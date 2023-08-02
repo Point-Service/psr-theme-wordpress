@@ -10,7 +10,7 @@
           "title": "Aree amministrative",
           "slug": "aree-amministrative",
           "description": "La struttura organizzativa è suddivisa in aree di competenze che gestiscono i servizi erogati alla comunità.",
-          "template_name": "aree-amministrative",
+          "template_name": "aree_amministrative",
           "children": {}
         },
         "Enti e fondazioni": {
@@ -91,7 +91,22 @@
       "slug": "vivere-il-comune",
       "description": "Tutti gli eventi, le iniziative e i luoghi d’interesse per scoprire e vivere il territorio comunale.",
       "template_name": "vivere-il-comune",
-      "children": {}
+      "children": {
+        "Eventi": {
+          "title": "Eventi",
+          "slug": "eventi",
+          "description": "",
+          "template_name": "eventi",
+          "children": {}
+        },
+        "Luoghi": {
+          "title": "Luoghi",
+          "slug": "luoghi",
+          "description": "",
+          "template_name": "luoghi",
+          "children": {}
+        }
+      }
     },
     "Argomenti": {
       "title": "Argomenti",
