@@ -26,6 +26,7 @@
                     label="Tutti i luoghi" 
                     buttonNext=true
                     data-element="live-button-locations"
+                    onclick="location.href='./luoghi'"
                 >
                     <span class="">Tutti i luoghi</span>
                 </button>

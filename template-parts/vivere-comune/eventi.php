@@ -26,6 +26,7 @@
                     label="Tutti gli eventi" 
                     buttonNext=true
                     data-element="live-button-events"
+                    onclick="location.href='./eventi'"
                 >
                     <span class="">Tutti gli eventi</span>
                 </button>
