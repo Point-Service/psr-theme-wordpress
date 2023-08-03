@@ -42,6 +42,7 @@ get_header();
 			</section>
 			<?php get_template_part("template-parts/vivere-comune/eventi"); ?>
 			<?php get_template_part("template-parts/vivere-comune/luoghi"); ?>
+			<?php get_template_part("template-parts/vivere-comune/argomenti"); ?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
 							

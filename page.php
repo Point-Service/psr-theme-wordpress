@@ -40,6 +40,7 @@ get_header();
                                 <?php
                                 the_content();
                                 ?>
+                                <?php if ('' === $post->post_content) { ?>
                                 <div class="callout note">
                                     <div class="callout-inner">
                                         <div class="callout-title">
@@ -52,6 +53,7 @@ get_header();
                                         <p><a href="https://docs.google.com/spreadsheets/d/1D4KbaA__xO9x_iBm08KvZASjrrFLYLKX/edit#gid=335720294">Consulta il documento di architettura dell'informazione</a> per costruire il template in autonomia.</p>
                                     </div>
                                 </div>
+                                <?php } ?>
                             </div>
                         </div>
                         <div class="row variable-gutters">
