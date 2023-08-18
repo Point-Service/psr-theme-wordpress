@@ -5,7 +5,9 @@
 
         $incarichi = dci_get_meta('incarichi');
 
-        $incarico = $incarichi[0];
+        if($incarichi) {
+            $incarico = $incarichi[0];
+        }
 
        
 
