@@ -212,7 +212,7 @@ function dci_get_group_ids() {
  */
 function dci_get_breadcrumb_label($name , $type = 'term') {
     $terms = array(
-        'comunicato stampa' => 'Comunicati',
+        'comunicato-stampa' => 'Comunicati',
         'news' => 'Notizie',
         'avviso' => 'Avvisi'
     );
