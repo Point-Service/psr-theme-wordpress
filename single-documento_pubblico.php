@@ -21,6 +21,7 @@ get_header();
             $prefix= '_dci_documento_pubblico_';
             $identificativo = dci_get_meta("identificativo", $prefix, $post->ID);
             $numero_protocollo = dci_get_meta("numero_protocollo", $prefix, $post->ID);
+            $data_protocollo = dci_get_meta("data_protocollo", $prefix, $post->ID);
             $tipo_documento = wp_get_post_terms( $post->ID, array( 'tipi_documento', 'tipi_doc_albo_pretorio' ) );
             $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
             $url_documento = dci_get_meta("url_documento", $prefix, $post->ID);
@@ -157,16 +158,17 @@ get_header();
                         <h3>Descrizione</h3>
                         <div class="richtext-wrapper lora">
                             <?php echo $descrizione; ?>
-                            <div class="table-responsive">
-                                <table class="table">
+                            <div class="table">
+                                <table>
                                     <tbody>
+
                                         <tr>
                                             <td><b>Tipo documento</b></td>
                                             <td>                                
                                                 <?php foreach($tipo_documento as $tipo) { 
                                                     $url = get_term_link($tipo->slug, $tipo->taxonomy);
                                                     ?>
-                                                    <a class="text-decoration-none" href="<?= $url ?>" aria-label="Vai all'archivio <?php echo $tipo->name; ?>" title="Vai all'archivio <?php echo $tipo->name; ?>">
+                                                    <a class="text-decoration-none" href="<?php echo $url; ?>" aria-label="Vai all'archivio <?php echo esc_attr($tipo->name); ?>" title="Vai all'archivio <?php echo esc_attr($tipo->name); ?>">
                                                         <?php echo $tipo->name; ?>
                                                     </a>, 
                                                 <?php }  ?>
@@ -174,26 +176,26 @@ get_header();
                                         </tr>
                                         <tr>
                                             <td><b>Numero e data</b></td>
-                                            <td>n. <?= $numero_protocollo ?> del <?= $data_protocollo ?></td>
+                                            <td>n. <?php echo $numero_protocollo; ?> del <?php echo $data_protocollo; ?></td>
                                         </tr>
                                         <tr>
                                             <td><b>Data di pubblicazione</b></td>
-                                            <td><?= the_date() ?></td>
+                                            <td><?php the_date() ?></td>
                                         </tr>
                                         <tr>
                                             <td><b>Oggetto</b></td>
-                                            <td><?= $descrizione_breve ?></td>
+                                            <td><?php echo $descrizione_breve; ?></td>
                                         </tr>
                                         <?php if ($autori) { ?>
                                             <tr>
                                                 <td><b>Autori</b></td>
-                                                <td><?= $autori ?></td>
+                                                <td><?php echo $autori; ?></td>
                                             </tr>
                                         <?php } ?>
                                         <?php if ($formati) { ?>
                                             <tr>
                                                 <td><b>Formati</b></td>
-                                                <td><?= $formati ?></td>
+                                                <td><?php echo $formati; ?></td>
                                             </tr>
                                         <?php } ?>
                                         <?php if ($licenza) { ?>
@@ -218,6 +220,9 @@ get_header();
                         <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                             <?php  
                             if ( $file_documento ) {
+                                if(is_array($file_documento)) {
+                                    $file_documento = $file_documento[0];
+                                }
                                 $documento_id = attachment_url_to_postid($file_documento);
                                 $documento = get_post($documento_id);
                             ?>
@@ -330,7 +335,7 @@ get_header();
                     </section>
                 </div>
             </div>
-
+            <?php get_template_part("template-parts/common/valuta-servizio"); ?>
 
         <?php
         endwhile; // End of the loop.
