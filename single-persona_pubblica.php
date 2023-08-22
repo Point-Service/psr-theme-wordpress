@@ -392,6 +392,7 @@ get_header();
                             <?php } ?>
                             </div>
                     </article>
+                    <?php  if ( $situazione_patrimoniale ) {?>
                     <article id="situazione-patrimoniale" class="it-page-section anchor-offset mt-5">
                             <h3>Situazione patrimoniale</h3>
                             <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
@@ -417,6 +418,8 @@ get_header();
                             <?php } ?>
                             </div>
                     </article>
+                    <?php } ?>
+                    <?php  if ( $dichiarazione_redditi ) {?>
                     <article id="dichiarazione-redditi" class="it-page-section anchor-offset mt-5">
                             <h3>Dichiarazione dei redditi</h3>
                             <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
@@ -441,7 +444,7 @@ get_header();
                                 </div>
                             </div>
                             <?php } ?>
-                            <?php } ?>
+                            <?php } } ?>
                             
                             </div>
                     </article>
