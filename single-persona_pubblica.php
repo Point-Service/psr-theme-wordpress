@@ -29,7 +29,7 @@ get_header();
             
             $img = wp_get_attachment_image_src($foto_id, "item-gallery");
 
-            $data_insediamento = dci_get_meta("data_insediamento");
+            $data_insediamento = dci_get_meta("data_inizio_incarico");
 
             $responsabili = dci_get_meta("responsabile");
 
