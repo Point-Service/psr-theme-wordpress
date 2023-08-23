@@ -437,7 +437,7 @@ get_header();
                                 </svg>
                                 <div class="card-body">
                                 <h5 class="card-title">
-                                    <a class="text-decoration-none" href="<?php echo $dichiarazione_redditi; ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
+                                    <a class="text-decoration-none" href="<?php echo $dichiarazione; ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
                                         <?php echo $documento->post_title; ?>
                                     </a>
                                 </h5>
@@ -466,7 +466,7 @@ get_header();
                                 </svg>
                                 <div class="card-body">
                                 <h5 class="card-title">
-                                    <a class="text-decoration-none" href="<?php echo $spese_elettorali; ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
+                                    <a class="text-decoration-none" href="<?php echo $spesa; ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
                                         <?php echo $documento->post_title; ?>
                                     </a>
                                 </h5>
