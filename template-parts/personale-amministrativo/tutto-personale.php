@@ -1,8 +1,8 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
-    $load_posts = 3;
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
+    $load_posts = 6;
 
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
@@ -67,7 +67,7 @@ global $the_query, $load_posts, $load_card_type;
             </div>
             <div class="row g-4" id="load-more">
                 <?php 
-                    $load_card_type = 'persona_pubblica';
+                    $load_card_type = 'personale-amministrativo';
                     foreach ($posts as $post) {get_template_part('template-parts/personale-amministrativo/cards-list');
                 }?>
             </div>

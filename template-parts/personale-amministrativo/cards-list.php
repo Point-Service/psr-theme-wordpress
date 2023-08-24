@@ -5,23 +5,25 @@
 
         $incarichi = dci_get_meta('incarichi');
 
-        $incarico = $incarichi[0];
+        $incarico = is_array($incarichi) ? $incarichi[0]: null;
 
        
 
         $arrdata = explode( '-', dci_get_meta("data_inizio_incarico") );
-        $tipo = get_the_terms($incarico, 'tipi_incarico')[0];
+        $tipo = is_array(get_the_terms($incarico, 'tipi_incarico')) ? get_the_terms($incarico, 'tipi_incarico')[0] : null;
 
         //var_dump($tipo);
 
         $prefix = '_dci_incarico_';
-        $nome_incarico = dci_get_meta('nome', $prefix, $tipo->term_id);
+        $nome_incarico = $tipo != NULL ? dci_get_meta('nome', $prefix, $tipo->term_id) : "";
+
+        $tipo_name = $tipo != NULL ? $tipo->name : "";
 
         //var_dump($nome_incarico);
 
         $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
         $img = dci_get_meta('foto');
-        if($tipo->name != "politico") {
+        if($tipo_name != "politico") {
         if ($img) {
 ?>
     <div class="col-md-6 col-xl-4">
