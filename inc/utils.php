@@ -1133,3 +1133,10 @@ if(!function_exists("dci_get_img")) {
         echo $img;
     }
 }
+
+if(!function_exists("dci_removeslashes")) {
+    function dci_removeslashes($string) { 
+        $string=implode("",explode("\\",$string)); 
+        return stripslashes(trim($string)); 
+    }
+}

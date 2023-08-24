@@ -218,7 +218,7 @@ get_header();
                                                                 <?php } ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#needed">
-                                                                        <span class="title-medium">Data di Insediamento</span>
+                                                                        <span class="title-medium">Data di <?php if($tipo_incarico == "politico") { echo 'Insediamento'; } else { echo 'inizio incarico'; } ?></span>
                                                                     </a>
                                                                 </li>
                                                                 <?php if ( $organizzazioni ) { ?>
@@ -328,7 +328,7 @@ get_header();
                             </section>
                             <?php } ?>
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="description">Data di Insediamento</h2>
+                                <h2 class="title-xxlarge mb-3" id="description">Data di <?php if($tipo_incarico == "politico") { echo 'Insediamento'; } else { echo 'inizio incarico'; } ?></h2>
                                 <div class="richtext-wrapper lora"><?php echo $data_insediamento; ?></div>
                             </section>
                             <?php if ( $organizzazioni ) { ?>
