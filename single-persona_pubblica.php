@@ -29,7 +29,7 @@ get_header();
             
             $img = wp_get_attachment_image_src($foto_id, "item-gallery");
 
-            $data_insediamento = dci_get_meta("data_insediamento");
+            $data_insediamento = dci_get_meta("data_inizio_incarico");
 
             $responsabili = dci_get_meta("responsabile");
 
@@ -51,7 +51,13 @@ get_header();
 
             $curriculum_vitae = dci_get_meta("curriculum_vitae");
 
-            $curriculum_vitae_id = dci_get_meta("curriculum_vitae_id");
+            $situazione_patrimoniale = dci_get_meta("situazione_patrimoniale");
+
+            $situazione_patrimoniale_id = dci_get_meta("situazione_patrimoniale_id");
+
+            $dichiarazione_redditi = dci_get_meta("dichiarazione_redditi");
+
+            $spese_elettorali = dci_get_meta("spese_elettorali");
 
             $descrizione = dci_get_wysiwyg_field("descrizione_estesa");
 
@@ -63,6 +69,8 @@ get_header();
                 $contatto = dci_get_full_punto_contatto($pc_id);
                 array_push($contatti, $contatto);
             }
+
+            $altre_cariche = dci_get_meta("altre_cariche");
             
 
             $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
@@ -210,7 +218,7 @@ get_header();
                                                                 <?php } ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#needed">
-                                                                        <span class="title-medium">Data di Insediamento</span>
+                                                                        <span class="title-medium">Data di <?php if($tipo_incarico == "politico") { echo 'Insediamento'; } else { echo 'inizio incarico'; } ?></span>
                                                                     </a>
                                                                 </li>
                                                                 <?php if ( $organizzazioni ) { ?>
@@ -248,9 +256,30 @@ get_header();
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
+                                                                <?php if ( $situazione_patrimoniale ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#situazione-patrimoniale">
+                                                                        <span class="title-medium">Situazione patrimoniale</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if ( $dichiarazione_redditi ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#dichiarazione-redditi">
+                                                                        <span class="title-medium">Dichiarazione dei redditi</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if ( $spese_elettorali ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#spese-elettorali">
+                                                                        <span class="title-medium">Spese elettorali</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
                                                                 <?php if ( $allegati ) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#more-info">
+                                                                    <a class="nav-link" href="#altre-cariche">
                                                                         <span class="title-medium">Allegati</span>
                                                                     </a>
                                                                 </li>
@@ -299,7 +328,7 @@ get_header();
                             </section>
                             <?php } ?>
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="description">Data di Insediamento</h2>
+                                <h2 class="title-xxlarge mb-3" id="description">Data di <?php if($tipo_incarico == "politico") { echo 'Insediamento'; } else { echo 'inizio incarico'; } ?></h2>
                                 <div class="richtext-wrapper lora"><?php echo $data_insediamento; ?></div>
                             </section>
                             <?php if ( $organizzazioni ) { ?>
@@ -361,10 +390,122 @@ get_header();
                                 </div>
                             </div>
                             <?php } ?>
+                            </div>
+                    </article>
+                    <?php  if ( $situazione_patrimoniale ) {?>
+                    <article id="situazione-patrimoniale" class="it-page-section anchor-offset mt-5">
+                            <h3>Situazione patrimoniale</h3>
+                            <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                            <?php  
+                                if ( $situazione_patrimoniale ) {
+                                    $documento_id = attachment_url_to_postid($situazione_patrimoniale);
+                                    $documento = get_post($documento_id);
+                                ?>
+                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                <svg class="icon" aria-hidden="true">
+                                <use
+                                    xlink:href="#it-clip"
+                                ></use>
+                                </svg>
+                                <div class="card-body">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" href="<?php echo $situazione_patrimoniale; ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
+                                        <?php echo $documento->post_title; ?>
+                                    </a>
+                                </h5>
+                                </div>
+                            </div>
+                            <?php } ?>
+                            </div>
+                    </article>
+                    <?php } ?>
+                    <?php  if ( $dichiarazione_redditi ) {?>
+                    <article id="dichiarazione-redditi" class="it-page-section anchor-offset mt-5">
+                            <h3>Dichiarazione dei redditi</h3>
+                            <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                            <?php  
+                                if ( $dichiarazione_redditi ) {
+                                    foreach ($dichiarazione_redditi as $dichiarazione) {
+                                        $documento_id = attachment_url_to_postid($dichiarazione);
+                                        $documento = get_post($documento_id);
+                                ?>
+                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                <svg class="icon" aria-hidden="true">
+                                <use
+                                    xlink:href="#it-clip"
+                                ></use>
+                                </svg>
+                                <div class="card-body">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" href="<?php echo $dichiarazione; ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
+                                        <?php echo $documento->post_title; ?>
+                                    </a>
+                                </h5>
+                                </div>
+                            </div>
+                            <?php } ?>
+                            <?php } } ?>
+                            
+                            </div>
+                    </article>
+                    <?php  
+                                if ( $spese_elettorali ) {
+                                    foreach ($spese_elettorali as $spesa) {
+                                    $documento_id = attachment_url_to_postid($spesa);
+                                    $documento = get_post($documento_id);
+                                ?>
+                    <article id="spese-elettorali" class="it-page-section anchor-offset mt-5">
+                            <h3>Spese elettorali</h3>
+                            <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                            
+                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                <svg class="icon" aria-hidden="true">
+                                <use
+                                    xlink:href="#it-clip"
+                                ></use>
+                                </svg>
+                                <div class="card-body">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" href="<?php echo $spesa; ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
+                                        <?php echo $documento->post_title; ?>
+                                    </a>
+                                </h5>
+                                </div>
+                            </div>
+                            <?php } ?>
+                            </div>
+                            <?php } ?>
+                    </article>
+                            <?php if ( $altre_cariche ) { ?>
+                            <article id="altre-cariche" class="it-page-section anchor-offset mt-5">
+                                <h3>Altre cariche</h3>
+                                <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                                    <div class="richtext-wrapper lora">
+                                        <?php foreach ($altre_cariche as $documento) {
+                                            $documento_id = attachment_url_to_postid($documento);
+                                            $documento = get_post($documento_id);
+                                        ?>
+                                        <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                            <svg class="icon" aria-hidden="true">
+                                            <use
+                                                xlink:href="#it-clip"
+                                            ></use>
+                                            </svg>
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <a class="text-decoration-none" href="<?php echo $curriculum_vitae; ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Scarica il documento <?php echo $documento->post_title; ?>">
+                                                        <?php echo $documento->post_title; ?>
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    
+                                        <?php } ?>
+                                        </div>
+                            </article>
+                            <?php } ?>
                             
                             <?php } ?>
-                        </div>
-                    </article>
                    <?php } ?>
                    
                         </div>

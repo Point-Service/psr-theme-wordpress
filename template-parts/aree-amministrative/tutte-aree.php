@@ -67,7 +67,7 @@ global $the_query, $load_posts, $load_card_type;
             </div>
             <div class="row g-4" id="load-more">
                 <?php 
-                    $load_card_type = 'unita_organizzativa';
+                    $load_card_type = 'aree-amministrative';
                     foreach ($posts as $post) {get_template_part('template-parts/aree-amministrative/cards-list');
                 }?>
             </div>

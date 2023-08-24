@@ -94,6 +94,9 @@ function load_more(){
 		if ($load_card_type == "domanda-frequente"){
 			$out .= load_template_part("template-parts/domanda-frequente/item");  
 		}
+		if ($load_card_type == "aree-amministrative"){
+			$out .= load_template_part("template-parts/aree-amministrative/cards-list");
+		}
 		if ($load_card_type == "unita-organizzativa"){
 			$out .= load_template_part("template-parts/unita-organizzativa/cards-list");
 		}
