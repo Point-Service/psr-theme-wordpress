@@ -103,6 +103,12 @@ function load_more(){
 		if ($load_card_type == "unita-organizzativa"){
 			$out .= load_template_part("template-parts/unita-organizzativa/cards-list");
 		}
+		if ($load_card_type == "luogo"){
+			$out .= load_template_part("template-parts/luogo/card-full");
+		}
+		if ($load_card_type == "evento"){
+			$out .= load_template_part("template-parts/evento/card-full");
+		}
  
 		endwhile;
  
