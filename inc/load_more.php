@@ -75,8 +75,11 @@ function load_more(){
 		$post = get_post();
 		++$i;
 
+		//die($load_card_type);
+
+		
 		if ($load_card_type == "servizio"){
-			$out .= load_template_part("template-parts/servizio/cards-list");
+			$out .= load_template_part("template-parts/servizio/card");
 		}
 		if ($load_card_type == "categoria_servizio"){
 			$hide_categories = true;
