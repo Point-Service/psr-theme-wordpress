@@ -32,7 +32,11 @@ get_header();
             </div>
         </section>
         <section id="accesso-rapido" class="quick-access-section">
-            <?php get_template_part("template-parts/home/accesso-rapido"); ?>
+            
+            <?php 
+                $boxes = dci_get_option( "quickboxes", "accesso_rapido" );
+                get_template_part("template-parts/home/accesso-rapido"); 
+            ?>
         </section>
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
