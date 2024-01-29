@@ -39,14 +39,15 @@ function load_more(){
 	$url_query_params =  json_decode( stripslashes( $_POST['query_params'] ), true );
 	$additional_filter =  json_decode( stripslashes( $_POST['additional_filter'] ), true );
 
-	$args = array(
-        's' => $_POST['search'],
-        'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
-        'post_type'      => $post_types,
-        'post_status' => 'publish',
-        'orderby'        => 'post_title',
-        'order'          => 'ASC'
-    );
+	if ( $post_types != "notizia" ) {
+		$args = array(
+			's' => $_POST['search'],
+	    'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+	    'post_type'      => $post_types,
+			'orderby' => 'post_title',
+			'order'   => 'ASC'
+		);
+	}
 
 	if ( isset($url_query_params["post_terms"]) ) {
 		$args['tax_query'] = array(
