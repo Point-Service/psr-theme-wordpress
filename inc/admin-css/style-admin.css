@@ -2,10 +2,6 @@
 * admin bar
 */
 
-#wpadminbar #wp-admin-bar-design-comuni>.ab-item .dci-icon:before {
-    content: "\f120";
-    top: 2px;
-}
 
 #wpadminbar .dci-icon{
     position: relative;
