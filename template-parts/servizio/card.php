@@ -1,11 +1,11 @@
 <?php
-global $servizio, $hide_categories;
+global $servizio, $hide_categorie, $post;
 
 $prefix = '_dci_servizio_';
 $categorie = get_the_terms($servizio->ID, 'categorie_servizio');
 $descrizione_breve = dci_get_meta('descrizione_breve', $prefix, $servizio->ID);
 
-if($servizio->post_status == "publish") {
+if($post->post_status == "publish") {
     ?>
         <div class="cmp-card-latest-messages mb-3 mb-30" data-bs-toggle="modal" data-bs-target="#">
             <div class="card shadow-sm px-4 pt-4 pb-4 rounded">

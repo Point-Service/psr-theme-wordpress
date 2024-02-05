@@ -39,14 +39,15 @@ function load_more(){
 	$url_query_params =  json_decode( stripslashes( $_POST['query_params'] ), true );
 	$additional_filter =  json_decode( stripslashes( $_POST['additional_filter'] ), true );
 
-	$args = array(
-        's' => $_POST['search'],
-        'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
-        'post_type'      => $post_types,
-        'post_status' => 'publish',
-        'orderby'        => 'post_title',
-        'order'          => 'ASC'
-    );
+	if ( $post_types != "notizia" ) {
+		$args = array(
+			's' => $_POST['search'],
+	    'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+	    'post_type'      => $post_types,
+			'orderby' => 'post_title',
+			'order'   => 'ASC'
+		);
+	}
 
 	if ( isset($url_query_params["post_terms"]) ) {
 		$args['tax_query'] = array(
@@ -75,8 +76,11 @@ function load_more(){
 		$post = get_post();
 		++$i;
 
+		//die($load_card_type);
+
+		
 		if ($load_card_type == "servizio"){
-			$out .= load_template_part("template-parts/servizio/cards-list");
+			$out .= load_template_part("template-parts/servizio/card");
 		}
 		if ($load_card_type == "categoria_servizio"){
 			$hide_categories = true;
@@ -97,8 +101,17 @@ function load_more(){
 		if ($load_card_type == "aree-amministrative"){
 			$out .= load_template_part("template-parts/aree-amministrative/cards-list");
 		}
+		if ($load_card_type == "personale-amministrativo"){
+			$out .= load_template_part("template-parts/personale-amministrativo/cards-list");
+		}
 		if ($load_card_type == "unita-organizzativa"){
 			$out .= load_template_part("template-parts/unita-organizzativa/cards-list");
+		}
+		if ($load_card_type == "luogo"){
+			$out .= load_template_part("template-parts/luogo/card-full");
+		}
+		if ($load_card_type == "evento"){
+			$out .= load_template_part("template-parts/evento/card-full");
 		}
  
 		endwhile;

@@ -15,6 +15,7 @@
         <div class="row g-4">
             <?php
                 foreach ($luoghi as $luogo_id) {
+                    $load_card_type = 'luogo';
                     $post = get_post($luogo_id);
                     get_template_part("template-parts/luogo/card-full");
                 }

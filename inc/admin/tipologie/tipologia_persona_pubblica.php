@@ -128,17 +128,17 @@ function dci_add_persona_pubblica_metaboxes() {
     ) );
 
     $cmb_user->add_field( array(
-        'id' => $prefix . 'data_inizio_incarico',
-        'name'    => __( 'Data inizio incarico', 'design_comuni_italia' ),
-        'desc' => __( 'Data inizio incarico.' , 'design_comuni_italia' ),
+        'id' => $prefix . 'data_conclusione_incarico',
+        'name'    => __( 'Data conclusione incarico', 'design_comuni_italia' ),
+        'desc' => __( 'Data conclusione incarico.' , 'design_comuni_italia' ),
         'type'    => 'text_date',
         'date_format' => 'd-m-Y',
     ) );
 
     $cmb_user->add_field( array(
-        'id' => $prefix . 'data_conclusione_incarico',
-        'name'    => __( 'Data conclusione incarico', 'design_comuni_italia' ),
-        'desc' => __( 'Data conclusione incarico.' , 'design_comuni_italia' ),
+        'id' => $prefix . 'data_inizio_incarico',
+        'name'    => __( 'Data inizio incarico', 'design_comuni_italia' ),
+        'desc' => __( 'Data inizio incarico.' , 'design_comuni_italia' ),
         'type'    => 'text_date',
         'date_format' => 'd-m-Y',
     ) );
