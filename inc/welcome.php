@@ -10,8 +10,11 @@ add_action( 'welcome_panel', 'dci_welcome_panel' );
 function dci_welcome_panel(){
     ?>
     <div class="welcome-panel-content" style="padding-bottom:30px;">
-        <img src="<?php echo get_template_directory_uri() . '/assets/img/designers-italia-wordpress-dashboard.png'?>"  style="float:left; margin:0px 0px 20px 0px;" />
-        <h2><?php _e( 'Design Comuni Italia: il tema di Developers Italia per i Comuni Italiani', "design_comuni_italia" ); ?></h2>
+        <img src="<?php echo get_template_directory_uri() . '/assets/img/designers-italia-wordpress-dashboard.png'?>"  style="width: 10%; margin: 0 auto;" />
+        <img src="<?php echo get_template_directory_uri() . '/assets/img/logo-point.png'?>"  style="margin: 0 auto; width:10%;" />
+        <h2 style="color: #fff; font-size: 24px; text-align:center"><?php _e( 'Tema basato su Design Comuni Italia: il tema di Developers Italia per i Comuni Italiani', "design_comuni_italia" ); ?></h2>
+        <a href="https://p-service.it" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Sito Web</button></a>
+        <a href="https://www.servizipa.com/guide/pointservice/" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Link alle Guide</button></a>
     </div>
     <?php
 }
@@ -32,13 +35,13 @@ add_action( 'wp_dashboard_setup', 'dci_add_dashboard_widgets' );
 function dci_add_dashboard_widgets() {
     wp_add_dashboard_widget(
         'dci_dashboard_widget', // Widget slug
-        'Design Comuni Italia', // Widget title
+        'Tema Point Service S.r.l', // Widget title
         'dci_new_dashboard_widget_function' // Function name to display the widget
     );
 }
 // Initialize the function to output the contents of your new dashboard widget
 function dci_new_dashboard_widget_function() {
-    echo "Design Comuni Italia: il tema di Developers Italia per i Comuni Italiani ";
+    echo "Basato su Design Comuni Italia: il tema di Developers Italia per i Comuni Italiani ";
 }
 
 /**
