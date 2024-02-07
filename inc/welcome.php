@@ -110,7 +110,7 @@ function dci_add_toolbar_manual($admin_bar)
     $admin_bar->add_menu(array(
         'id' => 'manuale',
         'title' => 'Manuale',
-        'href' => 'https://designers.italia.it/modello/comuni/',
+        'href' => 'https://www.servizipa.com/guide/pointservice',
         'meta' => array(
             'title' => __('Manuale'),
             'target' => '_blank'
