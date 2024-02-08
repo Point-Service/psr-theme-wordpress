@@ -143,6 +143,8 @@ function dci_get_sercheable_tipologie() {
         'servizio',
         'persona_pubblica',
         'dataset',
+        'page',
+        'post',
         'organi_governo',
         'aree_amministrative',
         'uffici'
