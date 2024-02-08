@@ -80,8 +80,7 @@ function dci_add_documento_pubblico_metaboxes()
         'desc' => __('Numero di protocollo del documento', 'design_comuni_italia'),
         'type' => 'text',
         'attributes' => array(
-            'maxlength' => '255',
-            'required' => 'required'
+            'maxlength' => '255'
         )
     ) );
 
@@ -93,10 +92,7 @@ function dci_add_documento_pubblico_metaboxes()
         'date_format' => 'd-m-Y',
         'data-datepicker' => json_encode( array(
             'yearRange' => '-100:+0',
-        ) ),
-        'attributes' => array(
-            'required' => 'required'
-        )
+        ) )
     ) );
 
     //APERTURA
