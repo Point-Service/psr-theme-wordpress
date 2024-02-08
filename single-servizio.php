@@ -105,10 +105,10 @@ get_header();
                         },
                     <?php } ?>
                     "audience": {
-                    "@type": "Audience",
-                    "audienceType": "<?php echo convertToPlain($destinatari); ?>",
-                    "name": "<?php echo convertToPlain($destinatari); ?>"
-                },
+                        "@type": "Audience",
+                        "audienceType": "<?php echo convertToPlain($destinatari); ?>",
+                        "name": "cittadinanza",
+                    },
                 "availableChannel": {
                     "@type": "ServiceChannel",
                     "name": "Dove rivolgersi"

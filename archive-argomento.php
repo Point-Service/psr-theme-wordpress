@@ -28,7 +28,7 @@ get_header();
       <?php } ?>
       <div class="container">
         <div class="row">
-          <div class="col-12 px-0 px-lg-2 drop-shadow">
+          <div class="col-12 px-0 px-lg-2">
             <div
               class="it-hero-card it-hero-bottom-overlapping rounded hero-p pb-lg-80"
             >
