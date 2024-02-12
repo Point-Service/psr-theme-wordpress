@@ -75,38 +75,65 @@ get_header();
                 return trim(strip_tags($text));
             };
             ?>
-            <script type="application/ld+json" data-element="metatag">{
-                    "name": "<?php echo esc_js($post->post_title); ?>",
-                    "serviceType": "<?php echo esc_js($categoria_servizio); ?>",
-                    "serviceOperator": {
-                        "name": "<?php echo esc_js($ipa); ?>"
-                    },
-                    <?php if ( !empty($copertura_geografica) ) : ?>
-                    "areaServed": {
-                        "name": "<?php echo convertToPlain($copertura_geografica); ?>"
-                    },
-                    <?php endif; ?>
+            <script type="application/ld+json" data-element="metatag">
+            {
+                "@context": "http://schema.org",
+                "@type": "GovernmentService",
+                "name": <?php echo json_encode($post->post_title); ?>,
+                "serviceType": <?php echo json_encode($categoria_servizio); ?>,
+                "serviceOperator": {
+                    "@type": "GovernmentOrganization",
+                    <?php if ($ipa){?>
+                        "name": "<?= $ipa; ?>"
+                    <?php } else {?>
+                        "name": "nessuno"
+                    <?php } ?>
+                },
+                <?php if ( !empty($copertura_geografica) ) { ?>
+                "areaServed": {
+                    "@type": "AdministrativeArea",
+                    <?php if ($copertura_geografica){?>
+                        "name": "<?= convertToPlain($copertura_geografica); ?>"
+                    <?php } else {?>
+                        "name": "nessuno"
+                    <?php } ?>
+                },
+                <?php } else { ?>
+                        "areaServed": {
+                            "@type": "AdministrativeArea",
+                            "name": "nessuno"
+                        },
+                    <?php } ?>
                     "audience": {
-                        "name": "<?php echo convertToPlain($destinatari); ?>"
+                        "@type": "Audience",
+                        "audienceType": "<?php echo convertToPlain($destinatari); ?>",
+                        "name": "cittadinanza",
                     },
-                    "availableChannel": {
-                        <?php if ( !empty($canale_digitale_link) ) : ?>
-                        "serviceUrl": "<?php echo esc_js($canale_digitale_link); ?>",
-                        <?php endif; ?>
-                        <?php if ( !empty($ufficio) ) : ?>
-                        "serviceLocation": {
-                            "name": "<?php echo esc_js($ufficio->post_title); ?>",
-                            "address": {
-                                "streetAddress": "<?php echo esc_js($indirizzo); ?>",
-                                "postalCode": "<?php echo esc_js($cap); ?>"
-                                <?php if ( !empty($quartiere) ) : ?>,
-                                "addressLocality": "<?php echo esc_js($quartiere); ?>"
-                                <?php endif; ?>
-                            }
+                "availableChannel": {
+                    "@type": "ServiceChannel",
+                    "name": "Dove rivolgersi"
+                    <?php if ( !empty($canale_digitale_link) ) { ?>
+                    ,"serviceUrl": <?php echo json_encode($canale_digitale_link); ?>
+                    <?php } else { ?>
+                    ,"serviceUrl": "nessuno"
+                    <?php } ?>
+                    <?php if ( !empty($ufficio) ) : ?>
+                    ,"serviceLocation": {
+                        "name": <?php echo json_encode($ufficio->post_title); ?>,
+                        "address": {
+                            "streetAddress": <?php echo json_encode($indirizzo); ?>,
+                            "postalCode": <?php echo json_encode((string)$cap); ?>,
+                            <?php if ($quartiere){?>
+                                "addressLocality": "<?= $quartiere; ?>"
+                            <?php } else {?>
+                                "addressLocality": "nessuno"
+                            <?php } ?>
                         }
-                        <?php endif; ?>
                     }
-            }</script>
+                    <?php endif; ?>
+                }
+            }
+            </script>
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-10">
