@@ -1,36 +1,13 @@
 <?php
 global $the_query, $load_posts, $load_card_type, $tipo_notizia;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 50;
-    $load_posts = 50;
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
+    $load_posts = 3;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-
-    $orderBy = 'data_modifica';
-    $order = 'DESC';
-
-    
-    if($tipo_notizia) {
-        $args = array(
-            's'         => $query,
-            'post_type' => 'notizia',
-            'tax_query' => array(
-                array (
-                    'taxonomy' => $tipo_notizia->taxonomy,
-                    'field' => 'term_id',
-                    'terms' => $tipo_notizia->term_id,
-                )
-            ),
-        );
-    } else {
-        $args = array(
-            's' => $query,
-            's'              => $query,
-            'posts_per_page' => $max_posts,
-            'post_type'      => 'notizia',
-            'orderby'        => 'post_title',
-            'order'          => 'ASC'
-         );
-    }
+    $args = array(
+        's'         => $query,
+        'post_type' => 'notizia'
+    );
 
     $the_query = new WP_Query( $args );
     $posts = $the_query->posts;
