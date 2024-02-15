@@ -25,9 +25,10 @@ function dci_icon_script() {
 function psr_login_logo() { 
     echo '<style type="text/css">
         #login h1 a, .login h1 a {
-        background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-point.png);
+            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-point.png);
+        }
         </style>
-    }';
+    ';
 }
 function get_login_in_webmail ( $text ) {
     if ($text == 'Lost your password?'){
