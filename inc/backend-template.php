@@ -30,6 +30,9 @@ function psr_login_logo() {
         </style>
     ';
 }
+function my_login_logo_url() {
+    return home_url();
+}
 function get_login_in_webmail ( $text ) {
     if ($text == 'Lost your password?'){
         $text .= '<br /><a href="http://codebing.com">Visit Code Bing</a>';
@@ -43,4 +46,5 @@ function dci_enqueue_stylesheets() {
 }
 add_action( 'admin_enqueue_scripts', 'dci_icon_script' );
 add_action( 'login_enqueue_scripts', 'dci_enqueue_stylesheets' );
+add_filter( 'login_headerurl', 'my_login_logo_url' );
 add_action( 'login_enqueue_scripts', 'psr_login_logo' );
