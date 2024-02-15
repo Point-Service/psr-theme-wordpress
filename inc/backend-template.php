@@ -30,6 +30,13 @@ function psr_login_logo() {
         </style>
     ';
 }
+function smallenvelop_login_message( $message ) {
+    if ( empty($message) ){
+        return '<p><strong>Per accedere alla webmail clicca <a href="https://webmailssl.it">qui</a></strong></p>';
+    } else {
+        return $message;
+    }
+}
 function my_login_logo_url() {
     return home_url();
 }
@@ -48,3 +55,4 @@ add_action( 'admin_enqueue_scripts', 'dci_icon_script' );
 add_action( 'login_enqueue_scripts', 'dci_enqueue_stylesheets' );
 add_filter( 'login_headerurl', 'my_login_logo_url' );
 add_action( 'login_enqueue_scripts', 'psr_login_logo' );
+add_filter( 'login_message', 'smallenvelop_login_message' );
