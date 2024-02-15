@@ -25,7 +25,7 @@ function dci_icon_script() {
 function psr_login_logo() { 
     echo '<style type="text/css">
         #login h1 a, .login h1 a {
-            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/assets/img/logo-point.png);
+            background-image: url('.get_stylesheet_directory_uri().'/assets/img/logo-point.webp);
         }
         </style>
     ';
@@ -40,13 +40,6 @@ function smallenvelop_login_message( $message ) {
 function my_login_logo_url() {
     return home_url();
 }
-function get_login_in_webmail ( $text ) {
-    if ($text == 'Lost your password?'){
-        $text .= '<br /><a href="http://codebing.com">Visit Code Bing</a>';
-    }
-    return $text;
-}
-add_filter( 'gettext', 'get_login_in_webmail' );
 
 function dci_enqueue_stylesheets() {
     wp_enqueue_style( 'dci-boostrap-italia-min', get_template_directory_uri() . '/assets/css/bootstrap-italia.min.css', false, '1.0.0' );
