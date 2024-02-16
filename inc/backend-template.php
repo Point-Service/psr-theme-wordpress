@@ -31,6 +31,11 @@ function psr_login_logo() {
     ';
 }
 function smallenvelop_login_message( $message ) {
+
+    return '<div class="bg-primary p-3 affix-top text-white">
+    <p><strong>Per accedere alla webmail clicca <a href="https://webmailssl.it" class="text-white">qui</a></strong></p>
+  </div>';
+
     if ( empty($message) ){
         return '<p><strong>Per accedere alla webmail clicca <a href="https://webmailssl.it">qui</a></strong></p>';
     } else {
