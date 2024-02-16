@@ -14,6 +14,10 @@ wp-content/plugins/hello.php
 # ignore specific themes
 wp-content/themes/twenty*/
 
+bootstrap-italia.min
+
+bootstrap-italia.min.css
+
 assets/css/bootstrap-italia.min.css
 
 # ignore node dependency directories

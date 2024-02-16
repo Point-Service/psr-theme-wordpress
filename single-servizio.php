@@ -107,7 +107,6 @@ get_header();
                     "audience": {
                         "@type": "Audience",
                         "audienceType": "<?php echo convertToPlain($destinatari); ?>",
-                        "name": "cittadinanza"
                     },
                 "availableChannel": {
                     "@type": "ServiceChannel",
