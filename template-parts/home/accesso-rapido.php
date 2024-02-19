@@ -11,7 +11,7 @@ $box_accesso_rapido = $boxes;
         <div class="card shadow-sm rounded" style="height: 0%;">
             <div class="card-body card-bg-blue">
                 <div class="fas fa-clipboard-list ico" style="font-size:38px; color: #fff;margin-right: 8px;top:10px;" aria-hidden="true"></div>
-                <a class="text-decoration-none card-bg-blue" href="<?php echo $box['link_message']; ?>" data-element="topic-element">
+                <a class="text-decoration-none card-bg-blue" href="<?php echo $box['link_message']; ?>" data-element="topic-element" target="_blank">
                     <h3 class="card-title t-primary title-xlarge text-white"><?php echo $box['titolo_message']; ?></h3>
                 </a>
                 <?php if($box['desc_message']) { ?>
