@@ -100,3 +100,4 @@ $posts = $the_query->posts;
         </div>
     </form>
 </div>
+<?php wp_reset_query(); ?>
