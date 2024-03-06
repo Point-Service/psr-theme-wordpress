@@ -7,10 +7,6 @@
 
         $incarico = $incarichi[0];
 
-       
-
-        $arrdata = explode( '-', $post->post_date );
-        $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
         $tipo = get_the_terms($post, 'tipi_unita_organizzativa')[0];
 
         //Var_dump($tipo);
@@ -34,12 +30,7 @@
                 </div>
                 <div class="col-8 order-1 order-md-2">
                 <div class="card-body">
-                    <div class="category-top cmp-list-card-img__body">
-                        <?php if ($tipo) { ?> 
-                            <span class="category cmp-list-card-img__body-heading-title underline"><?php echo $tipo->name ? $tipo->name : 'UNITA ORGANIZZATIVA'; ?></span>
-                        <?php } ?>                    
-                    <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
-                    </div>
+                    
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
                         <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
                     </a>
@@ -59,12 +50,7 @@
                 <div class="row g-2 g-md-0 flex-md-column">
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
-                            <div class="category-top cmp-list-card-img__body">
-                                <span class="category cmp-list-card-img__body-heading-title underline"><?php
-                                echo isset($tipo->name) ? strtoupper($tipo->name) : 'UNITA ORGANIZZATIVA'; ?>
-                                </span>
-                                <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
-                            </div>
+                            
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
                                 <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
                             </a>
