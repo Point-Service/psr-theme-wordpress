@@ -9,6 +9,16 @@
  * @package Design_Comuni_Italia
  */
 ?>
+
+<section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
+  <p>Usiamo i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.</p>
+  <div class="cookiebar-buttons">
+    <!--<a href="/privacy-cookies/" class="cookiebar-btn">Preferenze<span class="visually-hidden">cookies</span></a>!-->
+    <button data-bs-accept="cookiebar" class="cookiebar-btn cookiebar-confirm acceptAllCookie">Accetto<span class="visually-hidden"> i cookies</span></button>
+	<button class="cookiebar-btn cookiebar-confirm denyAllCookie">Nega<span class="visually-hidden"> i cookies</span></button>
+  </div>
+</section>
+
 <footer class="it-footer" id="footer">
     <div class="it-footer-main">
         <div class="container">
