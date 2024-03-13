@@ -27,6 +27,9 @@
                 </div>
                 <div class="col-8 order-1 order-md-2">
                 <div class="card-body">
+                    <div class="category-top">
+						<strong><?php echo $tipo->slug; ?></strong>
+					</div>
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
                         <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
                     </a>
@@ -46,7 +49,9 @@
                 <div class="row g-2 g-md-0 flex-md-column">
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
-                            
+                            <div class="category-top">
+						        <strong><?php echo $tipo->slug; ?></strong>
+					        </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
                                 <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
                             </a>
