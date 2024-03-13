@@ -48,8 +48,8 @@ function load_more(){
 			's' => $_POST['search'],
 	    'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
 	    'post_type'      => $post_types,
-			'orderby' => 'post_title',
-			'order'   => 'ASC'
+			'orderby' => 'date',
+			'order'   => 'DESC'
 		);
 	}
 
