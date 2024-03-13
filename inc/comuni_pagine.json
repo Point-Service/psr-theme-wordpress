@@ -17,7 +17,7 @@
           "title": "Enti e fondazioni",
           "slug": "enti-e-fondazioni",
           "description": "I consorzi, gli enti e le società partecipate di cui il Comune fa parte per rappresentare al meglio gli interessi della comunità.",
-          "template_name": "",
+          "template_name": "enti-e-fondazioni",
           "children": {}
         },
         "Organi di Governo": {
