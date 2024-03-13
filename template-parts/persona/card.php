@@ -1,34 +1,24 @@
 <?php
+global $persona_id;
 
-global $img, $tipo, $periodo, $description;
-
+$persona = get_post($persona_id);
+$prefix = '_dci_persona_pubblica_';
+$immagine = dci_get_meta('foto', $prefix, $persona_id);
+$incarichi_id = dci_get_meta('incarichi', $prefix, $persona_id);
 ?>
 
-
-<div class="col-md-6 col-xl-4">
-        <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
-            <div class="card no-after rounded">
-            <div class="row g-2 g-md-0 flex-md-column">
-                <div class="col-4 order-2 order-md-1">
-                <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
-                </div>
-                <div class="col-8 order-1 order-md-2">
-                <div class="card-body">
-                    <div class="category-top cmp-list-card-img__body">
-                        <?php if ($tipo) { ?> 
-                            <span class="category cmp-list-card-img__body-heading-title underline"><?php echo $tipo->name ? $tipo->name : 'AMMINISTRATIVO'; ?></span>
-                        <?php } ?>                    
-                    <span class="data"><?php echo $periodo[0].' '.$monthName.' '.$periodo[2] ?></span>
-                    </div>
-                    <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
-                        <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
-                    </a>
-                    <p class="card-text d-none d-md-block">
-                        <?php echo $description; ?>
-                    </p>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
+<div class="card-body">
+    <a href="<?php echo get_permalink($persona->ID); ?>" class="text-decoration-none" data-element="management-category-link" title="Vai al contenuto di <?php echo $persona->post_title; ?>"><h3 class="card-title t-primary title-xlarge"><?php echo $persona->post_title; ?></h3></a>
+    <p class="titillium text-paragraph mb-0">
+    <?php if ($incarichi_id) {
+        foreach ($incarichi_id as $inc_id) {
+            echo ' - ' . get_the_title($inc_id);
+        }
+    } ?>
+    </p>
+    <br />
+    <a class="read-more" href="<?php echo get_permalink($persona->ID); ?>" title="Vai al contenuto di <?php echo $persona->post_title; ?>" data-focus-mouse="false">
+        <span class="text">Ulteriori dettagli</span>
+        <svg class="icon ms-0"><use xlink:href="#it-arrow-right"></use></svg>
+    </a>
+</div>
