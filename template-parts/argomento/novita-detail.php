@@ -71,7 +71,10 @@
                     </div>
                 </div>
                 <?php } else { 
-                    $tipo_notizia = get_the_terms($post->ID, 'tipi_notizia')[0];
+                   //var_dump(get_the_terms($post->ID, 'tipi_notizia'));
+                    $tipo_notizia = is_array(get_the_terms($post->ID, 'tipi_notizia')) ? get_the_terms($post->ID, 'tipi_notizia')[0] : null;
+                    $tipo_notizia_link = $tipo_notizia != null ? get_term_link($tipo_notizia->term_id) : "#";
+                    $tipo_notizia_name = $tipo_notizia != null ? $tipo_notizia->name : 'Notizie';
                     $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
                     $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
                 ?>
@@ -89,8 +92,8 @@
                             <?php } ?>
                             <div class="card-body p-4">
                                 <div class="category-top">
-                                    <a class="text-decoration-none fw-semibold" href="<?php echo get_term_link($tipo_notizia->term_id); ?>">
-                                        <?php echo $tipo_notizia->name; ?>
+                                    <a class="text-decoration-none fw-semibold" href="<?php echo $tipo_notizia_link; ?>">
+                                        <?php echo $tipo_notizia_name; ?>
                                     </a>
                                     <span class="data u-grey-light">
                                         <?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]?>
@@ -123,3 +126,4 @@
             </div>
         </div>
     </div>
+</section>
