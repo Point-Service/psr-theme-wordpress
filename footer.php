@@ -201,14 +201,11 @@
 						<ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
                             <li class="list-inline-item d-flex">
                                 <small>
-                                    © 2023 <?php echo dci_get_option("nome_comune"); ?>                              &nbsp;| Sviluppato da
+                                    © 2023 <?php echo dci_get_option("nome_comune"); ?>                              &nbsp;| Sviluppato da 
                                 </small>
                                 <a class="text-primary" style="text-decoration:none;" href="https://p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">
-                                    <img class="logo-company" alt="Logo aziendale dello sviluppatore" src="<?php echo esc_url( get_template_directory_uri()); ?>//assets/img/logo-point.png" onerror="this.onerror=null;
-                                        this.src='<?php echo esc_url( get_template_directory_uri()); ?>//assets/img/logo-point.png'
-                                        " style="width: 10%;margin-top: -9px; margin-left: 5px;">
-                                    <span id="footerCompanyLabel" class="visually-hidden">
-                                        Point Service S.r.l
+                                    <span id="footerCompanyLabel" style="color: #fff">
+                                        &nbsp;Point Service S.R.L
                                     </span>
                                 </a>
                             </li>

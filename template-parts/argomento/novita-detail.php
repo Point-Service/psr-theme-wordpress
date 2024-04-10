@@ -71,8 +71,8 @@
                     </div>
                 </div>
                 <?php } else { 
-                   //var_dump(get_the_terms($post->ID, 'tipi_notizia'));
-                    $tipo_notizia = is_array(get_the_terms($post->ID, 'tipi_notizia')) ? get_the_terms($post->ID, 'tipi_notizia')[0] : null;
+                    //var_dump(get_the_terms($post->ID, 'tipi_notizia'));
+                    $tipo_notizia = count(get_the_terms($post->ID, 'tipi_notizia')) > 0 ? get_the_terms($post->ID, 'tipi_notizia')[0] : null;
                     $tipo_notizia_link = $tipo_notizia != null ? get_term_link($tipo_notizia->term_id) : "#";
                     $tipo_notizia_name = $tipo_notizia != null ? $tipo_notizia->name : 'Notizie';
                     $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
