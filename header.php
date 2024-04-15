@@ -191,7 +191,7 @@ $current_group = dci_get_current_group();
       </div>
     </div>
   </div>
-
+  <div class="bg-image"></div>
 </header>
 
 <?php get_template_part("template-parts/common/search-modal"); ?>
