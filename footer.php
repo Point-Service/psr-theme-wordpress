@@ -198,6 +198,9 @@
 						<?php if(dci_get_option("sitemap",'footer')) { ?>
 							<a href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>
 						<?php } ?>
+						<?php if(dci_get_option("servizi",'footer')) { ?>
+							<a href="<?php echo dci_get_option("servizi",'footer'); ?>">Servizi</a>
+						<?php } ?>
 						<ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
                             <li class="list-inline-item d-flex">
                                 <small>
