@@ -200,7 +200,7 @@
 						<?php } ?>
 						
 						<a href="<?php echo dci_get_option("servizi",'footer'); ?>/servizi">Servizi</a>
-			                        <a href="<?php echo dci_get_option("servizi",'footer'); ?>/wp-admin">Area Riservata</a>
+			                        <a href="<?php echo dci_get_option("Area Riservata",'footer'); ?>/wp-admin">Area Riservata</a>
 						
 						<ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
                             <li class="list-inline-item d-flex">
