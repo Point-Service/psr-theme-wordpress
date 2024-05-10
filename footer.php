@@ -204,8 +204,45 @@
 							<?php } ?>
 						      */
 	                                             ?>	
-			    
+
+
+			    <?
+$url = "<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html";
+$headers = @get_headers($url);
+if(strpos($headers[0],'404') === false)
+{
+  echo "La URL esiste";
+}
+else
+{
+  echo "La URL non esiste";
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+$url = "http://www.indirizzo-da-verificare.com/";
+$headers = @get_headers($url);
+if(strpos($headers[0],'404') === false)
+{
+  echo "La URL esiste";
+}
+else
+{
+  echo "La URL non esiste";
+}
+?>
+
+				
 				                <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html">Mappa del sito</a>
+
+			    
 						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
 			                        <a target="_blank" href="<?php echo dci_get_option("Area Riservata",'footer'); ?>/wp-admin">Area Riservata</a>
 						
