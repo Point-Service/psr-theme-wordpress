@@ -222,6 +222,6 @@
 </footer>
 
 <?php wp_footer(); ?>
-PICCIRIDDU
+
 </body>
 </html>
