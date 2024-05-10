@@ -199,7 +199,7 @@ er<?php
 							<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>
 						<?php } ?>
 						
-						<a href="<?php echo dci_get_option("servizi",'header'); ?>/servizi">Servizi</a>
+						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
 			                        <a target="_blank" href="<?php echo dci_get_option("Area Riservata",'footer'); ?>/wp-admin">Area Riservata</a>
 						
 						<ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
