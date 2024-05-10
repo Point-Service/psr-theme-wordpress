@@ -206,12 +206,13 @@
 	                                             ?>	
 
 						     <?php if (strlen(dci_get_option("sitemap",'footer')) > 3) { 
-				                ?>
-							    <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html">Mappa del sito</a>
-						    <?php } ?>
-			    
-						      <a target="_blank" href="/index.php/page-sitemap.html">Mappa del sito</a>
-
+				                      ?>
+				                        <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>				
+						      <?php } 
+			                                else 
+			                               { ?>			    
+						         <a target="_blank" href="/index.php/page-sitemap.html">Mappa del sito</a>
+                                                       <?php } ?>
 
 			    
 						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
