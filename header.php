@@ -37,6 +37,7 @@ $current_group = dci_get_current_group();
     <?php get_template_part("template-parts/header/slimheader"); ?> 
 
     <div class="it-nav-wrapper">
+    <div class="bg-image">    
     <div class="it-header-center-wrapper">
       <div class="container">
         <div class="row">
@@ -91,6 +92,7 @@ $current_group = dci_get_current_group();
           </div>
         </div>
       </div>
+    </div>
     </div>
     <div class="it-header-navbar-wrapper" id="header-nav-wrapper">
       <div class="container">
