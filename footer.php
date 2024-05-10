@@ -218,7 +218,7 @@
 							{
 						      ?>
 							<?php if(dci_get_option("sitemap",'footer')) { ?>
-								<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito2</a>
+								<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>
 							<?php } ?>
 						      <?php } ?>
 
