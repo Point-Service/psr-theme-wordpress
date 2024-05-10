@@ -207,7 +207,7 @@
 
 
 			    <?php
-				$url = "<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html";
+				$url = "/index.php/page-sitemap.html";
 				$headers = @get_headers($url);
 				if(strpos($headers[0],'404') === false)
 				{
