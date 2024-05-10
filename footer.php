@@ -217,26 +217,7 @@ else
 {
   echo "La URL non esiste";
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-$url = "http://www.indirizzo-da-verificare.com/";
-$headers = @get_headers($url);
-if(strpos($headers[0],'404') === false)
-{
-  echo "La URL esiste";
-}
-else
-{
-  echo "La URL non esiste";
-}
+
 ?>
 
 				
