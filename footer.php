@@ -204,28 +204,8 @@
 							<?php } ?>
 						      */
 	                                             ?>	
-
-			
-						    <?php
-							$url = "/index.php/page-sitemap.html";
-							$headers = @get_headers($url);
-							if(strpos($headers[0],'404') === false)
-							{ 
-						      ?>
-							  <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html">Mappa del sito</a>
-						     <?php }
-							else
-							{
-						      ?>
-							<?php if(dci_get_option("sitemap",'footer')) { ?>
-								<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>
-							<?php } ?>
-						      <?php } ?>
-
-				
-				                
-
 			    
+						<a target="_blank" href="/index.php/page-sitemap.html">Mappa del sito</a>		    
 						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
 			                        <a target="_blank" href="<?php echo dci_get_option("Area Riservata",'footer'); ?>/wp-admin">Area Riservata</a>
 						
