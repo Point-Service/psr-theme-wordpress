@@ -210,15 +210,16 @@
 							$url = "/index.php/page-sitemap.html";
 							$headers = @get_headers($url);
 							if(strpos($headers[0],'404') === false)
-							{ ?> 
-							    <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html">Mappa del sito</a>
-							  <?php }
-								else
-								{
-								  echo "La URL non esiste";
-								}
-			
-						         ?>
+							{ 
+						      ?>
+							  echo "<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html">Mappa del sito</a>";
+						     <?php }
+							else
+							{
+							  echo "La URL non esiste";
+							}
+
+						     ?>
 
 				
 				                
