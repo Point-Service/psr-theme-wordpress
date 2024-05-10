@@ -196,7 +196,7 @@
 							<a href="<?php echo dci_get_option("media_policy",'footer'); ?>">Media policy</a>
 						<?php } ?>
 						<?php if(dci_get_option("sitemap",'footer')) { ?>
-							<a href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>
+							<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>
 						<?php } ?>
 						
 						<a href="<?php echo dci_get_option("servizi",'footer'); ?>/servizi">Servizi</a>
