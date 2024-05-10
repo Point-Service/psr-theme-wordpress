@@ -212,14 +212,15 @@
 							if(strpos($headers[0],'404') === false)
 							{ 
 						      ?>
-							  echo "<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html">Mappa del sito</a>";
+							  <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html">Mappa del sito1</a>
 						     <?php }
 							else
 							{
-							  echo "La URL non esiste";
-							}
-
-						     ?>
+						      ?>
+							<?php if(dci_get_option("sitemap",'footer')) { ?>
+								<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito2</a>
+							<?php } ?>
+						      <?php } ?>
 
 				
 				                
