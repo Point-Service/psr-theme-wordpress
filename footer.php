@@ -201,7 +201,7 @@
 						<ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
                             <li class="list-inline-item d-flex">
                                 <small>
-                                    © 2024 <?php echo dci_get_option("nome_comune"); ?>                              &nbsp;| Sviluppato da 
+                                    © <?php echo dci_get_option("nome_comune"); ?>                              &nbsp;| Sviluppato da 
                                 </small>
                                 <a class="text-primary" style="text-decoration:none;" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">
                                     <span id="footerCompanyLabel" style="color: #fff">
