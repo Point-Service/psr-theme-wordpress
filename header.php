@@ -40,7 +40,8 @@ $current_group = dci_get_current_group();
     <div class="it-header-center-wrapper">
       <div class="container">
         <div class="row">
-          <div class="col-12" class="bg-image">
+	 <div class="bg-image">
+          <div class="col-12">
             <div class="it-header-center-content-wrapper">
               <div class="it-brand-wrapper">
                 <a 
@@ -88,6 +89,7 @@ $current_group = dci_get_current_group();
                 </div>
               </div>
             </div>
+	  </div>
           </div>
         </div>
       </div>
