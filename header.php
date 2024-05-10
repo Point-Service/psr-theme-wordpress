@@ -33,14 +33,13 @@ $current_group = dci_get_current_group();
     class="it-header-wrapper"
     data-bs-target="#header-nav-wrapper"
     style=""
->
+   >
     <?php get_template_part("template-parts/header/slimheader"); ?> 
 
     <div class="it-nav-wrapper">
     <div class="it-header-center-wrapper">
       <div class="container">
         <div class="row">
-	 <div class="bg-image">
           <div class="col-12">
             <div class="it-header-center-content-wrapper">
               <div class="it-brand-wrapper">
@@ -89,7 +88,6 @@ $current_group = dci_get_current_group();
                 </div>
               </div>
             </div>
-	  </div>
           </div>
         </div>
       </div>
