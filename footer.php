@@ -195,10 +195,17 @@
 						<?php if(dci_get_option("media_policy",'footer')) { ?>
 							<a href="<?php echo dci_get_option("media_policy",'footer'); ?>">Media policy</a>
 						<?php } ?>
-						<?php if(dci_get_option("sitemap",'footer')) { ?>
-							<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>
-						<?php } ?>
-						
+
+			    
+				                    <?php
+						     /** Tolgo il link ufficiale per agganciarmi al plugin XML Sitemap Generator for Google
+							<?php if(dci_get_option("sitemap",'footer')) { ?>
+								<a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>/index.php/page-sitemap.html">Mappa del sito</a>
+							<?php } ?>
+						      */
+	                                             ?>	
+			    
+				                <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer');/index ?>">Mappa del sito</a>
 						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
 			                        <a target="_blank" href="<?php echo dci_get_option("Area Riservata",'footer'); ?>/wp-admin">Area Riservata</a>
 						
