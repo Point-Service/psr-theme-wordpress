@@ -191,7 +191,9 @@
             </div>
             <div class="row">
                 <div class="col-12 footer-items-wrapper">
+			 <?php echo do_shortcode('[google-translator]'); ?>
                     <div class="footer-bottom">
+
 						<?php if(dci_get_option("media_policy",'footer')) { ?>
 							<a href="<?php echo dci_get_option("media_policy",'footer'); ?>">Media policy</a>
 						<?php } ?>
