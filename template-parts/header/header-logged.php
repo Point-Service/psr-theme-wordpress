@@ -33,38 +33,6 @@ $last_notification = get_user_meta($current_user->ID,"_dci_last_notification", t
             xlink:href="#it-expand"></use>
         </svg>
     </a>
-    <div class="dropdown-menu">
-        <div class="row">
-            <div class="col-12">
-                <div class="link-list-wrapper">
-                <ul class="link-list">
-                    <li>
-                    <a class="list-item" href="#"><span>I miei servizi</span></a>
-                    </li>
-                    <li>
-                    <a class="list-item" href="#"><span>Le mie pratiche</span></a>
-                    </li>
-                    <li>
-                    <a class="list-item" href="#"><span>Notifiche</span></a>
-                    </li>
-                    <li>
-                    <span class="divider"></span>
-                    </li>
-                    <li>
-                    <a class="list-item" href="#"><span>Impostazioni</span></a>
-                    </li>
-                    <li>
-                    <a class="list-item left-icon" href="<?php echo wp_logout_url(); ?>">
-                        <svg class="icon icon-primary icon-sm left">
-                        <use
-                            xlink:href="#it-external-link"></use>
-                        </svg>
-                        <span class="fw-bold">Esci</span>
-                    </a>
-                    </li>
-                </ul>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
