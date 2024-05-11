@@ -30,16 +30,11 @@
                     <use href="#it-expand"></use>
                   </svg>
               </button>
-              <div class="dropdown-menu">
-                <div class="row">
-                  <div class="col-12">
+
                  
                         <?php echo do_shortcode('[google-translator]'); ?>
                      
-                  </div>
-                </div>
-              </div>
-              
+   
             </div>
 		
             <?php
