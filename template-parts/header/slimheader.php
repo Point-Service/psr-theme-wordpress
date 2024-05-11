@@ -35,6 +35,7 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="link-list-wrapper">
+                      <?php echo do_shortcode('[google-translator]'); ?>
                       <ul class="link-list">
                         <li>
                           <a class="dropdown-item list-item" href="#">
