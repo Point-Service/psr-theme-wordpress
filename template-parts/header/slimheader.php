@@ -30,7 +30,6 @@
                     <use href="#it-expand"></use>
                   </svg>
               </button>
- <?php echo do_shortcode('[google-translator]'); ?>
               <div class="dropdown-menu">
                 <div class="row">
                   <div class="col-12">
@@ -43,7 +42,7 @@
                           </a>
                         </li>
                         <li>
-                          <a class="dropdown-item list-item" href="#">
+                          <a class="dropdown-item list-item" href="#" class="nturl notranslate it flag English tool-item"  >
                             <span>ENG</span>
                           </a>
                         </li>
