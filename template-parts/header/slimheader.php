@@ -35,9 +35,9 @@
                   <div class="col-12">
                     <div class="link-list-wrapper">
                      
-                      <ul class="link-list">
+                    
                         <?php echo do_shortcode('[google-translator]'); ?>
-                      </ul>
+                     
                     </div>
                   </div>
                 </div>
