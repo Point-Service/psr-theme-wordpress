@@ -33,12 +33,9 @@
               <div class="dropdown-menu">
                 <div class="row">
                   <div class="col-12">
-                    <div class="link-list-wrapper">
-                     
-                    
+                 
                         <?php echo do_shortcode('[google-translator]'); ?>
                      
-                    </div>
                   </div>
                 </div>
               </div>
