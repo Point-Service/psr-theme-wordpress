@@ -21,7 +21,7 @@ $last_notification = get_user_meta($current_user->ID,"_dci_last_notification", t
 ?>
 
 <div class="it-user-wrapper nav-item dropdown">
-    <a aria-expanded="false" class="btn btn-primary btn-icon btn-full" data-toggle="dropdown" href="#">
+    <a aria-expanded="false" class="btn btn-primary btn-icon btn-full" data-toggle="dropdown" href="#it-expand">
         <span class="rounded-icon">
             <img src="<?php echo dci_get_user_avatar($current_user); ?>" class="border rounded-circle icon-white" alt="<?php echo dci_get_display_name($current_user->ID); ?>" style="max-width:20px;" height="" width="20"/>
         </span>
@@ -33,6 +33,39 @@ $last_notification = get_user_meta($current_user->ID,"_dci_last_notification", t
             xlink:href="#it-expand"></use>
         </svg>
     </a>
-
+    
+    <div class="dropdown-menu">
+        <div class="row">
+            <div class="col-12">
+                <div class="link-list-wrapper">
+                <ul class="link-list">
+                    <li>
+                    <a class="list-item" href="#"><span>I miei servizi</span></a>
+                    </li>
+                    <li>
+                    <a class="list-item" href="#"><span>Le mie pratiche</span></a>
+                    </li>
+                    <li>
+                    <a class="list-item" href="#"><span>Notifiche</span></a>
+                    </li>
+                    <li>
+                    <span class="divider"></span>
+                    </li>
+                    <li>
+                    <a class="list-item" href="#"><span>Impostazioni</span></a>
+                    </li>
+                    <li>
+                    <a class="list-item left-icon" href="<?php echo wp_logout_url(); ?>">
+                        <svg class="icon icon-primary icon-sm left">
+                        <use
+                            xlink:href="#it-external-link"></use>
+                        </svg>
+                        <span class="fw-bold">Esci</span>
+                    </a>
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
