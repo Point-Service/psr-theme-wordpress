@@ -22,20 +22,12 @@
                </a>
             </div>
             <?php }?>
-            <div class="nav-item dropdown">
-              <button type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="languages" aria-haspopup="true">
-                <span class="visually-hidden">Lingua attiva:</span>
-                <span>ITA</span>
-                <svg class="icon">
-                    <use href="#it-expand"></use>
-                  </svg>
-              </button>
 
                  
                         <?php echo do_shortcode('[google-translator]'); ?>
                      
    
-            </div>
+         
 		
             <?php
                 if(!is_user_logged_in()) {
