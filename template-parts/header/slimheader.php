@@ -36,16 +36,7 @@
                     <div class="link-list-wrapper">
                      
                       <ul class="link-list">
-                        <li>
-                          <a class="dropdown-item list-item" href="#">
-                            <span>ITA<span class="visually-hidden">selezionata</span></span>
-                          </a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item list-item" href="#" >
-                            <span>ENG</span>
-                          </a>
-                        </li>
+                        <?php echo do_shortcode('[google-translator]'); ?>
                       </ul>
                     </div>
                   </div>
@@ -53,7 +44,7 @@
               </div>
               
             </div>
-		<?php echo do_shortcode('[google-translator]'); ?>
+		
             <?php
                 if(!is_user_logged_in()) {
                     get_template_part("template-parts/header/header-anon");
