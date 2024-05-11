@@ -22,13 +22,9 @@
                </a>
             </div>
             <?php }?>
-
-                 
+                
                         <?php echo do_shortcode('[google-translator]'); ?>
                      
-   
-         
-		
             <?php
                 if(!is_user_logged_in()) {
                     get_template_part("template-parts/header/header-anon");
