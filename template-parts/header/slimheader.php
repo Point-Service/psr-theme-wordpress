@@ -42,7 +42,7 @@
                           </a>
                         </li>
                         <li>
-                          <a class="dropdown-item list-item" href="#" class="nturl notranslate it flag English tool-item"  >
+                          <a class="dropdown-item list-item" href="#" >
                             <span>ENG</span>
                           </a>
                         </li>
