@@ -1,4 +1,3 @@
-@@ -1,27 +1,26 @@
 <?php
 /**
  * The template for displaying home
