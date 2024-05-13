@@ -1,8 +1,8 @@
-/*!
+*!
 Theme Name: Design Comuni Italia
 Author:
 Description: Design Comuni Italia è il tema di WordPress per i siti dei Comuni Italiani. Rispetta le linee guida di design dell’Agenzia per l’Italia digitale rilasciate dal Team per la Trasformazione Digitale. Utilizza Bootstrap Italia.
-Version: 1.5.0
+Version: 1.8.0
 License: AGPL 3.0 or later
 Text Domain: design_comuni_italia
 */
@@ -10,10 +10,6 @@ Text Domain: design_comuni_italia
 /** immagini e allineamenti wp **/
 /* =WordPress Core
 -------------------------------------------------------------- */
-
-:root {
-  --bootstrap-italia-version: '2.5.2';
-}
 
 svg.icon > image {
   width: inherit;
@@ -930,6 +926,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .home-message.yellow,
 .home-message.yellow .msg svg {
   background-color: #ffcc00;
+  color: #333 !important;
+  fill: #333 !important;
+}
+.home-message.orange,
+.home-message.orange .msg svg {
+  background-color: #FF8000;
   color: #333 !important;
   fill: #333 !important;
 }
