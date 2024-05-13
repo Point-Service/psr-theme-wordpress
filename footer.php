@@ -24,15 +24,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 footer-items-wrapper logo-wrapper">
-                <img class="ue-logo" src="<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" alt="logo Unione Europea" width="178" height="">
-                    <div class="it-brand-wrapper">
+		 <div class="it-brand-wrapper">
                         <a href="<?php echo home_url() ?>">
                             <?php get_template_part("template-parts/common/logo");?>
                             <div class="it-brand-text">
                                 <h2 class="no_toc"><?php echo dci_get_option("nome_comune");?></h2>
                             </div>
                         </a>
-                    </div>
+                   </div>	
+                <img class="ue-logo" src="<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" alt="logo Unione Europea" width="178" height="">
+                   
                 </div>
             </div>
             <div class="row">
