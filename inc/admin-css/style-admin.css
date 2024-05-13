@@ -2,6 +2,10 @@
 * admin bar
 */
 
+#wpadminbar #wp-admin-bar-design-comuni>.ab-item .dci-icon:before {
+    content: "\f120";
+    top: 2px;
+}
 
 #wpadminbar .dci-icon{
     position: relative;
@@ -204,6 +208,9 @@
 }
 .cmb2-options-box .radio-color.yellow {
     background-color: #FFCC00;
+}
+.cmb2-options-box .radio-color.orange {
+    background-color: #FF8000;
 }
 
 #spinner-overlayer {
