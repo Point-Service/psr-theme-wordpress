@@ -1,3 +1,4 @@
+@@ -1,27 +1,26 @@
 <?php
 /**
  * The template for displaying home
@@ -6,7 +7,6 @@
  *
  * @package Design_Comuni_Italia
  */
-
 get_header();
 ?>
     <main id="main-container" class="main-container redbrown">
@@ -21,7 +21,7 @@ get_header();
                 get_template_part("template-parts/home/messages");
             }
 		    ?>
-	    <?php //get_template_part("template-parts/home/carosello"); ?>
+            <?php //get_template_part("template-parts/home/carosello"); ?>
             <?php get_template_part("template-parts/home/notizie"); ?>
             <?php get_template_part("template-parts/home/calendario"); ?>
         </section>
@@ -37,7 +37,7 @@ get_header();
                 $boxes = dci_get_option( "quickboxes", "accesso_rapido" );
                 get_template_part("template-parts/home/accesso-rapido"); 
             ?>
-        </section>	    
+        </section>
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
         <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
