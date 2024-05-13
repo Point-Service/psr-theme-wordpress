@@ -21,7 +21,6 @@ get_header();
                 get_template_part("template-parts/home/messages");
             }
 		    ?>
-            <?php //get_template_part("template-parts/home/carosello"); ?>
             <?php get_template_part("template-parts/home/notizie"); ?>
             <?php get_template_part("template-parts/home/calendario"); ?>
         </section>
@@ -30,13 +29,6 @@ get_header();
                 <?php get_template_part("template-parts/home/argomenti"); ?>
                 <?php get_template_part("template-parts/home/siti","tematici"); ?>
             </div>
-        </section>
-        <section id="accesso-rapido" class="quick-access-section">
-            
-            <?php 
-                $boxes = dci_get_option( "quickboxes", "accesso_rapido" );
-                get_template_part("template-parts/home/accesso-rapido"); 
-            ?>
         </section>
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
