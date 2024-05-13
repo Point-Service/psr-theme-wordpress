@@ -32,7 +32,7 @@
                             </div>
                         </a>
                    </div>	
-			
+		<p></p>	
                <img class="ue-logo" src="<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" alt="logo Unione Europea" width="" height="">
                    
                 </div>
