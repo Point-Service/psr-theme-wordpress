@@ -1,4 +1,4 @@
-<?php
+?php
 /**
  * Evento template file
  *
@@ -220,8 +220,8 @@ get_header();
               <div class="point-list-wrapper my-4">
                 <div class="point-list">
                     <h3 class="point-list-aside point-list-primary fw-normal">
-                        <div class="point-date font-monospace"><?php echo $start_date_arr[0]; ?></div>
-                        <div class="point-month font-monospace"><?php echo $start_date_arr[1]; ?></div>
+                        <span class="point-date font-monospace"><?php echo $start_date_arr[0]; ?></span>
+                        <span class="point-month font-monospace"><?php echo $start_date_arr[1]; ?></span>
                     </h3>
                   <div class="point-list-content">
                       <div class="card card-teaser shadow rounded">
@@ -249,10 +249,6 @@ get_header();
                   </div>
               </div>
               </div>
-              <p class="font-serif">
-                  Per informazioni sul programma dettagliato degli appuntamenti religiosi e civili, consultare il programma
-                  nella sezione documenti.
-              </p>
               <?php
               $data_inizio = date_i18n("Ymd\THi00", date($start_timestamp));
               $data_fine = date_i18n("Ymd\THi00", date($end_timestamp));
@@ -303,7 +299,7 @@ get_header();
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#it-clip"></use>
                     </svg>
-                      <a class="text-decoration-none" href="<?php echo $documenti; ?>" title="Scarica la locandina <?php echo $doc->post_title; ?>" aria-label="Scarica la locandina <?php echo $doc->post_title; ?>"><?php echo $doc->post_title; ?></a>
+                      <a class="text-decoration-none" href="<?php echo $allegati; ?>" title="Scarica la locandina <?php echo $doc->post_title; ?>" aria-label="Scarica la locandina <?php echo $doc->post_title; ?>"><?php echo $doc->post_title; ?></a>
                   </h3>
                   </div>
               </div>
@@ -312,7 +308,7 @@ get_header();
 
           <?php if( is_array($appuntamenti) && count($appuntamenti) ) { ?>
           <article id="appuntamenti" class="it-page-section mb-5">
-              <h2 class="mb-3>Appuntamenti</h2>
+              <h2 class="mb-3">Appuntamenti</h2>
               <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                   <?php foreach ($appuntamenti as $appuntamento) {
                       get_template_part('template-parts/single/appuntamento');
