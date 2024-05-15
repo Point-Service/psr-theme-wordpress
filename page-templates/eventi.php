@@ -9,7 +9,7 @@ global $post;
 get_header();
 
 ?>
-	<main>  PROVA
+	<main> 
 		<?php
 		while ( have_posts() ) :
 			the_post();
