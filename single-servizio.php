@@ -314,7 +314,7 @@ get_header();
                                 </div>
                             </section>
                             <section class="it-page-section mb-30 has-bg-grey p-3">
-                                <h2 class="title-xxlarge mb-3" id="needed">Cosa serve</h2>
+                                <h2 class="title-xxlarge mb-3">Cosa serve</h2>
                                 <div class="richtext-wrapper lora" data-element="service-needed">
                                     <?php echo $cosa_serve_intro ?>
                                     <ul >
