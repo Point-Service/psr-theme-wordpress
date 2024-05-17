@@ -74,7 +74,7 @@ get_header();
 																aria-expanded="true"
 																data-bs-toggle="collapse"
 																data-bs-target="#collapse-one"
-															>INDICE DELLA PAGINA1
+															>INDICE DELLA PAGINA
 																<svg class="icon icon-sm icon-primary align-top">
 																	<use xlink:href="#it-expand"></use>
 																</svg>
@@ -436,4 +436,3 @@ get_header();
         ?>
     </main>
 <?php get_footer(); ?>
-
