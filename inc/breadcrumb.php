@@ -352,12 +352,6 @@ class Breadcrumb_Trail {
                 }
             }
 
-		$custom_breadcrumbs = apply_filters( 'dci_get_breadcrumb_items', $this->items );
-		if ( !empty( $custom_breadcrumbs ) ) {
-			$this->items = $custom_breadcrumbs;
-			return;
-		}
-
             if ( is_singular() ) {
 
 				if (get_post_type() == 'servizio') {
@@ -441,12 +435,12 @@ class Breadcrumb_Trail {
                     else if (is_tax(array("tipi_documento"))){
                         $this->items[] = "<a href='".home_url("documenti-e-dati")."'>".__("Documenti e dati", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
-                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+                        $this->items[] = single_term_title( '', false );
                     }
                     else if (is_tax(array("tipi_notizia"))){
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
-                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+                        $this->items[] = single_term_title( '', false );
                     }
                     else {
                         $this->add_term_archive_items();
