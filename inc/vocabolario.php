@@ -1,4 +1,4 @@
-?php
+<?php
 
 /**
  * Vocabolario controllato che raccoglie un subset dei vocaboli definiti in Eurovoc
