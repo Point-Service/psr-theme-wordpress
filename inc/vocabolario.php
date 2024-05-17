@@ -697,4 +697,3 @@ if(!function_exists('dci_get_categorie_servizio_descriptions_array')){
         return $categorie_servizio_descriptions_arr;
     }
 }
-
