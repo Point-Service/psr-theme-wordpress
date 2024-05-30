@@ -45,16 +45,6 @@ get_header();
             $uo_id = intval(dci_get_meta("unita_responsabile"));
             $argomenti = get_the_terms($post, 'argomenti');
 
-            $unwanted_array = array(    'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
-                            'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
-                            'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
-                            'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
-                            'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
-
-            $comune = strtolower(strtr(dci_get_option("nome_comune"), $unwanted_array));
-
-            $punti_contatto = dci_get_meta("punti_contatto");
-
             // valori per metatag
             $categorie = get_the_terms($post, 'categorie_servizio');
             $categoria_servizio = $categorie[0]->name;
@@ -76,63 +66,45 @@ get_header();
             };
             ?>
             <script type="application/ld+json" data-element="metatag">
-            {
-                "@context": "http://schema.org",
-                "@type": "GovernmentService",
-                "name": <?php echo json_encode($post->post_title); ?>,
-                "serviceType": <?php echo json_encode($categoria_servizio); ?>,
-                "serviceOperator": {
-                    "@type": "GovernmentOrganization",
-                    <?php if ($ipa){?>
-                        "name": "<?= $ipa; ?>"
-                    <?php } else {?>
-                        "name": "nessuno"
-                    <?php } ?>
-                },
-                <?php if ( !empty($copertura_geografica) ) { ?>
-                "areaServed": {
-                    "@type": "AdministrativeArea",
-                    <?php if ($copertura_geografica){?>
-                        "name": "<?= convertToPlain($copertura_geografica); ?>"
-                    <?php } else {?>
-                        "name": "nessuno"
-                    <?php } ?>
-                },
-                <?php } else { ?>
-                        "areaServed": {
-                            "@type": "AdministrativeArea",
-                            "name": "nessuno"
-                        },
-                    <?php } ?>
+                {
+                    "@context": "http://schema.org",
+                    "@type": "GovernmentService",
+                    "name": <?php echo json_encode($post->post_title); ?>,
+                    "serviceType": <?php echo json_encode($categoria_servizio); ?>,
+                    "serviceOperator": {
+                        "@type": "GovernmentOrganization",
+                        "name": <?php echo json_encode($ipa); ?>
+                    },
+                    <?php if ( !empty($copertura_geografica) ) : ?>
+                    "areaServed": {
+                        "@type": "AdministrativeArea",
+                        "name": "<?php echo convertToPlain($copertura_geografica); ?>"
+                    },
+                    <?php endif; ?>
                     "audience": {
                         "@type": "Audience",
-                        "audienceType": "<?php echo convertToPlain($destinatari); ?>",
-                        "name": "all"
+                        "audienceType": "<?php echo convertToPlain($destinatari); ?>"
                     },
-                "availableChannel": {
-                    "@type": "ServiceChannel",
-                    "name": "Dove rivolgersi"
-                    <?php if ( !empty($canale_digitale_link) ) { ?>
-                    ,"serviceUrl": <?php echo json_encode($canale_digitale_link); ?>
-                    <?php } else { ?>
-                    ,"serviceUrl": "nessuno"
-                    <?php } ?>
-                    <?php if ( !empty($ufficio) ) : ?>
-                    ,"serviceLocation": {
-                        "name": <?php echo json_encode($ufficio->post_title); ?>,
-                        "address": {
-                            "streetAddress": <?php echo json_encode($indirizzo); ?>,
-                            "postalCode": <?php echo json_encode((string)$cap); ?>,
-                            <?php if ($quartiere){?>
-                                "addressLocality": "<?= $quartiere; ?>"
-                            <?php } else {?>
-                                "addressLocality": "nessuno"
-                            <?php } ?>
+                    "availableChannel": {
+                        "@type": "ServiceChannel",
+                        "name": "Dove rivolgersi"
+                        <?php if ( !empty($canale_digitale_link) ) : ?>
+                        ,"serviceUrl": <?php echo json_encode($canale_digitale_link); ?>
+                        <?php endif; ?>
+                        <?php if ( !empty($ufficio) ) : ?>
+                        ,"serviceLocation": {
+                            "name": <?php echo json_encode($ufficio->post_title); ?>,
+                            "address": {
+                                "streetAddress": <?php echo json_encode($indirizzo); ?>,
+                                "postalCode": <?php echo json_encode((string)$cap); ?>
+                                <?php if ( !empty($quartiere) ) : ?>,
+                                "addressLocality": <?php echo json_encode($quartiere); ?>
+                                <?php endif; ?>
+                            }
                         }
+                        <?php endif; ?>
                     }
-                    <?php endif; ?>
                 }
-            }
             </script>
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
@@ -152,7 +124,7 @@ get_header();
                                     </h1>
                                     <ul class="d-flex flex-wrap gap-1 my-3">
                                         <li>
-                                            <div class="chip chip-simple text-button" data-element="service-status">
+                                            <div class="chip chip-simple <?php echo $stato == 'true'? 'chip-success' : 'chip-danger'; ?>" data-element="service-status">
                                                 <span class="chip-label">
                                                 <?php if ( $stato == 'true' ) {
                                                     echo 'Servizio attivo';
@@ -249,32 +221,32 @@ get_header();
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
-                                                                
+                                                                <?php if ( $costi ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#costs">
-                                                                        <span class="title-medium">Costi</span>
+                                                                        <span class="title-medium">Quanto costa</span>
                                                                     </a>
                                                                 </li>
-                                                                
+                                                                <?php } ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#submit-request">
                                                                         <span class="title-medium">Accedi al servizio</span>
                                                                     </a>
                                                                 </li>
-                                                                
+                                                                <?php if ( $more_info ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#more-info">
                                                                         <span class="title-medium">Ulteriori informazioni</span>
                                                                     </a>
                                                                 </li>
-                                                                
-                                                                
+                                                                <?php } ?>
+                                                                <?php if ( $condizioni_servizio ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#conditions">
                                                                         <span class="title-medium">Condizioni di servizio</span>
                                                                     </a>
                                                                 </li>
-                                                                
+                                                                <?php } ?>
                                                                 <?php if ( $uo_id ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#contacts">
@@ -314,7 +286,7 @@ get_header();
                                 </div>
                             </section>
                             <section class="it-page-section mb-30 has-bg-grey p-3">
-                                <h2 class="title-xxlarge mb-3">Cosa serve</h2>
+                                <h2 class="title-xxlarge mb-3" id="needed">Cosa serve</h2>
                                 <div class="richtext-wrapper lora" data-element="service-needed">
                                     <?php echo $cosa_serve_intro ?>
                                     <ul >
@@ -332,10 +304,8 @@ get_header();
                             <section class="it-page-section mb-30">
                                 <div class="cmp-timeline">
                                     <h2 class="title-xxlarge mb-3" id="deadlines">Tempi e scadenze</h2>
-                                    <div data-element="service-calendar-text">
-                                        <p class="richtext-wrapper lora">
-                                            <?php echo $fasi_scadenze_intro; ?>
-                                        </p>
+                                    <div class="richtext-wrapper lora" data-element="service-calendar-text">
+                                        <?php echo $fasi_scadenze_intro; ?>
                                     </div>
                                     <?php if ((is_array($fasi_group_simple_scadenze) && count($fasi_group_simple_scadenze)) || (is_array($fasi_scadenze) && count($fasi_scadenze))) { ?>
                                         <div class="calendar-vertical mb-3" data-element="service-calendar-list">
@@ -403,15 +373,14 @@ get_header();
                                 <h2 class="mb-3" id="submit-request">Accedi al servizio</h2>
                                 <?php if ($canale_digitale_link) { ?>
                                 <p class="text-paragraph lora mb-4" data-element="service-generic-access"><?php echo $canale_digitale_text; ?></p>
-                                <button type="button" class="btn btn-primary mobile-full" data-element="service-online-access" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
+                                <button type="button" class="btn btn-primary mobile-full" onclick="location.href='<?php echo $canale_digitale_link; ?>';" data-element="service-online-access">
                                     <span class=""><?php echo $canale_digitale_label; ?></span>
                                 </button>
                                 <?php } ?>
                                 <p class="text-paragraph lora mt-4" data-element="service-generic-access"><?php echo $canale_fisico_text; ?></p>
-                                <button type="button" data-element="service-booking-access" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>';">
+                                <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>';" data-element="service-booking-access">
                                     <span class="">Prenota appuntamento</span>
                                 </button>
-                                <?php get_template_part("template-parts/unita-organizzativa/card-full"); ?>
                             </section>
                             <?php if ( $more_info ) {  ?>
                             <section class="it-page-section mb-30">
@@ -434,30 +403,16 @@ get_header();
                             </section>
                             <?php } ?>
 
-                            <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="conditions">Unità Organizzativa Responsabile</h2>
-                                 <div class="row">
-                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
-                                         <div class="card-wrapper rounded h-auto mt-10">
-                                            <?php
-                                                $with_border = true;
-                                                $data_element = "service-area";
-                                                get_template_part("template-parts/unita-organizzativa/card");
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>    
-                            </section>
-                            
-
                             <section class="it-page-section">
                                 <h2 class="mb-3" id="contacts">Contatti</h2>
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
-                                        <?php foreach ($punti_contatto as $pc_id) {
-                                            get_template_part('template-parts/single/punto-contatto');
-                                        } ?>
-
+                                        <div class="card-wrapper rounded h-auto mt-10">
+                                            <?php
+                                                $with_border = true;
+                                                get_template_part("template-parts/unita-organizzativa/card");
+                                            ?>
+                                        </div>
                                     </div>
                                     <div class="col-12 mb-30">
                                         <span class="text-paragraph-small">Argomenti:</span>
@@ -489,421 +444,5 @@ get_header();
         endwhile; // End of the loop.
         ?>
     </main>
-<?php
-get_footer();
-?>
-<?php
-
-/**
- * Evento template file
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package Design_Comuni_Italia
- */
-
-global $show_calendar, $gallery, $video, $trascrizione, $luogo, $pc_id, $uo_id, $appuntamento, $inline;
-
-get_header();
-?>
-
-<main>
-    <?php
-    while (have_posts()) :
-        the_post();
-        set_views($post->ID);
-        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
-
-        $prefix = '_dci_evento_';
-        $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
-        //dates
-        $start_timestamp = dci_get_meta("data_orario_inizio", $prefix, $post->ID);
-        $start_date = date_i18n('d F Y', date($start_timestamp));
-        $start_date_arr = explode('-', date_i18n('d-M-Y-H-i', date($start_timestamp)));
-        $end_timestamp = dci_get_meta("data_orario_fine", $prefix, $post->ID);
-        $end_date = date_i18n('d F Y', date($end_timestamp));
-        $end_date_arr = explode('-', date_i18n('d-M-Y-H-i', date($end_timestamp)));
-        $descrizione = dci_get_wysiwyg_field("descrizione_completa", $prefix, $post->ID);
-        $destinatari = dci_get_wysiwyg_field("a_chi_e_rivolto", $prefix, $post->ID);
-        //media
-        $gallery = dci_get_meta("gallery", $prefix, $post->ID);
-        $video = dci_get_meta("video", $prefix, $post->ID);
-        $trascrizione = dci_get_meta("trascrizione", $prefix, $post->ID);
-        $persone = dci_get_meta("persone", $prefix, $post->ID);
-        $is_luogo_esa = dci_get_meta("is_luogo_esa") != "false"; //before 1.7.5.12, this meta value was not present
-        if ($is_luogo_esa) {
-            $luogo_evento_id = dci_get_meta("luogo_evento", $prefix, $post->ID);
-            $luogo_evento = $luogo_evento_id ? get_post($luogo_evento_id) : null;
-        }
-        $show_luogo = $luogo_evento || !$is_luogo_esa;
-        $costi = dci_get_meta('costi');
-        $allegati = dci_get_meta("allegati", $prefix, $post->ID);
-        $punti_contatto = dci_get_meta("punti_contatto", $prefix, $post->ID);
-        $organizzatori = dci_get_meta("organizzatore", $prefix, $post->ID);
-        $appuntamenti = dci_get_eventi_figli();
-        $patrocinato = dci_get_meta("patrocinato", $prefix, $post->ID);
-        $sponsor = dci_get_meta("sponsor", $prefix, $post->ID);
-        $more_info = dci_get_wysiwyg_field("ulteriori_informazioni", $prefix, $post->ID);
-    ?>
-
-        <div class="container px-4 my-4" id="main-container">
-            <div class="row">
-                <div class="col px-lg-4">
-                    <?php get_template_part("template-parts/common/breadcrumb"); ?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 px-lg-4 py-lg-2">
-                    <h1><?php the_title(); ?></h1>
-                    <h2 class="visually-hidden">Dettagli evento</h2>
-                    <?php if ($start_timestamp && $end_timestamp) { ?>
-                        <p class="h4 py-2">dal <?php echo $start_date; ?> al <?php echo $end_date; ?></p>
-                    <?php } ?>
-                    <p>
-                        <?php echo $descrizione_breve; ?>
-                    </p>
-                </div>
-                <div class="col-lg-3 offset-lg-1">
-                    <?php
-                    $inline = true;
-                    get_template_part('template-parts/single/actions');
-                    ?>
-                </div>
-            </div>
-        </div>
-
-        <?php get_template_part('template-parts/single/image-large'); ?>
-
-        <div class="container">
-            <div class="row border-top row-column-border row-column-menu-left border-light">
-                <aside class="col-lg-4">
-                    <div class="cmp-navscroll sticky-top" aria-labelledby="accordion-title-one">
-                        <nav class="navbar it-navscroll-wrapper navbar-expand-lg" aria-label="Indice della pagina" data-bs-navscroll>
-                            <div class="navbar-custom" id="navbarNavProgress">
-                                <div class="menu-wrapper">
-                                    <div class="link-list-wrapper">
-                                        <div class="accordion">
-                                            <div class="accordion-item">
-                                                <span class="accordion-header" id="accordion-title-one">
-                                                    <button class="accordion-button pb-10 px-3 text-uppercase" type="button" aria-controls="collapse-one" aria-expanded="true" data-bs-toggle="collapse" data-bs-target="#collapse-one">Indice della pagina
-                                                        <svg class="icon icon-sm icon-primary align-top">
-                                                            <use xlink:href="#it-expand"></use>
-                                                        </svg>
-                                                    </button>
-                                                </span>
-                                                <div class="progress">
-                                                    <div class="progress-bar it-navscroll-progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                                <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
-                                                    <div class="accordion-body">
-                                                        <ul class="link-list" data-element="page-index">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#cos-e">
-                                                                    <span class="title-medium">Cos'è</span>
-                                                                </a>
-                                                            </li>
-                                                            <?php if ($video || (is_array($gallery) && count($gallery))) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#media">
-                                                                        <span class="title-medium">Media</span>
-                                                                    </a>
-                                                                </li>
-                                                            <?php  } ?>
-                                                            <?php if ($destinatari) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#destinatari">
-                                                                        <span class="title-medium">A chi è rivolto</span>
-                                                                    </a>
-                                                                </li>
-                                                            <?php } ?>
-                                                            <?php if ($luogo_evento || !$is_luogo_esa) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#luogo">
-                                                                        <span class="title-medium">Luogo</span>
-                                                                    </a>
-                                                                </li>
-                                                            <?php } ?>
-                                                            <?php if ($start_timestamp && $end_timestamp) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#date-e-orari">
-                                                                        <span class="title-medium">Date e orari</span>
-                                                                    </a>
-                                                                </li>
-                                                            <?php } ?>
-                                                            <?php if (is_array($costi) && count($costi)) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#costi">
-                                                                        <span class="title-medium">Costi</span>
-                                                                    </a>
-                                                                </li>
-                                                            <?php } ?>
-                                                            <?php if ($allegati) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#allegati">
-                                                                        <span class="title-medium">Allegati</span>
-                                                                    </a>
-                                                                </li>
-                                                            <?php } ?>
-                                                            <?php if (is_array($punti_contatto) && count($punti_contatto)) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#contatti">
-                                                                        <span class="title-medium">Contatti</span>
-                                                                    </a>
-                                                                </li>
-                                                            <?php } ?>
-                                                            <?php if (is_array($appuntamenti) && count($appuntamenti)) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#appuntamenti">
-                                                                        <span class="title-medium">Appuntamenti</span>
-                                                                    </a>
-                                                                </li>
-                                                            <?php } ?>
-                                                            <?php if ((is_array($patrocinato) && count($patrocinato)) ||
-                                                                (is_array($sponsor) && count($sponsor))
-                                                            ) {  ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#ulteriori-informazioni">
-                                                                        <span class="title-medium">Ulteriori informazioni</span>
-                                                                    </a>
-                                                                </li>
-                                                            <?php } ?>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </aside>
-
-                <section class="col-lg-8 it-page-sections-container border-light">
-                    <article id="cos-e" class="it-page-section mb-5" data-audio>
-                        <h2 class="h3 mb-3">Cos'è</h2>
-                        <div class="richtext-wrapper font-serif">
-                            <?php echo $descrizione; ?>
-                        </div>
-                        <?php if (is_array($persone) && count($persone)) { ?>
-                            <div class="pt-3 mb-4">
-                                <h3 class="h4">Parteciperanno</h3>
-                                <?php get_template_part("template-parts/single/persone"); ?>
-                            </div>
-                        <?php  } ?>
-                    </article>
-
-                    <?php if ($video || (is_array($gallery) && count($gallery))) { ?>
-                        <article id="media" class="it-page-section mb-5">
-                            <h2 class="h3 mb-3">Media</h2>
-                            <?php if (is_array($gallery) && count($gallery)) {
-                                get_template_part("template-parts/single/gallery");
-                            } ?>
-                            <?php if ($video) {
-                                get_template_part("template-parts/single/video");
-                            } ?>
-                        </article>
-                    <?php  } ?>
-
-                    <?php if ($destinatari) { ?>
-                        <article id="destinatari" class="it-page-section mb-5">
-                            <h2 class="h3 mb-3">A chi è rivolto</h2>
-                            <p><?php echo $destinatari; ?></p>
-                        </article>
-                    <?php  } ?>
-
-                    <?php if ($show_luogo) { ?>
-                        <article id="luogo" class="it-page-section mb-5">
-                            <h2 class="h3 mb-3">Luogo</h2>
-                            <?php if ($is_luogo_esa && $luogo_evento) { ?>
-                                <?php
-                                $luogo = $luogo_evento;
-                                get_template_part("template-parts/single/luogo");
-                                ?>
-                            <?php } else if (!$is_luogo_esa) {
-                                get_template_part("template-parts/luogo/card", "custom");
-                            } ?>
-                        </article>
-                    <?php   } ?>
-
-                    <?php if ($start_timestamp || $end_timestamp) { ?>
-                        <article id="date-e-orari" class="it-page-section mb-5">
-                            <h2 class="h3 mb-3">Date e orari</h2>
-                            <div class="point-list-wrapper my-4">
-
-                                <?php if ($start_timestamp) { ?>
-                                    <div class="point-list">
-                                        <h3 class="h4 point-list-aside point-list-primary fw-normal">
-                                            <span class="point-date font-monospace"><?php echo $start_date_arr[0]; ?></span>
-                                            <span class="point-month font-monospace"><?php echo $start_date_arr[1]; ?></span>
-                                        </h3>
-                                        <div class="point-list-content">
-                                            <div class="card card-teaser shadow rounded">
-                                                <div class="card-body">
-                                                    <h3 class="card-title h5 m-0">
-                                                        <?php echo $start_date_arr[3] . ':' . $start_date_arr[4]; ?> - Inizio evento
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                <?php } ?>
-                                <?php if ($end_timestamp) { ?>
-                                    <div class="point-list">
-                                        <h3 class="h4 point-list-aside point-list-primary fw-normal">
-                                            <div class="point-date font-monospace"><?php echo $end_date_arr[0]; ?></div>
-                                            <div class="point-month font-monospace"><?php echo $end_date_arr[1]; ?></div>
-                                        </h3>
-                                        <div class="point-list-content">
-                                            <div class="card card-teaser shadow rounded">
-                                                <div class="card-body">
-                                                    <h3 class="card-title h5 m-0">
-                                                        <?php echo $end_date_arr[3]; ?>:<?php echo $end_date_arr[4]; ?> - Fine evento
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                            <?php
-                            $data_inizio = date_i18n("Ymd\THi00", date($start_timestamp));
-                            $data_fine = date_i18n("Ymd\THi00", date($end_timestamp));
-                            $luogo = $luogo_evento->post_title ?? '';
-                            ?>
-                            <div class="mt-5">
-                                <a target="_blank" href="https://calendar.google.com/calendar/r/eventedit?text=<?php echo urlencode(get_the_title()); ?>&dates=<?php echo $data_inizio; ?>/<?php echo $data_fine; ?>&details=<?php echo urlencode($descrizione_breve); ?>:+<?php echo urlencode(get_permalink()); ?>&location=<?php echo urlencode($luogo); ?>" class="btn btn-outline-primary btn-icon">
-                                    <svg class="icon icon-primary" aria-hidden="true">
-                                        <use xlink:href="#it-plus-circle"></use>
-                                    </svg>
-                                    <span>Aggiungi al calendario</span>
-                                </a>
-                            </div>
-                        </article>
-                    <?php } ?>
-
-                    <?php if (is_array($costi) && count($costi)) { ?>
-                        <article id="costi" class="it-page-section mb-5">
-                            <h2 class="h3 mb-3">Costi</h2>
-                            <?php foreach ($costi as $costo) { ?>
-                                <div class="card no-after border-start mt-3">
-                                    <div class="card-body">
-                                        <h3 class="h4">
-                                            <span>
-                                                <?php echo $costo['titolo_costo']; ?>
-                                            </span>
-                                            <p class="card-title big-heading">
-                                                <?php echo $costo['prezzo_costo']; ?>
-                                            </p>
-                                        </h3>
-                                        <p class="mt-4">
-                                            <?php echo $costo['descrizione_costo']; ?>
-                                        </p>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                        </article>
-                    <?php } ?>
-
-                    <?php if ($allegati) {
-                        $doc = get_post(attachment_url_to_postid($allegati));
-                    ?>
-                        <article id="allegati" class="it-page-section mb-5">
-                            <h2 class="h3 mb-3">Allegati</h2>
-                            <div class="card card-teaser shadow mt-3 rounded">
-                                <div class="card-body">
-                                    <h3 class="card-title h5 m-0">
-                                        <svg class="icon" aria-hidden="true">
-                                            <use xlink:href="#it-clip"></use>
-                                        </svg>
-                                        <a class="text-decoration-none" href="<?php echo $allegati; ?>" title="Scarica la locandina <?php echo $doc->post_title; ?>" aria-label="Scarica la locandina <?php echo $doc->post_title; ?>"><?php echo $doc->post_title; ?></a>
-                                    </h3>
-                                </div>
-                            </div>
-                        </article>
-                    <?php } ?>
-
-                    <?php if (is_array($appuntamenti) && count($appuntamenti)) { ?>
-                        <article id="appuntamenti" class="it-page-section mb-5">
-                            <h2 class="h3 mb-3">Appuntamenti</h2>
-                            <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                                <?php foreach ($appuntamenti as $appuntamento) {
-                                    get_template_part('template-parts/single/appuntamento');
-                                } ?>
-                            </div>
-                        </article>
-                    <?php } ?>
-
-                    <article id="contatti" class="it-page-section mb-5">
-                        <?php if (is_array($punti_contatto) && count($punti_contatto)) { ?>
-                            <h2 class="mb-3">Contatti</h2>
-                            <?php foreach ($punti_contatto as $pc_id) {
-                                get_template_part("template-parts/punto-contatto/card");
-                            } ?>
-                        <?php } ?>
-                        <?php if (is_array($organizzatori) && count($organizzatori)) { ?>
-                            <h2 class="h5 mt-4">Con il supporto di:</h2>
-                            <?php foreach ($organizzatori as $uo_id) {
-                                get_template_part("template-parts/unita-organizzativa/card-full");
-                            } ?>
-                        <?php } ?>
-                    </article>
-
-                    <article id="ulteriori-informazioni" class="it-page-section mb-5">
-                        <?php
-                        if ((is_array($patrocinato) && count($patrocinato)) ||
-                            (is_array($sponsor) && count($sponsor))
-                        ) { ?>
-                            <h2 class="mb-3">Ulteriori informazioni</h2>
-                            <?php
-                            if (is_array($patrocinato) && count($patrocinato)) {
-                                echo '<h3 class="h5">Patrocinato da:</h3>';
-                                echo '<div class="link-list-wrapper mb-3"><ul class="link-list">';
-                                foreach ($patrocinato as $item) { ?>
-                                    <li><a class="list-item px-0" href="<?php echo $item['_dci_evento_url']; ?>" target="_blank"><span><?php echo $item['_dci_evento_nome']; ?></span></a>
-                                    </li>
-                                <?php }
-                                echo '</ul></div>';
-                            }
-                            if (is_array($sponsor) && count($sponsor)) {
-                                echo '<h3 class="h5">Sponsor:</h3>';
-                                echo '<div class="link-list-wrapper"><ul class="link-list">';
-                                foreach ($sponsor as $item) { ?>
-                                    <li><a class="list-item px-0" href="<?php echo $item['_dci_evento_url']; ?>" target="_blank"><span><?php echo $item['_dci_evento_nome']; ?></span></a>
-                                    </li>
-                        <?php }
-                                echo '</ul></div>';
-                            }
-                        }
-
-                        ?>
-                        <h3 class="visually-hidden">Altro</h3>
-                        <?php if ($more_info) { ?>
-                            <div class="mt-5">
-                                <div class="callout">
-                                    <div class="callout-title">
-                                        <svg class="icon">
-                                            <use xlink:href="#it-info-circle"></use>
-                                        </svg>
-                                    </div>
-                                    <?php echo $more_info; ?>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    </article>
-                    <?php get_template_part('template-parts/single/page_bottom'); ?>
-                </section>
-            </div>
-        </div>
-        <?php get_template_part("template-parts/common/valuta-servizio"); ?>
-
-        <!-- <?php get_template_part('template-parts/single/more-posts', 'carousel'); ?> -->
-
-    <?php
-    endwhile; // End of the loop.
-    ?>
-</main>
-
 <?php
 get_footer();
