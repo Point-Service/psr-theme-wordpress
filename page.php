@@ -35,7 +35,16 @@ get_header();
                 <div class="container ">
                     <article class="article-wrapper">
 
-
+                        <div class="row variable-gutters">
+                            <div class="col-lg-12">
+                                <?php
+                                the_content();
+                                ?>
+                                <div class="callout note">
+                                    
+                                </div>
+                            </div>
+                        </div>
                         <div class="row variable-gutters">
                             <div class="col-lg-12">
                                 <?php
