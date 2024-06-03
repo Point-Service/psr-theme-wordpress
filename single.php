@@ -49,9 +49,7 @@ get_header();
                             <div class="callout note">
                                 <div class="callout-inner">
                                     <div class="callout-title">
-                                        <svg class="icon"><use href="#it-info-circle"></use></svg>
-                                        <span class="visually-hidden">Attenzione</span> 
-                                        <span class="text">Attenzione</span>
+
                                     </div>
                                 </div>
                             </div>
