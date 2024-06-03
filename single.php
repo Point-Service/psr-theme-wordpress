@@ -6,8 +6,6 @@
  *
  * @package Design_Comuni_Italia
  */
-
-
 get_header();
 ?>
     <main>
@@ -38,7 +36,8 @@ get_header();
                     </div>
                 </div>
             </div>
-  <div class="container ">
+
+            <div class="container ">
                 <article class="article-wrapper" data-audio>
 
                     <div class="row">
@@ -48,7 +47,13 @@ get_header();
                             ?>
 
                             <div class="callout note">
-                         
+                                <div class="callout-inner">
+                                    <div class="callout-title">
+                                        <svg class="icon"><use href="#it-info-circle"></use></svg>
+                                        <span class="visually-hidden">Attenzione</span> 
+                                        <span class="text">Attenzione</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -61,7 +66,7 @@ get_header();
 
                 </article>
             </div>
-           
+
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
 
         <?php
