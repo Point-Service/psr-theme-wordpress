@@ -8,6 +8,10 @@
  */
 get_header();
 ?>
+
+    <div class="it-header-center-wrapper">
+       <div class="bg-image"></div>
+    </div>
     <main id="main-container" class="main-container redbrown">
         <h1 class="visually-hidden">
             <?php echo dci_get_option("nome_comune"); ?>
