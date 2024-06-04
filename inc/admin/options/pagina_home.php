@@ -64,7 +64,7 @@ function dci_register_pagina_home_options(){
     $home_options->add_field( array(
             'name' => __('Notizia in evidenza', 'design_comuni_italia'),
             'desc' => __('Seleziona una notizia da mostrare in homepage', 'design_comuni_italia'),
-            'id' => $prefix . 'notizia_evidenziata',
+            'id' => $prefix . 'schede_evidenziate_' . $index,
             'type'    => 'custom_attached_posts',
             'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
             'options' => array(
