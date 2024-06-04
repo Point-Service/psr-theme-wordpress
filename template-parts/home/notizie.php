@@ -64,14 +64,6 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
         </div>       
       </div>
 
-<section id="notizie" aria-describedby="novita-in-evidenza">
- <div class="section-content">
-        <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
-            <a href="<?php echo dci_get_template_page_url("page-templates/notizie.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
-        </div>
-      </div>
-  </div>
-
       <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
         <?php if ($img) { 
           dci_get_img($img, 'img-fluid');
@@ -85,7 +77,14 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
  </div>
 </section>
 
-
+<section id="notizie" aria-describedby="novita-in-evidenza">
+ <div class="section-content">
+        <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
+            <a href="<?php echo dci_get_template_page_url("page-templates/notizie.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
+        </div>
+      </div>
+  </div>
+ 
 <section id="calendario">
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
     <div class="container">
