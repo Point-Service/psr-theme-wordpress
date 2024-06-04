@@ -40,8 +40,6 @@ get_header();
                                 <?php
                                 the_content();
                                 ?>
-                                <div class="callout note">
-                                </div>
                             </div>
                         </div>
                         <div class="row variable-gutters">
