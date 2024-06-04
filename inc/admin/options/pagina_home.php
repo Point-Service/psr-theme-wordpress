@@ -1,8 +1,6 @@
 <?php
-
 function dci_register_pagina_home_options(){
     $prefix = '';
-
     /**
      * Opzioni Home
      */
@@ -15,19 +13,68 @@ function dci_register_pagina_home_options(){
         'parent_slug'  => 'dci_options',
         'tab_group'    => 'dci_options',
         'tab_title'    => __('Home Page', "design_comuni_italia"),	);
-
     // 'tab_group' property is supported in > 2.4.0.
     if ( version_compare( CMB2_VERSION, '2.4.0' ) ) {
         $args['display_cb'] = 'dci_options_display_with_tabs';
     }
-
-	
+    $home_options = new_cmb2_box( $args );
+    $home_options->add_field( array(
+        'id' => $prefix . 'schede_evidenziate_title',
+        'name'        => __( 'Sezione Schede in Evidenza', 'design_comuni_italia' ),
+        'desc' => __( 'Configurazione sezione Schede in Evidenza.' , 'design_comuni_italia' ),
+        'type' => 'title',
+    ) );
+    $home_options->add_field( array(
+            'name' => __('<h5>Selezione notizia in evidenza</h5>', 'design_comuni_italia'),
+            'desc' => __('Seleziona una notizia da mostrare in homepage ', 'design_comuni_italia'),
+            'id' => $prefix . 'notizia_evidenziata',
+            'type'    => 'custom_attached_posts',
+            'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
+            'options' => array(
+                'show_thumbnails' => false, // Show thumbnails on the left
+                'filter_boxes'    => true, // Show a text box for filtering the results
+                'query_args'      => array(
+                    'posts_per_page' => -1,
+                    'post_type'      => array('notizia'),
+                ), // override the get_posts args
+            ),
+            'attributes' => array(
+                'data-max-items' => 1, //change the value here to how many posts may be attached.
+            ),
+        )
+    );
+   $home_options = new_cmb2_box( $args );
+    $home_options->add_field( array(
+        'id' => $prefix . 'contenuti_evidenziati_title',
+        'name'        => __( 'Sezione Contenuti in Evidenza', 'design_comuni_italia' ),
+        'desc' => __( 'Configurazione Contenuti in Evidenza.' , 'design_comuni_italia' ),
+        'type' => 'title',
+    ) );
+    $home_options->add_field( array(
+            'name' => __('Notizia in evidenza', 'design_comuni_italia'),
+            'desc' => __('Seleziona una notizia da mostrare in homepage', 'design_comuni_italia'),
+            'id' => $prefix . 'notizia_evidenziata',
+            'id' => $prefix . 'schede_evidenziate_' . $index,
+            'type'    => 'custom_attached_posts',
+            'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
+            'options' => array(
+                'show_thumbnails' => false, // Show thumbnails on the left
+                'filter_boxes'    => true, // Show a text box for filtering the results
+                'query_args'      => array(
+                    'posts_per_page' => -1,
+                    'post_type'      => array('notizia'),
+                ), // override the get_posts args
+            ),
+            'attributes' => array(
+                'data-max-items' => 1, //change the value here to how many posts may be attached.
+            ),
+        )
+    );
 	
 function add_scheda_group($home_options, $prefix, $index) {
     // Recupera il contenuto corrente della scheda
     $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
     $is_active = is_array($scheda_contenuto) && count($scheda_contenuto) > 0;
-
     $schede_group_id = $home_options->add_field(array(
         'id'           => $prefix . 'schede_evidenziate_' . $index,
         'type'         => 'group',
@@ -37,7 +84,6 @@ function add_scheda_group($home_options, $prefix, $index) {
             'closed'        => !$is_active, // Chiudi il gruppo se non c'è contenuto attivo
         )
     ));
-
     $home_options->add_group_field($schede_group_id, array(
         'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
         'desc'       => __('Seleziona il contenuto da mostrare nella Scheda.', 'design_comuni_italia'),
@@ -57,13 +103,11 @@ function add_scheda_group($home_options, $prefix, $index) {
         ),
     ));
 }
-
 // Esempio di utilizzo della funzione per creare 9 schede
 for ($i = 1; $i <= 9; $i++) {
     add_scheda_group($home_options, $prefix, $i);
 }
 	
-
     //sezione Siti Tematici
     $home_options->add_field( array(
         'id' => $prefix . 'siti_tematici_title',
@@ -71,7 +115,6 @@ for ($i = 1; $i <= 9; $i++) {
         'desc' => __( 'Configurazione sezione Siti Tematici.' , 'design_comuni_italia' ),
         'type' => 'title',
     ) );
-
     $home_options->add_field( array(
         'id' => $prefix . 'siti_tematici',
         'name'        => __( 'Sito Tematico ', 'design_comuni_italia' ),
@@ -82,7 +125,6 @@ for ($i = 1; $i <= 9; $i++) {
             'data-maximum-selection-length' => '12',
         ),
     ) );
-
     //sezione Argomenti
     $home_options->add_field( array(
         'id' => $prefix . 'argomenti_title',
@@ -90,7 +132,6 @@ for ($i = 1; $i <= 9; $i++) {
         'desc' => __( 'Gestione Argomenti mostrati in homepage.' , 'design_comuni_italia' ),
         'type' => 'title',
     ) );
-
     $argomenti_group_id = $home_options->add_field( array(
         'id'           => $prefix . 'argomenti_evidenziati_1',
         'type'        => 'group',
@@ -132,7 +173,6 @@ for ($i = 1; $i <= 9; $i++) {
             )
         )
     );
-
     $argomenti_group_id = $home_options->add_field( array(
         'id'           => $prefix . 'argomenti_evidenziati_2',
         'type'        => 'group',
@@ -172,8 +212,6 @@ for ($i = 1; $i <= 9; $i++) {
             )
         )
     );
-
-
 	
     $argomenti_group_id = $home_options->add_field( array(
         'id'           => $prefix . 'argomenti_evidenziati_3',
@@ -214,8 +252,6 @@ for ($i = 1; $i <= 9; $i++) {
             )
         )
     );
-
-
     $home_options->add_field( array(
         'id' => $prefix . 'argomenti_altri',
         'name'        => __( 'Altri argomenti', 'design_comuni_italia' ),
@@ -225,5 +261,4 @@ for ($i = 1; $i <= 9; $i++) {
         'show_option_none' => false,
         'remove_default' => 'true',
     ) );
-
 }
