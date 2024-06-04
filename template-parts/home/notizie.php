@@ -53,7 +53,8 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6 );
               <?php echo $descrizione_breve ?>
             </p>
             <?php get_template_part("template-parts/common/badges-argomenti"); ?>
-            <a
+          </div>
+                                     <a
               class="read-more pb-3"
               href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>"
             >
@@ -62,7 +63,6 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6 );
                 <use xlink:href="#it-arrow-right"></use>
               </svg>
             </a>
-          </div>
         </div>
       </div>
       <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
