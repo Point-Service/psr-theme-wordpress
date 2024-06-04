@@ -24,7 +24,7 @@ function dci_register_pagina_home_options(){
     $home_options = new_cmb2_box( $args );
 
     $home_options->add_field( array(
-        'id' => $prefix . 'schde_evidenziate_title',
+        'id' => $prefix . 'schede_evidenziate_title',
         'name'        => __( 'Sezione Schede in Evidenza', 'design_comuni_italia' ),
         'desc' => __( 'Configurazione sezione Schede in Evidenza.' , 'design_comuni_italia' ),
         'type' => 'title',
