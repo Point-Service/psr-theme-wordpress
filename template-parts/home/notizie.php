@@ -55,7 +55,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
             <p class="mb-4 subtitle-small pt-3 lora">
               <?php echo $descrizione_breve ?>
             </p>
-            
+           <?php get_template_part("template-parts/common/badges-argomenti"); ?>               
           </div>
 
         </div>
