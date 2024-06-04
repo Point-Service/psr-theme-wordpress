@@ -86,7 +86,7 @@ function dci_register_pagina_home_options(){
 }
 
 	// Esempio di utilizzo della funzione per creare 9 schede
-	for ($i = 1; $i <= 9; $i++) {
+	for ($i = 1; $i <= 12; $i++) {
 	    add_scheda_group($home_options, $prefix, $i);
 	}
 	
