@@ -30,6 +30,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
 ?>
 
     
+<!-- Tag section is opened in home.php -->
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
@@ -89,17 +90,15 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                         ?>
                     </div>
                 </div>
+                <div class="row my-4 justify-content-md-center">
+                  <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
+                       <svg class="icon icon-sm" aria-hidden="true">
+                        <use xlink:href="#it-calendar"></use>
+                      </svg>
+                    Visualizza tutte le novità </a>
+                </div>
             <?php } ?>
         </div>
-                        <div class="row my-4 justify-content-md-center">
-                    <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
-                        <button type="button" class="btn btn-outline-primary">Tutte le novità
-                            <svg class="icon">
-                                <use xlink:href="#it-arrow-right"></use>
-                            </svg>
-                        </button>
-                    </a>
-                </div>
     </div>
 </section>
 
