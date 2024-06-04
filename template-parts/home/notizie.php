@@ -60,7 +60,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
         </div>
       </div>
 
-                      <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                 
                     <a class="read-more pb-3" href="/novita/">
                         <button type="button" class="btn btn-outline-primary">Tutte le novità
                             <svg class="icon">
@@ -68,7 +68,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
                             </svg>
                         </button>
                     </a>
-                </div>
+
 
 
 
