@@ -34,7 +34,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
-            <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
+            <h2 id="novita-in-evidenza" class="">Novità in evidenza</h2>
             <?php if ($post_id) {
                 $overlapping = "card-overlapping";
             ?>
