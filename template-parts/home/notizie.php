@@ -72,6 +72,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
       <div style="height: 34px;"></div>
     <?php } ?>
   </div>
+ </div>
 </section>
 
 
