@@ -56,7 +56,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
               <?php echo $descrizione_breve ?>
             </p>
             <?php get_template_part("template-parts/common/badges-argomenti"); ?>            
-		     	<?php get_template_part("template-parts/novita/tutte-novita"); ?>   
+
           </div>
         </div>
       </div>
