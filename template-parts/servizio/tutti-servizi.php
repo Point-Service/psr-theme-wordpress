@@ -1,8 +1,8 @@
 <?php
     global $posts, $the_query, $load_posts, $servizio, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
-    $load_posts = 6;
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 15;
+    $load_posts = 20;
     $query = isset($_GET['search']) ? $_GET['search'] : null;
     $args = array(
         's' => $query,
