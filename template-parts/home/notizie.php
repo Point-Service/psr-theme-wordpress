@@ -59,19 +59,10 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
             </p>
             <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                          
-             <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0"> 
-              <div class="it-header-center-wrapper">
-               <a
-                    class="read-more pb-3"
-                    href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>"
-                  >
-                    <span class="text">Tutte le novità</span>
-                    <svg class="icon">
-                      <use xlink:href="#it-arrow-right"></use>
-                    </svg>
-                  </a>   
-           </div>
-           </div>
+           <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
+               <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
+           </div>    
+           
            
           </div>
         </div>
