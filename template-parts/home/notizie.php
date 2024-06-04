@@ -60,15 +60,17 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
             </p>
             <?php get_template_part("template-parts/common/badges-argomenti"); ?>                
           </div>
-                          <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
-               <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
-           </div>    
-           
-
          </div>
         </div>       
       </div>
 
+<section id="notizie" aria-describedby="novita-in-evidenza">
+ <div class="section-content">
+        <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
+            <a href="<?php echo dci_get_template_page_url("page-templates/notizie.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
+        </div>
+      </div>
+  </div>
 
       <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
         <?php if ($img) { 
