@@ -1,35 +1,36 @@
 <?php
-global $count, $scheda;
+global $scheda;
 // Per mostrare la notizia più recente
-// $args = array('post_type' => 'notizia',
-//              'posts_per_page' => 1,
-//         'orderby' => 'date',
-//         'order' => 'DESC'
-// );
-// $posts = get_posts($args);
-// $post = array_shift($posts);
+$post_id = dci_get_option('notizia_evidenziata', 'homepage', true)[0] ?? null;
+if ($post_id) {
+    $post = get_post($post_id);
+}
 
-$post_id = dci_get_option('notizia_evidenziata','homepage', true )[0] ?? null;
-if($post_id) $post = get_post($post_id);
-$img = dci_get_meta("immagine", '_dci_notizia_', $post->ID);
-$arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
-$monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+//Notizie in homepage
+$posts = null;
+$notizie_in_home = dci_get_option('notizie_in_home', 'homepage');
+if ($notizie_in_home && $notizie_in_home > 0) {
+    $args  = array(
+        'post_type'      => 'notizia',
+        'post_status'    => 'publish',
+        'posts_per_page' => $notizie_in_home,
+        'orderby'        => 'date',
+        'order'          => 'DESC'
+    );
+    $posts = get_posts($args);
+    //$post  = array_shift( $posts  );
+}
+
+$img               = dci_get_meta("immagine", '_dci_notizia_', $post->ID);
+$arrdata           = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
+$monthName         = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $descrizione_breve = dci_get_meta("descrizione_breve", '_dci_notizia_', $post->ID);
-$argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
+$argomenti         = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
 
-$scheda1 = dci_get_option('schede_evidenziate_1','homepage', true )[0] ?? null;
-$scheda2 = dci_get_option('schede_evidenziate_2','homepage', true )[0] ?? null;
-$scheda3 = dci_get_option('schede_evidenziate_3','homepage', true )[0] ?? null;
-$scheda4 = dci_get_option('schede_evidenziate_4','homepage', true )[0] ?? null;
-$scheda5 = dci_get_option('schede_evidenziate_5','homepage', true )[0] ?? null;
-$scheda6 = dci_get_option('schede_evidenziate_6','homepage', true )[0] ?? null;
-$scheda7 = dci_get_option('schede_evidenziate_7','homepage', true )[0] ?? null;
-$scheda8 = dci_get_option('schede_evidenziate_8','homepage', true )[0] ?? null;
-$scheda9 = dci_get_option('schede_evidenziate_9','homepage', true )[0] ?? null;
-$schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7 ,$scheda8 ,$scheda9  );
+$schede = dci_get_option('schede_evidenziate', 'homepage') ?? null;
+
+$overlapping = "";
 ?>
-
-    
 <!-- Tag section is opened in home.php -->
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
@@ -91,20 +92,45 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                     </div>
                 </div>
                 <div class="row my-4 justify-content-md-center">
-                     <div class="container">
-                       <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
-                         <svg class="icon icon-sm" aria-hidden="true">
-                           <use xlink:href="#it-calendar"></use>
-                          </svg>
-                          Visualizza tutte le novità
-                     </a>
-                  </div>
+                    <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
+                        <button type="button" class="btn btn-outline-primary">Tutte le novità
+                            <svg class="icon">
+                                <use xlink:href="#it-arrow-right"></use>
+                            </svg>
+                        </button>
+                    </a>
                 </div>
             <?php } ?>
         </div>
     </div>
 </section>
-
+<?php
+if ($schede && count($schede) > 0) { ?>
+    <section aria-describedby="contenuti_evidenza">
+        <div class="section-content">
+            <div class="section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
+                <div class="container">
+                    <div class="row row-title pt-5 pt-lg-60 pb-3">
+                        <div class="col-12 d-lg-flex justify-content-between">
+                            <h2 id="contenuti_evidenza" class="mb-lg-0">Contenuti in evidenza</h2>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+                            <?php $count = 1;
+                            foreach ($schede as $scheda) {
+                                if ($scheda) {
+                                    get_template_part("template-parts/home/scheda-evidenza");
+                                }
+                                ++$count;
+                            } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php } ?>
 
 <section id="calendario">
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
