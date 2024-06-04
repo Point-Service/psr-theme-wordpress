@@ -201,7 +201,8 @@ if(!is_user_logged_in())
 
 
 
-
-<div class="container">
-  <div class="bg-image"></div>
-</div>
+   <div class="it-nav-wrapper">
+    <div class="it-header-center-wrapper">
+       <div class="bg-image"></div>
+    </div>
+   </div>
