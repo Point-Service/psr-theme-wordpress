@@ -32,6 +32,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
 
 ?>
 <!-- Tag section is opened in home.php -->
+<section id="notizie" aria-describedby="novita-in-evidenza">
   <div class="container">
     <?php if ($post_id) { ?>
     <div class="row">
