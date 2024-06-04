@@ -21,7 +21,8 @@ $argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
 $scheda1 = dci_get_option('schede_evidenziate_1','homepage', true )[0] ?? null;
 $scheda2 = dci_get_option('schede_evidenziate_2','homepage', true )[0] ?? null;
 $scheda3 = dci_get_option('schede_evidenziate_3','homepage', true )[0] ?? null;
-$schede = array($scheda1,$scheda2,$scheda3 );
+$scheda4 = dci_get_option('schede_evidenziate_4','homepage', true )[0] ?? null;
+$schede = array($scheda1,$scheda2,$scheda3$scheda4 );
 
 
 ?>
