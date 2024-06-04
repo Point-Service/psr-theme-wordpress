@@ -11,6 +11,15 @@ if ($arg2) $argomenti_evidenza[2] = $arg2;
 $arg3 = dci_get_option('argomenti_evidenziati_3','homepage')[0] ?? null;
 if ($arg3) $argomenti_evidenza[3] = $arg3;
 
+$arg4 = dci_get_option('argomenti_evidenziati_4','homepage')[0] ?? null;
+if ($arg4) $argomenti_evidenza[4] = $arg4;
+
+$arg5 = dci_get_option('argomenti_evidenziati_5','homepage')[0] ?? null;
+if ($arg5) $argomenti_evidenza[5] = $arg5;
+
+$arg6 = dci_get_option('argomenti_evidenziati_6','homepage')[0] ?? null;
+if ($arg6) $argomenti_evidenza[6] = $arg6;
+
 $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 ?>
 
