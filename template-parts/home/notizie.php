@@ -33,7 +33,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
 ?>
 <!-- Tag section is opened in home.php -->
 <section id="notizie" aria-describedby="novita-in-evidenza">
-     <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+
  <div class="section-content">
   <div class="container">
     <?php if ($post_id) { ?>
@@ -46,10 +46,11 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
               <svg class="icon icon-sm" aria-hidden="true">
                 <use xlink:href="#it-calendar"></use>
               </svg>
-              <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
-              <?php if(is_array($arrdata) && count($arrdata)) { ?>
+              <span class="title-xsmall-semi-bold fw-semibold">
+            <?php echo $post->post_type ?></span>
+             <?php if(is_array($arrdata) && count($arrdata)) { ?>
               <span class="data fw-normal"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2]; ?></span>
-              <?php } ?>
+            <?php } ?>     
             </div>
             <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
               <h3 class="h4 card-title title-xlarge">
@@ -87,7 +88,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
             Visualizza tutte le novità </a>
     </div>
   </div>
- </div> 
+
 <section id="calendario">
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
     <div class="container">
