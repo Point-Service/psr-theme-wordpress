@@ -55,17 +55,9 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
             <p class="mb-4 subtitle-small pt-3 lora">
               <?php echo $descrizione_breve ?>
             </p>
-            <?php get_template_part("template-parts/common/badges-argomenti"); ?>            
+            
           </div>
-                          <div class="row my-4 justify-content-md-center">
-                    <a class="read-more pb-3" href="/novita/">
-                        <button type="button" class="btn btn-outline-primary">Tutte le novità
-                            <svg class="icon">
-                                <use xlink:href="#it-arrow-right"></use>
-                            </svg>
-                        </button>
-                    </a>
-                </div>
+
         </div>
       </div>
 
