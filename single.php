@@ -46,8 +46,7 @@ get_header();
                             the_content();
                             ?>
 
-                            <div class="callout note">
-                            </div>
+
                         </div>
                     </div>
 
