@@ -41,7 +41,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
       <div class="col-lg-5 order-2 order-lg-1">
         <div class="card mb-1">
          <div class="row">
-          <div class="container">
+
           <div class="card-body pb-5">
             <div class="category-top">
               <svg class="icon icon-sm" aria-hidden="true">
@@ -60,13 +60,17 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
             </a>
             <p class="mb-4 subtitle-small pt-3 lora">
               <?php echo $descrizione_breve ?>
-            </p>
-            <?php get_template_part("template-parts/common/badges-argomenti"); ?>                
+            </p>  
+  <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
+    <div class="container">           
+           <?php get_template_part("template-parts/common/badges-argomenti"); ?>     
+                </div>
+         </div>     
           </div>
          </div>
         </div>       
       </div>
-      </div>
+
       <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
         <?php if ($img) { 
           dci_get_img($img, 'img-fluid');
