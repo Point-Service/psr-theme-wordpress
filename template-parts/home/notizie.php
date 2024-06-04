@@ -79,10 +79,11 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
 
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
     <div class="container">
+          <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
                <svg class="icon icon-sm" aria-hidden="true">
                 <use xlink:href="#it-calendar"></use>
               </svg>
-            <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >Visualizza tutte le novità </a>
+            Visualizza tutte le novità </a>
     </div>
   </div>
  
