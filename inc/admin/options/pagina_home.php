@@ -21,67 +21,8 @@ function dci_register_pagina_home_options(){
         $args['display_cb'] = 'dci_options_display_with_tabs';
     }
 
-    $home_options = new_cmb2_box( $args );
-
-    $home_options->add_field( array(
-        'id' => $prefix . 'schede_evidenziate_title',
-        'name'        => __( 'Sezione Schede in Evidenza', 'design_comuni_italia' ),
-        'desc' => __( 'Configurazione sezione Schede in Evidenza.' , 'design_comuni_italia' ),
-        'type' => 'title',
-    ) );
-
-    $home_options->add_field( array(
-            'name' => __('<h5>Selezione notizia in evidenza</h5>', 'design_comuni_italia'),
-            'desc' => __('Seleziona una notizia da mostrare in homepage ', 'design_comuni_italia'),
-            'id' => $prefix . 'notizia_evidenziata',
-            'type'    => 'custom_attached_posts',
-            'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
-            'options' => array(
-                'show_thumbnails' => false, // Show thumbnails on the left
-                'filter_boxes'    => true, // Show a text box for filtering the results
-                'query_args'      => array(
-                    'posts_per_page' => -1,
-                    'post_type'      => array('notizia'),
-                ), // override the get_posts args
-            ),
-            'attributes' => array(
-                'data-max-items' => 1, //change the value here to how many posts may be attached.
-            ),
-        )
-    );
-
-
-
-   $home_options = new_cmb2_box( $args );
-
-    $home_options->add_field( array(
-        'id' => $prefix . 'contenuti_evidenziati_title',
-        'name'        => __( 'Sezione Contenuti in Evidenza', 'design_comuni_italia' ),
-        'desc' => __( 'Configurazione Contenuti in Evidenza.' , 'design_comuni_italia' ),
-        'type' => 'title',
-    ) );
-
-    $home_options->add_field( array(
-            'name' => __('Notizia in evidenza', 'design_comuni_italia'),
-            'desc' => __('Seleziona una notizia da mostrare in homepage', 'design_comuni_italia'),
-            'id' => $prefix . 'schede_evidenziate_' . $index,
-            'type'    => 'custom_attached_posts',
-            'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
-            'options' => array(
-                'show_thumbnails' => false, // Show thumbnails on the left
-                'filter_boxes'    => true, // Show a text box for filtering the results
-                'query_args'      => array(
-                    'posts_per_page' => -1,
-                    'post_type'      => array('notizia'),
-                ), // override the get_posts args
-            ),
-            'attributes' => array(
-                'data-max-items' => 1, //change the value here to how many posts may be attached.
-            ),
-        )
-    );
 	
-
+	
 function add_scheda_group($home_options, $prefix, $index) {
     // Recupera il contenuto corrente della scheda
     $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
