@@ -19,11 +19,16 @@ $argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
 
 
 
-// Esempio di utilizzo della funzione per creare 9 schede
-for ($i = 1; $i <= 9; $i++) {
-   array(dci_get_option('schede_evidenziate_' + $i,'homepage', true )[0] ?? null;)
-}
-
+$scheda1 = dci_get_option('schede_evidenziate_1','homepage', true )[0] ?? null;
+$scheda2 = dci_get_option('schede_evidenziate_2','homepage', true )[0] ?? null;
+$scheda3 = dci_get_option('schede_evidenziate_3','homepage', true )[0] ?? null;
+$scheda4 = dci_get_option('schede_evidenziate_4','homepage', true )[0] ?? null;
+$scheda5 = dci_get_option('schede_evidenziate_5','homepage', true )[0] ?? null;
+$scheda6 = dci_get_option('schede_evidenziate_6','homepage', true )[0] ?? null;
+$scheda7 = dci_get_option('schede_evidenziate_7','homepage', true )[0] ?? null;
+$scheda8 = dci_get_option('schede_evidenziate_8','homepage', true )[0] ?? null;
+$scheda9 = dci_get_option('schede_evidenziate_9','homepage', true )[0] ?? null;
+$schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7 ,$scheda8 ,$scheda9  );
 
 
 ?>
