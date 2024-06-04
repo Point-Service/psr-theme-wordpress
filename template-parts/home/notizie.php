@@ -89,7 +89,9 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                         ?>
                     </div>
                 </div>
-                <div class="row my-4 justify-content-md-center">
+            <?php } ?>
+        </div>
+                        <div class="row my-4 justify-content-md-center">
                     <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
                         <button type="button" class="btn btn-outline-primary">Tutte le novità
                             <svg class="icon">
@@ -98,8 +100,6 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                         </button>
                     </a>
                 </div>
-            <?php } ?>
-        </div>
     </div>
 </section>
 
