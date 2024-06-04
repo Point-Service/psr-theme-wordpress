@@ -1,5 +1,5 @@
 <?php
-global $count, $scheda;
+global $scheda;
 // Per mostrare la notizia più recente
 // $args = array('post_type' => 'notizia',
 //              'posts_per_page' => 1,
