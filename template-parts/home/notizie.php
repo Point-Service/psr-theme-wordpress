@@ -55,7 +55,16 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
             <p class="mb-4 subtitle-small pt-3 lora">
               <?php echo $descrizione_breve ?>
             </p>
-            <?php get_template_part("template-parts/common/badges-argomenti"); ?>
+            <?php get_template_part("template-parts/common/badges-argomenti"); ?>            
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+        <?php if ($img) { 
+          dci_get_img($img, 'img-fluid');
+        } ?>
+      </div>
+    </div>
 
            <a class="read-more pb-3"
               href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
@@ -64,19 +73,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
                 <use xlink:href="#it-arrow-right"></use>
               </svg>
             </a>
-            
-          </div>
-        </div>
-      </div>
-
-
-      
-      <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-        <?php if ($img) { 
-          dci_get_img($img, 'img-fluid');
-        } ?>
-      </div>
-    </div>
+    
     <?php } else { ?>
       <div style="height: 34px;"></div>
     <?php } ?>
