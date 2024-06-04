@@ -60,7 +60,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                                 <p class="mb-4 font-serif pt-3">
                                     <?php echo $descrizione_breve ?>
                                 </p>
-                   
+                                <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
                         </div>
                     </div>
