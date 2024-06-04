@@ -11,7 +11,7 @@ get_header();
 
 	    
        <main id="main-container" class="main-container redbrown">
-       <div class="bg-image"></div>
+       <div class="bg-image"><p></p></div>
 
 	       
         <h1 class="visually-hidden">
