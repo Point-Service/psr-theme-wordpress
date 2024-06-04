@@ -71,28 +71,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                     </div>
                 </div>
 
-            <?php }
-            if ($posts && is_array($posts) && count($posts) > 0) { ?>
-                <?php if (!$post_id) { ?>
-                    <div class="row row-title pt-lg-60 pb-3">
-                        <div class="col-12 d-lg-flex justify-content-between">
-                            <h2 id="ultime-news" class="mb-lg-0">Ultime news</h2>
-                        </div>
-                    </div>
-                <?php } ?>
-                <div class="row mb-2">
-                    <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                        <?php
-                        foreach ($posts as $post) {
-                            if ($post) {
-                                get_template_part("template-parts/home/notizia-evidenza");
-                            }
-                        }
-                        ?>
-                    </div>
-                </div>
-              
-            <?php } ?>
+
         </div>
     </div>
 </section>
