@@ -8,23 +8,21 @@ global $count, $scheda;
 // );
 // $posts = get_posts($args);
 // $post = array_shift($posts);
+
 $post_id = dci_get_option('notizia_evidenziata','homepage', true )[0] ?? null;
 if($post_id) $post = get_post($post_id);
+
 $img = dci_get_meta("immagine", '_dci_notizia_', $post->ID);
 $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
 $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $descrizione_breve = dci_get_meta("descrizione_breve", '_dci_notizia_', $post->ID);
 $argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
+
 $scheda1 = dci_get_option('schede_evidenziate_1','homepage', true )[0] ?? null;
 $scheda2 = dci_get_option('schede_evidenziate_2','homepage', true )[0] ?? null;
 $scheda3 = dci_get_option('schede_evidenziate_3','homepage', true )[0] ?? null;
 $scheda4 = dci_get_option('schede_evidenziate_4','homepage', true )[0] ?? null;
-$scheda5 = dci_get_option('schede_evidenziate_5','homepage', true )[0] ?? null;
-$scheda6 = dci_get_option('schede_evidenziate_6','homepage', true )[0] ?? null;
-$scheda7 = dci_get_option('schede_evidenziate_7','homepage', true )[0] ?? null;
-$scheda8 = dci_get_option('schede_evidenziate_8','homepage', true )[0] ?? null;
-$scheda9 = dci_get_option('schede_evidenziate_9','homepage', true )[0] ?? null;
-$schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$scheda8,$scheda9);
+$schede = array($scheda1,$scheda2,$scheda3$scheda4 );
 
 
 ?>
@@ -53,8 +51,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
               <?php echo $descrizione_breve ?>
             </p>
             <?php get_template_part("template-parts/common/badges-argomenti"); ?>
-          </div>
-                                     <a
+            <a
               class="read-more pb-3"
               href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>"
             >
@@ -63,6 +60,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
                 <use xlink:href="#it-arrow-right"></use>
               </svg>
             </a>
+          </div>
         </div>
       </div>
       <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
