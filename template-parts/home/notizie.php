@@ -41,16 +41,17 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
       <div class="col-lg-5 order-2 order-lg-1">
         <div class="card mb-1">
          <div class="row">
+          <div class="container">
           <div class="card-body pb-5">
             <div class="category-top">
               <svg class="icon icon-sm" aria-hidden="true">
                 <use xlink:href="#it-calendar"></use>
               </svg>
               <span class="title-xsmall-semi-bold fw-semibold">
-            <?php echo $post->post_type ?></span>
-             <?php if(is_array($arrdata) && count($arrdata)) { ?>
-              <span class="data fw-normal"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2]; ?></span>
-            <?php } ?>     
+             <?php echo $post->post_type ?></span>
+               <?php if(is_array($arrdata) && count($arrdata)) { ?>
+                <span class="data fw-normal"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2]; ?></span>
+               <?php } ?>     
             </div>
             <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
               <h3 class="h4 card-title title-xlarge">
@@ -65,7 +66,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
          </div>
         </div>       
       </div>
-
+      </div>
       <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
         <?php if ($img) { 
           dci_get_img($img, 'img-fluid');
