@@ -9,7 +9,7 @@
 get_header();
 ?>
 
-    <div class="it-header-center-wrapper">
+    <main id="main-container" class="main-container redbrown">
        <div class="bg-image"></div>
     </div>
     <main id="main-container" class="main-container redbrown">
