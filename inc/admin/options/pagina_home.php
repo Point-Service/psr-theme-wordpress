@@ -50,6 +50,25 @@ function dci_register_pagina_home_options(){
         )
     );
 
+
+    $home_options->add_field(array(
+        'id' => $prefix . 'notizie_in_home',
+        'name' => __('Notizie in homepage', 'design_comuni_italia'),
+        'desc' => __('Seleziona il numero di notizie da mostrare in homepage.', 'design_comuni_italia'),
+        'type' => 'radio_inline',
+        'default' => 0,
+        'options' => array(
+            0 => __(0, 'design_comuni_italia'),
+            3 => __(3, 'design_comuni_italia'),
+            6 => __(6, 'design_comuni_italia'),
+        ),
+        'attributes' => array(
+            'data-conditional-value' => "false",
+        ),
+    ));
+
+	
+
     $schede_group_id = $home_options->add_field( array(
         'id'           => $prefix . 'schede_evidenziate_1',
         'type'        => 'group',
