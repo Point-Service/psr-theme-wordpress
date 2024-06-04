@@ -58,7 +58,7 @@ function dci_register_pagina_home_options(){
 function add_scheda_group($home_options, $prefix, $index) {
     // Recupera il contenuto corrente della scheda
     $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
-    $is_active = !empty($scheda_contenuto);
+    $is_active = is_array($scheda_contenuto) && count($scheda_contenuto) > 0;
 
     $schede_group_id = $home_options->add_field(array(
         'id'           => $prefix . 'schede_evidenziate_' . $index,
