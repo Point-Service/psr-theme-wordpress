@@ -59,20 +59,15 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
           </div>
         </div>
       </div>
-
-                 
-                    <a class="read-more pb-3" href="/novita/">
+                <div class="row my-4 justify-content-md-center">
+                    <a class="read-more pb-3" href="https://comune.casalvecchiosiculo.me.it/novita/">
                         <button type="button" class="btn btn-outline-primary">Tutte le novità
                             <svg class="icon">
                                 <use xlink:href="#it-arrow-right"></use>
                             </svg>
                         </button>
                     </a>
-
-
-
-
-      
+                </div>
       <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
         <?php if ($img) { 
           dci_get_img($img, 'img-fluid');
