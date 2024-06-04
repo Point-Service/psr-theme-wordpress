@@ -70,6 +70,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
       <div style="height: 34px;"></div>
     <?php } ?>
   </div>
+</section>
                 <div class="row my-4 justify-content-md-center">
                     <a class="read-more pb-3" href="/novita/">
                         <button type="button" class="btn btn-outline-primary">Tutte le novità
@@ -81,7 +82,8 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
                 </div>
 
 
-</section>
+
+
 <section id="calendario">
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
     <div class="container">
