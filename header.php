@@ -198,11 +198,3 @@ $current_group = dci_get_current_group();
 if(!is_user_logged_in())
     get_template_part("template-parts/common/access-modal");
 ?>
-
-
-
- 
-    <div class="it-header-center-wrapper">
-       <div class="bg-image"></div>
-    </div>
-
