@@ -92,7 +92,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                 </div>
                 <div class="row my-4 justify-content-md-center">
                      <div class="container">
-                       <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
+                       <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary mt-40" >   
                          <svg class="icon icon-sm" aria-hidden="true">
                            <use xlink:href="#it-calendar"></use>
                           </svg>
