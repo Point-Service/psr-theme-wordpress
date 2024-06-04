@@ -39,6 +39,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
     <div class="row">
       <div class="col-lg-5 order-2 order-lg-1">
         <div class="card mb-1">
+         <div class="row">
           <div class="card-body pb-5">
             <div class="category-top">
               <svg class="icon icon-sm" aria-hidden="true">
@@ -59,12 +60,14 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
             </p>
             <?php get_template_part("template-parts/common/badges-argomenti"); ?>                
           </div>
-        </div>       
-      </div>
-                <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
+                          <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
                <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
            </div>    
            
+
+         </div>
+        </div>       
+      </div>
 
 
       <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
