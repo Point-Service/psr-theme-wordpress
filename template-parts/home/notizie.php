@@ -35,6 +35,16 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
     <div class="section-content">
         <div class="container">
             <h2 id="novita-in-evidenza" class="">Novità in evidenza</h2>
+              <div class="row my-4 justify-content-md-center">
+                     <div class="container">
+                       <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
+                         <svg class="icon icon-sm" aria-hidden="true">
+                           <use xlink:href="#it-calendar"></use>
+                          </svg>
+                          Visualizza tutte le novità
+                     </a>
+                  </div>
+                </div>
             <?php if ($post_id) {
                 $overlapping = "card-overlapping";
             ?>
@@ -90,16 +100,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                         ?>
                     </div>
                 </div>
-                <div class="row my-4 justify-content-md-center">
-                     <div class="container">
-                       <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
-                         <svg class="icon icon-sm" aria-hidden="true">
-                           <use xlink:href="#it-calendar"></use>
-                          </svg>
-                          Visualizza tutte le novità
-                     </a>
-                  </div>
-                </div>
+              
             <?php } ?>
         </div>
     </div>
