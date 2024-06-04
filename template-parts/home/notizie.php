@@ -56,6 +56,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
               <?php echo $descrizione_breve ?>
             </p>
             <?php get_template_part("template-parts/common/badges-argomenti"); ?>            
+		     	<?php get_template_part("template-parts/novita/tutte-novita"); ?>   
           </div>
         </div>
       </div>
@@ -65,15 +66,6 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
         } ?>
       </div>
     </div>
-
-           <a class="read-more pb-3"
-              href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
-              <span class="text">Tutte le novità</span>
-              <svg class="icon">
-                <use xlink:href="#it-arrow-right"></use>
-              </svg>
-            </a>
-    
     <?php } else { ?>
       <div style="height: 34px;"></div>
     <?php } ?>
