@@ -22,6 +22,15 @@ get_header();
 		    ?>
             <?php //get_template_part("template-parts/home/carosello"); ?>
             <?php get_template_part("template-parts/home/notizie"); ?>
+	        <a
+	        class="read-more ps-4"
+	        href="<?php echo dci_get_template_page_url("page-templates/notizie.php"); ?>"
+	        >
+	        <span class="text">Tutte le novità</span>
+	        <svg class="icon">
+	            <use xlink:href="#it-arrow-right"></use>
+	        </svg>
+	        </a>
             <?php get_template_part("template-parts/home/calendario"); ?>
         </section>
         <section id="evidenza" class="evidence-section">
