@@ -59,7 +59,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
           </div>
 
                 <div class="row my-4 justify-content-md-center">
-                    <a class="read-more pb-3" href="page-templates/notizie.php">
+                    <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
                         <button type="button" class="btn btn-outline-primary">Tutte le novità
                             <svg class="icon">
                                 <use xlink:href="#it-arrow-right"></use>
