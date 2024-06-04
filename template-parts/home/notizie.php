@@ -105,15 +105,12 @@ foreach ($schede as $key => $contenuto) {
                         ?>
                     </div>
                 </div>
-                <div class="row my-4 justify-content-md-center">
-                     <div class="container">
-                       <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
-                         <svg class="icon icon-sm" aria-hidden="true">
-                           <use xlink:href="#it-calendar"></use>
-                          </svg>
-                          Visualizza tutte le novità
-                     </a>
-                  </div>
+
+
+
+
+
+            
             <?php } ?>
         </div>
     </div>
