@@ -73,7 +73,10 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
     <?php } ?>
 
 
-       <a
+
+   
+  </div>
+         <a
               class="read-more pb-3"
               href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>"
             >
@@ -82,8 +85,6 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                 <use xlink:href="#it-arrow-right"></use>
               </svg>
             </a>   
-   
-  </div>
  </div>
 </section>
 <section id="calendario">
