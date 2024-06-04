@@ -77,18 +77,15 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
  </div>
 </section>
 
+<div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
+    <div class="container">
+            <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >Visualizza tutte le novità
+             <svg class="icon icon-sm" aria-hidden="true">
+                <use xlink:href="#it-calendar"></use>
+              </svg>
+            </a>
 
-            <div class="row my-4 justify-content-md-center">
-                        <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
-                            <button type="button" class="btn btn-outline-primary">Tutte le novità
-                                <svg class="icon">
-                                    <use xlink:href="#it-arrow-right"></use>
-                                </svg>
-                            </button>
-                        </a>
-                    </div>
-       
-
+    </div>
  
 <section id="calendario">
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
