@@ -47,11 +47,6 @@ get_header();
                             ?>
 
                             <div class="callout note">
-                                <div class="callout-inner">
-                                    <div class="callout-title">
-
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
