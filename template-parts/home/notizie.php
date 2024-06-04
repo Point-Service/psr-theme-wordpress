@@ -1,35 +1,35 @@
 <?php
-global $count, $scheda;
+global $scheda;
 // Per mostrare la notizia più recente
-// $args = array('post_type' => 'notizia',
-//              'posts_per_page' => 1,
-//         'orderby' => 'date',
-//         'order' => 'DESC'
-// );
-// $posts = get_posts($args);
-// $post = array_shift($posts);
+$post_id = dci_get_option('notizia_evidenziata', 'homepage', true)[0] ?? null;
+if ($post_id) {
+    $post = get_post($post_id);
+}
 
-$post_id = dci_get_option('notizia_evidenziata','homepage', true )[0] ?? null;
-if($post_id) $post = get_post($post_id);
+//Notizie in homepage
+$posts = null;
+$notizie_in_home = dci_get_option('notizie_in_home', 'homepage');
+if ($notizie_in_home && $notizie_in_home > 0) {
+    $args  = array(
+        'post_type'      => 'notizia',
+        'post_status'    => 'publish',
+        'posts_per_page' => $notizie_in_home,
+        'orderby'        => 'date',
+        'order'          => 'DESC'
+    );
+    $posts = get_posts($args);
+    //$post  = array_shift( $posts  );
+}
 
-$img = dci_get_meta("immagine", '_dci_notizia_', $post->ID);
-$arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
-$monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+$img               = dci_get_meta("immagine", '_dci_notizia_', $post->ID);
+$arrdata           = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
+$monthName         = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $descrizione_breve = dci_get_meta("descrizione_breve", '_dci_notizia_', $post->ID);
-$argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
+$argomenti         = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
 
-$scheda1 = dci_get_option('schede_evidenziate_1','homepage', true )[0] ?? null;
-$scheda2 = dci_get_option('schede_evidenziate_2','homepage', true )[0] ?? null;
-$scheda3 = dci_get_option('schede_evidenziate_3','homepage', true )[0] ?? null;
-$scheda4 = dci_get_option('schede_evidenziate_4','homepage', true )[0] ?? null;
-$scheda5 = dci_get_option('schede_evidenziate_5','homepage', true )[0] ?? null;
-$scheda6 = dci_get_option('schede_evidenziate_6','homepage', true )[0] ?? null;
-$scheda7 = dci_get_option('schede_evidenziate_7','homepage', true )[0] ?? null;
-$scheda8 = dci_get_option('schede_evidenziate_8','homepage', true )[0] ?? null;
-$scheda9 = dci_get_option('schede_evidenziate_9','homepage', true )[0] ?? null;
-$schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7 ,$scheda8 ,$scheda9  );
+$schede = dci_get_option('schede_evidenziate', 'homepage') ?? null;
 
-
+$overlapping = "";
 ?>
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
