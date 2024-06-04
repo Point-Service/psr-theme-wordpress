@@ -17,8 +17,6 @@ $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $descrizione_breve = dci_get_meta("descrizione_breve", '_dci_notizia_', $post->ID);
 $argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
 
-
-
 $scheda1 = dci_get_option('schede_evidenziate_1','homepage', true )[0] ?? null;
 $scheda2 = dci_get_option('schede_evidenziate_2','homepage', true )[0] ?? null;
 $scheda3 = dci_get_option('schede_evidenziate_3','homepage', true )[0] ?? null;
@@ -29,8 +27,6 @@ $scheda7 = dci_get_option('schede_evidenziate_7','homepage', true )[0] ?? null;
 $scheda8 = dci_get_option('schede_evidenziate_8','homepage', true )[0] ?? null;
 $scheda9 = dci_get_option('schede_evidenziate_9','homepage', true )[0] ?? null;
 $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7 ,$scheda8 ,$scheda9  );
-
-
 ?>
 
     
@@ -94,7 +90,6 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                         ?>
                     </div>
                 </div>
-
                 <div class="row my-4 justify-content-md-center">
                      <div class="container">
                        <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
@@ -104,17 +99,11 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
                           Visualizza tutte le novità
                      </a>
                   </div>
-
-
-
-            
+                </div>
             <?php } ?>
         </div>
     </div>
 </section>
-
-
-
 
 
 <section id="calendario">
@@ -130,5 +119,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5 ,$scheda6 ,$scheda7
         } ?>
         </div>
       </div>
+    </div>
+<!-- Tag section is closed in home.php -->
     </div>
 <!-- Tag section is closed in home.php -->
