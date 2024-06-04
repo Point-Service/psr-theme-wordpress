@@ -57,9 +57,7 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
             </p>
             <?php get_template_part("template-parts/common/badges-argomenti"); ?>            
           </div>
-        </div>
-      </div>
-                <div class="row my-4 justify-content-md-center">
+                          <div class="row my-4 justify-content-md-center">
                     <a class="read-more pb-3" href="https://comune.casalvecchiosiculo.me.it/novita/">
                         <button type="button" class="btn btn-outline-primary">Tutte le novità
                             <svg class="icon">
@@ -68,6 +66,9 @@ $schede = array($scheda1,$scheda2,$scheda3,$scheda4,$scheda5,$scheda6,$scheda7,$
                         </button>
                     </a>
                 </div>
+        </div>
+      </div>
+
       <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
         <?php if ($img) { 
           dci_get_img($img, 'img-fluid');
