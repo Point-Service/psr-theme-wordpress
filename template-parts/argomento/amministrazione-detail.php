@@ -1,4 +1,3 @@
-LUCA
 <?php
     global $argomento;
 
