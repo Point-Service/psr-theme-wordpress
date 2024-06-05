@@ -17,13 +17,16 @@ $page_macro = get_page_by_path($page_macro_slug);
     <div class="card-image-wrapper with-read-more">
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
-            <span class="category title-xsmall-semi-bold fw-semibold" ><?= $post_type ?></span>
+            <!-- <svg class="icon">
+                <use xlink:href="#<?php #echo $icon ?>"></use>
+            </svg> -->
+            <span class="category title-xsmall-semi-bold fw-semibold" ><?php echo $page->post_title ?></span>
             </div>
-            <?php echo '<' . $titleheading . ' class="card-title text-paragraph-medium u-grey-light">' . $post->post_title . '</' . $titleheading . '>'; ?>
+            <p class="card-title text-paragraph-medium u-grey-light"><?php echo $post->post_title ?></p>
             <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>
         </div>
         <div class="card-image card-image-rounded pb-5">            
-            <?php dci_get_img($img, size:'thumbnail'); ?>
+            <?php dci_get_img($img); ?>
         </div>
     </div>
     <a
@@ -39,15 +42,17 @@ $page_macro = get_page_by_path($page_macro_slug);
     </a>
 </div>
 <?php } else { ?>
-    <div class="card card-teaser no-after rounded shadow-sm mb-0 border border-light">
+    <div class="card card-teaser no-after rounded shadow-sm mb-0">
         <div class="card-body pb-5">
         <div class="category-top">
             <!-- <svg class="icon">
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
-            <span class="category title-xsmall-semi-bold fw-semibold"><?= $post_type ?></span>
+            <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
         </div>
-        <?php echo '<' . $titleheading . ' class="card-title text-paragraph-medium u-grey-light">' . $post->post_title . '</' . $titleheading . '>'; ?>
+        <p class="card-title text-paragraph-medium u-grey-light">
+            <?php echo $post->post_title ?>
+        </p>
         <p class="text-paragraph-card u-grey-light m-0">
             <?php echo $descrizione_breve ?>
         </p>
