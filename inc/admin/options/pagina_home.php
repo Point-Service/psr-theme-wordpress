@@ -47,45 +47,26 @@ function dci_register_pagina_home_options(){
 
 
 
-function add_schede_group($home_options, $prefix, $num_schede) {
-    $schede_group_id = $home_options->add_field(array(
-        'id'           => $prefix . 'schede_evidenziate',
-        'type'         => 'group',
-        'repeatable'   => true,
-        'options'      => array(
-            'group_title'   => 'Scheda %d:',
-            'closed'        => false,
-            'add_button'    => 'Aggiungi Scheda',
-            'remove_button' => 'Rimuovi Scheda',
-        )
+function add_scheda_unica($home_options, $prefix, $num_schede) {
+    $home_options->add_field(array(
+        'id'       => $prefix . 'scheda_unica_contenuto',
+        'name'     => __('Selezione contenuto', 'design_comuni_italia'),
+        'type'     => 'select', // Puoi usare 'checkbox' se vuoi permettere più selezioni
+        'options'  => array(),
     ));
-    
+
+    // Popola il campo con i titoli degli elementi basati sull'indice
+    $options = array();
     for ($i = 1; $i <= $num_schede; $i++) {
-        $home_options->add_group_field($schede_group_id, array(
-            'name'       => __('Selezione contenuto', 'design_comuni_italia'),
-            'id'         => $prefix . 'scheda_' . $i . '_contenuto',
-            'type'       => 'custom_attached_posts',
-            'options'    => array(
-                'show_thumbnails' => false,
-                'filter_boxes'    => true,
-                'query_args'      => array(
-                    'posts_per_page' => -1,
-                    'post_type'      => array('evento', 'luogo', 'unita_organizzativa', 'documento_pubblico', 'servizio', 'notizia', 'dataset'),
-                ),
-            ),
-            'attributes' => array(
-                'data-max-items' => 1,
-            ),
-        ));
+        $options[$i] = sprintf('Scheda %d', $i);
     }
+    $home_options->set_field_choices($prefix . 'scheda_unica_contenuto', $options);
 }
 
-// Esempio di utilizzo della funzione per creare 10 schede
-add_schede_group($home_options, $prefix, 10);
 
 
-
-
+// Esempio di utilizzo della funzione per creare una sola scheda con 10 selezioni
+add_scheda_unica($home_options, $prefix, 10);
 
 
 
