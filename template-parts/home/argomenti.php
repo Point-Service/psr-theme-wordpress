@@ -11,7 +11,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 ?>
 
 <div class="container">
-    <?php (is_array($argomenti_evidenza))  { ?>
+    <?(is_array($argomenti_evidenza))  { ?>
     <div class="row">
          <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2> 
      </div>
