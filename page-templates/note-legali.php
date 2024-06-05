@@ -64,8 +64,7 @@ get_header();
 			   Gli utenti sono quindi liberi di condividere (riprodurre, distribuire, comunicare al pubblico, esporre in pubblico), rappresentare, eseguire e recitare questo materiale con qualsiasi mezzo e formato e modificare (trasformare il materiale e utilizzarlo per opere derivate) per qualsiasi fine, anche commerciale con il solo onere di attribuzione, senza apporre restrizioni aggiuntive.</p>
 			</div>
                                        <h4>Copyright</h4>
-					  <p> La visualizzazione, il download e qualunque utilizzo dei dati pubblicati sul presente tipo
-						  comporta accettazione delle presenti note legali e delle condizioni della licenza con cui sono pubblicati.</p>
+					  <p>Tutti i contenuti, le immagini e le informazioni presenti all'interno del sito sono protetti ai sensi delle normative sul diritto d'autore, sui brevetti e su quelle relative alla proprietà intellettuale; pertanto nulla, neppure in parte, potrà essere copiato, modificato o rivenduto per fini di lucro o per trarne qualsivoglia utilità.</p>
 						<p data-element="legal-notes-body"> Gli utenti sono quindi liberi di condividere (riprodurre, distribuire, comunicare al pubblico, esporre in pubblico),
 							rappresentare, eseguire e recitare questo materiale con qualsiasi mezzo e formato e modificare (trasformare il materiale e utilizzarlo per opere
 							derivate) per qualsiasi fine, anche commerciale con il solo onere di attribuzione, senza apporre restrizioni aggiuntive.</p>
