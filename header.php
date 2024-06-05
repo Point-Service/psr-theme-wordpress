@@ -1,4 +1,4 @@
-sss<?php
+<?php
 
 /**
  * The header for our theme
