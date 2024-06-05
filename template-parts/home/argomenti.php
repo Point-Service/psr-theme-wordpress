@@ -2,14 +2,13 @@
 global $argomento_full, $count;
 
 $argomenti_evidenza = array();
-$arg1 = dci_get_option('argomenti_evidenziati_1','homepage')[0] ?? null;
-if ($arg1) $argomenti_evidenza[1] = $arg1;
 
-$arg2 = dci_get_option('argomenti_evidenziati_2','homepage')[0] ?? null;
-if ($arg2) $argomenti_evidenza[2] = $arg2;
-
-$arg3 = dci_get_option('argomenti_evidenziati_3','homepage')[0] ?? null;
-if ($arg3) $argomenti_evidenza[3] = $arg3;
+for ($i = 1; $i <= 3; $i++) {
+    $argomento = dci_get_option('argomenti_evidenziati_' . $i, 'homepage')[0] ?? null;
+    if ($argomento) {
+        $argomenti_evidenza[$i] = $argomento;
+    }
+}
 
 
 $altri_argomenti = dci_get_option('argomenti_altri','homepage');
