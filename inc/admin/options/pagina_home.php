@@ -47,42 +47,41 @@ function dci_register_pagina_home_options(){
 
 
 
-function add_scheda_group($home_options, $prefix, $index) {
-    // Recupera il contenuto corrente della scheda
-    $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
-    $is_active = count($scheda_contenuto) > 0;
+function add_schede_group($home_options, $prefix, $num_schede) {
     $schede_group_id = $home_options->add_field(array(
-        'id'           => $prefix . 'schede_evidenziate_' . $index,
+        'id'           => $prefix . 'schede_evidenziate',
         'type'         => 'group',
-        'repeatable'   => false,
+        'repeatable'   => true,
         'options'      => array(
-            'group_title'   => 'Scheda ' . $index . ':',
-            'closed'        => !$is_active, // Chiudi il gruppo se non c'è contenuto attivo
+            'group_title'   => 'Scheda %d:',
+            'closed'        => false,
+            'add_button'    => 'Aggiungi Scheda',
+            'remove_button' => 'Rimuovi Scheda',
         )
     ));
-    $home_options->add_group_field($schede_group_id, array(
-        'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
-        'desc'       => __('Seleziona il contenuto da mostrare nella Scheda.', 'design_comuni_italia'),
-        'id'         => $prefix . 'scheda_' . $index . '_contenuto',
-        'type'       => 'custom_attached_posts',
-        'column'     => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
-        'options'    => array(
-            'show_thumbnails' => false, // Show thumbnails on the left
-            'filter_boxes'    => true, // Show a text box for filtering the results
-            'query_args'      => array(
-                'posts_per_page' => 2,
-                'post_type'      => array('evento', 'luogo', 'unita_organizzativa', 'documento_pubblico', 'servizio', 'notizia', 'dataset'),
-            ), // override the get_posts args
-        ),
-        'attributes' => array(
-            'data-max-items' => 1, //change the value here to how many posts may be attached.
-        ),
-    ));
+    
+    for ($i = 1; $i <= $num_schede; $i++) {
+        $home_options->add_group_field($schede_group_id, array(
+            'name'       => __('Selezione contenuto', 'design_comuni_italia'),
+            'id'         => $prefix . 'scheda_' . $i . '_contenuto',
+            'type'       => 'custom_attached_posts',
+            'options'    => array(
+                'show_thumbnails' => false,
+                'filter_boxes'    => true,
+                'query_args'      => array(
+                    'posts_per_page' => -1,
+                    'post_type'      => array('evento', 'luogo', 'unita_organizzativa', 'documento_pubblico', 'servizio', 'notizia', 'dataset'),
+                ),
+            ),
+            'attributes' => array(
+                'data-max-items' => 1,
+            ),
+        ));
+    }
 }
-// Esempio di utilizzo della funzione per creare 9 schede
-for ($i = 1; $i <= 9; $i++) {
-    add_scheda_group($home_options, $prefix, $i);
-}
+
+// Esempio di utilizzo della funzione per creare 10 schede
+add_schede_group($home_options, $prefix, 10);
 
 
 
