@@ -1,4 +1,4 @@
-<?php
+prova<?php
 global $argomento_full, $count, $sito_tematico_id;
 
 $argomento = get_term_by('slug', $argomento_full['argomento_'.$count.'_argomento'], 'argomenti');
