@@ -47,43 +47,44 @@ function dci_register_pagina_home_options(){
 
 
 
-function add_unified_scheda_field($home_options, $prefix) {
-    // Aggiungi un gruppo ripetibile per gli elementi della scheda
-    $scheda_group_id = $home_options->add_field(array(
-        'id'           => $prefix . 'scheda_evidenziata',
-        'type'         => 'group',
-        'repeatable'   => true,
-        'options'      => array(
-            'group_title'   => 'Elemento {#}:', // {#} verrà sostituito con il numero di gruppo
-            'add_button'    => __('Aggiungi Elemento', 'design_comuni_italia'),
-            'remove_button' => __('Rimuovi Elemento', 'design_comuni_italia'),
-            'sortable'      => true, // Permette di riordinare gli elementi
-        )
-    ));
-    
-    // Aggiungi il campo per il contenuto dell'elemento
-    $home_options->add_group_field($scheda_group_id, array(
-        'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
-        'desc'       => __('Seleziona il contenuto da mostrare nell\'elemento.', 'design_comuni_italia'),
-        'id'         => 'contenuto',
-        'type'       => 'custom_attached_posts',
-        'column'     => true, // Output in the admin post-listing as a custom column
-        'options'    => array(
-            'show_thumbnails' => false, // Show thumbnails on the left
-            'filter_boxes'    => true, // Show a text box for filtering the results
-            'query_args'      => array(
-                'posts_per_page' => -1,
-                'post_type'      => array('evento', 'luogo', 'unita_organizzativa', 'documento_pubblico', 'servizio', 'notizia', 'dataset'),
-            ), // override the get_posts args
-        ),
-        'attributes' => array(
-            'data-max-items' => 1, //change the value here to how many posts may be attached.
-        ),
-    ));
-}
+$home_options->add_field( array(
+    'id' => $prefix . 'schede_evidenziate_title',
+    'name' => __( 'Sezione Schede in Evidenza', 'design_comuni_italia' ),
+    'desc' => __( 'Configurazione sezione Schede in Evidenza.', 'design_comuni_italia' ),
+    'type' => 'title',
+) );
 
-// Esempio di utilizzo della funzione per creare un campo modulo unificato
-add_unified_scheda_field($home_options, $prefix);
+$home_options->add_field( array(
+    'name' => __('<h5>Selezione notizie in evidenza</h5>', 'design_comuni_italia'),
+    'desc' => __('Seleziona una o più notizie da mostrare in homepage ', 'design_comuni_italia'),
+    'id' => $prefix . 'notizie_evidenziate',
+    'type' => 'multicheck',
+    'options' => cmb2_get_post_options( 'notizia' ),
+    'attributes' => array(
+        'multiple' => 'multiple', // Allow multiple selections
+    ),
+) );
+
+/**
+ * Helper function to get post options for multicheck field.
+ *
+ * @param string $post_type The post type to retrieve posts from.
+ * @return array Array of post ID => post title.
+ */
+function cmb2_get_post_options( $post_type ) {
+    $args = array(
+        'post_type'      => $post_type,
+        'posts_per_page' => -1,
+    );
+    $posts = get_posts( $args );
+    $post_options = array();
+    if ( $posts ) {
+        foreach ( $posts as $post ) {
+            $post_options[ $post->ID ] = $post->post_title;
+        }
+    }
+    return $post_options;
+}
 
 
 
