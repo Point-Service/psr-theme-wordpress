@@ -31,10 +31,14 @@ for ($i = 1; $i <= 20; $i++) {
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
-            <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
+
             <?php if ($post_id) {
+                ?> <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2> <?php
                 $overlapping = "card-overlapping";
-            ?>
+                        get_template_part("template-parts/home/notizia-hero");
+                }
+               ?>
+    
                 <div class="row">
                     <div class="col-lg-5 order-2 order-lg-1">
                         <div class="card mb-1">
