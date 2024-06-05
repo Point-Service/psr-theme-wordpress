@@ -45,25 +45,33 @@ function dci_register_pagina_home_options(){
     );
  
 	
-function add_scheda_group($home_options, $prefix, $index) {
+
+
+function add_scheda_group($home_options, $prefix) {
     // Recupera il contenuto corrente della scheda
-    $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
+    $scheda_contenuto = get_option($prefix . 'scheda_contenuto');
     $is_active = is_array($scheda_contenuto) && count($scheda_contenuto) > 0;
-    
+
+    // Creare un gruppo ripetibile
     $schede_group_id = $home_options->add_field(array(
-        'id'           => $prefix . 'schede_evidenziate_' . $index,
+        'id'           => $prefix . 'schede_evidenziate',
         'type'         => 'group',
-        'repeatable'   => false,
+        'repeatable'   => true,
         'options'      => array(
-            'group_title'   => 'Scheda ' . $index . ':',
+            'group_title'   => 'Scheda {#}:', // Usa {#} per mostrare il numero dell'elemento nel titolo del gruppo
             'closed'        => !$is_active, // Chiudi il gruppo se non c'è contenuto attivo
+            'add_button'    => __('Aggiungi Scheda', 'design_comuni_italia'),
+            'remove_button' => __('Rimuovi Scheda', 'design_comuni_italia'),
+            'sortable'      => true, // Permetti di riordinare gli elementi del gruppo
+            'limit'         => 9, // Limita a 9 schede
         )
     ));
-    
+
+    // Aggiungere un campo per selezionare il contenuto all'interno del gruppo
     $home_options->add_group_field($schede_group_id, array(
         'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
         'desc'       => __('Seleziona il contenuto da mostrare nella Scheda.', 'design_comuni_italia'),
-        'id'         => $prefix . 'scheda_' . $index . '_contenuto',
+        'id'         => 'contenuto',
         'type'       => 'custom_attached_posts',
         'column'     => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
         'options'    => array(
@@ -80,9 +88,15 @@ function add_scheda_group($home_options, $prefix, $index) {
     ));
 }
 
-// Esempio di utilizzo della funzione per creare tutte le schede trovate
-$prefix = 'your_prefix_here';
-$home_options = cmb2_get_option('your_option_key_here');
+// Utilizzo della funzione per creare il gruppo ripetibile di schede
+add_scheda_group($home_options, $prefix);
+
+
+
+
+
+
+	
 
 $options = get_all_options();
 foreach ($options as $option) {
