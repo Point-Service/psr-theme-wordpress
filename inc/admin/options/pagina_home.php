@@ -1,4 +1,5 @@
 <?php
+function dci_register_pagina_home_options(){<?php
 function dci_register_pagina_home_options(){
     $prefix = '';
     /**
@@ -43,8 +44,7 @@ function dci_register_pagina_home_options(){
             ),
         )
     );
- 
-	
+
 
 
 function add_scheda_group($home_options, $prefix, $index) {
@@ -83,21 +83,7 @@ function add_scheda_group($home_options, $prefix, $index) {
 for ($i = 1; $i <= 9; $i++) {
     add_scheda_group($home_options, $prefix, $i);
 }
-
-
-
-
-
-
 	
-
-$options = get_all_options();
-foreach ($options as $option) {
-    if (strpos($option->option_name, 'schede_evidenziate_') === 0) {
-        $index = str_replace('schede_evidenziate_', '', $option->option_name);
-        add_scheda_group($home_options, $prefix, $index);
-    }
-}	
     //sezione Siti Tematici
     $home_options->add_field( array(
         'id' => $prefix . 'siti_tematici_title',
