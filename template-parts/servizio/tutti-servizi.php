@@ -34,7 +34,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 
                 <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                          <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
-                            <div class="col-12 col-lg-4 pt-30 pt-lg-5 ps-lg-5 order-first order-md-last">
+                  
                             <div class="link-list-wrap">
                                 <h2 class="title-xsmall-semi-bold">
                                     <span>SERVIZI IN EVIDENZA</span>
@@ -53,7 +53,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             </div>
                           </div>
                         <?php } ?>
-                      </div>
+                    
                    </div>
 
                 <div class="pt-lg-50 pb-lg-50">
