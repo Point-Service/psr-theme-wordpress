@@ -1,4 +1,3 @@
-prova
 <?php
 global $documento, $file_documento;
 ?>
