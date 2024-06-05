@@ -117,7 +117,7 @@ $home_options->add_field( array(
     'type' => 'title',
 ) );
 
-$num_argomenti = 3; // Numero di argomenti
+$num_argomenti = 4; // Numero di argomenti
 
 for ($i = 1; $i <= $num_argomenti; $i++) {
     $argomenti_group_id = $home_options->add_field( array(
