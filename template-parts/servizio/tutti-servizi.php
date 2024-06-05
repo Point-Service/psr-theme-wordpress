@@ -32,6 +32,31 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                         Esplora tutti i servizi
                     </h2>
                 </div>
+
+
+                
+             <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
+                <div class="col-12 col-lg-4 pt-30 pt-lg-5 ps-lg-5 order-first order-md-last">
+                <div class="link-list-wrap">
+                    <h2 class="title-xsmall-semi-bold">
+                        <span>SERVIZI IN EVIDENZA</span>
+                    </h2>
+                    <ul class="link-list t-primary">
+                        <?php foreach ($servizi_evidenza as $servizio_id) { 
+                            $post = get_post($servizio_id);    
+                        ?>
+                        <li class="mb-3 mt-3">
+                            <a class="list-item ps-0 title-medium underline" href="<?php echo get_permalink($post->ID); ?>">
+                                <span><?php echo $post->post_title; ?></span>
+                            </a>
+                        </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+              </div>
+            <?php } ?>
+
+                
                 <div class="pt-lg-50 pb-lg-50">
                     <div class="cmp-input-search">
                         <div class="form-group autocomplete-wrapper mb-2 mb-lg-4">
@@ -52,28 +77,6 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <strong><?php echo $the_query->found_posts; ?> </strong>servizi trovati in ordine alfabetico
                         </p>
                     </div>
-
-
-             <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
-                <div class="col-12 col-lg-4 pt-30 pt-lg-5 ps-lg-5 order-first order-md-last">
-                <div class="link-list-wrap">
-                    <h2 class="title-xsmall-semi-bold">
-                        <span>SERVIZI IN EVIDENZA</span>
-                    </h2>
-                    <ul class="link-list t-primary">
-                        <?php foreach ($servizi_evidenza as $servizio_id) { 
-                            $post = get_post($servizio_id);    
-                        ?>
-                        <li class="mb-3 mt-3">
-                            <a class="list-item ps-0 title-medium underline" href="<?php echo get_permalink($post->ID); ?>">
-                                <span><?php echo $post->post_title; ?></span>
-                            </a>
-                        </li>
-                        <?php } ?>
-                    </ul>
-                </div>
-            </div>
-                     <?php } ?>
 
 
                     
