@@ -79,8 +79,8 @@ function add_scheda_group($home_options, $prefix, $index) {
         ),
     ));
 }
-// Esempio di utilizzo della funzione per creare 9 schede
-for ($i = 1; $i <= 9; $i++) {
+// Esempio di utilizzo della funzione per creare 12 schede
+for ($i = 1; $i <= 12; $i++) {
     add_scheda_group($home_options, $prefix, $i);
 }
 
