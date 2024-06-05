@@ -23,7 +23,7 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
         </div> -->
         <h3 class="card-title title-xlarge-card"><?php echo $argomento->name?></h3>
         <p class="card-text">
-            <?php echo $argomento->description?>
+            <?php echo $argomento->description; ?>
         </p>
 
         <!-- sito tematico -->
@@ -45,7 +45,12 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
                 <li>
                     <a class="list-item active icon-left mb-2" href="<?php echo get_permalink(intval($link_id)); ?>">
                     <span class="list-item-title-icon-wrapper">
-                        <span><?php echo $link_obj->post_title; ?></span>
+                        <!-- <svg class="icon icon-primary">
+                        <use
+                            xlink:href="#<?php #echo dci_get_post_type_icon_by_id($link_id); ?>"
+                        ></use>
+                        </svg> -->
+                        <span class="text-underline text-success"><?php echo $link_obj->post_title; ?></span>
                     </span>
                     </a>
                 </li>
@@ -63,5 +68,3 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
         </span>
     </a>
 </div>
-<?php
-$sito_tematico_id = null;
