@@ -47,49 +47,45 @@ function dci_register_pagina_home_options(){
 
 
 
-$home_options->add_field( array(
-    'id' => $prefix . 'schede_evidenziate_title',
-    'name' => __( 'Sezione Schede in Evidenza', 'design_comuni_italia' ),
-    'desc' => __( 'Configurazione sezione Schede in Evidenza.', 'design_comuni_italia' ),
-    'type' => 'title',
-) );
+	
+	
 
-$home_options->add_field( array(
-    'name' => __('<h5>Selezione notizie in evidenza</h5>', 'design_comuni_italia'),
-    'desc' => __('Seleziona una o più notizie da mostrare in homepage ', 'design_comuni_italia'),
-    'id' => $prefix . 'notizie_evidenziate',
-    'type' => 'multicheck',
-    'options' => cmb2_get_post_options( 'notizia' ),
-    'attributes' => array(
-        'multiple' => 'multiple', // Allow multiple selections
-    ),
-) );
-
-/**
- * Helper function to get post options for multicheck field.
- *
- * @param string $post_type The post type to retrieve posts from.
- * @return array Array of post ID => post title.
- */
-function cmb2_get_post_options( $post_type ) {
-    $args = array(
-        'post_type'      => $post_type,
-        'posts_per_page' => -1,
-    );
-    $posts = get_posts( $args );
-    $post_options = array();
-    if ( $posts ) {
-        foreach ( $posts as $post ) {
-            $post_options[ $post->ID ] = $post->post_title;
-        }
-    }
-    return $post_options;
+function add_scheda_group($home_options, $prefix, $index) {
+    // Recupera il contenuto corrente della scheda
+    $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
+    $is_active = is_array($scheda_contenuto) && count($scheda_contenuto) > 0;
+    $schede_group_id = $home_options->add_field(array(
+        'id'           => $prefix . 'schede_evidenziate_' . $index,
+        'type'         => 'group',
+        'repeatable'   => false,
+        'options'      => array(
+            'group_title'   => 'Scheda ' . $index . ':',
+            'closed'        => !$is_active, // Chiudi il gruppo se non c'è contenuto attivo
+        )
+    ));
+    $home_options->add_group_field($schede_group_id, array(
+        'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
+        'desc'       => __('Seleziona il contenuto da mostrare nella Scheda.', 'design_comuni_italia'),
+        'id'         => $prefix . 'scheda_' . $index . '_contenuto',
+        'type'       => 'custom_attached_posts',
+        'column'     => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
+        'options'    => array(
+            'show_thumbnails' => false, // Show thumbnails on the left
+            'filter_boxes'    => true, // Show a text box for filtering the results
+            'query_args'      => array(
+                'posts_per_page' => -1,
+                'post_type'      => array('evento', 'luogo', 'unita_organizzativa', 'documento_pubblico', 'servizio', 'notizia', 'dataset'),
+            ), // override the get_posts args
+        ),
+        'attributes' => array(
+            'data-max-items' => 1, //change the value here to how many posts may be attached.
+        ),
+    ));
 }
-
-
-
-
-
+// Esempio di utilizzo della funzione per creare 9 schede
+for ($i = 1; $i <= 9; $i++) {
+    add_scheda_group($home_options, $prefix, $i);
+}
 
 
 
