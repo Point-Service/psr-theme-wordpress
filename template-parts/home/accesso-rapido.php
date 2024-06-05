@@ -1,4 +1,3 @@
-fffff
 <?php
 global $boxes;
 $box_accesso_rapido = $boxes;
