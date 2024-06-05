@@ -49,6 +49,7 @@ function add_scheda_group($home_options, $prefix, $index) {
     // Recupera il contenuto corrente della scheda
     $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
     $is_active = is_array($scheda_contenuto) && count($scheda_contenuto) > 0;
+    
     $schede_group_id = $home_options->add_field(array(
         'id'           => $prefix . 'schede_evidenziate_' . $index,
         'type'         => 'group',
@@ -58,6 +59,7 @@ function add_scheda_group($home_options, $prefix, $index) {
             'closed'        => !$is_active, // Chiudi il gruppo se non c'è contenuto attivo
         )
     ));
+    
     $home_options->add_group_field($schede_group_id, array(
         'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
         'desc'       => __('Seleziona il contenuto da mostrare nella Scheda.', 'design_comuni_italia'),
@@ -77,11 +79,18 @@ function add_scheda_group($home_options, $prefix, $index) {
         ),
     ));
 }
-// Esempio di utilizzo della funzione per creare 9 schede
-for ($i = 1; $i <= 9; $i++) {
-    add_scheda_group($home_options, $prefix, $i);
-}
-	
+
+// Esempio di utilizzo della funzione per creare tutte le schede trovate
+$prefix = 'your_prefix_here';
+$home_options = cmb2_get_option('your_option_key_here');
+
+$options = get_all_options();
+foreach ($options as $option) {
+    if (strpos($option->option_name, 'schede_evidenziate_') === 0) {
+        $index = str_replace('schede_evidenziate_', '', $option->option_name);
+        add_scheda_group($home_options, $prefix, $index);
+    }
+}	
     //sezione Siti Tematici
     $home_options->add_field( array(
         'id' => $prefix . 'siti_tematici_title',
