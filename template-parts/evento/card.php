@@ -1,7 +1,7 @@
-d<?php
+<?php
 global $post;
 
-$img = get_the_post_thumbnail_url($post->ID);
+$img = dci_get_meta('immagine', '_dci_evento_',$post->ID);
 $descrizione = dci_get_meta('descrizione_breve', '_dci_evento_',$post->ID);
 $timestamp = dci_get_meta('data_orario_inizio', '_dci_evento_',$post->ID);
 $arrdata = explode('-', date_i18n("j-F-Y", $timestamp));
