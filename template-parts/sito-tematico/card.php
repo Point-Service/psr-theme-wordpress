@@ -14,7 +14,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 
 <a href="<?php echo $st_link ?>" style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3 shadow-sm border border-light" target="_blank">
     <?php if($st_img) { ?>
-        <div class="logo-sito-tematico size-xl bg-none me-3">
+           <div class="avatar size-lg me-3">
             <?php dci_get_img($st_img); ?>
         </div>
     <?php } ?>
