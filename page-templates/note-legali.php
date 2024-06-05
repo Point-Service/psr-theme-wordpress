@@ -45,13 +45,9 @@ get_header();
                                                     </li>
                                                        
 						</ul>
-                                            </div>
+                                            </div>						
+                                        </div>	
 
-						
-                                        </div>
-			
-
-					    
                                     </div>
                                 </div>
                             </div>
@@ -65,8 +61,37 @@ get_header();
             <article id="cos-e" class="it-page-section anchor-offset">
                         <h4 data-element="legal-notes-section">Licenza dei contenuti</h4>
                         <div class="the-content"><p data-element="legal-notes-body">In applicazione del principio open by default ai sensi dell’articolo 52 del decreto legislativo 7 marzo 2005, n. 82 (CAD) e salvo dove diversamente specificato (compresi i contenuti incorporati di terzi), i dati, i documenti e le informazioni pubblicati sul sito sono rilasciati con licenza <a href="https://creativecommons.org/licenses/by/4.0/legalcode.it"><strong>CC-BY 4.0</strong>.</a><br>
-Gli utenti sono quindi liberi di condividere (riprodurre, distribuire, comunicare al pubblico, esporre in pubblico), rappresentare, eseguire e recitare questo materiale con qualsiasi mezzo e formato e modificare (trasformare il materiale e utilizzarlo per opere derivate) per qualsiasi fine, anche commerciale con il solo onere di attribuzione, senza apporre restrizioni aggiuntive.</p>
-</div>                    </article>
+			   Gli utenti sono quindi liberi di condividere (riprodurre, distribuire, comunicare al pubblico, esporre in pubblico), rappresentare, eseguire e recitare questo materiale con qualsiasi mezzo e formato e modificare (trasformare il materiale e utilizzarlo per opere derivate) per qualsiasi fine, anche commerciale con il solo onere di attribuzione, senza apporre restrizioni aggiuntive.</p>
+			</div>
+                                       <h1>Copyright</h1>
+					  <p> La visualizzazione, il download e qualunque utilizzo dei dati pubblicati sul presente tipo
+						  comporta accettazione delle presenti note legali e delle condizioni della licenza con cui sono pubblicati.</p>
+						<p data-element="legal-notes-body"> Gli utenti sono quindi liberi di condividere (riprodurre, distribuire, comunicare al pubblico, esporre in pubblico),
+							rappresentare, eseguire e recitare questo materiale con qualsiasi mezzo e formato e modificare (trasformare il materiale e utilizzarlo per opere
+							derivate) per qualsiasi fine, anche commerciale con il solo onere di attribuzione, senza apporre restrizioni aggiuntive.</p>
+					  <h1>Utilizzo del sito e download</h1>
+						<p> Tutti i documenti pubblicati sul presente sito sono conformi e corrispondenti agli atti originali.</p>
+						<p> In nessun caso il Comune può essere ritenuto responsabile dei danni di qualsiasi natura causati direttamente o indirettamente dall'accesso al sito,
+							dall'incapacità o impossibilità di accedervi.
+						</p>
+						<p> Il Comune, inoltre, non potrà essere ritenuto in alcun modo responsabile per i servizi di connettività utilizzati dagli Utenti per l’accesso al Portale.
+						</p>
+						<p> I documenti presenti in questo sito per lo scaricamento (download) quali ad esempio documentazione tecnica, documentazione normativa, software ecc., salvo diversa
+							indicazione, sono liberamente e gratuitamente disponibili, in caso contrario viene prodotto un avviso come premessa nell'uso degli stessi.
+						</p>
+					  <h1>Accesso a siti esterni collegati</h1>
+						<p> I collegamenti a siti esterni, indicati nel presente sito, sono forniti come semplice servizio agli utenti, con esclusione di ogni responsabilità sulla correttezza
+							e sulla completezza dell’insieme dei collegamenti indicati.
+						</p>
+						<p> L’indicazione dei collegamenti non implica da parte del Comune alcun tipo di approvazione o condivisione di responsabilità in relazione alla legittimità,
+							alla completezza e alla correttezza delle informazioni contenute nei siti indicati.
+						</p>
+					    <h2>Privacy</h2>
+						<p> La privacy degli utenti è molto importante. Per questo motivo è stata predisposta un’apposita Informativa sulla Privacy che l’Utente, utilizzando il presente sito, accetta.
+						</p>
+			
+		    
+	    </article>
                 
                 
                 
