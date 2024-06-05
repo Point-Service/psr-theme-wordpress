@@ -1,5 +1,4 @@
-<?php
-function dci_register_pagina_home_options(){<?php
+{<?php
 function dci_register_pagina_home_options(){
     $prefix = '';
     /**
