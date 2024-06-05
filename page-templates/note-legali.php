@@ -80,14 +80,13 @@ get_header();
 							indicazione, sono liberamente e gratuitamente disponibili, in caso contrario viene prodotto un avviso come premessa nell'uso degli stessi.
 						</p>
 					  <h4>Accesso a siti esterni collegati</h4>
-						<p> I collegamenti a siti esterni, indicati nel presente sito, sono forniti come semplice servizio agli utenti, con esclusione di ogni responsabilità sulla correttezza
-							e sulla completezza dell’insieme dei collegamenti indicati.
+						<p> L'Ente non può essere ritenuto responsabile di quanto contenuto nei siti ai quali è possibile accedere tramite i collegamenti posti all'interno del sito stesso, declinando ogni responsabilità per le informazioni, la grafica, gli aggiornamenti ed i riferimenti in essi contenuti;
 						</p>
 						<p> L’indicazione dei collegamenti non implica da parte del Comune alcun tipo di approvazione o condivisione di responsabilità in relazione alla legittimità,
 							alla completezza e alla correttezza delle informazioni contenute nei siti indicati.
 						</p>
-					    <h4>Privacy</h4>
-						<p> La privacy degli utenti è molto importante. Per questo motivo è stata predisposta un’apposita Informativa sulla Privacy che l’Utente, utilizzando il presente sito, accetta.
+					        <h4>Privacy</h4>
+						<p>Tutti i contenuti, le immagini e le informazioni presenti all'interno del sito sono protetti ai sensi delle normative sul diritto d'autore, sui brevetti e su quelle relative alla proprietà intellettuale; pertanto nulla, neppure in parte, potrà essere copiato, modificato o rivenduto per fini di lucro o per trarne qualsivoglia utilità.
 						</p>
 			
 		    
