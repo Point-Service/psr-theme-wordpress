@@ -1,4 +1,4 @@
-u<?php
+<?php
 global $scheda, $count;
 
 $post = get_post($scheda['scheda_'.$count.'_contenuto'][0]);
