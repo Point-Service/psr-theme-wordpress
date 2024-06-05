@@ -13,12 +13,15 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 <div class="container">
     <?php if ($argomenti_evidenza) { ?>
     <div class="row">
-           <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2>
+    
     </div>
     <div>
         <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
             <?php
             if(is_array($argomenti_evidenza)) {
+                    <div class="row">
+                    <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2>
+                     </div>
                 foreach ($argomenti_evidenza as $key => $argomento_full) {
                     $count = $key;
                     if ($argomento_full){
