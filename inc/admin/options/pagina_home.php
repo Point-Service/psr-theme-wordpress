@@ -83,6 +83,51 @@ function add_scheda_group($home_options, $prefix, $index) {
 for ($i = 1; $i <= 9; $i++) {
     add_scheda_group($home_options, $prefix, $i);
 }
+
+
+function add_scheda_group($home_options, $prefix) {
+    // Aggiungi il campo di gruppo principale
+    $schede_group_id = $home_options->add_field(array(
+        'id'           => $prefix . 'schede_evidenziate',
+        'type'         => 'group',
+        'repeatable'   => true,
+        'options'      => array(
+            'group_title'   => 'Scheda {#}:', // Titolo del gruppo ripetibile
+            'add_button'    => 'Aggiungi Scheda',
+            'remove_button' => 'Rimuovi Scheda',
+            'sortable'      => true, // Permetti il drag and drop per riordinare le schede
+            'closed'        => true, // Le nuove schede aggiunte saranno chiuse per impostazione predefinita
+        ),
+    ));
+
+    // Aggiungi i campi alla scheda ripetibile
+    $home_options->add_group_field($schede_group_id, array(
+        'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
+        'desc'       => __('Seleziona il contenuto da mostrare nella Scheda.', 'design_comuni_italia'),
+        'id'         => 'contenuto', // ID relativo all'interno del gruppo
+        'type'       => 'custom_attached_posts',
+        'column'     => true,
+        'options'    => array(
+            'show_thumbnails' => false,
+            'filter_boxes'    => true,
+            'query_args'      => array(
+                'posts_per_page' => -1,
+                'post_type'      => array('evento', 'luogo', 'unita_organizzativa', 'documento_pubblico', 'servizio', 'notizia', 'dataset'),
+            ),
+        ),
+        'attributes' => array(
+            'data-max-items' => 1,
+        ),
+    ));
+}
+
+// Esempio di utilizzo della funzione per creare le schede
+add_scheda_group($home_options, $prefix);
+
+
+	
+
+
 	
     //sezione Siti Tematici
     $home_options->add_field( array(
