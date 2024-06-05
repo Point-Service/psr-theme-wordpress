@@ -1,3 +1,7 @@
+<?php
+global $boxes;
+$box_accesso_rapido = $boxes;
+?>
 <div class="container py-5">
     <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
     <div class="row g-4">
