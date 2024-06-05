@@ -1,4 +1,4 @@
-{<?php
+<?php
 function dci_register_pagina_home_options(){
     $prefix = '';
     /**
@@ -45,11 +45,8 @@ function dci_register_pagina_home_options(){
     );
 
 
-
-
 	
 	
-
 function add_scheda_group($home_options, $prefix, $index) {
     // Recupera il contenuto corrente della scheda
     $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
@@ -86,13 +83,6 @@ function add_scheda_group($home_options, $prefix, $index) {
 for ($i = 1; $i <= 9; $i++) {
     add_scheda_group($home_options, $prefix, $i);
 }
-
-
-
-
-
-
-	
 	
     //sezione Siti Tematici
     $home_options->add_field( array(
