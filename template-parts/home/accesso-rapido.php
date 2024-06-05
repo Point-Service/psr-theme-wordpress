@@ -1,22 +1,22 @@
 <style>
     .row {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Imposta la larghezza minima e massima delle colonne */
+        gap: 20px; /* Spazio tra le colonne */
     }
 
     .card-wrapper {
         width: 100%;
-        display: flex;
     }
 
     .card {
-        flex: 1;
-    }
-
-    .card-body {
         display: flex;
         flex-direction: column;
         height: 100%;
+    }
+
+    .card-body {
+        flex: 1;
     }
 
     .card-title {
@@ -26,7 +26,7 @@
 
 <div class="container py-5">
     <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
-    <div class="row g-4">
+    <div class="row">
         <?php foreach($boxes as $box) { ?>
         <div class="col-md-6 col-xl-4">
             <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
