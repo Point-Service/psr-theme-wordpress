@@ -3,7 +3,7 @@ global $argomento_full, $count;
 
 $argomenti_evidenza = array();
 
-for ($i = 1; $i <= 3; $i++) {
+for ($i = 1; $i <= 9; $i++) {
     $argomento = dci_get_option('argomenti_evidenziati_' . $i, 'homepage')[0] ?? null;
     if ($argomento) {
         $argomenti_evidenza[$i] = $argomento;
