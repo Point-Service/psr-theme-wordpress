@@ -32,9 +32,9 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                         Esplora tutti i servizi
                     </h2>
 
-                <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
-                         <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
-                  
+              
+                <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
+                         <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                             <div class="link-list-wrap">
                                 <h2 class="title-xsmall-semi-bold">
                                     <span>SERVIZI IN EVIDENZA</span>
@@ -52,9 +52,9 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 </ul>
                             </div>
                           </div>
-                        <?php } ?>
-                    
-                   </div>
+                        </div>
+                    <?php } ?>                    
+               
 
                 <div class="pt-lg-50 pb-lg-50">
                     <div class="cmp-input-search">
