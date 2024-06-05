@@ -22,6 +22,9 @@ $posts = $the_query->posts;
 //Per selezionare i contenuti in evidenza tramite configurazione
 $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 ?>
+
+
+
 <div id="tutti-servizi" class="<?= !($should_have_grey_background=(!$should_have_grey_background)) ? 'bg-grey-dsk':'' ?>">
     <form role="search" id="search-form" method="get" class="search-form">
         <button type="submit" class="d-none"></button>
@@ -36,7 +39,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                 <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
                          <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                             <div class="link-list-wrap">
-                                <h2 class="title-xsmall-semi-bold">
+                                <h2 class="title-semi-bold">
                                     <span>SERVIZI IN EVIDENZA</span>
                                 </h2>
                                 <ul class="link-list t-primary">
