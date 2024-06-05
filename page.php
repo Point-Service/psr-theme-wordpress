@@ -40,16 +40,7 @@ get_header();
                                 <?php
                                 the_content();
                                 ?>
-                                <div class="callout note">
-                                    <div class="callout-inner">
-                                        <div class="callout-title">
-                                            <svg class="icon"><use href="#it-info-circle"></use></svg>
-                                            <span class="visually-hidden">Attenzione</span> 
-                                            <span class="text">Attenzione</span>
-                                        </div>
-                                        <p><strong>Il modello di questa pagina non è ancora disponibile.</strong></p>
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
                         <div class="row variable-gutters">
