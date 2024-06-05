@@ -31,8 +31,6 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                     <h2 class="title-xxlarge mb-4 mt-5 mb-lg-10">
                         Esplora tutti i servizi
                     </h2>
-                </div>
-
 
                 
              <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
@@ -56,7 +54,9 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
               </div>
             <?php } ?>
 
-                
+                    
+                </div>
+
                 <div class="pt-lg-50 pb-lg-50">
                     <div class="cmp-input-search">
                         <div class="form-group autocomplete-wrapper mb-2 mb-lg-4">
