@@ -107,9 +107,12 @@ for ($i = 1; $i <= 20; $i++) {
                           Visualizza tutte le novità
                      </a>
                  
-</div>
+              </div>
             </div>
           </div>
+         </div>
+       </div>
+
 <section id="calendario">
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
     <div class="container">
