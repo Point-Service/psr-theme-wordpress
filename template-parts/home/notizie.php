@@ -105,37 +105,6 @@ for ($i = 1; $i <= 20; $i++) {
 </section>
 
 
-    if ($posts && is_array($posts) && count($posts) > 0) { ?>
-                    <?php if (!$post_id) { ?>
-                        <div class="row row-title pt-30 pt-lg-60 pb-3">
-                            <div class="col-12 d-lg-flex justify-content-between">
-                                <h2 id="ultime-news" class="mb-lg-0">Ultime notizie</h2>
-                            </div>
-                        </div>
-                    <?php } ?>
-                    <div class="row mb-2">
-                        <div class="card-wrapper <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                            <?php
-                            foreach ($posts as $post) {
-                                if ($post) {
-                                    get_template_part("template-parts/home/notizia-evidenza");
-                                }
-                            }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="row my-4 justify-content-md-center">
-                        <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
-                            <button type="button" class="btn btn-outline-primary">Tutte le novità
-                                <svg class="icon">
-                                    <use xlink:href="#it-arrow-right"></use>
-                                </svg>
-                            </button>
-                        </a>
-                    </div>
-                <?php } ?>
-
-
 
 
 <section id="calendario">
