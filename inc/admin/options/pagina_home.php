@@ -47,28 +47,27 @@ function dci_register_pagina_home_options(){
 
 
 
-function add_scheda_group($home_options, $prefix) {
-    // Creare un gruppo ripetibile
-    $schede_group_id = $home_options->add_field(array(
-        'id'           => $prefix . 'schede_evidenziate',
+function add_unified_scheda_field($home_options, $prefix) {
+    // Aggiungi un gruppo ripetibile per gli elementi della scheda
+    $scheda_group_id = $home_options->add_field(array(
+        'id'           => $prefix . 'scheda_evidenziata',
         'type'         => 'group',
         'repeatable'   => true,
         'options'      => array(
-            'group_title'   => __('Elemento {#}', 'design_comuni_italia'), // Usa {#} per mostrare il numero dell'elemento nel titolo del gruppo
+            'group_title'   => 'Elemento {#}:', // {#} verrà sostituito con il numero di gruppo
             'add_button'    => __('Aggiungi Elemento', 'design_comuni_italia'),
             'remove_button' => __('Rimuovi Elemento', 'design_comuni_italia'),
-            'sortable'      => true, // Permetti di riordinare gli elementi del gruppo
-            'limit'         => 9, // Limita a 9 elementi
+            'sortable'      => true, // Permette di riordinare gli elementi
         )
     ));
-
-    // Aggiungere campi per gli elementi all'interno del gruppo
-    $home_options->add_group_field($schede_group_id, array(
+    
+    // Aggiungi il campo per il contenuto dell'elemento
+    $home_options->add_group_field($scheda_group_id, array(
         'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
-        'desc'       => __('Seleziona il contenuto da mostrare.', 'design_comuni_italia'),
+        'desc'       => __('Seleziona il contenuto da mostrare nell\'elemento.', 'design_comuni_italia'),
         'id'         => 'contenuto',
         'type'       => 'custom_attached_posts',
-        'column'     => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
+        'column'     => true, // Output in the admin post-listing as a custom column
         'options'    => array(
             'show_thumbnails' => false, // Show thumbnails on the left
             'filter_boxes'    => true, // Show a text box for filtering the results
@@ -83,8 +82,9 @@ function add_scheda_group($home_options, $prefix) {
     ));
 }
 
-// Utilizzo della funzione per creare il campo di gruppo ripetibile
-add_scheda_group($home_options, $prefix);
+// Esempio di utilizzo della funzione per creare un campo modulo unificato
+add_unified_scheda_field($home_options, $prefix);
+
 
 
 
