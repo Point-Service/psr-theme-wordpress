@@ -1,38 +1,33 @@
 <?php
 global $argomento_full, $count;
-
 $argomenti_evidenza = array();
-
 for ($i = 1; $i <= 9; $i++) {
     $argomento = dci_get_option('argomenti_evidenziati_' . $i, 'homepage')[0] ?? null;
     if ($argomento) {
         $argomenti_evidenza[$i] = $argomento;
     }
 }
-
-
 $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 ?>
 
 <div class="container">
-        <?php if ($argomenti_evidenza) { ?>
-            <div class="row"> 
-                <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2>
-            </div>
-            <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                <?php
-                if(is_array($argomenti_evidenza)) {
-                    foreach ($argomenti_evidenza as $key => $argomento_full) {
-                        $count = $key;
-                        if ($argomento_full){
-                            if($argomento_full['argomento_'.$count.'_argomento']){
-                                get_template_part("template-parts/home/scheda-argomento");
-                            }
+    <?php if ($argomenti_evidenza) { ?>
+    <div class="row">
+           <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2>
+    </div>
+    <div>
+        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+            <?php
+            if(is_array($argomenti_evidenza)) {
+                foreach ($argomenti_evidenza as $key => $argomento_full) {
+                    $count = $key;
+                    if ($argomento_full){
+                        if($argomento_full['argomento_'.$count.'_argomento']){
+                            get_template_part("template-parts/home/scheda-argomento");
                         }
-                    } 
-                }?>
-            </div>
-        <?php } ?>
+                    }
+                } 
+            }?>
         </div>
     </div>
     <?php } 
