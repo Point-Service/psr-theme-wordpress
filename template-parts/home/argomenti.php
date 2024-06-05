@@ -17,7 +17,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 <div class="container">
     <?php if ($argomenti_evidenza) { ?>
     <div class="row">
-        <h2 class="text-white title-xlarge mb-3">Servizi in evidenza</h2>
+        <h2 class="text-black title-xlarge mb-3">Servizi in evidenza</h2>
     </div>
     <div>
         <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
