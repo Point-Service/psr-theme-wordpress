@@ -64,11 +64,11 @@ get_header();
 			   Gli utenti sono quindi liberi di condividere (riprodurre, distribuire, comunicare al pubblico, esporre in pubblico), rappresentare, eseguire e recitare questo materiale con qualsiasi mezzo e formato e modificare (trasformare il materiale e utilizzarlo per opere derivate) per qualsiasi fine, anche commerciale con il solo onere di attribuzione, senza apporre restrizioni aggiuntive.</p>
 			</div>
                                        <h4>Copyright</h4>
-					  <p>Tutti i contenuti, le immagini e le informazioni presenti all'interno del sito sono protetti ai sensi delle normative sul diritto d'autore, sui brevetti e su quelle relative alla proprietà intellettuale; pertanto nulla, neppure in parte, potrà essere copiato, modificato o rivenduto per fini di lucro o per trarne qualsivoglia utilità.</p>
-						<p data-element="legal-notes-body"> Gli utenti sono quindi liberi di condividere (riprodurre, distribuire, comunicare al pubblico, esporre in pubblico),
-							rappresentare, eseguire e recitare questo materiale con qualsiasi mezzo e formato e modificare (trasformare il materiale e utilizzarlo per opere
-							derivate) per qualsiasi fine, anche commerciale con il solo onere di attribuzione, senza apporre restrizioni aggiuntive.</p>
-					  <h4>Utilizzo del sito e download</h4>
+					     <p>Tutti i contenuti, le immagini e le informazioni presenti all'interno del sito sono protetti ai sensi delle normative sul diritto d'autore, sui brevetti e su quelle relative alla proprietà intellettuale; pertanto nulla, neppure in parte, potrà essere copiato, modificato o rivenduto per fini di lucro o per trarne qualsivoglia utilità.</p>
+						<p data-element="legal-notes-body"> Utilizzo del sito
+							In nessun caso l'Ente potrà essere ritenuto responsabile dei danni di qualsiasi natura causati direttamente o indirettamente dall'accesso al sito e dall'utilizzo che venga fatto delle informazioni in esso contenute; inoltre, l'Ente non ha alcuna responsabilità per eventuali problemi causati dall'utilizzazione del presente sito o di siti ad esso collegati.
+							Sebbene i contenuti forniti si ritengano adeguati ed aggiornati, l'Ente proprietario, titolare e gestore del sito non garantisce che il sito web stesso sia privo di imprecisioni, errori e/o omissioni.
+							L'Ente si riserva il diritto di modificare i contenuti in ogni momento.</h4>
 						<p> Tutti i documenti pubblicati sul presente sito sono conformi e corrispondenti agli atti originali.</p>
 						<p> In nessun caso il Comune può essere ritenuto responsabile dei danni di qualsiasi natura causati direttamente o indirettamente dall'accesso al sito,
 							dall'incapacità o impossibilità di accedervi.
