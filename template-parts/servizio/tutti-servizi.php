@@ -1,56 +1,27 @@
 <?php
-global $posts, $the_query, $load_posts, $servizio, $load_card_type;
+    global $posts, $the_query, $load_posts, $servizio, $load_card_type;
 
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 9;
-$load_posts = 9;
-$query = isset($_GET['search']) ? $_GET['search'] : null;
-$args = array(
-    's' => $query,
-    'posts_per_page' => $max_posts,
-    'post_type'      => 'servizio',
-    'orderby'        => 'post_title',
-    'order'          => 'ASC'
-);
-$the_query = new WP_Query( $args );
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
+    $load_posts = 6;
+    $query = isset($_GET['search']) ? $_GET['search'] : null;
+    $args = array(
+        's' => $query,
+        'posts_per_page' => $max_posts,
+        'post_type'      => 'servizio',
+        'orderby'        => 'post_title',
+        'order'          => 'ASC'
+    );
+    $the_query = new WP_Query( $args );
 
-$posts = $the_query->posts;
+    $posts = $the_query->posts;
 
-// Aggiungi il codice per ottenere i dati dal servizio web
-$url = "https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures";
-$response = wp_remote_get( $url );
+    // Per selezionare i contenuti in evidenza tramite flag
+    // $post_types = dci_get_post_types_grouped('servizi');
+    // $servizi_evidenza = dci_get_highlighted_posts( $post_types, 10);
 
-if ( is_array( $response ) && ! is_wp_error( $response ) ) {
-    $body = wp_remote_retrieve_body( $response );
-    $data = json_decode( $body, true );
-
-    if ( $data ) {
-        $servizi_evidenza = array(); // Inizializza l'array dei servizi in evidenza
-
-        foreach ( $data as $procedure ) {
-            $name = $procedure['nome'];
-            $description = $procedure['descrizione_breve'];
-            $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-            $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
-            $url = $procedure['url'];
-
-            // Aggiungi il servizio corrente all'array dei servizi in evidenza
-            $servizi_evidenza[] = array(
-                'name' => $name,
-                'description' => $description,
-                'category' => $category,
-                'arguments' => $arguments,
-                'url' => $url
-            );
-        }
-    }
-} else {
-    echo "Failed to fetch data.";
-}
-
-// Aggiungi il codice per visualizzare il risultato nel template
+    //Per selezionare i contenuti in evidenza tramite configurazione
+    $servizi_evidenza = dci_get_option('servizi_evidenziati','servizi');
 ?>
-
-
 
 <div class="bg-grey-card">
     <form role="search" id="search-form" method="get" class="search-form">
@@ -130,7 +101,5 @@ if ( is_array( $response ) && ! is_wp_error( $response ) ) {
         </div>
     </form>
 </div>
-
-
 
 
