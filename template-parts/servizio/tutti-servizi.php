@@ -103,43 +103,6 @@
 </div>
 
 
-<?php
-// Funzione per ottenere i dati dal servizio web
-function get_procedures_data() {
-    $url = "https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures";
-    $response = wp_remote_get( $url );
-
-    if ( is_array( $response ) && ! is_wp_error( $response ) ) {
-        $body = wp_remote_retrieve_body( $response );
-        $data = json_decode( $body, true );
-
-        if ( $data ) {
-            foreach ( $data as $procedure ) {
-                $name = $procedure['nome'];
-                $description = $procedure['descrizione_breve'];
-                $category = $procedure['categoria'];
-                $arguments = $procedure['argomenti'];
-                $url = $procedure['url'];
-
-                // Output dei dati nel template
-                echo "<p>Name: $name</p>";
-                echo "<p>Description: $description</p>";
-                echo "<p>Category: $category</p>";
-                echo "<p>Arguments: $arguments</p>";
-                echo '<p><a href="' . esc_url( $url ) . '">Link</a></p>';
-            }
-        }
-    } else {
-        echo "Failed to fetch data.";
-    }
-}
-
-// Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
-?>
-<div class="procedures-list">
-    <h2>Procedures List</h2>
-    <?php get_procedures_data(); ?>
-</div>
 
 
 
