@@ -78,18 +78,6 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <strong><?php echo $the_query->found_posts; ?> </strong>servizi trovati in ordine alfabetico
                         </p>
                     </div>
-                    <div class="row g-4" id="load-more">
-                        <?php foreach ($posts as $servizio) {
-                            $load_card_type = "servizio";
-                            ?>
-                            <div class="col-12 col-lg-6">
-                            <?php
-                            get_template_part("template-parts/servizio/card");
-                            ?>
-                            </div>
-                            <?php
-                        } ?>
-                    </div>
 
 
 <?php
@@ -134,15 +122,37 @@ function get_procedures_data() {
         echo "Failed to fetch data.";
     }
 }
-
-
     
 // Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
 ?>
-<div class="procedures-list">
-    <h2>Procedures List</h2>
-    <?php get_procedures_data(); ?>
-</div>
+
+
+
+                    
+                    <div class="row g-4" id="load-more">
+                        <?php foreach ($posts as $servizio) {
+                            $load_card_type = "servizio";
+                            ?>
+                            <div class="col-12 col-lg-6">
+                            <?php
+                            get_template_part("template-parts/servizio/card");
+                            ?>
+                            </div>
+                            <?php
+                        } ?>
+
+                        <div class="procedures-list">
+                        <h2>Procedures List</h2>
+                        <?php get_procedures_data(); ?>
+                    </div>
+                        
+                    </div>
+
+
+
+
+
+
 
 
 
