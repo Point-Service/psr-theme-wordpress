@@ -1,4 +1,4 @@
-d<?php
+<?php
 
 $tipologie = dci_get_sercheable_tipologie();
 
@@ -17,18 +17,12 @@ if(isset($_GET["post_terms"]))
 <div class="col-lg-3 d-none d-lg-block scroll-filter-wrapper">
     <h2 class="visually-hidden" id="filter">filtri da applicare</h2>
     <fieldset>
-        <legend class="h6 text-uppercase category-list__title">Tipologie</legend>
         <div class="categoy-list pb-4">
+            <legend class="h6 text-uppercase category-list__title">Tipologie</legend>
             <ul>
                 <?php 
                     foreach ($tipologie as $type_slug) {
                         $tipologia = get_term_by('slug', $type_slug);
-
-                        if ( isset( COMUNI_TIPOLOGIE[$type_slug] ) && isset( COMUNI_TIPOLOGIE[$type_slug]['plural_name'] ) ) {
-                            $plural_name = COMUNI_TIPOLOGIE[$type_slug]['plural_name'];
-                        } else if ( post_type_exists( $type_slug ) ) {
-                            $plural_name = get_post_type_object( $type_slug )->labels->name;
-                        }
                 ?>
                 <li>
                     <div class="form-check">
@@ -44,7 +38,7 @@ if(isset($_GET["post_terms"]))
                         <label
                             for="<?php echo $type_slug; ?>" 
                             class="subtitle-small_semi-bold mb-0 category-list__list"
-                            ><?php echo $plural_name; ?> 
+                            ><?php echo COMUNI_TIPOLOGIE[$type_slug]['plural_name']; ?> 
                         </label>
                         </div>
                     </div>
@@ -54,8 +48,8 @@ if(isset($_GET["post_terms"]))
         </div>
     </fieldset>    
     <fieldset>
-        <legend class="h6 text-uppercase category-list__title">Argomenti</legend>
         <div class="categoy-list pb-4">
+            <legend class="h6 text-uppercase category-list__title">Argomenti</legend>
             <ul>
                 <?php 
                     foreach ($arr_ids as $arg_id) {
