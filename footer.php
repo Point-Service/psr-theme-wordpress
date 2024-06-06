@@ -223,7 +223,7 @@
 						if ( isset( $_POST['nascondi_pulsante_login'] ) && $_POST['nascondi_pulsante_login'] == 'off' ) {
 						    // La checkbox è stata selezionata, quindi non mostrare il pulsante di login
 						    // Qui inserisci il codice per l'area riservata o qualsiasi altra azione desideri eseguire
-						    echo '<a target="_blank" href="' . get_admin_url() . '">Area Riservata</a>';
+						    echo '<a target="_blank" href="' . esc_url( admin_url() ) . '">Area Riservata</a>';
 						}
 						?>
 			                      
