@@ -1,4 +1,4 @@
-555555<?php
+<?php
 global $pc_id;
 $prefix = '_dci_punto_contatto_';
 
