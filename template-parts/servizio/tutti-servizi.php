@@ -141,9 +141,8 @@ function get_procedures_data() {
                             <?php
                         } ?>
 
-                        <div class="procedures-list">
-                        <h2>Procedures List</h2>
-                        <?php get_procedures_data(); ?>
+              
+
                     </div>
                         
                     </div>
