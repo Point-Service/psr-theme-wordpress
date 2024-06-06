@@ -1,12 +1,12 @@
 <?php
 global $argomento_full, $count;
 $argomenti_evidenza = array();
-
+$contatore = 0; // Inizializzazione del contatore
 for ($i = 1; $i <= 9; $i++) {
     $argomento = dci_get_option('argomenti_evidenziati_' . $i, 'homepage')[0] ?? null;
     if ($argomento) {
         $argomenti_evidenza[$i] = $argomento;
-
+        $contatore++; // Incrementa il contatore di 1
     }
 }
 $altri_argomenti = dci_get_option('argomenti_altri','homepage');
@@ -16,7 +16,9 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
   <?php if ($argomenti_evidenza) { ?>
     <div class="row">
            
-                <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenzaa</h2> 
+        if (is_array($argomenti_evidenza) && $contatore >= 1) { ?> 
+            <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza (Totale: <?php echo $contatore; ?>)</h2> 
+        <?php } ?>
     
      </div>
     <div>
