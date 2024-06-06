@@ -1,4 +1,5 @@
 <?php
+/ Funzione per ottenere i dati dal servizio web
 function get_procedures_data() {
     $url = "https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures";
     $response = wp_remote_get( $url );
