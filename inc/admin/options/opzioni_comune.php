@@ -93,58 +93,6 @@ function dci_register_comune_options(){
     ));
 
 
-        $header_options->add_field( array(
-        'id' => $prefix . 'nascondi_pulsante_login',
-        'name' => 'Nascondi il pulsante di login',
-        'desc' => 'Nascondi il pulsante di login dalla barra superiore del sito. Sarà necessario aprire manualmente <a target="_blank" href="'.wp_login_url().'">'. wp_login_url() .'</a> per effettuare il login.',
-        'type' => 'checkbox',
-    ) );
-
-
-
-   $header_options->add_field( array(
-        'id' => $prefix . 'home_istruzioni_barra_chiara_scura',
-        'name'        => __( 'Tema barra di navigazione', 'design_comuni_italia' ),
-        'desc' => __( 'Scegli il tema chiaro o scuro per le barre di navigazione' , 'design_comuni_italia' ),
-        'type' => 'title',
-    ) );
-
-    $header_options->add_field( array(
-        'id' => $prefix . 'tema_chiaro_nav_superiore',
-        'name' => 'Barra di navigazione superiore',
-        'desc' => "Scegli il tema della barra più alta nella pagina del sito, che contiene l'amministrazione afferente e il pulsante di login.",
-        'type' => 'radio_inline',
-        'options' => [
-            '' => 'Scuro',
-            'chiaro' => "Chiaro"
-        ],
-        'default' => ''
-    ) );
-
-    $header_options->add_field( array(
-        'id' => $prefix . 'tema_chiaro_nav_intestazione',
-        'name' => 'Barra di intestazione',
-        'desc' => "Scegli il tema della barra che contiene il nome e logo dell'ente.",
-        'type' => 'radio_inline',
-        'options' => [
-            '' => 'Scuro',
-            'chiaro' => "Chiaro"
-        ],
-        'default' => ''
-    ) );
-    
-    $header_options->add_field( array(
-        'id' => $prefix . 'tema_chiaro_nav_principale',
-        'name' => 'Barra di navigazione principale',
-        'desc' => "Scegli il tema della barra di navigazione principale",
-        'type' => 'radio_inline',
-        'options' => [
-            '' => 'Scuro',
-            'chiaro' => "Chiaro"
-        ],
-        'default' => ''
-    ) );
-
     
 
     $header_options->add_field( array(
