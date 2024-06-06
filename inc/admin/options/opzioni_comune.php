@@ -133,10 +133,5 @@ function dci_register_comune_options(){
         'type' => 'text'
     ));
     
-    $header_options->add_field( array(
-        'id'    => $prefix . 'Accedi_area_personale',
-        'name' => __('Accedi all'area personale', 'design_comuni_italia' ),
-        'desc' => __( 'Accedi all'area personale'),
-        'type' => 'text'
-    ));
+
 }
