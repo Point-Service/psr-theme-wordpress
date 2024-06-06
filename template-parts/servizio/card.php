@@ -1,5 +1,5 @@
 <?php
-unction get_procedures_data() {
+function get_procedures_data() {
     $url = "https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures";
     $response = wp_remote_get( $url );
 
