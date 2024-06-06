@@ -15,16 +15,18 @@ $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
         <div class="card card-img no-after rounded">
             <div class="img-responsive-wrapper cmp-list-card-img__wrapper">
                 <div class="img-responsive img-responsive-panoramic h-100">
-                   <figure class="img-wrapper">
-                        <?php
-                             if (strlen($img) > 1) {   
-                         
-              
+                    <figure class="img-wrapper">
+                    <?php dci_get_img($img, 'rounded-top img-fluid'); ?>
+                     <?php
+                        if (strlen($img) > 1) {
                             dci_get_img($img, 'rounded-top img-fluid');
-                              }
-                        ?>
-                     </figure>     
-                    <divclass="card-calendar d-flex flex-column justify-content-center">
+                        }
+                    ?>
+                    </figure>
+                    <div
+                    class="card-calendar d-flex flex-column justify-content-center"
+                    >
+                  
                     <span class="card-date"><?php echo $arrdata[0]; ?></span>
                     <span class="card-day"><?php echo $arrdata[1]; ?></span>
                     </div>
