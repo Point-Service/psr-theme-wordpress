@@ -91,7 +91,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                         } ?>
                     </div>
 
-<div class="row g-4" id="load-more">
+
 <?php
 // Funzione per ottenere i dati dal servizio web
 function get_procedures_data() {
@@ -134,7 +134,7 @@ function get_procedures_data() {
         echo "Failed to fetch data.";
     }
 }
-</div>
+
 
     
 // Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
