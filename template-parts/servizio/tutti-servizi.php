@@ -115,10 +115,10 @@ function get_procedures_data() {
 
         if ( $data ) {
             foreach ( $data as $procedure ) {
-                $name = $procedure['name'];
-                $description = $procedure['description'];
-                $category = $procedure['category'];
-                $arguments = $procedure['arguments'];
+                $name = $procedure['nome'];
+                $description = $procedure['descrizione_breve'];
+                $category = $procedure['categoria'];
+                $arguments = $procedure['argomenti'];
                 $url = $procedure['url'];
 
                 // Output dei dati nel template
