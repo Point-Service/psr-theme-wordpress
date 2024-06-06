@@ -1,9 +1,10 @@
 <?php global  $messages; ?>
-<?php foreach($messages as $message): ?>
+<?php 
+foreach($messages as $message): ?>
     <?php
-
+	if(isset($message['testo_message'])) {
     if(trim($message['testo_message']) == "") continue;
-    $message_date = strtotime($message['data_message']);
+    $message_date = strtotime($message['data_message'] ?? '');
     $now = strtotime("now");
     $color = $message['colore_message'] == 'yellow' ? 'black' : 'white';
     if (($message_date != "") && ($message_date <= $now)) continue; ?>
@@ -25,4 +26,5 @@
             </p>
         </div>
     </div>
-<?php endforeach; ?>
+<?php }
+endforeach; ?>
