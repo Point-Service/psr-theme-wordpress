@@ -72,7 +72,7 @@ for ($i = 1; $i <= 20; $i++) {
                 <?php if (!$post_id) { ?>
                     <div class="row row-title pt-lg-60 pb-3">
                         <div class="col-12 d-lg-flex justify-content-between">
-                            <h2 id="ultime-news" class="mb-lg-0">Ultime news</h2>
+                            <h2 id="ultime-news" class="visually-hidden">Ultime news</h2>
                         </div>
                     </div>
                 <?php } ?>
