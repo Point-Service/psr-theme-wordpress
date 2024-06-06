@@ -1,4 +1,4 @@
-d<?php 
+<?php 
 global $the_query, $load_posts, $wp_the_query, $load_card_type, $additional_filter, $filter_ids, $label, $label_no_more, $tax_query, $classes;
 
 if (!$the_query) $the_query = $wp_query;
