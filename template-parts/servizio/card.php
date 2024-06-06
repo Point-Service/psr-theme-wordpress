@@ -4,7 +4,6 @@ global $servizio, $hide_categorie, $post;
 $prefix = '_dci_servizio_';
 $categorie = get_the_terms($servizio->ID, 'categorie_servizio');
 $descrizione_breve = dci_get_meta('descrizione_breve', $prefix, $servizio->ID);
-
 if($post->post_status == "publish") {
     ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
@@ -37,3 +36,4 @@ if($post->post_status == "publish") {
         </div>
     <?php
 }
+àààà
