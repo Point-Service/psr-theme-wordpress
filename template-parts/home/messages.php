@@ -1,4 +1,4 @@
-<?php global  $messages; ?>
+a<?php global  $messages; ?>
 <?php 
 foreach($messages as $message): ?>
     <?php
