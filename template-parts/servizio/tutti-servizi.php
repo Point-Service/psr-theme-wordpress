@@ -16,7 +16,7 @@
     $posts = $the_query->posts;
 
     // Per selezionare i contenuti in evidenza tramite flag
-    $post_types = dci_get_post_types_grouped('servizi');
+    // $post_types = dci_get_post_types_grouped('servizi');
     // $servizi_evidenza = dci_get_highlighted_posts( $post_types, 10);
 
     //Per selezionare i contenuti in evidenza tramite configurazione
