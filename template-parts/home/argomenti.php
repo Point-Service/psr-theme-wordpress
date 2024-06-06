@@ -16,7 +16,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
   <?php if ($argomenti_evidenza) { ?>
     <div class="row">
             <?php  if $contatore >= 1 { ?> 
-                <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2> 
+                <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenzaa</h2> 
             <?php } ?>
      </div>
     <div>
