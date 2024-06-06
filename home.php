@@ -25,6 +25,7 @@ get_header();
             }
 		    ?>
             <?php //get_template_part("template-parts/home/carosello"); ?>
+		    <p></p>
             <?php get_template_part("template-parts/home/notizie"); ?>
             <?php get_template_part("template-parts/home/calendario"); ?>
         </section>
