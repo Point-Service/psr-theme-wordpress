@@ -102,36 +102,6 @@
     </form>
 </div>
 
-<?php
-// Effettua una richiesta GET al servizio
-$response = wp_remote_get( 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures' );
-
-// Verifica se la richiesta è andata a buon fine
-if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
-    // Ottieni il corpo della risposta (i dati JSON)
-    $body = wp_remote_retrieve_body( $response );
-
-    // Decodifica i dati JSON in un array
-    $data = json_decode( $body, true );
-
-    // Verifica se ci sono dati
-    if ( ! empty( $data ) ) {
-        // Elabora i dati qui, ad esempio visualizzali
-        echo '<ul>';
-        foreach ( $data as $procedure ) {
-            // Costruisci l'URL interno usando l'ID della procedura
-            $url = home_url( '/procedures/' . $procedure['id'] );
-            echo '<li><a href="' . esc_url( $url ) . '">' . esc_html( $procedure['nome'] ) . '</a></li>';
-        }
-        echo '</ul>';
-    } else {
-        echo 'Nessun dato disponibile.';
-    }
-} else {
-    echo 'Errore durante il recupero dei dati.';
-}
-?>
-In questo modo, ogni voce della lista sarà un collegamento ipertestuale a una pagina specifica del tuo sito web, dove l'identificatore unico della procedura verrà utilizzato per costruire l'URL interno. Assicurati di modificare '/procedures/' con il percorso corretto della tua pagina.
 
 
 
