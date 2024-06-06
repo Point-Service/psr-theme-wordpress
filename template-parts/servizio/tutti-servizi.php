@@ -27,6 +27,32 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
         <button type="submit" class="d-none"></button>
         <div class="container">
             <div class="row">
+
+                
+                <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
+                       <div class="col-12">
+                         <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
+                            <div class="link-list-wrap">
+                                <h2 class="title-xsmall-semi-bold">
+                                    <span>SERVIZI IN EVIDENZA</span>
+                                </h2>
+                                <ul class="link-list t-primary">
+                                    <?php foreach ($servizi_evidenza as $servizio_id) { 
+                                        $post = get_post($servizio_id);    
+                                    ?>
+                                    <li class="mb-3 mt-3">
+                                        <a class="list-item ps-0 title-medium underline" href="<?php echo get_permalink($post->ID); ?>">
+                                            <span><?php echo $post->post_title; ?></span>
+                                        </a>
+                                    </li>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <?php } ?>   
+                
                 <div class="col-12">
                     <h2 class="title-xxlarge mb-4 mt-5 mb-lg-10">
                         Esplora tutti i servizi
