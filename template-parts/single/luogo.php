@@ -1,4 +1,4 @@
-<?php
+aa<?php
     global $luogo, $luoghi;
     $prefix = '_dci_luogo_';
     $indirizzo = dci_get_meta('indirizzo', $prefix, $luogo->ID);
