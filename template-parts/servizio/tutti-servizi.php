@@ -119,7 +119,7 @@ if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response )
         // Elabora i dati qui, ad esempio visualizzali
         echo '<ul>';
         foreach ( $data as $procedure ) {
-            echo '<li>' . esc_html( $procedure['nome'] ) . '</li>';
+            echo '<li><a href="' . esc_url( $procedure['link'] ) . '">' . esc_html( $procedure['nome'] ) . '</a></li>';
         }
         echo '</ul>';
     } else {
