@@ -1,10 +1,12 @@
 <?php
 global $argomento_full, $count;
 $argomenti_evidenza = array();
+$contatore
 for ($i = 1; $i <= 9; $i++) {
     $argomento = dci_get_option('argomenti_evidenziati_' . $i, 'homepage')[0] ?? null;
     if ($argomento) {
         $argomenti_evidenza[$i] = $argomento;
+        $contatore=$contatore + 1;
     }
 }
 $altri_argomenti = dci_get_option('argomenti_altri','homepage');
@@ -13,10 +15,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 <div class="container">
   <?php if ($argomenti_evidenza) { ?>
     <div class="row">
-            <?php 
-            $countargomenti = count($argomenti_evidenza); // Assumendo che $argomenti_evidenza sia un array
-            
-            if(is_array($argomenti_evidenza) && $countargomenti > 1) { ?> 
+            <?php  if $contatore >= 1 { ?> 
                 <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2> 
             <?php } ?>
      </div>
