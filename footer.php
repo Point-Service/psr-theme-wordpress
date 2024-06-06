@@ -220,7 +220,7 @@
 						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
 						<?php
 						// Verifica se la checkbox è stata selezionata
-						if ( isset($_POST['nascondi_pulsante_login'] == 'off' ) {
+						if ( isset( $_POST['nascondi_pulsante_login'] ) && $_POST['nascondi_pulsante_login'] == 'off' ) {
 						    // La checkbox è stata selezionata, quindi non mostrare il pulsante di login
 						    // Qui inserisci il codice per l'area riservata o qualsiasi altra azione desideri eseguire
 						    echo '<a target="_blank" href="' . get_admin_url() . '">Area Riservata</a>';
