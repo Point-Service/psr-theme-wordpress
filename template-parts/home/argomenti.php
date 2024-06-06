@@ -16,7 +16,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
             <?php 
             $countargomenti = count($argomenti_evidenza); // Assumendo che $argomenti_evidenza sia un array
             
-            if(is_array($argomenti_evidenza) && $countargomenti >= 1) { ?> 
+            if(is_array($argomenti_evidenza) && $countargomenti > 1) { ?> 
                 <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2> 
             <?php } ?>
      </div>
