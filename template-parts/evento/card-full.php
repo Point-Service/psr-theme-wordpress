@@ -7,6 +7,7 @@ $descrizione = dci_get_meta('descrizione_breve', $prefix, $post->ID);
 $timestamp = dci_get_meta('data_orario_inizio', $prefix, $post->ID);
 $arrdata = explode('-', date_i18n("j-F-Y", $timestamp));
 $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
+
 ?>
 
 <div class="col-lg-6 col-xl-4">
@@ -15,7 +16,11 @@ $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
             <div class="img-responsive-wrapper cmp-list-card-img__wrapper">
                 <div class="img-responsive img-responsive-panoramic h-100">
                     <figure class="img-wrapper">
-                    <?php dci_get_img($img, 'rounded-top img-fluid'); ?>
+                     <?php
+                        if (strlen($img) > 1) {
+                            dci_get_img($img, 'rounded-top img-fluid');
+                        }
+                    ?>
                     </figure>
                     <div
                     class="card-calendar d-flex flex-column justify-content-center"
