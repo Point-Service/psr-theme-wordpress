@@ -12,8 +12,7 @@ get_header();
 	    
        <main id="main-container" class="main-container redbrown">
        <div class="bg-image"></div>
-<p></p>
-	       
+       
         <h1 class="visually-hidden">
             <?php echo dci_get_option("nome_comune"); ?>
         </h1>
