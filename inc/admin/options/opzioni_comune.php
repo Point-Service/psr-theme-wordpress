@@ -92,6 +92,16 @@ function dci_register_comune_options(){
         ))
     ));
 
+
+        $header_options->add_field( array(
+        'id' => $prefix . 'nascondi_pulsante_login',
+        'name' => 'Nascondi il pulsante di login',
+        'desc' => 'Nascondi il pulsante di login dalla barra superiore del sito. Sarà necessario aprire manualmente <a target="_blank" href="'.wp_login_url().'">'. wp_login_url() .'</a> per effettuare il login.',
+        'type' => 'checkbox',
+    ) );
+
+    
+
     $header_options->add_field( array(
         'id'    => $prefix . 'link_albopretorio',
         'name' => __('Link Albo pretorio', 'design_comuni_italia' ),
