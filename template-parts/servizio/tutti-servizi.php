@@ -85,6 +85,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             </div>
                             <?php
                         } ?>
+
                                <?php
                                 // Recupera il valore dell'opzione
                                 $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
@@ -127,7 +128,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div><p></p>
                                                     <?php
                                                 }
                                             }
