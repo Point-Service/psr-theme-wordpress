@@ -93,7 +93,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <?php
                         } ?>
 
-                    <?php if(dci_get_option("servizi_maggioli_url")) { ?>
+               
                      <?php
                             // Funzione per ottenere i dati dal servizio web
                             function get_procedures_data() {                                   
@@ -131,7 +131,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 <h2>Procedures List</h2>
                                 <?php get_procedures_data(); ?>
                             </div>
-                       <?php } ?>
+                   
 
                         
                     </div>
