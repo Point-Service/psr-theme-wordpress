@@ -149,8 +149,13 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             ?>
                             <div class="row g-4" id="load-more">
                                 <div class="procedures-list">
+                                <div class="col-12">
+                                    <h2 class="title-xxlarge mb-4 mt-5 mb-lg-10">
+                                       Servizi Aggiuntivi
+                                    </h2>
+                                </div>
+                                    
                                     <?php
-                                    echo "<p>Servizi aggiuntivi</p>";
                                     // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
                                     $total_services_loaded = get_procedures_data();
                                     echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
