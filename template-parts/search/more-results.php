@@ -1,3 +1,4 @@
+ <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>      
 <?php 
 global $the_query, $load_posts, $wp_the_query, $load_card_type, $additional_filter, $filter_ids, $label, $label_no_more, $tax_query, $classes;
 
@@ -53,4 +54,3 @@ if($the_query->post_count < $the_query->found_posts) {
 <!-- <nav class="pagination-wrapper" aria-label="Navigazione della pagina">
     <?php #echo dci_bootstrap_pagination(); ?>
 </nav> -->
-  <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>      
