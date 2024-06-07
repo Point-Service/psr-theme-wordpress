@@ -89,7 +89,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 <?php
 // Inizializza il contatore
 global $total_servizi; // Utilizza la variabile globale
-$total_servizi=0;
+
 // Recupera il valore dell'opzione
 $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
 
@@ -106,7 +106,7 @@ if (strlen($servizi_maggioli_url) > 1) {
             $body = wp_remote_retrieve_body($response);
             $data = json_decode($body, true);
 
-            if ($data) {
+            if ($data) {                
                 foreach ($data as $procedure) {
                     $name = $procedure['nome'];
                     $description = $procedure['descrizione_breve'];
