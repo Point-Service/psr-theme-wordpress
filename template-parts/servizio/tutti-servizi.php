@@ -1,7 +1,7 @@
 <?php
 global $posts, $the_query, $load_posts, $servizio, $load_card_type, $should_have_grey_background;
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 9;
-$load_posts = 12;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 50;
+$load_posts = 20;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $args = array(
     's' => $query,
@@ -88,8 +88,13 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <?php
                         } ?>
 
-                  
-                    <?php get_template_part("template-parts/search/more-results"); ?>
+                    <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>
+                      <?php
+                    
+                        
+                        if (strlen($servizi_maggioli_url) > 1) { ?>
+                           <?php get_template_part("template-parts/search/more-results"); ?>
+                        <?php }  ?>
                 </div>
             </div>
         </div>
