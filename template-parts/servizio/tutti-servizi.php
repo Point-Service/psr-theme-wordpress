@@ -145,9 +145,11 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     return $total_services;
                                 }
                             
-                                // Stampa il totale dei servizi prima di visualizzare i risultati dei servizi
+                                // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
                                 $total_services_loaded = get_procedures_data();
-                                echo "<p>Servizi aggiuntivi caricati : $total_services_loaded</p>";
+                            
+                                // Stampa il totale dei servizi prima di visualizzare i risultati dei servizi
+                                echo "<p>Servizi aggiuntivi trovati : $total_services_loaded</p>";
                             
                                 // Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
                                 ?>
