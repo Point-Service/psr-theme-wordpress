@@ -26,10 +26,6 @@ $query_params = '?post_count='.$the_query->post_count.'&load_posts='.$load_posts
 
 if($the_query->post_count < $the_query->found_posts) {
 ?> 
-
-  <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>      
-
-
 <div class="d-flex justify-content-center mt-4" id="load-more-btn">
     <?php if(get_parent_template() === 'servizi.php') {
         ?><button type="button"
