@@ -90,9 +90,8 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 
                         <?php
 
-                    <?php get_template_part("template-parts/search/more-results"); ?>
 
-                        
+                  
                         // Recupera il valore dell'opzione
                         $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
                         
@@ -170,7 +169,8 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             </div>
                         <?php } ?>
 
-
+                        
+                    <?php get_template_part("template-parts/search/more-results"); ?>
                 </div>
             </div>
         </div>
