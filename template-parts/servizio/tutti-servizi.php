@@ -93,9 +93,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <?php
                         } ?>
 
-                               <?php echo dci_get_option('servizi_maggioli_url'); ?>
-
-                                    <?php
+                                        <?php
                                     // Recupera il valore dell'opzione
                                     $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
                                     
@@ -104,7 +102,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         
                                         // Funzione per ottenere i dati dal servizio web
                                         function get_procedures_data() {                                   
-                                            $url = $servizi_maggioli_url;
+                                            $url =  dci_get_option('servizi_maggioli_url', 'servizi');
                                             $response = wp_remote_get($url);
                                         
                                             if (is_array($response) && !is_wp_error($response)) {
