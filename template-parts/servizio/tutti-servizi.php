@@ -118,6 +118,26 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                         $link = esc_url($procedure['link']); // Assuming there is a link field
 
                         ?>
+                    <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
+    <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
+        <?php
+        function get_procedures_data() {
+            $url = dci_get_option('servizi_maggioli_url', 'servizi');
+            $response = wp_remote_get($url);
+
+            if (is_array($response) && !is_wp_error($response)) {
+                $body = wp_remote_retrieve_body($response);
+                $data = json_decode($body, true);
+
+                if ($data) {
+                    foreach ($data as $procedure) {
+                        $name = $procedure['nome'];
+                        $description = $procedure['descrizione_breve'];
+                        $categories = is_array($procedure['categoria']) ? $procedure['categoria'] : [$procedure['categoria']];
+                        $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
+                        $link = esc_url($procedure['link']); // Assuming there is a link field
+
+                        ?>
                         <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                             <span class="visually-hidden">Categoria:</span>
                             <div class="card-header border-0 p-0">
@@ -146,19 +166,19 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                         </div>
                         <?php
                     }
-                                             else {
-                                                echo "Nessun Risultato trovato nella lista aggiuntiva dei servizi Maggioli.";
-                                            }
-                                        }
-                                        
-                                        // Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
-                                        ?>
-                                        <div class="procedures-list">
-                                            <div class="col-12 col-lg-6">
-                                            <?php get_procedures_data(); ?>
-                                          </div>
-                                        </div>
-                                        <?php } ?>
+                } else {
+                    echo "Nessun Risultato trovato nella lista aggiuntiva dei servizi Maggioli.";
+                }
+            } else {
+                echo "Errore nel recupero dei dati dal servizio web.";
+            }
+        }
+
+        // Esegui la funzione per ottenere e visualizzare i dati
+        get_procedures_data();
+        ?>
+    </div>
+</div>
 
 
 
