@@ -86,7 +86,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <?php
                         } ?>
 
- <?php
+<?php
 // Inizializza il contatore
 $total_servizi = 0;
 
