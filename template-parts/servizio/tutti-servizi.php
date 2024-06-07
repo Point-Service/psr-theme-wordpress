@@ -86,7 +86,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <?php
                         } ?>
 
-                              <?php
+                            <?php
                             // Recupera il valore dell'opzione
                             $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
                             
@@ -145,14 +145,17 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     return $total_services;
                                 }
                             
+                                // Stampa il totale dei servizi prima di visualizzare i risultati dei servizi
+                                $total_services_loaded = get_procedures_data();
+                                echo "<p>Servizi aggiuntivi caricati : $total_services_loaded</p>";
+                            
                                 // Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
                                 ?>
                                 <div class="row g-4" id="load-more">
                                     <div class="procedures-list">
                                         <?php
-                                        // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
-                                        $total_services_loaded = get_procedures_data();
-                                        echo "<p>Servizi aggiuntivi trovati: $total_services_loaded</p>";
+                                        // Chiamata alla funzione per ottenere i dati
+                                        get_procedures_data();
                                         ?>
                                     </div>
                                 </div>
