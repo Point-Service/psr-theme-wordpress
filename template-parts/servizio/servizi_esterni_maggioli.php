@@ -1,8 +1,5 @@
-
                         <?php
 
-
-                  
                         // Recupera il valore dell'opzione
                         $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
                         
@@ -37,7 +34,7 @@
                                                     <span class="visually-hidden">Categoria:</span>
                                                     <div class="card-header border-0 p-0">
                                                         <?php if ($category) {
-                                                            echo '<a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="#">' . $category . '</a>';
+                                                            echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $category . '</div>';
                                                         } ?>
                                                     </div>
                                                     <div class="card-body p-0 my-2">
