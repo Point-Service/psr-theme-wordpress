@@ -28,9 +28,6 @@ function dci_register_comune_options(){
 
 
     
-
-  
-    
     $header_options->add_field( array(
         'id' => $prefix . 'home_istruzioni',
         'name'        => __( 'Configurazione Comune', 'design_comuni_italia' ),
@@ -42,7 +39,7 @@ function dci_register_comune_options(){
        $header_options->add_field( array(
         'id'    => $prefix . 'area_riservata',
         'name' => __('Area Riservata', 'design_comuni_italia' ),
-        'desc' => __( 'Url per agganciare il tasto ad uno sportello esterno di autenticazione con CNS o SPID'),
+        'desc' => __( 'Url per agganciare il tasto ad uno sportello esterno di autenticazione con CNS o SPID (Se aggiunto un url il tasto verrà automaticamente indirizzato al link da te inserito.)'),
         'type' => 'text'
     ));   
     
