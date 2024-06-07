@@ -133,7 +133,6 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         // Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
                                         ?>
                                         <div class="procedures-list">
-                                            <h2>Procedures List</h2>
                                             <?php get_procedures_data(); ?>
                                         </div>
                                         <?php } ?>
