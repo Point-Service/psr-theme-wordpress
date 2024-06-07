@@ -88,7 +88,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 
 <?php
 // Inizializza il contatore
-global $total_servizi; // Utilizza la variabile globale
+$total_servizi = 0;
 
 // Recupera il valore dell'opzione
 $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
@@ -96,63 +96,60 @@ $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
 if (strlen($servizi_maggioli_url) > 1) {
 
     // Funzione per ottenere i dati dal servizio web
-function get_procedures_data() {
-    global $total_servizi; // Utilizza la variabile globale
+    function get_procedures_data() {
+        global $total_servizi; // Utilizza la variabile globale
 
-    $url =  dci_get_option('servizi_maggioli_url', 'servizi');
-    $response = wp_remote_get($url);
+        $url =  dci_get_option('servizi_maggioli_url', 'servizi');
+        $response = wp_remote_get($url);
 
-    if (is_array($response) && !is_wp_error($response)) {
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
+        if (is_array($response) && !is_wp_error($response)) {
+            $body = wp_remote_retrieve_body($response);
+            $data = json_decode($body, true);
 
-        if ($data) {
-            foreach ($data as $procedure) {
-                $name = $procedure['nome'];
-                $description = $procedure['descrizione_breve'];
-                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-                $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
-                $url = $procedure['url'];
+            if ($data) {
+                foreach ($data as $procedure) {
+                    $name = $procedure['nome'];
+                    $description = $procedure['descrizione_breve'];
+                    $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                    $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
+                    $url = $procedure['url'];
 
-                // Assicurati che la variabile $total_servizi sia un numero prima di incrementarla
-                if (is_numeric($total_servizi)) {
+                    // Incrementa il contatore
                     $total_servizi++;
-                } else {
-                    $total_servizi = 1; // Inizializza la variabile se non è un numero
-                }
 
-                // Output dei dati nel template con la stessa struttura grafica
-                ?>
-                <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
-                    <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
-                        <span class="visually-hidden">Categoria:</span>
-                        <div class="card-header border-0 p-0">
-                            <?php if ($category) {
-                                echo '<a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="#">' . $category . '</a>';
-                            } ?>
+                    // Output dei dati nel template con la stessa struttura grafica
+                    ?>
+                    <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
+                        <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
+                            <span class="visually-hidden">Categoria:</span>
+                            <div class="card-header border-0 p-0">
+                                <?php if ($category) {
+                                    echo '<a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="#">' . $category . '</a>';
+                                } ?>
+                            </div>
+                            <div class="card-body p-0 my-2">
+                                <h3 class="green-title-big t-primary mb-8">
+                                    <a class="text-decoration-none" href="<?php echo esc_url($url); ?>" data-element="service-link"><?php echo $name; ?></a>
+                                </h3>
+                                <p class="text-paragraph">
+                                    <?php echo $description; ?>
+                                </p>
+                            </div>
                         </div>
-                        <div class="card-body p-0 my-2">
-                            <h3 class="green-title-big t-primary mb-8">
-                                <a class="text-decoration-none" href="<?php echo esc_url($url); ?>" data-element="service-link"><?php echo $name; ?></a>
-                            </h3>
-                            <p class="text-paragraph">
-                                <?php echo $description; ?>
-                            </p>
-                        </div>
-                    </div>
-                </div><p></p>
-                <?php
+                    </div><p></p>
+                    <?php
+                }
             }
+        } else {
+            echo "Failed to fetch data.";
         }
-    } else {
-        echo "Failed to fetch data.";
     }
-}
+
+    // Output del totale dei servizi prima del loop
+    echo '<p>Totale servizi caricati: ' . $total_servizi . '</p>';
 
     // Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
     ?>
-    <!-- Visualizza il totale dei servizi -->
-    <p>Totale servizi caricati: <?php echo $total_servizi; ?></p>
     <div class="row g-4" id="load-more">
         <div class="procedures-list">
             <?php get_procedures_data(); ?>
