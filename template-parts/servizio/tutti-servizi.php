@@ -1,7 +1,7 @@
-TEST<?php
+<?php
 global $posts, $the_query, $load_posts, $servizio, $load_card_type, $should_have_grey_background;
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 4;
-$load_posts = 4;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 12;
+$load_posts = 12;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $args = array(
     's' => $query,
