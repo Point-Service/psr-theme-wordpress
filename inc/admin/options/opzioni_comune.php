@@ -26,12 +26,33 @@ function dci_register_comune_options(){
 
     $header_options = new_cmb2_box( $args );
 
+
+    
+    $header_options->add_field( array(
+        'id' => $prefix . 'home_areariservata',
+        'name'        => __( 'Url Area Riservata', 'design_comuni_italia' ),
+        'desc' => __( 'Qui puoi aggiungere un URL per l'Area Riservata' , 'design_comuni_italia' ),
+        'type' => 'title',
+    ) );
+
+
+     $header_options->add_field( array(
+        'id'    => $prefix . 'area_riservata',
+        'name' => __('Area Riservata', 'design_comuni_italia' ),
+        'desc' => __( 'Utilizzare questo campo per specificare Area Riservata'),
+        'type' => 'text'
+    ));   
+    
+    
     $header_options->add_field( array(
         'id' => $prefix . 'home_istruzioni',
         'name'        => __( 'Configurazione Comune', 'design_comuni_italia' ),
         'desc' => __( 'Area di configurazione delle informazioni di base' , 'design_comuni_italia' ),
         'type' => 'title',
     ) );
+
+
+    
 
     $header_options->add_field( array(
         'id' => $prefix . 'nome_comune',
@@ -93,13 +114,6 @@ function dci_register_comune_options(){
     ));
 
 
-     $header_options->add_field( array(
-        'id'    => $prefix . 'area_riservata',
-        'name' => __('Area Riservata', 'design_comuni_italia' ),
-        'desc' => __( 'Utilizzare questo campo per specificare Area Riservata'),
-        'type' => 'text'
-    ));   
-    
     
 
     $header_options->add_field( array(
