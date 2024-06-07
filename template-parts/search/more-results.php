@@ -53,3 +53,4 @@ if($the_query->post_count < $the_query->found_posts) {
 <!-- <nav class="pagination-wrapper" aria-label="Navigazione della pagina">
     <?php #echo dci_bootstrap_pagination(); ?>
 </nav> -->
+  <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>      
