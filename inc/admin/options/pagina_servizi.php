@@ -53,7 +53,7 @@ function dci_register_pagina_servizi_options(){
      $servizi_options->add_field( array(
         'id'    => $prefix . 'servizi_maggioli_url',
         'name' => __('Servizi Maggioli URL', 'design_comuni_italia' ),
-        'desc' => __( 'Utilizzare questo Campo solo se bisogna caricare servizi esterni da Maggioli'),
+        'desc' => __( 'Utilizzare questo Campo solo se bisogna caricare servizi esterni da Maggioli (Aggiungendo un URL al campo verranno caricati i servizi presenti sulla pagina di destinazione automaticamente.)'),
         'type' => 'text'
     ));   
     
