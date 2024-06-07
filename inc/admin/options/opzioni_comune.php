@@ -42,7 +42,7 @@ function dci_register_comune_options(){
        $header_options->add_field( array(
         'id'    => $prefix . 'area_riservata',
         'name' => __('Area Riservata', 'design_comuni_italia' ),
-        'desc' => __( 'Utilizzare questo campo per specificare Area Riservata'),
+        'desc' => __( 'Url per agganciare il tasto ad uno sportello esterno di autenticazione con CNS o SPID'),
         'type' => 'text'
     ));   
     
