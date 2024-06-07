@@ -74,7 +74,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                         </p>
                     </div>
                                    
-                    <?php get_template_part("template-parts/search/more-results"); ?>
+
 
                     <div class="row g-4" id="load-more">
                         <?php foreach ($posts as $servizio) {
@@ -89,6 +89,10 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                         } ?>
 
                         <?php
+
+                    <?php get_template_part("template-parts/search/more-results"); ?>
+
+                        
                         // Recupera il valore dell'opzione
                         $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
                         
