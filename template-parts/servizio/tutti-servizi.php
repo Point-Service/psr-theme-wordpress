@@ -96,7 +96,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                      <?php
 
                         // Verifica se la variabile è maggiore di 1
-                        if ($servizi_maggioli_url > 1) {
+                       if (strlen($servizi_maggioli_url) > 1) {
                             // Funzione per ottenere i dati dal servizio web
                             function get_procedures_data() {                                   
                                 $url = "https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures";
