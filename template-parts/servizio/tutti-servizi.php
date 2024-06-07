@@ -99,7 +99,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
                                     
                                     if (strlen($servizi_maggioli_url) > 1) {
-                                    echo $servizi_maggioli_url
+                                  
                                         
                                         // Funzione per ottenere i dati dal servizio web
                                         function get_procedures_data() {                                   
