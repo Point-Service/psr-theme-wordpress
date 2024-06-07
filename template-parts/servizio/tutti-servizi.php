@@ -1,4 +1,4 @@
-<?php
+TEST<?php
 global $posts, $the_query, $load_posts, $servizio, $load_card_type, $should_have_grey_background;
 $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 4;
 $load_posts = 4;
@@ -13,7 +13,7 @@ $args = array(
 $the_query = new WP_Query($args);
 $posts = $the_query->posts;
 // Per selezionare i contenuti in evidenza tramite flag
- $post_types = dci_get_post_types_grouped('servizi');
+// $post_types = dci_get_post_types_grouped('servizi');
 // $servizi_evidenza = dci_get_highlighted_posts( $post_types, 10);
 //Per selezionare i contenuti in evidenza tramite configurazione
 $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
