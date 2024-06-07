@@ -101,8 +101,8 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     if (strlen($servizi_maggioli_url) > 1) {
                                         // Funzione per ottenere i dati dal servizio web
                                         function get_procedures_data() {                                   
-                                            $url = $servizi_maggioli_url;
-                                            $response = wp_remote_get($url);
+                                         
+                                            $response = wp_remote_get($servizi_maggioli_url);
                                         
                                             if (is_array($response) && !is_wp_error($response)) {
                                                 $body = wp_remote_retrieve_body($response);
