@@ -28,21 +28,8 @@ function dci_register_comune_options(){
 
 
     
-    $header_options->add_field( array(
-        'id' => $prefix . 'home_areariservata',
-        'name'        => __( 'Url Area Riservata', 'design_comuni_italia' ),
-        'desc' => __( 'Qui puoi aggiungere un URL per l'Area Riservata' , 'design_comuni_italia' ),
-        'type' => 'title',
-    ) );
 
-
-     $header_options->add_field( array(
-        'id'    => $prefix . 'area_riservata',
-        'name' => __('Area Riservata', 'design_comuni_italia' ),
-        'desc' => __( 'Utilizzare questo campo per specificare Area Riservata'),
-        'type' => 'text'
-    ));   
-    
+  
     
     $header_options->add_field( array(
         'id' => $prefix . 'home_istruzioni',
@@ -52,6 +39,12 @@ function dci_register_comune_options(){
     ) );
 
 
+       $header_options->add_field( array(
+        'id'    => $prefix . 'area_riservata',
+        'name' => __('Area Riservata', 'design_comuni_italia' ),
+        'desc' => __( 'Utilizzare questo campo per specificare Area Riservata'),
+        'type' => 'text'
+    ));   
     
 
     $header_options->add_field( array(
