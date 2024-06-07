@@ -151,7 +151,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 <div class="procedures-list">
                                 <div class="col-12">
                                     <h2 class="title-xxlarge mb-4 mt-5 mb-lg-10">
-                                       Servizi Aggiuntivi
+                                    </a> Servizi Aggiuntivi
                                     </h2>
                                 </div>
                                     
