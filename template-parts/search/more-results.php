@@ -1,4 +1,4 @@
- <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>      
+<?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>      
 <?php 
 global $the_query, $load_posts, $wp_the_query, $load_card_type, $additional_filter, $filter_ids, $label, $label_no_more, $tax_query, $classes;
 
@@ -26,6 +26,10 @@ $query_params = '?post_count='.$the_query->post_count.'&load_posts='.$load_posts
 
 if($the_query->post_count < $the_query->found_posts) {
 ?> 
+
+  <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>      
+
+
 <div class="d-flex justify-content-center mt-4" id="load-more-btn">
     <?php if(get_parent_template() === 'servizi.php') {
         ?><button type="button"
