@@ -1,6 +1,5 @@
 <?php
 global $posts, $the_query, $load_posts, $servizio, $load_card_type, $should_have_grey_background;
-
 $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 4;
 $load_posts = 4;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
@@ -12,13 +11,10 @@ $args = array(
     'order'          => 'ASC'
 );
 $the_query = new WP_Query($args);
-
 $posts = $the_query->posts;
-
 // Per selezionare i contenuti in evidenza tramite flag
 // $post_types = dci_get_post_types_grouped('servizi');
 // $servizi_evidenza = dci_get_highlighted_posts( $post_types, 10);
-
 //Per selezionare i contenuti in evidenza tramite configurazione
 $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 ?>
@@ -27,7 +23,6 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
         <button type="submit" class="d-none"></button>
         <div class="container">
             <div class="row">
-
                 
                 <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
                        <div class="col-12">
@@ -78,8 +73,6 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <strong><?php echo $the_query->found_posts; ?> </strong>servizi trovati in ordine alfabetico
                         </p>
                     </div>
-
-
                     
                     <div class="row g-4" id="load-more">
                         <?php foreach ($posts as $servizio) {
@@ -92,7 +85,6 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             </div>
                             <?php
                         } ?>
-
                                         <?php
                                     // Recupera il valore dell'opzione
                                     $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
@@ -101,87 +93,43 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                   
                                         
                                         // Funzione per ottenere i dati dal servizio web
-                                       function get_procedures_data() {
-            $url = dci_get_option('servizi_maggioli_url', 'servizi');
-            $response = wp_remote_get($url);
-
-            if (is_array($response) && !is_wp_error($response)) {
-                $body = wp_remote_retrieve_body($response);
-                $data = json_decode($body, true);
-
-                if ($data) {
-                    foreach ($data as $procedure) {
-                        $name = $procedure['nome'];
-                        $description = $procedure['descrizione_breve'];
-                        $categories = is_array($procedure['categoria']) ? $procedure['categoria'] : [$procedure['categoria']];
-                        $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
-                        $link = esc_url($procedure['link']); // Assuming there is a link field
-
-                        ?>
-                    <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
-    <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
-        <?php
-        function get_procedures_data() {
-            $url = dci_get_option('servizi_maggioli_url', 'servizi');
-            $response = wp_remote_get($url);
-
-            if (is_array($response) && !is_wp_error($response)) {
-                $body = wp_remote_retrieve_body($response);
-                $data = json_decode($body, true);
-
-                if ($data) {
-                    foreach ($data as $procedure) {
-                        $name = $procedure['nome'];
-                        $description = $procedure['descrizione_breve'];
-                        $categories = is_array($procedure['categoria']) ? $procedure['categoria'] : [$procedure['categoria']];
-                        $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
-                        $link = esc_url($procedure['link']); // Assuming there is a link field
-
-                        ?>
-                        <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
-                            <span class="visually-hidden">Categoria:</span>
-                            <div class="card-header border-0 p-0">
-                                <?php
-                                $count = 1;
-                                foreach ($categories as $category) {
-                                    echo $count == 1 ? '' : ' - ';
-                                    echo '<a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="#">';
-                                    echo $category;
-                                    echo '</a>';
-                                    ++$count;
-                                }
-                                ?>
-                            </div>
-                            <div class="card-body p-0 my-2">
-                                <h3 class="green-title-big t-primary mb-8">
-                                    <a class="text-decoration-none" href="<?php echo $link; ?>" data-element="service-link"><?php echo $name; ?></a>
-                                </h3>
-                                <p class="text-paragraph">
-                                    <?php echo $description; ?>
-                                </p>
-                                <p class="text-paragraph">
-                                    <?php echo $arguments; ?>
-                                </p>
-                            </div>
-                        </div>
-                        <?php
-                    }
-                } else {
-                    echo "Nessun Risultato trovato nella lista aggiuntiva dei servizi Maggioli.";
-                }
-            } else {
-                echo "Errore nel recupero dei dati dal servizio web.";
-            }
-        }
-
-        // Esegui la funzione per ottenere e visualizzare i dati
-        get_procedures_data();
-        ?>
-    </div>
-</div>
-
-
-
+                                        function get_procedures_data() {                                   
+                                            $url =  dci_get_option('servizi_maggioli_url', 'servizi');
+                                            $response = wp_remote_get($url);
+                                        
+                                            if (is_array($response) && !is_wp_error($response)) {
+                                                $body = wp_remote_retrieve_body($response);
+                                                $data = json_decode($body, true);
+                                        
+                                                if ($data) {
+                                                    foreach ($data as $procedure) {
+                                                        $name = $procedure['nome'];
+                                                        $description = $procedure['descrizione_breve'];
+                                                        $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                                                        $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
+                                                        $url = $procedure['url'];
+                                                    
+                                                        // Output dei dati nel template
+                                                        echo "<p>Name: $name</p>";
+                                                        echo "<p>Description: $description</p>";
+                                                        echo "<p>Category: $category</p>";
+                                                        echo "<p>Arguments: $arguments</p>";
+                                                        echo '<p><a href="' . esc_url($url) . '">Link</a></p>';
+                                                    }
+                                                }
+                                            } else {
+                                                echo "Failed to fetch data.";
+                                            }
+                                        }
+                                        
+                                        // Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
+                                        ?>
+                                        <div class="procedures-list">
+                                            <div class="col-12 col-lg-6">
+                                            <?php get_procedures_data(); ?>
+                                          </div>
+                                        </div>
+                                        <?php } ?>
 
                     
                     <?php get_template_part("template-parts/search/more-results"); ?>
