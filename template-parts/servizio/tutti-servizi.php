@@ -96,9 +96,7 @@ $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
 if (strlen($servizi_maggioli_url) > 1) {
 
     // Funzione per ottenere i dati dal servizio web
-    function get_procedures_data() {
-        global $total_servizi; // Utilizza la variabile globale
-
+    function get_procedures_data($total_servizi) {
         $url =  dci_get_option('servizi_maggioli_url', 'servizi');
         $response = wp_remote_get($url);
 
@@ -143,7 +141,13 @@ if (strlen($servizi_maggioli_url) > 1) {
         } else {
             echo "Failed to fetch data.";
         }
+
+        // Restituisci il valore aggiornato del contatore
+        return $total_servizi;
     }
+
+    // Chiamata alla funzione per ottenere i dati e aggiornare il contatore
+    $total_servizi = get_procedures_data($total_servizi);
 
     // Output del totale dei servizi prima del loop
     echo '<p>Totale servizi caricati: ' . $total_servizi . '</p>';
@@ -152,7 +156,7 @@ if (strlen($servizi_maggioli_url) > 1) {
     ?>
     <div class="row g-4" id="load-more">
         <div class="procedures-list">
-            <?php get_procedures_data(); ?>
+            <?php get_procedures_data($total_servizi); ?>
         </div>
     </div>
 <?php } ?>
