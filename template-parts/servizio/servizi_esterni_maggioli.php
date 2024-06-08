@@ -1,5 +1,7 @@
 <?php
 
+// Recupera il valore dell'opzione
+$servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
 
 if (strlen($servizi_maggioli_url) > 1) {
 
