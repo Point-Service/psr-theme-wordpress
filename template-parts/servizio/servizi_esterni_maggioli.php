@@ -22,7 +22,7 @@ if (strlen($servizi_maggioli_url) > 1) {
                 $non_in_evidenza_services = [];
 
                 foreach ($data as $procedure) {
-                    $name = $procedure['nome'];
+                    $name = $procedure['in_evidenza'];
                     $description = $procedure['descrizione_breve'];
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
@@ -83,6 +83,7 @@ if (strlen($servizi_maggioli_url) > 1) {
                             <a class="text-decoration-none" href="<?php echo esc_url($service['url']); ?>" data-element="service-link"><?php echo $service['name']; ?></a>
                         </h3>
                         <p class="text-paragraph">
+                            <?php echo $service['description']; ?>
                             <?php echo $service['description']; ?>
                         </p>
                     </div>
