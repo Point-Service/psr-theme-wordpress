@@ -46,7 +46,7 @@ if (strlen($servizi_maggioli_url) > 1) {
                     // Incrementa il contatore ad ogni iterazione
                     $total_services++;
                 }
-
+                echo "</a>";
                 // Output del totale
                 echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
                 echo "<p></p>";
