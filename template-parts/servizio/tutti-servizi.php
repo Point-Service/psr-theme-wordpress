@@ -1,6 +1,6 @@
 <?php
 global $posts, $the_query, $load_posts, $servizio, $load_card_type, $should_have_grey_background;
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 50;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 9;
 $load_posts = 20;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $args = array(
