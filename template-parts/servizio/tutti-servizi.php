@@ -97,7 +97,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 if (strlen($servizi_maggioli_url) < 5) { ?>
                                    <?php get_template_part("template-parts/search/more-results"); ?>
                              <?php } else { ?>
-                                  </a><?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>
+                                sssss  </a><?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>
                             <?php } ?>
 
              
