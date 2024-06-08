@@ -88,11 +88,17 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <?php
                         } ?>
 
-                    <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>
-                      <?php
+
+                              <?php
+                        // Recupera il valore dell'opzione
+                        $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
                         if (strlen($servizi_maggioli_url) < 5) { ?>
-                           <?php get_template_part("template-parts/search/more-results"); ?>
-                      <?php } ?>
+                               <?php get_template_part("template-parts/search/more-results"); ?>
+                        <?php } else { ?>
+                               <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>
+                        <?php } ?>
+
+                        
                 </div>
             </div>
         </div>
