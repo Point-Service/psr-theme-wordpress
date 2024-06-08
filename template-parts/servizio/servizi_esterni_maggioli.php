@@ -9,7 +9,7 @@
 </div>
 
 <?php
-// Modifica la funzione per ottenere i dati dal servizio web
+// Funzione per ottenere i dati dal servizio web
 function get_procedures_data($search_term = null)
 {
     $url = dci_get_option('servizi_maggioli_url', 'servizi');
@@ -34,7 +34,6 @@ function get_procedures_data($search_term = null)
                 $name = $procedure['nome'];
                 $description = $procedure['descrizione_breve'];
                 $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-                $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
                 $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
                 $url = $procedure['url'];
 
@@ -74,6 +73,34 @@ function get_procedures_data($search_term = null)
 
     // Restituisci il totale dei servizi caricati
     return $total_services;
+}
+
+// Funzione per stampare i servizi
+function output_services($services)
+{
+    foreach ($services as $service) {
+?>
+        <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
+            <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
+                <span class="visually-hidden">Categoria:</span>
+                <div class="card-header border-0 p-0">
+                    <?php if ($service['category']) {
+                        echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</div>';
+                    } ?>
+                </div>
+                <div class="card-body p-0 my-2">
+                    <h3 class="green-title-big t-primary mb-8">
+                        <a class="text-decoration-none" href="<?php echo esc_url($service['url']); ?>" data-element="service-link"><?php echo $service['name']; ?></a>
+                    </h3>
+                    <p class="text-paragraph">
+                        <?php echo $service['description']; ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <p></p>
+<?php
+    }
 }
 
 // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
