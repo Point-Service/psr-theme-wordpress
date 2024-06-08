@@ -1,3 +1,4 @@
+</a>
 <!-- Aggiungi il modulo di ricerca -->
 <div class="row g-4">
     <div class="search-container">
@@ -55,7 +56,6 @@ function get_procedures_data($search_term = null)
                 $total_services++;
             }
             
-            echo "</a>";
             // Output del totale
             echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
             echo "<p></p>";
