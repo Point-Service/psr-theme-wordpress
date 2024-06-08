@@ -48,6 +48,10 @@ if (strlen($servizi_maggioli_url) > 1) {
                 }
 
                 // Output dei titoli
+                echo "<h4>Servizi Aggiuntivi Trovati (  )</h4>";
+                output_services($total_services);
+
+                // Output dei titoli
                 echo "<h4>Servizi in Evidenza</h4>";
                 output_services($in_evidenza_services);
 
