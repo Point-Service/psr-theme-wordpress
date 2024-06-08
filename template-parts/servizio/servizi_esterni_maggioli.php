@@ -1,4 +1,4 @@
-
+</a>
 
 <?php
 // Funzione per ottenere i dati dal servizio web
