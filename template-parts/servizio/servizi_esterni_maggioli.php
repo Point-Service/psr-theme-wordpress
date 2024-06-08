@@ -26,7 +26,9 @@ if (strlen($servizi_maggioli_url) > 1) {
                     $description = $procedure['descrizione_breve'];
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
-                    $in_evidenza = $procedure['in_evidenza'];
+                    
+                    // Converti il valore in_evidenza in booleano
+                    $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
                     $url = $procedure['url'];
 
                     // Aggiungi il servizio all'array corretto
