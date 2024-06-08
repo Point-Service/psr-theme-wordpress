@@ -46,9 +46,9 @@ if (strlen($servizi_maggioli_url) > 1) {
                     // Incrementa il contatore ad ogni iterazione
                     $total_services++;
                 }
-                echo "</button>mmm";
+                echo "ttt";
                 // Output del totale
-                echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
+                echo "</a><h2>Servizi Aggiuntivi ( $total_services )</h2>";
                 echo "<p></p>";
                 // Output dei servizi in evidenza
                 echo "<h4>Servizi in Evidenza</h4>";
@@ -97,10 +97,10 @@ if (strlen($servizi_maggioli_url) > 1) {
     ?>
     <div class="row g-4" id="load-more">
         <div class="procedures-list">
-                  <?php
-            // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
-            $total_services_loaded = get_procedures_data();
-            echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
+            <?php
+                // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
+                $total_services_loaded = get_procedures_data();
+                echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
             ?>
         </div>
     </div>
