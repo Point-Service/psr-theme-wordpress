@@ -43,7 +43,7 @@ if($the_query->post_count < $the_query->found_posts) {
 <p class="text-center text-paragraph-regular-medium mt-4 mb-0 d-none" id="no-more-results">
     <?php echo $label_no_more; ?>
 </p>
-<?php } else { ?>hh
+<?php } else { ?>
 <p class="text-center text-paragraph-regular-medium mt-4 mb-0" id="no-more-results">
     <?php echo $label_no_more; ?>
 </p>
