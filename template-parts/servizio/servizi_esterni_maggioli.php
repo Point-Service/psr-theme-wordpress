@@ -1,13 +1,4 @@
-</a>mm
-<!-- Aggiungi il modulo di ricerca -->
-<div class="row g-4">
-    <div class="search-container">
-        <form method="GET">
-            <input type="text" name="search" placeholder="Cerca nei servizi...">
-            <button type="submit">Cerca</button>
-        </form>
-    </div>
-</div>
+
 
 <?php
 // Funzione per ottenere i dati dal servizio web
