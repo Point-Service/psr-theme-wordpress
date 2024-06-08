@@ -88,7 +88,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             </div>
                             <?php
                         } ?>
-
+                      </div>
 
                         <?php     
                         if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { ?>
@@ -97,7 +97,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                              <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>
                         <?php } ?>
              
-                </div>
+               
             </div>
         </div>
     </form>
