@@ -48,10 +48,10 @@ if (strlen($servizi_maggioli_url) > 1) {
                 }
 
                 // Output dei titoli
-                echo "<h3>Servizi in Evidenza</h3>";
+                echo "<h4>Servizi in Evidenza</h4>";
                 output_services($in_evidenza_services);
 
-                echo "<h2>Altri Servizi</h2>";
+                echo "<h4>Altri Servizi</h4>";
                 output_services($other_services);
             }
         } else {
@@ -94,9 +94,9 @@ if (strlen($servizi_maggioli_url) > 1) {
     <div class="row g-4" id="load-more">
         <div class="procedures-list">
             <div class="col-12">
-                <h3 class="title-xxlarge mb-4 mt-5 mb-lg-10">
+                <h2 class="title-xxlarge mb-4 mt-5 mb-lg-10">
                     Servizi Aggiuntivi
-                </h3>
+                </h2>
             </div>
 
             <?php
