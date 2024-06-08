@@ -19,33 +19,28 @@ if (strlen($servizi_maggioli_url) > 1) {
             if ($data) {
                 // Inizializza array per servizi in evidenza e non in evidenza
                 $in_evidenza_services = [];
-                $non_in_evidenza_services = [];
+                $other_services = [];
 
                 foreach ($data as $procedure) {
-                    $name = $procedure['in_evidenza'];
+                    $name = $procedure['nome'];
                     $description = $procedure['descrizione_breve'];
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $arguments = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
-                    
-                    // Converti il valore in_evidenza in booleano
                     $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
                     $url = $procedure['url'];
 
                     // Aggiungi il servizio all'array corretto
+                    $service = [
+                        'name' => $name,
+                        'description' => $description,
+                        'category' => $category,
+                        'url' => $url
+                    ];
+
                     if ($in_evidenza) {
-                        $in_evidenza_services[] = [
-                            'name' => $name,
-                            'description' => $description,
-                            'category' => $category,
-                            'url' => $url
-                        ];
+                        $in_evidenza_services[] = $service;
                     } else {
-                        $non_in_evidenza_services[] = [
-                            'name' => $name,
-                            'description' => $description,
-                            'category' => $category,
-                            'url' => $url
-                        ];
+                        $other_services[] = $service;
                     }
 
                     // Incrementa il contatore ad ogni iterazione
@@ -57,7 +52,7 @@ if (strlen($servizi_maggioli_url) > 1) {
                 output_services($in_evidenza_services);
 
                 echo "<h2>Altri Servizi</h2>";
-                output_services($non_in_evidenza_services);
+                output_services($other_services);
             }
         } else {
             echo "Non riesco a leggere i servizi aggiuntivi.";
