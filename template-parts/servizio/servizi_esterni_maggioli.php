@@ -54,7 +54,8 @@ function get_procedures_data($search_term = null)
                 // Incrementa il contatore ad ogni iterazione
                 $total_services++;
             }
-
+            
+            echo "</a>";
             // Output del totale
             echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
             echo "<p></p>";
