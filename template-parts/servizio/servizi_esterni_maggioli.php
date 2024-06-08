@@ -48,8 +48,8 @@ if (strlen($servizi_maggioli_url) > 1) {
                 }
 
                 // Output del totale
-                echo "<h4>Totale Servizi: $total_services</h4>";
-
+                echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
+                echo "<p></p>";
                 // Output dei servizi in evidenza
                 echo "<h4>Servizi in Evidenza</h4>";
                 output_services($in_evidenza_services);
@@ -97,13 +97,7 @@ if (strlen($servizi_maggioli_url) > 1) {
     ?>
     <div class="row g-4" id="load-more">
         <div class="procedures-list">
-            <div class="col-12">
-                <h2 class="title-xxlarge mb-4 mt-5 mb-lg-10">
-                    Servizi Aggiuntivi
-                </h2>
-            </div>
-
-            <?php
+                  <?php
             // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
             $total_services_loaded = get_procedures_data();
             echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
