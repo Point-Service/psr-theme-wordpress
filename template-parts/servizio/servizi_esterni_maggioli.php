@@ -84,7 +84,6 @@ if (strlen($servizi_maggioli_url) > 1) {
                         </h3>
                         <p class="text-paragraph">
                             <?php echo $service['description']; ?>
-                            <?php echo $service['description']; ?>
                         </p>
                     </div>
                 </div>
