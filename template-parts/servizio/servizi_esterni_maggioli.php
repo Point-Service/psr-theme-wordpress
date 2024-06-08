@@ -1,4 +1,4 @@
-  <?php
+<?php
 
 // Recupera il valore dell'opzione
 $servizi_maggioli_url = dci_get_option('servizi_maggioli_url', 'servizi');
@@ -50,32 +50,12 @@ if (strlen($servizi_maggioli_url) > 1) {
                     $total_services++;
                 }
 
-                // Concatena i due array
-                $services = array_merge($in_evidenza_services, $non_in_evidenza_services);
+                // Output dei titoli
+                echo "<h2>Servizi in Evidenza</h2>";
+                output_services($in_evidenza_services);
 
-                // Output dei dati nel template con la stessa struttura grafica
-                foreach ($services as $service) {
-                    ?>
-                    <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
-                        <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
-                            <span class="visually-hidden">Categoria:</span>
-                            <div class="card-header border-0 p-0">
-                                <?php if ($service['category']) {
-                                    echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</div>';
-                                } ?>
-                            </div>
-                            <div class="card-body p-0 my-2">
-                                <h3 class="green-title-big t-primary mb-8">
-                                    <a class="text-decoration-none" href="<?php echo esc_url($service['url']); ?>" data-element="service-link"><?php echo $service['name']; ?></a>
-                                </h3>
-                                <p class="text-paragraph">
-                                    <?php echo $service['description']; ?>
-                                </p>
-                            </div>
-                        </div>
-                    </div><p></p>
-                <?php
-                }
+                echo "<h2>Altri Servizi</h2>";
+                output_services($non_in_evidenza_services);
             }
         } else {
             echo "Non riesco a leggere i servizi aggiuntivi.";
@@ -83,6 +63,33 @@ if (strlen($servizi_maggioli_url) > 1) {
 
         // Restituisci il totale dei servizi caricati
         return $total_services;
+    }
+
+    // Funzione per stampare i servizi
+    function output_services($services)
+    {
+        foreach ($services as $service) {
+            ?>
+            <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
+                <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
+                    <span class="visually-hidden">Categoria:</span>
+                    <div class="card-header border-0 p-0">
+                        <?php if ($service['category']) {
+                            echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</div>';
+                        } ?>
+                    </div>
+                    <div class="card-body p-0 my-2">
+                        <h3 class="green-title-big t-primary mb-8">
+                            <a class="text-decoration-none" href="<?php echo esc_url($service['url']); ?>" data-element="service-link"><?php echo $service['name']; ?></a>
+                        </h3>
+                        <p class="text-paragraph">
+                            <?php echo $service['description']; ?>
+                        </p>
+                    </div>
+                </div>
+            </div><p></p>
+        <?php
+        }
     }
 
     // Aggiungi il codice HTML/PHP nel tuo template dove desideri visualizzare i dati
