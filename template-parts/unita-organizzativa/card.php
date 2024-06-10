@@ -16,10 +16,7 @@
         foreach ($voci as $voce) {
             if ($voce[$prefix.'tipo_punto_contatto'] == 'indirizzo')
                 array_push($indirizzi, $voce[$prefix.'valore']);
-      
-            if ($voce[$prefix.'tipo_punto_contatto'] == 'pec')
-                array_push(pec, $voce[$prefix.'valore']);
-           
+                 
     }
     
     if($with_border) {
