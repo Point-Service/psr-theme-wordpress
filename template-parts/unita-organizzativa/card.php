@@ -63,10 +63,6 @@
 	  <?php if ($descrizione_breve) {
 		        echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
 	   } ?>     
-	   <div class="card-text">
-            <?php foreach ($pec as $pec) {
-                echo '<p>'.$pec.'</p>';
-            }?>
         </div> 
     </div>
 
