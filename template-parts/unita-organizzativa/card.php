@@ -25,7 +25,9 @@
 ?>
 
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-3">
-    <div class="card-body pe-3">
+  <div data-element="service-area"><
+    <div class="block" id="it-">
+     <div class="card-body pe-3">
         <p class="card-title text-paragraph-regular-medium-semi mb-3">
             <a class="text-decoration-none" href="<?php echo get_permalink($ufficio->ID); ?>" data-element="<?php echo $data_element != null ? $data_element : 'service_area'; ?>">
             <?php echo $ufficio->post_title; ?>
@@ -53,6 +55,8 @@
             <?php dci_get_img($img); ?>
         </div>
     <?php } ?>
+  </div>
+ </div>
 </div>
 <?php } else { ?>
 <div class="card card-teaser border rounded shadow p-4">
