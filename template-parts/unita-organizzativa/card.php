@@ -44,7 +44,7 @@
 	
 	  <div class="field--name-field-ita-mail">
             <?php foreach ($pec as $pec) {
-                echo '><a href="mailto:'.$pec.'">'.$pec.'</a>';
+                echo '<a href="mailto:'.$pec.'">'.$pec.'</a>';
             }?>
         </div>
     </div>
@@ -67,6 +67,16 @@
                 echo '<p>'.$indirizzo.'</p>';
             }?>
         </div> 
+
+	    
+	  <?php if ($descrizione_breve) {
+	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
+	   } ?>      
+	
+	  <div class="field--name-field-ita-mail">
+            <?php foreach ($pec as $pec) {
+                echo '<a href="mailto:'.$pec.'">'.$pec.'</a>';
+            }?>
     </div>
 
     <?php if ($img) { ?>
