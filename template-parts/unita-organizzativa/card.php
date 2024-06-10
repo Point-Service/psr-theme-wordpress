@@ -41,6 +41,12 @@
 	  <?php if ($descrizione_breve) {
 	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
 	   } ?>      
+
+	  <div class="card-text">
+            <?php foreach ($pec as $pec) {
+                echo '<p class="u-main-black">'.$pec.'</p>';
+            }?>
+        </div>
     </div>
     <?php if ($img) { ?>
         <div class="avatar size-xl">
