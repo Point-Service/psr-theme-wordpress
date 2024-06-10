@@ -2,8 +2,29 @@
     global $uo_id, $with_border;
     $ufficio = get_post( $uo_id );
 
-    $prefix = '_dci_unita_organizzativa_';
-	$descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $ufficio->ID);
+     $prefix = '_dci_unita_organizzativa_';
+     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $ufficio->ID);
+
+
+		$punti_contatto = dci_get_meta('contatti', $prefix, $uo_id);
+		$prefix = '_dci_punto_contatto_';
+		$contatti = array();
+		foreach ($punti_contatto as $pc_id) {
+		    $contatto = dci_get_full_punto_contatto($pc_id);
+		    array_push($contatti, $contatto);
+		}
+		$other_contacts = array(
+		    'linkedin',
+		    'pec',
+		    'skype',
+		    'telegram',
+		    'twitter',
+		    'whatsapp'
+		);
+
+
+
+
 
     $img = get_the_post_thumbnail_url($ufficio->ID);
 
