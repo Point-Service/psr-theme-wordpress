@@ -52,7 +52,25 @@
                 echo '<p>'.$indirizzo.'</p>';
             }?>
         </div>
+        <div class="card-text">
+            <?php foreach ($indirizzi as $indirizzo) {
+                echo '<p>'.$indirizzo.'</p>';
+            }?>
+        </div>        
     </div>
+                            <?php if (array_key_exists('email', $full_contatto) && is_array($full_contatto['email']) && count($full_contatto['email'])) {
+                                foreach ($full_contatto['email'] as $dati) { ?>
+                                    <p>
+                                        Email:
+                                        <a target="_blank" aria-label="invia un'email a <?php echo $dati['valore']; ?>" title="invia un'email a <?php echo $dati['valore']; ?>" href="mailto:<?php echo $dati['valore']; ?>">
+                                            <?php echo $dati['valore']; ?>
+                                        </a>
+                                        <?php echo $dati['dettagli']; ?>
+                                    </p>
+                            <?php }
+                            } ?>
+
+    
     <?php if ($img) { ?>
     <div class="avatar size-xl">
         <?php dci_get_img($img); ?>
