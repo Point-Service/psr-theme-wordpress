@@ -33,6 +33,11 @@
                 echo '<p class="u-main-black">'.$indirizzo.'</p>';
             }?>
         </div>
+
+
+	  <?php if ($descrizione_breve) {
+	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
+	   } ?>      
     </div>
     <?php if ($img) { ?>
         <div class="avatar size-xl">
@@ -52,10 +57,7 @@
             <?php foreach ($indirizzi as $indirizzo) {
                 echo '<p>'.$indirizzo.'</p>';
             }?>
-        </div>
-	   <?php if ($descrizione_breve) {
-		        echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
-	   } ?>       
+        </div> 
     </div>
 
     <?php if ($img) { ?>
