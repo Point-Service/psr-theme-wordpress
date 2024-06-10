@@ -10,11 +10,14 @@
     $prefix = '_dci_punto_contatto_';
 
     $indirizzi = array();
+    $pec = array();
     foreach ($contatti as $punto_contatto_id) {
         $voci = dci_get_meta('voci', $prefix, $punto_contatto_id);
         foreach ($voci as $voce) {
             if ($voce[$prefix.'tipo_punto_contatto'] == 'indirizzo')
                 array_push($indirizzi, $voce[$prefix.'valore']);
+	    if ($voce[$prefix.'tipo_punto_contatto'] == 'pec')
+                array_push($pec, $voce[$prefix.'valore']);
         }
     }
     
