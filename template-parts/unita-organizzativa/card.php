@@ -10,12 +10,16 @@
     $prefix = '_dci_punto_contatto_';
 
     $indirizzi = array();
+    $pec = array();
     foreach ($contatti as $punto_contatto_id) {
         $voci = dci_get_meta('voci', $prefix, $punto_contatto_id);
         foreach ($voci as $voce) {
             if ($voce[$prefix.'tipo_punto_contatto'] == 'indirizzo')
                 array_push($indirizzi, $voce[$prefix.'valore']);
         }
+            if ($voce[$prefix.'tipo_punto_contatto'] == 'pec')
+                array_push(pec, $voce[$prefix.'valore']);
+        }    
     }
     
     if($with_border) {
@@ -33,8 +37,6 @@
                 echo '<p class="u-main-black">'.$indirizzo.'</p>';
             }?>
         </div>
-
-
 	  <?php if ($descrizione_breve) {
 	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
 	   } ?>      
@@ -56,6 +58,14 @@
         <div class="card-text">
             <?php foreach ($indirizzi as $indirizzo) {
                 echo '<p>'.$indirizzo.'</p>';
+            }?>
+        </div> 
+	  <?php if ($descrizione_breve) {
+		        echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
+	   } ?>     
+	   <div class="card-text">
+            <?php foreach ($pec as $pec) {
+                echo '<p>'.$pec.'</p>';
             }?>
         </div> 
     </div>
