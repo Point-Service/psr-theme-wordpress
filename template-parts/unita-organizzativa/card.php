@@ -75,7 +75,7 @@
 	
 	  <div class="field--name-field-ita-mail">
             <?php foreach ($pec as $pec) {
-                echo '<a href="mailto:'.$pec.'">'.$pec.'</a>';
+                echo '<h4><a href="mailto:'.$pec.'">'.$pec.'</a></h4>';
             }?>
     </div>
 
