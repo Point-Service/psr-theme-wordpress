@@ -52,13 +52,14 @@
                     } ?>
                     <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                         foreach ($full_contatto['url'] as $value) { ?>
-                            <p><svg class="icon">
-                                <use xlink:href="#it-link"></use>
-                              </svg>
+                            <p>
                                 <a 
                                 target="_blank" 
                                 aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
                                 href="<?php echo $value; ?>">
+                                      <svg class="icon">
+                                            <use xlink:href="#it-link"></use>
+                                          </svg>                             
                                     <?php echo $value; ?>
                                 </a>
                             </p>
