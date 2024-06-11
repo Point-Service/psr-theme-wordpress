@@ -410,11 +410,13 @@ get_header();
                               <h3 class="mb-3" id="contacts">Contatta ufficio</h3>
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
-                                        <?php
-                                            $with_border = true;
-                                            $no_vertical_margin = true;
-                                            get_template_part("template-parts/unita-organizzativa/card-full");
-                                        ?>
+                                        <div data-element="service-area">
+                                            <?php
+                                                $with_border = true;
+                                                $no_vertical_margin = true;
+                                                get_template_part("template-parts/unita-organizzativa/card-full");
+                                            ?>
+                                        </div>
                                     </div>
                                 </div>
                                 <?php
@@ -426,9 +428,11 @@ get_header();
                                         <?php
                                         foreach($punti_contatto_id as $pc_id) {
                                             ?>
-                                        <div class="col-lg-6 col-md-12 mb-30">
-                                            <?php get_template_part("template-parts/punto-contatto/card"); ?>
-                                        </div>
+                                          <div data-element="service-area">
+                                            <div class="col-lg-6 col-md-12 mb-30">
+                                                <?php get_template_part("template-parts/punto-contatto/card"); ?>
+                                            </div>
+                                          </div>
                                         <?php } ?>
                                   </div>
                                 <?php } ?>                                   
