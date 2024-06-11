@@ -11,6 +11,7 @@
 
     $indirizzi = array();
     $pec = array();
+    $email = array();
     foreach ($contatti as $punto_contatto_id) {
         $voci = dci_get_meta('voci', $prefix, $punto_contatto_id);
         foreach ($voci as $voce) {
@@ -18,6 +19,8 @@
                 array_push($indirizzi, $voce[$prefix.'valore']);
 	    if ($voce[$prefix.'tipo_punto_contatto'] == 'pec')
                 array_push($pec, $voce[$prefix.'valore']);
+	    if ($voce[$prefix.'tipo_punto_contatto'] == 'email')
+                array_push($email, $voce[$prefix.'valore']);
         }
     }
     
@@ -83,8 +86,12 @@
             <?php foreach ($pec as $pec) {
                 echo '<h4><a href="mailto:'.$pec.'">'.$pec.'</a></h4>';
             }?>
-    </div>
-
+         </div>
+	  <div class="field--name-field-ita-mail">
+            <?php foreach ($email as $email) {
+                echo '<h4><a href="mailto:'.$email.'">'.$email.'</a></h4>';
+            }?>
+         </div>
     <?php if ($img) { ?>
     <div class="avatar size-xl">
         <?php dci_get_img($img); ?>
