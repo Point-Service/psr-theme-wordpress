@@ -47,7 +47,7 @@ function get_procedures_data($search_term = null)
             }
 
             
-            echo "<p></p>";
+            echo "</br>";
             echo "<p></p>";
             // Output del totale
             echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
