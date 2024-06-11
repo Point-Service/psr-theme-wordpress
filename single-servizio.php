@@ -407,32 +407,18 @@ get_header();
                                         
 
                             <section class="it-page-section mb-30">
-                                
-                                <h3 class="mb-3" id="contacts">Contatta ufficio</h3>
-                                <div class="row">
-                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
-                                        <?php
-                                            $with_border = true;
-                                            $no_vertical_margin = true;
-                                            get_template_part("template-parts/unita-organizzativa/card");
-                                        ?>
-                                    </div>
-                                </div>
-                                <?php
-                                    $punti_contatto_id = dci_get_meta("punti_contatto");
-                                    if(!empty($punti_contatto_id)){                                      
-                                ?>
-                                 <h3 class="mb-3" id="contacts">Contatti dedicati</h3>
-                                <div class="row">
-                                        <?php
-                                        foreach($punti_contatto_id as $pc_id) {
-                                            ?>
-                                        <div class="col-lg-6 col-md-12 mb-30">
-                                            <?php get_template_part("template-parts/punto-contatto/card"); ?>
-                                        </div>
-                                        <?php } ?>
-                                </div>
-                                <?php } ?>                                   
+                                <h2 class="mb-3" id="contacts">Contatti</h2>
+                                  <div class="row">                            
+
+                                   <div class="col-12 mb-30">
+                                        <span class="text-paragraph-small">Contatti:</span>
+                                        <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
+                                                <?php
+                                                $with_border = true;
+                                                get_template_part("template-parts/unita-organizzativa/card");
+                                              ?>
+                                        </ul>
+                                    </div>                                      
                                     <div class="col-12 mb-30">
                                       <span class="text-paragraph-small">Argomenti:</span>
                                         <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
@@ -449,6 +435,14 @@ get_header();
                                         <?php get_template_part('template-parts/single/page_bottom',"simple"); ?>
                                     </div>
                                 </div>
+                                <?php if ( $more_info ) {  ?>
+                                    <section class="it-page-section mb-30">
+                                        <h2 class="h3 mb-3" id="more-info">Ulteriori informazioni</h2>
+                                        <div class="richtext-wrapper lora">
+                                            <?php echo $more_info ?>
+                                        </div>
+                                    </section>
+                                  <?php }  ?>
                           
                             </section>
                         </div>
