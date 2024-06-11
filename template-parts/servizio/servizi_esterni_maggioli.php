@@ -1,4 +1,4 @@
-<div style="display:inline;"></div>
+
 <?php
 // Funzione per ottenere i dati dal servizio web
 function get_procedures_data($search_term = null)
@@ -45,7 +45,10 @@ function get_procedures_data($search_term = null)
                 // Incrementa il contatore ad ogni iterazione
                 $total_services++;
             }
+
             
+            echo"<div style="display:inline;"></div>"
+                
             // Output del totale
             echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
             echo "<p></p>";
