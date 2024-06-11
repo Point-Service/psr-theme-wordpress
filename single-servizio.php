@@ -420,7 +420,7 @@ get_header();
                                         </ul>
                                     </div>                                      
                                     <div class="col-12 mb-30">
-                                        <span class="text-paragraph-small">Argomenti:</span>
+                                      <span class="text-paragraph-small">Argomenti:</span>
                                         <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
                                             <?php foreach ( $argomenti as $item ) { ?>
                                                 <li>
@@ -435,6 +435,15 @@ get_header();
                                         <?php get_template_part('template-parts/single/page_bottom',"simple"); ?>
                                     </div>
                                 </div>
+                                <?php if ( $more_info ) {  ?>
+                                    <section class="it-page-section mb-30">
+                                        <h2 class="h3 mb-3" id="more-info">Ulteriori informazioni</h2>
+                                        <div class="richtext-wrapper lora">
+                                            <?php echo $more_info ?>
+                                        </div>
+                                    </section>
+                                  <?php }  ?>
+                          
                             </section>
                         </div>
                     </div>
