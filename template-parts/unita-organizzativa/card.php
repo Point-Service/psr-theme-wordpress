@@ -11,13 +11,13 @@
 
     $indirizzi = array();
     $pec = array();
-    $contatti = array();
+    $contatti1 = array();
 
 
     foreach ($contatti as $punto_contatto_id) {
         $voci = dci_get_meta('voci', $prefix, $punto_contatto_id);
-	$contatto = dci_get_full_punto_contatto($pc_id);
-        array_push($contatti, $contatto);
+	$contatto = dci_get_full_punto_contatto($punto_contatto_id);
+        array_push($contatti1, $contatto);
         foreach ($voci as $voce) {
             if ($voce[$prefix.'tipo_punto_contatto'] == 'indirizzo')
                 array_push($indirizzi, $voce[$prefix.'valore']);
@@ -49,11 +49,53 @@
 	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
 	   } ?>      
 	
-	  <div class="field--name-field-ita-mail">
-            <?php foreach ($pec as $pec) {
-                echo '<a href="mailto:'.$pec.'">'.$pec.'</a>';
-            }?>
-        </div>
+     <?php foreach ($contatti1 as $full_contatto) { ?>	
+
+
+	                        <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
+                        foreach ($full_contatto['indirizzo'] as $value) {
+                            echo '<p>'.$value.'</p>';
+                        } 
+                    } ?>
+                    <?php if ( isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
+                        foreach ($full_contatto['telefono'] as $value) {
+                            echo '<p>T '.$value.'</p>';
+                        }
+                    } ?>
+                    <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
+                        foreach ($full_contatto['url'] as $value) { ?>
+                            <p>
+                                <a 
+                                target="_blank" 
+                                aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
+                                href="<?php echo $value; ?>">
+                                    <?php echo $value; ?>
+                                </a>
+                            </p>
+                    <?php }
+                    } ?>
+                    <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
+                        foreach ($full_contatto['email'] as $value) { ?>
+                            <p>
+                                <a  
+                                target="_blank" 
+                                aria-label="invia un'email a <?php echo $value; ?>"
+                                href="mailto:<?php echo $value; ?>">
+                                    <?php echo $value; ?>
+                                </a>
+                            </p>
+                    <?php }
+                    } ?>
+                    <?php foreach ($other_contacts as $type) {
+                        if ( isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
+                            foreach ($full_contatto[$type] as $value) {
+                                echo '<p>'.$type.': '.$value.'</p>';
+                            }
+                        } 
+                    } ?>
+
+
+    <?php } ?>	  
     </div>
     <?php if ($img) { ?>
         <div class="avatar size-xl">
@@ -83,7 +125,7 @@
 	  <?php if ($descrizione_breve) {
 	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
 	   } ?>      
-        <?php foreach ($contatti as $full_contatto) { ?>	
+        <?php foreach ($contatti1 as $full_contatto) { ?>	
 
 
 	                        <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
