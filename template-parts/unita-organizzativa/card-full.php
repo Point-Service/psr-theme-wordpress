@@ -14,6 +14,7 @@
     }
     $other_contacts = array(
         'linkedin',
+        'pec',
         'skype',
         'telegram',
         'twitter',
