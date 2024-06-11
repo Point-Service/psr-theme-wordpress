@@ -70,7 +70,7 @@
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
-				title="invia un'email a <?php echo $value; ?>">" 
+				title="invia un'email a <?php echo $value; ?>" 
                                 href="mailto:<?php echo $value; ?>">
                                     <?php echo $value; ?>
                                 </a>
