@@ -32,6 +32,7 @@ $other_contacts = array(
                 foreach ($full_contatto['telefono'] as $value) {
                     echo '<b>Tel.</b> '.$value.'</p>';
                 }
+                    echo '<p class="mt-3"></p>';
             } ?>
             <?php if ( is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                 foreach ($full_contatto['url'] as $value) { ?>
