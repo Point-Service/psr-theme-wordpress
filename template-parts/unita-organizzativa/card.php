@@ -39,7 +39,7 @@
 	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
 	   } ?>      
 	
-jjjjjjjjj
+   <?php foreach ($contatti_full as $full_contatto) { ?>	
 
 
 	        <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
@@ -99,7 +99,7 @@ jjjjjjjjj
                         } 
                     } ?>
 
-
+    <?php } ?>	  
  
     </div>
     <?php if ($img) { ?>
