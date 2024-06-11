@@ -30,7 +30,9 @@ $other_contacts = array(
             } ?>
             <?php if ( is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                 foreach ($full_contatto['telefono'] as $value) {
-                    echo '<p><b>Tel.</b> '.$value.'</p>';
+                    echo '<p><svg class="icon" aria-hidden="true">
+                              <use xlink:href="#it-telephone"></use>
+                              </svg><b>Tel.</b> '.$value.'</p>';
                 }
             } ?>
             <?php if ( is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
