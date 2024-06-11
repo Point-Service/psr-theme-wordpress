@@ -51,7 +51,7 @@
 
 	        <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
                         foreach ($full_contatto['indirizzo'] as $value) {
-                            echo '<p>'.$value.'</p>';
+                            echo '<div class="field--name-field-ita-indirizzo"><p>'.$value.'</p></div>';
                         } 
                     } ?>
                     <?php if ( isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
@@ -73,7 +73,7 @@
                     } ?>
                     <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                         foreach ($full_contatto['email'] as $value) { ?>								     
-                            <p>Email: 
+                            <p><div class="field--name-field-ita-mail">Email: 
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
@@ -81,13 +81,13 @@
                                 href="mailto:<?php echo $value; ?>">
                                     <?php echo $value; ?>
                                 </a>
-                            </p>
+			    </div></p>
                     <?php }
                     } ?>
 
                     <?php if ( isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
                         foreach ($full_contatto['pec'] as $value) { ?>								     
-                            <p>PEC: 
+                            <p><div class="field--name-field-ita-mail">Pec: 
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
@@ -95,7 +95,7 @@
                                 href="mailto:<?php echo $value; ?>">
                                     <?php echo $value; ?>
                                 </a>
-                            </p>
+			    </div></p>
                     <?php }
                     } ?>	     
                     <?php foreach ($other_contacts as $type) {
