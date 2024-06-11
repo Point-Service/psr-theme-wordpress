@@ -414,7 +414,7 @@ get_header();
                                   <?php
                                       $with_border = true;
                                       $no_vertical_margin = true;
-                                      get_template_part("template-parts/unita-organizzativa/card");
+                                      get_template_part("template-parts/unita-organizzativa/card-full");
                                   ?>
                               </div>
                           </div>
