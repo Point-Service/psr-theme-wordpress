@@ -409,15 +409,15 @@ get_header();
                      <section class="it-page-section mb-30">
                       <h3 class="mb-3" id="contacts">Contatta ufficio</h3>
                       <div class="row">
-                                     <div class="col-12 mb-30">
-                                        <span class="text-paragraph-small">Contatti:</span>
-                                        <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
+                         <div class="col-12 mb-30">
+                              <span class="text-paragraph-small">Contatti:</span>
+                                 <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
                                                 <?php
                                                 $with_border = true;
-                                                get_template_part("template-parts/unita-organizzativa/card");
+                                                get_template_part("template-parts/unita-organizzativa/card-full");
                                               ?>
-                                        </ul>
-                                    </div> 
+                                 </ul>
+                          </div> 
                      
                       <?php
                           $punti_contatto_id = dci_get_meta("punti_contatto");
