@@ -45,7 +45,11 @@
 	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p><p></p></div>';
 	     echo '<p>';
 	   } ?>      
-	
+    <?php if ($img) { ?>
+    <div class="avatar size-xl">
+        <?php dci_get_img($img); ?>
+    </div>
+    <?php } ?>	
    <?php foreach ($contatti_full as $full_contatto) { ?>	
 
 
