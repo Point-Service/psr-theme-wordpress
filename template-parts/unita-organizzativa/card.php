@@ -73,7 +73,7 @@
                     } ?>
                     <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                         foreach ($full_contatto['email'] as $value) { ?>								     
-                            <p>
+                            <p>Email: 
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
@@ -87,7 +87,7 @@
 
                     <?php if ( isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
                         foreach ($full_contatto['pec'] as $value) { ?>								     
-                            <p>
+                            <p>PEC: 
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
