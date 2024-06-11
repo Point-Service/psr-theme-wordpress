@@ -18,7 +18,7 @@
         'telegram',
         'twitter',
         'whatsapp'
-    )
+    );
     
     if(!$with_border) {
 ?>
