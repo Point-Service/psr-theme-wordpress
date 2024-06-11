@@ -434,7 +434,7 @@ get_header();
                                <?php } ?>
                                </div>
                               </div>
-                         </div>
+                         
                          <?php } ?>                                   
                          <div class="col-12 mb-30">
                              <span class="text-paragraph-small">Argomenti:</span>
