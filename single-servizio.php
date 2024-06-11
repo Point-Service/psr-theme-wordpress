@@ -410,7 +410,6 @@ get_header();
                       <h3 class="mb-3" id="contacts">Contatta ufficio</h3>
                       <div class="row">
                          <div class="col-12 mb-30">
-                              <span class="text-paragraph-small">Contatti:</span>
                                  <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
                                                 <?php
                                                 $with_border = true;
@@ -418,11 +417,12 @@ get_header();
                                               ?>
                                  </ul>
                           </div> 
-                     
+                      </div> 
                       <?php
                           $punti_contatto_id = dci_get_meta("punti_contatto");
                           if(!empty($punti_contatto_id)){                                      
                       ?>
+                           
                       <h3 class="mb-3" id="contacts">Contatti dedicati</h3>
                       <div class="row">
                           <?php foreach($punti_contatto_id as $pc_id) { ?>
