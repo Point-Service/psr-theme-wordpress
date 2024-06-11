@@ -14,7 +14,6 @@
     }
     $other_contacts = array(
         'linkedin',
-        'pec',
         'skype',
         'telegram',
         'twitter',
@@ -71,6 +70,20 @@
                             </p>
                     <?php }
                     } ?>
+                    <?php if ( isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
+                        foreach ($full_contatto['pec'] as $value) { ?>
+                            <p>
+                                <a  
+                                target="_blank" 
+                                aria-label="invia un'email a <?php echo $value; ?>"
+                                href="mailto:<?php echo $value; ?>">
+                                    <?php echo $value; ?>
+                                </a>
+                            </p>
+                    <?php }
+                    } ?>
+
+                    
                     <?php foreach ($other_contacts as $type) {
                         if ( isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
                             foreach ($full_contatto[$type] as $value) {
