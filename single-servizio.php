@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * Servizio template file
  *
@@ -449,7 +449,6 @@ get_header();
                                                 </li>
                                             <?php } ?>
                                         </ul>
-                                        <?php get_template_part('template-parts/single/page_bottom',"simple"); ?>
                                     </div>
 
                                     <div class="col-12 mb-30">
