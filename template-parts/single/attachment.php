@@ -35,14 +35,15 @@ $attachment_id = attachment_url_to_postid($file_url) ;
 $size = formatSizeUnits( filesize( get_attached_file( $attachment_id ) ) );
 $extension = strtoupper( wp_check_filetype($file_url)['ext'] );
 ?>
-
-<div class="cmp-icon-link">
+    <?php 
+        $file_url = empty($file_url) ? 'https://www.google.it' : $file_url;
+    ?>
+<div class="cmp-icon-link">    
     <a class="list-item icon-left d-inline-block" href="<?php echo $file_url; ?>" aria-label="Scarica Termini e condizioni di servizio (<?php echo $extension.' '.$size; ?>)" data-element="service-file">
-    <span class="list-item-title-icon-wrapper">
+            <span class="list-item-title-icon-wrapper">
         <svg class="icon icon-primary icon-sm me-1" aria-hidden="true">
         <use href="#it-clip"></use>
         </svg>
-        <span class="list-item t-primary">Termini e condizioni di servizio (<?php echo $extension.' '.$size; ?>)</span>
     </span>
     </a>
 </div>
