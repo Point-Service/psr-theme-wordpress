@@ -38,17 +38,23 @@
                 <div class="card-text mb-3">
                     <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
                         foreach ($full_contatto['indirizzo'] as $value) {
-                            echo '<p>'.$value.'</p>';
+                            echo '<p><svg class="icon">
+                            <use xlink:href="it-map-marker-circle"></use>
+                             </svg>'.$value.'</p>';
                         } 
                     } ?>
                     <?php if ( isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                         foreach ($full_contatto['telefono'] as $value) {
-                            echo '<p>'.$value.'</p>';
+                            echo '<p><svg class="icon">
+                                <use xlink:href="#it-telephone"></use>
+                             </svg>'.$value.'</p>';
                         }
                     } ?>
                     <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                         foreach ($full_contatto['url'] as $value) { ?>
-                            <p>
+                            <p><svg class="icon">
+                                <use xlink:href="#it-link"></use>
+                              </svg>
                                 <a 
                                 target="_blank" 
                                 aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
@@ -61,6 +67,9 @@
                     <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                         foreach ($full_contatto['email'] as $value) { ?>
                             <p><div class="field--name-field-ita-mail">
+                                    <svg class="icon">
+                                        <use xlink:href="#it-mail"></use>
+                                    </svg>
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
@@ -73,6 +82,9 @@
                     <?php if ( isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
                         foreach ($full_contatto['pec'] as $value) { ?>
                             <p><div class="field--name-field-ita-mail">
+                                <svg class="icon">
+                                    <use xlink:href="#it-mail"></use>
+                                </svg>
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
