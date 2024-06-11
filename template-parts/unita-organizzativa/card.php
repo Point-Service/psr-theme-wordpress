@@ -25,7 +25,10 @@
     if($with_border) {
 ?>
 
-<div class="card card-teaser card-teaser-info rounded shadow-sm p-3">
+
+
+<div class="richtext-wrapper lora">
+ <div class="card card-teaser shadow mt-3 rounded">
   <div data-element="service-area">
     <div class="block" id="it-">
      <div class="card-body pe-3">
@@ -114,6 +117,7 @@
  
     </div>
   </div>
+ </div>
  </div>
 </div>
 <?php } else { ?>
