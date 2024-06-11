@@ -17,6 +17,11 @@ $other_contacts = array(
 
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
     <div class="card-body pe-3">
+
+    <svg class="icon">
+        <use xlink:href="#it-pa"></use>
+    </svg>
+        
         <h5 class="card-title">
             <?php echo $contatto->post_title; ?>
         </h5>
