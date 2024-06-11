@@ -25,12 +25,12 @@ if($post->post_status == "publish") {
                 </div>
                 <?php } ?>
                 <div class="card-body p-0 my-2">
-                <h3 class="green-title-big t-primary mb-8">
-                    <a class="text-decoration-none" href="<?php echo get_permalink($servizio->ID); ?>" data-element="service-link"><?php echo $servizio->post_title; ?></a>
-                </h3>
-                <p class="text-paragraph">
-                    <?php echo $descrizione_breve; ?>
-                </p>
+                    <h3 class="green-title-big t-primary mb-8">
+                        <a class="text-decoration-none" href="<?php echo get_permalink($servizio->ID); ?>" data-element="service-link"><?php echo $servizio->post_title; ?></a>
+                    </h3>
+                    <p class="text-paragraph">
+                        <?php echo $descrizione_breve; ?>
+                    </p>
                 </div>
             </div>
         </div>
