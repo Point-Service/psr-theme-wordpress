@@ -42,7 +42,7 @@
 
 
 	  <?php if ($descrizione_breve) {
-	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
+	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p><p></p></div>';
 	   } ?>      
 	
    <?php foreach ($contatti_full as $full_contatto) { ?>	
