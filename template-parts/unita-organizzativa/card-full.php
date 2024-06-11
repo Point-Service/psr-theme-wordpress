@@ -164,7 +164,7 @@
                                 </a>
                             </div></p>
                     <?php }
-                    } ?>ààà
+                    } ?>
                     <?php if ( isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
                         foreach ($full_contatto['pec'] as $value) { ?>
                             <p><div class="field--name-field-ita-mail">                                
@@ -172,9 +172,10 @@
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
                                 href="mailto:<?php echo $value; ?>">
-                                   <svg class="icon">
-                                    <use xlink:href="#it-mail"></use>
-                                </svg><?php echo $value; ?>
+                                  <?php echo '<svg class="icon">
+                                        <use xlink:href="#it-mail"></use>
+                                         </svg>'.$value.''; ?>
+                                                                   
                                 </a>
                             </div></p>
                     <?php }
