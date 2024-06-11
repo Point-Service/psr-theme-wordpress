@@ -67,14 +67,14 @@
                     <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                         foreach ($full_contatto['email'] as $value) { ?>
                             <p><div class="field--name-field-ita-mail">
-                                    <svg class="icon">
-                                        <use xlink:href="#it-mail"></use>
-                                    </svg>
+                                  
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
                                 href="mailto:<?php echo $value; ?>">
-                                    <?php echo $value; ?>
+                                      <svg class="icon">
+                                        <use xlink:href="#it-mail"></use>
+                                    </svg><?php echo $value; ?>
                                 </a>
                             </div></p>
                     <?php }
