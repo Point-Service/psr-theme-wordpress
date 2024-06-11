@@ -426,8 +426,11 @@ get_header();
                          <h3 class="mb-3" id="contacts">Contatti dedicati</h3>
                          <div class="row">
                              <?php foreach($punti_contatto_id as $pc_id) { ?>
-                                 <div class="col-12 col-md-6 col-lg-4 mb-30" data-element="service-area">
+                                 <div class="col-12 mb-30">
+                                    <ul class="d-flex flex-wrap gap-2 mt-10 mb-30" data-element="service-area">
                                      <?php get_template_part("template-parts/punto-contatto/card"); ?>
+                                    </ul>
+                                  </div> 
                                  </div>
                              <?php } ?>
                          </div>
