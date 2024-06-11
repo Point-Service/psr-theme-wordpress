@@ -43,7 +43,7 @@
                     } ?>
                     <?php if ( isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                         foreach ($full_contatto['telefono'] as $value) {
-                            echo '<p>T '.$value.'</p>';
+                            echo '<p>'.$value.'</p>';
                         }
                     } ?>
                     <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
