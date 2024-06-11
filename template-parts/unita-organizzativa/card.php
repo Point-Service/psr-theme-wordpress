@@ -8,22 +8,12 @@
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $ufficio->ID);
 
     $prefix = '_dci_punto_contatto_';
-
-    $indirizzi = array();
-    $pec = array();
-    $contatti1 = array();
+    $contatti_full = array();
 
 
     foreach ($contatti as $punto_contatto_id) {
-        $voci = dci_get_meta('voci', $prefix, $punto_contatto_id);
 	$contatto = dci_get_full_punto_contatto($punto_contatto_id);
-        array_push($contatti1, $contatto);
-        foreach ($voci as $voce) {
-            if ($voce[$prefix.'tipo_punto_contatto'] == 'indirizzo')
-                array_push($indirizzi, $voce[$prefix.'valore']);
-	    if ($voce[$prefix.'tipo_punto_contatto'] == 'pec')
-                array_push($pec, $voce[$prefix.'valore']);
-        }
+        array_push($contatti_full, $contatto);
     }
     
     if($with_border) {
@@ -49,17 +39,17 @@
 	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
 	   } ?>      
 	
-     <?php foreach ($contatti1 as $full_contatto) { ?>	
+     <?php foreach ($contatti_full as $full_contatto) { ?>	
 
 
-	                        <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
+	        <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
                         foreach ($full_contatto['indirizzo'] as $value) {
                             echo '<p>'.$value.'</p>';
                         } 
                     } ?>
                     <?php if ( isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                         foreach ($full_contatto['telefono'] as $value) {
-                            echo '<p>T '.$value.'</p>';
+                            echo '<p>T. '.$value.'</p>';
                         }
                     } ?>
                     <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
@@ -69,17 +59,18 @@
                                 target="_blank" 
                                 aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
                                 href="<?php echo $value; ?>">
-                                    <?php echo $value; ?>
+                                    Vai sul Sito
                                 </a>
                             </p>
                     <?php }
                     } ?>
                     <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
-                        foreach ($full_contatto['email'] as $value) { ?>
+                        foreach ($full_contatto['email'] as $value) { ?>								     
                             <p>
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
+				title="invia un'email a <?php echo $value; ?>">" 
                                 href="mailto:<?php echo $value; ?>">
                                     <?php echo $value; ?>
                                 </a>
