@@ -18,9 +18,7 @@ $other_contacts = array(
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
     <div class="card-body pe-3">
 
-    <svg class="icon">
-        <use xlink:href="#it-pa"></use>
-    </svg>
+
         
         <h5 class="card-title">
             <?php echo $contatto->post_title; ?>
@@ -53,7 +51,9 @@ $other_contacts = array(
             } ?>
             <?php if ( is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                 foreach ($full_contatto['email'] as $value) { ?>
-                    <p>
+                    <p> <svg class="icon">
+                            <use xlink:href="#it-mail"></use>
+                        </svg>
                         <a  
                         target="_blank" 
                         aria-label="invia un'email a <?php echo $value; ?>"
