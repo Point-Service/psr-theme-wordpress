@@ -27,7 +27,7 @@
 
 
 
-<div class="richtext-wrapper lora">
+
  <div class="card card-teaser shadow mt-3 rounded">
   <div data-element="service-area">
     <div class="block" id="it-">
@@ -48,11 +48,7 @@
 	     echo '<div class="card-text"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
 	     echo '<p></p>';
 	   } ?>      
-    <?php if ($img) { ?>
-    <div class="avatar size-xl">
-        <?php dci_get_img($img); ?>
-    </div>
-    <?php } ?>	
+
    <?php foreach ($contatti_full as $full_contatto) { ?>	
 
 
@@ -119,7 +115,7 @@
   </div>
  </div>
  </div>
-</div>
+
 <?php } else { ?>
 <div class="card card-teaser border rounded shadow p-4">
  <div data-element="service-area">
