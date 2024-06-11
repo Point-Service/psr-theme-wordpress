@@ -14,8 +14,15 @@
     foreach ($contatti as $punto_contatto_id) {
 	$contatto = dci_get_full_punto_contatto($punto_contatto_id);
         array_push($contatti_full, $contatto);
-    }
-    
+      }
+    $other_contacts = array(
+        'linkedin',
+        'pec',
+        'skype',
+        'telegram',
+        'twitter',
+        'whatsapp'
+    );
     if($with_border) {
 ?>
 
