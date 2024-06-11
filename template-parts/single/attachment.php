@@ -35,9 +35,6 @@ $attachment_id = attachment_url_to_postid($file_url) ;
 $size = formatSizeUnits( filesize( get_attached_file( $attachment_id ) ) );
 $extension = strtoupper( wp_check_filetype($file_url)['ext'] );
 ?>
-    <?php 
-        $file_url = empty($file_url) ? 'https://www.google.it' : $file_url;
-    ?>
 <div class="cmp-icon-link">    
     <a class="list-item icon-left d-inline-block" href="<?php echo $file_url; ?>" aria-label="Scarica Termini e condizioni di servizio (<?php echo $extension.' '.$size; ?>)" data-element="service-file">
             <span class="list-item-title-icon-wrapper">
