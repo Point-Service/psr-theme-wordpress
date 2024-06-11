@@ -30,7 +30,7 @@ $other_contacts = array(
             } ?>
             <?php if ( is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                 foreach ($full_contatto['telefono'] as $value) {
-                    echo '<b>Tel.</b> '.$value.'</p>';
+                    echo ' '.$value.'</p>';
                 }
                     echo '<p class="mt-3"></p>';
             } ?>
