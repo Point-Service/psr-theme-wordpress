@@ -404,17 +404,18 @@ get_header();
                                 <?php get_template_part("template-parts/single/attachment"); ?>
                             </section>
                             <?php } ?>
+                                        
 
-                            <section class="it-page-section">
+                            <section class="it-page-section mb-30">
                                 <h2 class="mb-3" id="contacts">Contatti</h2>
                                   <div class="row">                            
-                                                                
+                                        <div class="col-12 col-lg-8 col-lg-6 mb-30">                         
                                         <div class="card-wrapper rounded h-auto mt-10">
                                             <?php
                                                 $with_border = true;
                                                 get_template_part("template-parts/unita-organizzativa/card");
                                             ?>
-                                       
+                                    </div>                                       
                                    </div>
                                     <div class="col-12 mb-30">
                                         <span class="text-paragraph-small">Argomenti:</span>
