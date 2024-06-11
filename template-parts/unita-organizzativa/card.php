@@ -76,31 +76,28 @@
                     } ?>
                     <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                         foreach ($full_contatto['email'] as $value) { ?>								     
-                            <p><div class="field--name-field-ita-mail">Email: 
-                                <font color="black">
-				<a  
-                                target="_blank" 
-                                aria-label="invia un'email a <?php echo $value; ?>"
-				title="invia un'email a <?php echo $value; ?>" 
-                                href="mailto:<?php echo $value; ?>">
-                                    <?php echo $value; ?>
-                                </a></font>
-			    </div></p>
-                    <?php }
-                    } ?>
-
-                    <?php if ( isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
-                        foreach ($full_contatto['pec'] as $value) { ?>								     
-                            <p><div class="field--name-field-ita-mail">Pec: 
-                              <font color="black">
-				<a  
+                            <p><div class="field--name-field-ita-mail">Email:                              
+				<a  class="text-decoration-none"
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
 				title="invia un'email a <?php echo $value; ?>" 
                                 href="mailto:<?php echo $value; ?>">
                                     <?php echo $value; ?>
                                 </a>
-			      </font>	
+			    </div></p>
+                    <?php }
+                    } ?>
+
+                    <?php if ( isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
+                        foreach ($full_contatto['pec'] as $value) { ?>								     
+                            <p><div class="field--name-field-ita-mail">Pec:                              
+				<a class="text-decoration-none" 
+                                target="_blank" 
+                                aria-label="invia un'email a <?php echo $value; ?>"
+				title="invia un'email a <?php echo $value; ?>" 
+                                href="mailto:<?php echo $value; ?>">
+                                    <?php echo $value; ?>
+                                </a>			     
 			    </div></p>
                     <?php }
                     } ?>	     
