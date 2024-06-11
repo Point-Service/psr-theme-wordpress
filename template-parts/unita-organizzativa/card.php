@@ -77,13 +77,14 @@
                     <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                         foreach ($full_contatto['email'] as $value) { ?>								     
                             <p><div class="field--name-field-ita-mail">Email: 
-                                <a  
+                                <font color="black">
+				<a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
 				title="invia un'email a <?php echo $value; ?>" 
                                 href="mailto:<?php echo $value; ?>">
                                     <?php echo $value; ?>
-                                </a>
+                                </a></font>
 			    </div></p>
                     <?php }
                     } ?>
@@ -91,13 +92,15 @@
                     <?php if ( isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
                         foreach ($full_contatto['pec'] as $value) { ?>								     
                             <p><div class="field--name-field-ita-mail">Pec: 
-                                <a  
+                              <font color="black">
+				<a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
 				title="invia un'email a <?php echo $value; ?>" 
                                 href="mailto:<?php echo $value; ?>">
                                     <?php echo $value; ?>
                                 </a>
+			      </font>	
 			    </div></p>
                     <?php }
                     } ?>	     
