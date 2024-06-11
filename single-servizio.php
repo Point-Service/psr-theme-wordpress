@@ -411,10 +411,10 @@ get_header();
                          <div class="row">
                             <div class="col-12 mb-30">
                                     <ul class="d-flex flex-wrap gap-2 mt-10 mb-30" data-element="service-area">
-                                                   <?php
-                                                   $with_border = true;
-                                                   get_template_part("template-parts/unita-organizzativa/card-full");
-                                                 ?>
+                                       <?php
+                                          $with_border = true;
+                                          get_template_part("template-parts/unita-organizzativa/card-full");
+                                        ?>
                                     </ul>
                              </div> 
                          </div> 
