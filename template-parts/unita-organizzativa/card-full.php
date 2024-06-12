@@ -57,7 +57,7 @@
                             </section>
                     <?php } ?> 
             <?php foreach ($contatti as $full_contatto) { ?>
-                <div class="card-text mb-3">
+              <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
                     <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
                         foreach ($full_contatto['indirizzo'] as $value) {
                             echo '<p>'.$value.'</p>';
