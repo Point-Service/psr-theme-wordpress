@@ -128,7 +128,9 @@
                     <?php if ($sede_principale) { ?>
                             <section class="it-page-section">
                               <div class="field--name-field-ita-indirizzo">                                  
-                                <p> 
+                                <p><svg class="icon">
+                                    <use xlink:href="it-map-marker-circle"></use>
+                                   </svg>
                                     <a target="_blank" 
                                     aria-label="Apri la mappa  <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>"
                                     href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>">
