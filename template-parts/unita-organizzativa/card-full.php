@@ -108,17 +108,14 @@
                         <?php echo $ufficio->post_title; ?>
                     </a>
                 </h5>
-
-                            <?php if ($sede_principale) { ?>
-                            <section class="it-page-section">
-                                <p><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?></p>
-                                <p><?php echo dci_get_meta("descrizione_breve", '_dci_luogo_', $sede_principale); ?></p>
-                                    
-                           
-                            </section>
-                            <?php } ?>
-        
                 <div class="card-text">
+
+                    <?php if ($sede_principale) { ?>
+                            <section class="it-page-section">
+                                <p><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?></p>                                  
+                            </section>
+                    <?php } ?>       
+
                     <?php foreach ($contatti as $full_contatto) { ?>
                         <div class="card-text mb-3">
 
