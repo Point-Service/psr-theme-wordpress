@@ -133,16 +133,13 @@
                                     aria-label="Apri la mappa  <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>"
                                     href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>">
                                        <svg class="icon">
-                                    <use xlink:href="it-map-marker-circle"></use>
+                                    <use xlink:href="it-map-marker"></use>
                                    </svg><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>
                                     </a>
                               </p> 
                               </div>
                             </section>
                     <?php } ?>       
-  <svg class="icon">
-                                    <use xlink:href="it-map-marker-circle"></use>
-                                   </svg>
                     <?php foreach ($contatti as $full_contatto) { ?>
                         <div class="card-text mb-3">
 
