@@ -111,11 +111,10 @@
 
                             <?php if ($sede_principale) { ?>
                             <section class="it-page-section">
-                                <h2 class="mb-3" id="contacts">Sede principale</h2>
-                                                     <p><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?></p>
-                                                    <p><?php echo dci_get_meta("descrizione_breve", '_dci_luogo_', $sede_principale); ?></p>
+                                <p><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?></p>
+                                <p><?php echo dci_get_meta("descrizione_breve", '_dci_luogo_', $sede_principale); ?></p>
                                     
-                                </div>
+                           
                             </section>
                             <?php } ?>
         
