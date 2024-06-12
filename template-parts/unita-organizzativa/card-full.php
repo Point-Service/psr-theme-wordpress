@@ -120,7 +120,7 @@
 </div>
 <?php } else { ?>
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
-  <div class="card card-teaser card-teaser-info rounded shadow-sm p-4">
+
             <svg class="icon">
                 <use xlink:href="#it-pa"></use>
             </svg>
@@ -220,7 +220,7 @@
                     <?php } ?>
                 </div>
             </div>
-        </div>
+
     </div>
 <?php } 
 $with_border = false;
