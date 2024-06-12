@@ -119,8 +119,8 @@
     </div>
 </div>
 <?php } else { ?>
-    <div class="card-wrapper rounded shadow-sm h-auto my-5">
-        <div class="card card-teaser card-teaser-info rounded shadow-sm p-4">
+<div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
+    <div class="card-body pe-3">
             <svg class="icon">
                 <use xlink:href="#it-pa"></use>
             </svg>
