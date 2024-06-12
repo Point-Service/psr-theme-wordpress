@@ -120,7 +120,7 @@
 </div>
 <?php } else { ?>
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
-    <div class="card-body pe-3">
+  <div class="card card-teaser card-teaser-info rounded shadow-sm p-4">
             <svg class="icon">
                 <use xlink:href="#it-pa"></use>
             </svg>
@@ -164,7 +164,7 @@
                         foreach ($full_contatto['telefono'] as $value) {
                             echo '<p><svg class="icon">
                             <use xlink:href="#it-telephone"></use>
-                        </svg>'.$value.'</p>';
+                        </svg> '.$value.'</p>';
                         }
                     } ?>
                     <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
@@ -188,7 +188,7 @@
                                 href="mailto:<?php echo $value; ?>">
                                    <svg class="icon">
                             <use xlink:href="#it-mail"></use>
-                        </svg><?php echo $value; ?>
+                        </svg> <?php echo $value; ?>
                                 </a>
                             </div></p>
                     <?php }
@@ -202,7 +202,7 @@
                                 href="mailto:<?php echo $value; ?>">
                                   <svg class="icon">
                             <use xlink:href="#it-mail"></use>
-                        </svg><?php echo ''.$value.''; ?>                                                                   
+                        </svg> <?php echo ''.$value.''; ?>                                                                   
                                 </a>
                             </div></p>
                     <?php }
