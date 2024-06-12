@@ -112,7 +112,9 @@
 
                     <?php if ($sede_principale) { ?>
                             <section class="it-page-section">
-                                <p><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?></p>                                  
+                              <div class="field--name-field-ita-indirizzo">
+                                <p><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?></p> 
+                              </div>
                             </section>
                     <?php } ?>       
 
