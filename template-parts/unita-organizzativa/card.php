@@ -28,7 +28,7 @@
 
 
 
- <div class="card card-teaser shadow mt-3 rounded">
+<div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
   <div data-element="service-area">
     <div class="block" id="it-">
      <div class="card-body pe-3">
