@@ -109,7 +109,7 @@
                     </a>
                 </h5>
 
-                        
+                            <?php if ($sede_principale) { ?>
                             <section class="it-page-section">
                                 <h2 class="mb-3" id="contacts">Sede principale</h2>
                                 <div class="row">
@@ -127,27 +127,18 @@
                                             </div>
                                         </div>
                                         </div>
-                                    </div>                                    
+
+                                    </div>
+
+                                    
                                 </div>
                             </section>
-                        
-                
+                            <?php } ?>
+        
                 <div class="card-text">
                     <?php foreach ($contatti as $full_contatto) { ?>
                         <div class="card-text mb-3">
 
-                            <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])) {
-                                echo '<div class="mb-3">';
-                                foreach ($full_contatto['indirizzo'] as $dati) {
-                                    echo '<p>' . $dati['valore'];
-                                    if ($dati['dettagli']) {
-                                        echo $dati['dettagli'];
-                                    }
-                                    echo '</p>';
-                                }
-                                echo '</div>';
-                            } ?>
-        
                     <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
                         foreach ($full_contatto['indirizzo'] as $value) {
                             echo '<p>'.$value.'</p>';
