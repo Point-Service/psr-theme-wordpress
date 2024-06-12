@@ -140,7 +140,9 @@
                               </div>
                             </section>
                     <?php } ?>       
-
+  <svg class="icon">
+                                    <use xlink:href="it-map-marker-circle"></use>
+                                   </svg>
                     <?php foreach ($contatti as $full_contatto) { ?>
                         <div class="card-text mb-3">
 
