@@ -108,6 +108,32 @@
                         <?php echo $ufficio->post_title; ?>
                     </a>
                 </h5>
+
+                          <?php if ($sede_principale) { ?>
+                            <section class="it-page-section">
+                                <h2 class="mb-3" id="contacts">Sede principale</h2>
+                                <div class="row">
+                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
+                                        <div class="card-wrapper rounded h-auto mt-10">
+                                            <div class="card card-teaser card-teaser-info rounded shadow-sm p-3">
+                                            <div class="card-body pe-3">
+                                                <p class="card-title text-paragraph-regular-medium-semi mb-3">
+                                                    <a href="<?php echo get_permalink($sede_principale); ?>"><?php echo dci_get_meta('nome_alternativo', '_dci_luogo_', $sede_principale); ?></a>
+                                                </p>
+                                                <div class="card-text">
+                                                     <p><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?></p>
+                                                         <p><?php echo dci_get_meta("descrizione_breve", '_dci_luogo_', $sede_principale); ?></
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                    </div>
+
+                                    
+                                </div>
+                            </section>
+                            <?php } ?>               
                 <div class="card-text">
                     <?php foreach ($contatti as $full_contatto) { ?>
                         <div class="card-text mb-3">
