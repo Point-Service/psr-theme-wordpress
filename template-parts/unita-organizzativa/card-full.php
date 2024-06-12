@@ -35,20 +35,27 @@
         </h5>
         <div class="card-text">
             
+
                     <?php if ($sede_principale) { ?>
                             <section class="it-page-section">
                               <div class="field--name-field-ita-indirizzo">                                  
-                                <p> 
+                                <p>
                                     <a target="_blank" 
                                     aria-label="Apri la mappa  <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>"
                                     href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>">
-                                       <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>
+					<svg class="icon" viewBox="0 0 24 24"><g>
+					<g>
+						<path d="M17.7,5.3C16,2.2,12,1.1,8.9,2.8s-4.3,5.7-2.5,8.8L12,22l5.7-10.4c0.5-1,0.8-2,0.8-3.1S18.2,6.3,17.7,5.3z M16.8,11.1
+							L12,19.9l-4.8-8.8c-0.5-0.8-0.7-1.7-0.7-2.7C6.5,5.4,9,3,12,3s5.5,2.5,5.5,5.5C17.5,9.4,17.3,10.3,16.8,11.1z"></path>
+						<path d="M12,5c-1.9,0-3.5,1.6-3.5,3.5S10.1,12,12,12s3.5-1.6,3.5-3.5S13.9,5,12,5z M12,11c-1.4,0-2.5-1.1-2.5-2.5S10.6,6,12,6
+							s2.5,1.1,2.5,2.5S13.4,11,12,11z"></path>
+					</g>
+					</g></svg><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>
                                     </a>
                               </p> 
                               </div>
                             </section>
-                    <?php } ?>   
-            
+                    <?php } ?> 
             <?php foreach ($contatti as $full_contatto) { ?>
                 <div class="card-text mb-3">
                     <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
@@ -132,14 +139,14 @@
                                     <a target="_blank" 
                                     aria-label="Apri la mappa  <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>"
                                     href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>">
-<svg class="icon" viewBox="0 0 24 24"><g>
-<g>
-	<path d="M17.7,5.3C16,2.2,12,1.1,8.9,2.8s-4.3,5.7-2.5,8.8L12,22l5.7-10.4c0.5-1,0.8-2,0.8-3.1S18.2,6.3,17.7,5.3z M16.8,11.1
-		L12,19.9l-4.8-8.8c-0.5-0.8-0.7-1.7-0.7-2.7C6.5,5.4,9,3,12,3s5.5,2.5,5.5,5.5C17.5,9.4,17.3,10.3,16.8,11.1z"></path>
-	<path d="M12,5c-1.9,0-3.5,1.6-3.5,3.5S10.1,12,12,12s3.5-1.6,3.5-3.5S13.9,5,12,5z M12,11c-1.4,0-2.5-1.1-2.5-2.5S10.6,6,12,6
-		s2.5,1.1,2.5,2.5S13.4,11,12,11z"></path>
-</g>
-</g></svg><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>
+					<svg class="icon" viewBox="0 0 24 24"><g>
+					<g>
+						<path d="M17.7,5.3C16,2.2,12,1.1,8.9,2.8s-4.3,5.7-2.5,8.8L12,22l5.7-10.4c0.5-1,0.8-2,0.8-3.1S18.2,6.3,17.7,5.3z M16.8,11.1
+							L12,19.9l-4.8-8.8c-0.5-0.8-0.7-1.7-0.7-2.7C6.5,5.4,9,3,12,3s5.5,2.5,5.5,5.5C17.5,9.4,17.3,10.3,16.8,11.1z"></path>
+						<path d="M12,5c-1.9,0-3.5,1.6-3.5,3.5S10.1,12,12,12s3.5-1.6,3.5-3.5S13.9,5,12,5z M12,11c-1.4,0-2.5-1.1-2.5-2.5S10.6,6,12,6
+							s2.5,1.1,2.5,2.5S13.4,11,12,11z"></path>
+					</g>
+					</g></svg><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>
                                     </a>
                               </p> 
                               </div>
