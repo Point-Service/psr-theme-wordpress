@@ -34,6 +34,21 @@
             </a>
         </h5>
         <div class="card-text">
+            
+                    <?php if ($sede_principale) { ?>
+                            <section class="it-page-section">
+                              <div class="field--name-field-ita-indirizzo">                                  
+                                <p> 
+                                    <a target="_blank" 
+                                    aria-label="Apri la mappa  <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>"
+                                    href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>">
+                                       <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>
+                                    </a>
+                              </p> 
+                              </div>
+                            </section>
+                    <?php } ?>   
+            
             <?php foreach ($contatti as $full_contatto) { ?>
                 <div class="card-text mb-3">
                     <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
