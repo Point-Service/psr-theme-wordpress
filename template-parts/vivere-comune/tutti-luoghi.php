@@ -1,15 +1,21 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
     $load_posts = 3;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
-        's'         => $query,
-        'post_type' => 'luogo'
+        's' => $query,
+        'posts_per_page' => $max_posts,
+        'post_type'      => 'luogo',
+		'post_status'    => 'publish',
+        'orderby'        => 'post_title',
+        'order'          => 'ASC'
     );
-
     $the_query = new WP_Query( $args );
+
     $posts = $the_query->posts;
+
 ?>
 
 
@@ -40,19 +46,21 @@ global $the_query, $load_posts, $load_card_type;
                             </span>
                         </div>
                         <p id="autocomplete-label" class="u-grey-light text-paragraph-card mt-2 mb-30 mt-lg-3 mb-lg-40">
-                            <?php echo $the_query->found_posts; ?> notizie trovate in ordine alfabetico
+                            <?php echo $the_query->found_posts; ?> luoghi trovati in ordine alfabetico
                         </p>
                     </div>
                 </div>
             </div>
             <div class="row g-4" id="load-more">
-                <?php 
-                    foreach ($posts as $post) {
+                <?php
+                foreach ( $posts as $post ) {
                     $load_card_type = 'luogo';
-                    get_template_part("template-parts/luogo/card-full");
-                }?>
+                    get_template_part('template-parts/luogo/card-full');
+                }
+                ?>
             </div>
             <?php get_template_part("template-parts/search/more-results"); ?>
         </div>
     </form>
 </div>
+<?php wp_reset_query(); ?>
