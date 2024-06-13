@@ -262,11 +262,11 @@ get_header();
  		  <?php } ?>		
 
 
-gfgfgfgf
+
 
 
 		
-          <?php get_template_part('template-parts/single/page_bottom'); ?>
+          <?php //get_template_part('template-parts/single/page_bottom'); ?>
           </section>
       </div>
     </div>
