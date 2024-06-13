@@ -220,9 +220,49 @@ get_header();
 
 
 
+          <article id="contatti" class="it-page-section mb-5">
+          <?php if( is_array($punti_contatto) && count($punti_contatto) ) { ?>
+            <h2 class="mb-3">Contatti</h2>
+            <?php foreach ($punti_contatto as $pc_id) {
+                get_template_part('template-parts/single/punto-contatto');
+            } ?>
+          <?php } ?>
 
 
 
+          <?php if( is_array($organizzatori) && count($organizzatori) ) { ?>
+            <h4 class="h5 mt-4">Con il supporto di:</h4>
+            <?php foreach ($organizzatori as $uo_id) {
+               get_template_part("template-parts/unita-organizzativa/card-full");
+            } ?>
+          <?php } ?>
+          </article>
+			
+          <?php if($struttura_responsabile) {?>
+          <article id="struttura-responsabile" class="it-page-section mb-5">
+            <h2 class="mb-3">Struttura responsabile</h2>
+			<div class="row">
+				<div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+					<?php foreach ($struttura_responsabile as $uo_id) {
+						$with_border = true;
+						get_template_part("template-parts/unita-organizzativa/card");
+					} ?>
+				</div>
+			</div>
+          </article>
+          <?php } ?>
+
+		  
+			
+          <?php if($ulteriori_informazioni) {?>
+          <article id="ulteriori-informazioni" class="it-page-section mb-5">
+            <h2 class="mb-3">Ulteriori informazioni</h2>
+            <p><?php echo $ulteriori_informazioni; ?></p>
+          </article>
+ 		  <?php } ?>		
+
+
+gfgfgfgf
 
 
 		
