@@ -106,7 +106,9 @@ function load_more(){
 		if ($load_card_type == "domanda-frequente"){
 			$out .= load_template_part("template-parts/domanda-frequente/item");  
 		}	
- 
+		if ($load_card_type == "luogo"){
+			$out .= load_template_part("template-parts/luogo/card-full");  
+		}	 
 		endwhile;
  
 	endif;
