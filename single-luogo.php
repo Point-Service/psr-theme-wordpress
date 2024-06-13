@@ -226,7 +226,7 @@ get_header();
           <?php if( is_array($organizzatori) && count($organizzatori) ) { ?>
             <h4 class="h5 mt-4">Con il supporto di:</h4>
             <?php foreach ($organizzatori as $uo_id) {
-                get_template_part("template-parts/unita-organizzativa/card-full");
+              //  get_template_part("template-parts/unita-organizzativa/card-full");
             } ?>
           <?php } ?>
           </article>
@@ -238,7 +238,7 @@ get_header();
 				<div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
 					<?php foreach ($struttura_responsabile as $uo_id) {
 						$with_border = true;
-						get_template_part("template-parts/unita-organizzativa/card");
+						//get_template_part("template-parts/unita-organizzativa/card");
 					} ?>
 				</div>
 			</div>
