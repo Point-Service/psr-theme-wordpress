@@ -41,7 +41,7 @@ function load_more(){
         'post_type'      => $post_types,
         'orderby'        => 'date',
         'order'          => 'DESC',
-		'post_status' => 'publish' 
+	'post_status' => 'publish' 
     );
 	
 	if ( $post_types != "notizia" && $post_types != "evento") {
