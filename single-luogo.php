@@ -224,17 +224,6 @@ get_header();
             } ?>
           <?php } ?>
 
-
-
-
-		  
-			
-          <?php if($ulteriori_informazioni) {?>
-          <article id="ulteriori-informazioni" class="it-page-section mb-5">
-            <h2 class="mb-3">Ulteriori informazioni</h2>
-            <p><?php echo $ulteriori_informazioni; ?></p>
-          </article>
- 		  <?php } ?>
 			  
           <?php get_template_part('template-parts/single/page_bottom'); ?>
           </section>
