@@ -171,15 +171,7 @@ get_header();
                                             <div class="accordion">
                                                 <div class="accordion-item">
                                                     <span class="accordion-header" id="accordion-title-one">
-                                                        <button class="accordion-button pb-10 px-3 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
-                                                            Indice della pagina
-                                                            <svg class="icon icon-xs right">
-                                                                <use href="#it-expand"></use>
-                                                            </svg>
-                                                        </button>
-                                                    </span>
-
-
+                                                        
                                                     <?php if($img) { ?>
                                                         <section class="hero-img mb-20 mb-lg-50">
                                                           <section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
@@ -191,7 +183,14 @@ get_header();
                                                           </section>
                                                         </section>
                                                     <?php } ?>
-                                                    
+                                                        <button class="accordion-button pb-10 px-3 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
+                                                            Indice della pagina
+                                                            <svg class="icon icon-xs right">
+                                                                <use href="#it-expand"></use>
+                                                            </svg>
+                                                        </button>
+                                                    </span>
+
                                                     <div class="progress">
                                                         <div class="progress-bar it-navscroll-progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
