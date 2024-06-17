@@ -303,8 +303,8 @@ get_header();
                                              </div>                                  
                                         </section>
                                     </div>
-                                </div>
-                                <?php } ?>                    
+                                </div>....
+                                <?php } ?>                   
  
                              <?php if ($incarico) { ?>
                             <section class="it-page-section mb-30">
