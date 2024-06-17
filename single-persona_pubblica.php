@@ -161,10 +161,6 @@ get_header();
                 </div>
             </div>
 
-            <?php if($img) { ?>
-                       <div class="img-wrapper"><img src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
-            <?php } ?>
-    
             <div class="container">
                 <div class="row justify-content-center">
                     <hr class="d-none d-lg-block mt-2" />
@@ -305,6 +301,9 @@ get_header();
                         </div>
                     </div>
                     <div class="col-12 col-lg-8 offset-lg-1">
+                        <?php if($img) { ?>
+                               <div class="img-wrapper"><img src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
+                        <?php } ?>
                         <div class="it-page-sections-container">
                              <?php if ($incarico) { ?>
                             <section class="it-page-section mb-30">
