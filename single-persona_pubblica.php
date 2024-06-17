@@ -295,15 +295,19 @@ get_header();
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
                               <?php if($img) { ?>
-                                 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
-                                    <div class="card-body pe-3">   
+                                <div class="offset-md-1 col-md-6 lora page-pnrr-content">
+                                   <div class="card-wrapper card-space" >
+                                    <div class=" card card-bg  card-big rounded shadow">
+                                      <div class="card-body">
                                         <section class="hero-img mb-20 mb-lg-50">                                    
                                              <div class="img-responsive-wrapper">
                                                    <div class="img-wrapper"><img width="400" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
                                              </div>                                  
                                         </section>
+                                      </div>
                                     </div>
-                                </div>....
+                                   </div>
+                                  </div>
                                 <?php } ?>                   
  
                              <?php if ($incarico) { ?>
