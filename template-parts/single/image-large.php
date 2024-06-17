@@ -14,7 +14,7 @@ if ($img_url) {
                 src="<?php echo $img_url; ?>"
                 class="figure-img img-fluid"
                 alt="<?php echo $image_alt; ?>"
-                width="200"
+                width="300"
             />
             <?php if ($img->post_excerpt)  {?>
             <figcaption class="figure-caption text-center pt-3">
