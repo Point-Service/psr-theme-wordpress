@@ -172,17 +172,18 @@ get_header();
                                                 <div class="accordion-item">
                                                     <span class="accordion-header" id="accordion-title-one">
                                                         
-                                                    <?php if($img) { ?>
-                                                        <section class="hero-img mb-20 mb-lg-50">
-                                                          <section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
-                                                             <div class="img-responsive-wrapper">
-                                                                <div class="img-responsive">
-                                                                   <div class="img-wrapper"><img width="100" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
-                                                                </div>
-                                                             </div>
-                                                          </section>
-                                                        </section>
-                                                    <?php } ?>
+                                                        <?php if($img) { ?>
+                                                            <section class="hero-img mb-20 mb-lg-50">
+                                                              <section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
+                                                                 <div class="img-responsive-wrapper">
+                                                                    <div class="img-responsive">
+                                                                       <div class="img-wrapper"><img width="50" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
+                                                                    </div>
+                                                                 </div>
+                                                              </section>
+                                                            </section>
+                                                        <?php } ?>
+                                        
                                                         <button class="accordion-button pb-10 px-3 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
                                                             Indice della pagina
                                                             <svg class="icon icon-xs right">
