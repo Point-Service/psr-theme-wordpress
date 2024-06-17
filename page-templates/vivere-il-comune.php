@@ -19,7 +19,7 @@ get_header();
 			$data_element = 'data-element="page-name"';
 			?>
 			<?php get_template_part("template-parts/hero/hero"); ?>
-			
+			ddddd
 			<section class="hero-img mb-20 mb-lg-50">
 				<?php if($img != null) { ?>
 				<section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
