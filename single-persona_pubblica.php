@@ -177,7 +177,7 @@ get_header();
                                                               <section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
                                                                  <div class="img-responsive-wrapper">
 
-                                                                       <div class="img-wrapper"><img width="50" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
+                                                                       <div class="img-wrapper"><img width="200" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
                                                              
                                                                  </div>
                                                               </section>
