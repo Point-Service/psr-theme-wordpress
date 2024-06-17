@@ -15,8 +15,16 @@ $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
         <div class="card card-img no-after rounded">
             <div class="img-responsive-wrapper cmp-list-card-img__wrapper">
                 <div class="img-responsive img-responsive-panoramic h-100">
-  
-                    <div class="card-calendar d-flex flex-column justify-content-center">
+                    <figure class="img-wrapper">
+                     <?php
+                        if (strlen($img) > 1) {
+                            dci_get_img($img, 'rounded-top img-fluid');
+                        }
+                    ?>
+                    </figure>
+                    <div
+                    class="card-calendar d-flex flex-column justify-content-center"
+                    >
                   
                     <span class="card-date"><?php echo $arrdata[0]; ?></span>
                     <span class="card-day"><?php echo $arrdata[1]; ?></span>
@@ -24,13 +32,6 @@ $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
                 </div>
             </div>
             <div class="card-body">
-                <figure class="img-wrapper">
-                     <?php
-                        if (strlen($img) > 1) {
-                            dci_get_img($img, 'rounded-top img-fluid');
-                        }
-                    ?>
-                </figure>ccc
                 <div class="category-top cmp-list-card-img__body">
                     <a class="text-decoration-none fw-bold cmp-list-card-img__body-heading-title" href="<?php echo get_term_link($tipo_evento->term_id); ?>">
                         <?php echo $tipo_evento->name; ?>
