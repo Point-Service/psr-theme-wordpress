@@ -13,7 +13,7 @@ $arrdata = explode('-', date_i18n("j-F-Y", $timestamp));
 			<div class="img-responsive img-responsive-panoramic">
 			<figure class="img-wrapper">
 				<?php dci_get_img($img); ?>
-			</figure>
+			</figure>ssss
 			<div
 				class="card-calendar d-flex flex-column justify-content-center"
 			>
