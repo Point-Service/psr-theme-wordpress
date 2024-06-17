@@ -297,12 +297,10 @@ get_header();
                         <hr class="d-none d-lg-block mt-2"/>
                         <div class="it-page-sections-container">
                               <?php if($img) { ?>
-                                    <section class="hero-img mb-20 mb-lg-50">
-                                    
+                                    <section class="hero-img mb-20 mb-lg-50">                                    
                                          <div class="img-responsive-wrapper">
                                                <div class="img-wrapper"><img width="400" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
-                                         </div>
-                                  
+                                         </div>                                  
                                     </section>
                                 <?php } ?>                    
                                 <hr class="d-none d-lg-block mt-2"/>
