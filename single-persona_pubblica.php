@@ -181,6 +181,19 @@ get_header();
                                                     <div class="progress">
                                                         <div class="progress-bar it-navscroll-progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
+
+
+                                                    <?php if($img) { ?>
+                                                        <section class="hero-img mb-20 mb-lg-50">
+                                                          <section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
+                                                             <div class="img-responsive-wrapper">
+                                                                <div class="img-responsive">
+                                                                   <div class="img-wrapper"><img width="200" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
+                                                                </div>
+                                                             </div>
+                                                          </section>
+                                                        </section>
+                                                    <?php } ?>
                                                     <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
                                                         <div class="accordion-body">
                                                             <ul class="link-list" data-element="page-index">
@@ -294,21 +307,7 @@ get_header();
                     </div>
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
-                              <?php if($img) { ?>
-                                <div class="offset-md-1 col-md-6 lora page-pnrr-content">
-                                   <div class="card-wrapper card-space" >
-                                    <div class=" card card-bg  card-big rounded shadow">
-                                      <div class="card-body">
-                                        <section class="hero-img mb-20 mb-lg-50">                                    
-                                             <div class="img-responsive-wrapper">
-                                                   <div class="img-wrapper"><img width="400" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
-                                             </div>                                  
-                                        </section>
-                                      </div>
-                                    </div>
-                                   </div>
-                                  </div>
-                                <?php } ?>                   
+           
  
                              <?php if ($incarico) { ?>
                             <section class="it-page-section mb-30">
