@@ -30,7 +30,7 @@ $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
                             dci_get_img($img, 'rounded-top img-fluid');
                         }
                     ?>
-                </figure>
+                </figure>ccc
                 <div class="category-top cmp-list-card-img__body">
                     <a class="text-decoration-none fw-bold cmp-list-card-img__body-heading-title" href="<?php echo get_term_link($tipo_evento->term_id); ?>">
                         <?php echo $tipo_evento->name; ?>
