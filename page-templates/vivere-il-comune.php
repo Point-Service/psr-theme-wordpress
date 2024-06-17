@@ -23,7 +23,7 @@ get_header();
 				<div class="container">
 					<div class="row">
 				<?php if($img != null) { ?>
-				<section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
+				<section class="it-hero-small-size cmp-hero-img-small">
 					<div class="img-responsive-wrapper">
 						<div class="img-responsive">
 							<div class="img-wrapper">
