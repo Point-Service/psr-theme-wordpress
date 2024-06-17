@@ -157,7 +157,7 @@ get_header();
                             </div>
                         </div>
                     </div>            
-
+                    <hr class="d-none d-lg-block mt-2"/>
                 </div>
             </div>
             <div class="container">
