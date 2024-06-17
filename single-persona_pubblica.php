@@ -295,13 +295,13 @@ get_header();
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
                               <?php if($img) { ?>
-                                 <hr class="d-none d-lg-block mt-2"/>
+                                <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">    
                                     <section class="hero-img mb-20 mb-lg-50">                                    
                                          <div class="img-responsive-wrapper">
                                                <div class="img-wrapper"><img width="400" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
                                          </div>                                  
                                     </section>
-                                <hr class="d-none d-lg-block mt-2"/>
+                                </div>
                                 <?php } ?>                    
  
                              <?php if ($incarico) { ?>
