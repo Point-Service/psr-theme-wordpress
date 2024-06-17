@@ -62,8 +62,9 @@ get_header();
                         get_template_part('template-parts/single/actions');
                         ?>
                     </div>
-                </div>
+                    
                             <?php get_template_part('template-parts/single/image-large'); ?>
+                </div>
             </div>
 
             <div class="container">
