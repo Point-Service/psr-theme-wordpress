@@ -43,8 +43,7 @@ get_header();
                         <p data-audio>
                             <?php echo $descrizione_breve; ?>
                         </p>
-
-                            <?php get_template_part('template-parts/single/image-large'); ?>                        
+            
                         <div class="row mt-5 mb-4">
                             <div class="col-6">
                                 <small>Data:</small>
@@ -63,10 +62,9 @@ get_header();
                         $inline = true;
                         get_template_part('template-parts/single/actions');
                         ?>
-                    </div>
-                    
-
-                </div>
+                    </div>                 
+                </div>                
+                            <?php get_template_part('template-parts/single/image-large'); ?>            
             </div>
 
             <div class="container">
