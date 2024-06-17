@@ -174,13 +174,13 @@ get_header();
                                                         
                                                         <?php if($img) { ?>
                                                             <section class="hero-img mb-20 mb-lg-50">
-                                                              <section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
+               
                                                                  <div class="img-responsive-wrapper">
 
                                                                        <div class="img-wrapper"><img width="200" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
 
                                                                  </div>
-                                                              </section>
+ 
                                                             </section>
                                                         <?php } ?>
                                         
