@@ -160,11 +160,11 @@ get_header();
             
                     <?php if($img) { ?>
                         <section class="hero-img mb-20 mb-lg-50">
-                          <section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
+                        
                              <div class="img-responsive-wrapper">
-                                   <div class="img-wrapper"><img width="300" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
+                                   <div class="img-wrapper"><img width="400" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
                              </div>
-                          </section>
+                      
                         </section>
                     <?php } ?>
                     
@@ -306,16 +306,7 @@ get_header();
                     </div>
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
-                            <?php if($img) { ?>
-                                <section class="hero-img mb-20 mb-lg-50">
-                                  <section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
-                                     <div class="img-responsive-wrapper">
-                                           <div class="img-wrapper"><img width="300" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
-                                     </div>
-                                  </section>
-                                </section>
-                            <?php } ?>
-                            
+                           
                              <?php if ($incarico) { ?>
                             <section class="it-page-section mb-30">
                                 <h2 class="title-xxlarge mb-3" id="who-needs">Incarico</h2>
