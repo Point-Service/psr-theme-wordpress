@@ -173,14 +173,10 @@ get_header();
                                                     <span class="accordion-header" id="accordion-title-one">
                                                         
                                                         <?php if($img) { ?>
-                                                            <section class="hero-img mb-20 mb-lg-50">
-               
+                                                            <section class="hero-img mb-20 mb-lg-50">               
                                                                  <div class="img-responsive-wrapper">
-
-                                                                       <div class="img-wrapper"><img width="300" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
-
-                                                                 </div>
- 
+                                                                     <center><div class="img-wrapper"><img width="300" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div></center>
+                                                                 </div> 
                                                             </section>
                                                         <?php } ?>
                                         
