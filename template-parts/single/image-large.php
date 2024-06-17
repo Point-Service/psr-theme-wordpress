@@ -1,4 +1,4 @@
-<?php
+kk<?php
 global $post;
 $img_url = dci_get_meta('immagine');
 $img = get_post( attachment_url_to_postid($img_url) );
