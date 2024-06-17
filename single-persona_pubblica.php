@@ -178,9 +178,6 @@ get_header();
                                                             </svg>
                                                         </button>
                                                     </span>
-                                                    <div class="progress">
-                                                        <div class="progress-bar it-navscroll-progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
 
 
                                                     <?php if($img) { ?>
@@ -188,12 +185,17 @@ get_header();
                                                           <section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
                                                              <div class="img-responsive-wrapper">
                                                                 <div class="img-responsive">
-                                                                   <div class="img-wrapper"><img width="200" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
+                                                                   <div class="img-wrapper"><img width="100" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
                                                                 </div>
                                                              </div>
                                                           </section>
                                                         </section>
                                                     <?php } ?>
+                                                    
+                                                    <div class="progress">
+                                                        <div class="progress-bar it-navscroll-progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+
                                                     <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
                                                         <div class="accordion-body">
                                                             <ul class="link-list" data-element="page-index">
