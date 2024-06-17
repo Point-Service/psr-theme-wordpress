@@ -63,8 +63,9 @@ get_header();
                         ?>
                     </div>
                 </div>
+                            <?php get_template_part('template-parts/single/image-large'); ?>
             </div>
-            <?php get_template_part('template-parts/single/image-large'); ?>
+
             <div class="container">
                 <div class="row border-top border-light row-column-border row-column-menu-left">
                     <aside class="col-lg-4">
