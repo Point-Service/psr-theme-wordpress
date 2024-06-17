@@ -1,4 +1,4 @@
-kk<?php
+<?php
 global $post;
 $img_url = dci_get_meta('immagine');
 $img = get_post( attachment_url_to_postid($img_url) );
@@ -9,7 +9,7 @@ if ($img_url) {
 
 <div class="container-fluid my-3">
     <div class="row">
-        <figure class="figure px-0 img-full">
+        <figure class="figure px-0 img-small">
             <img
                 src="<?php echo $img_url; ?>"
                 class="figure-img img-fluid"
