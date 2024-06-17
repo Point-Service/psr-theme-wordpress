@@ -9,7 +9,7 @@ $arrdata = explode('-', date_i18n("j-F-Y", $timestamp));
 $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
 
 ?>
-
+kkkkkkkkkkkkkk
 <div class="col-lg-6 col-xl-4">
     <div class="card-wrapper shadow-sm rounded cmp-list-card-img">
         <div class="card card-img no-after rounded">
