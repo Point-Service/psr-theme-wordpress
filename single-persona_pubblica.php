@@ -160,7 +160,6 @@ get_header();
 
                 </div>
             </div>
-
             <div class="container">
                 <div class="row row-column-menu-left mt-4 mt-lg-80 pb-lg-80 pb-40">
                     <div class="col-12 col-lg-3 mb-4 border-col">
@@ -294,16 +293,17 @@ get_header();
                         </div>
                     </div>
                     <div class="col-12 col-lg-8 offset-lg-1">
-                        <hr class="d-none d-lg-block mt-2"/>
                         <div class="it-page-sections-container">
                               <?php if($img) { ?>
+                                 <hr class="d-none d-lg-block mt-2"/>
                                     <section class="hero-img mb-20 mb-lg-50">                                    
                                          <div class="img-responsive-wrapper">
                                                <div class="img-wrapper"><img width="400" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
                                          </div>                                  
                                     </section>
-                                <?php } ?>                    
                                 <hr class="d-none d-lg-block mt-2"/>
+                                <?php } ?>                    
+ 
                              <?php if ($incarico) { ?>
                             <section class="it-page-section mb-30">
                                 <h2 class="title-xxlarge mb-3" id="who-needs">Incarico</h2>
