@@ -177,7 +177,7 @@ get_header();
                
                                                                  <div class="img-responsive-wrapper">
 
-                                                                       <div class="img-wrapper"><img width="200" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
+                                                                       <div class="img-wrapper"><img width="300" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div>
 
                                                                  </div>
  
