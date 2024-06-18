@@ -47,7 +47,7 @@ get_header();
 			</section>
 		<?php } ?>
 
-		
+			<?php get_template_part("template-parts/vivere-comune/evidenza"); ?>		
 			<?php get_template_part("template-parts/vivere-comune/tutti-luoghi"); ?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
