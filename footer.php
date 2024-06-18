@@ -172,12 +172,13 @@
                     </div>
                 </div>
                 <div class="col-md-3 mt-md-4 footer-items-wrapper">
+		     <h3 class="footer-heading-title">Seguici su</h3>
+                        <ul class="list-inline text-start social">
                     <?php
                         $socials = dci_get_option('link_social', 'socials');
                         if (is_array($socials) && count($socials)) {
                     ?>
-                        <h3 class="footer-heading-title">Seguici su</h3>
-                        <ul class="list-inline text-start social">
+
                             <?php foreach ($socials as $social) { ?>
                                     <li class="list-inline-item">
                                         <a href="<?php echo $social['url_social'] ?>" target="_blank" class="p-2 text-white">
@@ -187,8 +188,9 @@
                                         </a>
                                     </li>
                                 <?php } ?>
+			    <?php } ?>
                             </ul><!-- /header-social-wrapper -->
-                    <?php } ?>
+
                 </div>
             </div>
             <div class="row">
