@@ -229,7 +229,7 @@
                                 <small>
                                     © <?php echo dci_get_option("nome_comune"); ?>                              &nbsp;| Sviluppato da 
                                 </small>
-                                <a class="text-primary" style="text-decoration:none;" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">
+                                <a class="text-primary" style="text-decoration:none;" target="_Black" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">
                                     <span id="footerCompanyLabel" style="color: #fff">
                                         &nbsp;Point Service S.R.L
                                     </span>
