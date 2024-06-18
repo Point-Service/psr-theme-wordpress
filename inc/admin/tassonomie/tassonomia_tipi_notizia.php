@@ -25,7 +25,7 @@ function dci_register_taxonomy_tipi_notizia() {
         'show_ui'           => true,
         'show_admin_column' => true,
         'query_var'         => true,
-        'has_archive'           => true,    //archive page
+        'has_archive'       => true,    //archive page
         //'rewrite'           => array( 'slug' => 'novita' ),
         'capabilities'      => array(
             'manage_terms'  => 'manage_tipi_notizia',
