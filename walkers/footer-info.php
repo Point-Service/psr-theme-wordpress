@@ -36,9 +36,15 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 	            $item->url = '/tipi_notizia/avvisi';
 	        }
 	
+               // Sovrascrivi l'URL per "Comunicati" se è '/Comunicati'
+	        if ($item->title == 'Comunicati' && $item->url == '/novita') {
+	            $item->url = '/tipi_notizia/comunicato-stampa';
+	        }
 
-
-
+               // Sovrascrivi l'URL per "Notizie" se è '/Notizie'
+	        if ($item->title == 'Notizie' && $item->url == '/novita') {
+	            $item->url = '/tipi_notizia/notizie';
+	        }
 		
 		
 		$data_element = '';
