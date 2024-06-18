@@ -22,7 +22,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		if ( !$item->url ) $item['url'] = '#';
 		
 		        // Sovrascrivi l'URL per "Luoghi" se è vuoto
-		        if ($item->title == 'Luoghi' && empty($item->url)) {
+		        if ($item->title == 'Luoghi' && $item->url== 'vivere-il-comune/') {
 		            $item->url = '/luoghi';
 		        }
 		$data_element = '';
