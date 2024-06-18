@@ -31,7 +31,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 	            $item->url = $item->url . '/eventi';
 	        }
 
-               // Sovrascrivi l'URL per "Avvisi" se è '/vivere-il-comune'
+               // Sovrascrivi l'URL per "Avvisi" se è '/novita'
 	        if ($item->title == 'Avvisi' && $item->url == '/novita') {
 	            $item->url = $item->url . '/avvisi';
 	        }
