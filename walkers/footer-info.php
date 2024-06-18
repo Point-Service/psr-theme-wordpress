@@ -65,9 +65,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		        if ($item->title == 'Note legali') {
 		            $data_element = "data-element='legal-notes'";
 		        }
-		        if ($item->title == 'Luoghi') {
-		            $data_element = "data-element='LUOGHI'";
-		        }
+
 
 
 		$output .= '<a href="' . $item->url . '" '.$data_element.'>';
