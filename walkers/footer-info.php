@@ -23,12 +23,12 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		
 		        // Sovrascrivi l'URL per "Luoghi" se è vuoto
 		        if ($item->title == 'Luoghi' && $item->url== '/vivere-il-comune') {
-		            $item->url = '/luoghi';
+		            $item->url = $item->url'/luoghi';
 		        }
 
 		        // Sovrascrivi l'URL per "Eventi" se è vuoto
 		        if ($item->title == 'Eventi' && $item->url== '/vivere-il-comune') {
-		            $item->url = '/eventi';
+		            $item->url = $item->url'/eventi';
 		        }
 		
 		$data_element = '';
