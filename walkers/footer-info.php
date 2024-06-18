@@ -21,6 +21,10 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		$output .= "<li>";
 		if ( !$item->url ) $item['url'] = '#';
 		
+		        // Sovrascrivi l'URL per "Luoghi" se è vuoto
+		        if ($item->title == 'Luoghi' && empty($item->url)) {
+		            $item->url = '/luoghi';
+		        }
 		$data_element = '';
 		// set data-elements
 		if ( $item->title == 'Leggi le FAQ' ) $data_element="data-element='faq'";
