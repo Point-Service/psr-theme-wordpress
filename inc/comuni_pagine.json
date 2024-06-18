@@ -120,7 +120,22 @@
       "slug": "domande-frequenti",
       "description": "Elenco di risposte alle domande più frequenti raccolte dalle richieste di assistenza dei cittadini.",
       "template_name": "domande-frequenti",
-      "children": {}
+      "children": {  
+	  "Tutti i luoghi": {
+          "title": "I luoghi",
+          "slug": "luoghi",
+          "description": "Tutti i luoghi d’interesse per scoprire il territorio comunale.",
+          "template_name": "luoghi",
+          "children": {
+		  "Tutti i luoghi": {
+          "title": "I luoghi",
+          "slug": "luoghi",
+          "description": "Tutti i luoghi d’interesse per scoprire il territorio comunale.",
+          "template_name": "luoghi",
+          "children": {}
+
+	  }
+		  
     },
     "Segnala disservizio": {
       "title": "Segnala disservizio",
@@ -130,13 +145,7 @@
       "children": {}
     }
     
-		"Tutti i luoghi": {
-          "title": "I luoghi",
-          "slug": "luoghi",
-          "description": "Tutti i luoghi d’interesse per scoprire il territorio comunale.",
-          "template_name": "luoghi",
-          "children": {}
-		  }
+
 
     
   }
