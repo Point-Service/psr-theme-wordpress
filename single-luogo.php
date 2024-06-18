@@ -195,12 +195,15 @@ get_header();
 
           <?php if($indirizzo) {?>
           <article id="indirizzo" class="it-page-section mb-5">
-            <h2 class="mb-3">Indirizzo</h2><center>
+            <h2 class="mb-3">Indirizzo</h2>
+                  <div class="richtext-wrapper font-serif">
+		    <center>
 				<?php 
 					$luoghi = array($luogo);
 					get_template_part("template-parts/luogo/map"); 
 			         ?>
-</center>
+                    </center>
+		   </div>
                    <div class="richtext-wrapper font-serif mt-3">  
 				<?php echo $indirizzo; ?>
 		   </div>
