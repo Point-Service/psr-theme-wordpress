@@ -25,8 +25,10 @@ get_header();
 			$schede_luoghi = get_posts($args);
 
 		?>
-		
-			<?php get_template_part("template-parts/hero/hero"); ?>
+		<?php 
+			$with_shadow = true;
+			get_template_part("template-parts/hero/hero"); 
+		?>		
 			<?php get_template_part("template-parts/vivere-comune/tutti-luoghi"); ?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
