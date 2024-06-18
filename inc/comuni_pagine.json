@@ -129,5 +129,15 @@
       "template_name": "segnala-disservizio",
       "children": {}
     }
+    
+		"Tutti i luoghi": {
+          "title": "I luoghi",
+          "slug": "luoghi",
+          "description": "Tutti i luoghi d’interesse per scoprire il territorio comunale.",
+          "template_name": "luoghi",
+          "children": {}
+		  }
+
+    
   }
 }
