@@ -21,27 +21,28 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		$output .= "<li>";
 		if ( !$item->url ) $item['url'] = '#';
 		
-	       // Sovrascrivi l'URL per "Luoghi" se è '/vivere-il-comune'
+		
+	       // Sovrascrivi l'URL per "Luoghi" se è vuoto
 	        if ($item->title == 'Luoghi' && $item->url == '/vivere-il-comune') {
 	            $item->url = $item->url . '/luoghi';
 	        }
 	
-	        // Sovrascrivi l'URL per "Eventi" se è '/vivere-il-comune'
+	        // Sovrascrivi l'URL per "Eventi" se è vuoto
 	        if ($item->title == 'Eventi' && $item->url == '/vivere-il-comune') {
 	            $item->url = $item->url . '/eventi';
 	        }
 
-               // Sovrascrivi l'URL per "Avvisi" se è '/novita'
+               // Sovrascrivi l'URL per "Avvisi" se è vuoto
 	        if ($item->title == 'Avvisi' && $item->url == '/novita') {
 	            $item->url = '/tipi_notizia/avvisi';
 	        }
 	
-               // Sovrascrivi l'URL per "Comunicati" se è '/Comunicati'
+               // Sovrascrivi l'URL per "Comunicati" se è vuoto
 	        if ($item->title == 'Comunicati' && $item->url == '/novita') {
 	            $item->url = '/tipi_notizia/comunicato-stampa';
 	        }
 
-               // Sovrascrivi l'URL per "Notizie" se è '/Notizie'
+               // Sovrascrivi l'URL per "Notizie" se è vuoto
 	        if ($item->title == 'Notizie' && $item->url == '/novita') {
 	            $item->url = '/tipi_notizia/notizie';
 	        }
