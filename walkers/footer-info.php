@@ -21,15 +21,15 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		$output .= "<li>";
 		if ( !$item->url ) $item['url'] = '#';
 		
-		        // Sovrascrivi l'URL per "Luoghi" se è vuoto
-		        if ($item->title == 'Luoghi' && $item->url== '/vivere-il-comune') {
-		            $item->url = $item->url'/luoghi';
-		        }
+       // Sovrascrivi l'URL per "Luoghi" se è '/vivere-il-comune'
+        if ($item->title == 'Luoghi' && $item->url == '/vivere-il-comune') {
+            $item->url = $item->url . '/luoghi';
+        }
 
-		        // Sovrascrivi l'URL per "Eventi" se è vuoto
-		        if ($item->title == 'Eventi' && $item->url== '/vivere-il-comune') {
-		            $item->url = $item->url'/eventi';
-		        }
+        // Sovrascrivi l'URL per "Eventi" se è '/vivere-il-comune'
+        if ($item->title == 'Eventi' && $item->url == '/vivere-il-comune') {
+            $item->url = $item->url . '/eventi';
+        }
 		
 		$data_element = '';
 		// set data-elements
