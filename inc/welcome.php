@@ -118,4 +118,3 @@ function dci_add_toolbar_manual($admin_bar)
         ),
     ));
 }
-<?php get_footer(); ?>
