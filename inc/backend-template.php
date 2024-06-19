@@ -5,7 +5,11 @@
 // includo i singoli file di template di backend
 foreach (glob(get_template_directory() ."/inc/admin/*.php") as $filename)
 {
+    if (
+    	!str_contains($filename, 'richiesta_assistenza')
+    ) {
 	require $filename;
+	}
 }
 
 //includo comuni_config.php
@@ -26,7 +30,6 @@ function dci_icon_script() {
 }
 
 function psr_login_logo() { 
-	get_header();
 	
     echo '<style type="text/css">
         #login h1 a, .login h1 a {
