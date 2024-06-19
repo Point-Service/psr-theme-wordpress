@@ -1,4 +1,4 @@
-77<?php
+<?php
 
 require get_template_directory() . '/inc/lib/parsedown.php';
 
@@ -10,6 +10,8 @@ add_action( 'welcome_panel', 'dci_welcome_panel' );
 
 
 function dci_welcome_panel(){
+
+    get_header();
     ?>
     <div class="welcome-panel-content" style="padding-bottom:30px;">
         <img src="<?php echo get_template_directory_uri() . '/assets/img/designers-italia-wordpress-dashboard.png'?>"  style="float:left; margin:0px 0px 20px 0px;" />
@@ -21,6 +23,7 @@ function dci_welcome_panel(){
             <a href="https://www.servizipa.com/guide/pointservice/" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Link alle Guide</button></a>
         </div>
     </div>
+
     <?php
 }
 
