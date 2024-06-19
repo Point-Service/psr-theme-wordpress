@@ -62,3 +62,4 @@ add_action( 'login_enqueue_scripts', 'dci_enqueue_stylesheets' );
 add_filter( 'login_headerurl', 'my_login_logo_url' );
 add_action( 'login_enqueue_scripts', 'psr_login_logo' );
 add_filter( 'login_message', 'smallenvelop_login_message' );
+,,
