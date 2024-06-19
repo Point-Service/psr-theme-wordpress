@@ -60,36 +60,7 @@ get_header();
             <div class="it-page-sections-container">
             <article id="cos-e" class="it-page-section anchor-offset">
                         <h4 data-element="legal-notes-section">Licenza dei contenuti</h4>
-                        <div class="the-content"><p data-element="legal-notes-body">In applicazione del principio open by default ai sensi dell’articolo 52 del decreto legislativo 7 marzo 2005, n. 82 (CAD) e salvo dove diversamente specificato (compresi i contenuti incorporati di terzi), i dati, i documenti e le informazioni pubblicati sul sito sono rilasciati con licenza <a href="https://creativecommons.org/licenses/by/4.0/legalcode.it"><strong>CC-BY 4.0</strong>.</a><br>
-			   Gli utenti sono quindi liberi di condividere (riprodurre, distribuire, comunicare al pubblico, esporre in pubblico), rappresentare, eseguire e recitare questo materiale con qualsiasi mezzo e formato e modificare (trasformare il materiale e utilizzarlo per opere derivate) per qualsiasi fine, anche commerciale con il solo onere di attribuzione, senza apporre restrizioni aggiuntive.</p>
-			</div>
-                                       <h4>Copyright</h4>
-					     <p>Tutti i contenuti, le immagini e le informazioni presenti all'interno del sito sono protetti ai sensi delle normative sul diritto d'autore, sui brevetti e su quelle relative alla proprietà intellettuale; pertanto nulla, neppure in parte, potrà essere copiato, modificato o rivenduto per fini di lucro o per trarne qualsivoglia utilità.</p>
-						<p data-element="legal-notes-body"> Utilizzo del sito
-							In nessun caso l'Ente potrà essere ritenuto responsabile dei danni di qualsiasi natura causati direttamente o indirettamente dall'accesso al sito e dall'utilizzo che venga fatto delle informazioni in esso contenute; inoltre, l'Ente non ha alcuna responsabilità per eventuali problemi causati dall'utilizzazione del presente sito o di siti ad esso collegati.
-							Sebbene i contenuti forniti si ritengano adeguati ed aggiornati, l'Ente proprietario, titolare e gestore del sito non garantisce che il sito web stesso sia privo di imprecisioni, errori e/o omissioni.
-							L'Ente si riserva il diritto di modificare i contenuti in ogni momento.</h4>
-						<p> Tutti i documenti pubblicati sul presente sito sono conformi e corrispondenti agli atti originali.</p>
-						<p> In nessun caso il Comune può essere ritenuto responsabile dei danni di qualsiasi natura causati direttamente o indirettamente dall'accesso al sito,
-							dall'incapacità o impossibilità di accedervi.
-						</p>
-						<p> Il Comune, inoltre, non potrà essere ritenuto in alcun modo responsabile per i servizi di connettività utilizzati dagli Utenti per l’accesso al Portale.
-						</p>
-						<p> I documenti presenti in questo sito per lo scaricamento (download) quali ad esempio documentazione tecnica, documentazione normativa, software ecc., salvo diversa
-							indicazione, sono liberamente e gratuitamente disponibili, in caso contrario viene prodotto un avviso come premessa nell'uso degli stessi.
-						</p>
-					  <h4>Accesso a siti esterni collegati</h4>
-						<p> L'Ente non può essere ritenuto responsabile di quanto contenuto nei siti ai quali è possibile accedere tramite i collegamenti posti all'interno del sito stesso, declinando ogni responsabilità per le informazioni, la grafica, gli aggiornamenti ed i riferimenti in essi contenuti;
-						</p>
-						<p> L’indicazione dei collegamenti non implica da parte del Comune alcun tipo di approvazione o condivisione di responsabilità in relazione alla legittimità,
-							alla completezza e alla correttezza delle informazioni contenute nei siti indicati.
-						</p>
-					        <h4>Privacy</h4>
-						<p>Tutti i contenuti, le immagini e le informazioni presenti all'interno del sito sono protetti ai sensi delle normative sul diritto d'autore, sui brevetti e su quelle relative alla proprietà intellettuale; pertanto nulla, neppure in parte, potrà essere copiato, modificato o rivenduto per fini di lucro o per trarne qualsivoglia utilità.
-						</p>
-			
-		    
-	    </article>
+<p><strong>Premessa</strong><br />Nel rispetto delle Linee guida per i siti web della PA (art. 4 della Direttiva 8/09 del Ministro per la pubblica amministrazione e l'innovazione) si forniscono le seguenti informazioni che regolano l'accesso al sito web e disciplinano i termini e le condizioni d'uso del sito stesso. Accedendo e consultando questo sito, il visitatore ne accetta i seguenti termini e condizioni d'uso.<br /><br /><strong>Copyright</strong><br />Tutti i contenuti, le immagini e le informazioni presenti all'interno del sito sono protetti ai sensi delle normative sul diritto d'autore, sui brevetti e su quelle relative alla propriet&agrave; intellettuale; pertanto nulla, neppure in parte, potr&agrave; essere copiato, modificato o rivenduto per fini di lucro o per trarne qualsivoglia utilit&agrave;.<br /><br /><strong>Utilizzo del sito</strong><br />In nessun caso l'Ente potr&agrave; essere ritenuto responsabile dei danni di qualsiasi natura causati direttamente o indirettamente dall'accesso al sito e dall'utilizzo che venga fatto delle informazioni in esso contenute; inoltre, l'Ente non ha alcuna responsabilit&agrave; per eventuali problemi causati dall'utilizzazione del presente sito o di siti ad esso collegati.<br />Sebbene i contenuti forniti si ritengano adeguati ed aggiornati, l'Ente proprietario, titolare e gestore del sito non garantisce che il sito web stesso sia privo di imprecisioni, errori e/o omissioni.<br />L'Ente si riserva il diritto di modificare i contenuti in ogni momento.<br /><br /><strong>Accesso a siti esterni collegati</strong><br />L'Ente non pu&ograve; essere ritenuto responsabile di quanto contenuto nei siti ai quali &egrave; possibile accedere tramite i collegamenti posti all'interno del sito stesso, declinando ogni responsabilit&agrave; per le informazioni, la grafica, gli aggiornamenti ed i riferimenti in essi contenuti;<br /><br /><strong>Download</strong><br />I contenuti e la documentazione scaricabile dal sito e reperibile via download sono liberamente e gratuitamente disponibili, alle condizioni stabilite al punto Copyright, salvo diversa indicazione. Quanto reperibile via download in questo sito tramite link a siti esterni pu&ograve; essere coperto da copyright, diritti d&rsquo;uso e/o copia dei rispettivi proprietari; pertanto l'Ente invita a verificare condizioni di utilizzo e diritti e si ritiene esplicitamente sollevato da qualsiasi responsabilit&agrave; in merito.<br /><br /><strong data-element="legal-notes-section">Licenza dei contenuti</strong></p><br />
                 
                 
                 
