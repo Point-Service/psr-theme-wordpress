@@ -8,7 +8,7 @@ require get_template_directory() . '/inc/lib/parsedown.php';
 remove_action('welcome_panel', 'wp_welcome_panel');
 add_action( 'welcome_panel', 'dci_welcome_panel' );
 
-get_header();
+
 function dci_welcome_panel(){
     ?>
     <div class="welcome-panel-content" style="padding-bottom:30px;">
