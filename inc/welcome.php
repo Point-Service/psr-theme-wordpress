@@ -1,5 +1,5 @@
 <?php
-
+get_header();
 require get_template_directory() . '/inc/lib/parsedown.php';
 
 /**
