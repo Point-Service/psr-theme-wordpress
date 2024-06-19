@@ -1,11 +1,14 @@
 <?php
-global $show_calendar, $gallery, $video, $trascrizione, $luogo, $pc_id, $uo_id, $appuntamento, $inline;
-get_header();
+
 require get_template_directory() . '/inc/lib/parsedown.php';
 
 /**
  * Welcome page
  */
+
+global $show_calendar, $gallery, $video, $trascrizione, $luogo, $pc_id, $uo_id, $appuntamento, $inline;
+get_header();
+
 remove_action('welcome_panel', 'wp_welcome_panel');
 add_action( 'welcome_panel', 'dci_welcome_panel' );
 function dci_welcome_panel(){
