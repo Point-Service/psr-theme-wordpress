@@ -17,6 +17,14 @@ function dci_welcome_panel(){
         <a href="https://p-service.it" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Sito Web</button></a>
         <a href="https://www.servizipa.com/guide/pointservice/" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Link alle Guide</button></a>
     </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <?php get_template_part( "template-parts/single/bottom" ); ?>
+                        </div><!-- /col-lg-9 -->
+                    </div><!-- /row -->
+
     <?php
 }
 
