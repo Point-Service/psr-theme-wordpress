@@ -16,7 +16,7 @@ function dci_welcome_panel(){
          <img src="<?php echo get_template_directory_uri() . '/assets/img/logo-point.png'?>"  style="margin: 0 auto; width:10%;" />
         <div class="welcome-panel-header">
             <h2 style="color: #fff; font-size: 24px; text-align:center"><?php _e( 'Tema basato su Design Comuni Italia: il tema di Developers Italia per i Comuni Italiani', "design_comuni_italia" ); ?></h2>
-            <h3>Il tema è stato preparato da PointServicr sulla base del <a href="https://github.com/italia/design-comuni-wordpress-theme">tema di Developers Italia predisposto per i Comuni Italiani</a></h3>
+            <h3>Il tema è stato preparato da PointService sulla base del <a href="https://github.com/italia/design-comuni-wordpress-theme">tema di Developers Italia predisposto per i Comuni Italiani</a></h3>
             <a href="https://p-service.it" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Sito Web</button></a>
             <a href="https://www.servizipa.com/guide/pointservice/" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Link alle Guide</button></a>
         </div>
