@@ -7,21 +7,15 @@ require get_template_directory() . '/inc/lib/parsedown.php';
  */
 remove_action('welcome_panel', 'wp_welcome_panel');
 add_action( 'welcome_panel', 'dci_welcome_panel' );
-
-
 function dci_welcome_panel(){
     ?>
     <div class="welcome-panel-content" style="padding-bottom:30px;">
-        <img src="<?php echo get_template_directory_uri() . '/assets/img/designers-italia-wordpress-dashboard.png'?>"  style="float:left; margin:0px 0px 20px 0px;" />
-         <img src="<?php echo get_template_directory_uri() . '/assets/img/logo-point.png'?>"  style="margin: 0 auto; width:10%;" />
-        <div class="welcome-panel-header">
-            <h2 style="color: #fff; font-size: 24px; text-align:center"><?php _e( 'Tema basato su Design Comuni Italia: il tema di Developers Italia per i Comuni Italiani', "design_comuni_italia" ); ?></h2>
-            <h3>Il tema è stato preparato da PointService sulla base del <a href="https://github.com/italia/design-comuni-wordpress-theme">tema di Developers Italia predisposto per i Comuni Italiani</a></h3>
-            <a href="https://p-service.it" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Sito Web</button></a>
-            <a href="https://www.servizipa.com/guide/pointservice/" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Link alle Guide</button></a>
-        </div>
+        <img src="<?php echo get_template_directory_uri() . '/assets/img/designers-italia-wordpress-dashboard.png'?>"  style="width: 10%; margin: 0 auto;" />
+        <img src="<?php echo get_template_directory_uri() . '/assets/img/logo-point.png'?>"  style="margin: 0 auto; width:10%;" />
+        <h2 style="color: #fff; font-size: 24px; text-align:center"><?php _e( 'Tema basato su Design Comuni Italia: il tema di Developers Italia per i Comuni Italiani', "design_comuni_italia" ); ?></h2>
+        <a href="https://p-service.it" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Sito Web</button></a>
+        <a href="https://www.servizipa.com/guide/pointservice/" style="text-align:center;"><button type="button" class="button button-primary" style="text-align:center;margin:0auto;">Link alle Guide</button></a>
     </div>
-
     <?php
 }
 
@@ -47,8 +41,7 @@ function dci_add_dashboard_widgets() {
 }
 // Initialize the function to output the contents of your new dashboard widget
 function dci_new_dashboard_widget_function() {
-    echo "<p>Design Point Service S.r.l: il tema dedicato agli Enti Pubblici</p>";
-    echo "<p>Il tema è stato preparato sulla base del <a href=\"https://github.com/italia/design-comuni-wordpress-theme\">tema di Developers Italia predisposto per i Comuni Italiani</a></p>";
+    echo "Basato su Design Comuni Italia: il tema di Developers Italia per i Comuni Italiani ";
 }
 
 /**
@@ -115,14 +108,13 @@ add_action('admin_bar_menu', 'dci_add_toolbar_manual', 100);
 function dci_add_toolbar_manual($admin_bar)
 {
     $admin_bar->add_menu(array(
-        'id' => 'norme_riferimenti',
-        'title' => 'Norme e riferimenti',
-        'href' => 'https://designers.italia.it/norme-e-riferimenti/',
+        'id' => 'manuale',
+        'title' => 'Manuale',
+        'href' => 'https://www.servizipa.com/guide/pointservice',
         'meta' => array(
-            'title' => __('La documentazione ufficiale che ti guida nella progettazione per la Pubblica Amministrazione, mettendo le persone al centro'),
+            'title' => __('Manuale'),
             'target' => '_blank'
         ),
     ));
 }
-
 
