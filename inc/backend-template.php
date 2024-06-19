@@ -1,6 +1,6 @@
 <?php
 
-get_header();
+
 
 // includo i singoli file di template di backend
 foreach (glob(get_template_directory() ."/inc/admin/*.php") as $filename)
@@ -26,6 +26,8 @@ function dci_icon_script() {
 }
 
 function psr_login_logo() { 
+	get_header();
+	
     echo '<style type="text/css">
         #login h1 a, .login h1 a {
             background-image: url('.get_stylesheet_directory_uri().'/assets/img/logo-point.webp);
