@@ -1,4 +1,5 @@
 <?php
+global $show_calendar, $gallery, $video, $trascrizione, $luogo, $pc_id, $uo_id, $appuntamento, $inline;
 get_header();
 require get_template_directory() . '/inc/lib/parsedown.php';
 
