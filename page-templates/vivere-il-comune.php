@@ -1,5 +1,5 @@
 <?php
-/* Template Name: Vivere il comune
+/* Template Name: Vivere il Comune
  *
  * Vivere il comune template file
  *
@@ -14,16 +14,14 @@ get_header();
 		while ( have_posts() ) :
 			the_post();
 			
-			$img = dci_get_option('immagine', 'vivi');
+			$img = !empty(dci_get_option('immagine', 'vivi'))
+    			? dci_get_option('immagine', 'vivi')
+    			: get_template_directory_uri()."\assets\placeholders\img-placeholder-500x384.png";
 			$didascalia = dci_get_option('didascalia', 'vivi');
-			$data_element = 'data-element="page-name"';
 			?>
-			<?php get_template_part("template-parts/hero/hero"); ?>	
+			<?php get_template_part("template-parts/hero/hero"); ?>
 			<section class="hero-img mb-20 mb-lg-50">
-				<div class="container">
-					<div class="row">
-				<?php if($img != null) { ?>
-				<section class="it-hero-small-size cmp-hero-img-small">
+				<section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
 					<div class="img-responsive-wrapper">
 						<div class="img-responsive">
 							<div class="img-wrapper">
@@ -32,16 +30,14 @@ get_header();
 						</div>
 					</div>
 				</section>
-				<?php } ?>
-						<p class="title-big cmp-hero-img-big__description">
-							<?php echo $didascalia; ?>
-						</p>
-					</div>
-				</div>
+				<p class="title-xsmall cmp-hero-img-small__description">
+					<?php echo $didascalia; ?>
+				</p>
 			</section>
 			<?php get_template_part("template-parts/vivere-comune/eventi"); ?>
 			<?php get_template_part("template-parts/vivere-comune/luoghi"); ?>
-			<?php get_template_part("template-parts/vivere-comune/argomenti"); ?>
+
+			<?php get_template_part("template-parts/vivere-comune/galleria-foto"); ?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
 							
@@ -52,6 +48,5 @@ get_header();
 
 <?php
 get_footer();
-
 
 
