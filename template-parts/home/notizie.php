@@ -26,7 +26,7 @@ for ($i = 1; $i <= 20; $i++) {
 
 ?>
 
-    
+    kllo
 <!-- Tag section is opened in home.php -->
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
