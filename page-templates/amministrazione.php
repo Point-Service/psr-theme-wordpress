@@ -17,13 +17,6 @@ get_header();
 			<?php get_template_part("template-parts/hero/hero"); ?>
 			<?php get_template_part("template-parts/amministrazione/evidenza"); ?>
 			<?php get_template_part("template-parts/amministrazione/cards-list"); ?>
-			<center>
-			    <a class="read-more pt-0" href="/politici">
-			        <span class="list-item-title-icon-wrapper">
-			            <span class="text">Visualizza L'Organo Politico</span>
-			        </span>
-			    </a>
-			</center><p></p>
 			<?php get_template_part("template-parts/politici/cards-list"); ?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
