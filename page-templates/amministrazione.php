@@ -17,7 +17,12 @@ get_header();
 			<?php get_template_part("template-parts/hero/hero"); ?>
 			<?php get_template_part("template-parts/amministrazione/evidenza"); ?>
 			<?php get_template_part("template-parts/amministrazione/cards-list"); ?>
-			echo 'ssss'	
+			    <a class="read-more pt-0" href="<?php echo get_term_link(intval($argomento->term_id),'politici'); ?>">
+			        <span class="list-item-title-icon-wrapper">
+			            <span class="text">Visualizza Organo Politico	/span>
+			        </span>
+			    </a>
+			
 			<?php get_template_part("template-parts/politici/cards-list"); ?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
