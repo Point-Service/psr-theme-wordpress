@@ -6,7 +6,8 @@
 
           <a class="d-lg-block navbar-brand" target="_blank" href="<?php echo dci_get_option("url_sito_regione"); ?>" target="_blank" aria-label="Vai al portale <?php echo dci_get_option("nome_regione"); ?> - link esterno - apertura nuova scheda" title="Vai al portale <?php echo dci_get_option("nome_regione"); ?>">
             
-            <?php echo dci_get_option("nome_regione"); ?></a>
+          <?php echo dci_get_option("nome_regione"); ?></a>
+           &nbsp;&nbsp;&nbsp;&nbsp;
           <div class="it-header-slim-right-zone" role="navigation">
             <?php if(dci_get_option("link_ammtrasparente")) { ?>
             <div class="it-user-wrapper nav-item dropdown">
