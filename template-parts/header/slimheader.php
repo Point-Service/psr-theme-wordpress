@@ -23,7 +23,7 @@
                </a>
             </div>
             <?php }?>
-                
+             &nbsp;&nbsp;&nbsp;   
             <?php echo do_shortcode('[google-translator]'); ?>
                      
             <?php
