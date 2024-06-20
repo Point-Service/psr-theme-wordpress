@@ -10,20 +10,20 @@
           <div class="it-header-slim-right-zone" role="navigation">
             <?php if(dci_get_option("link_ammtrasparente")) { ?>
             <div class="it-user-wrapper nav-item dropdown">
-               <a aria-expanded="false" class="btn btn-primary btn-icon btn-full" data-toggle="dropdown" target="_blank" href=" <?php echo dci_get_option("link_ammtrasparente"); ?>" data-focus-mouse="false">
+               <a aria-expanded="false" class="d-lg-block navbar-brand" data-toggle="dropdown" target="_blank" aria-label="Amministrazione trasparente" href=" <?php echo dci_get_option("link_ammtrasparente"); ?>" data-focus-mouse="false">
                   Amministrazione trasparente
                </a>
             </div>
             <?php }?>
             <?php if(dci_get_option("link_albopretorio")) { ?>
             <div class="it-user-wrapper nav-item dropdown">
-               <a aria-expanded="false" class="btn btn-primary btn-icon btn-full" target="_blank" data-toggle="dropdown" href="<?php echo dci_get_option("link_albopretorio"); ?>" data-focus-mouse="false">
+               <a aria-expanded="false" class="d-lg-block navbar-brand" target="_blank" data-toggle="dropdown"  aria-label="Albo pretorio" href="<?php echo dci_get_option("link_albopretorio"); ?>" data-focus-mouse="false">
                   Albo pretorio
                </a>
             </div>
             <?php }?>
                 
-                        <?php echo do_shortcode('[google-translator]'); ?>
+            <?php echo do_shortcode('[google-translator]'); ?>
                      
             <?php
                 if(!is_user_logged_in()) {
