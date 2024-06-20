@@ -26,7 +26,6 @@ for ($i = 1; $i <= 20; $i++) {
 
 ?>
 
-    kllo
 <!-- Tag section is opened in home.php -->
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
@@ -48,6 +47,7 @@ for ($i = 1; $i <= 20; $i++) {
                                         <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
                                     <?php } ?>
                                 </div>
+                .....
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                                     <h3 class="card-title">
                                         <?php echo $post->post_title ?>
