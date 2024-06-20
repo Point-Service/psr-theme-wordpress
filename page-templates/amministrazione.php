@@ -15,10 +15,8 @@ get_header();
 			the_post();
 			?>
 			<?php get_template_part("template-parts/hero/hero"); ?>
-						<?php get_template_part("template-parts/politici/tutti-politici"); ?>
 			<?php get_template_part("template-parts/amministrazione/evidenza"); ?>
 			<?php get_template_part("template-parts/amministrazione/cards-list"); ?>
-
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
 							
