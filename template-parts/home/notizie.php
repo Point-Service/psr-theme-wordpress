@@ -47,7 +47,6 @@ for ($i = 1; $i <= 20; $i++) {
                                         <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
                                     <?php } ?>
                                 </div>
-                .....
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                                     <h3 class="card-title">
                                         <?php echo $post->post_title ?>
@@ -60,7 +59,7 @@ for ($i = 1; $i <= 20; $i++) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">jjjj
                         <?php if ($img) {
                             dci_get_img($img, 'img-fluid');
                         } ?>
