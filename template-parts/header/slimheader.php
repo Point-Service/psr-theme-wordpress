@@ -14,6 +14,7 @@
                   Amministrazione trasparente
                </a>
             </div>
+            &nbsp;&nbsp;&nbsp;
             <?php }?>
             <?php if(dci_get_option("link_albopretorio")) { ?>
             <div class="it-user-wrapper nav-item dropdown">
