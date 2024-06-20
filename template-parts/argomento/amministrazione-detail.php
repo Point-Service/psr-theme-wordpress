@@ -2,11 +2,9 @@
     global $argomento;
 
     $posts = dci_get_grouped_posts_by_term( 'amministrazione' , 'argomenti', $argomento->slug, 3 );
-
-    if($posts) {
 ?>
 <section id="amministrazione">
-    <div class="pt-40 <?php echo $first_printed ? "pt-lg-80  pb-40" : "pt-md-100 pb-50"; ?>">
+    <div class="pb-40 pt-40 pt-lg-80">
         <div class="container">
             <div class="row row-title">
                 <div class="col-12">
@@ -18,7 +16,7 @@
                 <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                 <?php foreach ($posts as $post) { 
                     $description = dci_get_meta('descrizione_breve');
-                    $img = get_the_post_thumbnail_url();    
+                    $img = dci_get_meta('immagine');    
                     $tipo_amministrazione = get_the_terms($post->ID, 'tipi_unita_organizzativa')[0];
                 ?>
                     <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
@@ -47,13 +45,12 @@
                 <button 
                     type="button" 
                     class="btn btn-primary text-button w-100"
-                    onclick="location.href='<?= get_search_query_url(post_types: ['unita_organizzativa'], argomenti_ids: [$argomento->term_id]); ?>'"
+                    onclick="location.href='<?php echo dci_get_template_page_url('page-templates/amministrazione.php'); ?>'"
                 >
-                    Tutta l'amministrazione
+                    Tutta l’amministrazione
                 </button>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<?php } ?>
