@@ -1,3 +1,4 @@
+<?php
 /* Template Name: Vivere il comune
  *
  * Vivere il comune template file
