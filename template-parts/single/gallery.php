@@ -1,4 +1,4 @@
-<?php
+..<?php
 global $gallery;
 ?>
 <div class="it-carousel-wrapper it-carousel-landscape-abstract-three-cols it-full-carousel it-standard-image splide" data-bs-carousel-splide>
