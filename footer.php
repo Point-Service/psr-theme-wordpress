@@ -218,7 +218,7 @@
 						         <a target="_blank" href="/index.php/page-sitemap.html">Mappa del sito</a>
                                                       <?php } ?>
 
-			    
+						<a href="<?php echo dci_get_option("accessibilità",'header'); ?>/index.php/accessibilita">Accessibilità</a>			    
 						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
 						<a href="<?php echo get_admin_url(); ?>">Area Riservata</a>
 						
