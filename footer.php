@@ -21,7 +21,7 @@
 
 <div id="backToTop" data-bs-toggle="backtotop" class="back-to-top overflow-hidden cursorPointer" style="background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
   <svg class="icon icon-white" style="transform: scale(1.75); left: 1px;">
-    <use xlink:href="/bootstrap-italia/dist/svg/sprites.svg#it-collapse"></use>
+       <use href="#it-collapse></use>
   </svg>
 </div>
 
