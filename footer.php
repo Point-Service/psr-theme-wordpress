@@ -20,7 +20,7 @@
 </section>
         <div id="backToTop" data-bs-toggle="backtotop" class="back-to-top overflow-hidden cursorPointer">
             <svg class="icon icon-white" style="transform: scale(1.75); left: 1px;">
-                <use href="assets/bootstrap-italia/dist/svg/sprites.svg#it-collapse"></use></svg>
+                <use href="https://www.svgrepo.com/show/520995/top-arrow-5.svg"></use></svg>
         </div>
 <?php get_template_part("template-parts/common/search-modal"); ?>
 <footer class="it-footer" id="footer">
