@@ -18,10 +18,13 @@
     <button class="cookiebar-btn cookiebar-confirm denyAllCookie">Nega<span class="visually-hidden"> i cookies</span></button>
   </div>
 </section>
-        <div id="backToTop" data-bs-toggle="backtotop" class="back-to-top overflow-hidden cursorPointer">
-            <svg class="icon icon-white" style="transform: scale(1.75); left: 1px;">
-                <use href="https://www.svgrepo.com/show/520995/top-arrow-5.svg"></use></svg>
-        </div>
+
+<div id="backToTop" data-bs-toggle="backtotop" class="back-to-top overflow-hidden cursorPointer" style="background-color: white;">
+  <svg class="icon icon-white" style="transform: scale(1.75); left: 1px;">
+    <use href="https://www.svgrepo.com/show/520995/top-arrow-5.svg"></use>
+  </svg>
+</div>
+
 <?php get_template_part("template-parts/common/search-modal"); ?>
 <footer class="it-footer" id="footer">
     <div class="it-footer-main">
