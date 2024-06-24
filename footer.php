@@ -20,8 +20,8 @@
 </section>
 
 <div id="backToTop" data-bs-toggle="backtotop" class="back-to-top overflow-hidden cursorPointer" style="background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-  <svg class="icon icon-white" style="transform: scale(1.75); left: 1px;">
-    <use href="https://www.svgrepo.com/show/520995/top-arrow-5.svg"></use>
+  <svg class="icon icon-white" style="transform: scale(1.75); left: 1px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.293 14.293-5.293-5.293-5.293 5.293-1.414-1.414 6-6 .707-.707.707.707 6 6-1.414 1.414z"/>
   </svg>
 </div>
 
