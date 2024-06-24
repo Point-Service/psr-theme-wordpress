@@ -19,9 +19,9 @@
   </div>
 </section>
 
-<div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show">
+<div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show back-to-top-show" style="overflow-hidden; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); background-color: white; transition: background-color 0.3s;">
   <svg class="icon">
-       <use href="#it-collapse"></use>
+    <use href="#it-collapse"></use>
   </svg>
 </div>
 
