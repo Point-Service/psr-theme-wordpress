@@ -18,6 +18,11 @@
     <button class="cookiebar-btn cookiebar-confirm denyAllCookie">Nega<span class="visually-hidden"> i cookies</span></button>
   </div>
 </section>
+        <div class="bd-example">
+            <a href="#" aria-hidden="true" tabindex="-1" data-bs-toggle="backtotop" class="back-to-top back-to-top-show" id="example" data-focus-mouse="false">
+                <svg class="icon icon-light"><use href="/bootstrap-italia/dist/svg/sprites.svg#it-arrow-up"></use></svg>
+            </a>
+        </div>
 <?php get_template_part("template-parts/common/search-modal"); ?>
 <footer class="it-footer" id="footer">
     <div class="it-footer-main">
