@@ -8,7 +8,7 @@
  * @package Design_Comuni_Italia
  */
 
-global $the_query, $load_posts, $load_card_type, $servizio, $additional_filter, $title, $description, $data_element, $hide_categories;
+global $the_query, $load_posts, $load_card_type, $servizio, $tax_query, $title, $description, $data_element, $hide_categories;
 
 $obj = get_queried_object();
 $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
@@ -25,8 +25,13 @@ $args = array(
 $the_query = new WP_Query( $args );
 $servizi = $the_query->posts;
 
-$additional_filter = array();
-$additional_filter['categorie_servizio'] = $obj->slug;
+$tax_query = array(
+  array(
+    'taxonomy' => 'categorie_servizio',
+    'field' => 'slug',
+    'terms' => $obj->slug
+  )
+);
 
 $amministrazione = dci_get_related_unita_amministrative();
 $bandi = dci_get_related_bandi();
@@ -40,6 +45,7 @@ get_header();
       $data_element = 'data-element="page-name"';
       get_template_part("template-parts/hero/hero"); 
     ?>
+  
     <div class="bg-grey-card">
       <form role="search" id="search-form" method="get" class="search-form">
           <button type="submit" class="d-none"></button>
@@ -70,7 +76,7 @@ get_header();
                   </div>
                   <p id="autocomplete-label" class="mb-4"><strong><?php echo $the_query->found_posts; ?> </strong>servizi trovati in ordine alfabetico</p>
                 </div>
-                <div id="load-more">
+                <div class="row g-4" id="load-more">
                     <?php foreach ($servizi as $servizio) { 
                         $load_card_type = "categoria_servizio";
                         $hide_categories = true;
