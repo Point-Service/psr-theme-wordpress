@@ -278,7 +278,7 @@ get_header();
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
                             <section class="it-page-section mb-30">
-                                 <h2 class="h3 mb-3" id="who-needs">A chi è rivolto1</h2>
+                                 <h2 class="h3 mb-3" id="who-needs">A chi è rivolto</h2>
                                 <div class="richtext-wrapper lora" data-element="service-addressed">
                                     <?php echo $destinatari ?>
                                 </div>
@@ -353,18 +353,18 @@ get_header();
                             </section>
                             <?php if ($descrizione) { ?>
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="description">Descrizione</h2>
+                                <h2 class="h3 mb-3" id="description">Descrizione</h2>
                                 <div class="richtext-wrapper lora" data-element="service-extended-description"><?php echo $descrizione ?></div>
                             </section>
                             <?php } ?>
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="how-to">Come fare</h2>
+                                <h2 class="h3 mb-3" id="how-to">Come fare</h2>
                                 <div class="richtext-wrapper lora" data-element="service-how-to">
                                     <?php echo $come_fare ?>
                                 </div>
                             </section>
                             <section class="it-page-section mb-30 has-bg-grey p-3">
-                                <h2 class="title-xxlarge mb-3" id="needed">Cosa serve</h2>                                
+                                <h2 class="h3 mb-3" id="needed">Cosa serve</h2>                                
                                 <div class="richtext-wrapper lora" data-element="service-needed">
                                    <div class="field--name-field-ita-cosa-serve">
                                     <?php echo $cosa_serve_intro ?>
@@ -377,13 +377,13 @@ get_header();
                                 </div>
                             </section>
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="obtain">Cosa si ottiene</h2>
+                                <h2 class="h3 mb-3" id="obtain">Cosa si ottiene</h2>
                                 <div class="richtext-wrapper lora" data-element="service-achieved"><?php echo $output ?></div>
                             </section>
                             <?php if ( !empty($fasi_scadenze_intro) || (is_array($fasi_scadenze) && count($fasi_scadenze)) || (is_array($fasi_group_simple_scadenze) && count($fasi_group_simple_scadenze)) ) { ?>
                             <section class="it-page-section mb-30">
                                 <div class="cmp-timeline">
-                                    <h2 class="title-xxlarge mb-3" id="deadlines">Tempi e scadenze</h2>
+                                    <h2 class="h3 mb-3" id="deadlines">Tempi e scadenze</h2>
                                     <div class="richtext-wrapper lora" data-element="service-calendar-text">
                                         <?php echo $fasi_scadenze_intro; ?>
                                     </div>
@@ -445,12 +445,12 @@ get_header();
                             <?php } ?>
                             <?php if ( $costi ) { ?>
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="costs">Quanto costa</h2>
+                                <h2 class="h3 mb-3"" id="costs">Quanto costa</h2>
                                 <div class="richtext-wrapper lora" data-element="service-cost"><?php echo $costi ?></div>
                             </section>
                             <?php } ?>
                             <section class="it-page-section mb-30 has-bg-grey p-4">
-                                <h2 class="mb-3" id="submit-request">Accedi al servizio</h2>
+                                <h2 class="h3 mb-3" id="submit-request">Accedi al servizio</h2>
                                 <?php if ($canale_digitale_link) { ?>
                                 <p class="text-paragraph lora mb-4" data-element="service-generic-access"><?php echo $canale_digitale_text; ?></p>
                                 <button type="button" class="btn btn-primary mobile-full" onclick="location.href='<?php echo $canale_digitale_link; ?>';" data-element="service-online-access">
@@ -464,7 +464,7 @@ get_header();
                             </section>
                             <?php if ( $more_info ) {  ?>
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="more-info">Ulteriori informazioni</h2>
+                                <h2 class="h3 mb-3" id="more-info">Ulteriori informazioni</h2>
                                 <h3 class="mb-3 subtitle-medium">Graduatorie di accesso</h3>
                                 <div class="richtext-wrapper lora">
                                     <?php echo $more_info ?>
@@ -475,7 +475,7 @@ get_header();
                                 $file_url = $condizioni_servizio;
                             ?>
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="conditions">Condizioni di servizio</h2>
+                                <h2 class="h3 mb-3"" id="conditions">Condizioni di servizio</h2>
                                 <div class="richtext-wrapper lora">Per conoscere i dettagli di
                                     scadenze, requisiti e altre informazioni importanti, leggi i termini e le condizioni di servizio.
                                 </div>
@@ -485,7 +485,7 @@ get_header();
                                         
 
                         <section class="it-page-section mb-30">
-                         <h3 class="mb-3" id="contacts">Contatta ufficio</h3>
+                         <h3 class="h3 mb-3" id="contacts">Contatta ufficio</h3>
                          <div class="row">
                             <div class="col-12 mb-30">
                                     <ul class="d-flex flex-wrap gap-2 mt-10 mb-30" data-element="service-area">
@@ -501,7 +501,7 @@ get_header();
                              if(!empty($punti_contatto_id)){                                      
                          ?>
                               
-                         <h3 class="mb-3" id="contacts">Contatti dedicati</h3>
+                         <h3 class="h3 mb-3" id="contacts">Contatti dedicati</h3>
                          <div class="row">
                             <div class="col-12 mb-30">
                                <?php foreach($punti_contatto_id as $pc_id) { ?>                             
