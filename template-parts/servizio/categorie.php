@@ -1,4 +1,4 @@
-òòòò<?php
+<?php
 global $should_have_grey_background;
 $categorie_servizio_names = array_column(get_terms(
     array(
