@@ -2,10 +2,14 @@
 /**
  * Definisce la tassonomia Categorie di Servizio
  */
-add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
+
+
     // Aggiungi il pulsante per svuotare le categorie di servizio
     add_action( 'admin_head', 'add_empty_categories_button_css' );
     add_action( 'admin_notices', 'add_empty_categories_button' );
+
+add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
+
 function dci_register_taxonomy_categorie_servizio() {
     $labels = array(
         'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
