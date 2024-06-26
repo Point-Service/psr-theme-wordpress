@@ -497,12 +497,11 @@ get_header();
                                 <p class="text-paragraph lora mt-4" data-element="service-generic-access"><?php echo $canale_fisico_text; ?></p>
                                 <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>';" data-element="service-booking-access">
                                     <span class="">Prenota appuntamento</span>
-                                </button>
-                                <?php } ?>
-                                   <?php foreach ($canale_fisico_luoghi_id as $luogo_id) {
+                                </button>                              
+                                  <?php foreach ($canale_fisico_luoghi_id as $luogo_id) {
                                     $luogo = get_post($luogo_id);
                                     get_template_part("template-parts/luogo/card-title");
-                                } ?>
+                                  } ?>
                             </section>
                             <?php if ( $more_info ) {  ?>
                             <section class="it-page-section mb-30">
