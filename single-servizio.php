@@ -39,11 +39,13 @@ get_header();
             $canale_digitale_link = dci_get_meta("canale_digitale_link");
             $canale_fisico_text = dci_get_meta("canale_fisico_text");
             $canale_fisico_uffici = dci_get_meta("canale_fisico_uffici");
+            $canale_fisico_luoghi_id = dci_get_meta("canale_fisico_luoghi");
 
             $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
             $condizioni_servizio = dci_get_meta("condizioni_servizio");     
             $uo_id = intval(dci_get_meta("unita_responsabile"));
             $argomenti = get_the_terms($post, 'argomenti');
+            $documenti_ids = dci_get_meta("documenti");
 
             // valori per metatag
             $categorie = get_the_terms($post, 'categorie_servizio');
