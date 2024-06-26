@@ -54,7 +54,7 @@ function add_empty_categories_button() {
             addTermForm.after(deleteButtonHtml);
 
             // Aggiungi il pulsante "Aggiungi URL"
-            var addUrlButtonHtml = '<div style="margin-top: 10px;"><input type="text" id="remote-url" placeholder="Inserisci l\'URL"><button id="add-url" class="button">Aggiungi URL</button></div>';
+            var addUrlButtonHtml = '<div style="margin-top: 10px;"><input type="text" id="remote-url" placeholder="Inserisci l\'URL"><button id="add-url" class="button">Carica Categorie da Maggioli</button></div>';
             addTermForm.after(addUrlButtonHtml);
 
             // Gestisci il clic del pulsante
