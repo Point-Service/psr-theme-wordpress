@@ -38,5 +38,5 @@ function dci_register_taxonomy_categorie_servizio() {
         'rest_controller_class' => 'WP_REST_Terms_Controller',
     );
 
-   
+ register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );   
 }
