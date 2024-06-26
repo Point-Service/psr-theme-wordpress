@@ -169,7 +169,13 @@ get_header();
    <?php get_template_part('template-parts/single/image-large'); ?>    
      
             <div class="container">
-                <div class="row row-column-menu-left mt-4 mt-lg-80 pb-lg-80 pb-40">
+                <?php if($stato == 'false') { ?>
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Il servizio non è attivo.</strong> <?php echo $motivo_stato; ?>
+                    </div>
+                <?php } ?>
+
+                <div class="row border-top row-column-border row-column-menu-left border-light">
                     <div class="col-12 col-lg-3 mb-4 border-col">
                         <div class="cmp-navscroll sticky-top" aria-labelledby="accordion-title-one">
                             <nav class="navbar it-navscroll-wrapper navbar-expand-lg" aria-label="Indice della pagina" data-bs-navscroll>
