@@ -3,11 +3,6 @@
  * Definisce la tassonomia Categorie di Servizio
  */
 
-
-    // Aggiungi il pulsante per svuotare le categorie di servizio
-    add_action( 'admin_head', 'add_empty_categories_button_css' );
-    add_action( 'admin_notices', 'add_empty_categories_button' );
-
 add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
 
 function dci_register_taxonomy_categorie_servizio() {
@@ -41,18 +36,24 @@ function dci_register_taxonomy_categorie_servizio() {
         'rest_controller_class' => 'WP_REST_Terms_Controller',
     );
 
-
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
-
 }
 
-function add_empty_categories_button_css() {
-    echo '<style>#delete-all-categories { position: absolute; top: 10px; left: 20px; }</style>';
-}
+add_action( 'admin_head', 'add_empty_categories_button' );
 
 function add_empty_categories_button() {
     ?>
-    <button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio.</button>
+    <style>
+        #delete-all-categories {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            z-index: 9999; /* Assicura che il pulsante sia sopra gli altri elementi */
+        }
+    </style>
+
+    <button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>
+
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $('#delete-all-categories').on('click', function(e) {
@@ -80,6 +81,7 @@ function add_empty_categories_button() {
 
 // Funzione per svuotare tutte le categorie di servizio
 add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
+
 function empty_all_categories_callback() {
     check_ajax_referer( 'empty-categories-nonce', 'nonce' );
 
