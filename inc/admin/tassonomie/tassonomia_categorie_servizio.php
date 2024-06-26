@@ -40,7 +40,7 @@ function dci_register_taxonomy_categorie_servizio() {
     add_action( 'admin_footer', 'add_empty_categories_button' );
 }
 
-unction add_empty_categories_button() {
+function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
