@@ -1,3 +1,5 @@
+dsfdfdsfdsfds
+
 <?php
 global $should_have_grey_background;
 $categorie_servizio_names = array_column(get_terms(
@@ -7,7 +9,6 @@ $categorie_servizio_names = array_column(get_terms(
     )
 ), 'name');
 ?>
-hhhhh
 <div class="<?= !($should_have_grey_background=(!$should_have_grey_background)) ? 'bg-grey-dsk':'' ?>">
     <div class="container py-5">
         <h2 class="title-xxlarge mb-4">Esplora per categoria</h2>
