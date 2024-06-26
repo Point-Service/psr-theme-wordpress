@@ -38,6 +38,9 @@ function dci_register_taxonomy_categorie_servizio() {
 
     // Aggiungi il pulsante per svuotare le categorie di servizio
     add_action( 'admin_footer', 'add_empty_categories_button' );
+
+    // Aggiungi il pulsante "Aggiungi URL"
+    add_action( 'admin_footer', 'add_remote_url_button' );
 }
 
 function add_empty_categories_button() {
@@ -53,11 +56,7 @@ function add_empty_categories_button() {
             // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
             addTermForm.after(deleteButtonHtml);
 
-            // Aggiungi il pulsante "Aggiungi URL"
-            var addUrlButtonHtml = '<div style="margin-top: 10px;"><input type="text" id="remote-url" placeholder="Inserisci l\'URL"><button id="add-url" class="button">Carica Categorie da Maggioli</button></div>';
-            addTermForm.after(addUrlButtonHtml);
-
-            // Gestisci il clic del pulsante
+            // Gestisci il clic del pulsante "Cancella tutte le categorie di servizio"
             $(document).on('click', '#delete-all-categories', function(e) {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
@@ -72,38 +71,60 @@ function add_empty_categories_button() {
                         success: function(response) {
                             alert('Tutte le categorie di servizio sono state cancellate.');
                             location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Errore durante l\'eliminazione delle categorie: ' + error);
+                            console.error(xhr.responseText); // Mostra la risposta completa dell'errore nella console
                         }
                     });
                 }
             });
+        });
+    </script>
+    <?php
+}
+
+function add_remote_url_button() {
+    ?>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Trova il form per aggiungere una nuova categoria di servizio
+            var addTermForm = $('.form-field.term-parent-wrap').closest('form');
+
+            // Crea un nuovo elemento per il pulsante "Aggiungi URL"
+            var addUrlButtonHtml = '<div style="margin-top: 10px;"><input type="text" id="remote-url" placeholder="Inserisci l\'URL"><button id="add-url" class="button">Carica Categorie da Maggioli</button></div>';
+            addTermForm.after(addUrlButtonHtml);
 
             // Gestisci il clic del pulsante "Aggiungi URL"
-  $(document).on('click', '#add-url', function(e) {
-    e.preventDefault();
-    var remoteUrl = $('#remote-url').val();
-    if (remoteUrl) {
-        $.ajax({
-            url: remoteUrl,
-            type: 'GET',
-            dataType: 'json', // Assicurati che l'endpoint remoto ritorni un JSON valido
-            success: function(response) {
-                if (response && response.categories) {
-                    response.categories.forEach(function(category) {
-                        addCategoryIfNeeded(category.name, category.description);
+            $(document).on('click', '#add-url', function(e) {
+                e.preventDefault();
+                var remoteUrl = $('#remote-url').val();
+                if (remoteUrl) {
+                    $.ajax({
+                        url: remoteUrl,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response && response.length > 0) {
+                                response.forEach(function(item) {
+                                    if (item.categoria) {
+                                        addCategoryIfNeeded(item.categoria, ''); // Usa item.categoria come nome della categoria
+                                    }
+                                });
+                                alert('Categorie aggiunte con successo.');
+                            } else {
+                                alert('Nessuna categoria trovata nella risposta.');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Errore durante il recupero delle categorie: ' + error);
+                            console.error(xhr.responseText); // Mostra la risposta completa dell'errore nella console
+                        }
                     });
                 } else {
-                    alert('Il JSON restituito non contiene categorie valide.');
+                    alert('Inserisci un URL valido.');
                 }
-            },
-            error: function(xhr, status, error) {
-                alert('Errore durante il recupero delle categorie: ' + error);
-                console.error(xhr.responseText); // Mostra la risposta completa dell'errore nella console
-            }
-        });
-    } else {
-        alert('Inserisci un URL valido.');
-    }
-});
+            });
 
             // Funzione per aggiungere una categoria se non esiste
             function addCategoryIfNeeded(name, description) {
@@ -119,14 +140,13 @@ function add_empty_categories_button() {
                     data: data,
                     success: function(response) {
                         if (response && response.success) {
-                            alert('Categoria aggiunta con successo.');
+                            console.log('Categoria aggiunta con successo:', name);
                         } else {
-                            alert('Errore durante l\'aggiunta della categoria.');
+                            console.error('Errore durante l\'aggiunta della categoria:', name);
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Errore durante l\'aggiunta della categoria.');
-                        console.error(error);
+                        console.error('Errore durante l\'aggiunta della categoria:', name, error);
                     }
                 });
             }
@@ -162,8 +182,8 @@ add_action( 'wp_ajax_add_category_if_not_exists', 'add_category_if_not_exists_ca
 function add_category_if_not_exists_callback() {
     check_ajax_referer( 'add-category-nonce', 'nonce' );
 
-    $name = $_POST['name'];
-    $description = $_POST['description'];
+    $name = sanitize_text_field( $_POST['name'] );
+    $description = sanitize_text_field( $_POST['description'] );
 
     $existing_term = term_exists( $name, 'categorie_servizio' );
 
@@ -184,5 +204,4 @@ function add_category_if_not_exists_callback() {
 
     wp_die();
 }
-
 ?>
