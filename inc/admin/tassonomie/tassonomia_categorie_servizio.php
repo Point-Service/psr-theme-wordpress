@@ -44,7 +44,11 @@ function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            $('#delete-all-categories').on('click', function(e) {
+            // Trova il pulsante "Applica" e inserisci il nostro pulsante prima di esso
+            $('#submit').before('<button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>');
+
+            // Gestisci il clic del pulsante
+            $(document).on('click', '#delete-all-categories', function(e) {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
                 if (confirmDelete) {
@@ -64,7 +68,6 @@ function add_empty_categories_button() {
             });
         });
     </script>
-    <button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>
     <?php
 }
 
