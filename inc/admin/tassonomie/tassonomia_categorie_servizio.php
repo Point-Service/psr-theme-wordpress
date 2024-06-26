@@ -37,18 +37,20 @@ function dci_register_taxonomy_categorie_servizio() {
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 
     // Aggiungi il pulsante per svuotare le categorie di servizio
-    add_action( 'admin_footer', 'add_empty_categories_button' );
+    add_action( 'admin_head', 'add_empty_categories_button_css' );
+    add_action( 'admin_notices', 'add_empty_categories_button' );
+}
+
+function add_empty_categories_button_css() {
+    echo '<style>#delete-all-categories { position: absolute; top: 10px; left: 20px; }</style>';
 }
 
 function add_empty_categories_button() {
     ?>
+    <button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            // Trova il pulsante "Applica" e inserisci il nostro pulsante prima di esso
-            $('#submit').before('<button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>');
-
-            // Gestisci il clic del pulsante
-            $(document).on('click', '#delete-all-categories', function(e) {
+            $('#delete-all-categories').on('click', function(e) {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
                 if (confirmDelete) {
