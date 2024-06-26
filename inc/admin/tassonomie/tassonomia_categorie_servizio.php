@@ -48,7 +48,7 @@ function add_empty_categories_button_css() {
 
 function add_empty_categories_button() {
     ?>
-    <button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>
+    <button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio.</button>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $('#delete-all-categories').on('click', function(e) {
