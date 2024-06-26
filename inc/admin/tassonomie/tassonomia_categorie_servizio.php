@@ -58,28 +58,16 @@ function add_empty_categories_button() {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
                 if (confirmDelete) {
-                    // Esegui la richiesta AJAX per ottenere le categorie dall'URL fornito
                     $.ajax({
-                        url: 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures?argomento',
-                        type: 'GET',
-                        dataType: 'json', // Assicurati che il tipo di dati ritornato sia JSON
-                        success: function(response) {
-                            if (response && response.length > 0) {
-                                // Aggiungi le categorie ottenute al tuo array locale
-                                response.forEach(function(category) {
-                                    // Esempio di aggiunta al tuo array locale
-                                    // Aggiungi categorie come necessario nel tuo contesto
-                                    // Esempio:
-                                    $labels[category.id] = category.name;
-                                });
-                                alert('Categorie aggiunte con successo.');
-                            } else {
-                                alert('Nessuna categoria trovata.');
-                            }
+                        url: ajaxurl,
+                        type: 'POST',
+                        data: {
+                            action: 'empty_all_categories',
+                            nonce: '<?php echo wp_create_nonce( "empty-categories-nonce" ); ?>'
                         },
-                        error: function(xhr, status, error) {
-                            alert('Errore durante il recupero delle categorie.');
-                            console.error(error);
+                        success: function(response) {
+                            alert('Tutte le categorie di servizio sono state cancellate.');
+                            location.reload();
                         }
                     });
                 }
