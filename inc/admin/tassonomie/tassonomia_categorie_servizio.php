@@ -78,30 +78,32 @@ function add_empty_categories_button() {
             });
 
             // Gestisci il clic del pulsante "Aggiungi URL"
-            $(document).on('click', '#add-url', function(e) {
-                e.preventDefault();
-                var remoteUrl = $('#remote-url').val();
-                if (remoteUrl) {
-                    $.ajax({
-                        url: remoteUrl,
-                        type: 'GET',
-                        dataType: 'json', // Assicurati che l'endpoint remoto ritorni un JSON valido
-                        success: function(response) {
-                            if (response && response.categories) {
-                                response.categories.forEach(function(category) {
-                                    addCategoryIfNeeded(category.name, category.description);
-                                });
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Errore durante il recupero delle categorie.');
-                            console.error(error);
-                        }
+  $(document).on('click', '#add-url', function(e) {
+    e.preventDefault();
+    var remoteUrl = $('#remote-url').val();
+    if (remoteUrl) {
+        $.ajax({
+            url: remoteUrl,
+            type: 'GET',
+            dataType: 'json', // Assicurati che l'endpoint remoto ritorni un JSON valido
+            success: function(response) {
+                if (response && response.categories) {
+                    response.categories.forEach(function(category) {
+                        addCategoryIfNeeded(category.name, category.description);
                     });
                 } else {
-                    alert('Inserisci un URL valido.');
+                    alert('Il JSON restituito non contiene categorie valide.');
                 }
-            });
+            },
+            error: function(xhr, status, error) {
+                alert('Errore durante il recupero delle categorie: ' + error);
+                console.error(xhr.responseText); // Mostra la risposta completa dell'errore nella console
+            }
+        });
+    } else {
+        alert('Inserisci un URL valido.');
+    }
+});
 
             // Funzione per aggiungere una categoria se non esiste
             function addCategoryIfNeeded(name, description) {
