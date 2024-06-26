@@ -348,8 +348,6 @@ get_header();
                                     }
                                 ?>
 
-
-                             
                             </section>
                             <?php if ($descrizione) { ?>
                             <section class="it-page-section mb-30">
@@ -428,26 +426,34 @@ get_header();
                                                 $data = dci_get_meta('data_fase', '_dci_fase_', $fase_id);
                                                 $arrdata =  explode("-", $data);
                                                 $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10)); // March
-                                                ?>
-                                                <div class="calendar-date">
-                                                    <div class="calendar-date-day">
-                                                        <small class="calendar-date-day__year"><?php echo $arrdata[2]; ?></small>
-                                                        <span class="title-xxlarge-regular d-flex justify-content-center"><?php echo $arrdata[0]; ?></span>
-                                                        <small class="calendar-date-day__month"><?php echo $monthName; ?></small>
-                                                    </div>
-                                                    <div class="calendar-date-description rounded">
-                                                        <div class="calendar-date-description-content">
-                                                            <h3 class="title-medium-2 mb-0">
-                                                                <?php echo $fase->post_title; ?>
-                                                            </h3>
-                                                            <?php if (!empty(dci_get_meta('desc_fase','_dci_fase_', $fase->ID))) { ?>
-                                                                <p class="info-text mt-1 mb-0"><?php echo dci_get_meta('desc_fase','_dci_fase_', $fase->ID); ?></p>
-                                                            <?php }?>
-                                                        </div>
-                                                    </div>
+                                               ?>
+                                                     <div class="calendar-date">
+                                            <div class="calendar-date-day">
+                                                <small class="calendar-date-day__year">
+                                                    <?php echo $arrdata[2]; ?>
+                                                </small>
+                                                <span class="title-xxlarge-regular d-flex justify-content-center">
+                                                    <?php echo $arrdata[0]; ?>
+                                                </span>
+                                                <small class="calendar-date-day__month">
+                                                    <?php echo $monthName; ?>
+                                                </small>
+                                            </div>
+                                            <div class="calendar-date-description rounded">
+                                                <div class="calendar-date-description-content">
+                                                    <h3 class="title-medium-2 mb-0">
+                                                        <?php echo $fase->post_title; ?>
+                                                    </h3>
+                                                    <?php if (!empty(dci_get_meta('desc_fase','_dci_fase_', $fase->ID))) { ?>
+                                                    <p class="info-text mt-1 mb-0">
+                                                        <?php echo dci_get_meta('desc_fase','_dci_fase_', $fase->ID); ?>
+                                                    </p>
+                                                    <?php }?>
                                                 </div>
-                                            <?php } ?>
+                                            </div>
                                         </div>
+                                        <?php } ?>
+                                    </div>
                                     <?php } ?>
                                 </div>
                             </section>
