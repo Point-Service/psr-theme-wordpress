@@ -48,7 +48,7 @@ function add_empty_categories_button() {
             var addTermForm = $('.form-field.term-parent-wrap').closest('form');
 
             // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
-            var deleteButtonHtml = '<div style="margin-top: 30px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
+            var deleteButtonHtml = '<div style="margin-top: 10px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
 
             // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
             addTermForm.after(deleteButtonHtml);
@@ -58,16 +58,28 @@ function add_empty_categories_button() {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
                 if (confirmDelete) {
+                    // Esegui la richiesta AJAX per ottenere le categorie dall'URL fornito
                     $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'empty_all_categories',
-                            nonce: '<?php echo wp_create_nonce( "empty-categories-nonce" ); ?>'
-                        },
+                        url: 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures?argomento',
+                        type: 'GET',
+                        dataType: 'json', // Assicurati che il tipo di dati ritornato sia JSON
                         success: function(response) {
-                            alert('Tutte le categorie di servizio sono state cancellate.');
-                            location.reload();
+                            if (response && response.length > 0) {
+                                // Aggiungi le categorie ottenute al tuo array locale
+                                response.forEach(function(category) {
+                                    // Esempio di aggiunta al tuo array locale
+                                    // Aggiungi categorie come necessario nel tuo contesto
+                                    // Esempio:
+                                    $labels[category.id] = category.name;
+                                });
+                                alert('Categorie aggiunte con successo.');
+                            } else {
+                                alert('Nessuna categoria trovata.');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Errore durante il recupero delle categorie.');
+                            console.error(error);
                         }
                     });
                 }
