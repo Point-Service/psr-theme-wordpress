@@ -397,26 +397,33 @@ get_header();
                                              <?php if (empty($fase['giorni'])) {
                                                         $fase['giorni'] = "";
                                                     } ?>
-                                                    <div class="calendar-date-day">
-                                                        <span class="title-xxlarge-regular d-flex justify-content-center"><?php echo  $fase['giorni']; ?></span>
-                                                        <small class="calendar-date-day__month"><?php echo ($fase['giorni'] != "")?'giorni': ''; ?></small>
-                                                    </div>
-                                                    <?php if (!empty($fase['titolo']) || !empty($fase['descrizione'])) { ?>
-                                                        <div class="calendar-date-description rounded">
-                                                            <div class="calendar-date-description-content">
-                                                                <?php if (!empty($fase['titolo'])) { ?>
-                                                                    <h3 class="title-medium-2 mb-0">
-                                                                        <?php echo  $fase['titolo']; ?>
-                                                                    </h3>
-                                                                <?php }?>
-                                                                <?php if (!empty($fase['descrizione'])) { ?>
-                                                                    <p class="info-text mt-1 mb-0"><?php echo $fase['descrizione']; ?></p>
-                                                                <?php }?>
-                                                            </div>
-                                                        </div>
-                                                    <?php }?>                                                </div>
-                                            <?php } ?>
-                                            <?php if (!empty($fasi_scadenze)) foreach ($fasi_scadenze as $fase_id) {
+                                                   <div class="calendar-date-day">
+                                                       <span class="title-xxlarge-regular d-flex justify-content-center">
+                                                           <?php echo  $fase['giorni']; ?>
+                                                       </span>
+                                                       <small class="calendar-date-day__month">
+                                                           <?php echo ($fase['giorni'] != "")?'giorni': ''; ?>
+                                                       </small>
+                                                   </div>
+                                                   <?php if (!empty($fase['titolo']) || !empty($fase['descrizione'])) { ?>
+                                                   <div class="calendar-date-description rounded">
+                                                       <div class="calendar-date-description-content">
+                                                           <?php if (!empty($fase['titolo'])) { ?>
+                                                           <h3 class="title-medium-2 mb-0">
+                                                               <?php echo  $fase['titolo']; ?>
+                                                           </h3>
+                                                           <?php }?>
+                                                           <?php if (!empty($fase['descrizione'])) { ?>
+                                                           <p class="info-text mt-1 mb-0">
+                                                               <?php echo $fase['descrizione']; ?>
+                                                           </p>
+                                                           <?php }?>
+                                                       </div>
+                                                   </div>
+                                                   <?php }?>
+                                               </div>
+                                               <?php } ?>
+                                               <?php if (!empty($fasi_scadenze)) foreach ($fasi_scadenze as $fase_id) {
                                                 $fase = get_post($fase_id);
                                                 $data = dci_get_meta('data_fase', '_dci_fase_', $fase_id);
                                                 $arrdata =  explode("-", $data);
