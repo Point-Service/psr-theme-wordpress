@@ -44,8 +44,8 @@ function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            // Trova il pulsante "Applica" e inserisci il nostro pulsante dopo di esso
-            $('#submit').insertAfter('<button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>');
+            // Trova il pulsante "Applica" e inserisci il nostro pulsante prima di esso
+            $('#submit').before('<button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>');
 
             // Gestisci il clic del pulsante
             $(document).on('click', '#delete-all-categories', function(e) {
