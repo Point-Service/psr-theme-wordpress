@@ -205,8 +205,15 @@ get_header();
                                                                 <?php } ?>
                                                                <?php if ( $cosa_serve_intro || is_array($cosa_serve_list) ) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#needed">gggggggggggggggggg
+                                                                    <a class="nav-link" href="#needed">
                                                                         <span class="title-medium">Cosa serve</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if (!empty($documenti_ids) ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#costs">
+                                                                        <span class="title-medium">Documenti correlati</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
@@ -275,6 +282,74 @@ get_header();
                                 <div class="richtext-wrapper lora" data-element="service-addressed">
                                     <?php echo $destinatari ?>
                                 </div>
+                              <?php
+                                    $servizi_richiesti_id = dci_get_meta("servizi_richiesti");
+                                    if(!empty($servizi_richiesti_id)){
+                                        $servizi_richiesti_id = array_map('intval', $servizi_richiesti_id);
+
+                                        $args = array(
+                                            'nopaging' => true,
+                                            'post_type' => 'servizio',
+                                            'post__in' => $servizi_richiesti_id,
+                                            'orderby' => 'post_title',
+                                            'order' => 'ASC',
+                                        );
+                                        $posts = get_posts($args);
+
+                                        if(!empty($posts)){
+                                ?>
+                                <div class=" has-bg-grey p-4">
+                                    <h3 class="title mb-3" id="who-needs">Servizi necessari</h3>
+                                    <p>Questo servizio è limitato a chi usufruisce di particolari servizi.</p>
+                                    <div class="row g-4">
+                                        <?php
+                                            foreach($posts as $servizio) { ?>
+                                        <div class="col-lg-6 col-md-12">
+                                            <?php get_template_part("template-parts/servizio/card"); ?>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <?php
+                                        }
+                                    }
+                                ?>
+
+                                <?php
+                                    $servizi_inclusi_id = dci_get_meta("servizi_inclusi");
+                                    if(!empty($servizi_inclusi_id)){
+                                        $servizi_inclusi_id = array_map('intval', $servizi_inclusi_id);
+
+                                        $args = array(
+                                            'nopaging' => true,
+                                            'post_type' => 'servizio',
+                                            'post__in' => $servizi_inclusi_id,
+                                            'orderby' => 'post_title',
+                                            'order' => 'ASC',
+                                        );
+                                        $posts = get_posts($args);
+
+                                        if(!empty($posts)){
+                                ?>
+                                <div class=" has-bg-grey p-4">
+                                    <h3 class="title mb-3" id="who-needs">Servizi inclusi</h3>
+                                    <p>Questo servizio offre anche i seguenti servizi.</p>
+                                    <div class="row g-3">
+                                        <?php
+                                            foreach($posts as $servizio) { ?>
+                                        <div class="col-lg-6 col-md-12">
+                                            <?php get_template_part("template-parts/servizio/card-con-icona"); ?>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <?php
+                                        }
+                                    }
+                                ?>
+
+
+                             
                             </section>
                             <?php if ($descrizione) { ?>
                             <section class="it-page-section mb-30">
