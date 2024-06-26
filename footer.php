@@ -202,7 +202,24 @@
             </div>
             <div class="row">
                 <div class="col-12 footer-items-wrapper">
-			 <?php echo do_shortcode('[google-translator]'); ?>
+			
+				<?php
+				// Includi il file plugin.php per poter usare is_plugin_active
+				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+				
+				// Specifica il percorso del plugin
+				$plugin_path = 'google-language-translator/google-language-translator.php';
+				
+				// Verifica se il plugin è attivo
+				if ( is_plugin_active( $plugin_path ) ) {
+				    // Esegui lo shortcode solo se il plugin è attivo
+				    echo do_shortcode('[google-translator]');
+				} else {
+				    // Altrimenti non visualizzare niente o un messaggio alternativo
+				    // echo 'Il plugin Google Language Translator non è attivo.';
+				}
+				?>
+
                     <div class="footer-bottom">
 
 						<?php if(dci_get_option("media_policy",'footer')) { ?>
