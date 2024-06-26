@@ -551,58 +551,51 @@ get_header();
                                             $no_vertical_margin = true;
                                             get_template_part("template-parts/unita-organizzativa/card-full");
                                         ?>
-                                    </ul>
-                             </div> 
-                         </div> 
-                         <?php
-                             $punti_contatto_id = dci_get_meta("punti_contatto");
-                             if(!empty($punti_contatto_id)){                                      
-                         ?>
-                              
-                         <h3 class="h3 mb-3" id="contacts">Contatti dedicati</h3>
-                         <div class="row">
-                            <div class="col-12 mb-30">
-                               <?php foreach($punti_contatto_id as $pc_id) { ?>                             
-                                    <ul class="d-flex flex-wrap gap-2 mt-10 mb-30" data-element="service-area">
-                                     <?php get_template_part("template-parts/punto-contatto/card"); ?>
-                                    </ul>
-                                                               
-                               <?php } ?>
-                               </div>
-                              </div>
-                         
-                         <?php } ?>                                   
-                         <div class="col-12 mb-30">
-                             <span class="text-paragraph-small">Argomenti:</span>
-                             <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
-                                 <?php foreach ( $argomenti as $item ) { ?>
-                                     <li>
-                                         <a href="<?php echo get_term_link($item); ?>" class="chip chip-simple" data-element="service-topic">
-                                             <span class="chip-label">
-                                                 <?php echo $item->name; ?>
-                                             </span>
-                                         </a>
-                                     </li>
-                                 <?php } ?>
-                             </ul>
-                         </div>
-                     
-                         <div class="col-12 mb-30">
-                             <span class="text-paragraph-small">Categorie:</span>
-                             <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
-                                 <?php foreach ( $categorie as $item ) { ?>
-                                     <li>
-                                         <a href="<?php echo get_term_link($item); ?>" class="chip chip-simple" data-element="service-topic">
-                                             <span class="chip-label">
-                                                 <?php echo $item->name; ?>
-                                             </span>
-                                         </a>
-                                     </li>
-                                 <?php } ?>
-                             </ul>
-                             <?php get_template_part('template-parts/single/page_bottom',"simple"); ?>
-                         </div>
-                     </section>
+                                                                 </div>
+                                </div>
+                                <?php
+                                    $punti_contatto_id = dci_get_meta("punti_contatto");
+                                    if(!empty($punti_contatto_id)){                                      
+                                ?>
+                                 <h3 class="mb-3" id="contacts">Contatti dedicati</h3>
+                                <div class="row">
+                                        <?php
+                                        foreach($punti_contatto_id as $pc_id) {
+                                            ?>
+                                        <div class="col-lg-6 col-md-12 mb-30">
+                                            <?php get_template_part("template-parts/punto-contatto/card"); ?>
+                                        </div>
+                                        <?php } ?>
+                                </div>
+                                <?php } ?>    
+
+                            <?php if ( $more_info ) {  ?>
+                            <section class="it-page-section mb-30">
+                                <h2 class="h3 mb-3" id="more-info">Ulteriori informazioni</h2>
+                                <div class="richtext-wrapper lora">
+                                    <?php echo $more_info ?>
+                                </div>
+                            </section>
+                            <?php }  ?>
+                                 <div class="row">
+                                    <div class="col-12 mb-30">
+                                        <span class="text-paragraph-small">Argomenti:</span>
+                                        <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
+                                            <?php foreach ( $argomenti as $item ) { ?>
+                                                <li>
+                                                    <a href="<?php echo get_term_link($item); ?>" class="chip chip-simple" data-element="service-topic">
+                                                        <span class="chip-label">
+                                                            <?php echo $item->name; ?>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            <?php } ?>
+                                        </ul>
+                                        <?php get_template_part('template-parts/single/page_bottom',"simple"); ?>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
                     </div>
                 </div>
             </div>
