@@ -25,12 +25,18 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
         <button type="submit" class="d-none"></button>
         <div class="container">
             <div class="row">                
-                <?php if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
+                <?php 
+
+echo '<pre>';
+print_r($servizi_evidenza);
+echo '</pre>';
+
+if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
                     <div class="col-12">
                         <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                             <div class="link-list-wrap">
                                 <h2 class="title-xsmall-semi-bold">
-                                    <span>SERVIZI IN EVIDENZA1</span>
+                                    <span>SERVIZI IN EVIDENZA2</span>
                                 </h2>
                                 <ul class="link-list t-primary">
                                     <?php foreach ($servizi_evidenza as $servizio_id) { 
