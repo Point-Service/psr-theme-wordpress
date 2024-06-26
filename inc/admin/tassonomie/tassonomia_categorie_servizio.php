@@ -13,7 +13,7 @@ function dci_register_taxonomy_categorie_servizio() {
         'all_items'         => __( 'Tutti le Categorie di Servizio ', 'design_comuni_italia' ),
         'edit_item'         => __( 'Modifica la Categoria di Servizio', 'design_comuni_italia' ),
         'update_item'       => __( 'Aggiorna la Categoria di Servizio', 'design_comuni_italia' ),
-        'add_new_item'      => __( 'Aggiungi una Categoria di Servizios', 'design_comuni_italia' ),
+        'add_new_item'      => __( 'Aggiungi una Categoria di Servizio', 'design_comuni_italia' ),
         'new_item_name'     => __( 'Nuovo Tipo di Categoria di Servizio', 'design_comuni_italia' ),
         'menu_name'         => __( 'Categorie di Servizio', 'design_comuni_italia' ),
     );
