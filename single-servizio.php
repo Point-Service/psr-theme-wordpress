@@ -124,6 +124,14 @@ get_header();
                                     <h1 class="title-xxxlarge" data-element="service-title">
                                         <?php the_title(); ?>
                                     </h1>
+                                   <h2 class="visually-hidden">Dettagli del servizio</h2>
+                                    <?php if($sottotitolo){ ?>
+                                    <div>
+                                    <p class="subtitle-small mb-3" data-element="service-description">
+                                        <strong><?php echo $sottotitolo ?></strong>
+                                    </p>
+                                    </div>
+                                    <?php } ?>
                                     <ul class="d-flex flex-wrap gap-1 my-3">
                                         <li>
                                             <div class="chip chip-simple <?php echo $stato == 'true'? 'chip-success' : 'chip-danger'; ?>" data-element="service-status">
