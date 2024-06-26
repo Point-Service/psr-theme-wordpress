@@ -92,7 +92,7 @@ function add_remote_url_button() {
             var addTermForm = $('.form-field.term-parent-wrap').closest('form');
 
             // Crea un nuovo elemento per il pulsante "Aggiungi URL"
-            var addUrlButtonHtml = '<div style="margin-top: 10px;"><input type="text" id="remote-url" placeholder="Inserisci l\'URL"><button id="add-url" class="button">Carica Categorie da Maggioli.</button></div>';
+            var addUrlButtonHtml = '<div style="margin-top: 10px;"><input type="text" id="remote-url" placeholder="Inserisci l\'URL"><button id="add-url" class="button">Carica Categorie da Maggioli</button></div>';
             addTermForm.after(addUrlButtonHtml);
 
      // Gestisci il clic del pulsante "Aggiungi URL"
