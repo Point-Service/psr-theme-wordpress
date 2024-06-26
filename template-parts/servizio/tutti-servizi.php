@@ -27,11 +27,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
             <div class="row">                
                 <?php 
 
-echo '<pre>';
-print_r($servizi_evidenza);
-echo '</pre>';
-
-if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
+               if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
                     <div class="col-12">
                         <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                             <div class="link-list-wrap">
@@ -76,7 +72,9 @@ if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
                             </div>
                         </div>
                         <p id="autocomplete-label" class="mb-4">
-                            <strong><?php echo $the_query->found_posts; ?> </strong>servizi trovati in ordine alfabetico
+                            <?php if ($the_query->found_posts > 0) : ?>
+                                <strong><?php echo $the_query->found_posts; ?></strong> servizi trovati in ordine alfabetico
+                            <?php endif; ?>
                         </p>
                     </div>
                                    
