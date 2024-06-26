@@ -26,7 +26,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
         <div class="container">
             <div class="row">
                 
-                <?php if (is_array($servizi_evidenza) && count($servizi_evidenza)) { ?>
+              <?php if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
                        <div class="col-12">
                          <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                             <div class="link-list-wrap">
