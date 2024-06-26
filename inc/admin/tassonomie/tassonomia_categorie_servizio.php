@@ -95,61 +95,62 @@ function add_remote_url_button() {
             var addUrlButtonHtml = '<div style="margin-top: 10px;"><input type="text" id="remote-url" placeholder="Inserisci l\'URL"><button id="add-url" class="button">Carica Categorie da Maggioli.</button></div>';
             addTermForm.after(addUrlButtonHtml);
 
-            // Gestisci il clic del pulsante "Aggiungi URL"
-            $(document).on('click', '#add-url', function(e) {
-                e.preventDefault();
-                var remoteUrl = $('#remote-url').val();
-                if (remoteUrl) {
-                    $.ajax({
-                        url: remoteUrl,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response && response.length > 0) {
-                                response.forEach(function(item) {
-                                    if (item.categoria) {
-                                        addCategoryIfNeeded(item.categoria, ''); // Usa item.categoria come nome della categoria
-                                    }
-                                });
-                                alert('Categorie aggiunte con successo.');
-                            } else {
-                                alert('Nessuna categoria trovata nella risposta.');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Errore durante il recupero delle categorie: ' + error);
-                            console.error(xhr.responseText); // Mostra la risposta completa dell'errore nella console
+     // Gestisci il clic del pulsante "Aggiungi URL"
+$(document).on('click', '#add-url', function(e) {
+    e.preventDefault();
+    var remoteUrl = $('#remote-url').val();
+    if (remoteUrl) {
+        $.ajax({
+            url: remoteUrl,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response && response.length > 0) {
+                    response.forEach(function(item) {
+                        if (item.categoria) {
+                            addCategoryIfNeeded(item.categoria, ''); // Usa item.categoria come nome della categoria
                         }
                     });
+                    alert('Categorie aggiunte con successo.');
                 } else {
-                    alert('Inserisci un URL valido.');
+                    alert('Nessuna categoria trovata nella risposta.');
                 }
-            });
-
-            // Funzione per aggiungere una categoria se non esiste
-            function addCategoryIfNeeded(name, description) {
-                var data = {
-                    action: 'add_category_if_not_exists',
-                    name: name,
-                    description: description,
-                    nonce: '<?php echo wp_create_nonce( "add-category-nonce" ); ?>'
-                };
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: data,
-                    success: function(response) {
-                        if (response && response.success) {
-                            console.log('Categoria aggiunta con successo:', name);
-                        } else {
-                            console.error('Errore durante l\'aggiunta della categoria:', name);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Errore durante l\'aggiunta della categoria:', name, error);
-                    }
-                });
+            },
+            error: function(xhr, status, error) {
+                alert('Errore durante il recupero delle categorie: ' + error);
+                console.error(xhr.responseText); // Mostra la risposta completa dell'errore nella console
             }
+        });
+    } else {
+        alert('Inserisci un URL valido.');
+    }
+});
+
+// Funzione per aggiungere una categoria se non esiste
+function addCategoryIfNeeded(name, description) {
+    var data = {
+        action: 'add_category_if_not_exists',
+        name: name,
+        description: description,
+        nonce: '<?php echo wp_create_nonce( "add-category-nonce" ); ?>'
+    };
+    $.ajax({
+        url: ajaxurl,
+        type: 'POST',
+        data: data,
+        success: function(response) {
+            if (response && response.success) {
+                console.log('Categoria aggiunta con successo:', name);
+                // Aggiungi qui un codice per aggiornare l'interfaccia o fare altre operazioni necessarie
+            } else {
+                console.error('Errore durante l\'aggiunta della categoria:', name);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Errore durante l\'aggiunta della categoria:', name, error);
+        }
+    });
+}
         });
     </script>
     <?php
