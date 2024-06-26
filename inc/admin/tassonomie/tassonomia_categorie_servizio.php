@@ -20,8 +20,8 @@ function dci_register_taxonomy_categorie_servizio() {
 
 
         $labels = array(
-        'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
-        'singular_name'     => _x( 'Categoria di Servizio', 'taxonomy singular name', 'design_comuni_italia' ),
+        'name'              => _x( 'Categorie di Serviziohhhhhhh', 'taxonomy general name', 'design_comuni_italia' ),
+        'singular_name'     => _x( 'Categoria di Serviziohgfhghghgf', 'taxonomy singular name', 'design_comuni_italia' ),
         'search_items'      => __( 'Cerca Categoria di Servizio', 'design_comuni_italia' ),
         'all_items'         => __( 'Tutti le Categorie di Servizio ', 'design_comuni_italia' ),
         'edit_item'         => __( 'Modifica la Categoria di Servizio', 'design_comuni_italia' ),
