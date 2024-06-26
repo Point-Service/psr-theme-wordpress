@@ -18,6 +18,19 @@ function dci_register_taxonomy_categorie_servizio() {
         'menu_name'         => __( 'Categorie di Servizio', 'design_comuni_italia' ),
     );
 
+
+        $labels = array(
+        'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
+        'singular_name'     => _x( 'Categoria di Servizio', 'taxonomy singular name', 'design_comuni_italia' ),
+        'search_items'      => __( 'Cerca Categoria di Servizio', 'design_comuni_italia' ),
+        'all_items'         => __( 'Tutti le Categorie di Servizio ', 'design_comuni_italia' ),
+        'edit_item'         => __( 'Modifica la Categoria di Servizio', 'design_comuni_italia' ),
+        'update_item'       => __( 'Aggiorna la Categoria di Servizio', 'design_comuni_italia' ),
+        'add_new_item'      => __( 'Aggiungi una Categoria di Servizio', 'design_comuni_italia' ),
+        'new_item_name'     => __( 'Nuovo Tipo di Categoria di Servizio', 'design_comuni_italia' ),
+        'menu_name'         => __( 'Categorie di Servizio', 'design_comuni_italia' ),
+    );
+
     $args = array(
         'hierarchical'      => true,
         'labels'            => $labels,
