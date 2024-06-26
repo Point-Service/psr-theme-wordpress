@@ -44,14 +44,14 @@ function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            // Trova il pulsante "Aggiungi una Categoria di Servizio"
-            var addButton = $('.form-field.term-parent-wrap').find('.submit').first();
+            // Trova il form per aggiungere una nuova categoria di servizio
+            var addTermForm = $('.form-field.term-parent-wrap').closest('form');
 
-            // Crea il pulsante "Cancella tutte le categorie di servizio"
-            var deleteButton = $('<button id="delete-all-categories" class="button" style="margin-top: 10px;">Cancella tutte le categorie di servizio</button>');
+            // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
+            var deleteButtonHtml = '<div style="margin-top: 10px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
 
-            // Aggiungi il pulsante dopo il pulsante "Aggiungi una Categoria di Servizio"
-            addButton.after('<br>').after(deleteButton);
+            // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
+            addTermForm.after(deleteButtonHtml);
 
             // Gestisci il clic del pulsante
             $(document).on('click', '#delete-all-categories', function(e) {
