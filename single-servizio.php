@@ -543,16 +543,18 @@ get_header();
 
                               <section class="it-page-section">
                                 <h2 class="mb-3" id="contacts">Contatti</h2>
-                                <h3 class="mb-3" id="contacts">Contatta ufficio</h3>
+                               
+                              <h3 class="mb-3" id="contacts">Contatta ufficio</h3>
                                 <div class="row">
-                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
-                                        <?php
-                                            $with_border = true;
-                                            $no_vertical_margin = true;
-                                            get_template_part("template-parts/unita-organizzativa/card-full");
-                                        ?>
-                                                                 </div>
-                                </div>
+                                   <div class="col-12 mb-30">
+                                           <ul class="d-flex flex-wrap gap-2 mt-10 mb-30" data-element="service-area">
+                                              <?php
+                                                 $with_border = true;
+                                                 get_template_part("template-parts/unita-organizzativa/card-full");
+                                               ?>
+                                           </ul>
+                                    </div> 
+                                </div> 
                                 <?php
                                     $punti_contatto_id = dci_get_meta("punti_contatto");
                                     if(!empty($punti_contatto_id)){                                      
