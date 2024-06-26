@@ -203,7 +203,7 @@ get_header();
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
-                                                                <?php if ( is_array($cosa_serve_list) ) { ?>
+                                                               <?php if ( $cosa_serve_intro || is_array($cosa_serve_list) ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#needed">
                                                                         <span class="title-medium">Cosa serve</span>
