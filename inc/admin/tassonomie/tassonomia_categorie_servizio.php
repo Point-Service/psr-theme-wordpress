@@ -95,8 +95,7 @@ function add_remote_url_button() {
             var addUrlButtonHtml = '<div style="margin-top: 10px;"><input type="text" id="remote-url" placeholder="Inserisci l\'URL"><button id="add-url" class="button">Carica Categorie da Maggioli.</button></div>';
             addTermForm.after(addUrlButtonHtml);
 
-     // Gestisci il clic del pulsante "Aggiungi URL"
-
+            // Gestisci il clic del pulsante "Aggiungi URL"
             $(document).on('click', '#add-url', function(e) {
                 e.preventDefault();
                 var remoteUrl = $('#remote-url').val();
@@ -111,7 +110,7 @@ function add_remote_url_button() {
             
                                 response.forEach(function(item) {
                                     if (item.categoria) {
-                                        addCategoryIfNeeded(item.categoria, '', function(success) {
+                                        addCategoryIfNeeded(item.categoria, item.categoria, function(success) {
                                             if (success) {
                                                 categoriesAdded++;
                                                 if (categoriesAdded === response.length) {
