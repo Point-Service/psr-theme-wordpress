@@ -39,44 +39,10 @@ function dci_register_taxonomy_categorie_servizio() {
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 }
 
-add_action( 'admin_head', 'add_empty_categories_button' );
+add_action( 'admin_enqueue_scripts', 'enqueue_custom_scripts' );
 
-function add_empty_categories_button() {
-    ?>
-    <style>
-        #delete-all-categories {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            z-index: 9999; /* Assicura che il pulsante sia sopra gli altri elementi */
-        }
-    </style>
-
-    <button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>
-
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            $('#delete-all-categories').on('click', function(e) {
-                e.preventDefault();
-                var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
-                if (confirmDelete) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'empty_all_categories',
-                            nonce: '<?php echo wp_create_nonce( "empty-categories-nonce" ); ?>'
-                        },
-                        success: function(response) {
-                            alert('Tutte le categorie di servizio sono state cancellate.');
-                            location.reload();
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-    <?php
+function enqueue_custom_scripts() {
+    wp_enqueue_script( 'custom-admin-scripts', plugin_dir_url( __FILE__ ) . 'custom-admin-scripts.js', array( 'jquery' ), null, true );
 }
 
 // Funzione per svuotare tutte le categorie di servizio
