@@ -17,7 +17,7 @@ function dci_register_taxonomy_categorie_servizio() {
         'new_item_name'     => __( 'Nuovo Tipo di Categoria di Servizio', 'design_comuni_italia' ),
         'menu_name'         => __( 'Categorie di Servizio', 'design_comuni_italia' ),
     );
-hhhh
+echo 'sss';
     $args = array(
         'hierarchical'      => true,
         'labels'            => $labels,
