@@ -363,19 +363,21 @@ get_header();
                                     <?php echo $come_fare ?>
                                 </div>
                             </section>
-                            <section class="it-page-section mb-30 has-bg-grey p-3">
-                                <h2 class="h3 mb-3" id="needed">Cosa serve</h2>                                
+                            <?php if ( $cosa_serve_intro ?? false ) { ?>
+                            <section class="it-page-section mb-30">
+                                <h2 class="h3 mb-3" id="needed">Cosa serve</h2>
                                 <div class="richtext-wrapper lora" data-element="service-needed">
-                                   <div class="field--name-field-ita-cosa-serve">
                                     <?php echo $cosa_serve_intro ?>
-                                    <ul >
-                                        <?php foreach ($cosa_serve_list as $cosa_serve_item) { ?>
+                                    <ul>
+                                        <?php 
+                                        if(!empty($cosa_serve_list)){
+                                            foreach ($cosa_serve_list as $cosa_serve_item) { ?>
                                             <li><span><?php echo $cosa_serve_item ?></span></li>
-                                        <?php } ?>
+                                        <?php }} ?>
                                     </ul>
-                                   </div>
                                 </div>
                             </section>
+                            <?php } ?>
                             <section class="it-page-section mb-30">
                                 <h2 class="h3 mb-3" id="obtain">Cosa si ottiene</h2>
                                 <div class="richtext-wrapper lora" data-element="service-achieved"><?php echo $output ?></div>
