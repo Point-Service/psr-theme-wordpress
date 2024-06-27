@@ -7,11 +7,6 @@ $current_url = home_url(add_query_arg(array(), $wp->request));
 $segments = explode('/', $current_url);
 $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
-// Stampa il segmento desiderato
-echo $category_segment;
-
-
-
 // Funzione per ottenere i dati dal servizio web
 function get_procedures_data($search_term = null)
 {
@@ -99,8 +94,10 @@ function output_services($services)
 <?php
     }
 }
+
 // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
 $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
+
