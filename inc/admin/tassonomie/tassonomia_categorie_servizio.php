@@ -81,6 +81,7 @@ function add_empty_categories_button() {
                 $.ajax({
                     url: 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures',
                     type: 'GET',
+                    dataType: 'json', // Assicurati che la risposta sia JSON
                     success: function(response) {
                         var categories = [];
                         // Leggi i nomi delle categorie dalla risposta JSON
