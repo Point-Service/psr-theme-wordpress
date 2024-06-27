@@ -2,13 +2,7 @@
     global $title, $description, $with_shadow, $data_element;
     if (!$title) $title = get_the_title();
 
-
-// Suddivide la stringa $title in un array ogni volta che trova una virgola
-$title_array = explode(',', $title);
-
-// Stampa l'array risultante
-print_r($title_array);
-
+echo $title;
 
 
 // Ottieni l'URL della pagina corrente
