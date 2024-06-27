@@ -82,13 +82,12 @@ get_header();
                         $hide_categories = true;
                         get_template_part("template-parts/servizio/card");    
                     } ?>
-                </div>yy
-                       <?php     
-                        if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { ?>
+                     <?php     
+                        if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) >5 ) { ?>
+                            <?php get_template_part("template-parts/servizio/card_maggioli"); ?>
+                        <?php } ?>                    
+                </div>
                             <?php get_template_part("template-parts/search/more-results"); ?>
-                        <?php } else { ?>
-                             <?php get_template_part("/taxonomy-categorie_servizio_maggioli.php"); ?>
-                        <?php } ?>
               </div>
               
               <?php if ( is_array($amministrazione) && count($amministrazione) ) { ?>
