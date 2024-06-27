@@ -34,9 +34,6 @@ function dci_register_taxonomy_categorie_servizio() {
         'rest_controller_class' => 'WP_REST_Terms_Controller',
     );
 
-    // Aggiungi il pulsante per svuotare le categorie di servizio
-    add_action( 'admin_head', 'add_empty_categories_button_css' );
-    add_action( 'admin_notices', 'add_empty_categories_button' );
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 
 }
