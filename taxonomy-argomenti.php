@@ -58,7 +58,7 @@ get_header();
                     <?php 
                         if ((is_array($aree_appartenenza) && count($aree_appartenenza)) || (is_array($assessorati_riferimento) && count($assessorati_riferimento))) { ?>
                     <h3 class="title-xsmall-semi-bold">Questo argomento è gestito da:</h3>
-                    <?php } ?>
+                    <?php } ?>lllll
                     <?php 
                         if (is_array($aree_appartenenza) && count($aree_appartenenza)) {
                             foreach ($aree_appartenenza as $uo_id) {
@@ -66,7 +66,7 @@ get_header();
                               get_template_part("template-parts/unita-organizzativa/card");
                             }
                         };
-ùùùùùùùùùùù
+
                         if (is_array($assessorati_riferimento) && count($assessorati_riferimento)) {
                             foreach ($assessorati_riferimento as $uo_id) {
                               $with_border = true;
