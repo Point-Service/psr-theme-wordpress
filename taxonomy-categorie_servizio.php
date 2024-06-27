@@ -74,7 +74,11 @@ get_header();
                   </span>
                   </div>
                   </div>
-                  <p id="autocomplete-label" class="mb-4"><strong><?php echo $the_query->found_posts; ?> </strong>servizi trovati in ordine alfabetico</p>
+                     <?php     
+                        if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { ?>
+                            <p id="autocomplete-label" class="mb-4"><strong><?php echo $the_query->found_posts; ?> </strong>servizi trovati in ordine alfabetico</p>
+                     <?php } ?>    
+
                 </div>
                 <div class="row g-4" id="load-more">
                     <?php foreach ($servizi as $servizio) { 
