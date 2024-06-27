@@ -43,7 +43,7 @@ function get_procedures_data($search_term = null, $title = null)
                 $url = $procedure['url'];
 
                 // Verifica se la categoria contiene il segmento dell'URL
-                if ($category_segment && stripos($category, $title) === false) {
+                if ($title && stripos($category, $title) === false) {
                     continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                 }
 
