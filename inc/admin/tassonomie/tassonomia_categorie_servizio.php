@@ -8,7 +8,7 @@ function dci_register_taxonomy_categorie_servizio() {
         'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
         'singular_name'     => _x( 'Categoria di Servizio', 'taxonomy singular name', 'design_comuni_italia' ),
         'search_items'      => __( 'Cerca Categoria di Servizio', 'design_comuni_italia' ),
-        'all_items'         => __( 'Tutti le Categorie di Servizio ', 'design_comuni_italia' ),
+        'all_items'         => __( 'Tutte le Categorie di Servizio ', 'design_comuni_italia' ),
         'edit_item'         => __( 'Modifica la Categoria di Servizio', 'design_comuni_italia' ),
         'update_item'       => __( 'Aggiorna la Categoria di Servizio', 'design_comuni_italia' ),
         'add_new_item'      => __( 'Aggiungi una Categoria di Servizio', 'design_comuni_italia' ),
@@ -103,6 +103,9 @@ function add_empty_categories_button() {
                                     $('#categorie_servizio').append($('<option></option>').val(value).html(value));
                                 });
 
+                                // Mostra il debug a video
+                                $('#debug-output').html('<pre>' + JSON.stringify(categories, null, 2) + '</pre>');
+
                                 alert('Categorie caricate correttamente.');
                             } else {
                                 console.error('Errore: dati delle categorie non validi.');
@@ -147,7 +150,6 @@ function empty_all_categories_callback() {
 }
 
 // Funzione per caricare le categorie da un API esterno
-// Funzione per caricare le categorie da un API esterno
 add_action( 'wp_ajax_load_categories_from_external_api', 'load_categories_from_external_api_callback' );
 function load_categories_from_external_api_callback() {
     check_ajax_referer( 'load-categories-nonce', 'nonce' );
@@ -163,14 +165,15 @@ function load_categories_from_external_api_callback() {
     $data = json_decode( $body );
 
     if ( ! empty( $data ) ) {
-        // Logga i dati ricevuti nella console per debug
-        error_log( 'Dati ricevuti dall\'API: ' . print_r( $data, true ) );
+        // Mostra il debug a video
+        echo '<div id="debug-output"><pre>' . json_encode( $data, JSON_PRETTY_PRINT ) . '</pre></div>';
 
         wp_send_json_success( $data );
     } else {
         wp_send_json_error( array( 'message' => 'Nessun dato ricevuto dall\'API remoto.' ) );
     }
 }
+
 
 ?>
 
