@@ -1,4 +1,9 @@
 <?php
+    global $title, $description, $with_shadow, $data_element;
+    if (!$title) $title = get_the_title();
+
+echo $title;
+
 
 // Ottieni l'URL della pagina corrente
 $current_url = home_url(add_query_arg(array(), $wp->request));
@@ -7,11 +12,9 @@ $current_url = home_url(add_query_arg(array(), $wp->request));
 $segments = explode('/', $current_url);
 $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
-// Stampa il segmento desiderato (debugging)
-// echo $category_segment;
 
 // Funzione per ottenere i dati dal servizio web
-function get_procedures_data($search_term = null, $category_segment = null)
+function get_procedures_data($search_term = null, $title = null)
 {
     $url = dci_get_option('servizi_maggioli_url', 'servizi');
     $response = wp_remote_get($url);
@@ -37,7 +40,7 @@ function get_procedures_data($search_term = null, $category_segment = null)
                 $url = $procedure['url'];
 
                 // Verifica se la categoria contiene il segmento dell'URL
-                if ($category_segment && stripos($category, $category_segment) === false) {
+                if ($title && stripos($category, $title) === false) {
                     continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                 }
 
