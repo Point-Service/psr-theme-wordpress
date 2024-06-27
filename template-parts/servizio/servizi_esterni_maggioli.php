@@ -1,4 +1,3 @@
-
 <?php
 // Funzione per ottenere i dati dal servizio web
 function get_procedures_data($search_term = null)
@@ -69,7 +68,7 @@ function get_procedures_data($search_term = null)
 function output_services($services)
 {
     foreach ($services as $service) {
-        // Genera il link alla categoria
+        // Genera il link alla categoria basato sul nome del servizio
         $category_slug = sanitize_title($service['category']);
         $category_link = "/servizi-categoria/$category_slug";
 ?>
