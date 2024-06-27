@@ -3,6 +3,7 @@
 function get_procedures_data($search_term = null)
 {
     $url = dci_get_option('servizi_maggioli_url', 'servizi');
+    $categorie = get_the_terms($servizio->ID, 'categorie_servizio');
     $response = wp_remote_get($url);
     $total_services = 0; // Inizializza il contatore
 
@@ -94,7 +95,7 @@ function output_services($services)
 <?php
     }
 }
-
+echo "<p>Servizi aggiuntivi: $categorie</p>";
 // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
 $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
