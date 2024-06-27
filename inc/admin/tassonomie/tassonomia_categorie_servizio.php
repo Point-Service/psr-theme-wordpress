@@ -35,202 +35,71 @@ function dci_register_taxonomy_categorie_servizio() {
     );
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
-
-    // Aggiungi il pulsante per svuotare le categorie di servizio
-    add_action( 'admin_footer', 'add_empty_categories_button' );
-
-    // Aggiungi il pulsante "Aggiungi URL"
-    add_action( 'admin_footer', 'add_remote_url_button' );
 }
 
-function add_empty_categories_button() {
+/**
+ * Aggiungi un pulsante per svuotare le categorie nella dashboard
+ */
+add_action( 'admin_menu', 'dci_add_empty_categories_button' );
+function dci_add_empty_categories_button() {
+    add_submenu_page(
+        'edit.php?post_type=servizio',
+        __( 'Svuota Categorie', 'design_comuni_italia' ),
+        __( 'Svuota Categorie', 'design_comuni_italia' ),
+        'manage_options',
+        'svuota_categorie_servizio',
+        'dci_empty_categories_page'
+    );
+}
+
+/**
+ * Visualizza il contenuto della pagina Svuota Categorie
+ */
+function dci_empty_categories_page() {
     ?>
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            // Trova il form per aggiungere una nuova categoria di servizio
-            var addTermForm = $('.form-field.term-parent-wrap').closest('form');
-
-            // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
-            var deleteButtonHtml = '<div style="margin-top: 10px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
-
-            // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
-            addTermForm.after(deleteButtonHtml);
-
-            // Gestisci il clic del pulsante "Cancella tutte le categorie di servizio"
-            $(document).on('click', '#delete-all-categories', function(e) {
-                e.preventDefault();
-                var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
-                if (confirmDelete) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'empty_all_categories',
-                            nonce: '<?php echo wp_create_nonce( "empty-categories-nonce" ); ?>'
-                        },
-                        success: function(response) {
-                            if (response === 'success') {
-                                alert('Tutte le categorie di servizio sono state cancellate.');
-                                location.reload();
-                            } else {
-                                alert('Errore durante l\'eliminazione delle categorie.');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Errore durante l\'eliminazione delle categorie: ' + error);
-                            console.error(xhr.responseText); // Mostra la risposta completa dell'errore nella console
-                        }
-                    });
-                }
-            });
-        });
-    </script>
+    <div class="wrap">
+        <h1><?php _e( 'Svuota tutte le categorie di servizio', 'design_comuni_italia' ); ?></h1>
+        <form method="post" action="">
+            <?php wp_nonce_field( 'dci_empty_categories_nonce', 'dci_empty_categories_nonce_field' ); ?>
+            <p><?php _e( 'Questa azione rimuoverà tutte le categorie di servizio. Sei sicuro?', 'design_comuni_italia' ); ?></p>
+            <input type="submit" name="dci_empty_categories_submit" class="button button-primary" value="<?php _e( 'Svuota Categorie', 'design_comuni_italia' ); ?>" />
+        </form>
+    </div>
     <?php
 }
 
-function add_remote_url_button() {
-    ?>
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            // Trova il form per aggiungere una nuova categoria di servizio
-            var addTermForm = $('.form-field.term-parent-wrap').closest('form');
+/**
+ * Gestisci la richiesta di svuotamento delle categorie
+ */
+add_action( 'admin_init', 'dci_handle_empty_categories' );
+function dci_handle_empty_categories() {
+    if ( isset( $_POST['dci_empty_categories_submit'] ) && check_admin_referer( 'dci_empty_categories_nonce', 'dci_empty_categories_nonce_field' ) ) {
+        $terms = get_terms( array(
+            'taxonomy' => 'categorie_servizio',
+            'hide_empty' => false,
+        ) );
 
-            // Crea un nuovo elemento per il pulsante "Aggiungi URL"
-            var addUrlButtonHtml = '<div style="margin-top: 10px;"><input type="text" id="remote-url" placeholder="Inserisci l\'URL"><button id="add-url" class="button">Carica Categorie da Maggioli</button></div>';
-            addTermForm.after(addUrlButtonHtml);
-
-            // Gestisci il clic del pulsante "Aggiungi URL"
-            $(document).on('click', '#add-url', function(e) {
-                e.preventDefault();
-                var remoteUrl = $('#remote-url').val();
-                if (remoteUrl) {
-                    $.ajax({
-                        url: remoteUrl,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log("Response from remote URL:", response); // Log the response for debugging
-                            if (response && response.length > 0) {
-                                var categoriesAdded = 0;
-        
-                                response.forEach(function(item) {
-                                    console.log("Processing item:", item); // Log each item
-                                    if (item.categoria) {
-                                        addCategoryIfNeeded(item.categoria, item.categoria, function(success) {
-                                            if (success) {
-                                                categoriesAdded++;
-                                                if (categoriesAdded === response.length) {
-                                                    // Quando tutte le categorie sono state aggiunte con successo, ricarica la pagina
-                                                    location.reload();
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-        
-                                alert('Richiesta di aggiunta categorie completata.');
-                            } else {
-                                alert('Nessuna categoria trovata nella risposta.');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Errore durante il recupero delle categorie: ' + error);
-                            console.error('Error details:', xhr.responseText); // Log the full error response
-                        }
-                    });
-                } else {
-                    alert('Inserisci un URL valido.');
-                }
-            });
-
-            // Funzione per aggiungere una categoria se non esiste
-            function addCategoryIfNeeded(name, description, callback) {
-                var data = {
-                    action: 'add_category_if_not_exists',
-                    name: name,
-                    description: description,
-                    nonce: '<?php echo wp_create_nonce( "add-category-nonce" ); ?>'
-                };
-                console.log("Sending data to add category:", data); // Log the data being sent
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: data,
-                    success: function(response) {
-                        console.log("Response from add_category_if_not_exists:", response); // Log the response for debugging
-                        var result = JSON.parse(response);
-                        if (result && result.success) {
-                            console.log('Categoria aggiunta con successo:', name);
-                            if (typeof callback === 'function') {
-                                callback(true); // Chiamata al callback indicando successo
-                            }
-                        } else {
-                            console.error('Errore durante l\'aggiunta della categoria:', name);
-                            if (typeof callback === 'function') {
-                                callback(false); // Chiamata al callback indicando errore
-                            }
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Errore durante l\'aggiunta della categoria:', name, error);
-                        if (typeof callback === 'function') {
-                            callback(false); // Chiamata al callback indicando errore
-                        }
-                    }
-                });
-            }
-        });
-    </script>
-    <?php
-}
-
-// Funzione per svuotare tutte le categorie di servizio
-add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
-function empty_all_categories_callback() {
-    check_ajax_referer( 'empty-categories-nonce', 'nonce' );
-
-    $terms = get_terms( array(
-        'taxonomy'   => 'categorie_servizio',
-        'hide_empty' => false,
-    ) );
-
-    if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
         foreach ( $terms as $term ) {
             wp_delete_term( $term->term_id, 'categorie_servizio' );
         }
-        echo 'success';
-    } else {
-        echo 'error';
+
+        wp_redirect( admin_url( 'edit.php?post_type=servizio&page=svuota_categorie_servizio&success=true' ) );
+        exit;
     }
 
-    wp_die();
-}
-
-// Funzione per aggiungere una categoria se non esiste
-add_action( 'wp_ajax_add_category_if_not_exists', 'add_category_if_not_exists_callback' );
-function add_category_if_not_exists_callback() {
-    check_ajax_referer( 'add-category-nonce', 'nonce' );
-
-    $name = sanitize_text_field( $_POST['name'] );
-    $description = sanitize_text_field( $_POST['description'] );
-
-    $existing_term = term_exists( $name, 'categorie_servizio' );
-
-    if ( $existing_term === 0 || $existing_term === null ) {
-        $term_args = array(
-            'description' => $description,
-            'slug' => sanitize_title( $name ),
-        );
-        $result = wp_insert_term( $name, 'categorie_servizio', $term_args );
-        if ( ! is_wp_error( $result ) ) {
-            echo json_encode( array( 'success' => true ) );
-        } else {
-            error_log('Error inserting term: ' . print_r($result, true)); // Log the error details
-            echo json_encode( array( 'success' => false ) );
-        }
-    } else {
-        echo json_encode( array( 'success' => true ) );
+    if ( isset( $_GET['success'] ) ) {
+        add_action( 'admin_notices', 'dci_empty_categories_success_notice' );
     }
-
-    wp_die();
 }
+
+/**
+ * Mostra un messaggio di successo dopo aver svuotato le categorie
+ */
+function dci_empty_categories_success_notice() {
+    ?>
+    <div class="notice notice-success is-dismissible">
+        <p><?php _e( 'Tutte le categorie di servizio sono state rimosse con successo.', 'design_comuni_italia' ); ?></p>
+    </div>
+    <?php
+}
+?>
