@@ -38,11 +38,7 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 col-lg-3 offset-lg-9">
-                    <button 
-                        type="button" 
-                        class="btn btn-primary text-button w-100"
-                        onclick="location.href='<?php echo dci_get_template_page_url('page-templates/servizi.php'); ?>'"
-                    >
+                    <button type="button"  class="btn btn-primary text-button w-100" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/servizi.php'); ?>'">
                         Tutti i servizi
                     </button>
                 </div>
