@@ -23,28 +23,31 @@ function get_procedures_data($search_term = null)
 
                 $name = $procedure['nome'];
                 $description = $procedure['descrizione_breve'];
-                $category = $procedure['categoria'];
+                $categories = $procedure['categoria']; // Potrebbe essere un array di categorie
                 $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
                 $url_servizio = $procedure['url'];
                 $url_categoria = $procedure['url_categoria'];
 
-                // Aggiungi il servizio all'array corretto
-                $service = [
-                    'name' => $name,
-                    'description' => $description,
-                    'category' => $category,
-                    'url' => $url_servizio,
-                    'category_url' => $url_categoria
-                ];
+                // Processa ogni categoria se è un array
+                foreach ($categories as $category) {
+                    // Aggiungi il servizio all'array corretto
+                    $service = [
+                        'name' => $name,
+                        'description' => $description,
+                        'category' => $category,
+                        'url' => $url_servizio,
+                        'category_url' => $url_categoria
+                    ];
 
-                if ($in_evidenza) {
-                    $in_evidenza_services[] = $service;
-                } else {
-                    $other_services[] = $service;
+                    if ($in_evidenza) {
+                        $in_evidenza_services[] = $service;
+                    } else {
+                        $other_services[] = $service;
+                    }
+
+                    // Incrementa il contatore ad ogni iterazione
+                    $total_services++;
                 }
-
-                // Incrementa il contatore ad ogni iterazione
-                $total_services++;
             }
             
             // Output del totale
