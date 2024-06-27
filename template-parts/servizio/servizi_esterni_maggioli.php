@@ -72,18 +72,26 @@ function get_procedures_data($search_term = null)
 function output_services($services)
 {
     foreach ($services as $service) {
-        // Assume che ci sia almeno una categoria definita per ogni servizio
-        $first_category_name = $service['category'][0];
-        $category_url = '/servizi-categoria/' . urlencode($first_category_name); // Costruisce l'URL per la categoria
-
         ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
             <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                 <span class="visually-hidden">Categoria:</span>
                 <div class="card-header border-0 p-0">
-                    <?php if ($service['category']) {
-                        echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase"><a href="' . $category_url . '">' . $first_category_name . '</a></div>';
-                    } ?>
+                    <?php 
+                    if (!empty($service['category'])) {
+                        echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">';
+                        $first = true;
+                        foreach ($service['category'] as $index => $category_name) {
+                            $category_url = '/servizi-categoria/' . urlencode($category_name);
+                            if (!$first) {
+                                echo ', ';
+                            }
+                            echo '<a href="' . $category_url . '">' . $category_name . '</a>';
+                            $first = false;
+                        }
+                        echo '</div>';
+                    }
+                    ?>
                 </div>
                 <div class="card-body p-0 my-2">
                     <h3 class="green-title-big t-primary mb-8">
