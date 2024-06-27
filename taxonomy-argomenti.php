@@ -29,7 +29,7 @@ get_header();
           </div>
         </div>
       </div>
-      <?php } ?>hhhhhhhhhhhh
+      <?php } ?>
       <div class="container">
         <div class="row">
           <div class="col-12 px-0 px-lg-2">
@@ -66,6 +66,7 @@ get_header();
                               get_template_part("template-parts/unita-organizzativa/card");
                             }
                         };
+ùùùùùùùùùùù
                         if (is_array($assessorati_riferimento) && count($assessorati_riferimento)) {
                             foreach ($assessorati_riferimento as $uo_id) {
                               $with_border = true;
