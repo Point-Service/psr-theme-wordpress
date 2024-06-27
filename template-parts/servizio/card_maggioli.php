@@ -8,12 +8,11 @@ $segments = explode('/', $current_url);
 $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
 // Funzione per ottenere i dati dal servizio web
-function get_procedures_data($search_term = null)
+function get_procedures_data($search_term = null, $category_segment)
 {
     $url = dci_get_option('servizi_maggioli_url', 'servizi');
     $response = wp_remote_get($url);
     $total_services = 0; // Inizializza il contatore
-    global $category_segment; // Importa la variabile category_segment globale
 
     if (is_array($response) && !is_wp_error($response)) {
         $body = wp_remote_retrieve_body($response);
@@ -21,7 +20,6 @@ function get_procedures_data($search_term = null)
 
         if ($data) {
             // Inizializza array per servizi in evidenza e non in evidenza
-            $in_evidenza_services = [];
             $other_services = [];
 
             foreach ($data as $procedure) {
@@ -30,12 +28,11 @@ function get_procedures_data($search_term = null)
                     continue; // Ignora questo servizio se il termine di ricerca non è presente
                 }
 
-                // Verifica se la categoria del servizio contiene category_segment
+                // Verifica se la categoria del servizio contiene $category_segment
                 if (stripos($procedure['categoria'], $category_segment) !== false) {
                     $name = $procedure['nome'];
                     $description = $procedure['descrizione_breve'];
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-                    $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
                     $url = $procedure['url'];
 
                     // Aggiungi il servizio all'array corretto
@@ -53,11 +50,13 @@ function get_procedures_data($search_term = null)
             }
         
             // Output degli altri servizi filtrati
-            echo "<h4></h4>";
+            echo "<h4>Servizi correlati alla categoria '$category_segment'</h4>";
             output_services($other_services);
+        } else {
+            echo "Nessun dato disponibile.";
         }
     } else {
-        echo "Non riesco a leggere i servizi aggiuntivi.";
+        echo "Errore nel recupero dei dati dei servizi.";
     }
 
     // Restituisci il totale dei servizi caricati
@@ -97,7 +96,8 @@ function output_services($services)
 
 // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
 $search_term = isset($_GET['search']) ? $_GET['search'] : null;
-$total_services_loaded = get_procedures_data($search_term);
+$total_services_loaded = get_procedures_data($search_term, $category_segment);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
+
 
