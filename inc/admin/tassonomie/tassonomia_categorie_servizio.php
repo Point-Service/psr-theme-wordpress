@@ -36,8 +36,9 @@ function dci_register_taxonomy_categorie_servizio() {
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 
+
     // Aggiungi il pulsante per svuotare tutte le categorie di servizio
-    add_action( 'categorie_servizio', 'admin_footer', 'add_empty_categories_button' );
+    add_action(  'categorie_servizio', 'add_empty_categories_button' );
 }
 
 function add_empty_categories_button() {
