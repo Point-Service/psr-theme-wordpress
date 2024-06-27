@@ -2,7 +2,7 @@
     global $title, $description, $with_shadow, $data_element;
     if (!$title) $title = get_the_title();
 
-
+ echo 'TITOLO: ' . $title;    
     // Ottieni l'URL della pagina corrente
     $current_url = home_url(add_query_arg(array(), $wp->request));
 
@@ -36,7 +36,7 @@
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
                     
- echo 'TITOLO: ' . $title;              
+ echo 'TITOLO: ' . $title;             
  
   echo '<br>';
   echo strtoupper($category);
