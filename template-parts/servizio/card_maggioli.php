@@ -1,7 +1,16 @@
 <?php
 
-$page_slug = get_query_var('pagename');
-echo $page_slug;
+// Ottieni l'URL della pagina corrente
+$current_url = home_url(add_query_arg(array(), $wp->request));
+
+// Estrai il segmento desiderato dall'URL
+$segments = explode('/', $current_url);
+$category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
+
+// Stampa il segmento desiderato
+echo $category_segment;
+
+
 
 // Funzione per ottenere i dati dal servizio web
 function get_procedures_data($search_term = null)
