@@ -36,8 +36,8 @@
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
                     
-  echo 'TITOLO';                  
-  echo $title;
+ echo 'TITOLO: ' . $title;              
+ 
   echo '<br>';
   echo strtoupper($category);
   echo '<br>';
