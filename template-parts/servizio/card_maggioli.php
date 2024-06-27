@@ -47,7 +47,7 @@
                         if ($title && mb_stripos(mb_strtolower($category), mb_strtolower($title)) === false) {
                             continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                         }
-                      }
+                      
 
                     // Aggiungi il servizio all'array filtrato
                     $service = [
