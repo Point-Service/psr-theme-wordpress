@@ -75,53 +75,53 @@ function add_empty_categories_button() {
                 }
             });
 
-            // Gestisci il clic del pulsante "Carica Categorie"
-            $(document).on('click', '#load-categories', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        action: 'load_categories_from_external_api',
-                        nonce: '<?php echo wp_create_nonce( "load-categories-nonce" ); ?>'
-                    },
-                    success: function(response) {
-                        if (response.success && response.data) {
-                            var categories = [];
+// Gestisci il clic del pulsante "Carica Categorie"
+$(document).on('click', '#load-categories', function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            action: 'load_categories_from_external_api',
+            nonce: '<?php echo wp_create_nonce( "load-categories-nonce" ); ?>'
+        },
+        success: function(response) {
+            if (response.success && response.data) {
+                var categories = [];
 
-                            if (Array.isArray(response.data)) {
-                                // Loop attraverso le categorie restituite dall'API
-                                response.data.forEach(function(item) {
-                                    if (item.categoria) {
-                                        categories.push(item.categoria.nome);
-                                    }
-                                });
-
-                                // Aggiungi le categorie alla lista delle opzioni
-                                $.each(categories, function(key, value) {
-                                    $('#categorie_servizio').append($('<option></option>').val(value).html(value));
-                                });
-
-                                // Mostra il debug a video
-                                $('#debug-output').html('<pre>' + JSON.stringify(categories, null, 2) + '</pre>');
-
-                                alert('Categorie caricate correttamente.');
-                            } else {
-                                console.error('Errore: dati delle categorie non validi.');
-                                alert('Errore nel caricamento delle categorie.');
-                            }
-                        } else {
-                            console.error('Errore nella risposta API:', response);
-                            alert('Errore nel caricamento delle categorie.');
+                if (Array.isArray(response.data)) {
+                    // Loop attraverso le categorie restituite dall'API
+                    response.data.forEach(function(item) {
+                        if (item.categoria) {
+                            categories.push(item.categoria.nome);
                         }
-                    },
-                    error: function(error) {
-                        console.error('Errore nella chiamata AJAX:', error);
-                        alert('Errore nel caricamento delle categorie.');
-                    }
-                });
-            });
+                    });
+
+                    // Aggiungi le categorie alla lista delle opzioni
+                    $.each(categories, function(key, value) {
+                        $('#categorie_servizio').append($('<option></option>').val(value).html(value));
+                    });
+
+                    // Mostra il debug a video
+                    $('#debug-output').html('<pre>' + JSON.stringify(categories, null, 2) + '</pre>');
+
+                    alert('Categorie caricate correttamente.');
+                } else {
+                    console.error('Errore: dati delle categorie non validi.');
+                    alert('Errore nel caricamento delle categorie.');
+                }
+            } else {
+                console.error('Errore nella risposta API:', response);
+                alert('Errore nel caricamento delle categorie.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Errore nella chiamata AJAX:', error);
+            alert('Errore nel caricamento delle categorie.');
+        }
+    });
+});
         });
     </script>
     <?php
