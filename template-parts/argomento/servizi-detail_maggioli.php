@@ -118,7 +118,7 @@
 
     // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
     $search_term = isset($_GET['search']) ? $_GET['search'] : null;
-    $total_services_loaded = get_procedures_data($search_term, $category_segment, $title);
+    $total_services_loaded = get_procedures_data($search_term, $category_segment);
 ?>
 
 
