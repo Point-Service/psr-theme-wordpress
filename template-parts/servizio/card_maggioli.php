@@ -39,11 +39,8 @@ function get_procedures_data($search_term = null)
                     'url' => $url
                 ];
 
-                if ($in_evidenza) {
-                    $in_evidenza_services[] = $service;
-                } else {
-                    $other_services[] = $service;
-                }
+                $other_services[] = $service;
+   
 
                 // Incrementa il contatore ad ogni iterazione
                 $total_services++;
@@ -51,10 +48,6 @@ function get_procedures_data($search_term = null)
             
             // Output del totale
             echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
-
-            // Output dei servizi in evidenza
-            echo "<h4>Servizi in Evidenza</h4>";
-            output_services($in_evidenza_services);
 
             // Output degli altri servizi
             echo "<h4>Altri Servizi</h4>";
