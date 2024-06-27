@@ -23,20 +23,31 @@ function get_procedures_data($search_term = null)
 
                 $name = $procedure['nome'];
                 $description = $procedure['descrizione_breve'];
-                $categories = $procedure['categoria']; // Potrebbe essere un array di categorie
+                $categories_raw = $procedure['categoria']; // Stringa delle categorie separate da virgola
+                $categories = array_map('trim', explode(',', $categories_raw)); // Splitta le categorie
+
                 $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
                 $url_servizio = $procedure['url'];
-                $url_categoria = $procedure['url_categoria'];
+                $url_categoria_raw = $procedure['url_categoria']; // Stringa degli URL delle categorie separate da virgola
+                $urls_categoria = array_map('trim', explode(',', $url_categoria_raw)); // Splitta gli URL delle categorie
 
-                // Processa ogni categoria se è un array
-                foreach ($categories as $category) {
+                // Assicurati che il numero di categorie e URL delle categorie corrispondano
+                $num_categories = count($categories);
+                $num_urls = count($urls_categoria);
+                $urls_categoria = array_pad($urls_categoria, $num_categories, end($urls_categoria));
+
+                // Processa ogni categoria e URL associato
+                for ($i = 0; $i < $num_categories; $i++) {
+                    $category = $categories[$i];
+                    $category_url = $urls_categoria[$i];
+
                     // Aggiungi il servizio all'array corretto
                     $service = [
                         'name' => $name,
                         'description' => $description,
                         'category' => $category,
                         'url' => $url_servizio,
-                        'category_url' => $url_categoria
+                        'category_url' => $category_url
                     ];
 
                     if ($in_evidenza) {
