@@ -35,8 +35,9 @@
                     $description = $procedure['descrizione_breve'];
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
-  echo $title;
-  echo  stripos(strtoupper($category);
+                    
+  echo strtoupper($title);
+  echo  stripos(strtoupper($category));
 
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
