@@ -78,7 +78,7 @@ function output_services($services)
                 <span class="visually-hidden">Categoria:</span>
                 <div class="card-header border-0 p-0">
                     <?php if ($service['category']) {
-                        echo '<a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="'/servizi-categoria/' . $service['category'] ."><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
+                        echo '<a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="/servizi-categoria/' . $service['category'] . '"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
                     } ?>
                 </div>
                 <div class="card-body p-0 my-2">
