@@ -1,33 +1,144 @@
 <?php
-global $argomento;
+    global $argomento;
 
-$posts = dci_get_grouped_posts_by_term('servizi', 'argomenti', $argomento->slug, 3);
+    $posts = dci_get_grouped_posts_by_term( 'servizi' , 'argomenti', $argomento->slug, 3);
+
+?><?php echo $argomento->name; ?>
+<section id="servizi">
+            <div class="pb-40 pt-40 pt-lg-80">
+                <div class="container">
+                    <div class="row row-title">
+                        <div class="col-12">
+                            <h3 class="u-grey-light border-bottom border-semi-dark pb-2 pb-lg-3 title-large-semi-bold">
+                                Servizi
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row mx-0">
+                        
+                        <?php
+
+
+    // Ottieni l'URL della pagina corrente
+    $current_url = home_url(add_query_arg(array(), $wp->request));
+
+    // Estrai il segmento desiderato dall'URL
+    $segments = explode('/', $current_url);
+    $argomento_segment = end($segments); // Prendi l'ultimo segmento dell'URL
+
+
+
+    // Funzione per ottenere i dati dal servizio web
+    function get_procedures_data($search_term = null, $argomento_segment = null)
+    {
+        $url = dci_get_option('servizi_maggioli_url', 'servizi');
+        $response = wp_remote_get($url);
+        $total_services = 0; // Inizializza il contatore
+
+        if (is_array($response) && !is_wp_error($response)) {
+            $body = wp_remote_retrieve_body($response);
+            $data = json_decode($body, true);
+
+            if ($data) {
+                // Inizializza array per servizi filtrati
+                $filtered_services = [];
+
+                foreach ($data as $procedure) {
+                    // Verifica se il termine di ricerca è presente nel nome del servizio
+                    if ($search_term && stripos($procedure['nome'], $search_term) === false) {
+                        continue; // Ignora questo servizio se il termine di ricerca non è presente
+                    }
+
+                    $name = $procedure['nome'];
+                    $description = $procedure['descrizione_breve'];
+                    $argomento = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
+                    $url = $procedure['url'];
+
+                    /**
+                    // Stampa il titolo e la categoria per debug
+                    echo 'TITOLO  : ' . strtolower($title);
+                    echo '<br>';
+                    echo strtolower($argomento);
+                    echo '<br>';
+                     */
+
+
+                    // Verifica se l'argomento contiene il segmento dell'URL, confrontando in modo case-insensitive
+                        if ($argomento_segment && mb_stripos(mb_strtolower($argomento), mb_strtolower($argomento_segment)) === false) {
+                            continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
+                        }
+                      
+
+                    // Aggiungi il servizio all'array filtrato
+                    $service = [
+                        'name' => $name,
+                        'description' => $description,
+                        'category' => $argomento,
+                        'url' => $url
+                    ];
+
+                    $filtered_services[] = $service;
+                    // Incrementa il contatore ad ogni iterazione
+                    $total_services++;
+                }
+
+                // Output dei servizi filtrati
+                echo "<h4>Argomento : $argomento_segment )</h4>";
+                output_services($filtered_services);
+            }
+        } else {
+            echo "Non riesco a leggere i servizi aggiuntivi.";
+        }
+
+        // Restituisci il totale dei servizi caricati
+        return $total_services;
+    }
+
+    // Funzione per stampare i servizi
+    function output_services($services)
+    {
+        foreach ($services as $service) {
+            // Genera il link alla categoria basato sul nome del servizio
+            $argomento_slug = sanitize_title($service['category']);
+            $argomento_link = "/servizi-categoria/$argomento_slug";
+?>
+   
+                        <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+                        <?php if ($service['category']) {
+                            echo '<a href="'. esc_url($argomento_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
+                        } ?>
+                            </div> <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
+                                    <div class="card-image-wrapper with-read-more">
+                                        <div class="card-body p-3">
+                                            <div class="category-top">
+                                                <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?php echo get_term_link($categoria_servizio->term_id); ?>"><?php echo $categoria_servizio->name; ?></a>
+                                            </div>
+                                                <h4 class="card-title text-paragraph-medium u-grey-light">
+                                                   <a class="text-decoration-none" href="<?php echo esc_url($service['url']); ?>" data-element="service-link"><?php echo $service['name']; ?></a>
+                                                </h4>
+                                            <p class="text-paragraph-card u-grey-light m-0"> <?php echo $service['description']; ?></p>
+                                        </div>
+                                    </div>
+                                </div>                       
+                 
+            <p></p>
+<?php
+        }
+    }
+
+    // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
+    $search_term = isset($_GET['search']) ? $_GET['search'] : null;
+    $total_services_loaded = get_procedures_data($search_term, $argomento_segment);
 ?>
 
-<section id="servizi">
-    <div class="pb-40 pt-40 pt-lg-80">
-        <div class="container">
-            <div class="row row-title">
-                <div class="col-12">
-                    <h3 class="u-grey-light border-bottom border-semi-dark pb-2 pb-lg-3 title-large-semi-bold">
-                        Servizi
-                    </h3>
-                </div>
-            </div>
-            <div class="row mx-0">
-                <?php
-                $argomento_segment = $argomento->name;
-                $search_term = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : null;
-                $total_services_loaded = get_procedures_data($search_term, $argomento_segment);
-                ?>
-            </div>
 
+ 
             <div class="row mt-4">
                 <div class="col-12 col-lg-3 offset-lg-9">
                     <button 
                         type="button" 
                         class="btn btn-primary text-button w-100"
-                        onclick="location.href='<?php echo esc_url(dci_get_template_page_url('page-templates/servizi.php')); ?>'"
+                        onclick="location.href='<?php echo dci_get_template_page_url('page-templates/servizi.php'); ?>'"
                     >
                         Tutti i servizi
                     </button>
@@ -36,102 +147,3 @@ $posts = dci_get_grouped_posts_by_term('servizi', 'argomenti', $argomento->slug,
         </div>
     </div>
 </section>
-
-<?php
-function get_procedures_data($search_term = null, $argomento_segment = null)
-{
-    $url = dci_get_option('servizi_maggioli_url', 'servizi');
-    $response = wp_remote_get($url);
-    $total_services = 0; // Inizializza il contatore
-
-    if (is_array($response) && !is_wp_error($response)) {
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
-
-        if ($data) {
-            // Inizializza array per servizi filtrati
-            $filtered_services = [];
-
-            foreach ($data as $procedure) {
-                // Verifica se il termine di ricerca è presente nel nome del servizio
-                if ($search_term && stripos($procedure['nome'], $search_term) === false) {
-                    continue; // Ignora questo servizio se il termine di ricerca non è presente
-                }
-
-                $name = $procedure['nome'];
-                $description = $procedure['descrizione_breve'];
-                $argomento = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
-
-                // Verifica se l'argomento contiene il segmento dell'URL, confrontando in modo case-insensitive
-                if ($argomento_segment && mb_stripos(mb_strtolower($argomento), mb_strtolower($argomento_segment)) === false) {
-                    continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
-                }
-
-                // Aggiungi il servizio all'array filtrato
-                $service = [
-                    'name' => $name,
-                    'description' => $description,
-                    'category' => $argomento,
-                    // Aggiungi il campo dell'URL del servizio, se disponibile
-                    'url' => isset($procedure['url']) ? $procedure['url'] : '',
-                ];
-
-                $filtered_services[] = $service;
-                // Incrementa il contatore ad ogni iterazione
-                $total_services++;
-            }
-
-            // Output dei servizi filtrati
-            echo "<h4>Argomento : $argomento_segment </h4>";
-            output_services($filtered_services);
-        }
-    } else {
-        echo "Non riesco a leggere i servizi aggiuntivi.";
-    }
-
-    // Restituisci il totale dei servizi caricati
-    return $total_services;
-}
-
-function output_services($services)
-{
-    foreach ($services as $service) {
-        $argomento_slug = sanitize_title($service['category']);
-        $argomento_link = "/servizi-categoria/$argomento_slug";
-?>
-        <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-            <?php if ($service['category']) : ?>
-                <a href="<?php echo esc_url($argomento_link); ?>" class="text-decoration-none">
-                    <div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">
-                        <?php echo $service['category']; ?>
-                    </div>
-                </a>
-            <?php endif; ?>
-        </div>
-        <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
-            <div class="card-image-wrapper with-read-more">
-                <div class="card-body p-3">
-                    <!-- Aggiunto il link alla categoria del servizio -->
-                    <!-- Assicurati che $categoria_servizio sia definito correttamente -->
-                    <div class="category-top">
-                        <!-- Sostituito $categoria_servizio con $service['category'] per coerenza -->
-                        <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?php echo esc_url(get_term_link($service['category'])); ?>">
-                            <?php echo $service['category']; ?>
-                        </a>
-                    </div>
-                    <h4 class="card-title text-paragraph-medium u-grey-light">
-                        <a class="text-decoration-none" href="<?php echo esc_url($service['url']); ?>" data-element="service-link">
-                            <?php echo $service['name']; ?>
-                        </a>
-                    </h4>
-                    <p class="text-paragraph-card u-grey-light m-0">
-                        <?php echo $service['description']; ?>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <p></p>
-<?php
-    }
-}
-?>
