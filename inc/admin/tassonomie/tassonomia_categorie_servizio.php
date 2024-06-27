@@ -36,9 +36,16 @@ function dci_register_taxonomy_categorie_servizio() {
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 
+    
+// Verifica se siamo nella pagina corretta dell'amministrazione di WordPress
+$current_url = admin_url('edit-tags.php?taxonomy=categorie_servizio&post_type=servizio');
 
+if (stripos($_SERVER['REQUEST_URI'], $current_url) !== false) {
     // Aggiungi il pulsante per svuotare tutte le categorie di servizio
-    add_action(  'categorie_servizio', 'add_empty_categories_button' );
+    add_action( 'admin_footer', 'add_empty_categories_button' );
+}
+
+
 }
 
 function add_empty_categories_button() {
