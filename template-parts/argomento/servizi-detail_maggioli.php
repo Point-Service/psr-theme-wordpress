@@ -24,12 +24,12 @@
 
     // Estrai il segmento desiderato dall'URL
     $segments = explode('/', $current_url);
-    $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
+    $argomento_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
 
 
     // Funzione per ottenere i dati dal servizio web
-    function get_procedures_data($search_term = null, $category_segment = null)
+    function get_procedures_data($search_term = null, $argomento_segment = null)
     {
         $url = dci_get_option('servizi_maggioli_url', 'servizi');
         $response = wp_remote_get($url);
@@ -51,20 +51,20 @@
 
                     $name = $procedure['nome'];
                     $description = $procedure['descrizione_breve'];
-                    $category = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
+                    $argomento = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
                     $url = $procedure['url'];
 
                     /**
                     // Stampa il titolo e la categoria per debug
                     echo 'TITOLO  : ' . strtolower($title);
                     echo '<br>';
-                    echo strtolower($category);
+                    echo strtolower($argomento);
                     echo '<br>';
                      */
-                     
+                      echo strtolower($argomento);
 
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
-                        if ($category_segment && mb_stripos(mb_strtolower($category), mb_strtolower($category_segment)) === false) {
+                        if ($argomento_segment && mb_stripos(mb_strtolower($argomento), mb_strtolower($argomento_segment)) === false) {
                             continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                         }
                       
@@ -73,7 +73,7 @@
                     $service = [
                         'name' => $name,
                         'description' => $description,
-                        'category' => $category,
+                        'category' => $argomento,
                         'url' => $url
                     ];
 
@@ -83,7 +83,7 @@
                 }
 
                 // Output dei servizi filtrati
-                echo "<h4>Argomento : $category_segment )</h4>";
+                echo "<h4>Argomento : $argomento_segment )</h4>";
                 output_services($filtered_services);
             }
         } else {
@@ -99,13 +99,13 @@
     {
         foreach ($services as $service) {
             // Genera il link alla categoria basato sul nome del servizio
-            $category_slug = sanitize_title($service['category']);
-            $category_link = "/servizi-categoria/$category_slug";
+            $argomento_slug = sanitize_title($service['category']);
+            $argomento_link = "/servizi-categoria/$argomento_slug";
 ?>
    
                         <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                         <?php if ($service['category']) {
-                            echo '<a href="'. esc_url($category_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
+                            echo '<a href="'. esc_url($argomento_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
                         } ?>
                             </div> <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
                                     <div class="card-image-wrapper with-read-more">
@@ -128,7 +128,7 @@
 
     // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
     $search_term = isset($_GET['search']) ? $_GET['search'] : null;
-    $total_services_loaded = get_procedures_data($search_term, $category_segment);
+    $total_services_loaded = get_procedures_data($search_term, $argomento_segment);
 ?>
 
 
