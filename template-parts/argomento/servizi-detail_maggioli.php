@@ -48,9 +48,9 @@
                   
                     // Stampa il titolo e la categoria per debug
                     echo 'TITOLO  : ' . strtolower($argomento_segment);
-                    echo '<br>';
-                    echo strtolower($category);
-                    echo '<br>';
+                   // echo '<br>';
+                   // echo strtolower($category);
+                   // echo '<br>';
                     
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
