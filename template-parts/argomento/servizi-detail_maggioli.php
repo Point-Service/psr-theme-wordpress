@@ -18,7 +18,7 @@
                         <?php
 
 
-     $category_segment = dci_get_meta('argomento');
+     $category_segment = $argomento;
 
     // Funzione per ottenere i dati dal servizio web
     function get_procedures_data($search_term = null, $category_segment = null)
