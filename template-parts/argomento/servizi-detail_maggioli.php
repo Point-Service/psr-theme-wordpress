@@ -1,4 +1,4 @@
-     <section id="servizi">dd
+     <section id="servizi">
             <div class="pb-40 pt-40 pt-lg-80">
                 <div class="container">
                     <div class="row row-title">
@@ -56,6 +56,7 @@
                      */
                      
                     echo strtolower($category);
+                     echo 'hhhhhhhhhhhh';
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
                         if ($category_segment && mb_stripos(mb_strtolower($category), mb_strtolower($category_segment)) === false) {
                             continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
