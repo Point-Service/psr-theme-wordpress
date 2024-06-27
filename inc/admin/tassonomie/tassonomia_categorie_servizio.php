@@ -1,14 +1,12 @@
 <?php
-/**
- * Definisce la tassonomia Categorie di Servizio
- */
+// Funzione per registrare la tassonomia delle categorie di servizio
 add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
 function dci_register_taxonomy_categorie_servizio() {
     $labels = array(
         'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
         'singular_name'     => _x( 'Categoria di Servizio', 'taxonomy singular name', 'design_comuni_italia' ),
         'search_items'      => __( 'Cerca Categoria di Servizio', 'design_comuni_italia' ),
-        'all_items'         => __( 'Tutte le Categorie di Servizio ', 'design_comuni_italia' ),
+        'all_items'         => __( 'Tutte le Categorie di Servizio', 'design_comuni_italia' ),
         'edit_item'         => __( 'Modifica la Categoria di Servizio', 'design_comuni_italia' ),
         'update_item'       => __( 'Aggiorna la Categoria di Servizio', 'design_comuni_italia' ),
         'add_new_item'      => __( 'Aggiungi una Categoria di Servizio', 'design_comuni_italia' ),
@@ -40,6 +38,7 @@ function dci_register_taxonomy_categorie_servizio() {
     add_action( 'admin_footer', 'add_empty_categories_button' );
 }
 
+// Funzione per aggiungere il pulsante "Cancella tutte le categorie di servizio"
 function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
@@ -75,53 +74,33 @@ function add_empty_categories_button() {
                 }
             });
 
-// Gestisci il clic del pulsante "Carica Categorie"
-$(document).on('click', '#load-categories', function(e) {
-    e.preventDefault();
-    $.ajax({
-        url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
-        type: 'POST',
-        dataType: 'json',
-        data: {
-            action: 'load_categories_from_external_api',
-            nonce: '<?php echo wp_create_nonce( "load-categories-nonce" ); ?>'
-        },
-        success: function(response) {
-            if (response.success && response.data) {
-                var categories = [];
-
-                if (Array.isArray(response.data)) {
-                    // Loop attraverso le categorie restituite dall'API
-                    response.data.forEach(function(item) {
-                        if (item.categoria) {
-                            categories.push(item.categoria.nome);
+            // Gestisci il clic del pulsante "Carica Categorie"
+            $(document).on('click', '#load-categories', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        action: 'load_categories_from_external_api',
+                        nonce: '<?php echo wp_create_nonce( "load-categories-nonce" ); ?>'
+                    },
+                    success: function(response) {
+                        if (response.success && response.data) {
+                            var categories = response.data;
+                            console.log(categories); // Mostra le categorie nella console per debug
+                            alert('Categorie caricate correttamente.');
+                        } else {
+                            console.error('Errore nel caricamento delle categorie:', response.message);
+                            alert('Errore nel caricamento delle categorie.');
                         }
-                    });
-
-                    // Aggiungi le categorie alla lista delle opzioni
-                    $.each(categories, function(key, value) {
-                        $('#categorie_servizio').append($('<option></option>').val(value).html(value));
-                    });
-
-                    // Mostra il debug a video
-                    $('#debug-output').html('<pre>' + JSON.stringify(categories, null, 2) + '</pre>');
-
-                    alert('Categorie caricate correttamente.');
-                } else {
-                    console.error('Errore: dati delle categorie non validi.');
-                    alert('Errore nel caricamento delle categorie.');
-                }
-            } else {
-                console.error('Errore nella risposta API:', response);
-                alert('Errore nel caricamento delle categorie.');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Errore nella chiamata AJAX:', error);
-            alert('Errore nel caricamento delle categorie.');
-        }
-    });
-});
+                    },
+                    error: function(error) {
+                        console.error('Errore nel caricamento delle categorie:', error);
+                        alert('Errore nel caricamento delle categorie.');
+                    }
+                });
+            });
         });
     </script>
     <?php
@@ -141,12 +120,10 @@ function empty_all_categories_callback() {
         foreach ( $terms as $term ) {
             wp_delete_term( $term->term_id, 'categorie_servizio' );
         }
-        echo 'success';
+        wp_send_json_success( 'success' );
     } else {
-        echo 'error';
+        wp_send_json_error( 'error' );
     }
-
-    wp_die();
 }
 
 // Funzione per caricare le categorie da un API esterno
@@ -158,23 +135,18 @@ function load_categories_from_external_api_callback() {
     $response = wp_remote_get( 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures' );
 
     if ( is_wp_error( $response ) ) {
-        wp_send_json_error( array( 'message' => 'Errore nella richiesta API remoto.' ) );
+        wp_send_json_error( array( 'message' => 'Errore nella richiesta API remoto: ' . $response->get_error_message() ) );
     }
 
     $body = wp_remote_retrieve_body( $response );
     $data = json_decode( $body );
 
-    if ( ! empty( $data ) ) {
-        // Mostra il debug a video
-        echo '<div id="debug-output"><pre>' . json_encode( $data, JSON_PRETTY_PRINT ) . '</pre></div>';
-
+    if ( $data ) {
         wp_send_json_success( $data );
     } else {
-        wp_send_json_error( array( 'message' => 'Nessun dato ricevuto dall\'API remoto.' ) );
+        wp_send_json_error( array( 'message' => 'Nessun dato ricevuto dall\'API remoto o formato dati non valido.' ) );
     }
 }
-
-
 ?>
 
 
