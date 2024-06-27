@@ -88,9 +88,9 @@ function add_empty_categories_button() {
                     },
                     success: function(response) {
                         var categories = [];
-                        if (response && response.length > 0) {
-                            response.forEach(function(item) {
-                                if (item.categoria) {
+                        if (response && response.data && response.data.length > 0) {
+                            response.data.forEach(function(item) {
+                                if (item.categoria && item.categoria.nome) {
                                     categories.push(item.categoria.nome);
                                 }
                             });
@@ -153,3 +153,4 @@ function load_categories_from_external_api_callback() {
     }
 }
 ?>
+
