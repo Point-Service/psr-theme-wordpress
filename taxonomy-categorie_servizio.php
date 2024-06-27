@@ -114,7 +114,7 @@ get_header();
           </div>
       </form>
     </div>
-                        
+       ,,,,,,                 
     <?php if ( is_array($bandi) && count($bandi) ) { ?>
       <div class="container">
         <h2 class="title-xxlarge mt-40 mb-40 mt-lg-60 mb-lg-40">Bandi</h2>
