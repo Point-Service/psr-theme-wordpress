@@ -19,12 +19,7 @@
                         <?php
 
 
-    // Ottieni l'URL della pagina corrente
-    $current_url = home_url(add_query_arg(array(), $wp->request));
-
-    // Estrai il segmento desiderato dall'URL
-    $segments = explode('/', $current_url);
-    $argomento_segment = end($segments); // Prendi l'ultimo segmento dell'URL
+    $argomento_segment = $argomento->name; 
 
 
 
