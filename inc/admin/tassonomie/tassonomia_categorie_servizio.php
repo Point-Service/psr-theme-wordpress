@@ -147,6 +147,7 @@ function empty_all_categories_callback() {
 }
 
 // Funzione per caricare le categorie da un API esterno
+// Funzione per caricare le categorie da un API esterno
 add_action( 'wp_ajax_load_categories_from_external_api', 'load_categories_from_external_api_callback' );
 function load_categories_from_external_api_callback() {
     check_ajax_referer( 'load-categories-nonce', 'nonce' );
@@ -162,6 +163,9 @@ function load_categories_from_external_api_callback() {
     $data = json_decode( $body );
 
     if ( ! empty( $data ) ) {
+        // Logga i dati ricevuti nella console per debug
+        error_log( 'Dati ricevuti dall\'API: ' . print_r( $data, true ) );
+
         wp_send_json_success( $data );
     } else {
         wp_send_json_error( array( 'message' => 'Nessun dato ricevuto dall\'API remoto.' ) );
