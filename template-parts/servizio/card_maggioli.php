@@ -46,16 +46,17 @@ function get_procedures_data($search_term = null, $title_array = null)
                 $url = $procedure['url'];
 
                 // Verifica se la categoria contiene almeno uno dei termini in $title_array
-                $found = false;
-                foreach ($title_array as $term) {
-                    if (stripos($category, trim($term)) !== false) {
-                        $found = true;
-                        break;
+                if ($title_array && count($title_array) > 0) {
+                    $found = false;
+                    foreach ($title_array as $term) {
+                        if (stripos($category, trim($term)) !== false) {
+                            $found = true;
+                            break;
+                        }
                     }
-                }
-
-                if (!$found) {
-                    continue; // Ignora questo servizio se nessuno dei termini in $title_array è presente nella categoria
+                    if (!$found) {
+                        continue; // Ignora questo servizio se nessuno dei termini in $title_array è presente nella categoria
+                    }
                 }
 
                 // Aggiungi il servizio all'array filtrato
