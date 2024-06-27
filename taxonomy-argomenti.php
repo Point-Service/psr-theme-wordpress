@@ -25,7 +25,7 @@ get_header();
       <div class="img-responsive-wrapper">
         <div class="img-responsive">
           <div class="img-wrapper">
-        
+            <?php dci_get_img($img); ?>
           </div>
         </div>
       </div>
@@ -33,9 +33,7 @@ get_header();
       <div class="container">
         <div class="row">
           <div class="col-12 px-0 px-lg-2">
-            <div
-              class="it-hero-card it-hero-bottom-overlapping rounded hero-p pb-lg-80 drop-shadow <?php echo ($img? '' : 'mt-0'); ?>"
-            >
+            <divclass="it-hero-card it-hero-bottom-overlapping ">
   
                 <div class="row justify-content-center">
                   <div class="col-12 col-lg-10">
@@ -115,5 +113,7 @@ get_header();
     <?php get_template_part("template-parts/common/valuta-servizio"); ?>
     <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
 </main>
+<?php
+get_footer();
 <?php
 get_footer();
