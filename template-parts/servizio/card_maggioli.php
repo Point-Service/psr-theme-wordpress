@@ -28,6 +28,10 @@ function get_procedures_data($search_term = null)
                 $url_segments = explode('/', $procedure['url']);
                 $category_segment = end($url_segments);
 
+                // Sostituisci gli spazi con i trattini nel segmento della categoria
+                $category_segment = str_replace(' ', '-', $category_segment);
+
+                // Confronta il segmento della categoria con il segmento desiderato
                 if ($category_segment !== 'cultura-e-tempo-libero') {
                     continue; // Ignora questo servizio se la categoria non corrisponde
                 }
