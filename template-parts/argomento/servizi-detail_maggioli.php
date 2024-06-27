@@ -44,7 +44,7 @@
 
                     $name = $procedure['nome'];
                     $description = $procedure['descrizione_breve'];
-                    $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                    $category = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
                     $url = $procedure['url'];
 
                     /**
