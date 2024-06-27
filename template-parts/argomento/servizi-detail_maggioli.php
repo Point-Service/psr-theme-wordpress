@@ -10,19 +10,17 @@
                     </div>
                     <div class="row mx-0">
                         
-                        <?php
-    global $title, $description, $with_shadow, $data_element;
-    if (!$title) $title = get_the_title();
+    <?php
 
     // Ottieni l'URL della pagina corrente
     $current_url = home_url(add_query_arg(array(), $wp->request));
 
     // Estrai il segmento desiderato dall'URL
     $segments = explode('/', $current_url);
-    $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
+    $argomento_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
     // Funzione per ottenere i dati dal servizio web
-    function get_procedures_data($search_term = null, $category_segment = null, $title = null)
+    function get_procedures_data($search_term = null, $argomento_segment = null)
     {
         $url = dci_get_option('servizi_maggioli_url', 'servizi');
         $response = wp_remote_get($url);
@@ -44,19 +42,19 @@
 
                     $name = $procedure['nome'];
                     $description = $procedure['descrizione_breve'];
-                    $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                    $category = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
                     $url = $procedure['url'];
 
-                    /**
+                  
                     // Stampa il titolo e la categoria per debug
-                    echo 'TITOLO  : ' . strtolower($title);
+                    echo 'TITOLO  : ' . strtolower($argomento_segment);
                     echo '<br>';
                     echo strtolower($category);
                     echo '<br>';
-                     */
+                    
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
-                        if ($title && mb_stripos(mb_strtolower($category), mb_strtolower($title)) === false) {
+                        if ($title && mb_stripos(mb_strtolower($category), mb_strtolower($argomento_segment)) === false) {
                             continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                         }
                       
