@@ -36,13 +36,13 @@
                     $url = $procedure['url'];
 
                     // Stampa il titolo e la categoria per debug
-                    echo 'TITOLO: ' . $title;
+                    echo 'TITOLO: ' . strtolower($title);
                     echo '<br>';
-                    echo strtoupper($category);
+                    echo strtolower($category);
                     echo '<br>';
 
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
-                    if ($title && stripos(strtoupper($category), strtoupper($category_segment)) === false) {
+                    if ($title && stripos(strtolower($category), strtolower($title)) === false) {
                         continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                     }
 
