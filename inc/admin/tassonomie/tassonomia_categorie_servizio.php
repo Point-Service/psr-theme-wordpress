@@ -76,38 +76,48 @@ function add_empty_categories_button() {
             });
 
             // Gestisci il clic del pulsante "Carica Categorie"
-            $(document).on('click', '#load-categories', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        action: 'load_categories_from_external_api',
-                        nonce: '<?php echo wp_create_nonce( "load-categories-nonce" ); ?>'
-                    },
-                    success: function(response) {
-                        var categories = [];
-                        if (response && response.data) {
-                            if (typeof response.data === 'string') {
-                                // Se response.data è una stringa, splitta le categorie basate sul separatore
-                                categories = response.data.split(',').map(function(category) {
-                                    return category.trim(); // Rimuove spazi vuoti intorno alle categorie
-                                });
-                            } else if (Array.isArray(response.data)) {
-                                // Se response.data è un array, presume che contenga le categorie direttamente
-                                categories = response.data;
-                            }
-                        }
-                        console.log(categories); // Mostra le categorie nella console per debug
-                        alert('Categorie caricate correttamente.');
-                    },
-                    error: function(error) {
-                        console.error('Errore nel caricamento delle categorie:', error);
-                        alert('Errore nel caricamento delle categorie.');
-                    }
-                });
-            });
+$(document).on('click', '#load-categories', function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            action: 'load_categories_from_external_api',
+            nonce: '<?php echo wp_create_nonce( "load-categories-nonce" ); ?>'
+        },
+        success: function(response) {
+            if (response.success && response.data) {
+                var categories = [];
+
+                if (typeof response.data === 'string') {
+                    // Se response.data è una stringa, splitta le categorie basate sul separatore
+                    categories = response.data.split(',').map(function(category) {
+                        return category.trim(); // Rimuove spazi vuoti intorno alle categorie
+                    });
+                } else if (Array.isArray(response.data)) {
+                    // Se response.data è un array, presume che contenga le categorie direttamente
+                    categories = response.data;
+                } else {
+                    console.error('Formato dati non valido:', response.data);
+                    alert('Errore: Formato dati non valido.');
+                    return;
+                }
+
+                console.log(categories); // Mostra le categorie nella console per debug
+                alert('Categorie caricate correttamente.');
+            } else {
+                console.error('Errore nella risposta:', response);
+                alert('Errore nel caricamento delle categorie.');
+            }
+        },
+        error: function(error) {
+            console.error('Errore nella chiamata AJAX:', error);
+            alert('Errore nella chiamata AJAX.');
+        }
+    });
+});
+
         });
     </script>
     <?php
