@@ -1,9 +1,11 @@
 <?php
-/**
+
+/**_serv
  * Definisce la tassonomia Categorie di Servizio
  */
 add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
 function dci_register_taxonomy_categorie_servizio() {
+
     $labels = array(
         'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
         'singular_name'     => _x( 'Categoria di Servizio', 'taxonomy singular name', 'design_comuni_italia' ),
@@ -35,9 +37,5 @@ function dci_register_taxonomy_categorie_servizio() {
     );
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
-
 }
-
-
-?>
 
