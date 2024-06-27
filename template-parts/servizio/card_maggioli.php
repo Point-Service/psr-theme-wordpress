@@ -2,7 +2,6 @@
     global $title, $description, $with_shadow, $data_element;
     if (!$title) $title = get_the_title();
 
- echo 'TITOLO: ' . $title;    
     // Ottieni l'URL della pagina corrente
     $current_url = home_url(add_query_arg(array(), $wp->request));
 
@@ -11,7 +10,7 @@
     $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
     // Funzione per ottenere i dati dal servizio web
-    function get_procedures_data($search_term = null, $category_segment = null)
+    function get_procedures_data($search_term = null, $category_segment = null, $title = null)
     {
         $url = dci_get_option('servizi_maggioli_url', 'servizi');
         $response = wp_remote_get($url);
@@ -35,15 +34,13 @@
                     $description = $procedure['descrizione_breve'];
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
-                    
- echo 'TITOLO: ' . $title;             
- 
-  echo '<br>';
-  echo strtoupper($category);
-  echo '<br>';
-                    
 
-                    
+                    // Stampa il titolo e la categoria per debug
+                    echo 'TITOLO: ' . $title;
+                    echo '<br>';
+                    echo strtoupper($category);
+                    echo '<br>';
+
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
                     if ($title && stripos(strtoupper($category), strtoupper($category_segment)) === false) {
                         continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
@@ -107,9 +104,8 @@
 
     // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
     $search_term = isset($_GET['search']) ? $_GET['search'] : null;
-    $total_services_loaded = get_procedures_data($search_term, $category_segment);
+    $total_services_loaded = get_procedures_data($search_term, $category_segment, $title);
     echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
-
 
 
