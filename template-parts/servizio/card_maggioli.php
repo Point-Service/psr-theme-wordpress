@@ -11,7 +11,7 @@
     $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
     // Funzione per ottenere i dati dal servizio web
-    function get_procedures_data($search_term = null, $title = null)
+    function get_procedures_data($search_term = null, $category_segment = null)
     {
         $url = dci_get_option('servizi_maggioli_url', 'servizi');
         $response = wp_remote_get($url);
@@ -36,7 +36,7 @@
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
   echo 'TITOLO';                  
-  echo strtoupper($title);
+  echo strtoupper($category_segment);
   echo '<br>';
   echo strtoupper($category);
                     echo '<br>';
@@ -44,7 +44,7 @@
 
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
-                    if ($title && stripos(strtoupper($category), strtoupper($title)) === false) {
+                    if ($title && stripos(strtoupper($category), strtoupper($category_segment)) === false) {
                         continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                     }
 
