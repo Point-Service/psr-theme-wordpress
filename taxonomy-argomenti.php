@@ -33,9 +33,7 @@ get_header();
       <div class="container">
         <div class="row">
           <div class="col-12 px-0 px-lg-2">
-            <div
-              class="it-hero-card it-hero-bottom-overlapping rounded hero-p pb-lg-80 drop-shadow <?php echo ($img? '' : 'mt-0'); ?>"
-            >
+            <div class="it-hero-card it-hero-bottom-overlapping rounded hero-p pb-lg-80 drop-shadow">
   
                 <div class="row justify-content-center">
                   <div class="col-12 col-lg-10">
