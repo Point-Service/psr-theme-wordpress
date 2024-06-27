@@ -2,6 +2,7 @@
     global $argomento;
 
     $posts = dci_get_grouped_posts_by_term( 'servizi' , 'argomenti', $argomento->slug, 3);
+echo argomento;
 ?>
 <section id="servizi">
             <div class="pb-40 pt-40 pt-lg-80">
@@ -18,7 +19,14 @@
                         <?php
 
 
-     $category_segment = $argomento;
+    // Ottieni l'URL della pagina corrente
+    $current_url = home_url(add_query_arg(array(), $wp->request));
+
+    // Estrai il segmento desiderato dall'URL
+    $segments = explode('/', $current_url);
+    $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
+
+
 
     // Funzione per ottenere i dati dal servizio web
     function get_procedures_data($search_term = null, $category_segment = null)
