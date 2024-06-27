@@ -1,10 +1,9 @@
 <?php
     global $title, $description, $with_shadow, $data_element;
-
-    if($title == 'notizia') $title = 'Notizie';
-
     if (!$title) $title = get_the_title();
     if (!$description && $post) $description = dci_get_meta('descrizione','_dci_page_',$post->ID);
+    $categorie = get_the_terms($servizio->ID, 'categorie_servizio');
+echo $categorie;
 ?>
 <?php
 
