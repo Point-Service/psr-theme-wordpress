@@ -50,11 +50,10 @@ function add_empty_categories_button() {
             // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
             var deleteButtonHtml = '<div style="margin-top: 20px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
 
-            // Aggiungi i pulsanti sotto il form per aggiungere una nuova categoria di servizio
+            // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
             addTermForm.after(deleteButtonHtml);
-            addTermForm.after(loadCategoriesButtonHtml);
 
-            // Gestisci il clic del pulsante "Cancella tutte le categorie di servizio"
+            // Gestisci il clic del pulsante
             $(document).on('click', '#delete-all-categories', function(e) {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
@@ -72,9 +71,6 @@ function add_empty_categories_button() {
                         }
                     });
                 }
-            });
-
-      
             });
         });
     </script>
@@ -102,7 +98,5 @@ function empty_all_categories_callback() {
 
     wp_die();
 }
-
 ?>
-
 
