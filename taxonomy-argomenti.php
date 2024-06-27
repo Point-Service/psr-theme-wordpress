@@ -94,13 +94,13 @@ get_header();
     	<?php get_template_part("template-parts/argomento/novita-detail"); ?>
     	<?php get_template_part("template-parts/argomento/amministrazione-detail"); ?>	    
 	<?php
-			if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) { 
+	   if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) { 
 			    // Se la lunghezza della stringa è maggiore di 5, esegui questo blocco di codice
-			    get_template_part("template-parts/argomento/servizi-detail_maggioli");
-			} else {
+		get_template_part("template-parts/argomento/servizi-detail_maggioli");
+	    } else {
 			    // Altrimenti, esegui questo blocco di codice
-			    get_template_part("template-parts/argomento/servizi-detail");
-			}
+		get_template_part("template-parts/argomento/servizi-detail");
+	    }
 	?>
     	<?php get_template_part("template-parts/argomento/documenti-detail"); ?>
     	<?php get_template_part("template-parts/argomento/luoghi-detail"); ?>
