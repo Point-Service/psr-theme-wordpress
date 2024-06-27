@@ -1,4 +1,7 @@
 <?php
+
+global $servizio, $hide_categorie, $post;
+
 // Funzione per ottenere i dati dal servizio web
 function get_procedures_data($search_term = null)
 {
