@@ -77,7 +77,7 @@ function output_services($services)
                 <span class="visually-hidden">Categoria:</span>
                 <div class="card-header border-0 p-0">
                     <?php if ($service['category']) {
-                        echo '<?php echo esc_url($category_link); ?>" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
+                        echo '<a href="'. esc_url($category_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
                     } ?>
                 </div>
                 <div class="card-body p-0 my-2">
