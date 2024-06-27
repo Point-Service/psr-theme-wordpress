@@ -79,12 +79,15 @@ function add_empty_categories_button() {
             $(document).on('click', '#load-categories', function(e) {
                 e.preventDefault();
                 $.ajax({
-                    url: 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures',
-                    type: 'GET',
-                    dataType: 'json', // Assicurati che la risposta sia JSON
+                    url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        action: 'load_categories_from_external_api',
+                        nonce: '<?php echo wp_create_nonce( "load-categories-nonce" ); ?>'
+                    },
                     success: function(response) {
                         var categories = [];
-                        // Leggi i nomi delle categorie dalla risposta JSON
                         if (response && response.length > 0) {
                             response.forEach(function(item) {
                                 if (item.categoria) {
@@ -92,11 +95,12 @@ function add_empty_categories_button() {
                                 }
                             });
                         }
-                        // Ora hai tutte le categorie nell'array 'categories'
-                        console.log(categories); // Puoi fare quello che vuoi con questo array
+                        console.log(categories); // Mostra le categorie nella console per debug
+                        alert('Categorie caricate correttamente.');
                     },
                     error: function(error) {
                         console.error('Errore nel caricamento delle categorie:', error);
+                        alert('Errore nel caricamento delle categorie.');
                     }
                 });
             });
@@ -125,5 +129,27 @@ function empty_all_categories_callback() {
     }
 
     wp_die();
+}
+
+// Funzione per caricare le categorie da un API esterno
+add_action( 'wp_ajax_load_categories_from_external_api', 'load_categories_from_external_api_callback' );
+function load_categories_from_external_api_callback() {
+    check_ajax_referer( 'load-categories-nonce', 'nonce' );
+
+    // Esegui la richiesta all'API remoto
+    $response = wp_remote_get( 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures' );
+
+    if ( is_wp_error( $response ) ) {
+        wp_send_json_error( array( 'message' => 'Errore nella richiesta API remoto.' ) );
+    }
+
+    $body = wp_remote_retrieve_body( $response );
+    $data = json_decode( $body );
+
+    if ( ! empty( $data ) ) {
+        wp_send_json_success( $data );
+    } else {
+        wp_send_json_error( array( 'message' => 'Nessun dato ricevuto dall\'API remoto.' ) );
+    }
 }
 ?>
