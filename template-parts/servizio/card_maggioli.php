@@ -44,7 +44,7 @@
                      */
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
-                     if ($title && mb_stripos(mb_strtolower($category), mb_strtolower($category_segment)) === false) {
+                         if ($title && stripos(strtolower($category), strtolower($title)) === false) {
                         continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                       }
 
