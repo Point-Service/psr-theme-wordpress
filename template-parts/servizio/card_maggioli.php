@@ -1,6 +1,7 @@
 <?php
 
-global $servizio, $hide_categorie, $post;
+$page_slug = get_query_var('pagename');
+echo $page_slug;
 
 // Funzione per ottenere i dati dal servizio web
 function get_procedures_data($search_term = null)
