@@ -35,7 +35,11 @@
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
 
-  
+                    // Stampa il titolo e la categoria per debug
+                    echo 'TITOLO  : ' . strtolower($title);
+                    echo '<br>';
+                    echo strtolower($category);
+                    echo '<br>';
 
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
                     if ($title && stripos(strtolower($category), strtolower($title)) === false) {
@@ -56,7 +60,7 @@
                 }
 
                 // Output dei servizi filtrati
-                echo "<h4>Servizi trovati nella categoria: $category_segment</h4>";
+                echo "<h4>Servizi trovati nella categoria: $title)</h4>";
                 output_services($filtered_services);
             }
         } else {
