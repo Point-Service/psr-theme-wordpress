@@ -87,7 +87,7 @@ get_header();
                         if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { ?>
                             <?php get_template_part("template-parts/search/more-results"); ?>
                         <?php } else { ?>
-                             <?php get_template_part("taxonomy-categorie_servizio_maggioli.php"); ?>
+                             <?php get_template_part("/taxonomy-categorie_servizio_maggioli.php"); ?>
                         <?php } ?>
               </div>
               
