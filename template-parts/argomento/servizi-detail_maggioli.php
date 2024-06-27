@@ -22,7 +22,7 @@
     $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
     // Funzione per ottenere i dati dal servizio web
-    function get_procedures_data($search_term = null, $category_segment = null, $title = null)
+    function get_procedures_data($search_term = null, $category_segment = null)
     {
         $url = dci_get_option('servizi_maggioli_url', 'servizi');
         $response = wp_remote_get($url);
@@ -56,7 +56,7 @@
                      */
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
-                        if ($title && mb_stripos(mb_strtolower($category), mb_strtolower($title)) === false) {
+                        if ($category_segment && mb_stripos(mb_strtolower($category), mb_strtolower($category_segment)) === false) {
                             continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                         }
                       
@@ -120,7 +120,7 @@
 
     // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
     $search_term = isset($_GET['search']) ? $_GET['search'] : null;
-    $total_services_loaded = get_procedures_data($search_term, $category_segment, $title);
+    $total_services_loaded = get_procedures_data($search_term, $category_segment);
 ?>
 
 
