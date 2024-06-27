@@ -58,7 +58,7 @@ get_header();
                     <?php 
                         if ((is_array($aree_appartenenza) && count($aree_appartenenza)) || (is_array($assessorati_riferimento) && count($assessorati_riferimento))) { ?>
                     <h3 class="title-xsmall-semi-bold">Questo argomento è gestito da:</h3>
-                    <?php } ?>lllll
+                    <?php } ?>
                     <?php 
                         if (is_array($aree_appartenenza) && count($aree_appartenenza)) {
                             foreach ($aree_appartenenza as $uo_id) {
@@ -93,6 +93,7 @@ get_header();
     	<?php get_template_part("template-parts/argomento/page-detail"); ?>
     	<?php get_template_part("template-parts/argomento/novita-detail"); ?>
     	<?php get_template_part("template-parts/argomento/amministrazione-detail"); ?>
+	    kmjjjj
     	<?php get_template_part("template-parts/argomento/servizi-detail"); ?>
     	<?php get_template_part("template-parts/argomento/documenti-detail"); ?>
     	<?php get_template_part("template-parts/argomento/luoghi-detail"); ?>
