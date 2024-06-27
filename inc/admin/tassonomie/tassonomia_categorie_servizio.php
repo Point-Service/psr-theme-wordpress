@@ -41,58 +41,6 @@ function dci_register_taxonomy_categorie_servizio() {
 
 }
 
-function add_empty_categories_button_css() {
-    echo '<style>#delete-all-categories { position: absolute; top: 10px; left: 20px; }</style>';
-}
 
-function add_empty_categories_button() {
-    ?>
-    <button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            $('#delete-all-categories').on('click', function(e) {
-                e.preventDefault();
-                var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
-                if (confirmDelete) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'empty_all_categories',
-                            nonce: '<?php echo wp_create_nonce( "empty-categories-nonce" ); ?>'
-                        },
-                        success: function(response) {
-                            alert('Tutte le categorie di servizio sono state cancellate.');
-                            location.reload();
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-    <?php
-}
-
-// Funzione per svuotare tutte le categorie di servizio
-add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
-function empty_all_categories_callback() {
-    check_ajax_referer( 'empty-categories-nonce', 'nonce' );
-
-    $terms = get_terms( array(
-        'taxonomy'   => 'categorie_servizio',
-        'hide_empty' => false,
-    ) );
-
-    if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-        foreach ( $terms as $term ) {
-            wp_delete_term( $term->term_id, 'categorie_servizio' );
-        }
-        echo 'success';
-    } else {
-        echo 'error';
-    }
-
-    wp_die();
-}
 ?>
 
