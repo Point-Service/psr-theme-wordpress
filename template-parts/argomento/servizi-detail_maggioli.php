@@ -1,4 +1,4 @@
-    <section id="servizi">
+        <section id="servizi">
             <div class="pb-40 pt-40 pt-lg-80">
                 <div class="container">
                     <div class="row row-title">
@@ -9,18 +9,19 @@
                         </div>
                     </div>
                     <div class="row mx-0">
-                        
-    <?php
+                        <?php
+    global $title, $description, $with_shadow, $data_element;
+    if (!$title) $title = get_the_title();
 
     // Ottieni l'URL della pagina corrente
     $current_url = home_url(add_query_arg(array(), $wp->request));
 
     // Estrai il segmento desiderato dall'URL
     $segments = explode('/', $current_url);
-    $argomento_segment = end($segments); // Prendi l'ultimo segmento dell'URL
+    $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
     // Funzione per ottenere i dati dal servizio web
-    function get_procedures_data($search_term = null, $argomento_segment = null)
+    function get_procedures_data($search_term = null, $category_segment = null, $title = null)
     {
         $url = dci_get_option('servizi_maggioli_url', 'servizi');
         $response = wp_remote_get($url);
@@ -42,19 +43,19 @@
 
                     $name = $procedure['nome'];
                     $description = $procedure['descrizione_breve'];
-                    $category = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
+                    $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
 
-                  
+                    /**
                     // Stampa il titolo e la categoria per debug
-                    echo 'TITOLO  : ' . strtolower($argomento_segment);
+                    echo 'TITOLO  : ' . strtolower($title);
                     echo '<br>';
                     echo strtolower($category);
                     echo '<br>';
-                    
+                     */
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
-                        if ($title && mb_stripos(mb_strtolower($category), mb_strtolower($argomento_segment)) === false) {
+                        if ($title && mb_stripos(mb_strtolower($category), mb_strtolower($title)) === false) {
                             continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                         }
                       
@@ -92,7 +93,7 @@
             $category_slug = sanitize_title($service['category']);
             $category_link = "/servizi-categoria/$category_slug";
 ?>
-   
+
                         <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                         <?php if ($service['category']) {
                             echo '<a href="'. esc_url($category_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
