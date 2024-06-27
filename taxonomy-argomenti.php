@@ -52,7 +52,7 @@ get_header();
                     <p class="u-main-black text-paragraph-regular-medium mb-60">
                         <?php echo $argomento->description; ?>
                     </p>
-                  </div>dddd
+                  </div>
                   <div class="col-12 col-lg-5 me-lg-5">
                     <div class="card-wrapper card-column">
                     <?php 
