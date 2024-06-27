@@ -44,9 +44,9 @@
                      */
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
-                 if ($title && stripos($category, $title) === false) {
+                       if ($title && stripos(strtolower($category), strtolower($title)) === false) {
                         continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
-                    }
+                      }
 
                     // Aggiungi il servizio all'array filtrato
                     $service = [
