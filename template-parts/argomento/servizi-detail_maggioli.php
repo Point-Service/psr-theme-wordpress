@@ -54,7 +54,7 @@
                     echo strtolower($category);
                     echo '<br>';
                      */
-                    
+                    echo strtolower($category);
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
                         if ($category_segment && mb_stripos(mb_strtolower($category), mb_strtolower($category_segment)) === false) {
                             continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
