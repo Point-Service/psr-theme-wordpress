@@ -55,7 +55,7 @@ function add_empty_categories_button() {
             var addTermForm = $('.form-field.term-parent-wrap').closest('form');
 
             // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
-            var deleteButtonHtml = '<div style="margin-top: 20px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
+            var deleteButtonHtml = '<div style="margin-top: 40px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
 
             // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
             addTermForm.after(deleteButtonHtml);
