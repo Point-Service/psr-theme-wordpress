@@ -72,13 +72,17 @@ function get_procedures_data($search_term = null)
 function output_services($services)
 {
     foreach ($services as $service) {
-?>
+        // Assume che ci sia almeno una categoria definita per ogni servizio
+        $first_category_name = $service['category'][0];
+        $category_url = '/servizi-categoria/' . urlencode($first_category_name); // Costruisce l'URL per la categoria
+
+        ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
             <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                 <span class="visually-hidden">Categoria:</span>
                 <div class="card-header border-0 p-0">
                     <?php if ($service['category']) {
-                        echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</div>';
+                        echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase"><a href="' . $category_url . '">' . $first_category_name . '</a></div>';
                     } ?>
                 </div>
                 <div class="card-body p-0 my-2">
@@ -92,7 +96,7 @@ function output_services($services)
             </div>
         </div>
         <p></p>
-<?php
+        <?php
     }
 }
 
