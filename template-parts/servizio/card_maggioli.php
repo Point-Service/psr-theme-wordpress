@@ -4,8 +4,22 @@
     if (!$description && $post) $description = dci_get_meta('descrizione','_dci_page_',$post->ID);
     if (!$categorie && $post) $categorie = dci_get_meta('categorie_servizio','_dci_page_',$post->ID);
 
-echo $categorie;
+
 ?>
+
+ <?php if (is_array($categorie) && count($categorie)) {
+                        $count = 1;
+                        foreach ($categorie as $categoria) {
+                            echo $count == 1 ? '' : ' - ';
+                            echo '<a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="'.get_term_link($categoria->term_id).'">';
+                            echo $categoria->name ;                                    
+                            echo '</a>';
+                            ++$count;
+                        }
+                    }                        
+                    ?>
+
+
 <?php
 
 // Ottieni l'URL della pagina corrente
