@@ -49,11 +49,13 @@ function add_empty_categories_button() {
 
             // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
             var deleteButtonHtml = '<div style="margin-top: 20px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
+            var loadCategoriesButtonHtml = '<div style="margin-top: 10px;"><button id="load-categories" class="button">Carica Categorie</button></div>';
 
-            // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
+            // Aggiungi i pulsanti sotto il form per aggiungere una nuova categoria di servizio
             addTermForm.after(deleteButtonHtml);
+            addTermForm.after(loadCategoriesButtonHtml);
 
-            // Gestisci il clic del pulsante
+            // Gestisci il clic del pulsante "Cancella tutte le categorie di servizio"
             $(document).on('click', '#delete-all-categories', function(e) {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
@@ -71,6 +73,31 @@ function add_empty_categories_button() {
                         }
                     });
                 }
+            });
+
+            // Gestisci il clic del pulsante "Carica Categorie"
+            $(document).on('click', '#load-categories', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures',
+                    type: 'GET',
+                    success: function(response) {
+                        var categories = [];
+                        // Leggi i nomi delle categorie dalla risposta JSON
+                        if (response && response.length > 0) {
+                            response.forEach(function(item) {
+                                if (item.categoria) {
+                                    categories.push(item.categoria.nome);
+                                }
+                            });
+                        }
+                        // Ora hai tutte le categorie nell'array 'categories'
+                        console.log(categories); // Puoi fare quello che vuoi con questo array
+                    },
+                    error: function(error) {
+                        console.error('Errore nel caricamento delle categorie:', error);
+                    }
+                });
             });
         });
     </script>
