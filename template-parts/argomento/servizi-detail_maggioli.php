@@ -75,7 +75,7 @@
                 }
 
                 // Output dei servizi filtrati
-                echo "<h4>Servizi trovati nella categoria: $title)</h4>";
+                echo "<h4>Servizi trovati nella categoria: $category_segment )</h4>";
                 output_services($filtered_services);
             }
         } else {
