@@ -34,23 +34,27 @@ function dci_register_taxonomy_categorie_servizio() {
         'rest_controller_class' => 'WP_REST_Terms_Controller',
     );
 
-    // Aggiungi il pulsante per svuotare le categorie di servizio
-    add_action( 'admin_head', 'add_empty_categories_button_css' );
-    add_action( 'admin_notices', 'add_empty_categories_button' );
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 
-}
-
-function add_empty_categories_button_css() {
-    echo '<style>#delete-all-categories { position: absolute; top: 10px; left: 20px; }</style>';
+    // Aggiungi il pulsante per svuotare le categorie di servizio
+    add_action( 'admin_footer', 'add_empty_categories_button' );
 }
 
 function add_empty_categories_button() {
     ?>
-    <button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            $('#delete-all-categories').on('click', function(e) {
+            // Trova il form per aggiungere una nuova categoria di servizio
+            var addTermForm = $('.form-field.term-parent-wrap').closest('form');
+
+            // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
+            var deleteButtonHtml = '<div style="margin-top: 20px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
+
+            // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
+            addTermForm.after(deleteButtonHtml);
+
+            // Gestisci il clic del pulsante
+            $(document).on('click', '#delete-all-categories', function(e) {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
                 if (confirmDelete) {
