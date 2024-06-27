@@ -2,7 +2,6 @@
     global $title, $description, $with_shadow, $data_element;
     if (!$title) $title = strtoupper(get_the_title());
 
-    echo $title;
 
     // Ottieni l'URL della pagina corrente
     $current_url = home_url(add_query_arg(array(), $wp->request));
@@ -36,7 +35,10 @@
                     $description = $procedure['descrizione_breve'];
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
+  echo $title;
+  echo  stripos(strtoupper($category);
 
+                    
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
                     if ($title && stripos(strtoupper($category), strtoupper($title)) === false) {
                         continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
