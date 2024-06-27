@@ -2,7 +2,7 @@
     global $title, $description, $with_shadow, $data_element;
     if (!$title) $title = get_the_title();
 
-echo title;
+echo $title;
 
 
 // Ottieni l'URL della pagina corrente
