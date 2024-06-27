@@ -1,6 +1,6 @@
 <?php
     global $title, $description, $with_shadow, $data_element;
-    if (!$title) $title = get_the_title();
+    if (!$title) $title = strtoupper(get_the_title());
 
     echo $title;
 
