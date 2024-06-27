@@ -1,4 +1,4 @@
-     <section id="servizi">
+    <section id="servizi">
             <div class="pb-40 pt-40 pt-lg-80">
                 <div class="container">
                     <div class="row row-title">
@@ -48,13 +48,13 @@
                   
                     // Stampa il titolo e la categoria per debug
                     echo 'TITOLO  : ' . strtolower($argomento_segment);
-                   // echo '<br>';
-                   // echo strtolower($category);
-                   // echo '<br>';
+                    echo '<br>';
+                    echo strtolower($category);
+                    echo '<br>';
                     
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
-                        if ($argomento_segment && mb_stripos(mb_strtolower($category), mb_strtolower($argomento_segment)) === false) {
+                        if ($title && mb_stripos(mb_strtolower($category), mb_strtolower($argomento_segment)) === false) {
                             continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                         }
                       
@@ -118,7 +118,7 @@
 
     // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
     $search_term = isset($_GET['search']) ? $_GET['search'] : null;
-    $total_services_loaded = get_procedures_data($search_term, $category_segment);
+    $total_services_loaded = get_procedures_data($search_term, $category_segment, $title);
 ?>
 
 
