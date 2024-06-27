@@ -92,8 +92,12 @@ get_header();
     ?>
     	<?php get_template_part("template-parts/argomento/page-detail"); ?>
     	<?php get_template_part("template-parts/argomento/novita-detail"); ?>
-    	<?php get_template_part("template-parts/argomento/amministrazione-detail"); ?>
+    	<?php get_template_part("template-parts/argomento/amministrazione-detail"); ?>	    
     	<?php get_template_part("template-parts/argomento/servizi-detail"); ?>
+	 <?php     
+             if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) >5 ) { ?>
+              <?php get_template_part("template-parts/argomento/servizi-detail_maggioli"); ?>
+         <?php } ?>
     	<?php get_template_part("template-parts/argomento/documenti-detail"); ?>
     	<?php get_template_part("template-parts/argomento/luoghi-detail"); ?>
     	<?php get_template_part("template-parts/argomento/siti-tematici-detail"); ?>
