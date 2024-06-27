@@ -37,7 +37,9 @@
                     $url = $procedure['url'];
                     
   echo strtoupper($title);
-  echo  strtoupper($category);
+  echo strtoupper($category);
+                    echo'<br>'
+                    
 
                     
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
