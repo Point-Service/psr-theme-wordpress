@@ -11,7 +11,6 @@ function get_procedures_data($search_term = null)
         $data = json_decode($body, true);
 
         if ($data) {
-            // Inizializza array per servizi in evidenza e non in evidenza
             $in_evidenza_services = [];
             $other_services = [];
 
@@ -23,44 +22,41 @@ function get_procedures_data($search_term = null)
 
                 $name = $procedure['nome'];
                 $description = $procedure['descrizione_breve'];
-                $categories_raw = $procedure['categoria']; // Stringa delle categorie separate da virgola
-                $categories = array_map('trim', explode(',', $categories_raw)); // Splitta le categorie
+                
+                // Gestisci le categorie e gli URL delle categorie
+                if (isset($procedure['categoria']) && isset($procedure['url_categoria'])) {
+                    $categories_raw = $procedure['categoria'];
+                    $urls_categoria_raw = $procedure['url_categoria'];
 
-                $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
-                $url_servizio = $procedure['url'];
-                $url_categoria_raw = $procedure['url_categoria']; // Stringa degli URL delle categorie separate da virgola
-                $urls_categoria = array_map('trim', explode(',', $url_categoria_raw)); // Splitta gli URL delle categorie
+                    $categories = array_map('trim', explode(',', $categories_raw));
+                    $urls_categoria = array_map('trim', explode(',', $urls_categoria_raw));
 
-                // Assicurati che il numero di categorie e URL delle categorie corrispondano
-                $num_categories = count($categories);
-                $num_urls = count($urls_categoria);
-                $urls_categoria = array_pad($urls_categoria, $num_categories, end($urls_categoria));
+                    $num_categories = count($categories);
+                    $num_urls = count($urls_categoria);
+                    $urls_categoria = array_pad($urls_categoria, $num_categories, end($urls_categoria));
 
-                // Processa ogni categoria e URL associato
-                for ($i = 0; $i < $num_categories; $i++) {
-                    $category = $categories[$i];
-                    $category_url = $urls_categoria[$i];
+                    for ($i = 0; $i < $num_categories; $i++) {
+                        $category = $categories[$i];
+                        $category_url = $urls_categoria[$i];
 
-                    // Aggiungi il servizio all'array corretto
-                    $service = [
-                        'name' => $name,
-                        'description' => $description,
-                        'category' => $category,
-                        'url' => $url_servizio,
-                        'category_url' => $category_url
-                    ];
+                        $service = [
+                            'name' => $name,
+                            'description' => $description,
+                            'category' => $category,
+                            'category_url' => $category_url
+                        ];
 
-                    if ($in_evidenza) {
-                        $in_evidenza_services[] = $service;
-                    } else {
-                        $other_services[] = $service;
+                        if (filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN)) {
+                            $in_evidenza_services[] = $service;
+                        } else {
+                            $other_services[] = $service;
+                        }
+
+                        $total_services++;
                     }
-
-                    // Incrementa il contatore ad ogni iterazione
-                    $total_services++;
                 }
             }
-            
+
             // Output del totale
             echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
 
@@ -84,7 +80,6 @@ function get_procedures_data($search_term = null)
 function output_services($services)
 {
     foreach ($services as $service) {
-        // Genera il link alla categoria basato sull'URL della categoria
         $category_link = esc_url($service['category_url']);
 ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
@@ -115,4 +110,3 @@ $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
-
