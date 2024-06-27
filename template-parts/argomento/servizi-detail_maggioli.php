@@ -31,7 +31,7 @@
 
 
     // Funzione per ottenere i dati dal servizio web
-    function get_procedures_data($search_term = null, $argomento_segment = null, $argomento->name = null)
+    function get_procedures_data($search_term = null, $argomento_segment = null)
     {
         $url = dci_get_option('servizi_maggioli_url', 'servizi');
         $response = wp_remote_get($url);
@@ -130,7 +130,7 @@
 
     // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
     $search_term = isset($_GET['search']) ? $_GET['search'] : null;
-    $total_services_loaded = get_procedures_data($search_term, $argomento_segment, $argomento->name);
+    $total_services_loaded = get_procedures_data($search_term, $argomento_segment);
 ?>
 
 
