@@ -33,7 +33,7 @@ get_header();
       <div class="container">
         <div class="row">
           <div class="col-12 px-0 px-lg-2">
-            <divclass="it-hero-card it-hero-bottom-overlapping ">
+            <div class="it-hero-card it-hero-bottom-overlapping ">
   
                 <div class="row justify-content-center">
                   <div class="col-12 col-lg-10">
