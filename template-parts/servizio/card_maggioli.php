@@ -35,11 +35,12 @@
                     $description = $procedure['descrizione_breve'];
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
+                    
   echo 'TITOLO';                  
-  echo strtoupper($category_segment);
+  echo strtoupper($title);
   echo '<br>';
   echo strtoupper($category);
-                    echo '<br>';
+  echo '<br>';
                     
 
                     
