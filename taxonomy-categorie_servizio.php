@@ -83,7 +83,12 @@ get_header();
                         get_template_part("template-parts/servizio/card");    
                     } ?>
                 </div>
-                <?php get_template_part("template-parts/search/more-results"); ?>
+                       <?php     
+                        if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { ?>
+                            <?php get_template_part("template-parts/search/more-results"); ?>
+                        <?php } else { ?>
+                             <?php get_template_part("taxonomy-categorie_servizio_maggioli.php"); ?>
+                        <?php } ?>
               </div>
               
               <?php if ( is_array($amministrazione) && count($amministrazione) ) { ?>
