@@ -11,6 +11,7 @@ function get_procedures_data($search_term = null)
         $data = json_decode($body, true);
 
         if ($data) {
+            // Inizializza array per servizi in evidenza e non in evidenza
             $in_evidenza_services = [];
             $other_services = [];
 
@@ -22,43 +23,34 @@ function get_procedures_data($search_term = null)
 
                 $name = $procedure['nome'];
                 $description = $procedure['descrizione_breve'];
-                
-                // Gestisci le categorie e gli URL delle categorie
-                if (isset($procedure['categoria']) && isset($procedure['url_categoria'])) {
-                    $categories_raw = $procedure['categoria'];
-                    $urls_categoria_raw = $procedure['url_categoria'];
+                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
+                $url = $procedure['url'];
 
-                    $categories = array_map('trim', explode(',', $categories_raw));
-                    $urls_categoria = array_map('trim', explode(',', $urls_categoria_raw));
+                // Aggiungi il servizio all'array corretto
+                $service = [
+                    'name' => $name,
+                    'description' => $description,
+                    'category' => $category,
+                    'url' => $url
+                ];
 
-                    $num_categories = count($categories);
-                    $num_urls = count($urls_categoria);
-                    $urls_categoria = array_pad($urls_categoria, $num_categories, end($urls_categoria));
-
-                    for ($i = 0; $i < $num_categories; $i++) {
-                        $category = $categories[$i];
-                        $category_url = $urls_categoria[$i];
-
-                        $service = [
-                            'name' => $name,
-                            'description' => $description,
-                            'category' => $category,
-                            'category_url' => $category_url
-                        ];
-
-                        if (filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN)) {
-                            $in_evidenza_services[] = $service;
-                        } else {
-                            $other_services[] = $service;
-                        }
-
-                        $total_services++;
-                    }
+                if ($in_evidenza) {
+                    $in_evidenza_services[] = $service;
+                } else {
+                    $other_services[] = $service;
                 }
+
+                // Incrementa il contatore ad ogni iterazione
+                $total_services++;
             }
 
+            
+            echo "</br>";
+            echo "<p></p>";
             // Output del totale
             echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
+            echo "<p></p>";
 
             // Output dei servizi in evidenza
             echo "<h4>Servizi in Evidenza</h4>";
@@ -80,14 +72,13 @@ function get_procedures_data($search_term = null)
 function output_services($services)
 {
     foreach ($services as $service) {
-        $category_link = esc_url($service['category_url']);
 ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
             <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                 <span class="visually-hidden">Categoria:</span>
                 <div class="card-header border-0 p-0">
                     <?php if ($service['category']) {
-                        echo '<a href="'. $category_link .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</div></a>';
+                        echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</div>';
                     } ?>
                 </div>
                 <div class="card-body p-0 my-2">
