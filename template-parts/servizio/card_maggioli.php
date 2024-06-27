@@ -40,17 +40,12 @@ function get_procedures_data($search_term = null)
                 ];
 
                 $other_services[] = $service;
-   
-
                 // Incrementa il contatore ad ogni iterazione
                 $total_services++;
             }
-            
-            // Output del totale
-            echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
-
+        
             // Output degli altri servizi
-            echo "<h4>Altri Servizi</h4>";
+            echo "<h4></h4>";
             output_services($other_services);
         }
     } else {
