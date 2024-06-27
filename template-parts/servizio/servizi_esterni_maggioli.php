@@ -46,11 +46,8 @@ function get_procedures_data($search_term = null)
                 $total_services++;
             }
             
-            echo "</br>";
-            echo "<p></p>";
             // Output del totale
             echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
-            echo "<p></p>";
 
             // Output dei servizi in evidenza
             echo "<h4>Servizi in Evidenza</h4>";
@@ -72,13 +69,16 @@ function get_procedures_data($search_term = null)
 function output_services($services)
 {
     foreach ($services as $service) {
+        // Genera il link alla categoria
+        $category_slug = sanitize_title($service['category']);
+        $category_link = "/servizi-categoria/$category_slug";
 ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
             <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                 <span class="visually-hidden">Categoria:</span>
                 <div class="card-header border-0 p-0">
                     <?php if ($service['category']) {
-                        echo '<a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="/servizi-categoria/' . $service['category'] . '"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
+                        echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</div>';
                     } ?>
                 </div>
                 <div class="card-body p-0 my-2">
@@ -87,6 +87,9 @@ function output_services($services)
                     </h3>
                     <p class="text-paragraph">
                         <?php echo $service['description']; ?>
+                    </p>
+                    <p class="text-muted mt-4 mb-0">
+                        <a href="<?php echo esc_url($category_link); ?>" class="text-decoration-none">Vai alla categoria <?php echo $service['category']; ?></a>
                     </p>
                 </div>
             </div>
