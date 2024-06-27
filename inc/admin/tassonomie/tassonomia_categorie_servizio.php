@@ -1,5 +1,7 @@
 <?php
-// Funzione per registrare la tassonomia delle categorie di servizio
+/**
+ * Definisce la tassonomia Categorie di Servizio
+ */
 add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
 function dci_register_taxonomy_categorie_servizio() {
     $labels = array(
@@ -36,117 +38,127 @@ function dci_register_taxonomy_categorie_servizio() {
 
     // Aggiungi il pulsante per svuotare le categorie di servizio
     add_action( 'admin_footer', 'add_empty_categories_button' );
-}
+    function add_empty_categories_button() {
+        ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                // Trova il form per aggiungere una nuova categoria di servizio
+                var addTermForm = $('.form-field.term-parent-wrap').closest('form');
 
-// Funzione per aggiungere il pulsante "Cancella tutte le categorie di servizio"
-function add_empty_categories_button() {
-    ?>
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            // Trova il form per aggiungere una nuova categoria di servizio
-            var addTermForm = $('.form-field.term-parent-wrap').closest('form');
+                // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
+                var deleteButtonHtml = '<div style="margin-top: 20px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
+                var loadCategoriesButtonHtml = '<div style="margin-top: 10px;"><button id="load-categories" class="button">Carica Categorie</button></div>';
 
-            // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
-            var deleteButtonHtml = '<div style="margin-top: 20px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
-            var loadCategoriesButtonHtml = '<div style="margin-top: 10px;"><button id="load-categories" class="button">Carica Categorie</button></div>';
+                // Aggiungi i pulsanti sotto il form per aggiungere una nuova categoria di servizio
+                addTermForm.after(deleteButtonHtml);
+                addTermForm.after(loadCategoriesButtonHtml);
 
-            // Aggiungi i pulsanti sotto il form per aggiungere una nuova categoria di servizio
-            addTermForm.after(deleteButtonHtml);
-            addTermForm.after(loadCategoriesButtonHtml);
-
-            // Gestisci il clic del pulsante "Cancella tutte le categorie di servizio"
-            $(document).on('click', '#delete-all-categories', function(e) {
-                e.preventDefault();
-                var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
-                if (confirmDelete) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'empty_all_categories',
-                            nonce: '<?php echo wp_create_nonce( "empty-categories-nonce" ); ?>'
-                        },
-                        success: function(response) {
-                            alert('Tutte le categorie di servizio sono state cancellate.');
-                            location.reload();
-                        }
-                    });
-                }
-            });
-
-            // Gestisci il clic del pulsante "Carica Categorie"
-            $(document).on('click', '#load-categories', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        action: 'load_categories_from_external_api',
-                        nonce: '<?php echo wp_create_nonce( "load-categories-nonce" ); ?>'
-                    },
-                    success: function(response) {
-                        if (response.success && response.data) {
-                            var categories = response.data;
-                            console.log(categories); // Mostra le categorie nella console per debug
-                            alert('Categorie caricate correttamente.');
-                        } else {
-                            console.error('Errore nel caricamento delle categorie:', response.message);
-                            alert('Errore nel caricamento delle categorie.');
-                        }
-                    },
-                    error: function(error) {
-                        console.error('Errore nel caricamento delle categorie:', error);
-                        alert('Errore nel caricamento delle categorie.');
+                // Gestisci il clic del pulsante "Cancella tutte le categorie di servizio"
+                $(document).on('click', '#delete-all-categories', function(e) {
+                    e.preventDefault();
+                    var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
+                    if (confirmDelete) {
+                        $.ajax({
+                            url: ajaxurl,
+                            type: 'POST',
+                            data: {
+                                action: 'empty_all_categories',
+                                nonce: '<?php echo wp_create_nonce( "empty-categories-nonce" ); ?>'
+                            },
+                            success: function(response) {
+                                alert('Tutte le categorie di servizio sono state cancellate.');
+                                location.reload();
+                            }
+                        });
                     }
                 });
+
+                // Gestisci il clic del pulsante "Carica Categorie"
+                $(document).on('click', '#load-categories', function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            action: 'load_categories_from_external_api',
+                            nonce: '<?php echo wp_create_nonce( "load-categories-nonce" ); ?>'
+                        },
+                        success: function(response) {
+                            if (response.success && response.data) {
+                                var categories = response.data;
+                                console.log(categories); // Mostra le categorie nella console per debug
+
+                                // Inserisci le categorie nel DOM
+                                var categoriesList = $('#categorie-caricate');
+                                categoriesList.empty(); // Pulisce l'elenco precedente delle categorie, se presente
+
+                                categories.forEach(function(category) {
+                                    categoriesList.append('<li>' + category.nome + '</li>');
+                                });
+
+                                alert('Categorie caricate correttamente.');
+                            } else {
+                                console.error('Errore nel caricamento delle categorie:', response.message);
+                                alert('Errore nel caricamento delle categorie.');
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Errore nel caricamento delle categorie:', error);
+                            alert('Errore nel caricamento delle categorie.');
+                        }
+                    });
+                });
             });
-        });
-    </script>
-    <?php
-}
+        </script>
+        <?php
+    }
 
-// Funzione per svuotare tutte le categorie di servizio
-add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
-function empty_all_categories_callback() {
-    check_ajax_referer( 'empty-categories-nonce', 'nonce' );
+    // Funzione per svuotare tutte le categorie di servizio
+    add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
+    function empty_all_categories_callback() {
+        check_ajax_referer( 'empty-categories-nonce', 'nonce' );
 
-    $terms = get_terms( array(
-        'taxonomy'   => 'categorie_servizio',
-        'hide_empty' => false,
-    ) );
+        $terms = get_terms( array(
+            'taxonomy'   => 'categorie_servizio',
+            'hide_empty' => false,
+        ) );
 
-    if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-        foreach ( $terms as $term ) {
-            wp_delete_term( $term->term_id, 'categorie_servizio' );
+        if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+            foreach ( $terms as $term ) {
+                wp_delete_term( $term->term_id, 'categorie_servizio' );
+            }
+            echo 'success';
+        } else {
+            echo 'error';
         }
-        wp_send_json_success( 'success' );
-    } else {
-        wp_send_json_error( 'error' );
+
+        wp_die();
+    }
+
+    // Funzione per caricare le categorie da un API esterno
+    add_action( 'wp_ajax_load_categories_from_external_api', 'load_categories_from_external_api_callback' );
+    function load_categories_from_external_api_callback() {
+        check_ajax_referer( 'load-categories-nonce', 'nonce' );
+
+        // Esegui la richiesta all'API remoto
+        $response = wp_remote_get( 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures' );
+
+        if ( is_wp_error( $response ) ) {
+            wp_send_json_error( array( 'message' => 'Errore nella richiesta API remoto.' ) );
+        }
+
+        $body = wp_remote_retrieve_body( $response );
+        $data = json_decode( $body );
+
+        if ( ! empty( $data ) ) {
+            wp_send_json_success( $data );
+        } else {
+            wp_send_json_error( array( 'message' => 'Nessun dato ricevuto dall\'API remoto.' ) );
+        }
     }
 }
 
-// Funzione per caricare le categorie da un API esterno
-add_action( 'wp_ajax_load_categories_from_external_api', 'load_categories_from_external_api_callback' );
-function load_categories_from_external_api_callback() {
-    check_ajax_referer( 'load-categories-nonce', 'nonce' );
-
-    // Esegui la richiesta all'API remoto
-    $response = wp_remote_get( 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures' );
-
-    if ( is_wp_error( $response ) ) {
-        wp_send_json_error( array( 'message' => 'Errore nella richiesta API remoto: ' . $response->get_error_message() ) );
-    }
-
-    $body = wp_remote_retrieve_body( $response );
-    $data = json_decode( $body );
-
-    if ( $data ) {
-        wp_send_json_success( $data );
-    } else {
-        wp_send_json_error( array( 'message' => 'Nessun dato ricevuto dall\'API remoto o formato dati non valido.' ) );
-    }
-}
 ?>
 
 
