@@ -36,7 +36,7 @@
                     $url = $procedure['url'];
 
                     // Stampa il titolo e la categoria per debug
-                    echo 'TITOLO: ' . strtolower($title);
+                    echo 'TITOLO  hh: ' . strtolower($title);
                     echo '<br>';
                     echo strtolower($category);
                     echo '<br>';
