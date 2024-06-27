@@ -23,16 +23,18 @@ function get_procedures_data($search_term = null)
 
                 $name = $procedure['nome'];
                 $description = $procedure['descrizione_breve'];
-                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                $category = $procedure['categoria'];
                 $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
-                $url = $procedure['url'];
+                $url_servizio = $procedure['url'];
+                $url_categoria = $procedure['url_categoria'];
 
                 // Aggiungi il servizio all'array corretto
                 $service = [
                     'name' => $name,
                     'description' => $description,
                     'category' => $category,
-                    'url' => $url
+                    'url' => $url_servizio,
+                    'category_url' => $url_categoria
                 ];
 
                 if ($in_evidenza) {
@@ -68,16 +70,15 @@ function get_procedures_data($search_term = null)
 function output_services($services)
 {
     foreach ($services as $service) {
-        // Genera il link alla categoria basato sul nome del servizio
-        $category_slug = sanitize_title($service['category']);
-        $category_link = "/servizi-categoria/$category_slug";
+        // Genera il link alla categoria basato sull'URL della categoria
+        $category_link = esc_url($service['category_url']);
 ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
             <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                 <span class="visually-hidden">Categoria:</span>
                 <div class="card-header border-0 p-0">
                     <?php if ($service['category']) {
-                        echo '<a href="'. esc_url($category_link) .'>" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
+                        echo '<a href="'. $category_link .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</div></a>';
                     } ?>
                 </div>
                 <div class="card-body p-0 my-2">
@@ -100,3 +101,4 @@ $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
+
