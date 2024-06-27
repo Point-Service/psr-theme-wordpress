@@ -20,7 +20,7 @@ $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
 
 // Funzione per ottenere i dati dal servizio web
-function get_procedures_data($search_term = null, $title = null)
+function get_procedures_data($search_term = null, $title_array = null)
 {
     $url = dci_get_option('servizi_maggioli_url', 'servizi');
     $response = wp_remote_get($url);
@@ -45,9 +45,17 @@ function get_procedures_data($search_term = null, $title = null)
                 $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                 $url = $procedure['url'];
 
-                // Verifica se la categoria contiene il segmento dell'URL
-                if ($title && stripos($category, $title) === false) {
-                    continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
+                // Verifica se la categoria contiene almeno uno dei termini in $title_array
+                $found = false;
+                foreach ($title_array as $term) {
+                    if (stripos($category, trim($term)) !== false) {
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if (!$found) {
+                    continue; // Ignora questo servizio se nessuno dei termini in $title_array è presente nella categoria
                 }
 
                 // Aggiungi il servizio all'array filtrato
@@ -74,6 +82,7 @@ function get_procedures_data($search_term = null, $title = null)
     // Restituisci il totale dei servizi caricati
     return $total_services;
 }
+
 
 // Funzione per stampare i servizi
 function output_services($services)
