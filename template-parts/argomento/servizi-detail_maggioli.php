@@ -3,7 +3,7 @@
 
     $posts = dci_get_grouped_posts_by_term( 'servizi' , 'argomenti', $argomento->slug, 3);
 
-?><?php echo $argomento->name; ?>
+?>
 <section id="servizi">
             <div class="pb-40 pt-40 pt-lg-80">
                 <div class="container">
@@ -19,12 +19,8 @@
                         <?php
 
 
-    // Ottieni l'URL della pagina corrente
-    $current_url = home_url(add_query_arg(array(), $wp->request));
 
-    // Estrai il segmento desiderato dall'URL
-    $segments = explode('/', $current_url);
-    $argomento_segment = end($segments); // Prendi l'ultimo segmento dell'URL
+    $argomento_segment = $argomento->name;
 
 
 
