@@ -18,6 +18,7 @@ function get_procedures_data($search_term = null)
     $url = dci_get_option('servizi_maggioli_url', 'servizi');
     $response = wp_remote_get($url);
     $total_services = 0; // Inizializza il contatore
+    global $category_segment; // Importa la variabile category_segment globale
 
     if (is_array($response) && !is_wp_error($response)) {
         $body = wp_remote_retrieve_body($response);
@@ -34,26 +35,29 @@ function get_procedures_data($search_term = null)
                     continue; // Ignora questo servizio se il termine di ricerca non è presente
                 }
 
-                $name = $procedure['nome'];
-                $description = $procedure['descrizione_breve'];
-                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-                $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
-                $url = $procedure['url'];
+                // Verifica se la categoria del servizio contiene category_segment
+                if (stripos($procedure['categoria'], $category_segment) !== false) {
+                    $name = $procedure['nome'];
+                    $description = $procedure['descrizione_breve'];
+                    $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                    $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
+                    $url = $procedure['url'];
 
-                // Aggiungi il servizio all'array corretto
-                $service = [
-                    'name' => $name,
-                    'description' => $description,
-                    'category' => $category,
-                    'url' => $url
-                ];
+                    // Aggiungi il servizio all'array corretto
+                    $service = [
+                        'name' => $name,
+                        'description' => $description,
+                        'category' => $category,
+                        'url' => $url
+                    ];
 
-                $other_services[] = $service;
-                // Incrementa il contatore ad ogni iterazione
-                $total_services++;
+                    $other_services[] = $service;
+                    // Incrementa il contatore ad ogni iterazione
+                    $total_services++;
+                }
             }
         
-            // Output degli altri servizi
+            // Output degli altri servizi filtrati
             echo "<h4></h4>";
             output_services($other_services);
         }
