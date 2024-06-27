@@ -35,11 +35,7 @@
                     $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                     $url = $procedure['url'];
 
-                    // Stampa il titolo e la categoria per debug
-                    echo 'TITOLO  hh: ' . strtolower($title);
-                    echo '<br>';
-                    echo strtolower($category);
-                    echo '<br>';
+  
 
                     // Verifica se la categoria contiene il segmento dell'URL, confrontando in modo case-insensitive
                     if ($title && stripos(strtolower($category), strtolower($title)) === false) {
