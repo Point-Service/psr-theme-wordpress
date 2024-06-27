@@ -1,23 +1,13 @@
 <?php
-
-// Ottieni l'URL della pagina corrente
-$current_url = home_url(add_query_arg(array(), $wp->request));
-
-// Estrai il segmento desiderato dall'URL
-$segments = explode('/', $current_url);
-$category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
-
-// Stampa il segmento desiderato
-echo $category_segment;
-
-
-
 // Funzione per ottenere i dati dal servizio web
 function get_procedures_data($search_term = null)
 {
+    // Ottieni l'URL dei servizi
     $url = dci_get_option('servizi_maggioli_url', 'servizi');
+    
+    // Esegui la richiesta remota
     $response = wp_remote_get($url);
-    $total_services = 0; // Inizializza il contatore
+    $total_services = 0; // Inizializza il contatore dei servizi
 
     if (is_array($response) && !is_wp_error($response)) {
         $body = wp_remote_retrieve_body($response);
@@ -34,6 +24,14 @@ function get_procedures_data($search_term = null)
                     continue; // Ignora questo servizio se il termine di ricerca non è presente
                 }
 
+                // Verifica se il segmento della categoria corrisponde al segmento desiderato
+                $url_segments = explode('/', $procedure['url']);
+                $category_segment = end($url_segments);
+
+                if ($category_segment !== 'cultura-e-tempo-libero') {
+                    continue; // Ignora questo servizio se la categoria non corrisponde
+                }
+
                 $name = $procedure['nome'];
                 $description = $procedure['descrizione_breve'];
                 $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
@@ -48,14 +46,30 @@ function get_procedures_data($search_term = null)
                     'url' => $url
                 ];
 
-                $other_services[] = $service;
-                // Incrementa il contatore ad ogni iterazione
+                if ($in_evidenza) {
+                    $in_evidenza_services[] = $service;
+                } else {
+                    $other_services[] = $service;
+                }
+
+                // Incrementa il contatore dei servizi
                 $total_services++;
             }
-        
+
+            // Output del totale dei servizi caricati
+            echo "<h2>Servizi Aggiuntivi ($total_services)</h2>";
+
+            // Output dei servizi in evidenza
+            if (!empty($in_evidenza_services)) {
+                echo "<h4>Servizi in Evidenza</h4>";
+                output_services($in_evidenza_services);
+            }
+
             // Output degli altri servizi
-            echo "<h4></h4>";
-            output_services($other_services);
+            if (!empty($other_services)) {
+                echo "<h4>Altri Servizi</h4>";
+                output_services($other_services);
+            }
         }
     } else {
         echo "Non riesco a leggere i servizi aggiuntivi.";
@@ -69,17 +83,26 @@ function get_procedures_data($search_term = null)
 function output_services($services)
 {
     foreach ($services as $service) {
-        // Genera il link alla categoria basato sul nome del servizio
-        $category_slug = sanitize_title($service['category']);
-        $category_link = "/servizi-categoria/$category_slug";
-?>
+        ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
             <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                 <span class="visually-hidden">Categoria:</span>
                 <div class="card-header border-0 p-0">
-                    <?php if ($service['category']) {
-                        echo '<a href="'. esc_url($category_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
-                    } ?>
+                    <?php 
+                    if (!empty($service['category'])) {
+                        echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">';
+                        $first = true;
+                        foreach ($service['category'] as $index => $category_name) {
+                            $category_url = '/servizi-categoria/' . urlencode($category_name);
+                            if (!$first) {
+                                echo ', ';
+                            }
+                            echo '<a href="' . $category_url . '">' . $category_name . '</a>';
+                            $first = false;
+                        }
+                        echo '</div>';
+                    }
+                    ?>
                 </div>
                 <div class="card-body p-0 my-2">
                     <h3 class="green-title-big t-primary mb-8">
@@ -92,10 +115,11 @@ function output_services($services)
             </div>
         </div>
         <p></p>
-<?php
+        <?php
     }
 }
-// Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
+
+// Esegui la funzione per ottenere i dati e salvare il totale dei servizi
 $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
