@@ -38,7 +38,7 @@
                     
   echo strtoupper($title);
   echo strtoupper($category);
-                    echo'<br>'
+                    echo '<br>';
                     
 
                     
