@@ -3,7 +3,7 @@
  * Definisce la tassonomia Categorie di Servizio
  */
 add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
-add_action( 'admin_footer', 'add_empty_categories_button' );
+
 
 function dci_register_taxonomy_categorie_servizio() {
     $labels = array(
@@ -16,7 +16,6 @@ function dci_register_taxonomy_categorie_servizio() {
         'add_new_item'      => __( 'Aggiungi una Categoria di Servizio', 'design_comuni_italia' ),
         'new_item_name'     => __( 'Nuovo Tipo di Categoria di Servizio', 'design_comuni_italia' ),
         'menu_name'         => __( 'Categorie di Servizio', 'design_comuni_italia' ),
-        'add_empty_categories_button'         => __( 'CANCELLA TUTTE LE CATEGORIE', 'design_comuni_italia' ),
     );
 
     $args = array(
@@ -38,14 +37,16 @@ function dci_register_taxonomy_categorie_servizio() {
     );
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
-
-    
-
+   
+        if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
+            add_action( 'admin_footer', 'add_empty_categories_button' );
+        }
 
 
 
 }
 
+        
 function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
