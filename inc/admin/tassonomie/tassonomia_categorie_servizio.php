@@ -38,7 +38,7 @@ function dci_register_taxonomy_categorie_servizio() {
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 
-       ' Aggiungo il pulsante per eliminare tutte le Categporie   
+       // Aggiungo il pulsante per eliminare tutte le Categporie   
         if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
             add_action( 'admin_footer', 'add_empty_categories_button' );
         }
