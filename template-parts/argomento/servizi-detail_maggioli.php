@@ -1,4 +1,4 @@
-        <section id="servizi">
+   <section id="servizi">
             <div class="pb-40 pt-40 pt-lg-80">
                 <div class="container">
                     <div class="row row-title">
@@ -9,6 +9,7 @@
                         </div>
                     </div>
                     <div class="row mx-0">
+                        
                         <?php
     global $title, $description, $with_shadow, $data_element;
     if (!$title) $title = get_the_title();
@@ -93,7 +94,7 @@
             $category_slug = sanitize_title($service['category']);
             $category_link = "/servizi-categoria/$category_slug";
 ?>
-
+   
                         <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                         <?php if ($service['category']) {
                             echo '<a href="'. esc_url($category_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
