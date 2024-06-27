@@ -8,7 +8,7 @@ $segments = explode('/', $current_url);
 $category_segment = end($segments); // Prendi l'ultimo segmento dell'URL
 
 // Stampa il segmento desiderato (debugging)
-// echo $category_segment;
+ echo $category_segment;
 
 // Funzione per ottenere i dati dal servizio web
 function get_procedures_data($search_term = null, $category_segment = null)
