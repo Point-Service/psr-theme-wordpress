@@ -107,7 +107,7 @@ function add_empty_categories_button() {
                     alert('Errore nel caricamento delle categorie.');
                 }
             });
-        });
+    
 
 // Funzione per svuotare tutte le categorie di servizio
 add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
