@@ -4,6 +4,7 @@
  */
 add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
 
+
 function dci_register_taxonomy_categorie_servizio() {
     $labels = array(
         'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
@@ -37,12 +38,16 @@ function dci_register_taxonomy_categorie_servizio() {
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 
-    // Aggiungo il pulsante per eliminare tutte le Categorie
-    if ( isset( $_GET['taxonomy'] ) && $_GET['taxonomy'] === 'categorie_servizio' ) {
-        add_action( 'admin_footer', 'add_empty_categories_button' );
-    }
+       // Aggiungo il pulsante per eliminare tutte le Categporie   
+        if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
+            add_action( 'admin_footer', 'add_empty_categories_button' );
+        }
+
+
+
 }
 
+        
 function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
@@ -90,7 +95,6 @@ function add_empty_categories_button() {
 
 // Funzione per svuotare tutte le categorie di servizio
 add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
-
 function empty_all_categories_callback() {
     check_ajax_referer( 'empty-categories-nonce', 'nonce' );
 
@@ -110,64 +114,4 @@ function empty_all_categories_callback() {
 
     wp_die();
 }
-
-// Codice per confrontare e stampare le categorie mancanti
-function confronta_e_stampare_categorie_mancanti() {
-    global $argomento;
-
-    // Recupera le categorie dal JSON
-    $url = 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures';
-    $response = wp_remote_get($url);
-
-    if ( is_wp_error( $response ) ) {
-        echo 'Errore nella richiesta JSON: ' . $response->get_error_message();
-        return;
-    }
-
-    $body = wp_remote_retrieve_body( $response );
-    $data = json_decode( $body, true );
-
-    if ( ! $data ) {
-        echo 'Dati JSON non validi.';
-        return;
-    }
-
-    $categories_from_json = [];
-
-    foreach ( $data as $procedure ) {
-        if ( isset( $procedure['categoria'] ) ) {
-            $categories_from_json[] = $procedure['categoria'];
-        }
-    }
-
-    // Recupera le categorie dalla tassonomia 'categorie_servizio'
-    $terms = get_terms( [
-        'taxonomy'   => 'categorie_servizio',
-        'hide_empty' => false,
-    ] );
-
-    $existing_categories = [];
-
-    foreach ( $terms as $term ) {
-        $existing_categories[] = $term->name;
-    }
-
-    // Trova le categorie mancanti
-    $missing_categories = array_diff( $categories_from_json, $existing_categories );
-
-    // Stampa le categorie mancanti
-    if ( ! empty( $missing_categories ) ) {
-        echo '<h4>Categorie mancanti nella tassonomia "categorie_servizio":</h4>';
-        echo '<ul>';
-        foreach ( $missing_categories as $category ) {
-            echo '<li>' . $category . '</li>';
-        }
-        echo '</ul>';
-    } else {
-        echo '<p>Nessuna categoria mancante trovata.</p>';
-    }
-}
-
-// Includi la funzione nella tua pagina dove vuoi visualizzare le categorie mancanti
-confronta_e_stampare_categorie_mancanti();
 ?>
