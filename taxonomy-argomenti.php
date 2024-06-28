@@ -88,9 +88,9 @@ get_header();
     $posts = dci_get_posts_by_term('any','argomenti', $argomento->name);
      ?>
   
-    	<?php // get_template_part("template-parts/argomento/page-detail"); ?>
-    	<?php // get_template_part("template-parts/argomento/novita-detail"); ?>
-    	<?php // get_template_part("template-parts/argomento/amministrazione-detail"); ?>	    
+    	<?php get_template_part("template-parts/argomento/page-detail"); ?>
+    	<?php get_template_part("template-parts/argomento/novita-detail"); ?>
+    	<?php get_template_part("template-parts/argomento/amministrazione-detail"); ?>	    
 	<?php
 	   if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) { 
 			    // Se la lunghezza della stringa è maggiore di 5, esegui questo blocco di codice
