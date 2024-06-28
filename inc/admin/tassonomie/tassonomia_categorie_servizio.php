@@ -114,6 +114,6 @@ function dci_register_taxonomy_categorie_servizio() {
                     
                         wp_die();
                     }
-    ?>
+
 }
 ?>
