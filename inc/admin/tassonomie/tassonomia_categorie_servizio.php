@@ -42,7 +42,7 @@ function dci_register_taxonomy_categorie_servizio() {
         add_action( 'admin_footer', 'add_empty_categories_button' );
     }
 }
-
+<div id="remote-categories-list"></div>
 // Funzione per aggiungere i pulsanti "Confronta categorie" e "Elimina tutte le categorie"
 function add_empty_categories_button() {
     ?>
@@ -62,28 +62,35 @@ function add_empty_categories_button() {
             addTermForm.after(deleteButtonHtml);
 
             // Gestione del clic del pulsante "Confronta categorie"
-            $(document).on('click', '#compare-categories', function(e) {
-                e.preventDefault();
-                $.getJSON('https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures', function(data) {
-                    var remoteCategories = data.map(function(item) {
-                        return item.procedure_category_name;
-                    });
+   $(document).on('click', '#compare-categories', function(e) {
+    e.preventDefault();
+    $.getJSON('https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures', function(data) {
+        var remoteCategories = data.map(function(item) {
+            return item.procedure_category_name;
+        });
 
-                    var localCategories = <?php echo json_encode(get_terms('categorie_servizio', array('fields' => 'names'))); ?>;
+        var localCategories = <?php echo json_encode(get_terms('categorie_servizio', array('fields' => 'names'))); ?>;
 
-                    // Trova le categorie locali che non sono presenti nel dato remoto
-                    var categoriesMissing = remoteCategories.filter(function(category) {
-                        return localCategories.indexOf(category) === -1;
-                    });
+        // Trova le categorie locali che non sono presenti nel dato remoto
+        var categoriesMissing = remoteCategories.filter(function(category) {
+            return localCategories.indexOf(category) === -1;
+        });
 
-                    // Mostra le categorie mancanti
-                    if (categoriesMissing.length > 0) {
-                        alert('Le seguenti categorie sono presenti nell\'endpoint remoto ma non nel database locale:\n' + categoriesMissing.join(', '));
-                    } else {
-                        alert('Tutte le categorie presenti nell\'endpoint remoto sono già nel database locale.');
-                    }
-                });
-            });
+        // Mostra le categorie mancanti
+        if (categoriesMissing.length > 0) {
+            alert('Le seguenti categorie sono presenti nell\'endpoint remoto ma non nel database locale:\n' + categoriesMissing.join(', '));
+        } else {
+            alert('Tutte le categorie presenti nell\'endpoint remoto sono già nel database locale.');
+        }
+
+        // Mostra le categorie remote sulla pagina per verifica
+        var $remoteCategoriesList = $('<ul></ul>');
+        remoteCategories.forEach(function(category) {
+            $remoteCategoriesList.append('<li>' + category + '</li>');
+        });
+        $('#remote-categories-list').html($remoteCategoriesList); // Mostra nella pagina dove vuoi visualizzare le categorie remote
+    });
+});
 
             // Gestione del clic del pulsante "Elimina tutte le categorie"
             $(document).on('click', '#delete-all-categories', function(e) {
