@@ -47,7 +47,7 @@ function dci_register_taxonomy_categorie_servizio() {
 
 }
 
-   if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio' && !empty(dci_get_option('servizi_maggioli_url', 'servizi'))) {        
+   if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {        
                 function add_empty_categories_button() {
                     ?>
                     <script type="text/javascript">
