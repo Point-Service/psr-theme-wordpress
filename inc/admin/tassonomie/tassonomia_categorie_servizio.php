@@ -56,7 +56,7 @@ function dci_register_taxonomy_categorie_servizio() {
 
 
 // Verifica se il parametro 'taxonomy' nell'URL è uguale a 'categorie_servizio'
-if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
+ if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio' && !empty(dci_get_option('servizi_maggioli_url', 'servizi'))) {
 
 
                         
@@ -225,7 +225,7 @@ if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
                     
                     // Funzione AJAX per confrontare le categorie
                     function ajax_confronta_categorie() {
-                        $url = 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures'; // Assicurati che questa sia l'URL corretta
+                        $url = dci_get_option('servizi_maggioli_url', 'servizi'); // Assicurati che questa sia l'URL corretta
                         $response = wp_remote_get($url);
                     
                         if (is_array($response) && !is_wp_error($response)) {
