@@ -89,6 +89,10 @@ function add_empty_categories_button() {
                     });
                 }
             });
+
+            // Aggiungi la textarea scrollabile per visualizzare le categorie non trovate
+            var textareaHtml = '<div style="margin-top: 40px;"><textarea id="categorie-non-trovate" style="width: 100%; height: 200px;" readonly></textarea></div>';
+            addTermForm.after(textareaHtml);
         });
     </script>
     <?php
@@ -132,15 +136,15 @@ function confronta_categorie($data, $my_categories) {
 
     $categorie_non_trovate = array_diff($my_categories, $categorie_trovate);
 
-    $output = "<h4>Categorie non trovate:</h4>";
+    $output = '';
+
     if (!empty($categorie_non_trovate)) {
-        $output .= "<ul>";
+        $output .= "Categorie non trovate:\n";
         foreach ($categorie_non_trovate as $categoria) {
-            $output .= "<li>$categoria</li>";
+            $output .= "$categoria\n";
         }
-        $output .= "</ul>";
     } else {
-        $output .= "<p>Tutte le categorie sono state trovate.</p>";
+        $output .= "Tutte le categorie sono state trovate.";
     }
 
     return $output;
@@ -221,13 +225,11 @@ function ajax_confronta_categorie() {
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
 
-        if ($data) {
-            echo confronta_categorie($data, $GLOBALS['my_categories']);
-        } else {
-            echo "Errore nella decodifica dei dati.";
-        }
+        $output = confronta_categorie($data, $my_categories);
+
+        echo "<textarea style='width: 100%; height: 200px;' readonly>$output</textarea>";
     } else {
-        echo "Non riesco a leggere i servizi aggiuntivi.";
+        echo "<p>Non riesco a leggere i servizi aggiuntivi.</p>";
     }
 
     wp_die();
@@ -235,7 +237,7 @@ function ajax_confronta_categorie() {
 add_action('wp_ajax_confronta_categorie', 'ajax_confronta_categorie');
 add_action('wp_ajax_nopriv_confronta_categorie', 'ajax_confronta_categorie');
 
-// Aggiungi il seguente script JavaScript per gestire l'evento click sul pulsante
+// Aggiungi lo script JavaScript per gestire l'evento click sul pulsante
 function aggiungi_script_confronta_categorie() {
     ?>
     <script type="text/javascript">
@@ -260,9 +262,6 @@ function aggiungi_script_confronta_categorie() {
     <?php
 }
 add_action('wp_footer', 'aggiungi_script_confronta_categorie');
-
-// Mostra i servizi nella pagina desiderata (puoi chiamare questa funzione nel template corretto)
-mostra_servizi();
 ?>
 
 
