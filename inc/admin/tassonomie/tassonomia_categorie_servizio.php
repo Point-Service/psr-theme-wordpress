@@ -123,7 +123,7 @@ if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
                         wp_die();
                     }
                     
-                    // Funzione per confrontare e stampare le categorie non trovate
+
                     // Funzione per confrontare e stampare i nomi delle categorie non trovate
                     function confronta_categorie($data, $my_categories) {
                         $categorie_remote = array(); // Array per tenere traccia delle categorie remote
@@ -158,7 +158,7 @@ if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
                     
                     // Funzione principale per mostrare i servizi e il pulsante
                     function mostra_servizi() {
-                        $url = 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures'; // Assicurati che questa sia l'URL corretta
+                        $url =  dci_get_option('servizi_maggioli_url', 'servizi'); // Assicurati che questa sia l'URL corretta
                         $response = wp_remote_get($url);
                         $total_services = 0;
                     
@@ -311,7 +311,7 @@ if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
                     }
                     
 
-   // mostra_servizi_with_textarea();
+    mostra_servizi_with_textarea();
 }
     
 ?>
