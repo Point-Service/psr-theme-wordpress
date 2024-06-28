@@ -89,6 +89,9 @@ $argomento_name = $argomento->name;
               
                             <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
                                 <div class="card-image-wrapper with-read-more">
+                                              <?php if ($service['category']) {
+                                    echo '<a href="'. esc_url($category_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
+                                } ?>
                                     <div class="card-body p-3">
                                         <div class="argomento-top">
                                             <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?= esc_url($service['url']); ?>"><?= $service['argomento']; ?></a>
@@ -114,7 +117,7 @@ $argomento_name = $argomento->name;
                     echo "<p>Nessun servizio trovato.</p>";
                 }
                 ?>
-            </div>
+        
             <div class="row mt-4">
                 <div class="col-12 col-lg-3 offset-lg-9">
                     <button type="button" class="btn btn-primary text-button w-100" onclick="location.href='<?= dci_get_template_page_url('page-templates/servizi.php'); ?>'">
