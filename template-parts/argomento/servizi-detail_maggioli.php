@@ -97,7 +97,7 @@ $argomento_name = $argomento->name;
                                                 </h4>
                                                 <p class="text-paragraph-card u-grey-light m-0"><?= $service['description']; ?></p>
                                                  <h4 class="text-paragraph-medium u-grey-light">
-                                                    Argomento: <?= $service['argomento']; ?>
+                                                    Argomento: 
                                                 </h4>
                                             </div>
                                         </div>
