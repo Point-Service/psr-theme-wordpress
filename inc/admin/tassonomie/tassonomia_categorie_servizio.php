@@ -265,6 +265,6 @@ function aggiungi_script_confronta_categorie() {
 add_action('wp_footer', 'aggiungi_script_confronta_categorie');
 
 // Mostra i servizi nella pagina desiderata (puoi chiamare questa funzione nel template corretto)
-mostra_servizi();
+//mostra_servizi();
 ?>
 
