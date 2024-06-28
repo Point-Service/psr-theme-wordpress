@@ -47,7 +47,7 @@ function dci_register_taxonomy_categorie_servizio() {
 
 }
 
-        
+   if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio' && !empty(dci_get_option('servizi_maggioli_url', 'servizi'))) {        
 function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
@@ -91,28 +91,29 @@ function add_empty_categories_button() {
         });
     </script>
     <?php
-}
-
-// Funzione per svuotare tutte le categorie di servizio
-add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
-function empty_all_categories_callback() {
-    check_ajax_referer( 'empty-categories-nonce', 'nonce' );
-
-    $terms = get_terms( array(
-        'taxonomy'   => 'categorie_servizio',
-        'hide_empty' => false,
-    ) );
-
-    if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-        foreach ( $terms as $term ) {
-            wp_delete_term( $term->term_id, 'categorie_servizio' );
-        }
-        echo 'success';
-    } else {
-        echo 'error';
     }
 
-    wp_die();
+    // Funzione per svuotare tutte le categorie di servizio
+    add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
+    function empty_all_categories_callback() {
+        check_ajax_referer( 'empty-categories-nonce', 'nonce' );
+    
+        $terms = get_terms( array(
+            'taxonomy'   => 'categorie_servizio',
+            'hide_empty' => false,
+        ) );
+    
+        if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+            foreach ( $terms as $term ) {
+                wp_delete_term( $term->term_id, 'categorie_servizio' );
+            }
+            echo 'success';
+        } else {
+            echo 'error';
+        }
+    
+        wp_die();
+    }
+    ?>
 }
 ?>
-
