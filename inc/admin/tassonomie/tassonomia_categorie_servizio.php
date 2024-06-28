@@ -238,8 +238,8 @@ function ajax_confronta_categorie() {
 }
 add_action('wp_ajax_confronta_categorie', 'ajax_confronta_categorie');
 add_action('wp_ajax_nopriv_confronta_categorie', 'ajax_confronta_categorie');
-// Mostra i servizi con textarea nella pagina desiderata
-mostra_servizi_with_textarea();
+
+
 // Aggiungi il seguente script JavaScript per gestire l'evento click sul pulsante
 function aggiungi_script_confronta_categorie() {
     ?>
