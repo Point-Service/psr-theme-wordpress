@@ -2,7 +2,7 @@
     global $argomento;
 
     $posts = dci_get_grouped_posts_by_term( 'servizi' , 'argomenti', $argomento->slug, 3);
-    echo $argomento->name;
+    $argomento_name = $argomento->name;
 ?>
 
 
@@ -31,7 +31,7 @@
 
 
     // Funzione per ottenere i dati dal servizio web
-    function get_procedures_data($search_term = null, $argomento_segment = null)
+    function get_procedures_data($search_term = null, $argomento_name = null)
     {
         $url = dci_get_option('servizi_maggioli_url', 'servizi');
         $response = wp_remote_get($url);
@@ -66,7 +66,7 @@
 
 
                     // Verifica se l'argomento contiene il segmento dell'URL, confrontando in modo case-insensitive
-                        if ($argomento_segment && mb_stripos(mb_strtolower($argomento), mb_strtolower($argomento_segment)) === false) {
+                        if ($argomento_name && mb_stripos(mb_strtolower($argomento), mb_strtolower($argomento_name)) === false) {
                             continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
                         }
                       
@@ -85,7 +85,7 @@
                 }
 
                 // Output dei servizi filtrati
-                echo "<h4>Argomento : $argomento_segment )</h4>";
+                echo "<h4>Argomento : $argomento_name )</h4>";
                 output_services($filtered_services);
             }
         } else {
