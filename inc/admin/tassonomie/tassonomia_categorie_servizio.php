@@ -9,7 +9,7 @@ function dci_register_taxonomy_categorie_servizio() {
         'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
         'singular_name'     => _x( 'Categoria di Servizio', 'taxonomy singular name', 'design_comuni_italia' ),
         'search_items'      => __( 'Cerca Categoria di Servizio', 'design_comuni_italia' ),
-        'all_items'         => __( 'Tutti le Categorie di Servizio', 'design_comuni_italia' ),
+        'all_items'         => __( 'Tutte le Categorie di Servizio', 'design_comuni_italia' ),
         'edit_item'         => __( 'Modifica la Categoria di Servizio', 'design_comuni_italia' ),
         'update_item'       => __( 'Aggiorna la Categoria di Servizio', 'design_comuni_italia' ),
         'add_new_item'      => __( 'Aggiungi una Categoria di Servizio', 'design_comuni_italia' ),
@@ -36,14 +36,10 @@ function dci_register_taxonomy_categorie_servizio() {
     );
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
-
-    // Aggiungi il pulsante per eliminare tutte le categorie   
-    if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
-        add_action( 'admin_footer', 'add_empty_categories_button' );
-    }
 }
 
 // Funzione per aggiungere i pulsanti "Confronta categorie" e "Elimina tutte le categorie"
+add_action('admin_footer', 'add_empty_categories_button');
 function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
@@ -62,39 +58,38 @@ function add_empty_categories_button() {
             addTermForm.after(deleteButtonHtml);
 
             // Gestione del clic del pulsante "Confronta categorie"
-$(document).on('click', '#compare-categories', function(e) {
-    e.preventDefault();
-    $.getJSON('https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures', function(data) {
-        var remoteCategories = data.map(function(item) {
-            return item.procedure_category_name.trim().toLowerCase(); // Normalizza per evitare problemi di spazi e maiuscole/minuscole
-        });
-
-        var localCategories = <?php echo json_encode(get_terms('categorie_servizio', array('fields' => 'names'))); ?>;
-        localCategories = localCategories.map(function(category) {
-            return category.trim().toLowerCase(); // Normalizza per evitare problemi di spazi e maiuscole/minuscole
-        });
-
-        // Trova le categorie remote che non sono presenti nel dato locale
-        var categoriesMissing = remoteCategories.filter(function(category) {
-            return !localCategories.includes(category);
-        });
-
-        // Mostra le categorie mancanti
-        if (categoriesMissing.length > 0) {
-            alert('Le seguenti categorie sono presenti nell\'endpoint remoto ma non nel database locale:\n' + categoriesMissing.join(', '));
-        } else {
-            alert('Tutte le categorie presenti nell\'endpoint remoto sono già nel database locale.');
-        }
-
-        // Mostra le categorie remote sulla pagina per verifica
-        var $remoteCategoriesList = $('<ul></ul>');
-        remoteCategories.forEach(function(category) {
-            $remoteCategoriesList.append('<li>' + category + '</li>');
-        });
-        $('#remote-categories-list').html($remoteCategoriesList); // Mostra nella pagina dove vuoi visualizzare le categorie remote
-    });
-});
+            $(document).on('click', '#compare-categories', function(e) {
+                e.preventDefault();
+                $.getJSON('https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures', function(data) {
+                    var remoteCategories = data.map(function(item) {
+                        return item.procedure_category_name.trim().toLowerCase(); // Normalizza per evitare problemi di spazi e maiuscole/minuscole
+                    });
             
+                    var localCategories = <?php echo json_encode(get_terms('categorie_servizio', array('fields' => 'names'))); ?>;
+                    localCategories = localCategories.map(function(category) {
+                        return category.trim().toLowerCase(); // Normalizza per evitare problemi di spazi e maiuscole/minuscole
+                    });
+            
+                    // Trova le categorie remote che non sono presenti nel dato locale
+                    var categoriesMissing = remoteCategories.filter(function(category) {
+                        return !localCategories.includes(category);
+                    });
+            
+                    // Mostra le categorie mancanti
+                    if (categoriesMissing.length > 0) {
+                        alert('Le seguenti categorie sono presenti nell\'endpoint remoto ma non nel database locale:\n' + categoriesMissing.join(', '));
+                    } else {
+                        alert('Tutte le categorie presenti nell\'endpoint remoto sono già nel database locale.');
+                    }
+            
+                    // Mostra le categorie remote sulla pagina per verifica
+                    var $remoteCategoriesList = $('<ul></ul>');
+                    remoteCategories.forEach(function(category) {
+                        $remoteCategoriesList.append('<li>' + category + '</li>');
+                    });
+                    $('#remote-categories-list').html($remoteCategoriesList); // Mostra nella pagina dove vuoi visualizzare le categorie remote
+                });
+            });
 
             // Gestione del clic del pulsante "Elimina tutte le categorie"
             $(document).on('click', '#delete-all-categories', function(e) {
@@ -128,9 +123,6 @@ $(document).on('click', '#compare-categories', function(e) {
     <?php
 }
 
-// Aggiungi i pulsanti nella pagina delle categorie di servizio
-add_action('admin_footer', 'add_empty_categories_button');
-
 // Funzione per eliminare tutte le categorie di servizio
 add_action('wp_ajax_empty_all_categories', 'empty_all_categories_callback');
 function empty_all_categories_callback() {
@@ -153,8 +145,6 @@ function empty_all_categories_callback() {
     wp_die();
 }
 ?>
-
-
 
 
 
