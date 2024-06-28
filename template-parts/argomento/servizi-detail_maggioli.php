@@ -86,9 +86,7 @@ $argomento_name = $argomento->name;
 
                 
                         <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                                <?php if ($service['category']) {
-                                    echo '<a href="'. esc_url($category_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
-                                } ?>
+                      
               
                         <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
                             <div class="card-image-wrapper with-read-more">
