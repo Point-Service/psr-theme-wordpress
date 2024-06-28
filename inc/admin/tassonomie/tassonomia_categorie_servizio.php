@@ -4,7 +4,6 @@
  */
 add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
 
-
 function dci_register_taxonomy_categorie_servizio() {
     $labels = array(
         'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
@@ -38,80 +37,71 @@ function dci_register_taxonomy_categorie_servizio() {
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 
-       // Aggiungo il pulsante per eliminare tutte le Categporie   
-        if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
-            add_action( 'admin_footer', 'add_empty_categories_button' );
-        }
-
-
-
+    // Aggiungi il pulsante per confrontare ed eliminare categorie non corrispondenti   
+    if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
+        add_action( 'admin_footer', 'add_empty_and_sync_categories_button' );
+    }
 }
 
-        
-function add_empty_categories_button() {
+// Funzione per aggiungere il pulsante "Confronta ed elimina categorie non corrispondenti"
+function add_empty_and_sync_categories_button() {
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            // Trova il form per aggiungere una nuova categoria di servizio
-            var addTermForm = $('.form-field.term-parent-wrap').closest('form');
-
-            // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
-            var deleteButtonHtml = '<div style="margin-top: 40px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
-
-            // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
-            addTermForm.after(deleteButtonHtml);
-
-            // Gestisci il clic del pulsante
-            $(document).on('click', '#delete-all-categories', function(e) {
-                e.preventDefault();
-                var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
-                if (confirmDelete) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'empty_all_categories',
-                            nonce: '<?php echo wp_create_nonce( "empty-categories-nonce" ); ?>'
-                        },
-                        success: function(response) {
-                            if (response === 'success') {
-                                alert('Tutte le categorie di servizio sono state cancellate.');
-                                location.reload();
-                            } else {
-                                alert('Si è verificato un errore durante la cancellazione delle categorie di servizio.');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                            alert('Si è verificato un errore durante la richiesta AJAX.');
-                        }
+            $('#delete-non-matching-categories').on('click', function() {
+                $.getJSON('https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures', function(data) {
+                    var remoteCategories = data.map(function(item) {
+                        return item.procedure_category_name;
                     });
-                }
+
+                    var localCategories = <?php echo json_encode(get_terms('categorie_servizio', array('fields' => 'names'))); ?>;
+
+                    // Trova le categorie locali che non sono presenti nel dato remoto
+                    var categoriesToDelete = localCategories.filter(function(category) {
+                        return remoteCategories.indexOf(category) === -1;
+                    });
+
+                    // Elimina le categorie non corrispondenti
+                    categoriesToDelete.forEach(function(category) {
+                        $.ajax({
+                            url: ajaxurl,
+                            type: 'POST',
+                            data: {
+                                action: 'delete_category_by_name',
+                                category_name: category
+                            },
+                            success: function(response) {
+                                console.log('Categoria eliminata: ' + category);
+                            },
+                            error: function(error) {
+                                console.error('Errore durante l\'eliminazione della categoria: ' + category);
+                            }
+                        });
+                    });
+
+                    alert('Operazione completata. Le categorie non corrispondenti sono state eliminate.');
+                });
             });
         });
     </script>
+    <button id="delete-non-matching-categories" class="button button-secondary">Confronta ed elimina categorie non corrispondenti</button>
     <?php
 }
 
-// Funzione per svuotare tutte le categorie di servizio
-add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
-function empty_all_categories_callback() {
-    check_ajax_referer( 'empty-categories-nonce', 'nonce' );
+// Aggiungi il pulsante nella pagina delle categorie di servizio
+add_action('admin_footer', 'add_empty_and_sync_categories_button');
 
-    $terms = get_terms( array(
-        'taxonomy'   => 'categorie_servizio',
-        'hide_empty' => false,
-    ) );
+// Funzione per eliminare una categoria per nome
+add_action('wp_ajax_delete_category_by_name', 'delete_category_by_name');
+function delete_category_by_name() {
+    if (isset($_POST['category_name'])) {
+        $category_name = sanitize_text_field($_POST['category_name']);
+        $term = get_term_by('name', $category_name, 'categorie_servizio');
 
-    if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-        foreach ( $terms as $term ) {
-            wp_delete_term( $term->term_id, 'categorie_servizio' );
+        if ($term && !is_wp_error($term)) {
+            wp_delete_term($term->term_id, 'categorie_servizio');
         }
-        echo 'success';
-    } else {
-        echo 'error';
     }
-
-    wp_die();
 }
+
 ?>
