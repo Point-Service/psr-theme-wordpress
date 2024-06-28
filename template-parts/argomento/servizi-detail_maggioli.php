@@ -45,7 +45,9 @@ $argomento_name = $argomento->name;
                                         $argomento = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
                                         $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                                         $url = $procedure['url'];
-        
+
+echo $argomento;
+                                      
                                         // Verifica se l'argomento contiene il segmento dell'URL, confrontando in modo case-insensitive
                                         if ($argomento_name && mb_stripos(mb_strtolower($argomento), mb_strtolower($argomento_name)) === false) {
                                             continue;
