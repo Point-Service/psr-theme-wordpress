@@ -39,12 +39,12 @@ function dci_register_taxonomy_categorie_servizio() {
 
     // Aggiungi il pulsante per eliminare tutte le categorie   
     if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
-        add_action( 'admin_footer', 'add_empty_categories_button' );
+        add_action( 'admin_footer', 'add_category_management_buttons' );
     }
 }
 
 // Funzione per aggiungere i pulsanti "Confronta categorie" e "Elimina tutte le categorie"
-function add_empty_categories_button() {
+function add_category_management_buttons() {
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
@@ -128,7 +128,7 @@ function add_empty_categories_button() {
 }
 
 // Aggiungi i pulsanti nella pagina delle categorie di servizio
-add_action('admin_footer', 'add_empty_categories_button');
+add_action('admin_footer', 'add_category_management_buttons');
 
 // Funzione per eliminare tutte le categorie di servizio
 add_action('wp_ajax_empty_all_categories', 'empty_all_categories_callback');
@@ -152,6 +152,7 @@ function empty_all_categories_callback() {
     wp_die();
 }
 ?>
+
 
 
 
