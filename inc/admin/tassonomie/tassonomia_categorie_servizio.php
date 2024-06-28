@@ -37,19 +37,33 @@ function dci_register_taxonomy_categorie_servizio() {
 
     register_taxonomy( 'categorie_servizio', array( 'servizio' ), $args );
 
-    // Aggiungi i pulsanti per confrontare e eliminare categorie   
+    // Aggiungi il pulsante per eliminare tutte le categorie   
     if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
-        add_action( 'admin_footer', 'add_category_management_buttons' );
+        add_action( 'admin_footer', 'add_empty_categories_button' );
     }
 }
 
 // Funzione per aggiungere i pulsanti "Confronta categorie" e "Elimina tutte le categorie"
-function add_category_management_buttons() {
+function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            // Pulsante per confrontare le categorie
-            $('#compare-categories').on('click', function() {
+            // Trova il form per aggiungere una nuova categoria di servizio
+            var addTermForm = $('.form-field.term-parent-wrap').closest('form');
+
+            // Crea un nuovo elemento per il pulsante "Confronta categorie"
+            var compareButtonHtml = '<div style="margin-top: 20px;"><button id="compare-categories" class="button button-secondary">Confronta categorie</button></div>';
+            
+            // Crea un nuovo elemento per il pulsante "Elimina tutte le categorie"
+            var deleteButtonHtml = '<div style="margin-top: 10px;"><button id="delete-all-categories" class="button button-secondary">Elimina tutte le categorie</button></div>';
+
+            // Aggiungi i pulsanti sotto il form per aggiungere una nuova categoria di servizio
+            addTermForm.after(compareButtonHtml);
+            addTermForm.after(deleteButtonHtml);
+
+            // Gestione del clic del pulsante "Confronta categorie"
+            $(document).on('click', '#compare-categories', function(e) {
+                e.preventDefault();
                 $.getJSON('https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures', function(data) {
                     var remoteCategories = data.map(function(item) {
                         return item.procedure_category_name;
@@ -71,8 +85,9 @@ function add_category_management_buttons() {
                 });
             });
 
-            // Pulsante per eliminare tutte le categorie
-            $('#delete-all-categories').on('click', function() {
+            // Gestione del clic del pulsante "Elimina tutte le categorie"
+            $(document).on('click', '#delete-all-categories', function(e) {
+                e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
                 if (confirmDelete) {
                     $.ajax({
@@ -99,13 +114,11 @@ function add_category_management_buttons() {
             });
         });
     </script>
-    <button id="compare-categories" class="button button-secondary">Confronta categorie</button>
-    <button id="delete-all-categories" class="button button-secondary">Elimina tutte le categorie</button>
     <?php
 }
 
 // Aggiungi i pulsanti nella pagina delle categorie di servizio
-add_action('admin_footer', 'add_category_management_buttons');
+add_action('admin_footer', 'add_empty_categories_button');
 
 // Funzione per eliminare tutte le categorie di servizio
 add_action('wp_ajax_empty_all_categories', 'empty_all_categories_callback');
@@ -129,4 +142,5 @@ function empty_all_categories_callback() {
     wp_die();
 }
 ?>
+
 
