@@ -20,9 +20,6 @@ $argomento_name = $argomento->name;
                 // Funzione per ottenere i dati dal servizio web
                 function get_procedures_data($search_term = null, $argomento_name = null)
                 {
-
-      echo "<h4>Argomento: $argomento_name</h4>";
-                    
                     $url = dci_get_option('servizi_maggioli_url', 'servizi');
                     $response = wp_remote_get($url);
                     $total_services = 0; // Inizializza il contatore
@@ -94,7 +91,7 @@ $argomento_name = $argomento->name;
                             <div class="card-image-wrapper with-read-more">
                                 <div class="card-body p-3">
                                     <div class="argomento-top">
-                                        <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?= get_term_link($service['argomento']); ?>"><?= $service['argomento']; ?></a>
+                                        <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?= esc_url($service['url']); ?>"><?= $service['argomento']; ?></a>
                                     </div>
                                     <h4 class="card-title text-paragraph-medium u-grey-light">
                                         <a class="text-decoration-none" href="<?= esc_url($service['url']); ?>" data-element="service-link"><?= $service['name']; ?></a>
@@ -109,7 +106,12 @@ $argomento_name = $argomento->name;
 
                 // Chiamata alla funzione per ottenere i dati e salvare il totale dei servizi
                 $search_term = isset($_GET['search']) ? $_GET['search'] : null;
-            //    $total_services_loaded = get_procedures_data($search_term, $argomento_name);
+                $total_services_loaded = get_procedures_data($search_term, $argomento_name);
+
+                // Verifica se ci sono errori
+                if ($total_services_loaded === 0) {
+                    echo "<p>Nessun servizio trovato.</p>";
+                }
                 ?>
             </div>
             <div class="row mt-4">
