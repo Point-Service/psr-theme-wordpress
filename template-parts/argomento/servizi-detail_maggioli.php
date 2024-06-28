@@ -84,7 +84,7 @@ $argomento_name = $argomento->name;
                                 </div>
                             </div>
                             <div class="row mx-0">
-                          div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">              
+                          <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">              
                             <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
                                 <div class="card-image-wrapper with-read-more">    
                                     <div class="card-body p-3">
