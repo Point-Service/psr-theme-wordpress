@@ -69,7 +69,7 @@ function add_empty_categories_button() {
                         return item.procedure_category_name;
                     });
 
-                    var localCategories = <?php echo json_encode(get_terms('categorie_servizio', array('fields' => 'names'))); ?>;
+                    var localCategories = <?php echo json_encode(get_local_category_names()); ?>;
 
                     // Trova le categorie locali che non sono presenti nel dato remoto
                     var categoriesMissing = remoteCategories.filter(function(category) {
@@ -113,6 +113,16 @@ function add_empty_categories_button() {
                 }
             });
         });
+
+        // Funzione PHP per ottenere i nomi delle categorie locali
+        function get_local_category_names() {
+            $categories = get_terms( array(
+                'taxonomy'   => 'categorie_servizio',
+                'fields'     => 'names',
+                'hide_empty' => false,
+            ) );
+            return json_encode($categories);
+        }
     </script>
     <?php
 }
@@ -142,6 +152,7 @@ function empty_all_categories_callback() {
     wp_die();
 }
 ?>
+
 
 
 
