@@ -275,43 +275,7 @@ function dci_register_taxonomy_categorie_servizio() {
                     
                     // Mostra i servizi nella pagina desiderata (puoi chiamare questa funzione nel template corretto)
                     // Funzione per mostrare i servizi in un textarea scrollabile
-                    function mostra_servizi_with_textarea() {
-                        $url = dci_get_option('servizi_maggioli_url', 'servizi'); // Assicurati che questa sia l'URL corretta
-                        $response = wp_remote_get($url);
-                        $total_services = 0;
-                    
-                        if (is_array($response) && !is_wp_error($response)) {
-                            $body = wp_remote_retrieve_body($response);
-                            $data = json_decode($body, true);
-                    
-                            if ($data) {
-                                ob_start();
-                                echo "<textarea id='services-textarea' style='width: 100%; height: 300px;' readonly>";
-                                echo "Servizi Aggiuntivi ( " . count($data) . " )\n\n";
-                    
-                                foreach ($data as $procedure) {
-                                    $name = $procedure['nome'];
-                                    $description = $procedure['descrizione_breve'];
-                                    $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-                    
-                                    echo "{$name}: {$description} ({$category})\n";
-                                }
-                    
-                                echo "</textarea>";
-                                $textarea_content = ob_get_clean();
-                    
-                                // Stampa il textarea
-                                echo $textarea_content;
-                            }
-                        } else {
-                            echo "Non riesco a leggere i servizi aggiuntivi.";
-                        }
-                    
-                        return $total_services;
-                    }
-                    
-
-    mostra_servizi_with_textarea();
+              
 }
     
 ?>
