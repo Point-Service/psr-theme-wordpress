@@ -112,7 +112,7 @@ $argomento_name = $argomento->name;
                             echo "<p>Nessun servizio trovato.</p>";
                         }
                         ?>
-        b
+        
                         </div>
                           </div>
                           <div class="row mt-4">
