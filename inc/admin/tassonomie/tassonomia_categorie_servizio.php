@@ -119,19 +119,21 @@ function empty_all_categories_callback() {
 // Funzione per confrontare e stampare le categorie non trovate
 // Funzione per confrontare e stampare i nomi delle categorie non trovate
 function confronta_categorie($data, $my_categories) {
-    $categorie_trovate = array();
+    $categorie_remote = array(); // Array per tenere traccia delle categorie remote
 
+    // Popolo l'array con tutte le categorie remote trovate
     foreach ($data as $procedure) {
         if (is_array($procedure['categoria'])) {
             foreach ($procedure['categoria'] as $categoria) {
-                $categorie_trovate[] = $categoria;
+                $categorie_remote[] = $categoria;
             }
         } else {
-            $categorie_trovate[] = $procedure['categoria'];
+            $categorie_remote[] = $procedure['categoria'];
         }
     }
 
-    $categorie_non_trovate = array_diff($my_categories, $categorie_trovate);
+    // Trovo le categorie remote non presenti nell'array locale $my_categories
+    $categorie_non_trovate = array_diff($categorie_remote, $my_categories);
 
     $output = "<h4>Categorie non trovate:</h4>";
     if (!empty($categorie_non_trovate)) {
