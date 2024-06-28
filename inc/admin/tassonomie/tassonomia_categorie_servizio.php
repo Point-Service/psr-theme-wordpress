@@ -238,29 +238,24 @@ add_action('wp_ajax_confronta_categorie', 'ajax_confronta_categorie');
 add_action('wp_ajax_nopriv_confronta_categorie', 'ajax_confronta_categorie');
 
 // Aggiungi lo script JavaScript per gestire l'evento click sul pulsante
-function aggiungi_script_confronta_categorie() {
-    ?>
-    <script type="text/javascript">
-    jQuery(document).ready(function($) {
-        $('#confronta-categorie').click(function() {
-            $.ajax({
-                url: '<?php echo admin_url('admin-ajax.php'); ?>',
-                type: 'POST',
-                data: {
-                    action: 'confronta_categorie'
-                },
-                success: function(response) {
-                    $('#categorie-output').html(response);
-                },
-                error: function() {
-                    $('#categorie-output').html('<p>Errore nella richiesta AJAX.</p>');
-                }
-            });
-        });
-    });
-    </script>
-    <?php
+function ajax_confronta_categorie() {
+    $url = 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures'; // Assicurati che questa sia l'URL corretta
+    $response = wp_remote_get($url);
+
+    if (is_array($response) && !is_wp_error($response)) {
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        $output = confronta_categorie($data, $my_categories);
+
+        echo "<textarea style='width: 100%; height: 200px;' readonly>$output</textarea>"; // Controlla l'output qui
+    } else {
+        echo "<p>Non riesco a leggere i servizi aggiuntivi.</p>";
+    }
+
+    wp_die();
 }
+
 add_action('wp_footer', 'aggiungi_script_confronta_categorie');
 ?>
 
