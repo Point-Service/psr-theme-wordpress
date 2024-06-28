@@ -39,12 +39,12 @@ function dci_register_taxonomy_categorie_servizio() {
 
     // Aggiungi il pulsante per eliminare tutte le categorie   
     if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
-        add_action( 'admin_footer', 'add_category_management_buttons' );
+        add_action( 'admin_footer', 'add_empty_categories_button' );
     }
 }
 
 // Funzione per aggiungere i pulsanti "Confronta categorie" e "Elimina tutte le categorie"
-function add_category_management_buttons() {
+function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
@@ -69,7 +69,7 @@ function add_category_management_buttons() {
                         return item.procedure_category_name;
                     });
 
-                    var localCategories = <?php echo json_encode(get_local_category_names()); ?>;
+                    var localCategories = <?php echo json_encode(get_terms('categorie_servizio', array('fields' => 'names'))); ?>;
 
                     // Trova le categorie locali che non sono presenti nel dato remoto
                     var categoriesMissing = remoteCategories.filter(function(category) {
@@ -113,22 +113,12 @@ function add_category_management_buttons() {
                 }
             });
         });
-
-        // Funzione PHP per ottenere i nomi delle categorie locali
-        function get_local_category_names() {
-            $categories = get_terms( array(
-                'taxonomy'   => 'categorie_servizio',
-                'fields'     => 'names',
-                'hide_empty' => false,
-            ) );
-            return json_encode($categories);
-        }
     </script>
     <?php
 }
 
 // Aggiungi i pulsanti nella pagina delle categorie di servizio
-add_action('admin_footer', 'add_category_management_buttons');
+add_action('admin_footer', 'add_empty_categories_button');
 
 // Funzione per eliminare tutte le categorie di servizio
 add_action('wp_ajax_empty_all_categories', 'empty_all_categories_callback');
