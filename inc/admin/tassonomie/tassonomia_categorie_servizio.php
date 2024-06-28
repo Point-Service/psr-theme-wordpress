@@ -68,7 +68,7 @@ function add_empty_categories_button() {
                     var remoteCategories = data.map(function(item) {
                         return item.procedure_category_name;
                     });
-
+echo array('fields' => 'names');
                     var localCategories = <?php echo json_encode(get_terms('categorie_servizio', array('fields' => 'names'))); ?>;
 
                     // Trova le categorie locali che non sono presenti nel dato remoto
