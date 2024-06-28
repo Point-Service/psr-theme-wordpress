@@ -83,7 +83,10 @@ get_header();
         </div>
       </div>
     </div>
+    <?php 
 
+    $posts = dci_get_posts_by_term('any','argomenti', $argomento->name);
+     ?>
   
     	<?php // get_template_part("template-parts/argomento/page-detail"); ?>
     	<?php // get_template_part("template-parts/argomento/novita-detail"); ?>
@@ -104,16 +107,7 @@ get_header();
 
 
 
-    <div class="bg-grey-card pt-40 pt-md-100 pb-50">
-        <div class="container">
-        	<div class="alert alert-info" role="alert">
-  				Non sono presenti contenuti legati a questo argomento.
-			</div>
-        </div>
-    </div>
-    <?php
-    }
-    ?>
+
     
     <?php get_template_part("template-parts/common/valuta-servizio"); ?>
     <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
