@@ -62,7 +62,7 @@ function add_empty_categories_button() {
             addTermForm.after(deleteButtonHtml);
 
             // Gestione del clic del pulsante "Confronta categorie"
-     $(document).on('click', '#compare-categories', function(e) {
+$(document).on('click', '#compare-categories', function(e) {
     e.preventDefault();
     $.getJSON('https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures', function(data) {
         var remoteCategories = data.map(function(item) {
@@ -94,7 +94,6 @@ function add_empty_categories_button() {
         $('#remote-categories-list').html($remoteCategoriesList); // Mostra nella pagina dove vuoi visualizzare le categorie remote
     });
 });
-
             
 
             // Gestione del clic del pulsante "Elimina tutte le categorie"
