@@ -276,7 +276,7 @@ function dci_register_taxonomy_categorie_servizio() {
                     // Mostra i servizi nella pagina desiderata (puoi chiamare questa funzione nel template corretto)
                     // Funzione per mostrare i servizi in un textarea scrollabile
                     function mostra_servizi_with_textarea() {
-                        $url = 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures'; // Assicurati che questa sia l'URL corretta
+                        $url = dci_get_option('servizi_maggioli_url', 'servizi'); // Assicurati che questa sia l'URL corretta
                         $response = wp_remote_get($url);
                         $total_services = 0;
                     
