@@ -56,6 +56,7 @@ $argomento_name = $argomento->name;
                                             'name' => $name,
                                             'description' => $description,
                                             'category' => $category,
+                                            'argomento' => $argomento;
                                             'url' => $url
                                         ];
         
@@ -95,6 +96,9 @@ $argomento_name = $argomento->name;
                                                     <a class="text-decoration-none" href="<?= esc_url($service['url']); ?>" data-element="service-link"><?= $service['name']; ?></a>
                                                 </h4>
                                                 <p class="text-paragraph-card u-grey-light m-0"><?= $service['description']; ?></p>
+                                                 <h4 class="text-paragraph-medium u-grey-light">
+                                                    Argomento: <?= $service['name']; ?>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
