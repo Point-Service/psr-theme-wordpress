@@ -353,7 +353,7 @@ function mostra_servizi_with_textarea() {
 }
                     
 
-    mostra_servizi_with_textarea();
+
 }
     
 ?>
