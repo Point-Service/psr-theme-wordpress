@@ -54,6 +54,12 @@ function dci_register_taxonomy_categorie_servizio() {
     }
 }
 
+
+// Verifica se il parametro 'taxonomy' nell'URL è uguale a 'categorie_servizio'
+if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
+
+
+    
 // Funzione per aggiungere il pulsante di eliminazione categorie
 function add_empty_categories_button() {
     ?>
@@ -304,8 +310,7 @@ function mostra_servizi_with_textarea() {
     return $total_services;
 }
 
-// Verifica se il parametro 'taxonomy' nell'URL è uguale a 'categorie_servizio'
-if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
+
     mostra_servizi_with_textarea();
 }
     
