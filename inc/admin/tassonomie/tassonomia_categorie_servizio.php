@@ -223,7 +223,7 @@ add_action('wp_footer', 'aggiungi_script_confronta_categorie');
 
 // Funzione per mostrare i servizi (inserisci questa funzione dove vuoi mostrare i servizi)
 mostra_servizi();
-?>
+
 
 
 
