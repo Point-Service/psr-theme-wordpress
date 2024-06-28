@@ -63,6 +63,11 @@ function add_empty_categories_button() {
             var deleteButtonHtml = '<div style="margin-top: 40px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
             addTermForm.after(deleteButtonHtml);
 
+            
+// Mostra i servizi con textarea nella pagina desiderata
+mostra_servizi_with_textarea(); 
+
+            
             $(document).on('click', '#delete-all-categories', function(e) {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
