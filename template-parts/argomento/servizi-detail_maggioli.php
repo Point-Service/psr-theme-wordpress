@@ -57,25 +57,25 @@
                     $url = $procedure['url'];
 
                     /**
-                    // Stampa il titolo e la categoria per debug
-                    echo 'TITOLO  : ' . strtolower($title);
+                     Stampa il titolo e la categoria per debug
+                    echo 'TITOLO  : ' . strtolower($argomento_name);
                     echo '<br>';
                     echo strtolower($argomento);
                     echo '<br>';
-                     */
+                    
 
 
                     // Verifica se l'argomento contiene il segmento dell'URL, confrontando in modo case-insensitive
                         if ($argomento_name && mb_stripos(mb_strtolower($argomento), mb_strtolower($argomento_name)) === false) {
-                            continue; // Ignora questo servizio se la categoria non contiene il segmento dell'URL
+                            continue;
                         }
                       
 
-                    // Aggiungi il servizio all'array filtrato
+                    // Aggiungi l'argomento all'array filtrato
                     $service = [
                         'name' => $name,
                         'description' => $description,
-                        'category' => $argomento,
+                        'argomento' => $argomento,
                         'url' => $url
                     ];
 
@@ -101,18 +101,18 @@
     {
         foreach ($services as $service) {
             // Genera il link alla categoria basato sul nome del servizio
-            $argomento_slug = sanitize_title($service['category']);
+            $argomento_slug = sanitize_title($service['argomento']);
             $argomento_link = "/servizi-categoria/$argomento_slug";
 ?>
    
                         <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                        <?php if ($service['category']) {
-                            echo '<a href="'. esc_url($argomento_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
+                        <?php if ($service['argomento']) {
+                            echo '<a href="'. esc_url($argomento_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 argomento text-uppercase">' . $service['argomento'] . '</a></div>';
                         } ?>
                             </div> <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
                                     <div class="card-image-wrapper with-read-more">
                                         <div class="card-body p-3">
-                                            <div class="category-top">
+                                            <div class="argomento-top">
                                                 <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?php echo get_term_link($categoria_servizio->term_id); ?>"><?php echo $categoria_servizio->name; ?></a>
                                             </div>
                                                 <h4 class="card-title text-paragraph-medium u-grey-light">
