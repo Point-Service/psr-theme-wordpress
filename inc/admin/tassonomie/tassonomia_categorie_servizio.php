@@ -210,7 +210,7 @@ function aggiungi_script_confronta_categorie() {
     <?php
 }
 add_action('wp_footer', 'aggiungi_script_confronta_categorie');
-?>
+
 
 
 
