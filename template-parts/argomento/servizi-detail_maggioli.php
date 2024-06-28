@@ -52,7 +52,7 @@ $argomento_name = $argomento->name;
                                 $filtered_services[] = [
                                     'name' => $name,
                                     'description' => $description,
-                                    'argomento' => $argomento,
+                                    'servizi' => $argomento,
                                     'url' => $url
                                 ];
 
@@ -61,7 +61,7 @@ $argomento_name = $argomento->name;
                             }
 
                             // Output dei servizi filtrati
-                            echo "<h4>Argomento: $argomento_name</h4>";
+                           // echo "<h4>Argomento: $argomento_name</h4>";
                             output_services($filtered_services);
                         }
                     } else {
