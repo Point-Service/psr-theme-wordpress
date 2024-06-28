@@ -20,6 +20,9 @@ $argomento_name = $argomento->name;
                 // Funzione per ottenere i dati dal servizio web
                 function get_procedures_data($search_term = null, $argomento_name = null)
                 {
+
+      echo "<h4>Argomento: $argomento_name</h4>";
+                    
                     $url = dci_get_option('servizi_maggioli_url', 'servizi');
                     $response = wp_remote_get($url);
                     $total_services = 0; // Inizializza il contatore
