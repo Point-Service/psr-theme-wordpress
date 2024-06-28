@@ -184,13 +184,8 @@ function confronta_categorie( $data, $my_categories ) {
 
     $output = '';
 
-    if ( ! empty( $categorie_non_trovate ) ) {
-        $output .= "Categorie non trovate:\n";
-        foreach ( $categorie_non_trovate as $categoria ) {
-            $output .= "$categoria\n";
-        }
-    } else {
-        $output .= "Tutte le categorie sono state trovate.";
+    foreach ( $categorie_non_trovate as $categoria ) {
+        $output .= "$categoria\n";
     }
 
     return $output;
