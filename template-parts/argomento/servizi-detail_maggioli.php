@@ -88,13 +88,13 @@ $argomento_name = $argomento->name;
                         <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">                    
               
                             <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
-                                <div class="card-image-wrapper with-read-more">
-                                              <?php if ($service['category']) {
-                                    echo '<a href="'. esc_url($category_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
-                                } ?>
+                                <div class="card-image-wrapper with-read-more">    
                                     <div class="card-body p-3">
+                                            <?php if ($service['category']) {
+                                                    echo '<a href="'. esc_url($category_link) .'" class="text-decoration-none"><div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $service['category'] . '</a></div>';
+                                                } ?>
                                         <div class="argomento-top">
-                                            <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?= esc_url($service['url']); ?>"><?= $service['argomento']; ?></a>
+                                            <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?= esc_url($service['url']); ?>"><?= $service['category']; ?></a>
                                         </div>
                                         <h4 class="card-title text-paragraph-medium u-grey-light">
                                             <a class="text-decoration-none" href="<?= esc_url($service['url']); ?>" data-element="service-link"><?= $service['name']; ?></a>
