@@ -85,22 +85,22 @@ $argomento_name = $argomento->name;
 
 
                 
-                        <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                      
+                        <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">                    
               
-                        <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
-                            <div class="card-image-wrapper with-read-more">
-                                <div class="card-body p-3">
-                                    <div class="argomento-top">
-                                        <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?= esc_url($service['url']); ?>"><?= $service['argomento']; ?></a>
+                            <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
+                                <div class="card-image-wrapper with-read-more">
+                                    <div class="card-body p-3">
+                                        <div class="argomento-top">
+                                            <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?= esc_url($service['url']); ?>"><?= $service['argomento']; ?></a>
+                                        </div>
+                                        <h4 class="card-title text-paragraph-medium u-grey-light">
+                                            <a class="text-decoration-none" href="<?= esc_url($service['url']); ?>" data-element="service-link"><?= $service['name']; ?></a>
+                                        </h4>
+                                        <p class="text-paragraph-card u-grey-light m-0"><?= $service['description']; ?></p>
                                     </div>
-                                    <h4 class="card-title text-paragraph-medium u-grey-light">
-                                        <a class="text-decoration-none" href="<?= esc_url($service['url']); ?>" data-element="service-link"><?= $service['name']; ?></a>
-                                    </h4>
-                                    <p class="text-paragraph-card u-grey-light m-0"><?= $service['description']; ?></p>
                                 </div>
                             </div>
-                        </div>
+                       </div>
                 <?php
                     }
                 }
