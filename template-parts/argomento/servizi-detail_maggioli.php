@@ -56,8 +56,8 @@
                     $argomento = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
                     $url = $procedure['url'];
 
-                    /**
-                     Stampa il titolo e la categoria per debug
+                   
+                    // Stampa il titolo e la categoria per debug
                     echo 'TITOLO  : ' . strtolower($argomento_name);
                     echo '<br>';
                     echo strtolower($argomento);
