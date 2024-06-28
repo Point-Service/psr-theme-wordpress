@@ -275,41 +275,73 @@ function dci_register_taxonomy_categorie_servizio() {
                     
                     // Mostra i servizi nella pagina desiderata (puoi chiamare questa funzione nel template corretto)
                     // Funzione per mostrare i servizi in un textarea scrollabile
-                    function mostra_servizi_with_textarea() {
-                        
-                        $url = 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures'; // Assicurati che questa sia l'URL corretta
-                        $response = wp_remote_get($url);
-                        $total_services = 0;
-                    
-                        if (is_array($response) && !is_wp_error($response)) {
-                            $body = wp_remote_retrieve_body($response);
-                            $data = json_decode($body, true);
-                    
-                            if ($data) {
-                                ob_start();
-                                echo "<textarea id='services-textarea' style='width: 100%; height: 300px;' readonly>";
-                                echo "Servizi Aggiuntivi ( " . count($data) . " )\n\n";
-                    
-                                foreach ($data as $procedure) {
-                                    $name = $procedure['nome'];
-                                    $description = $procedure['descrizione_breve'];
-                                    $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-                    
-                                    echo "{$name}: {$description} ({$category})\n";
-                                }
-                    
-                                echo "</textarea>";
-                                $textarea_content = ob_get_clean();
-                    
-                                // Stampa il textarea
-                                echo $textarea_content;
-                            }
-                        } else {
-                            echo "Non riesco a leggere i servizi aggiuntivi.";
+// Funzione per mostrare i servizi in un textarea scrollabile
+function mostra_servizi_with_textarea() {
+    $url = dci_get_option('servizi_maggioli_url', 'servizi'); // Assicurati che questa sia l'URL corretta
+    $response = wp_remote_get($url);
+    $total_services = 0;
+
+    if (is_array($response) && !is_wp_error($response)) {
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        if ($data) {
+            // Recupero delle categorie remote
+            $categorie_remote = array();
+            foreach ($data as $procedure) {
+                if (isset($procedure['categoria'])) {
+                    if (is_array($procedure['categoria'])) {
+                        foreach ($procedure['categoria'] as $categoria) {
+                            $categorie_remote[] = $categoria;
                         }
-                    
-                        return $total_services;
+                    } else {
+                        $categorie_remote[] = $procedure['categoria'];
                     }
+                }
+            }
+
+            // Trova le categorie remote non presenti nell'array locale $my_categories
+            $categorie_non_presenti = array_diff($categorie_remote, $GLOBALS['my_categories']);
+
+            // Output delle categorie non presenti
+            if (!empty($categorie_non_presenti)) {
+                echo "<h4>Categorie non presenti nell'array locale:</h4>";
+                echo "<ul>";
+                foreach ($categorie_non_presenti as $categoria) {
+                    echo "<li>" . htmlspecialchars($categoria) . "</li>";
+                }
+                echo "</ul>";
+            } else {
+                echo "<p>Tutte le categorie sono presenti nell'array locale.</p>";
+            }
+
+            // Output dei servizi in un textarea scrollabile
+            ob_start();
+            echo "<textarea id='services-textarea' style='width: 100%; height: 300px;' readonly>";
+            echo "Servizi Aggiuntivi ( " . count($data) . " )\n\n";
+
+            foreach ($data as $procedure) {
+                $name = $procedure['nome'];
+                $description = $procedure['descrizione_breve'];
+                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+
+                echo "{$name}: {$description} ({$category})\n";
+            }
+
+            echo "</textarea>";
+            $textarea_content = ob_get_clean();
+
+            // Stampa il textarea
+            echo $textarea_content;
+        } else {
+            echo "Non riesco a leggere i servizi aggiuntivi.";
+        }
+    } else {
+        echo "Errore nel recupero dei dati dai servizi aggiuntivi.";
+    }
+
+    return $total_services;
+}
                     
 
     mostra_servizi_with_textarea();
