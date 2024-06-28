@@ -56,7 +56,7 @@ function dci_register_taxonomy_categorie_servizio() {
 
 
 // Verifica se il parametro 'taxonomy' nell'URL è uguale a 'categorie_servizio'
- if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio' && !empty(dci_get_option('servizi_maggioli_url', 'servizi'))) {
+ if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio' && !empty(dci_get_option('servizi_maggioli_url', 'servizi'))  && strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5 ) {
 
 
                         
