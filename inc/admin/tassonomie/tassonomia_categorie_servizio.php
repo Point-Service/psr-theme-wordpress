@@ -117,6 +117,7 @@ function empty_all_categories_callback() {
 }
 
 // Funzione per confrontare e stampare le categorie non trovate
+// Funzione per confrontare e stampare i nomi delle categorie non trovate
 function confronta_categorie($data, $my_categories) {
     $categorie_trovate = array();
 
@@ -136,7 +137,7 @@ function confronta_categorie($data, $my_categories) {
     if (!empty($categorie_non_trovate)) {
         $output .= "<ul>";
         foreach ($categorie_non_trovate as $categoria) {
-            $output .= "<li>$categoria</li>";
+            $output .= "<li>" . htmlspecialchars($categoria) . "</li>"; // Utilizzo di htmlspecialchars per evitare problemi di sicurezza
         }
         $output .= "</ul>";
     } else {
