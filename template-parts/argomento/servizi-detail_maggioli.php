@@ -77,9 +77,10 @@ $argomento_name = $argomento->name;
                 function output_services($services)
                 {
                     foreach ($services as $service) {
+
                         // Genera il link alla categoria basato sul nome del servizio
-                        $argomento_slug = sanitize_title($service['argomento']);
-                        $argomento_link = "/servizi-categoria/$argomento_slug";
+                        $category_slug = sanitize_title($service['category']);
+                        $category_link = "/servizi-categoria/$category_slug";
                 ?>
                         <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                                 <?php if ($service['category']) {
