@@ -95,9 +95,6 @@ $argomento_name = $argomento->name;
                                                     <a class="text-decoration-none" href="<?= esc_url($service['url']); ?>" data-element="service-link"><?= $service['name']; ?></a>
                                                 </h4>
                                                 <p class="text-paragraph-card u-grey-light m-0"><?= $service['description']; ?></p>
-                                                 <h4  class="title-xsmall-semi-bold fw-semibold text-decoration-none">
-                                                    Argomento: <?= $argomento_name; ?>
-                                                </h4>
                                             </div>
                                         </div>
                                     </div>
