@@ -5,18 +5,7 @@ $posts = dci_get_grouped_posts_by_term('servizi', 'argomenti', $argomento->slug,
 $argomento_name = $argomento->name;
 ?>
 
-<section id="servizi">
-    <div class="pb-40 pt-40 pt-lg-80">
-        <div class="container">
-            <div class="row row-title">
-                <div class="col-12">
-                    <h3 class="u-grey-light border-bottom border-semi-dark pb-2 pb-lg-3 title-large-semi-bold">
-                        Servizi
-                    </h3>
-                </div>
-            </div>
-            <div class="row mx-0">
-                <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+
                     
                 <?php
                 // Funzione per ottenere i dati dal servizio web
@@ -84,8 +73,18 @@ $argomento_name = $argomento->name;
                         $category_slug = sanitize_title($service['category']);
                         $category_link = "/servizi-categoria/$category_slug";
                 ?>
-
-              
+                <section id="servizi">
+                    <div class="pb-40 pt-40 pt-lg-80">
+                        <div class="container">
+                            <div class="row row-title">
+                                <div class="col-12">
+                                    <h3 class="u-grey-light border-bottom border-semi-dark pb-2 pb-lg-3 title-large-semi-bold">
+                                        Servizi
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="row mx-0">
+                          div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">              
                             <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
                                 <div class="card-image-wrapper with-read-more">    
                                     <div class="card-body p-3">
@@ -100,6 +99,22 @@ $argomento_name = $argomento->name;
                                 </div>
                             </div>
                        </div>
+                          </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-12 col-lg-3 offset-lg-9">
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-primary text-button w-100"
+                                            onclick="location.href='<?php echo dci_get_template_page_url('page-templates/servizi.php'); ?>'"
+                                        >
+                                            Tutti i servizi
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 <?php
                     }
                 }
@@ -114,19 +129,4 @@ $argomento_name = $argomento->name;
                 }
                 ?>
         
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-12 col-lg-3 offset-lg-9">
-                    <button 
-                        type="button" 
-                        class="btn btn-primary text-button w-100"
-                        onclick="location.href='<?php echo dci_get_template_page_url('page-templates/servizi.php'); ?>'"
-                    >
-                        Tutti i servizi
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
