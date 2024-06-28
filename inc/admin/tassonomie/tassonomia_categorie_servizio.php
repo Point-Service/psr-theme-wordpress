@@ -4,6 +4,14 @@
  */
 add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
 
+// Assumiamo che questo sia l'array delle categorie predefinite
+$my_categories = array(
+    'Categoria 1',
+    'Categoria 2',
+    'Categoria 3',
+    // Aggiungi altre categorie secondo necessità
+);
+
 function dci_register_taxonomy_categorie_servizio() {
     $labels = array(
         'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
@@ -43,6 +51,36 @@ function dci_register_taxonomy_categorie_servizio() {
     }
 }
 
+// Funzione per confrontare e stampare le categorie non trovate
+function confronta_categorie($data, $my_categories) {
+    $categorie_trovate = array();
+
+    foreach ($data as $procedure) {
+        if (is_array($procedure['categoria'])) {
+            foreach ($procedure['categoria'] as $categoria) {
+                $categorie_trovate[] = $categoria;
+            }
+        } else {
+            $categorie_trovate[] = $procedure['categoria'];
+        }
+    }
+
+    $categorie_non_trovate = array_diff($my_categories, $categorie_trovate);
+
+    echo "<h4>Categorie non trovate:</h4>";
+    if (!empty($categorie_non_trovate)) {
+        echo "<ul>";
+        foreach ($categorie_non_trovate as $categoria) {
+            echo "<li>$categoria</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "<p>Tutte le categorie sono state trovate.</p>";
+    }
+}
+
+
+
 // Funzione per aggiungere i pulsanti "Confronta categorie" e "Elimina tutte le categorie"
 function add_empty_categories_button() {
     ?>
@@ -68,7 +106,7 @@ function add_empty_categories_button() {
                     var remoteCategories = data.map(function(item) {
                         return item.procedure_category_name;
                     });
-echo array('fields' => 'names');
+
                     var localCategories = <?php echo json_encode(get_terms('categorie_servizio', array('fields' => 'names'))); ?>;
 
                     // Trova le categorie locali che non sono presenti nel dato remoto
