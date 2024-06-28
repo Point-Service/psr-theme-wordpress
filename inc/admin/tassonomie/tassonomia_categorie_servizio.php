@@ -185,7 +185,10 @@ function confronta_categorie( $data, $my_categories ) {
     $output = '';
 
     foreach ( $categorie_non_trovate as $categoria ) {
-        $output .= "$categoria\n";
+        // Verifica se la categoria non trovata è vuota o contiene solo spazi
+        if ( ! empty( trim( $categoria ) ) ) {
+            $output .= $categoria . "\n";
+        }
     }
 
     return $output;
