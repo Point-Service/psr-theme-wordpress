@@ -2,7 +2,7 @@
     global $argomento;
 
     $posts = dci_get_grouped_posts_by_term( 'servizi' , 'argomenti', $argomento->slug, 3);
- // echo $argomento->name;
+    echo $argomento->name;
 ?>
 
 
