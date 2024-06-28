@@ -1,8 +1,8 @@
 <?php
 /**
- * Definisce la tassonomia Categorie di Servizio
+ * Plugin Name: Gestione Servizi
+ * Description: Un plugin per gestire e confrontare i servizi.
  */
-add_action( 'init', 'dci_register_taxonomy_categorie_servizio', -10 );
 
 // Assumiamo che questo sia l'array delle categorie predefinite
 $my_categories = array(
@@ -12,17 +12,20 @@ $my_categories = array(
     // Aggiungi altre categorie secondo necessità
 );
 
+// Registra la tassonomia Categorie di Servizio
+add_action('init', 'dci_register_taxonomy_categorie_servizio', -10);
+
 function dci_register_taxonomy_categorie_servizio() {
     $labels = array(
-        'name'              => _x( 'Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia' ),
-        'singular_name'     => _x( 'Categoria di Servizio', 'taxonomy singular name', 'design_comuni_italia' ),
-        'search_items'      => __( 'Cerca Categoria di Servizio', 'design_comuni_italia' ),
-        'all_items'         => __( 'Tutti le Categorie di Servizio', 'design_comuni_italia' ),
-        'edit_item'         => __( 'Modifica la Categoria di Servizio', 'design_comuni_italia' ),
-        'update_item'       => __( 'Aggiorna la Categoria di Servizio', 'design_comuni_italia' ),
-        'add_new_item'      => __( 'Aggiungi una Categoria di Servizio', 'design_comuni_italia' ),
-        'new_item_name'     => __( 'Nuovo Tipo di Categoria di Servizio', 'design_comuni_italia' ),
-        'menu_name'         => __( 'Categorie di Servizio', 'design_comuni_italia' ),
+        'name'              => _x('Categorie di Servizio', 'taxonomy general name', 'design_comuni_italia'),
+        'singular_name'     => _x('Categoria di Servizio', 'taxonomy singular name', 'design_comuni_italia'),
+        'search_items'      => __('Cerca Categoria di Servizio', 'design_comuni_italia'),
+        'all_items'         => __('Tutti le Categorie di Servizio', 'design_comuni_italia'),
+        'edit_item'         => __('Modifica la Categoria di Servizio', 'design_comuni_italia'),
+        'update_item'       => __('Aggiorna la Categoria di Servizio', 'design_comuni_italia'),
+        'add_new_item'      => __('Aggiungi una Categoria di Servizio', 'design_comuni_italia'),
+        'new_item_name'     => __('Nuovo Tipo di Categoria di Servizio', 'design_comuni_italia'),
+        'menu_name'         => __('Categorie di Servizio', 'design_comuni_italia'),
     );
 
     $args = array(
@@ -31,7 +34,7 @@ function dci_register_taxonomy_categorie_servizio() {
         'show_ui'           => true,
         'show_admin_column' => true,
         'query_var'         => true,
-        'rewrite'           => array( 'slug' => 'servizi-categoria' ),
+        'rewrite'           => array('slug' => 'servizi-categoria'),
         'capabilities'      => array(
             'manage_terms'  => 'manage_categorie_servizio',
             'edit_terms'    => 'edit_categorie_servizio',
@@ -45,26 +48,21 @@ function dci_register_taxonomy_categorie_servizio() {
 
     register_taxonomy('categorie_servizio', array('servizio'), $args);
 
-    // Aggiungo il pulsante per eliminare tutte le Categporie   
+    // Aggiungo il pulsante per eliminare tutte le categorie
     if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'categorie_servizio') {
-        add_action( 'admin_footer', 'add_empty_categories_button' );
+        add_action('admin_footer', 'add_empty_categories_button');
     }
 }
 
+// Funzione per aggiungere il pulsante di eliminazione categorie
 function add_empty_categories_button() {
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            // Trova il form per aggiungere una nuova categoria di servizio
             var addTermForm = $('.form-field.term-parent-wrap').closest('form');
-
-            // Crea un nuovo elemento per il pulsante "Cancella tutte le categorie di servizio"
             var deleteButtonHtml = '<div style="margin-top: 40px;"><button id="delete-all-categories" class="button">Cancella tutte le categorie di servizio</button></div>';
-
-            // Aggiungi il pulsante sotto il form per aggiungere una nuova categoria di servizio
             addTermForm.after(deleteButtonHtml);
 
-            // Gestisci il clic del pulsante
             $(document).on('click', '#delete-all-categories', function(e) {
                 e.preventDefault();
                 var confirmDelete = confirm("Sei sicuro di voler cancellare tutte le categorie di servizio?");
@@ -74,7 +72,7 @@ function add_empty_categories_button() {
                         type: 'POST',
                         data: {
                             action: 'empty_all_categories',
-                            nonce: '<?php echo wp_create_nonce( "empty-categories-nonce" ); ?>'
+                            nonce: '<?php echo wp_create_nonce("empty-categories-nonce"); ?>'
                         },
                         success: function(response) {
                             if (response === 'success') {
@@ -97,18 +95,18 @@ function add_empty_categories_button() {
 }
 
 // Funzione per svuotare tutte le categorie di servizio
-add_action( 'wp_ajax_empty_all_categories', 'empty_all_categories_callback' );
+add_action('wp_ajax_empty_all_categories', 'empty_all_categories_callback');
 function empty_all_categories_callback() {
-    check_ajax_referer( 'empty-categories-nonce', 'nonce' );
+    check_ajax_referer('empty-categories-nonce', 'nonce');
 
-    $terms = get_terms( array(
+    $terms = get_terms(array(
         'taxonomy'   => 'categorie_servizio',
         'hide_empty' => false,
-    ) );
+    ));
 
-    if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-        foreach ( $terms as $term ) {
-            wp_delete_term( $term->term_id, 'categorie_servizio' );
+    if (!empty($terms) && !is_wp_error($terms)) {
+        foreach ($terms as $term) {
+            wp_delete_term($term->term_id, 'categorie_servizio');
         }
         echo 'success';
     } else {
@@ -150,36 +148,28 @@ function confronta_categorie($data, $my_categories) {
 
 // Funzione principale per mostrare i servizi e il pulsante
 function mostra_servizi() {
-    $url = dci_get_option('servizi_maggioli_url', 'servizi');
+    $url = 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures'; // Assicurati che questa sia l'URL corretta
     $response = wp_remote_get($url);
-    $total_services = 0; // Inizializza il contatore
+    $total_services = 0;
 
     if (is_array($response) && !is_wp_error($response)) {
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
 
         if ($data) {
-            // Pulsante per confrontare categorie
             echo '<button id="confronta-categorie">Confronta categorie</button>';
             echo '<div id="categorie-output"></div>';
 
-            // Inizializza array per servizi in evidenza e non in evidenza
             $in_evidenza_services = [];
             $other_services = [];
 
             foreach ($data as $procedure) {
-                // Verifica se il termine di ricerca è presente nel nome del servizio
-                if (isset($_GET['search_term']) && stripos($procedure['nome'], $_GET['search_term']) === false) {
-                    continue; // Ignora questo servizio se il termine di ricerca non è presente
-                }
-
                 $name = $procedure['nome'];
                 $description = $procedure['descrizione_breve'];
                 $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                 $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
                 $url = $procedure['url'];
 
-                // Aggiungi il servizio all'array corretto
                 $service = [
                     'name' => $name,
                     'description' => $description,
@@ -193,18 +183,12 @@ function mostra_servizi() {
                     $other_services[] = $service;
                 }
 
-                // Incrementa il contatore ad ogni iterazione
                 $total_services++;
             }
-            
-            // Output del totale
-            echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
 
-            // Output dei servizi in evidenza
+            echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
             echo "<h4>Servizi in Evidenza</h4>";
             output_services($in_evidenza_services);
-
-            // Output degli altri servizi
             echo "<h4>Altri Servizi</h4>";
             output_services($other_services);
         }
@@ -212,7 +196,6 @@ function mostra_servizi() {
         echo "Non riesco a leggere i servizi aggiuntivi.";
     }
 
-    // Restituisci il totale dei servizi caricati
     return $total_services;
 }
 
@@ -231,7 +214,7 @@ function output_services($services) {
 
 // Funzione AJAX per confrontare le categorie
 function ajax_confronta_categorie() {
-    $url = dci_get_option('servizi_maggioli_url', 'servizi');
+    $url = 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures'; // Assicurati che questa sia l'URL corretta
     $response = wp_remote_get($url);
 
     if (is_array($response) && !is_wp_error($response)) {
@@ -247,7 +230,7 @@ function ajax_confronta_categorie() {
         echo "Non riesco a leggere i servizi aggiuntivi.";
     }
 
-    wp_die(); // Termina l'esecuzione dello script
+    wp_die();
 }
 add_action('wp_ajax_confronta_categorie', 'ajax_confronta_categorie');
 add_action('wp_ajax_nopriv_confronta_categorie', 'ajax_confronta_categorie');
@@ -278,8 +261,9 @@ function aggiungi_script_confronta_categorie() {
 }
 add_action('wp_footer', 'aggiungi_script_confronta_categorie');
 
-// Funzione per mostrare i servizi (inserisci questa funzione dove vuoi mostrare i servizi)
+// Mostra i servizi nella pagina desiderata (puoi chiamare questa funzione nel template corretto)
 mostra_servizi();
 ?>
+
 
 
