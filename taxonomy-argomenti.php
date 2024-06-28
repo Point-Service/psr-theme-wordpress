@@ -86,10 +86,8 @@ get_header();
     <?php 
 
     $posts = dci_get_posts_by_term('any','argomenti', $argomento->name);
-    
-    if($posts) {
-      $first_printed = false;
-    ?>
+     ?>
+  
     	<?php // get_template_part("template-parts/argomento/page-detail"); ?>
     	<?php // get_template_part("template-parts/argomento/novita-detail"); ?>
     	<?php // get_template_part("template-parts/argomento/amministrazione-detail"); ?>	    
@@ -105,9 +103,10 @@ get_header();
     	<?php get_template_part("template-parts/argomento/documenti-detail"); ?>
     	<?php get_template_part("template-parts/argomento/luoghi-detail"); ?>
     	<?php get_template_part("template-parts/argomento/siti-tematici-detail"); ?>
-    <?php
-    } else {
-    ?>
+
+
+
+
     <div class="bg-grey-card pt-40 pt-md-100 pb-50">
         <div class="container">
         	<div class="alert alert-info" role="alert">
