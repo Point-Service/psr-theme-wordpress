@@ -275,70 +275,79 @@ function dci_register_taxonomy_categorie_servizio() {
                     
                     // Mostra i servizi nella pagina desiderata (puoi chiamare questa funzione nel template corretto)
                     // Funzione per mostrare i servizi in un textarea scrollabile
-// Funzione per mostrare i servizi in un textarea scrollabile
 function mostra_servizi_with_textarea() {
     $url = 'https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures'; // Assicurati che questa sia l'URL corretta
     $response = wp_remote_get($url);
     $total_services = 0;
 
-    if (is_array($response) && !is_wp_error($response)) {
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
-
-        if ($data) {
-            // Recupero delle categorie remote
-            $categorie_remote = array();
-            foreach ($data as $procedure) {
-                if (isset($procedure['categoria'])) {
-                    if (is_array($procedure['categoria'])) {
-                        foreach ($procedure['categoria'] as $categoria) {
-                            $categorie_remote[] = $categoria;
-                        }
-                    } else {
-                        $categorie_remote[] = $procedure['categoria'];
-                    }
-                }
-            }
-
-            // Trova le categorie remote non presenti nell'array locale $my_categories
-            $categorie_non_presenti = array_diff($categorie_remote, $GLOBALS['my_categories']);
-
-            // Output delle categorie non presenti
-            if (!empty($categorie_non_presenti)) {
-                echo "<h4>Categorie non presenti nell'array locale:</h4>";
-                echo "<ul>";
-                foreach ($categorie_non_presenti as $categoria) {
-                    echo "<li>" . htmlspecialchars($categoria) . "</li>";
-                }
-                echo "</ul>";
-            } else {
-                echo "<p>Tutte le categorie sono presenti nell'array locale.</p>";
-            }
-
-            // Output dei servizi in un textarea scrollabile
-            ob_start();
-            echo "<textarea id='services-textarea' style='width: 100%; height: 300px;' readonly>";
-            echo "Servizi Aggiuntivi ( " . count($data) . " )\n\n";
-
-            foreach ($data as $procedure) {
-                $name = $procedure['nome'];
-                $description = $procedure['descrizione_breve'];
-                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-
-                echo "{$name}: {$description} ({$category})\n";
-            }
-
-            echo "</textarea>";
-            $textarea_content = ob_get_clean();
-
-            // Stampa il textarea
-            echo $textarea_content;
-        } else {
-            echo "Non riesco a leggere i servizi aggiuntivi.";
-        }
-    } else {
-        echo "Errore nel recupero dei dati dai servizi aggiuntivi.";
+    if (is_wp_error($response)) {
+        echo "Errore nella richiesta HTTP: " . $response->get_error_message();
+        return $total_services;
     }
+
+    $response_code = wp_remote_retrieve_response_code($response);
+    if ($response_code !== 200) {
+        echo "Errore nella risposta HTTP. Codice: " . $response_code;
+        return $total_services;
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        echo "Errore nella decodifica dei dati JSON.";
+        return $total_services;
+    }
+
+    // Inizializza l'array delle categorie remote
+    $categorie_remote = array();
+
+    // Recupero delle categorie remote
+    foreach ($data as $procedure) {
+        if (isset($procedure['categoria'])) {
+            if (is_array($procedure['categoria'])) {
+                foreach ($procedure['categoria'] as $categoria) {
+                    $categorie_remote[] = $categoria;
+                }
+            } else {
+                $categorie_remote[] = $procedure['categoria'];
+            }
+        }
+    }
+
+    // Trova le categorie remote non presenti nell'array locale $my_categories
+    $categorie_non_presenti = array_diff($categorie_remote, $GLOBALS['my_categories']);
+
+    // Output delle categorie non presenti
+    if (!empty($categorie_non_presenti)) {
+        echo "<h4>Categorie non presenti nell'array locale:</h4>";
+        echo "<ul>";
+        foreach ($categorie_non_presenti as $categoria) {
+            echo "<li>" . htmlspecialchars($categoria) . "</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "<p>Tutte le categorie sono presenti nell'array locale.</p>";
+    }
+
+    // Output dei servizi in un textarea scrollabile
+    ob_start();
+    echo "<textarea id='services-textarea' style='width: 100%; height: 300px;' readonly>";
+    echo "Servizi Aggiuntivi ( " . count($data) . " )\n\n";
+
+    foreach ($data as $procedure) {
+        $name = $procedure['nome'];
+        $description = $procedure['descrizione_breve'];
+        $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+
+        echo "{$name}: {$description} ({$category})\n";
+    }
+
+    echo "</textarea>";
+    $textarea_content = ob_get_clean();
+
+    // Stampa il textarea
+    echo $textarea_content;
 
     return $total_services;
 }
