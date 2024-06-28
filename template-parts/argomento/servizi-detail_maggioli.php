@@ -39,7 +39,7 @@ $argomento_name = $argomento->name;
                                         if ($search_term && stripos($procedure['nome'], $search_term) === false) {
                                             continue; // Ignora questo servizio se il termine di ricerca non è presente
                                         }
-                                        echo 'hh'
+                                        echo 'hh';
                                         $name = $procedure['nome'];
                                         $description = $procedure['descrizione_breve'];
                                         $argomento = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
