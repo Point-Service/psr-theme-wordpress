@@ -42,7 +42,7 @@ function dci_register_taxonomy_categorie_servizio() {
         add_action( 'admin_footer', 'add_empty_categories_button' );
     }
 }
-<div id="remote-categories-list"></div>
+
 // Funzione per aggiungere i pulsanti "Confronta categorie" e "Elimina tutte le categorie"
 function add_empty_categories_button() {
     ?>
