@@ -86,12 +86,14 @@ get_header();
                         $hide_categories = true;
                         get_template_part("template-parts/servizio/card");    
                     } ?>
+
                      <?php     
                         if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) >5 ) { ?>
                             <?php get_template_part("template-parts/servizio/card_maggioli"); ?>
-                        <?php } ?>                    
-                </div>
-                            <?php get_template_part("template-parts/search/more-results"); ?>
+                     <?php } ?>    
+                    
+                 </div>
+                       <?php get_template_part("template-parts/search/more-results"); ?>
               </div>
               
               <?php if ( is_array($amministrazione) && count($amministrazione) ) { ?>
