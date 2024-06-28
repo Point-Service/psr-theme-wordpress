@@ -41,6 +41,7 @@ $argomento_name = $argomento->name;
                                 $name = $procedure['nome'];
                                 $description = $procedure['descrizione_breve'];
                                 $argomento = is_array($procedure['argomenti']) ? implode(', ', $procedure['argomenti']) : $procedure['argomenti'];
+                                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                                 $url = $procedure['url'];
 
                                 // Verifica se l'argomento contiene il segmento dell'URL, confrontando in modo case-insensitive
@@ -52,7 +53,7 @@ $argomento_name = $argomento->name;
                                 $filtered_services[] = [
                                     'name' => $name,
                                     'description' => $description,
-                                    'servizi' => $argomento,
+                                    'category' => $category,
                                     'url' => $url
                                 ];
 
