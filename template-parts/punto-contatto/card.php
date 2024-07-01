@@ -32,7 +32,7 @@ $other_contacts = array(
                 } 
                 echo '<p class="mt-3"></p>';
             } ?>
-            <?php if ( is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
+            <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                 foreach ($full_contatto['telefono'] as $value) {
                     echo '<p><svg class="icon">
                             <use xlink:href="#it-telephone"></use>
@@ -40,7 +40,7 @@ $other_contacts = array(
                 }
                     echo '<p class="mt-3"></p>';
             } ?>
-            <?php if ( is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
+            <?php if (array_key_exists('url', $full_contatto) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                 foreach ($full_contatto['url'] as $value) { ?>
                     <p><svg class="icon">
                             <use xlink:href="#it-link"></use>
@@ -55,7 +55,7 @@ $other_contacts = array(
                     </p>
                <?php }
             } ?>
-            <?php if ( is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
+            <?php if (array_key_exists('email', $full_contatto) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                 foreach ($full_contatto['email'] as $value) { ?>
                     <p> <svg class="icon">
                             <use xlink:href="#it-mail"></use>
@@ -70,7 +70,7 @@ $other_contacts = array(
                     </p>
                <?php }
             } ?>
-            <?php if ( is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
+            <?php if (array_key_exists('pec', $full_contatto) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
                 foreach ($full_contatto['pec'] as $value) { ?>
                     <p><svg class="icon">
                             <use xlink:href="#it-mail"></use>
@@ -87,7 +87,7 @@ $other_contacts = array(
             } ?>
             
             <?php foreach ($other_contacts as $type) {
-                if ( is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
+                if (array_key_exists($type, $full_contatto) &&  is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
                     foreach ($full_contatto[$type] as $value) {
                         echo '<p><svg class="icon">
                             <use xlink:href="#it-list"></use>
