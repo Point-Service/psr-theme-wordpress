@@ -93,38 +93,33 @@
                             <?php }
                         } ?>
 
-				
-                    <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
-                        foreach ($full_contatto['email'] as $value) { ?>
-                            <p><div class="field--name-field-ita-mail">                                    
-                                    <svg class="icon">
-                            <use xlink:href="#it-mail"></use>
-                              </svg> <a  
-                                target="_blank" 
-                                aria-label="invia un'email a <?php echo $value; ?>"
-                                title="invia un'email a <?php echo $value; ?>" 
-                                href="mailto:<?php echo $value; ?>">
-                              <?php echo $value; ?>
-                                </a>
-                            </div></p>
-                    <?php }
-                    } ?>
-                    <?php if ( isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
-                        foreach ($full_contatto['pec'] as $value) { ?>
-                            <p><div class="field--name-field-ita-mail"> 
-				 <svg class="icon">
-	                            <use xlink:href="#it-mail"></use>
-	                        </svg> 			   
-                                <a  
-                                target="_blank" 
-                                aria-label="invia un'email a <?php echo $value; ?>"
-				title="invia un'email a <?php echo $value; ?>" 
-                                href="mailto:<?php echo $value; ?>">
-                                  <?php echo ''.$value.''; ?>                                                                   
-                                </a>
-                            </div></p>
-                    <?php }
-                    } ?>
+                       <?php if (array_key_exists('email', $full_contatto) && is_array($full_contatto['email']) && count($full_contatto['email'])) {
+                                foreach ($full_contatto['email'] as $value) { ?>
+                                    <p>
+                                        <svg class="icon">
+		                            <use xlink:href="#it-mail"></use>
+		                        </svg> 
+                                        <a target="_blank" aria-label="invia un'email <?php echo $value; ?>" title="invia un'email a  <?php echo $value; ?>" href="mailto:<?php echo $value; ?>">
+                                             <?php echo $value; ?>
+                                        </a>
+                                    </p>
+                            <?php }
+                         } ?>	
+	
+                       <?php if (array_key_exists('pec', $full_contatto) && is_array($full_contatto['pec']) && count($full_contatto['pec'])) {
+                                foreach ($full_contatto['pec'] as $value) { ?>
+                                    <p>
+                                        <svg class="icon">
+		                            <use xlink:href="#it-mail"></use>
+		                        </svg> 
+                                        <a target="_blank" aria-label="invia una pec a  <?php echo $value; ?>" title="invia una pec a  <?php echo $value; ?>" href="mailto:<?php echo $value; ?>">
+                                             <?php echo $value; ?>
+                                        </a>
+                                    </p>
+                            <?php }
+                         } ?>	
+	
+
 
                     
                     <?php foreach ($other_contacts as $type) {
