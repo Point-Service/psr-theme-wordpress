@@ -8,7 +8,6 @@ $voci = dci_get_meta('voci', $prefix, $pc_id);
 
 $other_contacts = array(
     'linkedin',
-    'pec',
     'skype',
     'telegram',
     'twitter',
