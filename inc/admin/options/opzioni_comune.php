@@ -211,5 +211,6 @@ function dci_register_comune_options(){
         ],
         'default' => ''
     ) );
+    
 }
-}
+
