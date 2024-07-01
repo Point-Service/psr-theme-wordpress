@@ -1,12 +1,19 @@
 <?php 
-    global $post;
+global $post;
 
-        $description = dci_get_meta('descrizione_breve');
-        $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
-        $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
-        $img = dci_get_meta('immagine');
-        $tipo = get_the_terms($post->term_id, 'tipi_notizia')[0];
-        if ($img) {
+$description = dci_get_meta('descrizione_breve');
+$arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
+$monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+$img = dci_get_meta('immagine');
+$tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
+
+if ($tipo_terms && !is_wp_error($tipo_terms)) {
+    $tipo = $tipo_terms[0];
+} else {
+    $tipo = null;
+}
+
+if ($img) {
 ?>
     <div class="col-12 col-md-6 col-xl-4">
         <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
@@ -18,7 +25,9 @@
                 <div class="col-12 order-1 order-md-2">
                 <div class="card-body">
                     <div class="category-top cmp-list-card-img__body">
-                    <span class="category cmp-list-card-img__body-heading-title underline"><?php echo strtoupper($tipo->name); ?></span>
+                    <?php if ($tipo): ?>
+                        <span class="category cmp-list-card-img__body-heading-title underline"><?php echo strtoupper($tipo->name); ?></span>
+                    <?php endif; ?>
                     <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                     </div>
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
@@ -33,7 +42,7 @@
             </div>
         </div>
     </div>
-    <?php } else { ?>
+<?php } else { ?>
     <div class="col-md-6 col-xl-4">
         <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
             <div class="card no-after rounded">
@@ -41,9 +50,11 @@
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
                             <div class="category-top cmp-list-card-img__body">
-                                <span class="category cmp-list-card-img__body-heading-title underline">
-                                    <?php echo strtoupper($tipo->name); ?>
-                                </span>
+                                <?php if ($tipo): ?>
+                                    <span class="category cmp-list-card-img__body-heading-title underline">
+                                        <?php echo strtoupper($tipo->name); ?>
+                                    </span>
+                                <?php endif; ?>
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                             </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
