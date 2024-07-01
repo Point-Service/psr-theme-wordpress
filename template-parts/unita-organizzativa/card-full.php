@@ -70,13 +70,19 @@
                                 }
                                 echo '</div>';
                             } ?>                         
-                    <?php if ( isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
-                        foreach ($full_contatto['telefono'] as $value) {
-                            echo '<p><svg class="icon">
-                            <use xlink:href="#it-telephone"></use>
-                        </svg> '.$value.'</p>';
-                        }
-                    } ?>
+                            <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])) {
+                                foreach ($full_contatto['telefono'] as $value) {
+                            ?>
+                                    <p>
+                                        Telefono:
+                                        <a target="_blank" aria-label="contatta telefonicamente tramite il numero <?php echo $value; ?>" title="chiama <?php echo $value; ?>" href="tel:<?php echo $value; ?>">
+                                            <?php echo $value; ?>
+                                        </a>
+                                        <?php echo $value; ?>
+                                    </p>
+                            <?php
+                                }
+                            } ?>
                     <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                         foreach ($full_contatto['url'] as $value) { ?>
                             <p>
@@ -182,13 +188,19 @@
                                 }
                                 echo '</div>';
                             } ?>                            
-                    <?php if ( isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
-                        foreach ($full_contatto['telefono'] as $value) {
-                            echo '<p><svg class="icon">
-                            <use xlink:href="#it-telephone"></use>
-                        </svg> '.$value.'</p>';
-                        }
-                    } ?>
+                            <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])) {
+                                foreach ($full_contatto['telefono'] as $value) {
+                            ?>
+                                    <p>
+                                        Telefono:
+                                        <a target="_blank" aria-label="contatta telefonicamente tramite il numero <?php echo $value; ?>" title="chiama <?php echo $value; ?>" href="tel:<?php echo $value; ?>">
+                                            <?php echo $value; ?>
+                                        </a>
+                                        <?php echo $value; ?>
+                                    </p>
+                            <?php
+                                }
+                            } ?>
                     <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                         foreach ($full_contatto['url'] as $value) { ?>
                             <p>
