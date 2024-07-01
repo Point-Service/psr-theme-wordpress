@@ -19,6 +19,11 @@
         'twitter',
         'whatsapp'
     );
+
+$card_class = !$with_border ? "" : ("card-wrapper rounded shadow-sm h-auto pb-0 ".($no_vertical_margin?"":"my-5"));
+$card_content_class = !$with_border ? ("card card-teaser shadow rounded ".($no_vertical_margin?"":"mt-3")) : "card card-teaser card-teaser-info rounded shadow-sm p-4";
+$card_body_class = !$with_border ? "card-body" : "card-body pe-3";
+$card_link_class = !$with_border ? "text-decoration-none" : "";
     
     if(!$with_border) {
 ?>
