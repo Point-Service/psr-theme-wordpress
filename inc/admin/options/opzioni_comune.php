@@ -146,6 +146,10 @@ function dci_register_comune_options(){
         'desc' => __( 'Utilizzare questo campo per specificare email principale del sito'),
         'type' => 'text'
     ));
+
+
+
+
     
   $header_options->add_field( array(
         'id'    => $prefix . 'favicon',
@@ -165,8 +169,6 @@ function dci_register_comune_options(){
         'type' => 'checkbox',
     ) );
 
-    add_custom_file_field_to_box($header_options, $CSS_NAME_COMUNI, 'comuni_css_file', 'use_comuni_css');
-    
     $header_options->add_field( array(
         'id' => $prefix . 'home_istruzioni_barra_chiara_scura',
         'name'        => __( 'Tema barra di navigazione', 'design_comuni_italia' ),
