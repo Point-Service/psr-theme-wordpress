@@ -239,4 +239,5 @@
     </div>
 <?php } 
 $with_border = false;
+$no_vertical_margin = false;
 ?>
