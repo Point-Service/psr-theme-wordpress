@@ -19,17 +19,16 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
      </div>
     <div>
         <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-            <?php
+		<?php
             if(is_array($argomenti_evidenza)) {
-                foreach ($argomenti_evidenza as $key => $argomento_full) {
-                    $count = $key;
-                    if ($argomento_full){
-                        if($argomento_full['argomento_'.$count.'_argomento']){
+                    foreach ($argomenti_evidenza as $key => $argomento_full) {
+                        $count = $key;
+                        if ($argomento_full && isset($argomento_full['argomento_'.$count.'_argomento'])) {
                             get_template_part("template-parts/home/scheda-argomento");
                         }
                     }
                 } 
-            }?>
+        } ?>
         </div>
     </div>
     <?php } 
