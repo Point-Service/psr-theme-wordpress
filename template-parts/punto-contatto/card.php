@@ -33,13 +33,22 @@ $other_contacts = array(
                 } 
                 echo '</div>';
             } ?>
-            <?php if ( is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
-                foreach ($full_contatto['telefono'] as $value) {
-                    echo '<p><svg class="icon">
-                            <use xlink:href="#it-telephone"></use>
-                        </svg>'.$value.'</p>';
+            <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
+                foreach ($full_contatto['telefono'] as $dati) {
+                    ?>
+                    <p>
+                        Telefono: 
+                        <a 
+                        target="_blank" 
+                        aria-label="contatta telefonicamente tramite il numero <?php echo $dati['valore']; ?>" 
+                        title="chiama <?php echo $dati['valore']; ?>" 
+                        href="tel:<?php echo $dati['valore']; ?>">
+                            <?php echo $dati['valore']; ?>
+                        </a>
+                        <?php echo $dati['dettagli']; ?>
+                    </p>
+                    <?php
                 }
-                    echo '<p class="mt-3"></p>';
             } ?>
             <?php if ( is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                 foreach ($full_contatto['url'] as $value) { ?>
