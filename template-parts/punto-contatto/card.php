@@ -51,13 +51,12 @@ $other_contacts = array(
             } ?>
             <?php if (array_key_exists('url', $full_contatto) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                 foreach ($full_contatto['url'] as $value) { ?>
-                    <p><svg class="icon">
-                            <use xlink:href="#it-link"></use>
-                        </svg>
+                    <p>
+                        Collegamento web:
                         <a 
                         target="_blank" 
-                        aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
-                        title="vai sul sito <?php echo $value; ?>" 
+                        aria-label="scopri di pi첫 su   <?php echo $value; ?> - link esterno - apertura nuova scheda" 
+                        title="vai sul sito   <?php echo $value; ?>" 
                         href="<?php echo $value; ?>">
                             <?php echo $value; ?>
                         </a>
