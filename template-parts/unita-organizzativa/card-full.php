@@ -155,6 +155,7 @@
                                 <p>
                                     <a target="_blank" 
                                     aria-label="Apri la mappa  <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>"
+				    title="Indirizzo <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>"
                                     href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>">
 					<svg class="icon" viewBox="0 0 24 24"><g>
 					<g>
