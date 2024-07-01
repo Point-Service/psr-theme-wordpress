@@ -24,7 +24,7 @@ $other_contacts = array(
             <?php echo $contatto->post_title; ?>
         </h5>
         <div class="card-text">
-            <?php if ( is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
+           <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
                 foreach ($full_contatto['indirizzo'] as $value) {
                     echo '<p><svg class="icon">
                             <use xlink:href="it-map-marker-circle"></use>
