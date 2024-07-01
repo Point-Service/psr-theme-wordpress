@@ -40,9 +40,9 @@ $other_contacts = array(
                         <a 
                         target="_blank" 
                         aria-label="contatta telefonicamente tramite il numero <?php echo $dati['valore']; ?>" 
-                        title="chiama <?php echo $dati['valore']; ?>" 
-                        href="tel:<?php echo $dati['valore']; ?>">
-                            <?php echo $dati['valore']; ?>
+                        title="chiama <?php echo $dati['value']; ?>" 
+                        href="tel:<?php echo $dati['value']; ?>">
+                            <?php echo $dati['value']; ?>
                         </a>
                         <?php echo $dati['dettagli']; ?>
                     </p>
