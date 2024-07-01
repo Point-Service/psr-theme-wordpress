@@ -599,6 +599,25 @@ get_header();
                                         <?php get_template_part('template-parts/single/page_bottom',"simple"); ?>
                                     </div>
                                 </div>
+
+
+                              <div class="col-12 mb-30">
+                                        <span class="text-paragraph-small">Categorie:</span>
+                                        <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
+                                            <?php foreach ( $categorie as $item ) { ?>
+                                                <li>
+                                                    <a href="<?php echo get_term_link($item); ?>" class="chip chip-simple" data-element="service-topic">
+                                                        <span class="chip-label">
+                                                            <?php echo $item->name; ?>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            <?php } ?>
+                                        </ul>
+                                        <?php get_template_part('template-parts/single/page_bottom',"simple"); ?>
+                        </div>                                 
+
+				    
                             </section>
                         </div>
                     </div>
