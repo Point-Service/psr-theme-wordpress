@@ -28,11 +28,13 @@
         <use xlink:href="#it-pa"></use>
     </svg>
     <div class="card-body">
-        <h3 class="card-title h5">
+	    
+        <h5 class="card-title">
             <a class="text-decoration-none" href="<?php echo get_permalink($ufficio->ID); ?>" data-element="service-area">
                 <?php echo $ufficio->post_title; ?>
             </a>
         </h5>
+	    
         <div class="card-text">
             
                     <?php if ($sede_principale) { ?>
@@ -75,6 +77,7 @@
                                 <a 
                                 target="_blank" 
                                 aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
+				title="vai sul sito <?php echo $value; ?>" 
                                 href="<?php echo $value; ?>">
                                  <?php echo $value; ?>
                                 </a>
@@ -89,6 +92,7 @@
                               </svg> <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
+                                title="invia un'email a <?php echo $value; ?>" 
                                 href="mailto:<?php echo $value; ?>">
                               <?php echo $value; ?>
                                 </a>
@@ -104,6 +108,7 @@
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
+				title="invia un'email a <?php echo $value; ?>" 
                                 href="mailto:<?php echo $value; ?>">
                                   <?php echo ''.$value.''; ?>                                                                   
                                 </a>
