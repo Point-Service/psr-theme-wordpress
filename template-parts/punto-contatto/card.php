@@ -63,11 +63,10 @@ $other_contacts = array(
                     </p>
                <?php }
             } ?>
-            <?php if (array_key_exists('email', $full_contatto) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
+          <?php if (array_key_exists('email', $full_contatto) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                 foreach ($full_contatto['email'] as $value) { ?>
-                    <p> <svg class="icon">
-                            <use xlink:href="#it-mail"></use>
-                        </svg>
+                    <p>
+                        Email:
                         <a  
                         target="_blank" 
                         aria-label="invia un'email a <?php echo $value; ?>"
@@ -93,8 +92,7 @@ $other_contacts = array(
                     </p>
                <?php }
             } ?>
-            
-            <?php foreach ($other_contacts as $type) {
+        <?php foreach ($other_contacts as $type) {
                 if (array_key_exists($type, $full_contatto) &&  is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
                     foreach ($full_contatto[$type] as $value) {
                         echo '<p><svg class="icon">
@@ -103,6 +101,7 @@ $other_contacts = array(
                     }
                 } 
             } ?>
+  
         </div>
     </div>
 </div>
