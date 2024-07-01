@@ -34,7 +34,8 @@ $other_contacts = array(
             } ?>
             <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                 foreach ($full_contatto['telefono'] as $value) {
-                   <p>
+                   ?>
+                    <p>
                         Telefono: 
                         <a 
                         target="_blank" 
@@ -45,6 +46,8 @@ $other_contacts = array(
                         </a>
                         <?php echo $dati['dettagli']; ?>
                     </p>
+                    <?php
+                }
             } ?>
             <?php if (array_key_exists('url', $full_contatto) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                 foreach ($full_contatto['url'] as $value) { ?>
