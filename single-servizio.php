@@ -527,11 +527,8 @@ get_header();
                                     <span class="">Prenota appuntamento</span>
                                 </button>
                                 <?php } ?>
-                                  <?php foreach ($canale_fisico_luoghi_id as $luogo_id) {
-                                    $luogo = get_post($luogo_id);
-                                    get_template_part("template-parts/luogo/card-title");
-                                  } ?>
-
+					    
+                         
                             </section>
                             <?php } ?>
                             <?php if ( $condizioni_servizio ) {
