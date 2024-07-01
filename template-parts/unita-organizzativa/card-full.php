@@ -83,19 +83,17 @@
                             <?php
                                 }
                             } ?>
-                    <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
-                        foreach ($full_contatto['url'] as $value) { ?>
-                            <p>
-                                <a 
-                                target="_blank" 
-                                aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
-				title="vai sul sito <?php echo $value; ?>" 
-                                href="<?php echo $value; ?>">
-                                 <?php echo $value; ?>
-                                </a>
-                            </p>
-                    <?php }
-                    } ?>
+	               <?php if (array_key_exists('url', $full_contatto) && is_array($full_contatto['url']) && count($full_contatto['url'])) {
+                                foreach ($full_contatto['url'] as $value) { ?>
+                                    <p>
+                                        <a target="_blank" aria-label="scopri di pi첫 su <?php echo $value; ?> - link esterno - apertura nuova scheda" title="vai sul sito <?php echo $value; ?>" href="<?php echo $value; ?>">
+                                           <?php echo $value; ?>
+                                        </a>
+                                    </p>
+                            <?php }
+                        } ?>
+
+				
                     <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                         foreach ($full_contatto['email'] as $value) { ?>
                             <p><div class="field--name-field-ita-mail">                                    
