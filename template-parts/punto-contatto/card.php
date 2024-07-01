@@ -39,7 +39,7 @@ $other_contacts = array(
                         Telefono: 
                         <a 
                         target="_blank" 
-                        aria-label="contatta telefonicamente tramite il numero <?php echo $dati['valore']; ?>" 
+                        aria-label="contatta telefonicamente tramite il numero <?php echo $dati['value']; ?>" 
                         title="chiama <?php echo $dati['value']; ?>" 
                         href="tel:<?php echo $dati['value']; ?>">
                             <?php echo $dati['value']; ?>
