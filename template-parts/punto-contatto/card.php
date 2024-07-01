@@ -34,11 +34,17 @@ $other_contacts = array(
             } ?>
             <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                 foreach ($full_contatto['telefono'] as $value) {
-                    echo '<p><svg class="icon">
-                            <use xlink:href="#it-telephone"></use>
-                        </svg>'.$value.'</p>';
-                }
-                    echo '<p class="mt-3"></p>';
+                   <p>
+                        Telefono: 
+                        <a 
+                        target="_blank" 
+                        aria-label="contatta telefonicamente tramite il numero <?php echo $dati['valore']; ?>" 
+                        title="chiama <?php echo $dati['valore']; ?>" 
+                        href="tel:<?php echo $dati['valore']; ?>">
+                            <?php echo $dati['valore']; ?>
+                        </a>
+                        <?php echo $dati['dettagli']; ?>
+                    </p>
             } ?>
             <?php if (array_key_exists('url', $full_contatto) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
                 foreach ($full_contatto['url'] as $value) { ?>
