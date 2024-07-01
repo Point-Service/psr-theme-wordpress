@@ -1,10 +1,11 @@
 <?php
-global $servizio, $hide_categorie, $post;
+global $servizio, $hide_categories;
 
 $prefix = '_dci_servizio_';
 $categorie = get_the_terms($servizio->ID, 'categorie_servizio');
 $descrizione_breve = dci_get_meta('descrizione_breve', $prefix, $servizio->ID);
-if($post->post_status == "publish") {
+
+if($servizio->post_status == "publish") {
     ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
             <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
@@ -25,12 +26,12 @@ if($post->post_status == "publish") {
                 </div>
                 <?php } ?>
                 <div class="card-body p-0 my-2">
-                    <h3 class="green-title-big t-primary mb-8">
-                        <a class="text-decoration-none" href="<?php echo get_permalink($servizio->ID); ?>" data-element="service-link"><?php echo $servizio->post_title; ?></a>
-                    </h3>
-                    <p class="text-paragraph">
-                        <?php echo $descrizione_breve; ?>
-                    </p>
+                <h3 class="green-title-big t-primary mb-8">
+                    <a class="text-decoration-none" href="<?php echo get_permalink($servizio->ID); ?>" data-element="service-link"><?php echo $servizio->post_title; ?></a>
+                </h3>
+                <p class="text-paragraph">
+                    <?php echo $descrizione_breve; ?>
+                </p>
                 </div>
             </div>
         </div>
