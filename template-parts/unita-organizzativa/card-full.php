@@ -43,7 +43,8 @@
                                 <p>
                                     <a target="_blank" 
                                     aria-label="Apri la mappa  <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>"
-                                    href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>">
+				    title="Indirizzo <?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>"
+                                    href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?>">						 
 					<svg class="icon" viewBox="0 0 24 24"><g>
 					<g>
 						<path d="M17.7,5.3C16,2.2,12,1.1,8.9,2.8s-4.3,5.7-2.5,8.8L12,22l5.7-10.4c0.5-1,0.8-2,0.8-3.1S18.2,6.3,17.7,5.3z M16.8,11.1
