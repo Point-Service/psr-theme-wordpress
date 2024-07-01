@@ -171,12 +171,17 @@
                     <?php } ?>       
                     <?php foreach ($contatti as $full_contatto) { ?>
                         <div class="card-text mb-3">
-
-                    <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
-                        foreach ($full_contatto['indirizzo'] as $value) {
-                            echo '<p>'.$value.'</p>';
-                        } 
-                    } ?>                            
+                            <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])) {
+                                echo '<div class="mb-3">';
+                                foreach ($full_contatto['indirizzo'] as $value) {
+                                    echo '<p>' .$value;
+                                    if ($value) {
+                                        echo $value;
+                                    }
+                                    echo '</p>';
+                                }
+                                echo '</div>';
+                            } ?>                            
                     <?php if ( isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                         foreach ($full_contatto['telefono'] as $value) {
                             echo '<p><svg class="icon">
