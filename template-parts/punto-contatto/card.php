@@ -26,7 +26,7 @@ $other_contacts = array(
                 echo '<div class="mb-3">';
                 foreach ($full_contatto['indirizzo'] as $dati) {
                     echo '<p>'.$dati['valore'];
-                    if($dati['dettagli']) { echo $dati['dettagli']; }
+                    if($dati['valore']) { echo $dati['valore']; }
                     echo '</p>';
                 } 
                 echo '</div>';
@@ -43,7 +43,7 @@ $other_contacts = array(
                         href="tel:<?php echo $dati['valore']; ?>">
                             <?php echo $dati['valore']; ?>
                         </a>
-                        <?php echo $dati['dettagli']; ?>
+                        <?php echo $dati['valore']; ?>
                     </p>
                     <?php
                 }
@@ -59,7 +59,7 @@ $other_contacts = array(
                         href="<?php echo $dati['valore']; ?>">
                             <?php echo $dati['valore']; ?>
                         </a>
-                        <?php echo $dati['dettagli']; ?>
+                        <?php echo $dati['valore']; ?>
                     </p>
                <?php }
             } ?>
@@ -74,12 +74,20 @@ $other_contacts = array(
                         href="mailto:<?php echo $dati['valore']; ?>">
                             <?php echo $dati['valore']; ?>
                         </a>
-                        <?php echo $dati['dettagli']; ?>
+                        <?php echo $dati['valore']; ?>
                     </p>
                <?php }
             } ?>
 
-
+            <?php foreach ($other_contacts as $type) {
+                if (array_key_exists($type, $full_contatto) &&  is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
+                    foreach ($full_contatto[$type] as $value) {
+                        echo '<p><svg class="icon">
+                            <use xlink:href="#it-list"></use>
+                            </svg>'.$type.': '.$value.'</p>';
+                    }
+                } 
+            } ?>
 
 
 
