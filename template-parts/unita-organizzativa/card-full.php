@@ -184,6 +184,7 @@
                                 <a 
                                 target="_blank" 
                                 aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
+				title="invia un'email a <?php echo $value; ?>" 
                                 href="<?php echo $value; ?>">
                                  <?php echo $value; ?>
                                 </a>
@@ -198,6 +199,7 @@
                               </svg> <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
+				title="invia un'email a <?php echo $value; ?>" 
                                 href="mailto:<?php echo $value; ?>">
                               <?php echo $value; ?>
                                 </a>
@@ -213,6 +215,7 @@
                                 <a  
                                 target="_blank" 
                                 aria-label="invia un'email a <?php echo $value; ?>"
+				title="invia un'email a <?php echo $value; ?>" 
                                 href="mailto:<?php echo $value; ?>">
                                   <?php echo ''.$value.''; ?>                                                                   
                                 </a>
