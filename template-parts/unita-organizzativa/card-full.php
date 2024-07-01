@@ -78,7 +78,6 @@
                                         <a target="_blank" aria-label="contatta telefonicamente tramite il numero <?php echo $value; ?>" title="chiama <?php echo $value; ?>" href="tel:<?php echo $value; ?>">
                                             <?php echo $value; ?>
                                         </a>
-                                        <?php echo $value; ?>
                                     </p>
                             <?php
                                 }
@@ -196,7 +195,6 @@
                                         <a target="_blank" aria-label="contatta telefonicamente tramite il numero <?php echo $value; ?>" title="chiama <?php echo $value; ?>" href="tel:<?php echo $value; ?>">
                                             <?php echo $value; ?>
                                         </a>
-                                        <?php echo $value; ?>
                                     </p>
                             <?php
                                 }
