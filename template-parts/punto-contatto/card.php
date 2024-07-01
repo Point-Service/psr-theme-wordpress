@@ -28,7 +28,7 @@ $other_contacts = array(
                 echo '<div class="mb-3">';
                 foreach ($full_contatto['indirizzo'] as $value) {
                     echo '<p>'.$value;;
-                    if($value; ) { echo $value; }
+                    if($value) { echo $value; }
                     echo '</p>';
                 } 
                 echo '</div>';
