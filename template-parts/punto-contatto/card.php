@@ -44,7 +44,6 @@ $other_contacts = array(
                         href="tel:<?php echo $value; ?>">
                             <?php echo $value; ?>
                         </a>
-                       <?php echo $value; ?>
                     </p>
                     <?php
                 }
