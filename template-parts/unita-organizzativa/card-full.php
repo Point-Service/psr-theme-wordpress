@@ -73,8 +73,9 @@
                             <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])) {
                                 foreach ($full_contatto['telefono'] as $value) {
                             ?>
-                                    <p>
-                                        Telefono:
+			             <p><svg class="icon">
+			               <use xlink:href="#it-telephone"></use>
+			              </svg>
                                         <a target="_blank" aria-label="contatta telefonicamente tramite il numero <?php echo $value; ?>" title="chiama <?php echo $value; ?>" href="tel:<?php echo $value; ?>">
                                             <?php echo $value; ?>
                                         </a>
@@ -190,8 +191,9 @@
                             <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])) {
                                 foreach ($full_contatto['telefono'] as $value) {
                             ?>
-                                    <p>
-                                        Telefono:
+			             <p><svg class="icon">
+			               <use xlink:href="#it-telephone"></use>
+			              </svg>
                                         <a target="_blank" aria-label="contatta telefonicamente tramite il numero <?php echo $value; ?>" title="chiama <?php echo $value; ?>" href="tel:<?php echo $value; ?>">
                                             <?php echo $value; ?>
                                         </a>
