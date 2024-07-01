@@ -24,13 +24,14 @@ $other_contacts = array(
             <?php echo $contatto->post_title; ?>
         </h5>
         <div class="card-text">
-           <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
+            <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
+                echo '<div class="mb-3">';
                 foreach ($full_contatto['indirizzo'] as $value) {
-                    echo '<p><svg class="icon">
-                            <use xlink:href="it-map-marker-circle"></use>
-                          </svg>'.$value.'</p>';
+                    echo '<p>'.$value;;
+                    if($value; ) { echo $value; }
+                    echo '</p>';
                 } 
-                echo '<p class="mt-3"></p>';
+                echo '</div>';
             } ?>
             <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
                 foreach ($full_contatto['telefono'] as $value) {
