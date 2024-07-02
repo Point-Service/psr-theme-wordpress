@@ -164,7 +164,7 @@ function dci_add_persone_metaboxes() {
 	$cmb_user->add_field( array(
         'id' => $prefix . 'organizzazioni',
         'name'    => __( 'Organizzazione *' ),
-        'desc' => __( 'Le organizzazioni di cui fa parte (es. Consiglio Comunale; es. Sistemi informativi)' , 'design_comuni_italia' ),
+        'desc' => __( 'Le organizzazioni di cui fa parte (es. Consiglio Comunale; es. Sistemi informativi). Le organizzazioni in cui la persona ricopre un incarico vengono mostrate automaticamente in base alle informazioni degli incarichi.' , 'design_comuni_italia' ),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('unita_organizzativa'),
 		'attributes'    => array(
