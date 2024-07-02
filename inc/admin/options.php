@@ -40,7 +40,7 @@ function dci_register_main_options_metabox() {
 
     dci_register_ricerca_options();
 	
-    dci_register_bootstrap_italia_options();
+
 
 }
 add_action( 'cmb2_admin_init', 'dci_register_main_options_metabox' );
