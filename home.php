@@ -43,8 +43,7 @@ get_header();
             ?>
         </section>
 	  <?php if ($mostra_gallery) {
-      	    $sfondo_grigio = false;
-      	  get_template_part("template-parts/vivere-comune/galleria-foto");
+	  get_template_part("template-parts/vivere-comune/galleria-foto");
   	  } ?>
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
