@@ -8,7 +8,7 @@
     <span class="d-none d-lg-block">Accedi all'area personale</span>
   </a>
 <?php } else { ?>
-   <a class="btn btn-primary btn-icon btn-full" title="Accedi all'area personale" href="<?php echo get_admin_url(); ?>" data-element="personal-area-login">
+   <a class="btn btn-primary btn-icon btn-full" title="Accedi all'area personale" href="?#area_personale_admin" data-element="personal-area-login">
     <span class="rounded-icon" aria-hidden="true">
         <svg class="icon icon-primary">
             <use xlink:href="#it-user"></use>
