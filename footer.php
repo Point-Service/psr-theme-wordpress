@@ -228,6 +228,7 @@
                                                       <?php } ?>
 		    
 						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
+			                        <div id="area_personale_admin"></div>
 						<a href="<?php echo get_admin_url(); ?>">Area Riservata</a>
 						
 			                      
