@@ -43,12 +43,12 @@ function dci_register_comune_options(){
         'type' => 'text'
     ));   
     
-        $header_options->add_field( array(
-        'id' => $prefix . 'nascondi_pulsante_login',
-        'name' => 'Nascondi il pulsante Area Riservata',
-        'desc' => 'Nascondi il pulsante Area Riservata dalla barra superiore del sito. Sarà necessario aprire manualmente <a target="_blank" href="'.wp_login_url().'">'. wp_login_url() .'</a> per effettuare il login.',
-        'type' => 'checkbox',
-    ) );
+    $header_options->add_field(array(
+            'id' => $prefix . 'nascondi_pulsante_login',
+            'name' => 'Nascondi il pulsante Area Riservata',
+            'desc' => 'Nascondi il pulsante Area Riservata dalla barra superiore del sito. Sarà necessario aprire manualmente <a target="_blank" href="' . wp_login_url() . '">' . wp_login_url() . '</a> per effettuare il login.',
+            'type' => 'checkbox',
+        ));
 
 
     $header_options->add_field( array(
