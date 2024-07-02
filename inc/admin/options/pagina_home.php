@@ -182,7 +182,7 @@ $home_options->add_field( array(
 $home_options->add_field( array(
         'id' => $prefix . 'mostra_gallery',
         'name' => 'Mostra gallery',
-        'desc' => 'Mostra la galleria di foto (da impostare in <i>Configurazione &gt; Vivere l\'ente</i>)',
+        'desc' => 'Mostra la galleria di foto (da impostare in <i>Configurazione &gt; Vivere il Comune</i>)',
         'type' => 'checkbox',
     ) ); 
 }
