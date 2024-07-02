@@ -70,57 +70,43 @@ get_header();
             };
 
             ?>
-            <script type="application/ld+json" data-element="metatag">
-                {
-                    "@context": "http://schema.org",
-                    "@type": "GovernmentService",
-                    "name": <?php echo json_encode($post->post_title); ?>,
-                    "serviceType": <?php echo json_encode($categoria_servizio); ?>,
-                    "serviceOperator": {
-						<? if ($ipa){?>
-							"name": "<?= $ipa; ?>"
-						<?} else {?>
-							"name": "nessuno"
-						<? } ?>
-                    },
-                    "areaServed": {
-						<? if ($copertura_geografica){?>
-							"name": "<?= convertToPlain($copertura_geografica); ?>"
-						<?} else {?>
-							"name": "nessuno"
-						<? } ?>
-                    },
-		    
+      <script type="application/ld+json" data-element="metatag">
+{
+    "@context": "http://schema.org",
+    "@type": "GovernmentService",
+    "name": <?php echo json_encode($post->post_title); ?>,
+    "serviceType": <?php echo json_encode($categoria_servizio); ?>,
+    "serviceOperator": {
+        "name": <?php echo json_encode($ipa ? $ipa : "nessuno"); ?>
+    },
+    "areaServed": {
+        "name": <?php echo json_encode($copertura_geografica ? convertToPlain($copertura_geografica) : "nessuno"); ?>
+    },
+    "audience": {
+        "@type": "Audience",
+        "audienceType": <?php echo json_encode(convertToPlain($destinatari)); ?>
+    },
+    "availableChannel": {
+        "@type": "ServiceChannel",
+        "name": "Dove rivolgersi"
+        <?php if (!empty($canale_digitale_link)) : ?>
+        ,"serviceUrl": <?php echo json_encode($canale_digitale_link); ?>
+        <?php endif; ?>
+        <?php if (!empty($ufficio)) : ?>
+        ,"serviceLocation": {
+            "name": <?php echo json_encode($ufficio->post_title); ?>,
+            "address": {
+                "streetAddress": <?php echo json_encode($indirizzo); ?>,
+                "postalCode": <?php echo json_encode((string)$cap); ?>,
+                "addressLocality": <?php echo json_encode($quartiere ? $quartiere : "nessuno"); ?>
+            }
+        }
+        <?php endif; ?>
+    }
+}
+</script>
 
-                    },
-                    <?php endif; ?>
-                    "audience": {
-                        "@type": "Audience",
-                        "audienceType": "<?php echo convertToPlain($destinatari); ?>"
-                    },
-                    "availableChannel": {
-                        "@type": "ServiceChannel",
-                        "name": "Dove rivolgersi"
-                        <?php if ( !empty($canale_digitale_link) ) : ?>
-                        ,"serviceUrl": <?php echo json_encode($canale_digitale_link); ?>
-                        <?php endif; ?>
-                        <?php if ( !empty($ufficio) ) : ?>
-                        ,"serviceLocation": {
-                            "name": <?php echo json_encode($ufficio->post_title); ?>,
-                            "address": {
-                                "streetAddress": <?php echo json_encode($indirizzo); ?>,		    
-                                "postalCode": <?php echo json_encode((string)$cap); ?>
-                                <?php if ( !empty($quartiere) ) : ?>,
-	"addressLocality": "<?= $quartiere; ?>"
-		    		<?} else {?>
-				   "addressLocality": "nessuno"
-                                <?php endif; ?>
-                            }
-                        }
-                        <?php endif; ?>
-                    }
-                }
-            </script>
+
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-10">
