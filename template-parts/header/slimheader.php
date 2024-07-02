@@ -30,7 +30,7 @@
               <?php
 
               // Ottieni il valore del campo nascondi_pulsante_login dalle opzioni del tema o del plugin
-              $nascondi_login = get_option($prefix . 'nascondi_pulsante_login', false);
+              $nascondi_login = get_option('nascondi_pulsante_login', false);
 
               if (!is_user_logged_in()) {
                   if (!$nascondi_login) {
