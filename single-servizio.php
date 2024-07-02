@@ -111,7 +111,7 @@ get_header();
                                 "streetAddress": <?php echo json_encode($indirizzo); ?>,		    
                                 "postalCode": <?php echo json_encode((string)$cap); ?>
                                 <?php if ( !empty($quartiere) ) : ?>,
-                                   "addressLocality": <?php echo json_encode($quartiere); ?>
+	"addressLocality": "<?= $quartiere; ?>"
 		    		<?} else {?>
 				   "addressLocality": "nessuno"
                                 <?php endif; ?>
