@@ -113,10 +113,12 @@ get_header();
                         ,"serviceLocation": {
                             "name": <?php echo json_encode($ufficio->post_title); ?>,
                             "address": {
-                                "streetAddress": <?php echo json_encode($indirizzo); ?>,
+                                "streetAddress": <?php echo json_encode($indirizzo); ?>,		    
                                 "postalCode": <?php echo json_encode((string)$cap); ?>
                                 <?php if ( !empty($quartiere) ) : ?>,
-                                "addressLocality": <?php echo json_encode($quartiere); ?>
+                                   "addressLocality": <?php echo json_encode($quartiere); ?>
+		    		<?} else {?>
+				   "addressLocality": "nessuno"
                                 <?php endif; ?>
                             }
                         }
