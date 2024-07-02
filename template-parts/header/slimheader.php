@@ -26,14 +26,17 @@
             <?php }?>
               &nbsp;&nbsp;&nbsp;&nbsp;
             <?php echo do_shortcode('[google-translator]'); ?>
-                     
+
             <?php
                 if(!is_user_logged_in()) {
+                  if (!$nascondi_login)
                     get_template_part("template-parts/header/header-anon");
                 }else{
                     get_template_part("template-parts/header/header-logged");
                 }
               ?>
+
+            
           </div>
         </div>
       </div>
