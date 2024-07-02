@@ -77,24 +77,19 @@ get_header();
                     "name": <?php echo json_encode($post->post_title); ?>,
                     "serviceType": <?php echo json_encode($categoria_servizio); ?>,
                     "serviceOperator": {
-		    <? if ($ipa){?>
-                        "@type": "GovernmentOrganization",
-                        "name": <?php echo json_encode($ipa); ?>
-			     <?} else {?>                        
-			     "@type": "GovernmentOrganization",
-				"name": "nessuno"
-			<? } ?>
-
+						<? if ($ipa){?>
+							"name": "<?= $ipa; ?>"
+						<?} else {?>
+							"name": "nessuno"
+						<? } ?>
                     },
-                    <?php if ( !empty($copertura_geografica) ) : ?>
                     "areaServed": {
-		    	<? if ($copertura_geografica){?>
-	                        "@type": "AdministrativeArea",
-	                        "name": "<?php echo convertToPlain($copertura_geografica); ?>"
-			    <?} else {?>
-				"@type": "AdministrativeArea",
-				"name": "nessuno"
-			<? } ?>
+						<? if ($copertura_geografica){?>
+							"name": "<?= convertToPlain($copertura_geografica); ?>"
+						<?} else {?>
+							"name": "nessuno"
+						<? } ?>
+                    },
 		    
 
                     },
