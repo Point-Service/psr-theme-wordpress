@@ -30,6 +30,7 @@
               <?php
               if (!is_user_logged_in()) {
                   if (!$nascondi_login) {
+                    echo "ddd";
                       get_template_part("template-parts/header/header-anon");
                   }
               } else {
