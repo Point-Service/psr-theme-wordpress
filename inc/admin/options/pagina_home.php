@@ -179,5 +179,10 @@ $home_options->add_field( array(
         'name'        => __( 'Altre opzioni', 'design_comuni_italia' ),
         'type' => 'title',
     ) );
-	 
+$home_options->add_field( array(
+        'id' => $prefix . 'mostra_gallery',
+        'name' => 'Mostra gallery',
+        'desc' => 'Mostra la galleria di foto (da impostare in <i>Configurazione &gt; Vivere l\'ente</i>)',
+        'type' => 'checkbox',
+    ) ); 
 }
