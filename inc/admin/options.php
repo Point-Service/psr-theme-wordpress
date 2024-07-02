@@ -40,6 +40,9 @@ function dci_register_main_options_metabox() {
 
     dci_register_ricerca_options();
 	
+    dci_register_pagina_luoghi_options();
+
+    dci_register_luoghi_options();
 
 
 }
