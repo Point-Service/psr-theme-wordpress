@@ -28,15 +28,8 @@
             <?php echo do_shortcode('[google-translator]'); ?>
 
               <?php
-
-              // Ottieni il valore del campo nascondi_pulsante_login dalle opzioni del tema o del plugin
-             $nascondi_login = get_option($prefix . 'nascondi_pulsante_login', false);
-
               if (!is_user_logged_in()) {
-                  if (!$nascondi_login) {
-
-                      get_template_part("template-parts/header/header-anon");
-                  }
+                      get_template_part("template-parts/header/header-anon");  
               } else {
                   get_template_part("template-parts/header/header-logged");
               }
