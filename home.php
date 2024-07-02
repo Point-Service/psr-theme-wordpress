@@ -42,6 +42,10 @@ get_header();
                 get_template_part("template-parts/home/accesso-rapido"); 
             ?>
         </section>
+	  <?php if ($mostra_gallery) {
+      	    $sfondo_grigio = false;
+      	  get_template_part("template-parts/vivere-comune/galleria-foto");
+  	  } ?>
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
         <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
