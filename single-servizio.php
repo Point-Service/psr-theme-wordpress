@@ -89,9 +89,11 @@ get_header();
     "availableChannel": {
         "@type": "ServiceChannel",
         "name": "Dove rivolgersi"
-        <?php if (!empty($canale_digitale_link)) : ?>
-        ,"serviceUrl": <?php echo json_encode($canale_digitale_link); ?>
-        <?php endif; ?>
+	      
+        ,"serviceUrl": <?php echo json_encode($canale_digitale_link ? convertToPlain($canale_digitale_link) : "nessuno"); ?>	
+
+
+	      
         <?php if (!empty($ufficio)) : ?>
         ,"serviceLocation": {
             "name": <?php echo json_encode($ufficio->post_title); ?>,
