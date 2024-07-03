@@ -23,9 +23,9 @@ const legalNotes = document.querySelector("#menu-info-2 > li:nth-child(3) > a")
 const loaderMore = document.querySelector("#load-more-btn > button")
 
 if(loaderMore)
-	loaderMore.setAttribute("data-element", "load-other-cards")
+loaderMore.setAttribute("data-element", "load-other-cards")
 
-
+legalNotes.setAttribute("data-element", "legal-notes")
 
 management.setAttribute("data-element", "management")
 news.setAttribute("data-element", "news")
@@ -36,6 +36,6 @@ segnalazione.setAttribute("data-element", "report-inefficiency")
 
 faq.setAttribute("data-element", "faq")
 
-
+privacyPolicy.setAttribute("data-element", "privacy-policy-link")
 
 accessibility.setAttribute("data-element", "accessibility-link")
