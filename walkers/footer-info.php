@@ -47,6 +47,11 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 	            $item->url = '/tipi_notizia/notizie';
 	        }
 		
+               // Sovrascrivi l'URL per "Notizie" se è vuoto
+	        if ($item->title == 'Privacy' && $item->url == '/privacy') {
+	            $item->url = '/page-templates/privacy';
+	        }
+
 		
 		$data_element = '';
 		   // Imposta data-elements
