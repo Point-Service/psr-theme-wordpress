@@ -93,9 +93,7 @@ for ($i = 1; $i <= 20; $i++) {
     </div>
 </section>
 
-    <?php if (!empty($posts)) { ?>
-        <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
-    <?php } ?>
+    
 
     <div class="container">
       <div class="row mb-2">
