@@ -25,7 +25,6 @@
 ?>
 
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
-   <small>Responsabili:</small>
     <svg class="icon">
         <use xlink:href="#it-pa"></use>
     </svg>
@@ -39,7 +38,8 @@
 		<?php echo $descrizione_breve ?>
            </p>
         </h5>
-         <h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	    
+         <h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
+        <small>Contatti Area:</small>	    
         <div class="card-text">
             
                     <?php if ($sede_principale) { ?>
