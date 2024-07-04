@@ -15,7 +15,9 @@
                                                      </a>
                                                   </p>
                                                     <div class="card-text">
-    
+                                                        <div class="richtext-wrapper lora">
+                                                          <?php echo $incarico ?>
+                                                        </div>
                                                     </div>
                                                  </div>    
                                                 <?php } ?>
