@@ -140,7 +140,7 @@
                         </div>
                     <?php } ?>
 	    	<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
-                <div id="contacts"><small>Responsabile Area:</small></div> 
+                <div id="contacts"><small>Responsabile Area:</small></div><p></p>        
 		           <section class="it-page-section">                
                                 <?php if ( $responsabile ) {?>
                                 <div class="row">
