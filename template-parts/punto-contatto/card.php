@@ -101,10 +101,9 @@ $other_contacts = array(
                     }
                 } 
 
-
-    <p></p>
+    
             } ?>
   
         </div>
     </div>
-</div>
+</div><p></p>
