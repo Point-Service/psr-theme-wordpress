@@ -25,6 +25,7 @@
 ?>
 
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
+   <small>Responsabili:</small>
     <svg class="icon">
         <use xlink:href="#it-pa"></use>
     </svg>
