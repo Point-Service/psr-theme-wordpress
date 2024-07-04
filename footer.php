@@ -31,9 +31,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 footer-items-wrapper logo-wrapper">
-		 <div class="it-brand-wrapper">                    
+		 <div>                    
                                  <img class="ue-logo" src="<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" alt="logo Unione Europea" width="178" height="56" >                               
-                   </div>	
+                </div>	
 		 <div class="it-brand-wrapper">
                         <a href="<?php echo home_url() ?>">
                             <?php get_template_part("template-parts/common/logo");?>
