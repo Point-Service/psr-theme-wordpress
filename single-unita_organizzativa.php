@@ -352,6 +352,7 @@ get_header();
                             </article>
                             <?php } ?>
                             <?php if ($sede_principale) { ?>
+			    <p></p>
                             <section class="it-page-section">
                                 <h2 class="mb-3" id="contacts">Sede principale</h2>
                                 <div class="row">
