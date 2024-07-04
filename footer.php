@@ -31,7 +31,7 @@
         <div class="container">
             <div class="row"> 
                 <div class="col-12 footer-items-wrapper logo-wrapper">
-                  <img decoding="async" data-opt-src="https://mlsy3spd7v5e.i.optimole.com/w:245/h:60/q:mauto/ig:avif/https://comune.cocullo.aq.it/wp-content/themes/tema-agid-comuni-release/assets/img/logo-eu-inverted.svg" class="optimole-lazy-only ue-logo" src="https://mlsy3spd7v5e.i.optimole.com/w:245/h:60/q:mauto/ig:avif/https://comune.cocullo.aq.it/wp-content/themes/tema-agid-comuni-release/assets/img/logo-eu-inverted.svg" width="245" height="60" alt="logo Unione Europea" data-opt-lazy-loaded="false" data-opt-optimized-width="245" data-opt-optimized-height="60">
+                  <img decoding="async" data-opt-src="<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" class="optimole-lazy-only ue-logo" src="https://mlsy3spd7v5e.i.optimole.com/w:245/h:60/q:mauto/ig:avif/<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" width="245" height="60" alt="logo Unione Europea" data-opt-lazy-loaded="false" data-opt-optimized-width="178" data-opt-optimized-height="56">
 		 <div class="it-brand-wrapper">
                         <a href="<?php echo home_url() ?>">
                             <?php get_template_part("template-parts/common/logo");?>
