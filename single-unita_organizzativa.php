@@ -331,7 +331,7 @@ get_header();
                                 <div class="row">
                                       <?php 
                                     $with_border = true;
-                                      get_template_part("template-parts/persona/card");
+                                      get_template_part("template-parts/single/persone");
                                     ?>
 
                                     <br>
