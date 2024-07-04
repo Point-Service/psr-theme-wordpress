@@ -282,10 +282,11 @@
                     } ?>
                         </div>
                     <?php } ?>
+	      <?php if ( $responsabile ) {?>
 	    	<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
-                <div id="contacts"><small>Responsabile Area:</small></div><p></p>        
+                <div id="contacts"><small>Responsabile Area:</small><p></p>   </div>     
 		           <section class="it-page-section">                
-                                <?php if ( $responsabile ) {?>
+
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
                                         <div class="cmp-card-latest-messages mb-3 mb-30">
@@ -306,8 +307,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php } ?>
-                            </section>
+                        </section>
+		    <?php } ?>
                </div>
             </div>	 
     </div><p></p>
