@@ -6,7 +6,7 @@
     $img = dci_get_meta('immagine', $prefix, $uo_id);
     $punti_contatto = dci_get_meta('contatti', $prefix, $uo_id);
     $sede_principale = dci_get_meta("sede_principale", $prefix, $uo_id);
-    $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $uo_id));
+    $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $uo_id);
     $prefix = '_dci_punto_contatto_';
     $contatti = array();
     foreach ($punti_contatto as $pc_id) {
