@@ -256,11 +256,11 @@
                     } ?>
                         </div>
                     <?php } ?>
+		 <h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
+                <small>Responsabile Area:</small><p></p>  
 			
                 </div>
-            </div>
-	 <h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
-        <small>Responsabile Area:</small><p></p>  	 
+            </div>	 
     </div><p></p>
 <?php } 
 $with_border = false;
