@@ -384,14 +384,14 @@ get_header();
                                         <div class="card-wrapper rounded h-auto mt-10">
                                         	<?php foreach ( $allegati as $allegato ) { ?>
 	                                            <div class="card card-bg bg-white card-thumb-rounded">
-												   <div class="card-body">
-												      <div class="card-content">
-												         <h4 class="h5"><a href="<?php echo $allegato ?>"><?php echo $allegato ?></a></h4>
-												      </div>
-												   </div>
-												   <!-- /card-body -->
-												</div>
-											<?php } ?>
+						      <div class="card-body">
+							<div class="card-content">
+							    <h4 class="h5"><a href="<?php echo $allegato ?>"><?php echo $allegato ?></a></h4>
+							 </div>
+						      </div>
+						   <!-- /card-body -->
+					             </div>
+						<?php } ?>
                                         </div>
                                     </div>
 
