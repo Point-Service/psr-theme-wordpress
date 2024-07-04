@@ -11,10 +11,10 @@
       <img class="d-block w-100" src="https://www.servizipa.cloud/comuni/img/comune/album_pd/3075_142.jpg" alt="First slide">
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" src="https://i.natgeofe.com/n/2a832501-483e-422f-985c-0e93757b7d84/6.jpg?w=1272&h=954" alt="Second slide">
+      <img class="d-block w-100" src="https://www.servizipa.cloud/comuni/img/comune/album_pd/3075_142.jpg" alt="Second slide">
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" src="https://petapixel.com/assets/uploads/2022/08/fdfs11-800x533.jpg" alt="Third slide">
+      <img class="d-block w-100" src="https://www.servizipa.cloud/comuni/img/comune/album_pd/3075_142.jpg" alt="Third slide">
     </div>
   </div>
   <a class="carousel-control-prev" href="#caroselloControlli" role="button" data-slide="prev">
