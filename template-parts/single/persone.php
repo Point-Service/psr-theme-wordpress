@@ -21,7 +21,7 @@
                                                         </p>
                                                     <div class="card-text">
                                                         <div class="richtext-wrapper lora">
-                                                          <?php echo $incarico ?>
+                                                          <?php echo $incarichi ?>
                                                         </div>
                                                     </div>                                                     
                                                  </div>    
