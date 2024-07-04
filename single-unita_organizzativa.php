@@ -351,10 +351,10 @@ get_header();
                                 </div>
                             </article>
                             <?php } ?>
-                            <?php if ($sede_principale) { ?>
+                            <?php if ($_principale) { ?>
 			    <p></p>
                             <section class="it-page-section">
-                                <h2 class="mb-3" id="contacts">Sede principale</h2>
+                                <h2 class="titillium title-large mb-2 mt-4" id="contacts">Sede principale</h2>
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
                                         <div class="card-wrapper rounded h-auto mt-10">
