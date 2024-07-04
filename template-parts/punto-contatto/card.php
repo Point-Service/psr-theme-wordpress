@@ -100,8 +100,11 @@ $other_contacts = array(
                             </svg>'.$type.': '.$value.'</p>';
                     }
                 } 
+
+
+    <p></p>
             } ?>
   
         </div>
     </div>
-</div><p></p>
+</div>
