@@ -302,8 +302,8 @@ get_header();
                             <?php } ?>
 
                             <section class="it-page-section">
-                                <h2 class="mb-3" id="contacts">Responsabile</h2>
-                                <?php if ( $responsabile ) {?>
+			      <?php if ( $responsabile ) {?>
+                                <h2 class="mb-3" id="contacts">Responsabile</h2>                                
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
                                         <div class="cmp-card-latest-messages mb-3 mb-30">
