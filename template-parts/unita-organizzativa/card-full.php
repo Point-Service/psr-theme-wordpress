@@ -38,7 +38,7 @@
 		<?php echo $descrizione_breve ?>
            </p>
         </h5>
-	    
+         <h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	    
         <div class="card-text">
             
                     <?php if ($sede_principale) { ?>
