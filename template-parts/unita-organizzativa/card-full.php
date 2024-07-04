@@ -39,8 +39,8 @@
            </p>
         </h5>
          <h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
-        <small>Contatti Area:</small>	    
-        <div class="card-text"><p></p>            
+        <small>Contatti Area:</small><p></p>  	    
+        <div class="card-text">          
                     <?php if ($sede_principale) { ?>
                             <section class="it-page-section">
                               <div class="field--name-field-ita-indirizzo">                                  
@@ -154,7 +154,8 @@
 			<?php echo $descrizione_breve ?>
                 </p>
                 </h5>
-		<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
+		<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>
+		<small>Contatti Area:</small><p></p>  	
                 <div class="card-text">
                     <?php if ($sede_principale) { ?>
                             <section class="it-page-section">
