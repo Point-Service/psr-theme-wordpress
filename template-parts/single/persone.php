@@ -7,7 +7,8 @@
                                                <?php foreach ($persone as $person_id) { 
                                                 $prefix = '_dci_persona_pubblica_';
                                                 $nome = dci_get_meta('nome', $prefix, $person_id);
-                                                $cognome = dci_get_meta('cognome', $prefix, $person_id); ?>                                             
+                                                $cognome = dci_get_meta('cognome', $prefix, $person_id); ?>       
+                                                $incarico = dci_get_meta('incarico', $prefix, $person_id); ?>        
                                               <div class="card-body pe-3">
                                                   <p class="card-title text-paragraph-regular-medium-semi mb-3">
                                                       <a href="<?php echo get_permalink($person_id); ?>">
@@ -16,7 +17,7 @@
                                                   </p>
                                                     <div class="card-text">
                                                         <div class="richtext-wrapper lora">
-                                                          <?php echo $incarico ?>àà
+                                                          <?php echo $incarico ?>
                                                         </div>
                                                     </div>
                                                  </div>    
