@@ -29,10 +29,9 @@
 <footer class="it-footer" id="footer">
     <div class="it-footer-main">
         <div class="container">
-				 <img class="ue-logo" src="<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" alt="logo Unione Europea" width="178" height="56" >    
-            <div class="row">
- 
+            <div class="row"> 
                 <div class="col-12 footer-items-wrapper logo-wrapper">
+                  <img decoding=async  data-opt-src="https://mlsy3spd7v5e.i.optimole.com/w:245/h:60/q:mauto/ig:avif/https://comune.cocullo.aq.it/wp-content/themes/tema-agid-comuni-release/assets/img/logo-eu-inverted.svg"  class="optimole-lazy-only  ue-logo" src="data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20245%2060%22%20width%3D%22245%22%20height%3D%2260%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22245%22%20height%3D%2260%22%20fill%3D%22transparent%22%2F%3E%3C%2Fsvg%3E" width="245" height="60" alt="logo Unione Europea"> 
 		 <div class="it-brand-wrapper">
                         <a href="<?php echo home_url() ?>">
                             <?php get_template_part("template-parts/common/logo");?>
