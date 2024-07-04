@@ -40,8 +40,7 @@
         </h5>
          <h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
         <small>Contatti Area:</small>	    
-        <div class="card-text">
-            
+        <div class="card-text"><p></p>            
                     <?php if ($sede_principale) { ?>
                             <section class="it-page-section">
                               <div class="field--name-field-ita-indirizzo">                                  
