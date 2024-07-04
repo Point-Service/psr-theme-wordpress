@@ -138,7 +138,7 @@
                     <?php } ?>
         </div>
     </div>
-</div>
+</div><p></p>
 <?php } else { ?>
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
 
@@ -256,8 +256,7 @@
 			
                 </div>
             </div>
-
-    </div>
+    </div><p></p>
 <?php } 
 $with_border = false;
 ?>
