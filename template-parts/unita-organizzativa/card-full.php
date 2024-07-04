@@ -137,9 +137,8 @@
                         </div>
                     <?php } ?>
 	    	<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
-                <small>Responsabile Area:</small><p></p>  
-		           <section class="it-page-section">
-                                <h2 class="mb-3" id="contacts">Responsabile</h2>
+                <div id="contacts"><small>Responsabile Area:</small></div>div>  
+		           <section class="it-page-section">                
                                 <?php if ( $responsabile ) {?>
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
