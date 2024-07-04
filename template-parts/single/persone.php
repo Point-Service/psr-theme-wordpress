@@ -7,7 +7,10 @@
                                                <?php foreach ($persone as $person_id) { 
                                                 $prefix = '_dci_persona_pubblica_';
                                                 $nome = dci_get_meta('nome', $prefix, $person_id);
-                                                $cognome = dci_get_meta('cognome', $prefix, $person_id); ?>       
+                                                $cognome = dci_get_meta('cognome', $prefix, $person_id); ?>   
+                                                $incarichi = dci_get_meta("incarichi", $prefix, $responsabile);
+                                                $incarico = get_the_title($incarichi[0]);
+                                                
                                                 $incarico = dci_get_meta('incarico', $prefix, $person_id); ?>        
                                               <div class="card-body pe-3">
                                                   <p class="card-title text-paragraph-regular-medium-semi mb-3">
