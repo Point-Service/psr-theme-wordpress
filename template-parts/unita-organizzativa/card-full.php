@@ -7,6 +7,9 @@
     $punti_contatto = dci_get_meta('contatti', $prefix, $uo_id);
     $sede_principale = dci_get_meta("sede_principale", $prefix, $uo_id);
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $uo_id);
+    $responsabili = dci_get_meta("responsabile", $prefix, $uo_id);
+    $responsabile = $responsabili[0];
+
     $prefix = '_dci_punto_contatto_';
     $contatti = array();
     foreach ($punti_contatto as $pc_id) {
@@ -137,7 +140,7 @@
                         </div>
                     <?php } ?>
 	    	<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
-                <div id="contacts"><small>Responsabile Area:</small></div>div>  
+                <div id="contacts"><small>Responsabile Area:</small></div> 
 		           <section class="it-page-section">                
                                 <?php if ( $responsabile ) {?>
                                 <div class="row">
