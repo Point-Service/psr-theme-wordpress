@@ -145,7 +145,10 @@
                 <h3 class="card-title h5">
                     <a href="<?php echo get_permalink($ufficio->ID); ?>">
                         <?php echo $ufficio->post_title; ?>
-                    </a>
+                    </a>			
+		<p class="subtitle-small mb-3" data-element="service-description">
+			<?php echo $ufficio->descrizione_breve; ?>
+                </p>
                 </h5>
                 <div class="card-text">
 
