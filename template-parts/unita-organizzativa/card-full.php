@@ -33,6 +33,9 @@
             <a class="text-decoration-none" href="<?php echo get_permalink($ufficio->ID); ?>" data-element="service-area">
                 <?php echo $ufficio->post_title; ?>
             </a>
+	   <p class="subtitle-small mb-3" data-element="service-description">
+		<?php echo $ufficio->descrizione_breve; ?>
+           </p>
         </h5>
 	    
         <div class="card-text">
