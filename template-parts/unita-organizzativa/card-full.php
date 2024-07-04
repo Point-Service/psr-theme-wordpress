@@ -24,7 +24,7 @@
     if(!$with_border) {
 ?>
 
-<div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
+<div class="card card-teaser shadow-sm p-4s rounded border border-light flex-nowrap">
     <svg class="icon">
         <use xlink:href="#it-pa"></use>
     </svg>
