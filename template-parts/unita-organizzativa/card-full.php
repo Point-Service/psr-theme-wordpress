@@ -138,6 +138,8 @@
                     <?php } ?>
         </div>
     </div>
+	<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
+        <small>Responsabile Area:</small><p></p>  	
 </div><p></p>
 <?php } else { ?>
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
