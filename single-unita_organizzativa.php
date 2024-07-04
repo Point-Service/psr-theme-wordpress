@@ -354,7 +354,7 @@ get_header();
                             <?php if ($_principale) { ?>
 			    <p></p>
                             <section class="it-page-section">
-                                <h2 class="titillium title-large mb-2 mt-4" id="contacts">Sede principale</h2>
+                                <h3 class="mt-4" id="contacts">Sede principale</h3>
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
                                         <div class="card-wrapper rounded h-auto mt-10">
