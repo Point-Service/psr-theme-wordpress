@@ -139,32 +139,33 @@
                     } ?>
                         </div>
                     <?php } ?>
-	    	<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
-                <div id="contacts"><small>Responsabile Area:</small></div><p></p>        
-		           <section class="it-page-section">                
-                                <?php if ( $responsabile ) {?>
-                                <div class="row">
-                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
-                                        <div class="cmp-card-latest-messages mb-3 mb-30">
-                                        	<div class="card card-bg px-4 pt-4 pb-4 rounded">
-                                                    <div class="card-header border-0 p-0">
-                                                             <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="#"><?php echo 
-                                                             $nome_incarico; ?></a>
-                                                        </div>
-                                                   <div class="card-body p-0 my-2">
-                                                      <div class="card-content">
-                                                        
-                                                         <h4 class="h5"><a href="<?php echo get_permalink($responsabile); ?>"><?php echo dci_get_meta('nome', '_dci_persona_pubblica_', $responsabile); ?> <?php echo dci_get_meta('cognome', '_dci_persona_pubblica_', $responsabile); ?></a></h4>
-                                                         <p class="text-paragraph"><?php echo dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $responsabile); ?></p>
-                                                      </div>
-                                                   </div>
-                                                   <!-- /card-body -->
-                                               </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php } ?>
-                            </section>
+		      <?php if ( $responsabile ) {?>
+		    	<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
+	                <div id="contacts"><small>Responsabile Area:</small><p></p>   </div>     
+			           <section class="it-page-section">                
+	
+	                                <div class="row">
+	                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
+	                                        <div class="cmp-card-latest-messages mb-3 mb-30">
+	                                        	<div class="card card-bg px-4 pt-4 pb-4 rounded">
+	                                                    <div class="card-header border-0 p-0">
+	                                                             <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="#"><?php echo 
+	                                                             $nome_incarico; ?></a>
+	                                                        </div>
+	                                                   <div class="card-body p-0 my-2">
+	                                                      <div class="card-content">
+	                                                        
+	                                                         <h4 class="h5"><a href="<?php echo get_permalink($responsabile); ?>"><?php echo dci_get_meta('nome', '_dci_persona_pubblica_', $responsabile); ?> <?php echo dci_get_meta('cognome', '_dci_persona_pubblica_', $responsabile); ?></a></h4>
+	                                                         <p class="text-paragraph"><?php echo dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $responsabile); ?></p>
+	                                                      </div>
+	                                                   </div>
+	                                                   <!-- /card-body -->
+	                                               </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                        </section>
+			    <?php } ?>
                 </div>
     </div>
 	
