@@ -15,7 +15,7 @@ $other_contacts = array(
 );
 ?>
 
-<div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
+<div class="card card-teaser shadow-sm p-4s rounded border border-light flex-nowrap">
     <div class="card-body pe-3">
 
 
