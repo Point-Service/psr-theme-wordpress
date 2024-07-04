@@ -1,5 +1,6 @@
 <?php 
   $links = dci_get_option('contenuti','ricerca');
+  $unique_id = 'search-' . uniqid();
 ?>
 <!-- Search Modal -->
 <div
@@ -57,11 +58,11 @@
                           </svg>
                         </div>
                       </div>
-                      <label for="search">Con Etichetta</label>
+                      <label for="<?php echo $unique_id; ?>">Con Etichetta</label>
                       <input
                         type="search"
                         class="form-control"
-                        id="search"
+                        id="<?php echo $unique_id; ?>"
                         name="s"
                         placeholder="<?php _e("Cerca nel sito","design_comuni_italia"); ?>"
                         value="<?php echo get_search_query(); ?>"
@@ -168,3 +169,4 @@
 </div>
 
 <!-- End Search Modal -->
+
