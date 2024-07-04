@@ -3,7 +3,9 @@ global $boxes;
 $box_accesso_rapido = $boxes;
 ?>
 <div class="container py-5">
-    <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
+    <?php if (!empty($boxes)) { ?>
+        <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
+    <?php } ?>
     <div class="row g-4">
         <?php foreach($boxes as $box) { ?>
         <div class="col-md-6 col-xl-4">
