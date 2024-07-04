@@ -261,5 +261,3 @@
 <?php } 
 $with_border = false;
 ?>
-
- ?>
