@@ -35,7 +35,7 @@
                 <?php echo $ufficio->post_title; ?>
             </a>
 	   <p class="subtitle-small mb-3" data-element="service-description">
-		<?php echo $ufficio->descrizione_breve; ?>
+		<?php echo $descrizione_breve ?>
            </p>
         </h5>
 	    
@@ -151,7 +151,7 @@
                         <?php echo $ufficio->post_title; ?>
                     </a>			
 		<p class="subtitle-small mb-3" data-element="service-description">
-			<?php echo $ufficio->descrizione_breve; ?>
+			<?php echo $descrizione_breve ?>
                 </p>
                 </h5>
                 <div class="card-text">
