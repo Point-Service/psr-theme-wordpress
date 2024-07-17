@@ -18,9 +18,12 @@ get_header();
 			$didascalia = dci_get_option('didascalia', 'vivi');
 			$data_element = 'data-element="page-name"';
 			?>
-			<?php get_template_part("template-parts/hero/hero"); ?>
+			<?php get_template_part("template-parts/hero/hero"); ?>	
 			<section class="hero-img mb-20 mb-lg-50">
-				<section class="it-hero-wrapper it-hero-small-size cmp-hero-img-small">
+				<div class="container">
+					<div class="row">
+				<?php if($img != null) { ?>
+				<section class="it-hero-small-size cmp-hero-img-small">
 					<div class="img-responsive-wrapper">
 						<div class="img-responsive">
 							<div class="img-wrapper">
@@ -29,9 +32,12 @@ get_header();
 						</div>
 					</div>
 				</section>
-				<p class="title-xsmall cmp-hero-img-small__description">
-					<?php echo $didascalia; ?>
-				</p>
+				<?php } ?>
+						<p class="title-big cmp-hero-img-big__description">
+							<?php echo $didascalia; ?>
+						</p>
+					</div>
+				</div>
 			</section>
 			<?php get_template_part("template-parts/vivere-comune/eventi"); ?>
 			<?php get_template_part("template-parts/vivere-comune/luoghi"); ?>
@@ -47,5 +53,3 @@ get_header();
 
 <?php
 get_footer();
-
-
