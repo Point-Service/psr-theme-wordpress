@@ -34,7 +34,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 
                // Sovrascrivi l'URL per "Avvisi" se è vuoto
 	        if ($item->title == 'Avvisi' && $item->url == '/novita') {
-	            $item->url = 'tipi_notizia/avvisi';
+	            $item->url = '/tipi_notizia/avvisi';
 	        }
 	
                // Sovrascrivi l'URL per "Comunicati" se è vuoto
