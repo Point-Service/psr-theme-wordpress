@@ -85,17 +85,7 @@ for ($i = 1; $i <= 20; $i++) {
                         }
                         ?>
                     </div>
-                    
-                </div>
-                </div>
-            <?php } ?>
-        </div>
-    </div>
-</section>
-
-    
-
-    <div class="container">
+                        <div class="container">
       <div class="row mb-2">
         <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                 <div class="row my-4 justify-content-md-center">                 
@@ -109,7 +99,14 @@ for ($i = 1; $i <= 20; $i++) {
             </div>
           </div>
          </div>
-  
+                    
+                </div>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+</section>
+
 
 <section id="calendario">
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
