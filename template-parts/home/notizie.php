@@ -86,8 +86,6 @@ for ($i = 1; $i <= 20; $i++) {
                         ?>
                     </div>                    
                 </div>
-                </div>
-            <?php } ?>
  <div class="container">
       <div class="row mb-2">
         <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
@@ -102,6 +100,11 @@ for ($i = 1; $i <= 20; $i++) {
             </div>
           </div>
          </div>
+
+            
+                </div>
+            <?php } ?>
+
   
                         
         </div>
