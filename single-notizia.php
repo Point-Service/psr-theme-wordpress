@@ -146,11 +146,13 @@ get_header();
                             <?php echo $descrizione; ?>
                         </div>
                     </article>
+
+                        
 <?php if($galleria) { ?>
     <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
         <h4 id="documenti">Media</h4>
         <div class="grid-row">
-            <?php foreach ($galleria as $img_url) {
+            <?php foreach ($galleria as $key => $img_url) {
 
                 $immagine = get_post(attachment_url_to_postid($img_url));
                 $image_alt = get_post_meta($immagine->ID, '_wp_attachment_image_alt', true);
@@ -169,11 +171,12 @@ get_header();
 
                                 // Verifica se l'estensione è un formato audio
                                 if (in_array($extension, $audio_formats)) { ?>
-                                   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+                                    <!-- Includi lo script di Howler.js -->
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 
                                     <div class="audio-wrapper">
                                         <div id="audio-player-<?php echo $key; ?>" class="audio-player">
-                                            <!-- Aggiungi un contenitore per Howler.js -->
+                                            <!-- Contenitore per i controlli audio -->
                                             <button onclick="playAudio('<?php echo $img_url; ?>')">Play</button>
                                             <button onclick="pauseAudio()">Pause</button>
                                             <button onclick="stopAudio()">Stop</button>
@@ -199,6 +202,44 @@ get_header();
     </article>
 <?php } ?>
 
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Crea una variabile globale per l'oggetto Howl
+    var sound;
+
+    // Funzione per riprodurre l'audio
+    window.playAudio = function(url) {
+        if (sound) {
+            sound.stop(); // Ferma l'audio precedente
+        }
+        sound = new Howl({
+            src: [url],
+            html5: true, // Usa HTML5 Audio per file più grandi
+            onplay: function() {
+                console.log('Audio is playing');
+            },
+            onend: function() {
+                console.log('Audio has ended');
+            }
+        });
+        sound.play();
+    }
+
+    // Funzione per mettere in pausa l'audio
+    window.pauseAudio = function() {
+        if (sound) {
+            sound.pause();
+        }
+    }
+
+    // Funzione per fermare l'audio
+    window.stopAudio = function() {
+        if (sound) {
+            sound.stop();
+        }
+    }
+});
+</script>
 
                     <?php if( is_array($documenti) && count($documenti) ) { ?>
                     <article class="it-page-section anchor-offset mt-5">
@@ -317,43 +358,6 @@ get_header();
         const wordsNumber = descText.split(' ').length
         document.querySelector('#readingTime').innerHTML = `${Math.ceil(wordsNumber / 200)} min`;
     </script>
-
-<script>
-// Crea una variabile globale per l'oggetto Howl
-var sound;
-
-// Funzione per riprodurre l'audio
-function playAudio(url) {
-    if (sound) {
-        sound.stop(); // Ferma l'audio precedente
-    }
-    sound = new Howl({
-        src: [url],
-        html5: true,
-        onplay: function() {
-            console.log('Audio is playing');
-        },
-        onend: function() {
-            console.log('Audio has ended');
-        }
-    });
-    sound.play();
-}
-
-// Funzione per mettere in pausa l'audio
-function pauseAudio() {
-    if (sound) {
-        sound.pause();
-    }
-}
-
-// Funzione per fermare l'audio
-function stopAudio() {
-    if (sound) {
-        sound.stop();
-    }
-}
-</script>
 
 
 <?php
