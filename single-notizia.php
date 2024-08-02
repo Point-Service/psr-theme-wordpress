@@ -147,12 +147,12 @@ get_header();
                         </div>
                     </article>
 
-         v               
+                       
 <?php if($galleria) { ?>
     <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
         <h4 id="documenti">Media</h4>
         <div class="grid-row">
-            <?php foreach ($galleria as $key => $img_url) {
+            <?php foreach ($galleria as $img_url) {
 
                 $immagine = get_post(attachment_url_to_postid($img_url));
                 $image_alt = get_post_meta($immagine->ID, '_wp_attachment_image_alt', true);
@@ -171,15 +171,17 @@ get_header();
 
                                 // Verifica se l'estensione è un formato audio
                                 if (in_array($extension, $audio_formats)) { ?>
-                                    <!-- Includi lo script di Howler.js -->
-                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-
                                     <div class="audio-wrapper">
-                                        <div id="audio-player-<?php echo $key; ?>" class="audio-player">
-                                            <!-- Contenitore per i controlli audio -->
-                                            <button onclick="playAudio('<?php echo $img_url; ?>')">Play</button>
-                                            <button onclick="pauseAudio()">Pause</button>
-                                            <button onclick="stopAudio()">Stop</button>
+                                        <div class="custom-audio-player">
+                                            <audio id="audio-<?php echo md5($img_url); ?>" controls>
+                                                <source src="<?php echo $img_url; ?>" type="audio/<?php echo $extension; ?>">
+                                                Il tuo browser non supporta l'elemento audio.
+                                            </audio>
+                                            <div class="audio-controls">
+                                                <button onclick="playAudio('audio-<?php echo md5($img_url); ?>')">Play</button>
+                                                <button onclick="pauseAudio('audio-<?php echo md5($img_url); ?>')">Pause</button>
+                                                <button onclick="stopAudio('audio-<?php echo md5($img_url); ?>')">Stop</button>
+                                            </div>
                                         </div>
                                     </div>
                                 <?php } 
@@ -358,7 +360,63 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const wordsNumber = descText.split(' ').length
         document.querySelector('#readingTime').innerHTML = `${Math.ceil(wordsNumber / 200)} min`;
     </script>
+<style>
+.custom-audio-player {
+    position: relative;
+    width: 100%;
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+}
 
+.audio-controls {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.audio-controls button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.audio-controls button:hover {
+    background: #0056b3;
+}
+</style>
+
+<script>
+// Funzione per riprodurre l'audio
+function playAudio(id) {
+    var audio = document.getElementById(id);
+    if (audio) {
+        audio.play();
+    }
+}
+
+// Funzione per mettere in pausa l'audio
+function pauseAudio(id) {
+    var audio = document.getElementById(id);
+    if (audio) {
+        audio.pause();
+    }
+}
+
+// Funzione per fermare l'audio
+function stopAudio(id) {
+    var audio = document.getElementById(id);
+    if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+}
+</script>
 
 <?php
 get_footer();
