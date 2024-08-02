@@ -1,15 +1,10 @@
 <?php
 global $post;
+$img_url = dci_get_meta('immagine');
+$img = get_post( attachment_url_to_postid($img_url) );
+$image_alt = get_post_meta( $img->ID, '_wp_attachment_image_alt', true);
 
-$has_thumbnail = has_post_thumbnail();
-
-if(!$has_thumbnail = has_post_thumbnail()){
-    $img_url = get_the_post_thumbnail_url();
-    $img = get_post( attachment_url_to_postid($img_url) );
-    $image_alt = get_post_meta( $img->ID, '_wp_attachment_image_alt', true);
-}
-
-if ($has_thumbnail || $img_url) {
+if ($img_url) {
 ?>
 
 <div class="container-fluid my-3">
@@ -33,3 +28,5 @@ if ($has_thumbnail || $img_url) {
     </div>
 </div>
 <?php } ?>
+    
+
