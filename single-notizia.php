@@ -65,7 +65,7 @@ get_header();
                     </div>                 
                 </div>                      
             </div>
-                   <?php get_template_part('template-parts/single/image-large'); ?>     
+
             <div class="container">
                 <div class="row border-top border-light row-column-border row-column-menu-left">
                     <aside class="col-lg-4">
@@ -139,7 +139,7 @@ get_header();
                         </div>
                     </aside>
                     <section class="col-lg-8 it-page-sections-container border-light">
- 
+                    <?php get_template_part('template-parts/single/image-large'); ?>
                     <article class="it-page-section anchor-offset" data-audio>                        
                         <h4 id="descrizione">Descrizione</h4>
                         <div class="richtext-wrapper lora">
