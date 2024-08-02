@@ -145,7 +145,7 @@ get_header();
                         <div class="richtext-wrapper lora">
                             <?php echo $descrizione; ?>
                         </div>
-                    </article>
+                    </article>vvvvvv
                         <?php if($galleria) { ?>
                             <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
                                 <h4 id="documenti">Galleria immagini</h4>
