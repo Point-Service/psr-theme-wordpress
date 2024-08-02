@@ -158,7 +158,7 @@ get_header();
                                         $image_alt = get_post_meta($immagine->ID, '_wp_attachment_image_alt', true);
                                         $extension = pathinfo($img_url, PATHINFO_EXTENSION); // Estrai l'estensione del file    
                                     ?>
-                                    <div class="col-8 col-lg-4">
+ <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                                         <div class="it-grid-item-wrapper">
                                             <div class="img-responsive-wrapper">
                                                 <div class="img-responsive">
