@@ -146,54 +146,59 @@ get_header();
                             <?php echo $descrizione; ?>
                         </div>
                     </article>
-                        <?php if($galleria) { ?>
-                            <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
-                                <h4 id="documenti">Media</h4>
-                                <div class="grid-row">
-                                    <?php foreach ($galleria as $img_url) {
-                        
-                                        $immagine = get_post(attachment_url_to_postid($img_url));
-                                        $image_alt = get_post_meta($immagine->ID, '_wp_attachment_image_alt', true);
-                                        $extension = pathinfo($img_url, PATHINFO_EXTENSION); // Estrai l'estensione del file    
-                                    ?>
-                                    <div class="col-6 col-lg-4">
-                                        <div class="it-grid-item-wrapper">
-                                            <div class="img-responsive-wrapper">
-                                                <div class="img-responsive" style="height: 350px; width: 350px;">
-                                                    <?php 
-                                                        // Array di formati audio supportati
-                                                        $audio_formats = array('mp3', 'wav', 'ogg', 'aac');
-                                                        
-                                                        // Array di formati immagine supportati
-                                                        $image_formats = array('jpg', 'jpeg', 'png', 'gif', 'webp');
-                            
-                                                        // Verifica se l'estensione è un formato audio
-                                                        if (in_array($extension, $audio_formats)) { ?>
-                                                            <div class="audio-wrapper">
-                                                                <audio controls>
-                                                                    <source src="<?php echo $img_url; ?>" type="audio/<?php echo $extension; ?>">
-                                                                    Il tuo browser non supporta l'elemento audio.
-                                                                </audio>
-                                                            </div>
-                                                        <?php } 
-                                                        // Verifica se l'estensione è un formato immagine
-                                                        elseif (in_array($extension, $image_formats)) { ?>
-                                                            <div class="img-wrapper">
-                                                                <img src="<?php echo $img_url; ?>" alt="<?php echo $image_alt; ?>">
-                                                            </div>
-                                                        <?php } else { ?>
-                                                            <div class="other-file">
-                                                                File non supportato.
-                                                            </div>
-                                                        <?php } ?>
-                                                </div>
-                                            </div>
+<?php if($galleria) { ?>
+    <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
+        <h4 id="documenti">Media</h4>
+        <div class="grid-row">
+            <?php foreach ($galleria as $img_url) {
+
+                $immagine = get_post(attachment_url_to_postid($img_url));
+                $image_alt = get_post_meta($immagine->ID, '_wp_attachment_image_alt', true);
+                $extension = pathinfo($img_url, PATHINFO_EXTENSION); // Estrai l'estensione del file    
+            ?>
+            <div class="col-6 col-lg-4">
+                <div class="it-grid-item-wrapper">
+                    <div class="img-responsive-wrapper">
+                        <div class="img-responsive" style="height: 350px; width: 350px;">
+                            <?php 
+                                // Array di formati audio supportati
+                                $audio_formats = array('mp3', 'wav', 'ogg', 'aac');
+                                
+                                // Array di formati immagine supportati
+                                $image_formats = array('jpg', 'jpeg', 'png', 'gif', 'webp');
+
+                                // Verifica se l'estensione è un formato audio
+                                if (in_array($extension, $audio_formats)) { ?>
+                                   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+
+                                    <div class="audio-wrapper">
+                                        <div id="audio-player-<?php echo $key; ?>" class="audio-player">
+                                            <!-- Aggiungi un contenitore per Howler.js -->
+                                            <button onclick="playAudio('<?php echo $img_url; ?>')">Play</button>
+                                            <button onclick="pauseAudio()">Pause</button>
+                                            <button onclick="stopAudio()">Stop</button>
                                         </div>
                                     </div>
-                                    <?php } ?>
-                                </div>
-                            </article>
-                        <?php } ?>
+                                <?php } 
+                                // Verifica se l'estensione è un formato immagine
+                                elseif (in_array($extension, $image_formats)) { ?>
+                                    <div class="img-wrapper">
+                                        <img src="<?php echo $img_url; ?>" alt="<?php echo $image_alt; ?>">
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="other-file">
+                                        File non supportato.
+                                    </div>
+                                <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+        </div>
+    </article>
+<?php } ?>
+
 
                     <?php if( is_array($documenti) && count($documenti) ) { ?>
                     <article class="it-page-section anchor-offset mt-5">
@@ -312,6 +317,45 @@ get_header();
         const wordsNumber = descText.split(' ').length
         document.querySelector('#readingTime').innerHTML = `${Math.ceil(wordsNumber / 200)} min`;
     </script>
+
+<script>
+// Crea una variabile globale per l'oggetto Howl
+var sound;
+
+// Funzione per riprodurre l'audio
+function playAudio(url) {
+    if (sound) {
+        sound.stop(); // Ferma l'audio precedente
+    }
+    sound = new Howl({
+        src: [url],
+        html5: true,
+        onplay: function() {
+            console.log('Audio is playing');
+        },
+        onend: function() {
+            console.log('Audio has ended');
+        }
+    });
+    sound.play();
+}
+
+// Funzione per mettere in pausa l'audio
+function pauseAudio() {
+    if (sound) {
+        sound.pause();
+    }
+}
+
+// Funzione per fermare l'audio
+function stopAudio() {
+    if (sound) {
+        sound.stop();
+    }
+}
+</script>
+
+
 <?php
 get_footer();
 
