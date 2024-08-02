@@ -9,24 +9,20 @@ if ($img_url) {
 
 <div class="container-fluid my-3">
     <div class="row">
-        <figure class="figure px-0 img-full">
-            <?php if(!$has_thumbnail){ ?>
+        <figure class="figure px-0 img-small">
             <img
                 src="<?php echo $img_url; ?>"
                 class="figure-img img-fluid"
                 alt="<?php echo $image_alt; ?>"
+                width="500"
             />
             <?php if ($img->post_excerpt)  {?>
             <figcaption class="figure-caption text-center pt-3">
                 <?php echo $img->post_excerpt; ?>
             </figcaption>
             <?php } ?>
-            <?php } else { 
-                the_post_thumbnail('post-thumbnail', $attr = array('class' => 'figure-img img-fluid'));
-            } ?>
         </figure>
     </div>
 </div>
 <?php } ?>
-    
 
