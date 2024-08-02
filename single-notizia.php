@@ -147,7 +147,7 @@ get_header();
                         </div>
                     </article>
 
-                        
+         v               
 <?php if($galleria) { ?>
     <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
         <h4 id="documenti">Media</h4>
