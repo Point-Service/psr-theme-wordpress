@@ -161,7 +161,7 @@ get_header();
             <div class="col-6 col-lg-4">
                 <div class="it-grid-item-wrapper">
                     <div class="img-responsive-wrapper">
-                        <div class="img-responsive" style="height: 350px; width: 350px;">
+                        <div class="img-responsive">
                             <?php 
                                 // Array di formati audio supportati
                                 $audio_formats = array('mp3', 'wav', 'ogg', 'aac');
@@ -323,33 +323,33 @@ get_header();
         document.querySelector('#readingTime').innerHTML = `${Math.ceil(wordsNumber / 200)} min`;
     </script>
 <style>
-.custom-audio-player {
-    position: relative;
+.it-grid-item-wrapper {
+    /* Imposta una larghezza fissa per il contenitore dell'immagine/audio se necessario */
     width: 100%;
-    background: #f4f4f4;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
+}
+
+.img-responsive-wrapper {
+    display: flex;
+    justify-content: center; /* Centratura orizzontale */
+}
+
+.audio-wrapper {
+    width: 100%; /* Usa tutta la larghezza disponibile */
+    padding: 10px; /* Padding per evitare che il player tocchi i bordi */
+    box-sizing: border-box; /* Include padding e bordi nella larghezza totale */
+}
+
+.custom-audio-player {
+    width: 100%; /* Usa tutta la larghezza disponibile del contenitore */
 }
 
 .audio-controls {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
+    margin-top: 10px; /* Spazio sopra i controlli audio */
+    text-align: center; /* Centratura dei bottoni dei controlli */
 }
 
 .audio-controls button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.audio-controls button:hover {
-    background: #0056b3;
+    margin: 0 5px; /* Spazio tra i bottoni */
 }
 </style>
 
