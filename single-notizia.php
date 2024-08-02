@@ -148,61 +148,61 @@ get_header();
                     </article>
 
                        
-<?php if($galleria) { ?>
-    <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
-        <h4 id="documenti">Media</h4>
-        <div class="grid-row">
-            <?php foreach ($galleria as $img_url) {
-
-                $immagine = get_post(attachment_url_to_postid($img_url));
-                $image_alt = get_post_meta($immagine->ID, '_wp_attachment_image_alt', true);
-                $extension = pathinfo($img_url, PATHINFO_EXTENSION); // Estrai l'estensione del file    
-            ?>
-            <div class="col-6 col-lg-4">
-                <div class="it-grid-item-wrapper">
-                    <div class="img-responsive-wrapper">
-                        <div class="img-responsive">
-                            <?php 
-                                // Array di formati audio supportati
-                                $audio_formats = array('mp3', 'wav', 'ogg', 'aac');
-                                
-                                // Array di formati immagine supportati
-                                $image_formats = array('jpg', 'jpeg', 'png', 'gif', 'webp');
-
-                                // Verifica se l'estensione è un formato audio
-                                if (in_array($extension, $audio_formats)) { ?>
-                                    <div class="audio-wrapper">
-                                        <div class="custom-audio-player">
-                                            <audio id="audio-<?php echo md5($img_url); ?>" controls>
-                                                <source src="<?php echo $img_url; ?>" type="audio/<?php echo $extension; ?>">
-                                                Il tuo browser non supporta l'elemento audio.
-                                            </audio>
-                                            <div class="audio-controls">
-                                                <button onclick="playAudio('audio-<?php echo md5($img_url); ?>')">Play</button>
-                                                <button onclick="pauseAudio('audio-<?php echo md5($img_url); ?>')">Pause</button>
-                                                <button onclick="stopAudio('audio-<?php echo md5($img_url); ?>')">Stop</button>
+                        <?php if($galleria) { ?>
+                            <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
+                                <h4 id="documenti">Media</h4>
+                                <div class="grid-row">
+                                    <?php foreach ($galleria as $img_url) {
+                        
+                                        $immagine = get_post(attachment_url_to_postid($img_url));
+                                        $image_alt = get_post_meta($immagine->ID, '_wp_attachment_image_alt', true);
+                                        $extension = pathinfo($img_url, PATHINFO_EXTENSION); // Estrai l'estensione del file    
+                                    ?>
+                                    <div class="col-6 col-lg-4">
+                                        <div class="it-grid-item-wrapper">
+                                            <div class="img-responsive-wrapper">
+                                                <div class="img-responsive">
+                                                    <?php 
+                                                        // Array di formati audio supportati
+                                                        $audio_formats = array('mp3', 'wav', 'ogg', 'aac');
+                                                        
+                                                        // Array di formati immagine supportati
+                                                        $image_formats = array('jpg', 'jpeg', 'png', 'gif', 'webp');
+                        
+                                                        // Verifica se l'estensione è un formato audio
+                                                        if (in_array($extension, $audio_formats)) { ?>
+                                                            <div class="audio-wrapper">
+                                                                <div class="custom-audio-player">
+                                                                    <audio id="audio-<?php echo md5($img_url); ?>" controls>
+                                                                        <source src="<?php echo $img_url; ?>" type="audio/<?php echo $extension; ?>">
+                                                                        Il tuo browser non supporta l'elemento audio.
+                                                                    </audio>
+                                                                    <div class="audio-controls">
+                                                                        <button onclick="playAudio('audio-<?php echo md5($img_url); ?>')">Play</button>
+                                                                        <button onclick="pauseAudio('audio-<?php echo md5($img_url); ?>')">Pause</button>
+                                                                        <button onclick="stopAudio('audio-<?php echo md5($img_url); ?>')">Stop</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php } 
+                                                        // Verifica se l'estensione è un formato immagine
+                                                        elseif (in_array($extension, $image_formats)) { ?>
+                                                            <div class="img-wrapper">
+                                                                <img src="<?php echo $img_url; ?>" alt="<?php echo $image_alt; ?>">
+                                                            </div>
+                                                        <?php } else { ?>
+                                                            <div class="other-file">
+                                                                File non supportato.
+                                                            </div>
+                                                        <?php } ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                <?php } 
-                                // Verifica se l'estensione è un formato immagine
-                                elseif (in_array($extension, $image_formats)) { ?>
-                                    <div class="img-wrapper">
-                                        <img src="<?php echo $img_url; ?>" alt="<?php echo $image_alt; ?>">
-                                    </div>
-                                <?php } else { ?>
-                                    <div class="other-file">
-                                        File non supportato.
-                                    </div>
-                                <?php } ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php } ?>
-        </div>
-    </article>
-<?php } ?>
+                                    <?php } ?>
+                                </div>
+                            </article>
+                        <?php } ?>
                             
 
                     <?php if( is_array($documenti) && count($documenti) ) { ?>
