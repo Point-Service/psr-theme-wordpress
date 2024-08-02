@@ -148,7 +148,7 @@ get_header();
                     </article>
                         <?php if($galleria) { ?>
                             <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
-                                <h4 id="documenti">Galleria</h4>
+                                <h4 id="documenti">Media</h4>
                                 <div class="grid-row">
                                     <?php foreach ($galleria as $img_url) {
                         
@@ -160,18 +160,32 @@ get_header();
                                         <div class="it-grid-item-wrapper">
                                             <div class="img-responsive-wrapper">
                                                 <div class="img-responsive" style="height: 350px; width: 350px;">
-                                                    <?php if ($extension == 'mp3') { ?>
-                                                        <div class="audio-wrapper">
-                                                            <audio controls>
-                                                                <source src="<?php echo $img_url; ?>" type="audio/mpeg">
-                                                                Il tuo browser non supporta l'elemento audio.
-                                                            </audio>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="img-wrapper">
-                                                            <img src="<?php echo $img_url; ?>" alt="<?php echo $image_alt; ?>">
-                                                        </div>
-                                                    <?php } ?>
+                                                    <?php 
+                                                        // Array di formati audio supportati
+                                                        $audio_formats = array('mp3', 'wav', 'ogg', 'aac');
+                                                        
+                                                        // Array di formati immagine supportati
+                                                        $image_formats = array('jpg', 'jpeg', 'png', 'gif', 'webp');
+                            
+                                                        // Verifica se l'estensione è un formato audio
+                                                        if (in_array($extension, $audio_formats)) { ?>
+                                                            <div class="audio-wrapper">
+                                                                <audio controls>
+                                                                    <source src="<?php echo $img_url; ?>" type="audio/<?php echo $extension; ?>">
+                                                                    Il tuo browser non supporta l'elemento audio.
+                                                                </audio>
+                                                            </div>
+                                                        <?php } 
+                                                        // Verifica se l'estensione è un formato immagine
+                                                        elseif (in_array($extension, $image_formats)) { ?>
+                                                            <div class="img-wrapper">
+                                                                <img src="<?php echo $img_url; ?>" alt="<?php echo $image_alt; ?>">
+                                                            </div>
+                                                        <?php } else { ?>
+                                                            <div class="other-file">
+                                                                File non supportato.
+                                                            </div>
+                                                        <?php } ?>
                                                 </div>
                                             </div>
                                         </div>
