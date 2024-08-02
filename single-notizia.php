@@ -203,45 +203,7 @@ get_header();
         </div>
     </article>
 <?php } ?>
-
-<script>
-document.addEventListener('DOMContentLoaded', (event) => {
-    // Crea una variabile globale per l'oggetto Howl
-    var sound;
-
-    // Funzione per riprodurre l'audio
-    window.playAudio = function(url) {
-        if (sound) {
-            sound.stop(); // Ferma l'audio precedente
-        }
-        sound = new Howl({
-            src: [url],
-            html5: true, // Usa HTML5 Audio per file più grandi
-            onplay: function() {
-                console.log('Audio is playing');
-            },
-            onend: function() {
-                console.log('Audio has ended');
-            }
-        });
-        sound.play();
-    }
-
-    // Funzione per mettere in pausa l'audio
-    window.pauseAudio = function() {
-        if (sound) {
-            sound.pause();
-        }
-    }
-
-    // Funzione per fermare l'audio
-    window.stopAudio = function() {
-        if (sound) {
-            sound.stop();
-        }
-    }
-});
-</script>
+                            
 
                     <?php if( is_array($documenti) && count($documenti) ) { ?>
                     <article class="it-page-section anchor-offset mt-5">
