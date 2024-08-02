@@ -145,10 +145,10 @@ get_header();
                         <div class="richtext-wrapper lora">
                             <?php echo $descrizione; ?>
                         </div>
-                    </article>vvvvvv
+                    </article>
                         <?php if($galleria) { ?>
                             <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
-                                <h4 id="documenti">Galleria immagini</h4>
+                                <h4 id="documenti">Galleria</h4>
                                 <div class="grid-row">
                                     <?php foreach ($galleria as $img_url) {
                         
