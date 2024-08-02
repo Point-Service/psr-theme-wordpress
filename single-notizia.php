@@ -146,28 +146,41 @@ get_header();
                             <?php echo $descrizione; ?>
                         </div>
                     </article>
-                    <?php if($galleria) { ?>
-                    <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
-                        <h4 id="documenti">Galleria immagini</h4>
-                        <div class="grid-row">
-                            <?php foreach ($galleria as $img_url) {
-
-                                $immagine = get_post( attachment_url_to_postid($img_url));
-                                $image_alt = get_post_meta( $immagine->ID, '_wp_attachment_image_alt', true);
-                            ?>
-                            <div class="col-6 col-lg-4">
-                                <div class="it-grid-item-wrapper">
-                                    <div class="img-responsive-wrapper">
-                                        <div class="img-responsive"  style="height: 350px; width: 350px;">
-                                        <div class="img-wrapper"><img src="<?php echo $img_url; ?>" alt="<?php echo $image_alt; ?>"></div>
+                        <?php if($galleria) { ?>
+                            <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
+                                <h4 id="documenti">Galleria immagini</h4>
+                                <div class="grid-row">
+                                    <?php foreach ($galleria as $img_url) {
+                        
+                                        $immagine = get_post(attachment_url_to_postid($img_url));
+                                        $image_alt = get_post_meta($immagine->ID, '_wp_attachment_image_alt', true);
+                                        $extension = pathinfo($img_url, PATHINFO_EXTENSION); // Estrai l'estensione del file    
+                                    ?>
+                                    <div class="col-6 col-lg-4">
+                                        <div class="it-grid-item-wrapper">
+                                            <div class="img-responsive-wrapper">
+                                                <div class="img-responsive" style="height: 350px; width: 350px;">
+                                                    <?php if ($extension == 'mp3') { ?>
+                                                        <div class="audio-wrapper">
+                                                            <audio controls>
+                                                                <source src="<?php echo $img_url; ?>" type="audio/mpeg">
+                                                                Il tuo browser non supporta l'elemento audio.
+                                                            </audio>
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <div class="img-wrapper">
+                                                            <img src="<?php echo $img_url; ?>" alt="<?php echo $image_alt; ?>">
+                                                        </div>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <?php } ?>
                                 </div>
-                            </div>
-                            <?php } ?>
-                        </div>
-                    </article>
-                    <?php } ?>
+                            </article>
+                        <?php } ?>
+
                     <?php if( is_array($documenti) && count($documenti) ) { ?>
                     <article class="it-page-section anchor-offset mt-5">
                         <h4 id="documenti">Documenti</h4>
