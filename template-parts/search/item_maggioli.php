@@ -7,8 +7,28 @@ $remote_url = "https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/pr
 // Ottieni i dati dal link remoto
 $response = file_get_contents($remote_url);
 
+// Verifica se la richiesta ha avuto successo
+if ($response === false) {
+    echo "Errore durante il recupero dei dati.";
+    return;
+}
+
 // Decodifica il JSON in un array associativo
 $data = json_decode($response, true);
+
+// Controlla se il JSON è stato decodificato correttamente
+if ($data === null) {
+    echo "Errore durante la decodifica del JSON.";
+    return;
+}
+
+// Verifica la struttura dei dati per identificare le chiavi corrette
+// echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+
+// Testo di ricerca (puoi sostituirlo con un valore dinamico o una query string)
+$search_text = "testo di ricerca";
 
 // Filtra i dati in base al testo di ricerca
 $filtered_data = array_filter($data, function($item) use ($search_text) {
@@ -17,7 +37,6 @@ $filtered_data = array_filter($data, function($item) use ($search_text) {
 
 // Cicla attraverso i risultati filtrati e visualizzali
 foreach ($filtered_data as $item) {
-    // Qui puoi utilizzare i dati come nel tuo codice originale, ad esempio:
     ?>
     <div class="cmp-card-latest-messages mb-3 mb-30" data-bs-toggle="modal" data-bs-target="#">
         <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
@@ -49,3 +68,4 @@ foreach ($filtered_data as $item) {
     <?php
 }
 ?>
+
