@@ -96,13 +96,22 @@ get_header();
                                                 
                                             endwhile; ?> 
                                     </div>  
-                                    <?php get_template_part("template-parts/search/more-results"); ?>
+
+                                            <?php     
+                                                if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { ?>
+                                                     <?php get_template_part("template-parts/search/more-results"); ?>
+                                                <?php } else { ?>
+                                                     <?php get_template_part("template-parts/search/more-results"); ?>
+                                                     <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>
+                                            <?php } ?>
+    
+                          
                                 <?php
                                 else :
                                     get_template_part( 'template-parts/content', 'none' );
 
                                 endif;
-                                ?>ssssssssssssssss
+                                ?>
                                 </div>
                             </div>
                         </div>
