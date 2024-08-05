@@ -102,7 +102,7 @@ get_header();
                                                      <?php get_template_part("template-parts/search/more-results"); ?>
                                                 <?php } else { ?>
                                                      <?php get_template_part("template-parts/search/more-results"); ?>
-                                                     <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>
+                                                     <?php get_template_part("template-parts/search/more-results_maggioli"); ?>
                                             <?php } ?>
     
                           
