@@ -22,8 +22,7 @@ if ($data === null) {
     return;
 }
 
-// Testo di ricerca (puoi sostituirlo con un valore dinamico o una query string)
-$search_text = "titolo servizio"; // Sostituisci con il testo che vuoi cercare
+
 
 // Filtra i dati in base al testo di ricerca nel titolo
 $filtered_data = array_filter($data, function($item) use ($search_text) {
