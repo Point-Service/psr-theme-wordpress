@@ -92,20 +92,21 @@ get_header();
                                                 the_post();
 
                                                 $load_card_type = 'global-search';
-                                                get_template_part("template-parts/search/item");
                                                 
+                                                
+   
+                                                if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { 
+                                                    get_template_part("template-parts/search/item");
+                                                  } else { 
+                                                     get_template_part("template-parts/search/item");
+                                                     get_template_part("template-parts/search/item_maggioli");
+                                                 }
+      
                                             endwhile; ?> 
                                     </div>  
 
-                                            <?php     
-                                                if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { ?>
-                                                     <?php get_template_part("template-parts/search/more-results"); ?>
-                                                <?php } else { ?>
-                                                     <?php get_template_part("template-parts/search/more-results"); ?>
-                                                     <?php get_template_part("template-parts/search/more-results_maggioli"); ?>
-                                            <?php } ?>
-    
-                          
+                                             <?php get_template_part("template-parts/search/more-results"); ?>
+                         
                                 <?php
                                 else :
                                     get_template_part( 'template-parts/content', 'none' );
