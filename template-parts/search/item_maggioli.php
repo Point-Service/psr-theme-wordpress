@@ -22,7 +22,7 @@ if ($data === null) {
     return;
 }
 
-// Debug: stampa la struttura dei dati per controllo (commentare o rimuovere in produzione)
+// Debug: stampa la struttura dei dati per controllo
 // echo '<pre>';
 // var_dump($data);
 // echo '</pre>';
@@ -43,6 +43,14 @@ if (empty($filtered_data)) {
 
 // Cicla attraverso i risultati filtrati e visualizzali
 foreach ($filtered_data as $item) {
+    // Debug: stampa l'elemento per trovare il campo corretto
+    // echo '<pre>';
+    // var_dump($item);
+    // echo '</pre>';
+
+    // Sostituisci 'title' con il nome corretto del campo che contiene il titolo
+    $titolo = isset($item['title']) ? $item['title'] : ''; // Modifica 'title' con il campo giusto
+
     ?>
     <div class="cmp-card-latest-messages mb-3 mb-30" data-bs-toggle="modal" data-bs-target="#">
         <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
@@ -54,7 +62,7 @@ foreach ($filtered_data as $item) {
             <div class="card-body p-0 my-2">
                 <h3 class="green-title-big t-primary mb-8">
                     <a class="text-decoration-none" href="<?= $item['link'] ?>" data-element="service-link">
-                        <?php echo htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8'); ?>
+                        <?php echo htmlspecialchars($titolo, ENT_QUOTES, 'UTF-8'); ?>
                     </a>
                 </h3>
                 <p class="text-paragraph">
@@ -66,4 +74,5 @@ foreach ($filtered_data as $item) {
     <?php
 }
 ?>
+
 
