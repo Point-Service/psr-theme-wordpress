@@ -96,13 +96,7 @@ get_header();
                                                 get_template_part("template-parts/search/item");  
                                                 
                                             endwhile; ?> 
-
-                                                 
-                                             <?php /* Cerca nei servizi Maggioli */
-                                              if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) {   
-                                                     get_template_part("template-parts/search/item_maggioli");                                                    
-                                                 }
-                                               ?> 
+                                           
                                     </div>  
 
                                              <?php get_template_part("template-parts/search/more-results"); ?>
@@ -113,6 +107,13 @@ get_header();
 
                                 endif;
                                 ?>
+                                 <?php /* Cerca nei servizi Maggioli */
+                                              if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) {   
+                                                     get_template_part("template-parts/search/item_maggioli");                                                    
+                                                 }
+                                  ?> 
+
+                                    
                                 </div>
                             </div>
                         </div>
