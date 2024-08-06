@@ -103,6 +103,11 @@ get_header();
                                                  }
       
                                             endwhile; ?> 
+                                             <?php
+                                              if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) {   
+                                                     get_template_part("template-parts/search/item_maggioli");                                                    
+                                                 }
+                                               ?> 
                                     </div>  
 
                                              <?php get_template_part("template-parts/search/more-results"); ?>
