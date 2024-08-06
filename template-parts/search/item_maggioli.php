@@ -1,4 +1,3 @@
-lllllllllll
 
 <?php
     global $title, $description, $with_shadow, $data_element;
