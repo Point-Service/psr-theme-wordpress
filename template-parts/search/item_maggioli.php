@@ -35,6 +35,12 @@ if (!empty($search_text)) {
     $filtered_data = $data;
 }
 
+// Conta il numero di risultati trovati
+$total_services = count($filtered_data);
+
+// Visualizza il totale dei servizi trovati
+echo "<p><strong>Servizi trovati: $total_services</strong></p>";
+
 // Se non ci sono risultati, mostra un messaggio
 if (empty($filtered_data)) {
     echo "Nessun risultato trovato per '$search_text'.";
