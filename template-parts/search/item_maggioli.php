@@ -22,7 +22,13 @@ if ($data === null) {
     return;
 }
 
+// Debug: stampa la struttura dei dati per controllo
+echo '<pre>';
+var_dump($data);
+echo '</pre>';
 
+// Definisci la variabile di ricerca
+$search_text = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Filtra i dati in base al testo di ricerca nel titolo
 $filtered_data = array_filter($data, function($item) use ($search_text) {
@@ -37,6 +43,11 @@ if (empty($filtered_data)) {
 
 // Cicla attraverso i risultati filtrati e visualizzali
 foreach ($filtered_data as $item) {
+    // Debug: stampa i singoli elementi per controllo
+    echo '<pre>';
+    var_dump($item);
+    echo '</pre>';
+    
     ?>
     <div class="cmp-card-latest-messages mb-3 mb-30" data-bs-toggle="modal" data-bs-target="#">
         <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
@@ -47,10 +58,12 @@ foreach ($filtered_data as $item) {
             </div>
             <div class="card-body p-0 my-2">
                 <h3 class="green-title-big t-primary mb-8">
-                    <a class="text-decoration-none" href="<?= $item['link'] ?>" data-element="service-link"><?php echo $item['title']; ?></a>
+                    <a class="text-decoration-none" href="<?= $item['link'] ?>" data-element="service-link">
+                        <?php echo htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8'); ?>
+                    </a>
                 </h3>
                 <p class="text-paragraph">
-                    <?php echo $item['descrizione']; ?>
+                    <?php echo htmlspecialchars($item['descrizione'], ENT_QUOTES, 'UTF-8'); ?>
                 </p>
             </div>
         </div>
@@ -58,3 +71,4 @@ foreach ($filtered_data as $item) {
     <?php
 }
 ?>
+
