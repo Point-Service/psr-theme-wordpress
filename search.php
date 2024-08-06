@@ -97,9 +97,11 @@ get_header();
    
                                                 if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { 
                                                     get_template_part("template-parts/search/item");
+                                                    aaaaaaaa
                                                   } else { 
                                                      get_template_part("template-parts/search/item");
                                                      get_template_part("template-parts/search/item_maggioli");
+                                                    bbbbbbbb
                                                  }
       
                                             endwhile; ?> 
