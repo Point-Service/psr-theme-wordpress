@@ -93,16 +93,10 @@ get_header();
 
                                                 $load_card_type = 'global-search';
                                                 
+                                                get_template_part("template-parts/search/item");  
                                                 
-   
-                                                if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { 
-                                                    get_template_part("template-parts/search/item");
-                                                  } else { 
-                                                     get_template_part("template-parts/search/item");
-                                                     get_template_part("template-parts/search/item_maggioli");                                                    
-                                                 }
-      
                                             endwhile; ?> 
+    
                                              <?php
                                               if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) {   
                                                      get_template_part("template-parts/search/item_maggioli");                                                    
