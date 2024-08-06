@@ -96,8 +96,9 @@ get_header();
                                                 get_template_part("template-parts/search/item");  
                                                 
                                             endwhile; ?> 
-    
-                                             <?php
+
+                                                 
+                                             <?php /* Cerca nei servizi Maggioli */
                                               if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) {   
                                                      get_template_part("template-parts/search/item_maggioli");                                                    
                                                  }
