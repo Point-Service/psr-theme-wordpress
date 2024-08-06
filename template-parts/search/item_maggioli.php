@@ -59,11 +59,11 @@ foreach ($filtered_data as $item) {
             <div class="card-body p-0 my-2">
                 <h3 class="green-title-big t-primary mb-8">
                     <a class="text-decoration-none" href="<?= $item['link'] ?>" data-element="service-link">
-                        <?php echo htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8'); ?>
+                        <?php echo htmlspecialchars($item['title']); ?>
                     </a>
                 </h3>
                 <p class="text-paragraph">
-                    <?php echo htmlspecialchars($item['descrizione'], ENT_QUOTES, 'UTF-8'); ?>
+                    <?php echo htmlspecialchars($item['descrizione']); ?>
                 </p>
             </div>
         </div>
