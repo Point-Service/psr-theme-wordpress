@@ -2,7 +2,8 @@
 global $post;
 
 // URL remoto da cui ottenere i dati
-$remote_url = "https://sportellotelematico.comune.roccalumera.me.it/rest/pnrr/procedures";
+ $url = dci_get_option('servizi_maggioli_url', 'servizi');
+ $remote_url = wp_remote_get($url);
 
 // Ottieni i dati dal link remoto
 $response = file_get_contents($remote_url);
