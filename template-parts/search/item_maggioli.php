@@ -22,13 +22,18 @@ if ($data === null) {
     return;
 }
 
-// Definisci la variabile di ricerca
-$search_text = isset($_GET['search']) ? $_GET['search'] : '';
+// Definisci la variabile di ricerca, usando il parametro di WordPress 's'
+$search_text = isset($_GET['s']) ? $_GET['s'] : '';
 
 // Filtra i dati in base al testo di ricerca nel titolo (campo "nome")
-$filtered_data = array_filter($data, function($item) use ($search_text) {
-    return stripos($item['nome'], $search_text) !== false;
-});
+if (!empty($search_text)) {
+    $filtered_data = array_filter($data, function($item) use ($search_text) {
+        return stripos($item['nome'], $search_text) !== false;
+    });
+} else {
+    // Se non c'è testo di ricerca, mostra tutti i risultati
+    $filtered_data = $data;
+}
 
 // Se non ci sono risultati, mostra un messaggio
 if (empty($filtered_data)) {
