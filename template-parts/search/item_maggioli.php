@@ -1,4 +1,5 @@
 
+
 <?php
     global $title, $description, $with_shadow, $data_element;
     if (!$title) $title = get_the_title();
@@ -112,5 +113,3 @@
     $total_services_loaded = get_procedures_data($search_term, $category_segment, $title);
     echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
-
-
