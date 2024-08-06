@@ -22,17 +22,12 @@ if ($data === null) {
     return;
 }
 
-// Debug: stampa la struttura dei dati per controllo
-// echo '<pre>';
-// var_dump($data);
-// echo '</pre>';
-
 // Definisci la variabile di ricerca
 $search_text = isset($_GET['search']) ? $_GET['search'] : '';
 
-// Filtra i dati in base al testo di ricerca nel titolo
+// Filtra i dati in base al testo di ricerca nel titolo (campo "nome")
 $filtered_data = array_filter($data, function($item) use ($search_text) {
-    return stripos($item['title'], $search_text) !== false;
+    return stripos($item['nome'], $search_text) !== false;
 });
 
 // Se non ci sono risultati, mostra un messaggio
@@ -43,14 +38,6 @@ if (empty($filtered_data)) {
 
 // Cicla attraverso i risultati filtrati e visualizzali
 foreach ($filtered_data as $item) {
-    // Debug: stampa l'elemento per trovare il campo corretto
-    // echo '<pre>';
-    // var_dump($item);
-    // echo '</pre>';
-
-    // Sostituisci 'title' con il nome corretto del campo che contiene il titolo
-    $titolo = isset($item['title']) ? $item['title'] : ''; // Modifica 'title' con il campo giusto
-
     ?>
     <div class="cmp-card-latest-messages mb-3 mb-30" data-bs-toggle="modal" data-bs-target="#">
         <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
@@ -61,8 +48,8 @@ foreach ($filtered_data as $item) {
             </div>
             <div class="card-body p-0 my-2">
                 <h3 class="green-title-big t-primary mb-8">
-                    <a class="text-decoration-none" href="<?= $item['link'] ?>" data-element="service-link">
-                        <?php echo htmlspecialchars($titolo, ENT_QUOTES, 'UTF-8'); ?> hgh
+                    <a class="text-decoration-none" href="<?= htmlspecialchars($item['url'], ENT_QUOTES, 'UTF-8'); ?>" data-element="service-link">
+                        <?php echo htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8'); ?>
                     </a>
                 </h3>
                 <p class="text-paragraph">
@@ -74,5 +61,6 @@ foreach ($filtered_data as $item) {
     <?php
 }
 ?>
+
 
 
