@@ -910,7 +910,7 @@ if (!function_exists("dci_truncate")) {
  * @return array
  */
 if(!function_exists("dci_get_data_pubblicazione_arr")) {
-    function dci_get_data_pubblicazione_arr($key = '', $prefix = '', $post_id) {
+    function dci_get_data_pubblicazione_arr($key = '', $prefix = '', $post_id = null) {
         global $post;
         $arrdata = array();
         if (!$post) $post = get_post($post_id);
@@ -935,7 +935,7 @@ if(!function_exists("dci_get_data_pubblicazione_arr")) {
  * @return string
  */
 if(!function_exists("dci_get_data_pubblicazione_ts")) {
-    function dci_get_data_pubblicazione_ts($key = '', $prefix = '', $post_id) {
+    function dci_get_data_pubblicazione_ts($key = '', $prefix = '', $post_id = null) {
         global $post;
         if (!$post) $post = get_post($post_id);
 
@@ -1086,12 +1086,12 @@ if(!function_exists("dci_get_related_unita_amministrative")) {
             );
         }
 
-        $servizi =  get_posts( $args );
+        $id_servizi =  get_posts( $args );
 
         $unita_organizzative = array();
 
-        foreach ($servizi as $servizio) {
-            $id = dci_get_meta('unita_responsabile', '_dci_servizio_', $servizio -> ID);
+        foreach ($id_servizi as $id_servizio) {
+            $id = dci_get_meta('unita_responsabile', '_dci_servizio_', $id_servizio);
 
             if (!dci_contains_element_with($unita_organizzative, $key= 'id', $value = $id)){
                 $unita_organizzative [] = array(
@@ -1124,7 +1124,7 @@ if(!function_exists("dci_get_img")) {
         $image_alt = get_post_meta( $img_post->ID, '_wp_attachment_image_alt', true);
         $image_title = get_the_title( $img_post->ID );
 
-        $img = '<img width="" height="" src="'.$url.'" ';        
+        $img = '<img src="'.$url.'" ';        
         if ($classes) $img .= 'class="'.$classes.'" ';
         if ($image_alt) $img .= 'alt="'.$image_alt.'" ';
         if ($image_title) $img .= 'title="'.$image_title.'" ';
@@ -1133,6 +1133,9 @@ if(!function_exists("dci_get_img")) {
         echo $img;
     }
 }
+
+//Fix relativo issue #262
+//Ad ogni invio del form lo "slash" viene moltiplicato (es. primo invio: /, secondo invio: //, terzo invio: ////, quarto invio: ////////), fino al raggiungimento del limite massimo previsto dal webserver per il metodo GET.
 
 if(!function_exists("dci_removeslashes")) {
     function dci_removeslashes($string) { 
