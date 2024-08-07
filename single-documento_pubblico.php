@@ -11,7 +11,7 @@ global $uo_id, $inline;
 
 get_header();
 ?>
-,,,,,,,,,,,,,,,,,,,,,,,,,
+
     <main>
         <?php 
         while ( have_posts() ) :
