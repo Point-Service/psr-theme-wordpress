@@ -23,8 +23,8 @@ $arrdata = explode('-', date_i18n("j-F-Y", $timestamp));
                         <?php dci_get_img($img ?: get_template_directory_uri()."/assets/img/repertorio/abdul-a-CxRBtNe243k-unsplash.jpg", 'rounded-top img-fluid', 'medium_large'); ?>
                     </figure>
                     <div class="card-calendar d-flex flex-column justify-content-center">
-                        <span class="card-date"><?php echo $start_date_arr[0]; ?></span>
-                        <span class="card-day"><?php echo $start_date_arr[1]; ?></span>
+                        <span class="card-date"><?php echo $arrdata[0]; ?></span>
+                        <span class="card-day"><?php echo $arrdata[1]; ?></span>
                     </div>
                 </div>
             </div>
