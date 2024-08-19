@@ -30,7 +30,7 @@ $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
             <div class="card-body">
                 <div class="category-top">
                     <a class="category text-decoration-none"
-                        href="<?php echo get_term_link($tipo_evento->term_id); ?>">
+                        href="#">
                         <?php echo $tipo_evento->name; ?>
                     </a>
                     <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
