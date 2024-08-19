@@ -11,6 +11,7 @@ $end_timestamp = dci_get_meta("data_orario_fine", $prefix, $post->ID);
 $end_date = date_i18n('d/m', date($end_timestamp));
 $end_date_arr = explode('-', date_i18n('d-F-Y-H-i', date($end_timestamp)));
 $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
+$arrdata = explode('-', date_i18n("j-F-Y", $timestamp));
 ?>
 
 <div class="col-lg-6 col-xl-4">
