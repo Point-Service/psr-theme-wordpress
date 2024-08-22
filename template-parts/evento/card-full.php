@@ -32,7 +32,7 @@ $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
                 <div class="category-top">
                     <a class="category text-decoration-none"
                        <! --   href="<?php echo get_term_link($tipo_evento->term_id); ?>"> -->
-                          href=""
+                          href="#"
                         <?php echo $tipo_evento->name; ?>
                     </a>
                     <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
