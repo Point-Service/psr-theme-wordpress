@@ -6,7 +6,7 @@ $img = dci_get_meta('immagine', $prefix, $post->ID);
 $descrizione = dci_get_meta('descrizione_breve', $prefix, $post->ID);
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
 ?>
-SUP
+
 <div class="col-lg-6 col-xl-4">
     <div class="card-wrapper shadow-sm rounded cmp-list-card-img">
         <div class="card card-img no-after rounded">
