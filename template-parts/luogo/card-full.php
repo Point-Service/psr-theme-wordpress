@@ -33,7 +33,7 @@ $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
                     <?php ++$count; }} ?>
                 </div>
                 <h3 class="cmp-list-card-img__body-title u-main-primary">
-                    <a class="text-decoration-none" href="<?php echo get_permalink($post->ID); ?>"><?php echo $post->post_title ?></a>
+                    <a class="text-decoration-none" href="#"><?php echo $post->post_title ?></a>
                 </h3>
                 <p class="cmp-list-card-img__body-description">
                     <?php echo $descrizione; ?>
