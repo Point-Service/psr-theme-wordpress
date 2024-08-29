@@ -338,18 +338,20 @@ get_header();
                                 </div>
                             </section>
                             <?php if ($servizi && is_array($servizi) && count($servizi)>0 ) { ?>
-                            <article id="servizi" class="it-page-section anchor-offset mt-5">
-                                <h3>Servizi collegati</h3>
-                                <div class="row">
-                                    <div class="col-12 col-sm-8">
-                                        <?php foreach ($servizi as $servizio_id) {
-                                            $servizio = get_post($servizio_id);
-                                            $with_border = true;
-                                            get_template_part("template-parts/servizio/card");
-                                        } ?>
-                                    </div>
-                                </div>
-                            </article>
+			        <article id="servizi" class="it-page-section anchor-offset mt-5">
+				    <h3>Servizi collegati</h3>
+				    <?php foreach ($servizi as $servizio_id) { ?>
+				        <div class="row">
+				            <div class="col-12 col-sm-8">
+				                <?php 
+				                    $servizio = get_post($servizio_id);
+				                    $with_border = true;
+				                    get_template_part("template-parts/servizio/card");
+				                ?>
+				            </div>
+				        </div>
+				    <?php } ?>
+				</article>
                             <?php } ?>
                             <?php if ($sede_principale) { ?>
 			    <p></p>
