@@ -119,7 +119,10 @@
                             Motivo dell&#x27;appuntamento
                         </label>
                         <select id="motivo-appuntamento" class="">
-                        	<option selected value="test">test</option>                        
+                        	<option selected value="test">test</option> 
+                            <option selected="selected" value="prova">
+                               Prova
+                            </option>
                         </select>
                     </div>
                 </div>
