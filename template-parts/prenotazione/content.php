@@ -25,7 +25,7 @@
                         <h2 class="title-xxlarge mb-0">Ufficio*</h2>
                     </div>
                     <p class="subtitle-small mb-0">
-                        Scegli l’ufficio a cui vuoi richiedere l’appuntamento
+                        Scegli l’ufficio a cui vuoi richiedere l’appuntamento hhhh
                     </p>
                 </div>
                 <div class="card-body p-0">
