@@ -349,7 +349,7 @@ get_header();
 				                    get_template_part("template-parts/servizio/card");
 				                ?>
 				            </div>
-				        </div>
+				        </div><p></p>
 				    <?php } ?>
 				</article>
                             <?php } ?>
