@@ -336,7 +336,7 @@ get_header();
 
                                     <br>
                                 </div>
-                            </section>llllllllllllllllllllllllllllll
+                            </section>
                             <?php if ($servizi && is_array($servizi) && count($servizi)>0 ) { ?>
 			        <article id="servizi" class="it-page-section anchor-offset mt-5">
 				    <h3>Servizi collegati</h3>
