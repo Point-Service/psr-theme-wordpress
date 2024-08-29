@@ -116,7 +116,7 @@
                 <div class="card-body p-0">
                     <div class="select-wrapper p-0 select-partials">
                         <label for="motivo-appuntamento" class="visually-hidden">
-                            Motivo dell&#x27;appuntamento
+                            Motivo dell&#x27;appuntamento          jjjjjjjjjjjjjjjjjj
                         </label>
                         <select id="motivo-appuntamento" class="">
                         	<option selected value="test">test</option> 
