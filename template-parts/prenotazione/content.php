@@ -25,7 +25,7 @@
                         <h2 class="title-xxlarge mb-0">Ufficio*</h2>
                     </div>
                     <p class="subtitle-small mb-0">
-                        Scegli l’ufficio a cui vuoi richiedere l’appuntamento hhhh
+                        Scegli l’ufficio a cui vuoi richiedere l’appuntamento
                     </p>
                 </div>
                 <div class="card-body p-0">
@@ -110,14 +110,15 @@
                         <h2 class="title-xxlarge mb-0" >Motivo*</h2>
                     </div>
                     <p class="subtitle-small mb-0">
-                        Scegli il motivo dell’appuntamento hgggggg
+                        Scegli il motivo dell’appuntamento
                     </p>
                 </div>
                 <div class="card-body p-0">
                     <div class="select-wrapper p-0 select-partials">
                         <label for="motivo-appuntamento" class="visually-hidden">
-                            Motivo dell&#x27;appuntamento          jjjjjjjjjjjjjjjjjj
+                            Motivo dell&#x27;appuntamento
                         </label>
+                        lkkkkkkkkkkkkllllllllllll
                         <select id="motivo-appuntamento" class="">
                         	<option selected value="test">test</option> 
                             <option selected="selected" value="prova">
