@@ -118,12 +118,12 @@
                         <label for="motivo-appuntamento" class="visually-hidden">
                             Motivo dell&#x27;appuntamento
                         </label>
-                        lkkkkkkkkkkkkllllllllllll
                         <select id="motivo-appuntamento" class="">
+                            <?php foreach ($months as $month) {
+                                echo '<option value="'.$month.'">'.date_i18n('F', mktime(0, 0, 0, $month, 10)).'</option>';
+                            } ?>
                         	<option selected value="test">test</option> 
-                            <option selected="selected" value="prova">
-                               Prova
-                            </option>
+                            <option selected="selected" value="prova"> Prova</option>
                         </select>
                     </div>
                 </div>
