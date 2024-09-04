@@ -376,6 +376,31 @@ get_header();
                                 </div>
                             </section>
                             <?php } ?>
+
+         <?php if( is_array($documenti) && count($documenti) ) { ?>
+                    <article class="it-page-section anchor-offset mt-5">
+                        <h4 id="documenti">Documenti</h4>
+                        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                            <?php foreach ($documenti as $doc_id) {
+                                $documento = get_post($doc_id);
+                            ?>
+                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                <svg class="icon" aria-hidden="true">
+                                <use
+                                    xlink:href="#it-clip"
+                                ></use>
+                                </svg>
+                                <div class="card-body">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" href="<?php echo get_permalink($doc_id); ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Visualizza il documento <?php echo $documento->post_title; ?>">
+                                        <?php echo $documento->post_title; ?>
+                                    </a>
+                                </h5>
+                                </div>
+                            </div>
+                            <?php } ?>
+
+				
                              <?php if ($allegati) { ?>
                             <section class="it-page-section">
                                 <h2 class="mb-3" id="contacts">Allegati</h2>
