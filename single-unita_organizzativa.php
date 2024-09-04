@@ -1,12 +1,14 @@
 <?php
+
 /**
- * Servizio template file
+ * Unità Organizzativa template file
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package Design_Comuni_Italia
+ * @package Design_CDR_Italia
+ * Developer : Alessio Lazzaron, Marco Rubin
  */
-global $uo_id, $file_url, $hide_arguments;
+global $uo_id, $file_url, $hide_arguments, $luogo;
 
 get_header();
 ?>
