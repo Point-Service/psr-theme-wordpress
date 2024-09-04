@@ -383,32 +383,21 @@ get_header();
                             <?php } ?>
 
    				
-                      <?php if( is_array($allegati) && count($allegati) ) { ?>
-                    <article class="it-page-section anchor-offset mt-5">
-                        <h4 id="allegati">Allegatigfhfdhfdhdhdgff</h4>
-                        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                            <?php foreach ($allegati as $all_url) {
-                                $all_id = attachment_url_to_postid($all_url);
-                                $allegato = get_post($all_id);
-                            ?>
-                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                <svg class="icon" aria-hidden="true">
-                                <use
-                                    xlink:href="#it-clip"
-                                ></use>
-                                </svg>
-                                <div class="card-body">
-                                <h5 class="card-title">
-                                    <a class="text-decoration-none" href="<?php echo get_the_guid($allegato); ?>" aria-label="Scarica l'allegato <?php echo $allegato->post_title; ?>" title="Scarica l'allegato <?php echo $allegato->post_title; ?>">
-                                        <?php echo $allegato->post_title; ?>
-                                    </a>
-                                </h5>
+           <?php if ($allegati && is_array($allegati) && count($allegati) > 0) { ?>
+                            <section id="allegati" class="it-page-section mb-4">
+                                <h2 class="h3 my-2">Documenti</h2>
+                                <div class="row">
+                                    <?php foreach ($allegati as $allegato_id) { ?>
+                                        <div class="col-md-6 col-sm-12 mb-3 card-wrapper">
+                                            <?php
+                                            $documento = get_post($allegato_id);
+                                            $with_border = true;
+                                            get_template_part("template-parts/documento/card"); ?>
+                                        </div>
+                                    <?php  } ?>
                                 </div>
-                            </div>
-                            <?php } ?>
-                        </div>
-                    </article>
-                    <?php } ?>
+                            </section>
+                        <?php } ?>
 
 				
                             <section class="it-page-section mb-30">
