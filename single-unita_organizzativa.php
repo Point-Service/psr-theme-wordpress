@@ -383,16 +383,13 @@ get_header();
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
                                         <div class="card-wrapper rounded h-auto mt-10">
-                                        	<?php foreach ( $allegati as $allegato ) { ?>
-	                                            <div class="card card-bg bg-white card-thumb-rounded">
-						      <div class="card-body">
-							<div class="card-content">
-							    <h4 class="h5"><a href="<?php echo $allegato ?>"><?php echo $allegato ?></a></h4>
-							 </div>
-						      </div>
-						   <!-- /card-body -->
-					             </div>
-						<?php } ?>
+                                        	 <?php if ($allegati && is_array($allegati) && count($allegati) > 0) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#allegati">
+                                                                        <span class="title-medium">Documenti</span>
+                                                                    </a>
+                                                                </li>
+                                                            <?php } ?>
                                         </div>
                                     </div>
 
