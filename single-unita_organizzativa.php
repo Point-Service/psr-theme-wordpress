@@ -224,14 +224,21 @@ get_header();
                                                                         <span class="title-medium">Altre sedi</span>
                                                                     </a>
                                                                 </li>
-                                                                <?php } ?>
-                                                                <?php if ( $allegati ) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#more-info">
-                                                                        <span class="title-medium">Allegati</span>
-                                                                    </a>
-                                                                </li>
-                                                                <?php } ?>
+                        <?php if ($allegati && is_array($allegati) && count($allegati) > 0) { ?>
+                            <section id="allegati" class="it-page-section mb-4">
+                                <h2 class="h3 my-2">Documenti</h2>
+                                <div class="row">
+                                    <?php foreach ($allegati as $allegato_id) { ?>
+                                        <div class="col-md-6 col-sm-12 mb-3 card-wrapper">
+                                            <?php
+                                            $documento = get_post($allegato_id);
+                                            $with_border = true;
+                                            get_template_part("template-parts/documento/card"); ?>
+                                        </div>
+                                    <?php  } ?>
+                                </div>
+                            </section>
+                        <?php } ?>
        
                                                                 <?php if ( $uo_id ) { ?>
                                                                 <li class="nav-item">
