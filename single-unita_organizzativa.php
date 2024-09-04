@@ -17,8 +17,8 @@ get_header();
             $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
 
             // prefix: _dci_unita_organizzativa_
-            
-           
+             
+            $prefix = "_dci_unita_organizzativa_";
             // $motivo_stato = dci_get_meta("motivo_stato");
             $sottotitolo = dci_get_meta("sottotitolo");
             $descrizione_breve = dci_get_meta("descrizione_breve");
@@ -46,8 +46,9 @@ get_header();
             $persone = dci_get_meta("persone_struttura");
 
             $allegati = dci_get_meta("allegati");
+	   $allegati = dci_get_meta("allegati", $prefix, $post->ID);
 
-			$sede_principale = dci_get_meta("sede_principale");
+	    $sede_principale = dci_get_meta("sede_principale");
 
             $servizi = dci_get_meta("elenco_servizi_offerti");
 
