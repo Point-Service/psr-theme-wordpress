@@ -382,43 +382,34 @@ get_header();
                             <?php } ?>
 
    				
-                             <?php if ($allegati) { ?>
-                            <section class="it-page-section">
-                                <h2 class="mb-3" id="contacts">Allegati</h2>
-                                <div class="row">
-                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
-                                        <div class="card-wrapper rounded h-auto mt-10">
-     
-
-						
-                                        	<?php foreach ( $allegati as $all_url )
-			   $all_id = attachment_url_to_postid($all_url);
-                                $allegato = get_post($all_id);	    
-			    { ?>
-	                                            <div class="card card-bg bg-white card-thumb-rounded">
-						      <div class="card-body">
-							<div class="card-content">
-							    <h4 class="h5">
-								                                      <a class="text-decoration-none" href="<?php echo get_the_guid($allegato); ?>" aria-label="Scarica l'allegato <?php echo $allegato->post_title; ?>" title="Scarica l'allegato <?php echo $allegato->post_title; ?>">
+                      <?php if( is_array($allegati) && count($allegati) ) { ?>
+                    <article class="it-page-section anchor-offset mt-5">
+                        <h4 id="allegati">Allegati</h4>
+                        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                            <?php foreach ($allegati as $all_url) {
+                                $all_id = attachment_url_to_postid($all_url);
+                                $allegato = get_post($all_id);
+                            ?>
+                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                <svg class="icon" aria-hidden="true">
+                                <use
+                                    xlink:href="#it-clip"
+                                ></use>
+                                </svg>
+                                <div class="card-body">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" href="<?php echo get_the_guid($allegato); ?>" aria-label="Scarica l'allegato <?php echo $allegato->post_title; ?>" title="Scarica l'allegato <?php echo $allegato->post_title; ?>">
                                         <?php echo $allegato->post_title; ?>
-                                    </a>  
-								    </h4>
-
-                                               
-
-								
-							 </div>
-						      </div>
-						   <!-- /card-body -->
-					             </div>
-						<?php } ?>
-                                        </div>
-                                    </div>
-
-                                    
+                                    </a>
+                                </h5>
                                 </div>
-                            </section>
+                            </div>
                             <?php } ?>
+                        </div>
+                    </article>
+                    <?php } ?>
+
+				
                             <section class="it-page-section mb-30">
                                 <h2 class="title-xxlarge mb-3" id="costs">Contatti</h2>
                                 <div class="richtext-wrapper lora">
