@@ -398,9 +398,13 @@ get_header();
 	                                            <div class="card card-bg bg-white card-thumb-rounded">
 						      <div class="card-body">
 							<div class="card-content">
-							    <h4 class="h5"><a href="<?php echo $allegato ?>"><?php echo $allegato ?></a></h4>
+							    <h4 class="h5">
+								                                      <a class="text-decoration-none" href="<?php echo get_the_guid($allegato); ?>" aria-label="Scarica l'allegato <?php echo $allegato->post_title; ?>" title="Scarica l'allegato <?php echo $allegato->post_title; ?>">
+                                        <?php echo $allegato->post_title; ?>
+                                    </a>  
+								    </h4>
 
-                                                    </a>
+                                               
 
 								
 							 </div>
