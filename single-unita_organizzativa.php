@@ -1,14 +1,12 @@
 <?php
-
 /**
- * Unità Organizzativa template file
+ * Servizio template file
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package Design_CDR_Italia
- * Developer : Alessio Lazzaron, Marco Rubin
+ * @package Design_Comuni_Italia
  */
-global $uo_id, $file_url, $hide_arguments, $luogo;
+global $uo_id, $file_url, $hide_arguments;
 
 get_header();
 ?>
@@ -64,7 +62,7 @@ get_header();
                 array_push($contatti, $contatto);
             }
            	
-        $allegati = dci_get_meta("allegati", $prefix, $post->ID);
+
             $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
             $condizioni_servizio = dci_get_meta("condizioni_servizio");     
             $uo_id = intval(dci_get_meta("unita_responsabile"));
@@ -224,21 +222,14 @@ get_header();
                                                                         <span class="title-medium">Altre sedi</span>
                                                                     </a>
                                                                 </li>
-                        <?php if ($allegati && is_array($allegati) && count($allegati) > 0) { ?>
-                            <section id="allegati" class="it-page-section mb-4">
-                                <h2 class="h3 my-2">Documenti</h2>
-                                <div class="row">
-                                    <?php foreach ($allegati as $allegato_id) { ?>
-                                        <div class="col-md-6 col-sm-12 mb-3 card-wrapper">
-                                            <?php
-                                            $documento = get_post($allegato_id);
-                                            $with_border = true;
-                                            get_template_part("template-parts/documento/card"); ?>
-                                        </div>
-                                    <?php  } ?>
-                                </div>
-                            </section>
-                        <?php } ?>
+                                                                <?php } ?>
+                                                                <?php if ( $allegati ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#more-info">
+                                                                        <span class="title-medium">Allegati</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
        
                                                                 <?php if ( $uo_id ) { ?>
                                                                 <li class="nav-item">
@@ -433,4 +424,3 @@ get_header();
 get_footer();
 
  ?>
-
