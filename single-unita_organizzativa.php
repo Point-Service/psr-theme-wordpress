@@ -356,33 +356,6 @@ get_header();
 				    <?php } ?>
 				</article>
                             <?php } ?>
-
-			                    <?php if( is_array($documenti) && count($documenti) ) { ?>
-                    <article class="it-page-section anchor-offset mt-5">
-                        <h4 id="documenti">Documenti</h4>
-                        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                            <?php foreach ($documenti as $doc_id) {
-                                $documento = get_post($doc_id);
-                            ?>
-                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                <svg class="icon" aria-hidden="true">
-                                <use
-                                    xlink:href="#it-clip"
-                                ></use>
-                                </svg>
-                                <div class="card-body">
-                                <h5 class="card-title">
-                                    <a class="text-decoration-none" href="<?php echo get_permalink($doc_id); ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Visualizza il documento <?php echo $documento->post_title; ?>">
-                                        <?php echo $documento->post_title; ?>
-                                    </a>
-                                </h5>
-                                </div>
-                            </div>
-                            <?php } ?>
-                        </div>
-                    </article>
-                    <?php } ?>
-
 				
                             <?php if ($sede_principale) { ?>
 			    <p></p>
@@ -415,16 +388,18 @@ get_header();
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
                                         <div class="card-wrapper rounded h-auto mt-10">
-                                        	<?php foreach ( $allegati as $allegato ) { ?>
+     
+
+						
+                                        	<?php foreach ( $allegati as $all_url )
+			   $all_id = attachment_url_to_postid($all_url);
+                                $allegato = get_post($all_id);	    
+			    { ?>
 	                                            <div class="card card-bg bg-white card-thumb-rounded">
 						      <div class="card-body">
 							<div class="card-content">
 							    <h4 class="h5"><a href="<?php echo $allegato ?>"><?php echo $allegato ?></a></h4>
 
-
-								
-                                 <a class="text-decoration-none" href="<?php echo $allegato; ?>" aria-label="Scarica il documento <?php echo $allegato->post_title; ?>" title="Scarica il documento <?php echo $allegato->post_title; ?>">
-                                                        <?php echo $allegato->post_title; ?> (<?php echo getFileSizeAndFormat($allegato);?>)
                                                     </a>
 
 								
