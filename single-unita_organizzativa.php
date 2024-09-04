@@ -64,7 +64,7 @@ get_header();
                 array_push($contatti, $contatto);
             }
            	
-
+        $allegati = dci_get_meta("allegati", $prefix, $post->ID);
             $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
             $condizioni_servizio = dci_get_meta("condizioni_servizio");     
             $uo_id = intval(dci_get_meta("unita_responsabile"));
