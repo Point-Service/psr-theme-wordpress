@@ -387,6 +387,14 @@ get_header();
 						      <div class="card-body">
 							<div class="card-content">
 							    <h4 class="h5"><a href="<?php echo $allegato ?>"><?php echo $allegato ?></a></h4>
+
+
+								
+                                 <a class="text-decoration-none" href="<?php echo $allegato; ?>" aria-label="Scarica il documento <?php echo $allegato->post_title; ?>" title="Scarica il documento <?php echo $allegato->post_title; ?>">
+                                                        <?php echo $allegato->post_title; ?> (<?php echo getFileSizeAndFormat($allegato);?>)
+                                                    </a>
+
+								
 							 </div>
 						      </div>
 						   <!-- /card-body -->
