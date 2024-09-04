@@ -485,24 +485,26 @@ get_header();
                             </section>
                             <?php } ?>
 
-                            <?php if (!empty($documenti_ids)) { ?>
-                            <section class="it-page-section mb-30">
-                                <h2 class="h3 mb-3" id="costs">Documenti correlati</h2>
-                                <div class="richtext-wrapper lora" data-element="service-document">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6 col-lg-6 mb-3">
-                                            <?php
-                                                foreach($documenti_ids as $documento_id){
-                                                    $documento = get_post($documento_id);
-                                                    get_template_part("template-parts/documento/card");
-                                                }
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                            <?php } ?>
 
+						    
+	                        <?php if (!empty($documenti_ids)) { ?>
+	                            <section class="it-page-section mb-30">
+	                                <h2 class="h3 mb-3" id="costs">Documenti correlati</h2>
+	                                <div class="richtext-wrapper lora" data-element="service-document">
+	                                    <div class="row">
+	                                        <?php
+	                                        foreach ($documenti_ids as $documento_id) { ?>
+	                                            <div class="col-12 col-md-6 mb-3 card-wrapper">
+	                                                <?php
+	                                                $documento = get_post($documento_id);
+	                                                get_template_part("template-parts/documento/card");
+	                                                ?>
+	                                            </div>
+	                                        <?php } ?>
+	                                    </div>
+	                                </div>
+	                            </section>
+	                        <?php } ?>
 
                             <?php if ( $costi ) { ?>
                             <section class="it-page-section mb-30">
