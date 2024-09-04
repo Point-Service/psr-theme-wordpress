@@ -77,7 +77,10 @@ global $the_query, $load_posts, $load_card_type;
                     foreach ($posts as $post) {get_template_part('template-parts/aree-amministrative/cards-list');
                 }?>
             </div>
+            
+            <?php get_template_part("template-parts/search/more-results"); ?>
 
+            
         </div>
     </form>
 </div>
