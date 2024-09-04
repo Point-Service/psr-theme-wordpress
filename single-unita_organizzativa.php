@@ -19,6 +19,7 @@ get_header();
         
              $prefix= '_dci_unita_organizzativa_';
              $documenti = dci_get_meta("documenti", $prefix, $post->ID);
+		
             // $motivo_stato = dci_get_meta("motivo_stato");
             $sottotitolo = dci_get_meta("sottotitolo");
             $descrizione_breve = dci_get_meta("descrizione_breve");
@@ -45,9 +46,9 @@ get_header();
 
             $persone = dci_get_meta("persone_struttura");
 
-            $allegati = dci_get_meta("allegati");
-
-			$sede_principale = dci_get_meta("sede_principale");
+           ' $allegati = dci_get_meta("allegati");
+            $allegati = dci_get_meta("allegati", $prefix, $post->ID);
+	   $sede_principale = dci_get_meta("sede_principale");
 
             $servizi = dci_get_meta("elenco_servizi_offerti");
 
@@ -384,7 +385,7 @@ get_header();
    				
                       <?php if( is_array($allegati) && count($allegati) ) { ?>
                     <article class="it-page-section anchor-offset mt-5">
-                        <h4 id="allegati">Allegatillllll</h4>
+                        <h4 id="allegati">Allegati</h4>
                         <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                             <?php foreach ($allegati as $all_url) {
                                 $all_id = attachment_url_to_postid($all_url);
