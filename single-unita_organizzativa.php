@@ -46,8 +46,8 @@ get_header();
 
             $persone = dci_get_meta("persone_struttura");
 
-           $allegati = dci_get_meta("allegati");
          
+           $allegati = dci_get_meta("allegati", $prefix, $post->ID);
 	   $sede_principale = dci_get_meta("sede_principale");
 
             $servizi = dci_get_meta("elenco_servizi_offerti");
