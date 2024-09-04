@@ -381,10 +381,10 @@ get_header();
                             </section>
                             <?php } ?>
 
-   				u
+   				
                       <?php if( is_array($allegati) && count($allegati) ) { ?>
                     <article class="it-page-section anchor-offset mt-5">
-                        <h4 id="allegati">Allegati</h4>
+                        <h4 id="allegati">Allegatillllll</h4>
                         <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                             <?php foreach ($allegati as $all_url) {
                                 $all_id = attachment_url_to_postid($all_url);
