@@ -200,9 +200,15 @@ function dci_add_unita_organizzativa_metaboxes() {
     ) );
 
 
-    // Funzione per ottenere i dati dal servizio web e popolare le opzioni
+// Funzione per ottenere i dati dal servizio web e popolare le opzioni
 function get_services_options() {
     $url = dci_get_option('servizi_maggioli_url', 'servizi');
+
+    // Controlla se l'URL è valido e ha più di 2 caratteri
+    if (strlen($url) <= 2) {
+        return []; // Restituisci un array vuoto se l'URL non è valido
+    }
+
     $response = wp_remote_get($url);
     $services_options = [];
 
