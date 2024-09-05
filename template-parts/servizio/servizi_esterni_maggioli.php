@@ -21,19 +21,27 @@ function get_procedures_data($search_term = null)
                     continue; // Ignora questo servizio se il termine di ricerca non è presente
                 }
 
+                $names = explode(',', $procedure['nome']); // Split dei nomi dei servizi
+                $urls = explode(',', $procedure['url']); // Split degli URL
+
+                // Assicurati che il numero di URL corrisponda al numero di nomi
+                if (count($names) !== count($urls)) {
+                    echo "Errore: Il numero di URL non corrisponde al numero di nomi dei servizi.";
+                    continue; // Salta questa iterazione se non corrispondono
+                }
+
                 $description = $procedure['descrizione_breve'];
                 $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                 $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
-                $url = $procedure['url'];
 
-                // Splitta i servizi separati da virgola nel campo service
-                $services = explode(',', $description); // Assumendo che i servizi siano separati nel campo descrizione
-                foreach ($services as $service_name) {
-                    $service_name = trim($service_name); // Rimuovi eventuali spazi vuoti attorno al nome del servizio
+                // Itera su nomi e URL per creare servizi individuali
+                foreach ($names as $index => $name) {
+                    $name = trim($name); // Rimuovi eventuali spazi vuoti attorno al nome
+                    $url = trim($urls[$index]); // Associa l'URL corrispondente
 
                     // Crea un nuovo servizio
                     $service = [
-                        'name' => $service_name,
+                        'name' => $name,
                         'description' => $description,
                         'category' => $category,
                         'url' => $url
