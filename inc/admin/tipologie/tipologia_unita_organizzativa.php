@@ -242,16 +242,34 @@ $services_options = get_services_options();
         'context'      => 'normal',
         'priority'     => 'high',
     ) );
-    $cmb_servizi->add_field( array(
-        'id' => $prefix . 'elenco_servizi_offerti',
-        'name'    => __( 'Elenco servizi offerti', 'design_comuni_italia' ),
-        'desc' => __( 'Relazione con i servizi offerti dalla struttura' , 'design_comuni_italia' ),
-        'type'    => 'pw_multiselect',
-        'options' => dci_get_posts_options('servizio'),
-        'attributes' => array(
-            'placeholder' =>  __( 'Seleziona i Servizi', 'design_comuni_italia' ),
-        )
-    ) );
+
+    
+    // Verifica se l'URL di Maggioli è valido e ha più di 2 caratteri
+    $url = dci_get_option('servizi_maggioli_url', 'servizi');
+    if (strlen($url) > 2) {
+        // Recupera le opzioni dei servizi se l'URL è valido
+        $services_options = get_services_options();
+    
+        $cmb_servizi->add_field(array(
+            'id'          => $prefix . 'elenco_servizi_offerti',
+            'name'        => __('Elenco servizi offerti', 'design_comuni_italia'),
+            'desc'        => __('Relazione con i servizi offerti dalla struttura', 'design_comuni_italia'),
+            'type'        => 'pw_multiselect',
+            'options'     => $services_options, // Usa le opzioni ottenute
+            'attributes'  => array(
+                'placeholder' => __('Seleziona i Servizi', 'design_comuni_italia'),
+            ),
+        ));
+    } else {
+        // Se l'URL non è valido, mostra un messaggio o gestisci come preferisci
+        $cmb_servizi->add_field(array(
+            'id'          => $prefix . 'elenco_servizi_offerti',
+            'name'        => __('Elenco servizi offerti', 'design_comuni_italia'),
+            'desc'        => __('Relazione con i servizi offerti dalla struttura', 'design_comuni_italia'),
+            'type'        => 'text',
+            'default'     => __('URL non valido per il recupero dei servizi', 'design_comuni_italia'),
+        ));
+    }
 
     //CONTATTI
     $cmb_contatti = new_cmb2_box( array(
