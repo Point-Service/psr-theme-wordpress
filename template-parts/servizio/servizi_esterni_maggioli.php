@@ -71,15 +71,18 @@ function output_services($services)
         // Separare le categorie in array
         $categories = explode(', ', $service['category']);
         
-        // Output per ogni categoria
+        // Output del servizio con categorie separate
         echo '<div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">';
         echo '<div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">';
         echo '<span class="visually-hidden">Categoria:</span>';
         echo '<div class="card-header border-0 p-0">';
 
+        // Iterare su ciascuna categoria e creare un link separato
         foreach ($categories as $category) {
             $category_slug = sanitize_title($category);
             $category_link = "/servizi-categoria/$category_slug";
+            
+            // Genera il link per ciascuna categoria
             echo '<a href="' . esc_url($category_link) . '" class="text-decoration-none">';
             echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . esc_html($category) . '</div>';
             echo '</a>';
@@ -103,4 +106,5 @@ $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
+
 
