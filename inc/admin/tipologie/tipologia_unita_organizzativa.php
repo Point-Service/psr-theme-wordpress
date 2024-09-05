@@ -199,41 +199,6 @@ function dci_add_unita_organizzativa_metaboxes() {
         ),
     ) );
 
-
-// Funzione per ottenere i dati dal servizio web e popolare le opzioni
-function get_services_options() {
-    $url = dci_get_option('servizi_maggioli_url', 'servizi');
-
-    // Controlla se l'URL è valido e ha più di 2 caratteri
-    if (strlen($url) <= 2) {
-        return []; // Restituisci un array vuoto se l'URL non è valido
-    }
-
-    $response = wp_remote_get($url);
-    $services_options = [];
-
-    if (is_array($response) && !is_wp_error($response)) {
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
-
-        if ($data) {
-            foreach ($data as $procedure) {
-                $name = $procedure['nome'];
-                $id = sanitize_title($name); // Usa una versione sanificata del nome per l'ID
-                $services_options[$id] = $name; // Aggiungi il servizio all'array delle opzioni
-            }
-        }
-    }
-
-    return $services_options;
-}
-
-
-// Recupera le opzioni dei servizi MAGGIOLI
-$services_options = get_services_options();
-
-
-
     //SERVIZI
     $cmb_servizi = new_cmb2_box( array(
         'id'           => $prefix . 'box_servizi',
@@ -242,34 +207,16 @@ $services_options = get_services_options();
         'context'      => 'normal',
         'priority'     => 'high',
     ) );
-
-    
-    // Verifica se l'URL di Maggioli è valido e ha più di 2 caratteri
-    $url = dci_get_option('servizi_maggioli_url', 'servizi');
-    if (strlen($url) > 2) {
-        // Recupera le opzioni dei servizi se l'URL è valido
-        $services_options = get_services_options();
-    
-        $cmb_servizi->add_field(array(
-            'id'          => $prefix . 'elenco_servizi_offerti',
-            'name'        => __('Elenco servizi offerti', 'design_comuni_italia'),
-            'desc'        => __('Relazione con i servizi offerti dalla struttura', 'design_comuni_italia'),
-            'type'        => 'pw_multiselect',
-            'options'     => $services_options, // Usa le opzioni ottenute
-            'attributes'  => array(
-                'placeholder' => __('Seleziona i Servizi', 'design_comuni_italia'),
-            ),
-        ));
-    } else {
-        // Se l'URL non è valido, mostra un messaggio o gestisci come preferisci
-        $cmb_servizi->add_field(array(
-            'id'          => $prefix . 'elenco_servizi_offerti',
-            'name'        => __('Elenco servizi offerti', 'design_comuni_italia'),
-            'desc'        => __('Relazione con i servizi offerti dalla struttura', 'design_comuni_italia'),
-            'type'        => 'text',
-            'default'     => __('URL non valido per il recupero dei servizi', 'design_comuni_italia'),
-        ));
-    }
+    $cmb_servizi->add_field( array(
+        'id' => $prefix . 'elenco_servizi_offerti',
+        'name'    => __( 'Elenco servizi offerti', 'design_comuni_italia' ),
+        'desc' => __( 'Relazione con i servizi offerti dalla struttura' , 'design_comuni_italia' ),
+        'type'    => 'pw_multiselect',
+        'options' => dci_get_posts_options('servizio'),
+        'attributes' => array(
+            'placeholder' =>  __( 'Seleziona i Servizi', 'design_comuni_italia' ),
+        )
+    ) );
 
     //CONTATTI
     $cmb_contatti = new_cmb2_box( array(
