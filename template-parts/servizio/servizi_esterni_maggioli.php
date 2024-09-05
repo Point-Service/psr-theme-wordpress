@@ -21,23 +21,25 @@ function get_procedures_data($search_term = null)
                     continue; // Ignora questo servizio se il termine di ricerca non è presente
                 }
 
-                // Splitta i nomi dei servizi se separati da virgola
-                $names = explode(',', $procedure['nome']);
-                foreach ($names as $name) {
-                    $name = trim($name); // Rimuovi eventuali spazi vuoti attorno al nome
-                    $description = $procedure['descrizione_breve'];
-                    $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-                    $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
-                    $url = $procedure['url'];
+                $description = $procedure['descrizione_breve'];
+                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
+                $url = $procedure['url'];
 
-                    // Aggiungi il servizio all'array corretto
+                // Splitta i servizi separati da virgola nel campo service
+                $services = explode(',', $description); // Assumendo che i servizi siano separati nel campo descrizione
+                foreach ($services as $service_name) {
+                    $service_name = trim($service_name); // Rimuovi eventuali spazi vuoti attorno al nome del servizio
+
+                    // Crea un nuovo servizio
                     $service = [
-                        'name' => $name,
+                        'name' => $service_name,
                         'description' => $description,
                         'category' => $category,
                         'url' => $url
                     ];
 
+                    // Aggiungi il servizio all'array corretto
                     if ($in_evidenza) {
                         $in_evidenza_services[] = $service;
                     } else {
