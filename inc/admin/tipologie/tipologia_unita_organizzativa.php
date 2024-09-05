@@ -229,7 +229,7 @@ function get_services_options() {
 }
 
 
-// Recupera le opzioni dei servizi
+// Recupera le opzioni dei servizi MAGGIOLI
 $services_options = get_services_options();
 
 
