@@ -22,7 +22,7 @@ function get_procedures_data($search_term = null)
                 }
 
                 $name = $procedure['nome'];
-                $description = $procedure['descrizione_breve'];
+                $description = format_description($procedure['descrizione_breve']);
                 $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
                 $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
                 $url = $procedure['url'];
@@ -64,6 +64,15 @@ function get_procedures_data($search_term = null)
     return $total_services;
 }
 
+// Funzione per formattare la descrizione del servizio
+function format_description($description)
+{
+    // Converti tutto il testo in minuscolo
+    $description = strtolower($description);
+    // Capitalizza solo la prima lettera
+    return ucfirst($description);
+}
+
 // Funzione per stampare i servizi
 function output_services($services)
 {
@@ -79,8 +88,8 @@ function output_services($services)
             $category_links[] = '<a href="'. esc_url($category_link) .'" class="text-decoration-none">' . esc_html($category) . '</a>';
         }
 
-        // Unisci i link delle categorie con '>>' come separatore
-        $category_links_html = implode(' &gt;&gt; ', $category_links);
+        // Unisci i link delle categorie con '-' come separatore
+        $category_links_html = implode(' - ', $category_links);
 ?>
         <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
             <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
@@ -110,4 +119,3 @@ $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
-
