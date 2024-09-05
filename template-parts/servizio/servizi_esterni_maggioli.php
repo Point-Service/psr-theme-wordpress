@@ -21,28 +21,32 @@ function get_procedures_data($search_term = null)
                     continue; // Ignora questo servizio se il termine di ricerca non è presente
                 }
 
-                $name = $procedure['nome'];
-                $description = $procedure['descrizione_breve'];
-                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
-                $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
-                $url = $procedure['url'];
+                // Splitta i nomi dei servizi se separati da virgola
+                $names = explode(',', $procedure['nome']);
+                foreach ($names as $name) {
+                    $name = trim($name); // Rimuovi eventuali spazi vuoti attorno al nome
+                    $description = $procedure['descrizione_breve'];
+                    $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                    $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
+                    $url = $procedure['url'];
 
-                // Aggiungi il servizio all'array corretto
-                $service = [
-                    'name' => $name,
-                    'description' => $description,
-                    'category' => $category,
-                    'url' => $url
-                ];
+                    // Aggiungi il servizio all'array corretto
+                    $service = [
+                        'name' => $name,
+                        'description' => $description,
+                        'category' => $category,
+                        'url' => $url
+                    ];
 
-                if ($in_evidenza) {
-                    $in_evidenza_services[] = $service;
-                } else {
-                    $other_services[] = $service;
+                    if ($in_evidenza) {
+                        $in_evidenza_services[] = $service;
+                    } else {
+                        $other_services[] = $service;
+                    }
+
+                    // Incrementa il contatore per ogni servizio
+                    $total_services++;
                 }
-
-                // Incrementa il contatore ad ogni iterazione
-                $total_services++;
             }
             
             // Output del totale
@@ -100,3 +104,4 @@ $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
+
