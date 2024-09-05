@@ -199,6 +199,35 @@ function dci_add_unita_organizzativa_metaboxes() {
         ),
     ) );
 
+
+    // Funzione per ottenere i dati dal servizio web e popolare le opzioni
+function get_services_options() {
+    $url = dci_get_option('servizi_maggioli_url', 'servizi');
+    $response = wp_remote_get($url);
+    $services_options = [];
+
+    if (is_array($response) && !is_wp_error($response)) {
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        if ($data) {
+            foreach ($data as $procedure) {
+                $name = $procedure['nome'];
+                $id = sanitize_title($name); // Usa una versione sanificata del nome per l'ID
+                $services_options[$id] = $name; // Aggiungi il servizio all'array delle opzioni
+            }
+        }
+    }
+
+    return $services_options;
+}
+
+
+// Recupera le opzioni dei servizi
+$services_options = get_services_options();
+
+
+
     //SERVIZI
     $cmb_servizi = new_cmb2_box( array(
         'id'           => $prefix . 'box_servizi',
