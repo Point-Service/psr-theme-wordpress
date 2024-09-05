@@ -25,10 +25,11 @@ function get_procedures_data($search_term = null)
                 $description = $procedure['descrizione_breve'];
                 
                 // Controlla se 'categoria' è un array o una stringa e separa correttamente
-                $categories = is_array($procedure['categoria']) ? $procedure['categoria'] : array_map('trim', explode(', ', $procedure['categoria']));
+                // Sostituisci la separazione con >> invece di , 
+                $categories = is_array($procedure['categoria']) ? $procedure['categoria'] : array_map('trim', explode('>>', $procedure['categoria']));
                 
                 // Separa gli URL se necessario (assumendo che gli URL siano distinti per le categorie)
-                $urls = is_array($procedure['url']) ? $procedure['url'] : array_map('trim', explode(', ', $procedure['url']));
+                $urls = is_array($procedure['url']) ? $procedure['url'] : array_map('trim', explode('>>', $procedure['url']));
 
                 // Aggiungi il servizio all'array corretto con categorie e URL separati
                 $service = [
@@ -87,7 +88,7 @@ function output_services($services)
 
             // Genera il link per ciascuna categoria
             $category_link = "/servizi-categoria/$category_slug";
-            echo '<a href="' . esc_url($category_link) . '" class="text-decoration-none">';
+            echo '<a href="' . esc_url($url) . '" class="text-decoration-none">';
             echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . esc_html($category) . '</div>';
             echo '</a>';
         }
@@ -111,4 +112,3 @@ $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
-
