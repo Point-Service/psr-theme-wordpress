@@ -23,20 +23,16 @@ function get_procedures_data($search_term = null)
 
                 $name = $procedure['nome'];
                 $description = $procedure['descrizione_breve'];
-                
-                // Controlla se 'categoria' è un array o una stringa e separa correttamente
-                // Sostituisci la separazione con >> invece di , 
-                $categories = is_array($procedure['categoria']) ? $procedure['categoria'] : array_map('trim', explode('>>', $procedure['categoria']));
-                
-                // Separa gli URL se necessario (assumendo che gli URL siano distinti per le categorie)
-                $urls = is_array($procedure['url']) ? $procedure['url'] : array_map('trim', explode('>>', $procedure['url']));
+                $category = is_array($procedure['categoria']) ? implode(', ', $procedure['categoria']) : $procedure['categoria'];
+                $in_evidenza = filter_var($procedure['in_evidenza'], FILTER_VALIDATE_BOOLEAN);
+                $url = $procedure['url'];
 
-                // Aggiungi il servizio all'array corretto con categorie e URL separati
+                // Aggiungi il servizio all'array corretto
                 $service = [
                     'name' => $name,
                     'description' => $description,
-                    'categories' => $categories,
-                    'urls' => $urls
+                    'category' => $category,
+                    'url' => $url
                 ];
 
                 if ($in_evidenza) {
@@ -48,7 +44,7 @@ function get_procedures_data($search_term = null)
                 // Incrementa il contatore ad ogni iterazione
                 $total_services++;
             }
-
+            
             // Output del totale
             echo "<h2>Servizi Aggiuntivi ( $total_services )</h2>";
 
@@ -72,38 +68,40 @@ function get_procedures_data($search_term = null)
 function output_services($services)
 {
     foreach ($services as $service) {
-        // Output del servizio con categorie e URL separati
-        echo '<div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">';
-        echo '<div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">';
-        echo '<span class="visually-hidden">Categoria:</span>';
-        echo '<div class="card-header border-0 p-0">';
+        // Genera i link alla categoria basato sul nome della categoria
+        $categories = explode(',', $service['category']);
+        $category_links = [];
 
-        // Iterare su ciascuna categoria e creare un link separato con l'URL corrispondente
-        foreach ($service['categories'] as $index => $category) {
-            // Crea lo slug per la categoria
+        foreach ($categories as $category) {
+            $category = trim($category);
             $category_slug = sanitize_title($category);
-
-            // Associa l'URL alla categoria correttamente, usando l'indice o il primo URL come fallback
-            $url = isset($service['urls'][$index]) ? $service['urls'][$index] : (count($service['urls']) > 0 ? $service['urls'][0] : '#');
-
-            // Genera il link per ciascuna categoria
             $category_link = "/servizi-categoria/$category_slug";
-            echo '<a href="' . esc_url($url) . '" class="text-decoration-none">';
-            echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . esc_html($category) . '</div>';
-            echo '</a>';
+            $category_links[] = '<a href="'. esc_url($category_link) .'" class="text-decoration-none">' . esc_html($category) . '</a>';
         }
 
-        echo '</div>';
-        echo '<div class="card-body p-0 my-2">';
-        echo '<h3 class="green-title-big t-primary mb-8">';
-        // Usa solo il primo URL come link al nome del servizio, se esiste una lista di URL
-        echo '<a class="text-decoration-none" href="' . esc_url($service['urls'][0]) . '" data-element="service-link">' . esc_html($service['name']) . '</a>';
-        echo '</h3>';
-        echo '<p class="text-paragraph">' . esc_html($service['description']) . '</p>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        echo '<p></p>';
+        // Unisci i link delle categorie con '>>' come separatore
+        $category_links_html = implode(' &gt;&gt; ', $category_links);
+?>
+        <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
+            <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
+                <span class="visually-hidden">Categoria:</span>
+                <div class="card-header border-0 p-0">
+                    <?php if ($category_links_html) {
+                        echo '<div class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase">' . $category_links_html . '</div>';
+                    } ?>
+                </div>
+                <div class="card-body p-0 my-2">
+                    <h3 class="green-title-big t-primary mb-8">
+                        <a class="text-decoration-none" href="<?php echo esc_url($service['url']); ?>" data-element="service-link"><?php echo esc_html($service['name']); ?></a>
+                    </h3>
+                    <p class="text-paragraph">
+                        <?php echo esc_html($service['description']); ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <p></p>
+<?php
     }
 }
 
@@ -112,3 +110,4 @@ $search_term = isset($_GET['search']) ? $_GET['search'] : null;
 $total_services_loaded = get_procedures_data($search_term);
 echo "<p>Servizi aggiuntivi: $total_services_loaded</p>";
 ?>
+
