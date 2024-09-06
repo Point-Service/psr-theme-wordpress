@@ -70,7 +70,7 @@
                                 Seleziona un mese
                             </option>
                             <?php foreach ($months as $month) {
-                                echo '<option value="'.$month.'">''</option>';
+                                echo '<option value="'.$month.'">ssss</option>';
                             } ?>
                         </select>
                     </div>
