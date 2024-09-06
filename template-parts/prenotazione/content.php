@@ -70,7 +70,14 @@
                                 Seleziona un mese
                             </option>
 <?php 
+date_default_timezone_set('Europe/Rome'); // Imposta il fuso orario corretto
+
+echo 'Fuso orario: ' . date_default_timezone_get() . "<br>";
+echo 'Data e ora corrente: ' . date('Y-m-d H:i:s') . "<br>"; // Visualizza data e ora completa
+
 $currentYear = date('Y'); // Ottieni l'anno corrente
+echo 'Anno corrente: ' . $currentYear; // Controlla quale anno viene letto
+
 foreach ($months as $month) {
     echo '<option value="'.$month.'">'.date_i18n('F', mktime(0, 0, 0, $month, 10, $currentYear)).'</option>';
 } 
