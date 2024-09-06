@@ -70,7 +70,7 @@
                                 Seleziona un mese
                             </option>
                             <?php foreach ($months as $month) {
-                                echo '<option value="'.$month.'">ssss</option>';
+                                echo '<option value="'.$month.'">'.date_i18n('F', mktime(0, 0, 0, $month, 10)).'</option>';
                             } ?>
                         </select>
                     </div>
