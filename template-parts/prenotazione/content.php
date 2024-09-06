@@ -69,9 +69,12 @@
                             <option selected="selected" value="">
                                 Seleziona un mese
                             </option>
-                            <?php foreach ($months as $month) {
-                                echo '<option value="'.$month.'">'.date_i18n('F', mktime(0, 0, 0, $month, 10)).'</option>';
-                            } ?>
+<?php 
+$currentYear = date('Y'); // Ottieni l'anno corrente
+foreach ($months as $month) {
+    echo '<option value="'.$month.'">'.date_i18n('F', mktime(0, 0, 0, $month, 10, $currentYear)).'</option>';
+} 
+?>
                         </select>
                     </div>
                     <div class="cmp-card-radio-list mt-4">
