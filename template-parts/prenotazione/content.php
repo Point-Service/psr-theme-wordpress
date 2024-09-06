@@ -74,9 +74,9 @@ for ($i = 0; $i < 12; $i++) {
                             $currentYear = date('Y'); // Ottieni l'anno corrente
 
                             // Correggi la sequenza dei mesi
-                            foreach ($months as $month) {
-                                echo '<option value="' . $month . '">' . date_i18n('F', mktime(0, 0, 0, $month, 10, $currentYear)) . '</option>';
-                            } 
+foreach ($months as $month) {
+    echo '<option value="' . $month . '">' . date('F', mktime(0, 0, 0, $month, 10, $currentYear)) . '</option>';
+}
                             ?>
                         </select>
                     </div>
