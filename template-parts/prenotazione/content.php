@@ -1,17 +1,17 @@
 <?php
-    $uffici = get_posts(array(
-        'posts_per_page' => -1,
-        'post_type' => 'unita_organizzativa'
-    ));
+$uffici = get_posts(array(
+    'posts_per_page' => -1,
+    'post_type' => 'unita_organizzativa'
+));
 
-    $months = array();
-    $currentMonth = intval(date('m'));
+$months = array();
+$currentMonth = intval(date('m')); // Ottieni il mese corrente
 
-    for ($i=0; $i < 12; $i++) {
-        array_push($months, $currentMonth);
-        if($currentMonth >= 12) $currentMonth = 0;
-        $currentMonth++;
-    }
+// Corretto: Popola l'array $months con i prossimi 12 mesi partendo da quello corrente
+for ($i = 0; $i < 12; $i++) {
+    $months[] = ($currentMonth + $i - 1) % 12 + 1; // Calcola il mese con ciclo modulo
+}
+
 ?>
 
 <div class="it-page-sections-container">
@@ -67,10 +67,10 @@
                         </label>
 
                         <?php 
-date_default_timezone_set('Europe/Rome'); 
-echo 'Fuso orario: ' . date_default_timezone_get() . "<br>";
-echo 'Data e ora corrente: ' . date('Y-m-d H:i:s') . "<br>"; // Mostra data e ora corrente
-?>
+                            date_default_timezone_set('Europe/Rome'); 
+                            echo 'Fuso orario: ' . date_default_timezone_get() . "<br>";
+                            echo 'Data e ora corrente: ' . date('Y-m-d H:i:s') . "<br>"; // Mostra data e ora corrente
+                            ?>
                         <select id="appointment" class="">
                             <option selected="selected" value="">
                                 Seleziona un mese
