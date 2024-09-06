@@ -85,22 +85,23 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             $load_card_type = "servizio";
                             ?>
                                 <div class="col-12 col-lg-6">
-                                    <?php
+                                    <?php if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { 
                                         get_template_part("template-parts/servizio/card");
+                                         }
                                     ?>
                                 </div>
                             <?php
                         } ?>
                       </div>
                        </a>
+
                         <?php     
                         if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { ?>
                             <?php get_template_part("template-parts/search/more-results"); ?>
                         <?php } else { ?>
                              <?php get_template_part("template-parts/servizio/servizi_esterni_maggioli"); ?>
                         <?php } ?>
-             
-               
+                            
             </div>
         </div>
     </form>
