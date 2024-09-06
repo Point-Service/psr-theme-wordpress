@@ -67,7 +67,7 @@
                         </label>
                         <select id="appointment" class="">
                             <option selected="selected" value="">
-                                Seleziona un mese
+                                Seleziona un mese kjkk
                             </option>
 <?php 
 date_default_timezone_set('Europe/Rome'); // Imposta il fuso orario corretto
