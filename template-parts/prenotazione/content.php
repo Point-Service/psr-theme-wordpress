@@ -66,11 +66,6 @@ for ($i = 0; $i < 12; $i++) {
                             Seleziona un mese
                         </label>
 
-                        <?php 
-                            date_default_timezone_set('Europe/Rome'); 
-                            echo 'Fuso orario: ' . date_default_timezone_get() . "<br>";
-                            echo 'Data e ora corrente: ' . date('Y-m-d H:i:s') . "<br>"; // Mostra data e ora corrente
-                            ?>
                         <select id="appointment" class="">
                             <option selected="selected" value="">
                                 Seleziona un mese
