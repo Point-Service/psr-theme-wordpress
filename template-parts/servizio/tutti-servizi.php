@@ -72,9 +72,11 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             </div>
                         </div>
                         <p id="autocomplete-label" class="mb-4">
-                            <?php if ($the_query->found_posts > 0) : ?>
+                            <?php 
+                               if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) { 
+                                 if ($the_query->found_posts > 0) : ?>
                                 <strong><?php echo $the_query->found_posts; ?></strong> servizi trovati in ordine alfabetico
-                            <?php endif; ?>
+                            <?php  } endif; ?>
                         </p>
                     </div>
                                    
