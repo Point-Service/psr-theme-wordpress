@@ -341,22 +341,23 @@ get_header();
                                     <br>
                                 </div>
                             </section>
-                            <?php if ($servizi && is_array($servizi) && count($servizi)>0 ) { ?>
-			        <article id="servizi" class="it-page-section anchor-offset mt-5">
-				    <h3>Servizi collegati</h3><p></p>
-				    <?php foreach ($servizi as $servizio_id) { ?>
-				        <div class="row">
-				            <div class="col-12 col-sm-8">
-				                <?php 
-				                    $servizio = get_post($servizio_id);
-				                    $with_border = true;
-				                    get_template_part("template-parts/servizio/card");
-				                ?>
-				            </div>
-				        </div><p></p>
-				    <?php } ?>
-				</article>
-                            <?php } ?>
+                            <?php  if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) {                                     
+		              	     if ($servizi && is_array($servizi) && count($servizi)>0 ) { ?>
+				        <article id="servizi" class="it-page-section anchor-offset mt-5">
+					    <h3>Servizi collegati</h3><p></p>
+					    <?php foreach ($servizi as $servizio_id) { ?>
+					        <div class="row">
+					            <div class="col-12 col-sm-8">
+					                <?php 
+					                    $servizio = get_post($servizio_id);
+					                    $with_border = true;
+					                    get_template_part("template-parts/servizio/card");
+					                ?>
+					            </div>
+					        </div><p></p>
+					    <?php } ?>
+					</article>
+                            <?php } }?>
 				
                             <?php if ($sede_principale) { ?>
 			    <p></p>
@@ -383,7 +384,7 @@ get_header();
                             <?php } ?>
 
    				
-           <?php if ($allegati && is_array($allegati) && count($allegati) > 0) { ?>
+                <?php if ($allegati && is_array($allegati) && count($allegati) > 0) { ?>
                             <section id="allegati" class="it-page-section mb-4">
                                 <h2 class="h3 my-2">Documenti</h2>
                                 <div class="row">
