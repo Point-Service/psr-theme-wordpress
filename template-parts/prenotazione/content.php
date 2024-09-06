@@ -1,17 +1,17 @@
 <?php
-$uffici = get_posts(array(
-    'posts_per_page' => -1,
-    'post_type' => 'unita_organizzativa'
-));
+    $uffici = get_posts(array(
+        'posts_per_page' => -1,
+        'post_type' => 'unita_organizzativa'
+    ));
 
-$months = array();
-$currentMonth = intval(date('m')); // Ottieni il mese corrente
+    $months = array();
+    $currentMonth = intval(date('m'));
 
-// Corretto: Popola l'array $months con i prossimi 12 mesi partendo da quello corrente
-for ($i = 0; $i < 12; $i++) {
-    $months[] = ($currentMonth + $i - 1) % 12 + 1; // Calcola il mese con ciclo modulo
-}
-
+    for ($i=0; $i < 12; $i++) {
+        array_push($months, $currentMonth);
+        if($currentMonth >= 12) $currentMonth = 0;
+        $currentMonth++;
+    }
 ?>
 
 <div class="it-page-sections-container">
@@ -65,19 +65,13 @@ for ($i = 0; $i < 12; $i++) {
                         <label for="appointment" class="visually-hidden">
                             Seleziona un mese
                         </label>
-
                         <select id="appointment" class="">
                             <option selected="selected" value="">
                                 Seleziona un mese
                             </option>
-                            <?php 
-                            $currentYear = date('Y'); // Ottieni l'anno corrente
-
-                            // Correggi la sequenza dei mesi
-foreach ($months as $month) {
-    echo '<option value="' . $month . '">' . date('F', mktime(0, 0, 0, $month, 10, $currentYear)) . '</option>';
-}
-                            ?>
+                            <?php foreach ($months as $month) {
+                                echo '<option value="'.$month.'">'.date_i18n('F', mktime(0, 0, 0, $month, 10)).'</option>';
+                            } ?>
                         </select>
                     </div>
                     <div class="cmp-card-radio-list mt-4">
