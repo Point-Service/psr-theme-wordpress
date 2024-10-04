@@ -121,14 +121,15 @@ get_header();
                                                 </a>
                                                 </li>
                                                 <?php } ?>
-                                                <?php if( is_array($struttura_responsabile) && count($struttura_responsabile) ) { ?>
-						<p></p>
+		  
+                                                <?php if( is_array($struttura_responsabile) && count($struttura_responsabile) ) { ?>						
                                                 <li class="nav-item">
                                                 <a class="nav-link" href="#struttura-responsabile">
                                                 <span class="title-medium">Struttura responsabile</span>
                                                 </a>
                                                 </li>
                                                 <?php } ?>
+		  
                                                 </ul>
                                             </div>
                                         </div>
