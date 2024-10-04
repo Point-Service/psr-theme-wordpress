@@ -120,12 +120,11 @@ get_header();
                                                 <span class="title-medium">Contatti</span>
                                                 </a>
                                                 </li>
-                                                <?php } ?>
-		  
+                                                <?php } ?>		  
                                                 <?php if( is_array($struttura_responsabile) && count($struttura_responsabile) ) { ?>						
-                                                <li class="nav-item"></br>
+                                                <li class="nav-item">
                                                 <a class="nav-link" href="#struttura-responsabile">
-                                                <span class="title-medium">Struttura responsabilessss</span>
+                                                <span class="title-medium">Struttura responsabile</span>
                                                 </a>
                                                 </li>
                                                 <?php } ?>
@@ -210,7 +209,9 @@ get_header();
             } ?>
           <?php } ?>
           </article> -->
-			
+
+		  
+	  </br>
           <?php if($struttura_responsabile) {?>
           <article id="struttura-responsabile" class="it-page-section mb-5">
             <h2 class="mb-3">Struttura responsabile</h2>
