@@ -1,5 +1,4 @@
 <?php
-
 global $pc_id;
 $prefix = '_dci_punto_contatto_';
 
@@ -15,63 +14,76 @@ $other_contacts = array(
     'twitter',
     'whatsapp'
 );
-
 ?>
+
 <div class="card card-teaser shadow mt-3 rounded">
-    <svg class="icon" aria-hidden="true">
-        <use xlink:href="#it-telephone"></use>
-    </svg>
+    <?php if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])): ?>
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#it-mail"></use>
+        </svg>
+    <?php elseif (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])): ?>
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#it-telephone"></use>
+        </svg>
+    <?php else: ?>
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#it-map-marker-circle"></use>
+        </svg>
+    <?php endif; ?>
+
     <div class="card-body">
         <h3 class="card-title h5">
-            <a class="text-decoration-none" href="#">
-            <?php echo $contatto->post_title; ?>
-            </a>
+            <span>
+                <?php echo $contatto->post_title; ?>
+            </span>
         </h3>
         <div class="card-text">
-            <?php if ( isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) {
-                foreach ($full_contatto['indirizzo'] as $value) {
-                    echo '<p>'.$value.'</p>';
-                } 
-                echo '<p class="mt-3"></p>';
-            } ?>
-            <?php if ( isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
-                foreach ($full_contatto['telefono'] as $value) {
-                    echo '<p>T '.$value.'</p>';
-                }
-            } ?>
-            <?php if ( isset($full_contatto['url']) && is_array($full_contatto['url']) && count ($full_contatto['url']) ) {
-                foreach ($full_contatto['url'] as $value) { ?>
+            <!-- Controlla se è un indirizzo -->
+            <?php if (isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])): ?>
+                <?php foreach ($full_contatto['indirizzo'] as $value): ?>
+                    <a href="https://www.google.com/maps/place/<?php echo $value; ?>" target="_blank"><?php echo $value; ?></a>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <!-- Controlla se è un telefono -->
+            <?php if (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])): ?>
+                <?php foreach ($full_contatto['telefono'] as $value): ?>
+                    <a href="tel:<?php echo $value;?>"><?php echo $value; ?></a>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <!-- Controlla se è un url -->
+            <?php if (isset($full_contatto['url']) && is_array($full_contatto['url']) && count($full_contatto['url'])): ?>
+                <?php foreach ($full_contatto['url'] as $value): ?>
                     <p>
                         <a 
-                        target="_blank" 
-                        aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
-                        title="vai sul sito <?php echo $value; ?>" 
-                        href="<?php echo $value; ?>">
+                            target="_blank" 
+                            aria-label="scopri di più su <?php echo $value; ?> - link esterno - apertura nuova scheda" 
+                            title="vai sul sito <?php echo $value; ?>" 
+                            href="<?php echo $value; ?>">
                             <?php echo $value; ?>
                         </a>
                     </p>
-               <?php }
-            } ?>
-            <?php if ( isset($full_contatto['email']) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
-                foreach ($full_contatto['email'] as $value) { ?>
-                    <p>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <!-- controlla se è una email -->
+            <?php if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])): ?>
+                <?php foreach ($full_contatto['email'] as $value): ?>
                         <a  
-                        target="_blank" 
-                        aria-label="invia un'email a <?php echo $value; ?>"
-                        title="invia un'email a <?php echo $value; ?>" 
-                        href="mailto:<?php echo $value; ?>">
+                            target="_blank" 
+                            aria-label="invia un'email a <?php echo $value; ?>"
+                            title="invia un'email a <?php echo $value; ?>" 
+                            href="mailto:<?php echo $value; ?>">
                             <?php echo $value; ?>
                         </a>
-                    </p>
-               <?php }
-            } ?>
-            <?php foreach ($other_contacts as $type) {
-                if ( isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
-                    foreach ($full_contatto[$type] as $value) {
-                        echo '<p>'.$type.': '.$value.'</p>';
-                    }
-                } 
-            } ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+            <?php foreach ($other_contacts as $type): ?>
+                <?php if (isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count($full_contatto[$type])): ?>
+                    <?php foreach ($full_contatto[$type] as $value): ?>
+                        <p><?php echo $type; ?>: <?php echo $value; ?></p>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
