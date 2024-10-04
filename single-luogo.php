@@ -18,17 +18,18 @@ get_header();
 
     $prefix= '_dci_luogo_';
 	$nome_alternativo = dci_get_meta("nome_alternativo", $prefix, $post->ID);
-    $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
+  $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
 	$descrizione_estesa = dci_get_meta("descrizione_estesa", $prefix, $post->ID);
 	$luoghi_collegati = dci_get_meta("luoghi_collegati", $prefix, $post->ID);
-	$servizi = dci_get_meta("servizi", $prefix, $post->ID);
-	$modalita_accesso = dci_get_meta("modalita_accesso", $prefix, $post->ID);
 	$indirizzo = dci_get_meta("indirizzo", $prefix, $post->ID);
-    $luogo = $post->ID;
+  $luogo = $post->ID;
 	$orario_pubblico = dci_get_meta("orario_pubblico", $prefix, $post->ID);
 	$punti_contatto = dci_get_meta("punti_contatto", $prefix, $post->ID);
 	$struttura_responsabile = dci_get_meta("struttura_responsabile", $prefix, $post->ID);
-	$ulteriori_informazioni = dci_get_wysiwyg_field("ulteriori_informazioni", $prefix, $post->ID); 
+  //media
+  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
+  $video = dci_get_meta("video", $prefix, $post->ID);
+  $trascrizione = dci_get_meta("trascrizione", $prefix, $post->ID);
     
     ?>
 
@@ -99,20 +100,6 @@ get_header();
                                                     </a>
                                                     </li>
                                                 <?php } ?>  
-                                                <?php if( $servizi) { ?>
-                                                    <li class="nav-item">
-                                                    <a class="nav-link" href="#servizi">
-                                                    <span class="title-medium">Servizi</span>
-                                                    </a>
-                                                    </li>
-                                                <?php } ?>
-                                                <?php if ($modalita_accesso) { ?>
-                                                    <li class="nav-item">
-                                                    <a class="nav-link" href="#modalita-accesso">
-                                                    <span class="title-medium">Modalità di accesso</span>
-                                                    </a>
-                                                    </li>
-                                                <?php } ?>
                                                 <?php if($indirizzo) { ?>
                                                     <li class="nav-item">
                                                     <a class="nav-link" href="#indirizzo">
@@ -174,38 +161,13 @@ get_header();
 		  </article>
           <?php } ?>
           
-
-          <?php if($servizi) {?>
-          <article id="servizi" class="it-page-section mb-5">
-            <h2 class="mb-3">Servizi</h2>
-            <div class="richtext-wrapper font-serif">
-				<?php echo $servizi; ?>
-			</div>
-          </article>
-          <?php  } ?>
-
-          <?php if($modalita_accesso) {?>
-          <article id="modalita-accesso" class="it-page-section mb-5">
-            <h2 class="mb-3">Modalità di accesso</h2>
-            <div class="richtext-wrapper font-serif">
-				<?php echo $modalita_accesso; ?>
-			</div>
-          </article>
-          <?php } ?>
-
           <?php if($indirizzo) {?>
 	          <article id="indirizzo" class="it-page-section mb-5">
 	            <h2 class="mb-3">Indirizzo</h2>	        
-			    <center>
-					<?php 
-						$luoghi = array($luogo);
-						get_template_part("template-parts/luogo/map"); 
-				         ?>
-	                    </center>
-	
-	                   <div class="richtext-wrapper font-serif mt-3">  
-					<?php echo $indirizzo; ?>
-			   </div>
+                <!-- inserire mappa -->
+	              <div class="richtext-wrapper font-serif mt-3">  
+					        <?php echo $indirizzo; ?>
+			          </div>
 	          </article>
           <?php } ?>	
 
@@ -213,32 +175,39 @@ get_header();
           <article id="orario-pubblico" class="it-page-section mb-5">
             <h2 class="mb-3">Orario per il pubblico</h2>
             <div class="richtext-wrapper font-serif">
-				<?php echo $orario_pubblico; ?>
-			</div>
+				      <?php echo $orario_pubblico; ?>
+			      </div>
           </article>
           <?php } ?>
 
+          <article id="galleria" class="it-page-section mb-5" data-audio>
+            <?php if (is_array($gallery) && count($gallery)) {?>
+              <?php get_template_part("template-parts/single/gallery"); ?>
+          <?php } ?>
+          <?php if ($video) {
+                  get_template_part("template-parts/single/video");
+              } ?>
+        </article>
 
-
-
-
-          <article id="contatti" class="it-page-section mb-5">
+          <article id="contatti" class="it-page-section mb-30">
           <?php if( is_array($punti_contatto) && count($punti_contatto) ) { ?>
-            <h2 class="mb-3">Contatti</h2>
-            <?php foreach ($punti_contatto as $pc_id) {
-                get_template_part('template-parts/single/punto-contatto');
-            } ?>
+            <h2 class="title-xxlarge mb-3">Contatti</h2>
+            <div class="richtext-wrapper lora">
+              <?php foreach ($punti_contatto as $pc_id) {
+                  get_template_part('template-parts/single/punto-contatto');
+              } ?>
+            </div>
           <?php } ?>
 
 
 
-          <?php if( is_array($organizzatori) && count($organizzatori) ) { ?>
+          <!-- <?php if( is_array($organizzatori) && count($organizzatori) ) { ?>
             <h4 class="h5 mt-4">Con il supporto di:</h4>
             <?php foreach ($organizzatori as $uo_id) {
                get_template_part("template-parts/unita-organizzativa/card-full");
             } ?>
           <?php } ?>
-          </article>
+          </article> -->
 			
           <?php if($struttura_responsabile) {?>
           <article id="struttura-responsabile" class="it-page-section mb-5">
@@ -255,16 +224,6 @@ get_header();
           <?php } ?>
 
 		  
-			
-          <?php if($ulteriori_informazioni) {?>
-          <article id="ulteriori-informazioni" class="it-page-section mb-5">
-            <h2 class="mb-3">Ulteriori informazioni</h2>
-            <p><?php echo $ulteriori_informazioni; ?></p>
-          </article>
- 		  <?php } ?>		
-
-
-
 		
           <?php get_template_part('template-parts/single/page_bottom'); ?>
           </section>
