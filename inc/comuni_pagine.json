@@ -1,67 +1,17 @@
 {
   "pagine": {
-    "Amministrazione": {
-      "title": "Amministrazione",
-      "slug": "amministrazione",
-      "description": "Tutte le informazioni sulla struttura amministrativa dell'Ente'. Scopri gli organi di governo e controllo, gli uffici e il personale e consulta i documenti pubblici, le statistiche e i bandi di gara.",
-      "template_name": "amministrazione",
-      "children": {
-        "Organi governo": {
-          "title": "Organi di governo e controllo",
-          "slug": "organi-di-governo-e-controllo",
-          "description": "Le informazioni sul Consiglio di amministrazione, il Collegio dei revisori e il Nucleo di valutazione.",
-          "template_name": "unita-organizzative",
-          "children": {}
-        },
-        "Aree gestionali": {
-          "title": "Aree gestionali",
-          "slug": "aree-gestionali",
-          "description": "La struttura organizzativa è suddivisa in aree di competenze che gestiscono i servizi erogati agli ospiti.",
-          "template_name": "unita-organizzative",
-          "children": {}
-        },
-        "Uffici": {
-          "title": "Uffici",
-          "slug": "uffici",
-          "description": "Le informazioni e i contatti degli Uffici, come le competenze e gli orari di apertura al pubblico.",
-          "template_name": "unita-organizzative",
-          "children": {}
-        },
-        "Personale amministrativo": {
-          "title": "Personale amministrativo",
-          "slug": "personale-amministrativo",
-          "description": "Personale da contattare per informazioni e supporto ai servizi amministrativi erogati dagli uffici.",
-          "template_name": "incarichi",
-          "children": {}
-        },
-        "Personale sanitario": {
-          "title": "Personale sanitario",
-          "slug": "personale-sanitario",
-          "description": "Personale da contattare per informazioni e supporto ai servizi socio-sanitari erogati.",
-          "template_name": "incarichi",
-          "children": {}
-        },
-        "Personale socio-assistenziale": {
-          "title": "Personale socio-assistenziale",
-          "slug": "personale-socio-assistenziale",
-          "description": "Personale da contattare per informazioni e supporto ai servizi sociali e assistenziali.",
-          "template_name": "incarichi",
-          "children": {}
-        },
-        "Documenti e dati": {
-          "title": "Documenti e dati",
-          "slug": "documenti-e-dati",
-          "description": "Bandi di concorso, avvisi, graduatorie, statistiche e documenti pubblici.",
-          "template_name": "documenti-e-dati",
-          "children": {}
-        }
-      }
-    },
     "Novità": {
-      "title": "Novità",
+      "title": "Appunti",
       "slug": "novita",
-      "description": "Tutte le novità dall'Ente per i cittadini per restare aggiornati.",
+      "description": "Tutti gli appunti publicati da gli utenti",
       "template_name": "novita",
+      "children": {}
+    },
+    "Multimedia": {
+      "title": "Multimedia",
+      "slug": "multimedia",
+      "description": "video del comune",
+      "template_name": "multimeda",
       "children": {}
     },
     "Servizi": {
@@ -153,3 +103,4 @@
     }
   }
 }
+
