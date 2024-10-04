@@ -3,7 +3,7 @@
     "Novità": {
       "title": "Appunti",
       "slug": "novita",
-      "description": "Tutti gli appunti publicati da gli utenti",
+      "description": "Tutti gli appunti pubblicati dagli utenti.",
       "template_name": "novita",
       "children": {}
     },
