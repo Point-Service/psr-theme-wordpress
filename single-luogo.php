@@ -122,6 +122,7 @@ get_header();
                                                 </li>
                                                 <?php } ?>
                                                 <?php if( is_array($struttura_responsabile) && count($struttura_responsabile) ) { ?>
+						<p></p>
                                                 <li class="nav-item">
                                                 <a class="nav-link" href="#struttura-responsabile">
                                                 <span class="title-medium">Struttura responsabile</span>
@@ -139,7 +140,7 @@ get_header();
                 </nav>
             </div>
         </aside>
-<p></p>
+
         <section class="col-lg-8 it-page-sections-container border-light">
 	   <?php get_template_part('template-parts/single/image-large'); ?>	
           <article id="cos-e" class="it-page-section mb-5" data-audio>
