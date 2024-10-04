@@ -9,6 +9,8 @@ foreach(glob(get_template_directory() . "/inc/admin/options/*.php") as $file){
  */
 function dci_register_main_options_metabox() {
 	$prefix = '';
+    dci_register_comune_options();
+	
     dci_register_pagina_accessorapido_options();
 	
     dci_register_comune_options();
