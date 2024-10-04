@@ -32,7 +32,7 @@ function dci_register_pagina_multimedia_options(){
     ) );
 
     $boxes_group_id = $boxes_options->add_field( array(
-        'id'           => $prefix . 'quickboxes',
+        'id'           => $prefix . 'multemedia',
         'type'        => 'group',
         'desc' => __( 'Inserisci il nome e il link' , 'design_comuni_italia' ),
         'repeatable'  => true,
