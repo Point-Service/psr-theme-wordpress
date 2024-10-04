@@ -9,10 +9,12 @@ foreach(glob(get_template_directory() . "/inc/admin/options/*.php") as $file){
  */
 function dci_register_main_options_metabox() {
 	$prefix = '';
-    dci_register_pagina_accessorapido_options();
+
     dci_register_comune_options();
 
     dci_register_pagina_avvisi_options();
+
+    dci_register_pagina_accessorapido_options();
 
     dci_register_pagina_home_options();
 
@@ -20,15 +22,26 @@ function dci_register_main_options_metabox() {
 
     dci_register_footer_options();
 
+    dci_register_pagina_amministrazione_options();
+
     dci_register_pagina_novita_options();
 
+    dci_register_pagina_servizi_options();
+
+    dci_register_pagina_documenti_options();
+
+    dci_register_pagina_vivi_options();
+
     dci_register_pagina_argomenti_options();
+
+    dci_register_scheda_assistenza_options();
 
     dci_register_link_utili_options();
 
     dci_register_ricerca_options();
-    dci_register_pagina_vivi_options();
+
     dci_register_pagina_multimedia_options();
+
 }
 add_action( 'cmb2_admin_init', 'dci_register_main_options_metabox' );
 
@@ -104,4 +117,3 @@ function dci_options_assets() {
 
 }
 add_action( 'admin_enqueue_scripts', 'dci_options_assets' );
-
