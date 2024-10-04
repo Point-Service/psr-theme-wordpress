@@ -188,11 +188,13 @@ get_header();
                 <?php get_template_part("template-parts/single/persone"); ?>
               </div>
               <?php  } ?>
-              <?php if (is_array($gallery) && count($gallery)) {
-                  get_template_part("template-parts/single/gallery");
+             
+              <?php if (is_array($gallery) && count($gallery)) {?>
+                    <h3 class="h4">Galleria Immagini</h3>
+                    <?php get_template_part("template-parts/single/gallery");
               } ?>
-              <?php if ($video) {
-                  get_template_part("template-parts/single/video");
+              <?php if ($video) {?>
+                  <?php get_template_part("template-parts/single/video");
               } ?>
           </article>
 
@@ -384,3 +386,4 @@ get_header();
 
 <?php
 get_footer();
+
