@@ -56,7 +56,7 @@ get_header();
 	       
 		<?php 
 		    // Controlla se mostrare la galleria
-                     $mostra_gallery = dci_get_option('mostra_gallery', 'homepage');
+                     $mostra_gallery = dci_get_option('mostra_gallery', 'galleria');
                      if ($mostra_gallery) {
 		?>  
 		<?php get_template_part("template-parts/vivere-comune/galleria-foto"); ?>
@@ -64,7 +64,7 @@ get_header();
 		    } // Fine controllo se mostrare la galleria 
 		?>
 
-<?php get_template_part("template-parts/vivere-comune/galleria-foto"); ?>
+
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
         <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
