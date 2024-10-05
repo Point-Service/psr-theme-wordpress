@@ -207,7 +207,7 @@ $home_options->add_field( array(
 $home_options->add_field( array(
         'id' => $prefix . 'mostra_gallery_home',
         'name' => 'Mostra gallery Home',
-        'desc' => 'Mostra la galleria foto su Home (da impostare in <i>Configurazione &gt; Vivere il Comune</i>)',
+        'desc' => 'Mostra la galleria foto sulla Home (da impostare in <i>Configurazione &gt; Vivere il Comune</i>)',
         'type' => 'checkbox',
     ) ); 
     
