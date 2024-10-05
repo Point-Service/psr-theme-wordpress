@@ -195,6 +195,7 @@ $home_options->add_field( array(
         'name'        => __( 'Altre opzioni', 'design_comuni_italia' ),
         'type' => 'title',
     ) );
+	
 $home_options->add_field( array(
         'id' => $prefix . 'mostra_gallery',
         'name' => 'Mostra gallery',
@@ -205,7 +206,7 @@ $home_options->add_field( array(
 
 $home_options->add_field( array(
         'id' => $prefix . 'mostra_gallery_home',
-        'name' => 'Mostra gallery',
+        'name' => 'Mostra gallery Home',
         'desc' => 'Mostra la galleria foto sull'Home Page (da impostare in <i>Configurazione &gt; Vivere il Comune</i>)',
         'type' => 'checkbox',
     ) ); 
