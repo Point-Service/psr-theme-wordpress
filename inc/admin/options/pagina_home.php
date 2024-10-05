@@ -202,7 +202,7 @@ $home_options->add_field( array(
         'desc' => 'Mostra la galleria foto su Vivere il comune - (da impostare in <i>Configurazione &gt; Vivere il Comune</i>)',
         'type' => 'checkbox',
     ) ); 
-}
+
 
 $home_options->add_field( array(
         'id' => $prefix . 'mostra_gallery_home',
