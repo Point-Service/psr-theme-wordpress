@@ -24,10 +24,17 @@ function dci_register_pagina_galleria_options(){
         'type' => 'title',
     ) );
 
+    $gallery_options->add_field( array(
+        'id' => $prefix . 'mostra_gallery',
+        'name' => 'Gallery sulla HOME PAGE',
+        'desc' => 'Mostra le immagini caricati sulla Home.',
+        'type' => 'checkbox',
+    ) ); 
+
 
    $gallery_options->add_field( array(
         'id' => $prefix . 'mostra_gallery_vivereilcomune',
-        'name' => 'Mostra la Gallery',
+        'name' => 'Gallery su VIVERE IL COMUNE',
         'desc' => 'Mostra la galleria Foto su Vivere il Comune',
         'type' => 'checkbox',
     ) ); 
