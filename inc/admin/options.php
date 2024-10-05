@@ -42,6 +42,8 @@ function dci_register_main_options_metabox() {
 
     dci_register_pagina_multimedia_options();
 
+   dci_register_pagina_galleria_options();
+
 }
 add_action( 'cmb2_admin_init', 'dci_register_main_options_metabox' );
 
