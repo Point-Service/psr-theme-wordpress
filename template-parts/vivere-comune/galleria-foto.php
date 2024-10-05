@@ -3,8 +3,8 @@
 global $sfondo_grigio, $gallery;
 $sfondo_grigio = $sfondo_grigio ?? true;
 
-$gallery = dci_get_option('gallery_items', 'vivi') ?: [];
-$nome_sezione = dci_get_option('gallery_title', 'vivi') ?: "";
+$gallery = dci_get_option('gallery_items', 'gallery') ?: [];
+$nome_sezione = dci_get_option('gallery_title', 'gallery') ?: "";
 
 // Numero di elementi per pagina
 $items_per_page = 6;
