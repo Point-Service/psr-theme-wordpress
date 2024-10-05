@@ -52,24 +52,26 @@ get_header();
             ?>
         </section>
         
-			<?php 
-			    $mostra_gallery = dci_get_option('mostra_gallery', 'homepage');
-			    if ($mostra_gallery) { 
-			?>    
-			    <div class="row g-4 justify-content-center"> <!-- Aggiungi "justify-content-center" qui -->
-			        <div class="col-md-6 col-xl-4 mx-auto"> <!-- Aggiungi "mx-auto" qui -->
-			            <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
-			                <div class="card shadow-sm rounded">
-			                    <?php 
-			                        // Include il template della galleria foto
-			                        get_template_part("template-parts/vivere-comune/galleria-foto");
-			                    ?>
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-			<?php 
-			    } // Fine controllo se mostrare la galleria 
+<?php 
+    $mostra_gallery = dci_get_option('mostra_gallery', 'homepage');
+    if ($mostra_gallery) { 
+?>    
+    <div class="row g-4 justify-content-center"> <!-- Mantieni "justify-content-center" -->
+        <div class="col-md-12 col-xl-6 mx-auto"> <!-- Cambia le dimensioni delle colonne -->
+            <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
+                <div class="card shadow-sm rounded">
+                    <?php 
+                        // Include il template della galleria foto
+                        get_template_part("template-parts/vivere-comune/galleria-foto");
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php 
+    } // Fine controllo se mostrare la galleria 
+?>
+   } // Fine controllo se mostrare la galleria 
 			?>
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
