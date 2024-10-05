@@ -54,7 +54,7 @@ function dci_register_pagina_galleria_options(){
     $gallery_options->add_field( array(
         'id' => $prefix . 'mostra_gallery',
         'name' => 'Galleria sulla HOME PAGE',
-        'desc' => 'Mostra le immagini caricati sulla Home.',
+        'desc' => 'Mostra le immagini caricate sulla Home.',
         'type' => 'checkbox',
     ) ); 
 
@@ -62,7 +62,7 @@ function dci_register_pagina_galleria_options(){
    $gallery_options->add_field( array(
         'id' => $prefix . 'mostra_gallery_vivereilcomune',
         'name' => 'Galleria su VIVERE IL COMUNE',
-        'desc' => 'Mostra le immagini caricati sul Vivere il Comune.',
+        'desc' => 'Mostra le immagini caricate su Vivere il Comune.',
         'type' => 'checkbox',
     ) ); 
 
