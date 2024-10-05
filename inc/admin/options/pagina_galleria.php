@@ -28,20 +28,6 @@ function dci_register_pagina_galleria_options(){
         'type' => 'title',
     ) );
 
-    $gallery_options->add_field( array(
-        'id' => $prefix . 'mostra_gallery',
-        'name' => 'Galleria sulla HOME PAGE',
-        'desc' => 'Mostra le immagini caricati sulla Home.',
-        'type' => 'checkbox',
-    ) ); 
-
-
-   $gallery_options->add_field( array(
-        'id' => $prefix . 'mostra_gallery_vivereilcomune',
-        'name' => 'Galleria su VIVERE IL COMUNE',
-        'desc' => 'Mostra la galleria Foto su Vivere il Comune',
-        'type' => 'checkbox',
-    ) ); 
 
      $gallery_options->add_field(array(
         'name' => __('', 'design_comuni_italia'),
@@ -61,5 +47,22 @@ function dci_register_pagina_galleria_options(){
         'default' => 'Le nostre foto'
       ) 
     );
+
+
+    $gallery_options->add_field( array(
+        'id' => $prefix . 'mostra_gallery',
+        'name' => 'Galleria sulla HOME PAGE',
+        'desc' => 'Mostra le immagini caricati sulla Home.',
+        'type' => 'checkbox',
+    ) ); 
+
+
+   $gallery_options->add_field( array(
+        'id' => $prefix . 'mostra_gallery_vivereilcomune',
+        'name' => 'Galleria su VIVERE IL COMUNE',
+        'desc' => 'Mostra la galleria Foto su Vivere il Comune',
+        'type' => 'checkbox',
+    ) ); 
+
     
 }
