@@ -22,16 +22,16 @@ function dci_register_pagina_multimedia_options(){
         $args['display_cb'] = 'dci_options_display_with_tabs';
     }
 
-    $boxes_options = new_cmb2_box( $args );
+    $media_options = new_cmb2_box( $args );
 
-    $boxes_options->add_field( array(
+    $media_options->add_field( array(
         'id' => $prefix . 'messages_istruzioni',
         'name'        => __( 'Box in evidenza su Multimedia', 'design_comuni_italia' ),
         'desc' => __( 'Inserisci i video che verrano visualizzati nella pagina multimedia.' , 'design_comuni_italia' ),
         'type' => 'title',
     ) );
 
-    $boxes_group_id = $boxes_options->add_field( array(
+    $media_group_id = $media_options->add_field( array(
         'id'           => $prefix . 'quickboxes',
         'type'        => 'group',
         'desc' => __( 'Inserisci il nome e il link' , 'design_comuni_italia' ),
@@ -45,7 +45,7 @@ function dci_register_pagina_multimedia_options(){
     ) );
 
 
-    $boxes_options->add_group_field( $boxes_group_id, array(
+    $media_options->add_group_field( $media_group_id, array(
         'id' => $prefix . 'titolo_video',
         'name'        => __( 'Titolo', 'design_comuni_italia' ),
         'desc' => __( 'Massimo 100 caratteri' , 'design_comuni_italia' ),
@@ -56,7 +56,7 @@ function dci_register_pagina_multimedia_options(){
         ),
     ) );
 
-    $boxes_options->add_group_field( $boxes_group_id, array(
+    $media_options->add_group_field( $media_group_id, array(
         'id' => $prefix . 'link_video',
         'name'        => __( 'Indirizzo video youtube', 'design_comuni_italia' ),
         'desc' => __( 'Link al video Youtube' , 'design_comuni_italia' ),
@@ -64,3 +64,4 @@ function dci_register_pagina_multimedia_options(){
     ) );
 
 }
+
