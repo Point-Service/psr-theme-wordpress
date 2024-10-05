@@ -70,7 +70,7 @@ get_header();
                              <?php 
                                     // Ottieni tutte le immagini della galleria
                                     $immagini = dci_get_option('galleria_immagini', 'home'); // Sostituisci con il metodo che usi per ottenere le immagini
-                                    $limite_immagini = 6; // Imposta il numero massimo di immagini da mostrare
+                                    $limite_immagini = 3; // Imposta il numero massimo di immagini da mostrare
                                     $contatore = 0;
 
                                     if (!empty($immagini)) {
