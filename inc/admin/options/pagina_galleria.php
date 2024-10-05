@@ -23,7 +23,7 @@ function dci_register_pagina_galleria_options(){
 
     $gallery_options->add_field( array(
         'id' => $prefix . 'messages_istruzioni_g',
-        'name'        => __( 'Gallery', 'design_comuni_italia' ),
+        'name'        => __( '', 'design_comuni_italia' ),
         'desc' => __( 'Da qui puoi gestire la tua Galleria Fotografica' , 'design_comuni_italia' ),
         'type' => 'title',
     ) );
