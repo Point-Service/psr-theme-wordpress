@@ -52,12 +52,27 @@ get_header();
             ?>
         </section>
         
-	    <?php 
-            $mostra_gallery = dci_get_option('mostra_gallery', 'homepage');
-            if ($mostra_gallery) {
-                get_template_part("template-parts/vivere-comune/galleria-foto");
-            }
-        ?>
+              <?php 
+			$mostra_gallery = dci_get_option('mostra_gallery', 'homepage');
+			if ($mostra_gallery) { 
+			?>    
+			    <div class="row g-4">	     
+			        <div class="col-md-6 col-xl-4">
+			            <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
+			                <div class="card shadow-sm rounded">
+			                    <div class="card-body card-bg-blue">
+			                        <?php 
+			                            // Include il template della galleria foto
+			                            get_template_part("template-parts/vivere-comune/galleria-foto");
+			                        ?>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			<?php 
+			} // Fine controllo se mostrare la galleria 
+	     ?>
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
         <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
