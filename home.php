@@ -56,7 +56,7 @@ get_header();
     $mostra_gallery = dci_get_option('mostra_gallery', 'homepage');
     if ($mostra_gallery) { 
 ?>    
-    <div class="row g-4 justify-content-center"> <!-- Mantieni "justify-content-center" -->
+  <div class="card card-teaser no-after rounded border border-light shadow-sm mb-0">
         <div class="col-md-12 col-xl-6 mx-auto"> <!-- Cambia le dimensioni delle colonne -->
             <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
                 <div class="card shadow-sm rounded">
