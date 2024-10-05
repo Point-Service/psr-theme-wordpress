@@ -67,9 +67,24 @@ get_header();
                     <div class="card mb-4"> <!-- Uniformato margine inferiore con mb-4 -->
                         <div class="card-body pb-5"> <!-- Presumo che anche gli altri abbiano padding simile -->
                             <div class="category-top">
-                                <?php 
-                                    // Include il template della galleria foto
-                                    get_template_part("template-parts/vivere-comune/galleria-foto");
+                             <?php 
+                                    // Ottieni tutte le immagini della galleria
+                                    $immagini = dci_get_option('galleria_immagini', 'home'); // Sostituisci con il metodo che usi per ottenere le immagini
+                                    $limite_immagini = 6; // Imposta il numero massimo di immagini da mostrare
+                                    $contatore = 0;
+
+                                    if (!empty($immagini)) {
+                                        foreach ($immagini as $immagine) {
+                                            if ($contatore >= $limite_immagini) {
+                                                break; // Interrompi il ciclo se raggiungi il limite
+                                            }
+                                            // Visualizza l'immagine
+                                            dci_get_img($immagine, 'immagine-galleria'); // Supponendo che questa funzione stampi l'immagine
+                                            $contatore++; // Incrementa il contatore
+                                        }
+                                    } else {
+                                        echo 'Nessuna immagine disponibile nella galleria.';
+                                    }
                                 ?>
                             </div>
                         </div>
