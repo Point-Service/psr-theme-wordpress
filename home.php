@@ -60,20 +60,12 @@ get_header();
 		<div class="container py-5">		  
 		    <div class="row g-4">
 		            <div class="col-sm-6 col-lg-4">
-		                <div class="it-grid-item-wrapper it-grid-item-overlay">
-		                    <a href="<?php echo get_term_link( $argomento->term_id ); ?>">
-		                    <div class="img-responsive-wrapper">
-		                        <div class="img-responsive">
-		                            <div class="img-wrapper">
-				                        <?php 
+		                <div class="it-grid-item-wrapper it-grid-item-overlay">	                 
+		                    <span class="it-griditem-text-wrapper">
+		                        	 <?php 
 			                            // Include il template della galleria foto
 			                            get_template_part("template-parts/vivere-comune/galleria-foto");
 			                        ?>
-		                            </div>
-		                        </div>
-		                    </div>
-		                    <span class="it-griditem-text-wrapper">
-		                        <h3><?php echo $argomento->name; ?></h3>
 		                    </span>
 		                    </a>
 		                </div>
