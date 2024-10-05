@@ -13,7 +13,11 @@ function dci_register_pagina_galleria_options(){
         'parent_slug'  => 'dci_options',
         'tab_group'    => 'dci_options',
         'tab_title'    => __('Galleria', "design_comuni_italia"),	);
-
+    
+    // 'tab_group' property is supported in > 2.4.0.
+    if ( version_compare( CMB2_VERSION, '2.4.0' ) ) {
+        $args['display_cb'] = 'dci_options_display_with_tabs';
+    }
    
     $gallery_options = new_cmb2_box( $args );
 
