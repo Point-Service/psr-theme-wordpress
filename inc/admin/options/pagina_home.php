@@ -18,6 +18,22 @@ function dci_register_pagina_home_options(){
         $args['display_cb'] = 'dci_options_display_with_tabs';
     }
     $home_options = new_cmb2_box( $args );
+    // Immagine 
+    // $home_options->add_field( array(
+    //     'id' => $prefix . 'home_options',
+    //     'name'        => __( 'Sezione Immagine Pagina Home', 'design_comuni_italia' ),
+    //     'desc' => __( 'Configurazione sezione immagine pagina Home.' , 'design_comuni_italia' ),
+    //     'type' => 'title',
+    // ) );
+
+    // $home_options->add_field( array(
+    //     'id' => $prefix . 'immagine',
+    //     'name'=> __( 'Immagine', 'design_comuni_italia' ),
+    //     'desc' => __( 'Immagine/ banner (in alto nella pagina)' , 'design_comuni_italia' ),
+    //     'type' => 'file',
+    //     'query_args' => array( 'type' => 'image' ),
+    // ) );
+
     $home_options->add_field( array(
         'id' => $prefix . 'schede_evidenziate_title',
         'name'        => __( 'Sezione Schede in Evidenza', 'design_comuni_italia' ),
@@ -186,3 +202,4 @@ $home_options->add_field( array(
         'type' => 'checkbox',
     ) ); 
 }
+
