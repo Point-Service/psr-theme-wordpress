@@ -31,7 +31,7 @@ function dci_register_pagina_galleria_options(){
     $gallery_options->add_field( array(
         'id' => $prefix . 'gallery_title',
         'name' => 'Nome galleria',
-        'desc' => 'Scegli il nome della sezione con la galleria.',
+        'desc' => 'Scegli il titolo da dare alla Galleria.',
         'type' => 'text',
         'default' => 'Le nostre foto'
       ) 
@@ -62,7 +62,7 @@ function dci_register_pagina_galleria_options(){
    $gallery_options->add_field( array(
         'id' => $prefix . 'mostra_gallery_vivereilcomune',
         'name' => 'Galleria su VIVERE IL COMUNE',
-        'desc' => 'Mostra la galleria Foto su Vivere il Comune',
+        'desc' => 'Mostra le immagini caricati sul Vivere il Comune.',
         'type' => 'checkbox',
     ) ); 
 
