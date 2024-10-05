@@ -60,12 +60,12 @@ get_header();
 			        <div class="col-md-6 col-xl-4">
 			            <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
 			                <div class="card shadow-sm rounded">
-			                    <div class="card-body card-bg-blue">
+
 			                        <?php 
 			                            // Include il template della galleria foto
 			                            get_template_part("template-parts/vivere-comune/galleria-foto");
 			                        ?>
-			                    </div>
+			               
 			                </div>
 			            </div>
 			        </div>
