@@ -57,7 +57,7 @@ get_header();
 		<?php 
 		    // Controlla se mostrare la galleria
 		    $mostra_gallery = dci_get_option('mostra_gallery', 'homepage');
-		    if ($mostra_gallery) { 
+		    if ($mostra_gallery_home) { 
 		?>  
 		<?php get_template_part("template-parts/vivere-comune/galleria-foto"); ?>
 		<?php 
