@@ -5,7 +5,7 @@ function dci_register_pagina_galleria_options(){
 
  
     $args = array(
-        'id'           => 'dci_options_galleriaa',
+        'id'           => 'dci_options_galleria',
         'title'        => esc_html__( 'Galleria', 'design_comuni_italia' ),
         'object_types' => array( 'options-page' ),
         'option_key'   => 'Galleria',
@@ -15,17 +15,9 @@ function dci_register_pagina_galleria_options(){
         'tab_title'    => __('Galleria', "design_comuni_italia"),	);
 
    
-    $media_options = new_cmb2_box( $args );
-
-    $media_options->add_field( array(
-        'id' => $prefix . 'messages_istruzioni_g',
-        'name'        => __( 'Box in evidenza su Multimedia', 'design_comuni_italia' ),
-        'desc' => __( 'Inserisci i video che verrano visualizzati nella pagina multimedia.' , 'design_comuni_italia' ),
-        'type' => 'title',
-    ) );
 
 
- $vivi_options->add_field(array(
+ $options_gallerias->add_field(array(
         'name' => __('Gallery', 'design_comuni_italia'),
         'desc' => __('Seleziona le foto da mostrare in fondo alla pagina', 'design_comuni_italia'),
         'id' => $prefix . 'gallery_items',
@@ -35,7 +27,21 @@ function dci_register_pagina_galleria_options(){
     )
   );
 
+    $options_galleria->add_field( array(
+        'id' => $prefix . 'gallery_title',
+        'name' => 'Nome gallery',
+        'desc' => 'Scegli il nome della sezione con la galleria.',
+        'type' => 'text',
+        'default' => 'Le nostre foto'
+      ) 
+    );
 
+   $options_galleria->add_field( array(
+        'id' => $prefix . 'mostra_gallery_vivereilcomune',
+        'name' => 'Mostra la Gallery',
+        'desc' => 'Mostra la galleria Foto su Vivere il Comune',
+        'type' => 'checkbox',
+    ) ); 
 
 
 
