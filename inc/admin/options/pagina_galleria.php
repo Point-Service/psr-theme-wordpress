@@ -25,6 +25,18 @@ function dci_register_pagina_galleria_options(){
     ) );
 
 
+ $vivi_options->add_field(array(
+        'name' => __('Gallery', 'design_comuni_italia'),
+        'desc' => __('Seleziona le foto da mostrare in fondo alla pagina', 'design_comuni_italia'),
+        'id' => $prefix . 'gallery_items',
+        'type' => 'file_list',
+        'preview_size' => array( 100, 100 ), // Default: array( 50, 50 )
+        'query_args' => array( 'type' => 'image' ), // Only images attachment
+    )
+  );
+
+
+
 
 
 }
