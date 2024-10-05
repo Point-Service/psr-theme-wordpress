@@ -42,7 +42,17 @@ get_header();
 			<?php get_template_part("template-parts/vivere-comune/eventi"); ?>
 			<?php get_template_part("template-parts/vivere-comune/luoghi"); ?>
 			<?php get_template_part("template-parts/vivere-comune/argomenti"); ?>
-			<?php get_template_part("template-parts/vivere-comune/galleria-foto"); ?>
+			<?php 
+				    // Controlla se mostrare la galleria
+		                     $mostra_gallery_vivereilcomune = dci_get_option('mostra_gallery_vivereilcomune', 'vivi');
+		                     if ($mostra_gallery_vivereilcomune) {
+				?>  
+				<?php get_template_part("template-parts/vivere-comune/galleria-foto"); ?>
+			 <?php 
+				    } // Fine controllo se mostrare la galleria 
+			  ?>
+
+			
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
 							
