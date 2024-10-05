@@ -5,7 +5,7 @@ function dci_register_pagina_galleria_options(){
 
  
     $args = array(
-        'id'           => 'dci_options_galleria',
+        'id'           => 'dci_options_galleriaa',
         'title'        => esc_html__( 'Galleria', 'design_comuni_italia' ),
         'object_types' => array( 'options-page' ),
         'option_key'   => 'Galleria',
