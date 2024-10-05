@@ -71,8 +71,7 @@ get_header();
 <?php 
     } // Fine controllo se mostrare la galleria 
 ?>
-   } // Fine controllo se mostrare la galleria 
-			?>
+
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
         <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
