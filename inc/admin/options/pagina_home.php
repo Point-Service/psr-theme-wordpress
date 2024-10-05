@@ -190,12 +190,7 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
         'remove_default' => 'true',
     ) );
 
-$home_options->add_field( array(
-        'id' => $prefix . 'more_section_title',
-        'name'        => __( 'Altre opzioni', 'design_comuni_italia' ),
-        'type' => 'title',
-    ) );
-	
+
    
 }
 
