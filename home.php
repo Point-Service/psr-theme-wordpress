@@ -11,8 +11,17 @@ get_header();
 
 	    
        <main id="main-container" class="main-container redbrown">
-       <div class="bg-image"></div>
-       
+       <!-- <?php 
+            $img=dci_get_option("immagine","home");
+            echo var_dump($img);
+            if($img!= null){?>
+                <div class="bg-image">
+                    CIAO!   
+                    <?php dci_get_img($img, 'immagine-home'); ?>
+                </div>
+            <?php }?> -->
+            <div class="bg-image"></div>
+                
         <h1 class="visually-hidden">
             <?php echo dci_get_option("nome_comune"); ?>
         </h1>
@@ -42,13 +51,19 @@ get_header();
                 get_template_part("template-parts/home/accesso-rapido"); 
             ?>
         </section>
-	  <?php if ($mostra_gallery) {
-	  get_template_part("template-parts/vivere-comune/galleria-foto");
-  	  } ?>
+        
+	    <?php 
+            $mostra_gallery = dci_get_option('mostra_gallery', 'homepage');
+            if ($mostra_gallery) {
+                get_template_part("template-parts/vivere-comune/galleria-foto");
+            }
+        ?>
         <?php get_template_part("template-parts/home/ricerca"); ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
         <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
     </main>
 <?php
 get_footer();
+
+
 
