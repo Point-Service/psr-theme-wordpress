@@ -44,7 +44,7 @@ get_header();
 			<?php get_template_part("template-parts/vivere-comune/argomenti"); ?>
 			<?php 
 				    // Controlla se mostrare la galleria
-		                     $mostra_gallery_vivereilcomune = dci_get_option('mostra_gallery_vivereilcomune', 'vivi');
+		                     $mostra_gallery_vivereilcomune = dci_get_option('mostra_gallery_vivereilcomune', 'galleria');
 		                     if ($mostra_gallery_vivereilcomune) {
 				?>  
 				<?php get_template_part("template-parts/vivere-comune/galleria-foto"); ?>
