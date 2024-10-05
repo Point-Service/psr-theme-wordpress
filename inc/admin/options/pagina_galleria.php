@@ -28,7 +28,16 @@ function dci_register_pagina_galleria_options(){
         'type' => 'title',
     ) );
 
+    $gallery_options->add_field( array(
+        'id' => $prefix . 'gallery_title',
+        'name' => 'Nome galleria',
+        'desc' => 'Scegli il nome della sezione con la galleria.',
+        'type' => 'text',
+        'default' => 'Le nostre foto'
+      ) 
+    );
 
+    
      $gallery_options->add_field(array(
         'name' => __('', 'design_comuni_italia'),
         'desc' => __('Seleziona le foto da mostrare.', 'design_comuni_italia'),
@@ -39,14 +48,7 @@ function dci_register_pagina_galleria_options(){
     )
   );
 
-    $gallery_options->add_field( array(
-        'id' => $prefix . 'gallery_title',
-        'name' => 'Nome galleria',
-        'desc' => 'Scegli il nome della sezione con la galleria.',
-        'type' => 'text',
-        'default' => 'Le nostre foto'
-      ) 
-    );
+
 
 
     $gallery_options->add_field( array(
