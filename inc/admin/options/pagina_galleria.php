@@ -27,6 +27,6 @@ function dci_register_pagina_galleria_options(){
 
 
 
-
+jjjjjjjjj
 
 }
