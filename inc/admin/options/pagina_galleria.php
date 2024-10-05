@@ -24,13 +24,13 @@ function dci_register_pagina_galleria_options(){
     $gallery_options->add_field( array(
         'id' => $prefix . 'messages_istruzioni_g',
         'name'        => __( 'Gallery', 'design_comuni_italia' ),
-        'desc' => __( 'Da qui puoi gestire la tua Foto Gallery' , 'design_comuni_italia' ),
+        'desc' => __( 'Da qui puoi gestire la tua Galleria Fotografica' , 'design_comuni_italia' ),
         'type' => 'title',
     ) );
 
     $gallery_options->add_field( array(
         'id' => $prefix . 'mostra_gallery',
-        'name' => 'Gallery sulla HOME PAGE',
+        'name' => 'Galleria sulla HOME PAGE',
         'desc' => 'Mostra le immagini caricati sulla Home.',
         'type' => 'checkbox',
     ) ); 
@@ -38,14 +38,14 @@ function dci_register_pagina_galleria_options(){
 
    $gallery_options->add_field( array(
         'id' => $prefix . 'mostra_gallery_vivereilcomune',
-        'name' => 'Gallery su VIVERE IL COMUNE',
+        'name' => 'Galleria su VIVERE IL COMUNE',
         'desc' => 'Mostra la galleria Foto su Vivere il Comune',
         'type' => 'checkbox',
     ) ); 
 
      $gallery_options->add_field(array(
         'name' => __('Gallery', 'design_comuni_italia'),
-        'desc' => __('Seleziona le foto da mostrare in fondo alla pagina', 'design_comuni_italia'),
+        'desc' => __('Seleziona le foto da mostrare.', 'design_comuni_italia'),
         'id' => $prefix . 'gallery_items',
         'type' => 'file_list',
         'preview_size' => array( 100, 100 ), // Default: array( 50, 50 )
@@ -55,7 +55,7 @@ function dci_register_pagina_galleria_options(){
 
     $gallery_options->add_field( array(
         'id' => $prefix . 'gallery_title',
-        'name' => 'Nome gallery',
+        'name' => 'Nome galleria',
         'desc' => 'Scegli il nome della sezione con la galleria.',
         'type' => 'text',
         'default' => 'Le nostre foto'
