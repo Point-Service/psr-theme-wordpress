@@ -103,6 +103,12 @@ function dci_register_pagina_vivi_options(){
       ) 
     );
 
-
+   $vivi_options->add_field( array(
+        'id' => $prefix . 'mostra_gallery_vivereilcomune',
+        'name' => 'Mostra la Gallery',
+        'desc' => 'Mostra la galleria Foto',
+        'type' => 'checkbox',
+    ) ); 
+       
     
 }
