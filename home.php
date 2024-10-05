@@ -60,12 +60,12 @@ get_header();
     if ($mostra_gallery) { 
 ?>  
 <section id="gallery" aria-describedby="galleria">
-    <div class="section-content">
+    <div class="section-content py-5"> <!-- Aggiunta classe py-5 per padding uniforme -->
         <div class="container">    
-            <div class="row">
-                <div class="col-lg-5 order-2 order-lg-1">
-                    <div class="card mb-1">
-                        <div class="card-body pb-5">
+            <div class="row justify-content-center"> <!-- Usato justify-content-center per centrare -->
+                <div class="col-lg-6 col-md-8"> <!-- Uniformato con col-lg-6, col-md-8 per allineamento simile agli altri div -->
+                    <div class="card mb-4"> <!-- Uniformato margine inferiore con mb-4 -->
+                        <div class="card-body pb-5"> <!-- Presumo che anche gli altri abbiano padding simile -->
                             <div class="category-top">
                                 <?php 
                                     // Include il template della galleria foto
@@ -75,13 +75,14 @@ get_header();
                         </div>
                     </div>
                 </div>
-            </div> <!-- Fine prima row -->
+            </div> <!-- Fine row -->
         </div> <!-- Fine container -->
     </div> <!-- Fine section-content -->
 </section> 
 <?php 
     } // Fine controllo se mostrare la galleria 
 ?>
+
 	       
     
 
