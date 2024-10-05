@@ -36,21 +36,21 @@ $total_pages = ceil($total_items / $items_per_page);
 				</div>
 			</div>
 		<?php } ?>
-		<div class="section <?= $sfondo_grigio ? 'section-muted' : '' ?> px-0 pt-0">
+		<div class="section <?= $sfondo_grigio ? 'section-muted' : '' ?> px-0 pt-0 ">
 			<div class="container">
-				<div class="row"> <!-- Inizio della riga -->
+				<div class="row">
 					<?php
 					// Visualizza solo gli elementi della pagina corrente
 					foreach ($gallery_page as $item) {
 						?>
-						<div class="col-md-4 mb-4"> <!-- Ogni immagine è in una colonna -->
+						<div class="col-md-4 mb-4"> <!-- Assicurati che ogni immagine sia in una colonna -->
 							<!-- Codice per visualizzare l'immagine -->
 							<?php dci_get_img($item, 'galleria-img'); ?>
 						</div>
 						<?php
 					}
 					?>
-				</div> <!-- Fine della riga -->
+				</div>
 				<?php if ($total_pages > 1) { ?>
 					<!-- Paginazione -->
 					<nav aria-label="Navigazione della galleria">
@@ -85,5 +85,6 @@ $total_pages = ceil($total_items / $items_per_page);
 		</div>
 	</section>
 <?php } ?>
+
 
 
