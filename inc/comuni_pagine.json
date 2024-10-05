@@ -63,6 +63,13 @@
           "template_name": "",
           "children": {}
         },
+        "Galleria": {
+          "title": "Galleria",
+          "slug": "galleria",
+          "description": "Galleria Foto.",
+          "template_name": "galleria",
+          "children": {}
+        }, 
         "Valori e obiettivi": {
           "title": "Valori e obiettivi",
           "slug": "valori-obiettivi",
