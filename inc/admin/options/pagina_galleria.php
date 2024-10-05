@@ -23,8 +23,8 @@ function dci_register_pagina_galleria_options(){
 
     $gallery_options->add_field( array(
         'id' => $prefix . 'messages_istruzioni_g',
-        'name'        => __( 'Box in evidenza su Multimedia', 'design_comuni_italia' ),
-        'desc' => __( 'Inserisci i video che verrano visualizzati nella pagina multimedia.' , 'design_comuni_italia' ),
+        'name'        => __( 'Gallery', 'design_comuni_italia' ),
+        'desc' => __( 'Da qui puoi gestire la tua Foto Gallery' , 'design_comuni_italia' ),
         'type' => 'title',
     ) );
 
