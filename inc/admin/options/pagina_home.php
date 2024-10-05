@@ -198,19 +198,11 @@ $home_options->add_field( array(
 	
 $home_options->add_field( array(
         'id' => $prefix . 'mostra_gallery',
-        'name' => 'Mostra Gallery su Vivere il Comune',
+        'name' => 'Mostra la Gallery anche sulla HOME PAGE',
         'desc' => 'Mostra la galleria foto (da impostare in <i>Configurazione &gt; Vivere il Comune</i>)',
         'type' => 'checkbox',
     ) ); 
-
-
-$home_options->add_field( array(
-        'id' => $prefix . 'mostra_gallery_home',
-        'name' => 'Mostra Gallery Sulla Home',
-        'desc' => 'Mostra la galleria delle foto sulla Home (da impostare in <i>Configurazione &gt; Vivere il Comune</i>)',
-        'type' => 'checkbox',
-    ) ); 
-    
+   
     
 }
 
