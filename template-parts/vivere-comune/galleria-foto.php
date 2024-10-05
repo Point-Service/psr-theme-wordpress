@@ -30,7 +30,7 @@ $total_pages = ceil($total_items / $items_per_page);
                 <div class="container">
                     <div class="row row-title pt-3 pt-lg-60 pb-3">
                         <div class="col-12 d-lg-flex justify-content-between">
-                            <h2 class="mb-lg-0"><?= esc_html($nome_sezione) ?></h2>
+                            <h2 class="mb-lg-0"><?= $nome_sezione ?></h2>
                         </div>
                     </div>
                 </div>
@@ -43,12 +43,12 @@ $total_pages = ceil($total_items / $items_per_page);
                     <?php
                     // Visualizza solo gli elementi della pagina corrente
                     foreach ($gallery_page as $item) {
-                        // Assicurati di avere un metodo per ottenere l'URL dell'immagine
-                        $img_url = dci_get_img_url($item); // Cambia questa riga se necessario
+                        // Assicurati che il link dell'immagine punti alla versione ingrandita
+                        $img_url = dci_get_img_url($item); // Assicurati di avere questa funzione per ottenere l'URL dell'immagine
                         ?>
                         <div class="col-md-4 mb-4">
                             <div class="card">
-                                <a href="<?= esc_url($img_url) ?>" data-lightbox="gallery" data-title="<?= esc_html($nome_sezione) ?>">
+                                <a href="<?= $img_url ?>" data-lightbox="gallery" data-title="<?= $nome_sezione ?>">
                                     <?php dci_get_img($item, 'galleria-img'); ?>
                                 </a>
                             </div>
@@ -70,13 +70,13 @@ $total_pages = ceil($total_items / $items_per_page);
                                     </a>
                                 </li>
                             <?php } ?>
-
+                            
                             <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
                                 <li class="page-item <?= ($i == $current_page) ? 'active' : '' ?>">
                                     <a class="page-link" href="?pagina=<?= $i ?>"><?= $i ?></a>
                                 </li>
                             <?php } ?>
-
+                            
                             <?php if ($current_page < $total_pages) { ?>
                                 <li class="page-item">
                                     <a class="page-link" href="?pagina=<?= $current_page + 1 ?>" aria-label="Successivo">
@@ -91,8 +91,6 @@ $total_pages = ceil($total_items / $items_per_page);
             </div>
         </div>
     </section>
-<?php } else { ?>
-    <p>Nessuna immagine disponibile.</p>
 <?php } ?>
 
 
