@@ -203,6 +203,5 @@ $home_options->add_field( array(
         'type' => 'checkbox',
     ) ); 
    
-    
 }
 
