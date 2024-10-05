@@ -25,7 +25,7 @@ function dci_register_pagina_galleria_options(){
     ) );
 
 
-   $options_galleria->add_field( array(
+   $media_options->add_field( array(
         'id' => $prefix . 'mostra_gallery_vivereilcomune',
         'name' => 'Mostra la Gallery',
         'desc' => 'Mostra la galleria Foto su Vivere il Comune',
