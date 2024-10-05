@@ -36,21 +36,17 @@ $total_pages = ceil($total_items / $items_per_page);
                 </div>
             </div>
         <?php } ?>
-
+        
         <div class="section <?= $sfondo_grigio ? 'section-muted' : '' ?> px-0 pt-0 ">
             <div class="container">
                 <div class="row">
                     <?php
                     // Visualizza solo gli elementi della pagina corrente
                     foreach ($gallery_page as $item) {
-                        // Assicurati che il link dell'immagine punti alla versione ingrandita
-                        $img_url = dci_get_img_url($item); // Assicurati di avere questa funzione per ottenere l'URL dell'immagine
                         ?>
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                <a href="<?= $img_url ?>" data-lightbox="gallery" data-title="<?= $nome_sezione ?>">
-                                    <?php dci_get_img($item, 'galleria-img'); ?>
-                                </a>
+                        <div class="col-md-4 mb-4"> <!-- Assicurati che ogni immagine sia in una colonna -->
+                            <div class="card"> <!-- Aggiungi un contenitore card se necessario -->
+                                <?php dci_get_img($item, 'galleria-img'); ?>
                             </div>
                         </div>
                         <?php
