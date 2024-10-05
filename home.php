@@ -67,7 +67,7 @@ get_header();
 			                            get_template_part("template-parts/vivere-comune/galleria-foto");
 			                        ?>
 		                    </span>
-		                    </a>
+		               
 		                </div>
 		            </div>
 		       
