@@ -33,13 +33,27 @@
                       ></use></svg><span>Numero verde <?php echo $numero_verde; ?></span></a
                   >
                 </li>
-                <li>
-                  <a class="list-item" href="<?php echo dci_get_template_page_url("page-templates/prenota-appuntamento.php");?>" data-element="appointment-booking">
-                    <svg class="icon icon-primary icon-sm" aria-hidden="true">
-                      <use href="#it-calendar"></use>
-                    </svg><span>Prenota appuntamento</span>
-                  </a>
-                </li>
+                <?php 
+                    $prenota_appuntamento = dci_get_option("prenota_appuntamento");
+
+
+                    if($prenota_appuntamento!=null){?>
+                      <li>
+                        <a class="list-item" href="<?php echo $prenota_appuntamento;?>" data-element="appointment-booking">
+                          <svg class="icon icon-primary icon-sm" aria-hidden="true">
+                            <use href="#it-calendar"></use>
+                          </svg><span>Prenota appuntamento</span>
+                        </a>
+                      </li>
+                    <?php } else{?>
+                      <li>
+                        <a class="list-item" href="<?php echo dci_get_template_page_url("page-templates/prenota-appuntamento.php");?>" data-element="appointment-booking">
+                          <svg class="icon icon-primary icon-sm" aria-hidden="true">
+                            <use href="#it-calendar"></use>
+                          </svg><span>Prenota appuntamento2</span>
+                        </a>
+                      </li>
+                    <?php } ?>
               </ul>
               <h2 class="title-medium-2-semi-bold mt-4">
                 Problemi in città
