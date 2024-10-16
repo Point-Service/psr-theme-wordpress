@@ -54,17 +54,17 @@
                                                 <ul class="link-list" data-element="page-index">
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="#needed">
-                                                            <span>Cosa serve</span>
+                                                            <span class="title-medium">Cosa serve</span>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="#address">
-                                                            <span>Indirizzo</span>
+                                                            <span class="title-medium">Indirizzo</span>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="#calendar">
-                                                            <span>Aggiungi al tuo calendario</span>
+                                                            <span class="title-medium">Aggiungi al tuo calendario</span>
                                                         </a>
                                                     </li>
                                                 </ul>
