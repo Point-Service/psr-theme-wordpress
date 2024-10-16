@@ -43,6 +43,8 @@ get_header();
             $mostra_prenota_appuntamento = dci_get_option("prenota_appuntamento", "servizi");
             $mostra_accedi_al_servizio = $canale_digitale_link || $canale_fisico_text || $mostra_prenota_appuntamento || $canale_fisico_luoghi_id;
 
+            $prenota_appuntamento = dci_get_option("prenota_appuntamento");
+
             $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
             $condizioni_servizio = dci_get_meta("condizioni_servizio");     
             $uo_id = intval(dci_get_meta("unita_responsabile"));
@@ -522,13 +524,17 @@ get_header();
                                 </button>
                                 <?php } ?>
                                 <p class="text-paragraph lora mt-4" data-element="service-generic-access"><?php echo $canale_fisico_text; ?></p>
-                                <?php if ($mostra_prenota_appuntamento) { ?>
-                                <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>';" data-element="service-booking-access">
-                                    <span class="">Prenota appuntamento</span>
-                                </button>
-                                <?php } ?>
-					    
-                         
+                                <?php if ($mostra_prenota_appuntamento) { 
+                                if($prenota_appuntamento != null){?>
+                                    <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo $prenota_appuntamento ?>';" data-element="service-booking-access">
+                                        <span class="">Prenota appuntamento</span>
+                                    </button>
+                                <?php } else {?>
+                                    <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>';" data-element="service-booking-access">
+                                        <span class="">Prenota appuntamento</span>
+                                    </button>
+                                <?php }?>
+                            <?php }?>
                             </section>
                             <?php } ?>
                             <?php if ( $condizioni_servizio ) {
@@ -628,3 +634,4 @@ get_header();
     </main>
 <?php
 get_footer();
+
