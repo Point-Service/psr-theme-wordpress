@@ -144,7 +144,7 @@
                                 Aggiungi ulteriori dettagli
                             </label>
                             <textarea
-                                class="text-area"
+                                class="text-area form-control"
                                 id="form-details"
                                 rows="2"
                             ></textarea>
