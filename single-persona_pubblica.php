@@ -198,89 +198,89 @@ get_header();
                                                                 <?php if ($incarico ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#who-needs">
-                                                                        <span class="title-medium">Incarico</span>
+                                                                        <span>Incarico</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $tipo_incarico ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#description">
-                                                                        <span class="title-medium">Tipo di incarico</span>
+                                                                        <span>Tipo di incarico</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if($compensi) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#how-to">
-                                                                        <span class="title-medium">Compensi</span>
+                                                                        <span>Compensi</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#needed">
-                                                                        <span class="title-medium">Data di <?php if($tipo_incarico == "politico") { echo 'Insediamento'; } else { echo 'inizio incarico'; } ?></span>
+                                                                        <span>Data di <?php if($tipo_incarico == "politico") { echo 'Insediamento'; } else { echo 'inizio incarico'; } ?></span>
                                                                     </a>
                                                                 </li>
                                                                 <?php if ( $organizzazioni ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#obtain">
-                                                                        <span class="title-medium">Organizzazione</span>
+                                                                        <span>Organizzazione</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $competenze ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#obtain">
-                                                                        <span class="title-medium">Competenze</span>
+                                                                        <span>Competenze</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $biografia ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#deadlines">
-                                                                        <span class="title-medium">Biografia</span>
+                                                                        <span>Biografia</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $contatti ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#deadlines">
-                                                                        <span class="title-medium">Contatti</span>
+                                                                        <span>Contatti</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $curriculum_vitae ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#costs">
-                                                                        <span class="title-medium">Curriculum Vitae</span>
+                                                                        <span>Curriculum Vitae</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $situazione_patrimoniale ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#situazione-patrimoniale">
-                                                                        <span class="title-medium">Situazione patrimoniale</span>
+                                                                        <span>Situazione patrimoniale</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $dichiarazione_redditi ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#dichiarazione-redditi">
-                                                                        <span class="title-medium">Dichiarazione dei redditi</span>
+                                                                        <span>Dichiarazione dei redditi</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $spese_elettorali ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#spese-elettorali">
-                                                                        <span class="title-medium">Spese elettorali</span>
+                                                                        <span>Spese elettorali</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $allegati ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#altre-cariche">
-                                                                        <span class="title-medium">Allegati</span>
+                                                                        <span>Allegati</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
@@ -288,7 +288,7 @@ get_header();
                                                                 <?php if ( $uo_id ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#contacts">
-                                                                        <span class="title-medium">Contatti</span>
+                                                                        <span>Contatti</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
