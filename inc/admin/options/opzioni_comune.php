@@ -146,6 +146,12 @@ function dci_register_comune_options(){
         'desc' => __( 'Utilizzare questo campo per specificare email principale del sito'),
         'type' => 'text'
     ));
+    $header_options->add_field( array(
+        'id'    => $prefix . 'prenota_appuntamento',
+        'name' => __('Link Prenota Appuntamento', 'design_comuni_italia' ),
+        'desc' => __( 'Utilizzare questo campo per specificare il link alla pagina prenota appuntamento'),
+        'type' => 'text'
+    ));
 
 
 
@@ -161,6 +167,10 @@ function dci_register_comune_options(){
             'image/svg',
         ))
     ));
+
+}
+
+
 
 
 
