@@ -112,7 +112,7 @@
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="#details">
-                                                <span class="title-medium">Dettagli</span>
+                                                <span class="text-area form-control">Dettagli</span>
                                                 </a>
                                             </li>
                                         </ul>
