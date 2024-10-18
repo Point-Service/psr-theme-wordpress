@@ -9,11 +9,8 @@
     $indirizzo = dci_get_meta('indirizzo', $prefix, $sede_principale);
 
     $prefix = '_dci_luogo_';
-    $contatti = array();
-    foreach ($punti_contatto as $pc_id) {
-        $contatto = dci_get_full_punto_contatto($pc_id);
-        array_push($contatti, $contatto);
-    }
+    
+    //  Ho rimosso i Contatti perchè non venivano utilizzati
     
     if($with_border) {
 ?>
