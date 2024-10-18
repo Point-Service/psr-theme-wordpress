@@ -9,9 +9,6 @@
             $incarico = $incarichi[0];
         }
 
-       
-
-
         $tipo = get_the_terms($post, 'tipi_unita_organizzativa')[0];
 
         //Var_dump($tipo);
@@ -20,9 +17,11 @@
         $nome_incarico = dci_get_meta('nome', $prefix, $tipo->term_id);
 
         //var_dump($nome_incarico);
-
         
-        $img = dci_get_meta('foto');
+        $prefix = '_dci_unita_organizzativa_';
+        // Diciarazzione variabile $img
+        $img = dci_get_meta('immagine', $prefix);
+        
         if($tipo->slug == "area") {
         if($img) {
 ?>
@@ -30,7 +29,7 @@
         <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
             <div class="card no-after rounded">
             <div class="row g-2 g-md-0 flex-md-column">
-                <div class="col-4 order-2 order-md-1">
+                <div class="img-wrapper">
                 <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
                 </div>
                 <div class="col-8 order-1 order-md-2">
