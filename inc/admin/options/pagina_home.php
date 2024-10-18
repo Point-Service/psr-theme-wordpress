@@ -19,20 +19,20 @@ function dci_register_pagina_home_options(){
     }
     $home_options = new_cmb2_box( $args );
     // Immagine 
-    // $home_options->add_field( array(
-    //     'id' => $prefix . 'home_options',
-    //     'name'        => __( 'Sezione Immagine Pagina Home', 'design_comuni_italia' ),
-    //     'desc' => __( 'Configurazione sezione immagine pagina Home.' , 'design_comuni_italia' ),
-    //     'type' => 'title',
-    // ) );
+    $home_options->add_field( array(
+        'id' => $prefix . 'home_image',
+        'name'        => __( 'Sezione Immagine Pagina Home', 'design_comuni_italia' ),
+        'desc' => __( 'Configurazione sezione immagine pagina Home.' , 'design_comuni_italia' ),
+        'type' => 'title',
+    ) );
 
-    // $home_options->add_field( array(
-    //     'id' => $prefix . 'immagine',
-    //     'name'=> __( 'Immagine', 'design_comuni_italia' ),
-    //     'desc' => __( 'Immagine/ banner (in alto nella pagina)' , 'design_comuni_italia' ),
-    //     'type' => 'file',
-    //     'query_args' => array( 'type' => 'image' ),
-    // ) );
+    $home_options->add_field( array(
+        'id' => $prefix . 'immagine',
+        'name'=> __( 'Immagine', 'design_comuni_italia' ),
+        'desc' => __( 'Immagine/ banner (in alto nella pagina)' , 'design_comuni_italia' ),
+        'type' => 'file',
+        'query_args' => array( 'type' => 'image' ),
+    ) );
 
     $home_options->add_field( array(
         'id' => $prefix . 'schede_evidenziate_title',
@@ -190,7 +190,5 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
         'remove_default' => 'true',
     ) );
 
-
-   
-}
+    }
 
