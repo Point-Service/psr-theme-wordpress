@@ -19,15 +19,6 @@ get_header();
             </div>
         <?php } ?>
 
-	   <!-- <?php 
-            $img=dci_get_option("immagine","home");
-            echo var_dump($img);
-            if($img!= null){?>
-                <div class="bg-image">
-                    CIAO!   
-                    <?php dci_get_img($img, 'immagine-home'); ?>
-                </div>
-            <?php }?> -->
 
         <h1 class="visually-hidden">
             <?php echo dci_get_option("nome_comune"); ?>
