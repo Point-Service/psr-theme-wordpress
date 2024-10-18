@@ -11,17 +11,14 @@ get_header();
 
 	    
        <main id="main-container" class="main-container redbrown">
-       <!-- <?php 
-            $img=dci_get_option("immagine","home");
-            echo var_dump($img);
-            if($img!= null){?>
-                <div class="bg-image">
-                    CIAO!   
-                    <?php dci_get_img($img, 'immagine-home'); ?>
-                </div>
-            <?php }?> -->
-            <div class="bg-image"></div>
-                
+       <?php
+            $immagine = dci_get_option("immagine", "homepage");
+            if ($immagine != null) { ?>
+            <div class="bg-image">
+                <?php dci_get_img($immagine, 'immagine-home'); ?>
+            </div>
+        <?php } ?>
+
         <h1 class="visually-hidden">
             <?php echo dci_get_option("nome_comune"); ?>
         </h1>
@@ -33,7 +30,7 @@ get_header();
                 get_template_part("template-parts/home/messages");
             }
 		    ?>
-            <?php // get_template_part("template-parts/home/carosello"); ?>
+            
 	    <p></p>
             <?php get_template_part("template-parts/home/notizie"); ?>
             <?php get_template_part("template-parts/home/calendario"); ?>
@@ -71,3 +68,12 @@ get_header();
     </main>
 <?php
 get_footer();
+?>
+<style>
+    .bg-image img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        object-position: center;
+    }
+</style>
