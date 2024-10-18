@@ -9,6 +9,11 @@
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $uo_id);
     $responsabili = dci_get_meta("responsabile", $prefix, $uo_id);
     $responsabile = $responsabili[0];
+    
+    // Gestione Incarichi
+    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
+    $incarico = get_the_title($incarichi[0]);
+    $nome_incarico = $incarico;
 
     $prefix = '_dci_punto_contatto_';
     $contatti = array();
@@ -127,10 +132,7 @@
                                     </p>
                             <?php }
                          } ?>	
-	
-
-                    
-                    <?php foreach ($other_contacts as $type) {
+	        <?php foreach ($other_contacts as $type) {
                         if ( isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
                             foreach ($full_contatto[$type] as $value) {
                                 echo '<p>'.$type.': '.$value.'</p>';
@@ -143,7 +145,7 @@
 		    	<h6 class="border-top border-light mt-2 mb-0 pt-2"></h6>	
 	                <div id="contacts"><small>Responsabile Area:</small><p></p>   </div>     
 			           <section class="it-page-section">                
-	
+                       
 	                                <div class="row">
 	                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
 	                                        <div class="cmp-card-latest-messages mb-3 mb-30">
@@ -316,3 +318,4 @@
 <?php } 
 $with_border = false;
 ?>
+
