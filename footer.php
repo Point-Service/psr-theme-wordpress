@@ -237,7 +237,7 @@
                                 </small>
                                 <a class="text-primary" style="text-decoration:none;" target="_Black" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">
                                     <span id="footerCompanyLabel" style="color: #fff">
-                                        &nbsp;Point Service S.R.L
+                                        &nbsp;Point Service S.r.l
                                     </span>
                                 </a>
                             </li>
