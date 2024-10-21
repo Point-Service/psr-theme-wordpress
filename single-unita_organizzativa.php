@@ -318,10 +318,18 @@ get_header();
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
                                         <div class="cmp-card-latest-messages mb-3 mb-30">
                                         	<div class="card card-bg px-4 pt-4 pb-4 rounded">
-                                                    <div class="card-header border-0 p-0">
-                                                             <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="#"><?php echo 
-                                                             $nome_incarico; ?></a>
-                                                        </div>
+							<div class="card-header border-0 p-0">
+							    <?php 
+							    // Assicurati che la variabile sia definita prima di usarla
+							    $nome_incarico = $nome_incarico ?? ''; // Imposta a stringa vuota se non è definita
+							
+							    // Controlla se $nome_incarico non è vuoto prima di visualizzarlo
+							    if (!empty($nome_incarico)) { ?>
+							        <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="#">
+							            <?php echo esc_html($nome_incarico); ?>
+							        </a>
+							    <?php } ?>
+							</div>
                                                    <div class="card-body p-0 my-2">
                                                       <div class="card-content">
                                                         
