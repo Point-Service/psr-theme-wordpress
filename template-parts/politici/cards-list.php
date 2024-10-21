@@ -15,10 +15,16 @@ if (is_array($incarichi) && !empty($incarichi[0])) {
 
 // Estrai la data inizio incarico e controlla che abbia almeno tre elementi
 $arrdata = explode('-', dci_get_meta("data_inizio_incarico"));
-if (count($arrdata) >= 3) {
-    $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+if (count($arrdata) === 3) { // Verifica che ci siano esattamente 3 elementi
+    $day = $arrdata[0];
+    $month = $arrdata[1];
+    $year = $arrdata[2];
+    $monthName = date_i18n('M', mktime(0, 0, 0, $month, 10));
 } else {
+    // Gestione dell'errore: valori predefiniti se non ci sono 3 elementi
+    $day = '';
     $monthName = ''; // Valore predefinito
+    $year = '';
 }
 
 // Verifica che get_the_terms() restituisca un array valido con almeno un elemento
@@ -58,7 +64,7 @@ $img = dci_get_meta('foto');
                                                 <?php echo $nome_incarico ? $nome_incarico : 'POLITICO'; ?>
                                             </span>
                                             <span class="data">
-                                                <?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?>
+                                                <?php echo $day . ' ' . $monthName . ' ' . $year; ?>
                                             </span>
                                         </div>
                                         <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
@@ -88,7 +94,7 @@ $img = dci_get_meta('foto');
                                             <?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'POLITICO'; ?>
                                         </span>
                                         <span class="data">
-                                            <?php echo $arrdata[0] . ' ' . strtoupper($monthName) . ' ' . $arrdata[2]; ?>
+                                            <?php echo $day . ' ' . strtoupper($monthName) . ' ' . $year; ?>
                                         </span>
                                     </div>
                                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
