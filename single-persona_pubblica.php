@@ -280,13 +280,13 @@ get_header();
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
-                                                                <?php if ( $allegati ) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#altre-cariche">
-                                                                        <span>Allegati</span>
-                                                                    </a>
-                                                                </li>
-                                                                <?php } ?>
+                                                                  <?php if (isset($allegati) && !empty($allegati)) { ?>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" href="#altre-cariche">
+                                                                                <span>Allegati</span>
+                                                                            </a>
+                                                                        </li>
+                                                                    <?php } ?>
        
                                                                 <?php if ( $uo_id ) { ?>
                                                                 <li class="nav-item">
