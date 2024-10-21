@@ -3,9 +3,15 @@
 
         $description = dci_get_meta('descrizione_breve');
 
-        $incarichi = dci_get_meta('incarichi');
-
-        $incarico = $incarichi[0];
+            // Recupero degli incarichi
+            $incarichi = dci_get_meta('incarichi');
+            
+            // Controllo se $incarichi è un array e non è vuoto
+            if (is_array($incarichi) && !empty($incarichi)) {
+                $incarico = $incarichi[0];
+            } else {
+                $incarico = null; // O un valore di fallback appropriato
+            }
         $tipo = get_the_terms($post, 'tipi_unita_organizzativa')[0];
 
         //Var_dump($tipo);
