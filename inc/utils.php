@@ -350,11 +350,14 @@ if(!function_exists("dci_get_current_group")) {
                 $taxObject = get_taxonomy($taxonomy);
                 $postTypeArray = $taxObject->object_type;
             }
-            //if there's only one post type related
-            if (!empty($postTypeArray) && count($postTypeArray) === 1) {
-                $tipo_post = reset($postTypeArray);
-            }
-            return  dci_get_group($tipo_post);
+		// Verifica se $postTypeArray è un array e non è vuoto
+		if (is_array($postTypeArray) && !empty($postTypeArray) && count($postTypeArray) === 1) {
+		    $tipo_post = reset($postTypeArray); // Recupera il primo elemento dell'array
+		} else {
+		    $tipo_post = null; // Imposta $tipo_post a null se non ci sono post types validi
+		}
+		
+		return dci_get_group($tipo_post); // Restituisce il gruppo, anche se $tipo_post è null
         }
 
         if (is_author()) {
