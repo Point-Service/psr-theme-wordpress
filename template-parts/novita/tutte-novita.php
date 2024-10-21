@@ -1,8 +1,8 @@
 <?php
-global $the_query, $load_posts, $load_card_type, $tipo_notizia;
+global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 9;
-    $load_posts = 15;
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
+    $load_posts = 3;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
         's'         => $query,
@@ -60,13 +60,16 @@ global $the_query, $load_posts, $load_card_type, $tipo_notizia;
                 </div>
             </div>
             <div class="row g-4" id="load-more">
-                <?php 
-                    foreach ($posts as $post) {
+                <?php
+                foreach ( $posts as $post ) {
                     $load_card_type = 'notizia';
                     get_template_part('template-parts/novita/cards-list');
-                }?>
+                }
+                wp_reset_postdata();
+                ?>
             </div>
             <?php get_template_part("template-parts/search/more-results"); ?>
         </div>
     </form>
 </div>
+<?php wp_reset_query(); ?>
