@@ -16,10 +16,10 @@ $box_accesso_rapido = $boxes;
                         <a class="text-decoration-none card-bg-blue" href="<?php echo $box['link_message']; ?>" data-element="topic-element" target="_blank">
                             <h3 class="card-title t-primary title-xlarge text-white"><?php echo $box['titolo_message']; ?></h3>
                         </a>
-                        <?php if($box['desc_message']) { ?>
-                        <p class="titillium text-paragraph mb-0 description text-white">
-                            <?php echo $box['desc_message']; ?>            
-                        </p>
+                        <?php if (isset($box['desc_message']) && $box['desc_message']) { ?>
+                            <p class="titillium text-paragraph mb-0 description text-white">
+                                <?php echo $box['desc_message']; ?>            
+                            </p>
                         <?php } ?>
                     </div>
                 </div>
