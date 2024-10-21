@@ -13,7 +13,13 @@
         $tipo = get_the_terms($incarico, 'tipi_incarico')[0];
 
         $prefix = '_dci_incarico_';
-        $nome_incarico = get_the_title($incarichi[0]);
+        // Verifica che $incarichi sia un array e che contenga almeno un elemento
+        if (is_array($incarichi) && !empty($incarichi[0])) {
+            $incarico = $incarichi[0];
+            $nome_incarico = get_the_title($incarico);
+        } else {
+            $nome_incarico = ''; // Valore predefinito nel caso in cui $incarichi sia vuoto o non valido
+        }
 
         //var_dump($nome_incarico);
 
