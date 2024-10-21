@@ -142,11 +142,20 @@ get_header();
                                         <?php the_title(); ?>
                                     </h1>
                                     
-                                    <p class="subtitle-small mb-3" data-element="service-description">
-                                        <?php echo $descrizione_breve ?>
-                                    </p>
-
-                                </div>
+					<p class="subtitle-small mb-3" data-element="service-description">
+					    <?php echo esc_html($descrizione_breve); ?>
+					</p>
+					
+					<?php 
+					// Verifica se la variabile è definita e non è null o vuota
+					if (isset($canale_digitale_link) && !empty($canale_digitale_link)) { 
+					?>
+					    <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo esc_url($canale_digitale_link); ?>';">
+					        <span class=""><?php echo esc_html($canale_digitale_label); ?></span>
+					    </button>
+					<?php 
+					} 
+					?>
                                 <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
                                     <?php
                                         $hide_arguments = true;
