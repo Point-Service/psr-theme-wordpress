@@ -5,8 +5,15 @@ if ($persone && is_array($persone) && count($persone) > 0) { ?>
     $prefix = '_dci_persona_pubblica_';
     $nome = dci_get_meta('nome', $prefix, $person_id);
     $cognome = dci_get_meta('cognome', $prefix, $person_id); 
-    $incarichi = dci_get_meta("incarichi", $prefix, $person_id);                                    
-    $incarico = get_the_title($incarichi[0]);        
+      // Recupera gli incarichi utilizzando la funzione dci_get_meta
+      $incarichi = dci_get_meta("incarichi", $prefix, $person_id);
+      
+      // Controlla se $incarichi è un array e se ha almeno un elemento
+      if (is_array($incarichi) && !empty($incarichi) && isset($incarichi[0])) {
+          $incarico = get_the_title($incarichi[0]); // Recupera il titolo se il primo incarico esiste
+      } else {
+          $incarico = ''; // Imposta $incarico a una stringa vuota se non ci sono incarichi
+      }
     $img = dci_get_meta("foto", $prefix, $person_id);
 
     if ($img != null) { ?>
