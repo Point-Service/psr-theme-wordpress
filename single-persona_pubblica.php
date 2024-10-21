@@ -33,7 +33,10 @@ get_header();
 
             $responsabili = dci_get_meta("responsabile");
 
-            $responsabile = $responsabili[0];
+             // Verifica se $responsabili è un array e se ha almeno un elemento
+            if (is_array($responsabili) && !empty($responsabili) && isset($responsabili[0])) {
+                $responsabile = $responsabili[0]; // Assegna il primo elemento se esiste
+            }
 
             $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
 
