@@ -29,7 +29,7 @@ function dci_register_post_type_incarico() {
         'has_archive'           => true,
         'capability_type' => array('incarico', 'incarichi'),
         'map_meta_cap'    => true,
-        'description'    => __( "Questa Tipologia descrive la struttura di cariche, incarichi o ruoli salienti per il dominio (sito di una casa di riposo), funzionale alla creazione di una scheda persona", 'design_comuni_italia' ),
+        'description'    => __( "Questa Tipologia descrive la struttura di cariche, incarichi o ruoli salienti per il dominio (sito di un comune), funzionale alla creazione di una scheda persona", 'design_comuni_italia' ),
 
     );
     register_post_type( 'incarico', $args );
@@ -43,7 +43,7 @@ function dci_register_post_type_incarico() {
 add_action( 'edit_form_after_title', 'dci_incarico_add_content_after_title' );
 function dci_incarico_add_content_after_title($post) {
     if($post->post_type == "incarico")
-        _e('<span><i>il <b>Titolo</b> è il <b>Titolo carica o incarico *</b></i></span><br><br><br> ', 'design_comuni_italia' );
+        _e('<span><i>il <b>Titolo</b> è il <b>Titolo carica o incarico</b></i></span><br><br><br> ', 'design_comuni_italia' );
 }
 
 /**
@@ -74,59 +74,6 @@ function dci_add_incarico_metaboxes()
         ),
     ) );
 
-
-    $cmb_dati->add_field( array(
-        'id' => $prefix . 'persona',
-        'name'    => __( 'Persona *', 'design_comuni_italia' ),
-        'desc' => __( 'La persona che ha la carica e l\'incarico' , 'design_comuni_italia' ),
-        'type'    => 'pw_select',
-        'options' => dci_get_posts_options('persona_pubblica'),
-        'attributes'    => array(
-            'required'    => 'required',
-            'placeholder' =>  __( 'Seleziona una Persona Pubblica', 'design_comuni_italia' ),
-        ),
-        'column' => array(
-            'position' => 2
-        ),
-        'display_cb' => 't_incarico_display_persona_value'
-    ) );
-
-    $cmb_dati->add_field( array(
-        'id' => $prefix . 'url_trasparenza',
-        'name'        => __( 'Link alla scheda di Amministrazione Trasparente', 'design_comuni_italia' ),
-        'desc' => __( 'Collegamento ipertestuale alla scheda dell\'incarico in Amministrazione Trasparente' , 'design_comuni_italia' ),
-        'type' => 'text_url'
-    ) );
-
-    
-	$cmb_dati->add_field( array(
-		'id'        => $prefix . 'di_responsabilita',
-        'name'      => 'Incarico di responsabilità *',
-		'desc'      => __( 'L\'incarico è di responsabilità (ad esempio direttore, referente…)?', 'design_comuni_italia' ),
-		'type'      => 'radio_inline',
-		'options'   => array(
-			"true"  => __( 'È di responsabilità', 'design_comuni_italia' ),
-			"" => __( 'Non è di responsabilità', 'design_comuni_italia' ),
-		),
-	) );
-
-    $cmb_dati->add_field( array(
-        'id' => $prefix . 'unita_organizzativa',
-        'name'    => __( 'Unità organizzativa', 'design_comuni_italia' ),
-        'desc' => __( 'L\'unità organizzativa alla quale si riferisce l\'incarico.' , 'design_comuni_italia' ),
-        'type'    => 'pw_select',
-        'options' => dci_get_posts_options('unita_organizzativa'),
-        'column' => array(
-            'position' => 3
-        ),
-        'attributes'    => array(
-            'required'    => 'required',
-            'placeholder' =>  __( 'Seleziona una Unità Organizzativa', 'design_comuni_italia' ),
-        ),
-        'display_cb' => 't_incarico_display_unita_org_value',
-    ) );
-
-
     $cmb_dati->add_field( array(
         'id' => $prefix . 'compensi',
         'name'        => __( 'Compensi', 'design_comuni_italia' ),
@@ -151,6 +98,39 @@ function dci_add_incarico_metaboxes()
         ),
     ) );
 
+    $cmb_dati->add_field( array(
+        'id' => $prefix . 'persona',
+        'name'    => __( 'Persona *', 'design_comuni_italia' ),
+        'desc' => __( 'La persona che ha la carica e l\'incarico' , 'design_comuni_italia' ),
+        'type'    => 'pw_select',
+        'options' => dci_get_posts_options('persona_pubblica'),
+        'attributes'    => array(
+            'required'    => 'required',
+            'placeholder' =>  __( 'Seleziona una Persona Pubblica', 'design_comuni_italia' ),
+        ),
+    ) );
+
+    $cmb_dati->add_field( array(
+        'id' => $prefix . 'unita_organizzativa',
+        'name'    => __( 'Unità organizzativa', 'design_comuni_italia' ),
+        'desc' => __( 'L\'organizzazione presso la quale svolge l\'incarico' , 'design_comuni_italia' ),
+        'type'    => 'pw_select',
+        'options' => dci_get_posts_options('unita_organizzativa'),'attributes' => array(
+            'placeholder' =>  __( 'Seleziona una Unità Organizzativa', 'design_comuni_italia' ),
+        ),
+    ) );
+
+    $cmb_dati->add_field( array(
+        'id' => $prefix . 'responsabile_struttura',
+        'name'    => __( 'Responsabile della struttura', 'design_comuni_italia' ),
+        'desc' => __( 'Se è un incarico di responsabilità, specificare l\'organizzazione della quale è responsabile in base all\'incarico' , 'design_comuni_italia' ),
+        'type'    => 'pw_select',
+        'options' => dci_get_posts_options('unita_organizzativa'),
+        'attributes' => array(
+            'placeholder' =>  __( 'Seleziona una Unità Organizzativa', 'design_comuni_italia' ),
+        ),
+    ) );
+
     /**
      * metabox Date
      */
@@ -164,10 +144,13 @@ function dci_add_incarico_metaboxes()
 
     $cmb_date->add_field( array(
         'id' => $prefix . 'data_inizio_incarico',
-        'name'    => __( 'Data inizio incarico', 'design_comuni_italia' ),
+        'name'    => __( 'Data inizio incarico *', 'design_comuni_italia' ),
         'desc' => __( 'Data di inizio dell\'incarico' , 'design_comuni_italia' ),
         'type'    => 'text_date_timestamp',
         'date_format' => 'd-m-Y',
+        'attributes'    => array(
+            'required'    => 'required'
+        ),
     ) );
 
     $cmb_date->add_field( array(
@@ -231,36 +214,4 @@ function dci_add_incarico_metaboxes()
         ),
     ) );
 
-}
-
-/**
- * Manually render a field column display.
- *
- * @param  array      $field_args Array of field arguments.
- * @param  CMB2_Field $field      The field object
- */
-function t_incarico_display_persona_value( $field_args, $field ) {
-    $list = dci_get_posts_options('persona_pubblica');
-    
-    if($field->value)
-        echo $list[intval($field->value)];
-    ?>
-    
-    <?php
-}
-
-/**
- * Manually render a field column display.
- *
- * @param  array      $field_args Array of field arguments.
- * @param  CMB2_Field $field      The field object
- */
-function t_incarico_display_unita_org_value( $field_args, $field ) {
-    $list = dci_get_posts_options('unita_organizzativa');
-    
-    if($field->value)
-        echo $list[intval($field->value)];
-    ?>
-    
-    <?php
 }
