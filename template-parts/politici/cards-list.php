@@ -42,7 +42,7 @@ $img = dci_get_meta('foto');
 ?>
 <div class="container py-5">
     <h2 class="title-xxlarge mb-4">
-        Esplora l'amministrazione
+        Politica
     </h2>
     <div class="row g-4">
         <?php 
