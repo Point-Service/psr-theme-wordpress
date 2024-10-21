@@ -145,11 +145,11 @@ get_header();
                                     <p class="subtitle-small mb-3" data-element="service-description">
                                         <?php echo $descrizione_breve ?>
                                     </p>
-                                    <?php if ($canale_digitale_link) { ?>
-                                    <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
-                                        <span class=""><?php echo $canale_digitale_label; ?></span>
+                                <?php if (!empty($canale_digitale_link) && !empty($canale_digitale_label)) { ?>
+                                    <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo esc_url($canale_digitale_link); ?>';">
+                                        <span class=""><?php echo esc_html($canale_digitale_label); ?></span>
                                     </button>
-                                    <?php } ?>
+                                <?php } ?
                                 </div>
                                 <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
                                     <?php
