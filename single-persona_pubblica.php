@@ -10,94 +10,84 @@ global $uo_id, $file_url, $hide_arguments;
 
 get_header();
 ?>
-    <main>
-        <?php
-        while ( have_posts() ) :
-            the_post();
-            $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
+<main>
+    <?php
+    while (have_posts()) :
+        the_post();
+        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
 
-            // prefix: _dci_unita_persona_pubblica_
-            
-           
-            // $motivo_stato = dci_get_meta("motivo_stato");
-            $nome = dci_get_meta("nome");
-            $nome = dci_get_meta("cognome");
-            $descrizione_breve = dci_get_meta("descrizione_breve");
-            $competenze = dci_get_wysiwyg_field("competenze");
+        // Recupero dei metadati con controlli
+        $nome = dci_get_meta("nome") ?? '';
+        $cognome = dci_get_meta("cognome") ?? '';
+        $descrizione_breve = dci_get_meta("descrizione_breve") ?? '';
+        $competenze = dci_get_wysiwyg_field("competenze") ?? '';
+        
+        $foto_id = dci_get_meta("foto_id");
+        $img = wp_get_attachment_image_src($foto_id, "item-gallery");
 
-            $foto_id = dci_get_meta("foto_id");
-            
-            $img = wp_get_attachment_image_src($foto_id, "item-gallery");
+        $data_insediamento = dci_get_meta("data_inizio_incarico") ?? '';
 
-            $data_insediamento = dci_get_meta("data_inizio_incarico");
+        $responsabili = dci_get_meta("responsabile") ?? [];
+        $responsabile = !empty($responsabili) ? $responsabili[0] : null;
 
-            $responsabili = dci_get_meta("responsabile");
+        $incarichi = !is_null($responsabile) ? dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile) : [];
+        $incarico = !empty($incarichi) ? get_the_title($incarichi[0]) : '';
 
-            $responsabile = $responsabili[0];
+        $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
+        $tipo_incarico = (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms)) ? $tipo_incarico_terms[0]->name : '';
 
-            $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
+        $compensi = !empty($incarichi) ? dci_get_meta("compensi", '_dci_incarico_', $incarichi[0]) : [];
 
-            $incarico = get_the_title($incarichi[0]);
+        $organizzazioni = dci_get_meta("organizzazioni") ?? [];
+        $biografia = dci_get_meta("biografia") ?? '';
+        $curriculum_vitae = dci_get_meta("curriculum_vitae") ?? '';
+        $situazione_patrimoniale = dci_get_meta("situazione_patrimoniale") ?? '';
+        $situazione_patrimoniale_id = dci_get_meta("situazione_patrimoniale_id") ?? '';
+        $dichiarazione_redditi = dci_get_meta("dichiarazione_redditi") ?? '';
+        $spese_elettorali = dci_get_meta("spese_elettorali") ?? '';
+        $descrizione = dci_get_wysiwyg_field("descrizione_estesa") ?? '';
+        $punti_contatto = dci_get_meta("punti_contatto") ?? [];
 
-            $tipo_incarico = (get_the_terms(get_post($incarichi[0]), 'tipi_incarico'))[0]->name;
-
-            $nome_incarico = $incarico;
-
-            $compensi = dci_get_meta("compensi", '_dci_incarico_', $incarichi[0]);
-
-            $organizzazioni = dci_get_meta("organizzazioni");
-
-            $biografia = dci_get_meta("biografia");
-
-            $curriculum_vitae = dci_get_meta("curriculum_vitae");
-
-            $situazione_patrimoniale = dci_get_meta("situazione_patrimoniale");
-
-            $situazione_patrimoniale_id = dci_get_meta("situazione_patrimoniale_id");
-
-            $dichiarazione_redditi = dci_get_meta("dichiarazione_redditi");
-
-            $spese_elettorali = dci_get_meta("spese_elettorali");
-
-            $descrizione = dci_get_wysiwyg_field("descrizione_estesa");
-
-            $punti_contatto = dci_get_meta("punti_contatto");
-
-            $prefix = '_dci_punto_contatto_';
-            $contatti = array();
-            foreach ($punti_contatto as $pc_id) {
-                $contatto = dci_get_full_punto_contatto($pc_id);
+        $prefix = '_dci_punto_contatto_';
+        $contatti = [];
+        foreach ($punti_contatto as $pc_id) {
+            $contatto = dci_get_full_punto_contatto($pc_id);
+            if ($contatto) {
                 array_push($contatti, $contatto);
             }
+        }
 
-            $altre_cariche = dci_get_meta("altre_cariche");
-            
+        $altre_cariche = dci_get_meta("altre_cariche") ?? [];
+        $more_info = dci_get_wysiwyg_field("ulteriori_informazioni") ?? '';
+        $condizioni_servizio = dci_get_meta("condizioni_servizio") ?? '';
+        $uo_id = intval(dci_get_meta("unita_responsabile") ?? 0);
+        $argomenti = get_the_terms($post, 'argomenti') ?? [];
 
-            $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
-            $condizioni_servizio = dci_get_meta("condizioni_servizio");     
-            $uo_id = intval(dci_get_meta("unita_responsabile"));
-            $argomenti = get_the_terms($post, 'argomenti');
+        // valori per metatag
+        $categorie = get_the_terms($post, 'categorie_servizio');
+        $categoria_servizio = (!empty($categorie) && !is_wp_error($categorie)) ? $categorie[0]->name : '';
+        $ipa = dci_get_meta('codice_ente_erogatore') ?? '';
+        $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica") ?? '';
 
-            // valori per metatag
-            $categorie = get_the_terms($post, 'categorie_servizio');
-            $categoria_servizio = $categorie[0]->name;
-            $ipa = dci_get_meta('codice_ente_erogatore');
-            $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica");
-            if ($canale_fisico_uffici[0]??null) {
-                $ufficio = get_post($canale_fisico_uffici[0]);
-                $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID);
-                $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id);
-                $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id);
-                $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id);
+        if (isset($canale_fisico_uffici[0])) {
+            $ufficio = get_post($canale_fisico_uffici[0]);
+            if ($ufficio) {
+                $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID) ?? 0;
+                $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id) ?? '';
+                $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id) ?? '';
+                $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id) ?? '';
             }
-            function convertToPlain($text) {
-                $text = str_replace(array("\r", "\n"), '', $text);
-                $text = str_replace('"', '\"', $text);
-                $text = str_replace('&nbsp;', ' ', $text);
+        }
 
-                return trim(strip_tags($text));
-            };
-            ?>
+        function convertToPlain($text) {
+            $text = str_replace(array("\r", "\n"), '', $text);
+            $text = str_replace('"', '\"', $text);
+            $text = str_replace('&nbsp;', ' ', $text);
+
+            return trim(strip_tags($text));
+        }
+    ?>
+</main>
             <script type="application/ld+json" data-element="metatag">{
                     "name": "<?= $post->post_title; ?>",
                     "serviceType": "<?= $categoria_servizio; ?>",
