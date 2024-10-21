@@ -39,8 +39,13 @@ get_header();
             }
 
             $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
+          
 
-            $incarico = get_the_title($incarichi[0]);
+                // Verifica se $incarico è un array e se ha almeno un elemento
+                if (is_array($incarico) && !empty($incarico) && isset($incarico[0])) {
+                    $incarico = $incarico[0]; // Assegna il primo elemento se esiste
+                }
+                            
 
             $tipo_incarico = (get_the_terms(get_post($incarichi[0]), 'tipi_incarico'))[0]->name;
 
