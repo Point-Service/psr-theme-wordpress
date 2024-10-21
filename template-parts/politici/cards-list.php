@@ -1,33 +1,51 @@
 <?php 
-    global $posts;
+   <?php 
+global $posts;
 
-        $description = dci_get_meta('descrizione_breve');
+$description = dci_get_meta('descrizione_breve');
+$incarichi = dci_get_meta('incarichi');
 
-        $incarichi = dci_get_meta('incarichi');
+// Verifica che $incarichi sia un array e che contenga almeno un elemento
+if (is_array($incarichi) && !empty($incarichi[0])) {
+    $incarico = $incarichi[0];
+    $nome_incarico = get_the_title($incarico);
+} else {
+    $incarico = null;
+    $nome_incarico = ''; // Valore predefinito nel caso in cui $incarichi sia vuoto o non valido
+}
 
-        $incarico = $incarichi[0];
+// Estrai la data inizio incarico e controlla che abbia almeno due elementi
+$arrdata = explode('-', dci_get_meta("data_inizio_incarico"));
+if (count($arrdata) >= 2) {
+    $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+} else {
+    $monthName = ''; // Valore predefinito nel caso in cui la data non sia valida
+}
 
-       
+// Verifica che get_the_terms() restituisca un array valido con almeno un elemento
+$terms = $incarico ? get_the_terms($incarico, 'tipi_incarico') : null;
+if (is_array($terms) && !empty($terms[0])) {
+    $tipo = $terms[0];
+} else {
+    $tipo = null; // Valore predefinito se non ci sono termini validi
+}
 
-        $arrdata = explode( '-', dci_get_meta("data_inizio_incarico") );
-        $tipo = get_the_terms($incarico, 'tipi_incarico')[0];
+$prefix = '_dci_incarico_';
+$img = dci_get_meta('foto');
 
-        $prefix = '_dci_incarico_';
-        // Verifica che $incarichi sia un array e che contenga almeno un elemento
-        if (is_array($incarichi) && !empty($incarichi[0])) {
-            $incarico = $incarichi[0];
-            $nome_incarico = get_the_title($incarico);
-        } else {
-            $nome_incarico = ''; // Valore predefinito nel caso in cui $incarichi sia vuoto o non valido
-        }
-
-        //var_dump($nome_incarico);
-
-        $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
-        $img = dci_get_meta('foto');
-        if($tipo->name == "politico") {
-        if ($img) {
+// Verifica che $tipo sia definito e che il suo nome sia "politico"
+if ($tipo && $tipo->name == "politico") {
+    if ($img) {
+        // Codice HTML/PHP per visualizzare l'immagine o altre operazioni
+        ?>
+        <p class="titillium text-paragraph mb-0 description text-white">
+            <?php echo $nome_incarico; ?>            
+        </p>
+        <?php
+    }
+}
 ?>
+
     <div class="col-md-6 col-xl-4">
         <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
             <div class="card no-after rounded">
