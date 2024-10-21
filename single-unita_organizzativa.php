@@ -145,7 +145,7 @@ get_header();
 					<p class="subtitle-small mb-3" data-element="service-description">
 					    <?php echo esc_html($descrizione_breve); ?>
 					</p>
-					
+					dddd
 					<?php 
 					// Verifica se la variabile è definita e non è null o vuota
 					if (isset($canale_digitale_link) && !empty($canale_digitale_link)) { 
@@ -156,6 +156,7 @@ get_header();
 					<?php 
 					} 
 					?>
+						
                                 <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
                                     <?php
                                         $hide_arguments = true;
