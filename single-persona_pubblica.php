@@ -149,7 +149,7 @@ get_header();
                                     <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo esc_url($canale_digitale_link); ?>';">
                                         <span class=""><?php echo esc_html($canale_digitale_label); ?></span>
                                     </button>
-                                <?php } ?
+                                <?php } ?>
                                 </div>
                                 <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
                                     <?php
