@@ -42,7 +42,6 @@
                     </div>
                 </div>
             </div>
-		
             <div class="row">
                 <div class="col-md-3 footer-items-wrapper">
                     <?php
@@ -129,7 +128,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <p class="footer-info">
-                                Comune di <?php echo dci_get_option("nome_comune"); ?>
+                                <?php echo dci_get_option("nome_comune"); ?>
                                 <br /><?php echo dci_get_option("contatti_indirizzo",'footer'); ?>
                                 <br /><?php if(dci_get_option("contatti_CF_PIVA",'footer')) echo 'Codice fiscale / P. IVA:' . dci_get_option("contatti_CF_PIVA",'footer'); ?>
                                 <br /><br />
@@ -178,13 +177,12 @@
                     </div>
                 </div>
                 <div class="col-md-3 mt-md-4 footer-items-wrapper">
-		     <h3 class="footer-heading-title">Seguici su</h3>
-                        <ul class="list-inline text-start social">
                     <?php
                         $socials = dci_get_option('link_social', 'socials');
                         if (is_array($socials) && count($socials)) {
                     ?>
-
+                        <h3 class="footer-heading-title">Seguici su</h3>
+                        <ul class="list-inline text-start social">
                             <?php foreach ($socials as $social) { ?>
                                     <li class="list-inline-item">
                                         <a href="<?php echo $social['url_social'] ?>" target="_blank" class="p-2 text-white">
@@ -194,9 +192,8 @@
                                         </a>
                                     </li>
                                 <?php } ?>
-			    <?php } ?>
                             </ul><!-- /header-social-wrapper -->
-
+                    <?php } ?>
                 </div>
             </div>
             <div class="row">
