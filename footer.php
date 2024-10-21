@@ -199,7 +199,13 @@
             <div class="row">
                 <div class="col-12 footer-items-wrapper">
 			
-                           <?php echo do_shortcode('[google-translator]'); ?>
+                           <?php 
+				$shortcode_output = do_shortcode('[google-translator]');
+				
+				if ($shortcode_output !== '[google-translator]') {
+				    echo $shortcode_output;
+				}
+			     ?>
 
                     <div class="footer-bottom">
 
