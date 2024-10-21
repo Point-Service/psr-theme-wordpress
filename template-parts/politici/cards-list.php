@@ -1,5 +1,5 @@
 <?php 
-   <?php 
+
 global $posts;
 
 $description = dci_get_meta('descrizione_breve');
