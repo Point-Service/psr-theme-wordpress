@@ -10,85 +10,62 @@ global $uo_id, $file_url, $hide_arguments;
 
 get_header();
 ?>
-    <main>
-        <?php
-        while ( have_posts() ) :
-            the_post();
-            $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
+<main>
+    <?php
+    while (have_posts()) :
+        the_post();
+        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
 
-        
-             $prefix= '_dci_unita_organizzativa_';
-             $documenti = dci_get_meta("documenti", $prefix, $post->ID);
-		
-            // $motivo_stato = dci_get_meta("motivo_stato");
-            $sottotitolo = dci_get_meta("sottotitolo");
-            $descrizione_breve = dci_get_meta("descrizione_breve");
-            $competenze = dci_get_wysiwyg_field("competenze");
-            // $destinatari_intro = dci_get_meta("destinatari_introduzione");
-            // $destinatari_list = dci_get_meta("destinatari_list");
+        $prefix = '_dci_unita_organizzativa_';
+        $documenti = dci_get_meta("documenti", $prefix, $post->ID);
+        $sottotitolo = dci_get_meta("sottotitolo");
+        $descrizione_breve = dci_get_meta("descrizione_breve");
+        $competenze = dci_get_wysiwyg_field("competenze");
+
+        $responsabili = dci_get_meta("responsabile");
+        $responsabile = $responsabili[0] ?? null; // Uso dell'operatore null coalescent
+
+        $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
+        $incarico = $incarichi[0] ? get_the_title($incarichi[0]) : ''; // Eliminazione della variabile intermedia
+
+        $tipologia = get_the_terms($post, 'tipi_unita_organizzativa')[0]->name ?? ''; // Unione e semplificazione
+
+        $area_riferimento = dci_get_meta("unita_organizzativa_genitore");
+        $persone = dci_get_meta("persone_struttura");
+        $allegati = dci_get_meta("allegati", $prefix, $post->ID);
+        $sede_principale = dci_get_meta("sede_principale");
+        $servizi = dci_get_meta("elenco_servizi_offerti");
+        $descrizione = dci_get_wysiwyg_field("descrizione_estesa");
+        $punti_contatto = dci_get_meta("contatti");
+
+        $contatti = array_map('dci_get_full_punto_contatto', $punti_contatto); // Utilizzo di array_map per ridurre il codice
+
+        $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
+        $condizioni_servizio = dci_get_meta("condizioni_servizio");
+        $uo_id = intval(dci_get_meta("unita_responsabile"));
+
+        $argomenti = get_the_terms($post, 'argomenti');
+        $categoria_servizio = get_the_terms($post, 'categorie_servizio')[0]->name ?? ''; // Semplificazione
+
+        $ipa = dci_get_meta('codice_ente_erogatore');
+        $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica");
+
+        if (!empty($canale_fisico_uffici)) {
+            $ufficio = get_post($canale_fisico_uffici[0]);
+            $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID);
+            $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id);
+            $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id);
+            $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id);
+        }
+
+        function convertToPlain($text) {
+            return trim(strip_tags(str_replace(['\r', '\n', '"', '&nbsp;'], ['', '', '\"', ' '], $text))); // Semplificazione della funzione
+        }
+    endwhile; // Chiusura del ciclo while
+    ?>
+</main>
 
 
-            $responsabili = dci_get_meta("responsabile");
-
-            $responsabile = $responsabili[0];
-
-            $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
-
-            $incarico = get_the_title($incarichi[0]);
-
-  			$tipologie = get_the_terms($post, 'tipi_unita_organizzativa');
-
-  			$tipologia = $tipologie[0]->name;
-
-            $nome_incarico = $incarico;
-
-            $area_riferimento = dci_get_meta("unita_organizzativa_genitore");
-
-            $persone = dci_get_meta("persone_struttura");
-
-         
-           $allegati = dci_get_meta("allegati", $prefix, $post->ID);
-	   $sede_principale = dci_get_meta("sede_principale");
-
-            $servizi = dci_get_meta("elenco_servizi_offerti");
-
-            $descrizione = dci_get_wysiwyg_field("descrizione_estesa");
-
-            $punti_contatto = dci_get_meta("contatti");
-
-            $prefix = '_dci_punto_contatto_';
-            $contatti = array();
-            foreach ($punti_contatto as $pc_id) {
-                $contatto = dci_get_full_punto_contatto($pc_id);
-                array_push($contatti, $contatto);
-            }
-           	
-
-            $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
-            $condizioni_servizio = dci_get_meta("condizioni_servizio");     
-            $uo_id = intval(dci_get_meta("unita_responsabile"));
-            $argomenti = get_the_terms($post, 'argomenti');
-
-            // valori per metatag
-            $categorie = get_the_terms($post, 'categorie_servizio');
-            $categoria_servizio = $categorie[0]->name;
-            $ipa = dci_get_meta('codice_ente_erogatore');
-            $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica");
-            if ($canale_fisico_uffici[0]??null) {
-                $ufficio = get_post($canale_fisico_uffici[0]);
-                $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID);
-                $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id);
-                $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id);
-                $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id);
-            }
-            function convertToPlain($text) {
-                $text = str_replace(array("\r", "\n"), '', $text);
-                $text = str_replace('"', '\"', $text);
-                $text = str_replace('&nbsp;', ' ', $text);
-
-                return trim(strip_tags($text));
-            };
-            ?>
             <script type="application/ld+json" data-element="metatag">{
                     "name": "<?= $post->post_title; ?>",
                     "serviceType": "<?= $categoria_servizio; ?>",
