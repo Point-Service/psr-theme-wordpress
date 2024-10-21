@@ -228,20 +228,28 @@ get_header();
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
-                                                                <?php if ( $sede_principale ) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#deadlines">
-                                                                        <span class="title-medium">Sede principale</span>
-                                                                    </a>
-                                                                </li>
-                                                                <?php } ?>
-                                                                <?php if ( $altre_sedi ) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#costs">
-                                                                        <span class="title-medium">Altre sedi</span>
-                                                                    </a>
-                                                                </li>
-                                                                <?php } ?>
+								<?php 
+								// Assicurati che le variabili siano definite e inizializzate
+								$sede_principale = isset($sede_principale) ? $sede_principale : null;
+								$altre_sedi = isset($altre_sedi) ? $altre_sedi : null;
+								
+								// Verifica se la sede principale è disponibile
+								if ($sede_principale) { ?>
+								    <li class="nav-item">
+								        <a class="nav-link" href="#deadlines">
+								            <span class="title-medium">Sede principale</span>
+								        </a>
+								    </li>
+								<?php } ?>
+								
+								<?php // Verifica se ci sono altre sedi
+								if ($altre_sedi) { ?>
+								    <li class="nav-item">
+								        <a class="nav-link" href="#costs">
+								            <span class="title-medium">Altre sedi</span>
+								        </a>
+								    </li>
+								<?php } ?>
                                                                 <?php if ( $allegati ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#more-info">
