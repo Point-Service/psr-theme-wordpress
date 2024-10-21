@@ -219,11 +219,13 @@ function dci_get_breadcrumb_label($name , $type = 'term') {
         'avviso' => 'Avvisi'
     );
 
-    if ($terms[$name]) {
-        return $terms[$name];
-    }
+// Assicurati che $terms sia un array
+if (is_array($terms) && array_key_exists($name, $terms)) {
+    return $terms[$name];
+}
 
-    return ucfirst($name);
+// Se $terms è vuoto o non contiene la chiave $name, ritorna il nome con la prima lettera maiuscola
+return ucfirst($name);
 }
 
 /**
