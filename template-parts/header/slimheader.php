@@ -25,7 +25,13 @@
             </div>
             <?php }?>
               &nbsp;&nbsp;&nbsp;&nbsp;
-            <?php echo do_shortcode('[google-translator]'); ?>
+              <?php 
+        				$shortcode_output = do_shortcode('[google-translator]');
+        				
+        				if ($shortcode_output !== '[google-translator]') {
+        				    echo $shortcode_output;
+        				}
+			       ?>
 
               <?php
               if (!is_user_logged_in()) {
