@@ -279,12 +279,16 @@ get_header();
                                 </div>
                             </section>
                             <?php } ?>
-                            <?php if ( $costi ) { ?>
-                            <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="costs">Quanto costa</h2>
-                                <div class="richtext-wrapper lora"><?php echo $costi ?></div>
-                            </section>
-                            <?php } ?>
+	                         <?php 
+					// Assicurati che la variabile sia definita prima di usarla
+					$costi = $costi ?? null; // Imposta a null se non è definita
+					
+					if (!empty($costi)) { ?>
+					    <section class="it-page-section mb-30">
+					        <h2 class="title-xxlarge mb-3" id="costs">Quanto costa</h2>
+					        <div class="richtext-wrapper lora"><?php echo $costi; ?></div>
+					    </section>
+				  <?php } ?>
                             
                             <?php if ( $more_info ) {  ?>
                             <section class="it-page-section mb-30">
