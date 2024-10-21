@@ -92,5 +92,5 @@ if ($tipo && $tipo->name == "politico") {
     </div>
     <?php 
 }
-?>
+?><p></p>
 
