@@ -70,8 +70,20 @@ get_header();
             $argomenti = get_the_terms($post, 'argomenti');
 
             // valori per metatag
-            $categorie = get_the_terms($post, 'categorie_servizio');
-            $categoria_servizio = $categorie[0]->name;
+		// Ottieni le categorie del servizio
+		$categorie = get_the_terms($post, 'categorie_servizio');
+		
+		// Inizializza la variabile per la categoria del servizio
+		$categoria_servizio = '';
+		
+		// Verifica che $categorie non sia null e che sia un array
+		if ($categorie && !is_wp_error($categorie) && is_array($categorie) && !empty($categorie)) {
+		    // Assegna il nome della prima categoria
+		    $categoria_servizio = $categorie[0]->name;
+		} else {
+		    // Gestione nel caso non ci siano categorie
+		    $categoria_servizio = 'Nessuna categoria disponibile'; // O un valore predefinito a tua scelta
+		}
             $ipa = dci_get_meta('codice_ente_erogatore');
             $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica");
             if ($canale_fisico_uffici[0]??null) {
