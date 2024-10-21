@@ -10,73 +10,73 @@ global $uo_id, $file_url, $hide_arguments;
 
 get_header();
 ?>
-<main>
-    <?php
-    while ( have_posts() ) :
-        the_post();
-        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
-
-        $prefix = '_dci_unita_organizzativa_';
-        $documenti = dci_get_meta("documenti", $prefix, $post->ID);
-        
-        // Initialize variables to avoid errors
-        $sottotitolo = dci_get_meta("sottotitolo") ?? '';
-        $descrizione_breve = dci_get_meta("descrizione_breve") ?? '';
-        $competenze = dci_get_wysiwyg_field("competenze") ?? '';
-        $responsabili = dci_get_meta("responsabile") ?? [];
-        $responsabile = !empty($responsabili) ? $responsabili[0] : null;
-
-        $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile) ?? [];
-        $incarico = !empty($incarichi) ? get_the_title($incarichi[0]) : '';
-
-        $tipologie = get_the_terms($post, 'tipi_unita_organizzativa') ?? [];
-        $tipologia = !empty($tipologie) ? $tipologie[0]->name : '';
-
-        $area_riferimento = dci_get_meta("unita_organizzativa_genitore") ?? '';
-        $persone = dci_get_meta("persone_struttura") ?? [];
-        $allegati = dci_get_meta("allegati", $prefix, $post->ID) ?? [];
-        $sede_principale = dci_get_meta("sede_principale") ?? '';
-        $servizi = dci_get_meta("elenco_servizi_offerti") ?? [];
-        $descrizione = dci_get_wysiwyg_field("descrizione_estesa") ?? '';
-        $punti_contatto = dci_get_meta("contatti") ?? [];
-
-        $contatti = [];
-        foreach ($punti_contatto as $pc_id) {
-            $contatto = dci_get_full_punto_contatto($pc_id);
-            if ($contatto) {
-                $contatti[] = $contatto;
-            }
-        }
-
-        $more_info = dci_get_wysiwyg_field("ulteriori_informazioni") ?? '';
-        $condizioni_servizio = dci_get_meta("condizioni_servizio") ?? '';
-        $uo_id = intval(dci_get_meta("unita_responsabile")) ?? 0;
-        $argomenti = get_the_terms($post, 'argomenti') ?? [];
-        
-        // valori per metatag
-        $categorie = get_the_terms($post, 'categorie_servizio') ?? [];
-        $categoria_servizio = !empty($categorie) ? $categorie[0]->name : '';
-        $ipa = dci_get_meta('codice_ente_erogatore') ?? '';
-        $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica") ?? '';
-
-        if (isset($canale_fisico_uffici[0])) {
-            $ufficio = get_post($canale_fisico_uffici[0]);
-            if ($ufficio) {
-                $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID) ?? null;
-                $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id) ?? '';
-                $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id) ?? '';
-                $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id) ?? '';
-            }
-        }
-
-        function convertToPlain($text) {
-            $text = str_replace(array("\r", "\n"), '', $text);
-            $text = str_replace('"', '\"', $text);
-            $text = str_replace('&nbsp;', ' ', $text);
-            return trim(strip_tags($text));
-        }
-        ?>
-</main>
+	<main>
+	    <?php
+	    while ( have_posts() ) :
+	        the_post();
+	        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
+	
+	        $prefix = '_dci_unita_organizzativa_';
+	        $documenti = dci_get_meta("documenti", $prefix, $post->ID);
+	        
+	        // Initialize variables to avoid errors
+	        $sottotitolo = dci_get_meta("sottotitolo") ?? '';
+	        $descrizione_breve = dci_get_meta("descrizione_breve") ?? '';
+	        $competenze = dci_get_wysiwyg_field("competenze") ?? '';
+	        $responsabili = dci_get_meta("responsabile") ?? [];
+	        $responsabile = !empty($responsabili) ? $responsabili[0] : null;
+	
+	        $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile) ?? [];
+	        $incarico = !empty($incarichi) ? get_the_title($incarichi[0]) : '';
+	
+	        $tipologie = get_the_terms($post, 'tipi_unita_organizzativa') ?? [];
+	        $tipologia = !empty($tipologie) ? $tipologie[0]->name : '';
+	
+	        $area_riferimento = dci_get_meta("unita_organizzativa_genitore") ?? '';
+	        $persone = dci_get_meta("persone_struttura") ?? [];
+	        $allegati = dci_get_meta("allegati", $prefix, $post->ID) ?? [];
+	        $sede_principale = dci_get_meta("sede_principale") ?? '';
+	        $servizi = dci_get_meta("elenco_servizi_offerti") ?? [];
+	        $descrizione = dci_get_wysiwyg_field("descrizione_estesa") ?? '';
+	        $punti_contatto = dci_get_meta("contatti") ?? [];
+	
+	        $contatti = [];
+	        foreach ($punti_contatto as $pc_id) {
+	            $contatto = dci_get_full_punto_contatto($pc_id);
+	            if ($contatto) {
+	                $contatti[] = $contatto;
+	            }
+	        }
+	
+	        $more_info = dci_get_wysiwyg_field("ulteriori_informazioni") ?? '';
+	        $condizioni_servizio = dci_get_meta("condizioni_servizio") ?? '';
+	        $uo_id = intval(dci_get_meta("unita_responsabile")) ?? 0;
+	        $argomenti = get_the_terms($post, 'argomenti') ?? [];
+	        
+	        // valori per metatag
+	        $categorie = get_the_terms($post, 'categorie_servizio') ?? [];
+	        $categoria_servizio = !empty($categorie) ? $categorie[0]->name : '';
+	        $ipa = dci_get_meta('codice_ente_erogatore') ?? '';
+	        $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica") ?? '';
+	
+	        if (isset($canale_fisico_uffici[0])) {
+	            $ufficio = get_post($canale_fisico_uffici[0]);
+	            if ($ufficio) {
+	                $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID) ?? null;
+	                $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id) ?? '';
+	                $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id) ?? '';
+	                $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id) ?? '';
+	            }
+	        }
+	
+	        function convertToPlain($text) {
+	            $text = str_replace(array("\r", "\n"), '', $text);
+	            $text = str_replace('"', '\"', $text);
+	            $text = str_replace('&nbsp;', ' ', $text);
+	            return trim(strip_tags($text));
+	        }
+	        ?>
+	</main>
 
             <script type="application/ld+json" data-element="metatag">{
                     "name": "<?= $post->post_title; ?>",
@@ -119,14 +119,21 @@ get_header();
                                         <?php the_title(); ?>
                                     </h1>
                                     
-                                    <p class="subtitle-small mb-3" data-element="service-description">
-                                        <?php echo $descrizione_breve ?>
-                                    </p>
-                                    <?php if ($canale_digitale_link) { ?>
-                                    <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
-                                        <span class=""><?php echo $canale_digitale_label; ?></span>
-                                    </button>
-                                    <?php } ?>
+					<p class="subtitle-small mb-3" data-element="service-description">
+					    <?php echo $descrizione_breve; ?>
+					</p>
+					
+					<?php 
+					// Assicurati che le variabili siano definite prima di usarle
+					$canale_digitale_link = $canale_digitale_link ?? ''; // Imposta a stringa vuota se non è definita
+					$canale_digitale_label = $canale_digitale_label ?? 'Link'; // Fornisci un'etichetta di default
+					
+					if (!empty($canale_digitale_link)) { // Controlla se il link non è vuoto
+					?>
+					    <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo esc_url($canale_digitale_link); ?>';">
+					        <span class=""><?php echo esc_html($canale_digitale_label); ?></span>
+					    </button>
+					<?php } ?>
                                 </div>
                                 <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
                                     <?php
