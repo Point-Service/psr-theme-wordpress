@@ -43,7 +43,7 @@ if ($tipo && $tipo->name == "politico") {
         </p>
         <?php
     }
-}
+
 ?>
 
     <div class="col-md-6 col-xl-4">
