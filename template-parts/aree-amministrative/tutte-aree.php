@@ -3,7 +3,7 @@ global $the_query, $load_posts, $load_card_type;
 
     $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
     $load_posts = 6;
-
+    $count=0;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
         's' => $query,
@@ -74,10 +74,12 @@ global $the_query, $load_posts, $load_card_type;
             <div class="row g-4" id="load-more">
                 <?php 
                     $load_card_type = 'aree-amministrative';
-                    foreach ($posts as $post) {get_template_part('template-parts/aree-amministrative/cards-list');
+                    foreach ($posts as $post) {get_template_part('template-parts/aree-amministrative/cards-list');$count++;
                 }?>
             </div>
-            <?php get_template_part("template-parts/search/more-results"); ?>
+            <?php if($count>6){
+                get_template_part("template-parts/search/more-results");
+            } ?>
         </div>
     </form>
 </div>
