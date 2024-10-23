@@ -18,8 +18,8 @@ $box_accesso_rapido = $boxes;
                     <div class="card-body card-bg-blue d-flex align-items-center">
                     <?php 
                     if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
-                        <div style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%; margin-right: 1rem;">
-                            <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>" style="color: #007bff;"></i>
+                        <div style="min-width: 50px; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%; margin-right: 1rem;">
+                            <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>" style="color: #007bff; font-size: 24px;"></i>
                         </div>
                     <?php } ?>
                         <div class="content">
