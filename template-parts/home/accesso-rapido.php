@@ -7,7 +7,7 @@ $box_accesso_rapido = $boxes;
 <div class="container py-5">
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-        <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
+        <h2 class="title-xxlarge mb-4">Accesso rapidoff</h2>
    
     <div class="row g-4 custom-styles">
         <?php foreach ($boxes as $box) {
