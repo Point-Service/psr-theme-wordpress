@@ -13,18 +13,18 @@ $box_accesso_rapido = $boxes;
     <div class="row g-4">
         <?php foreach($boxes as $box) { ?>
         <div class="col-md-6 col-xl-4">
-            <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
+            <div class="cmp-card-custom card-wrapper-custom pb-0 rounded border-none">
                 <div class="card shadow-sm rounded">
-                    <div class="card-body card-bg-blue d-flex align-items-center">
+                    <div class="card-body card-bg-custom d-flex align-items-center">
 <?php 
 if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
-    <div class="avatar size-lg me-3">
+    <div class="avatar-custom size-lg me-3">
         <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>"></i>
     </div>
 <?php } ?>
-                        <div class="content">
-                        <a class="text-decoration-none card-bg-blue" href="<?php echo htmlspecialchars($box['link_message']); ?>" data-element="topic-element" target="_blank">
-                            <h3 class="card-title t-primary title-xlarge text-white"><?php echo htmlspecialchars($box['titolo_message']); ?></h3>
+                        <div class="content-custom">
+                        <a class="text-decoration-none card-bg-custom" href="<?php echo htmlspecialchars($box['link_message']); ?>" data-element="topic-element" target="_blank">
+                            <h3 class="card-title-custom t-primary title-xlarge text-white"><?php echo htmlspecialchars($box['titolo_message']); ?></h3>
                         </a>
                         <?php if (isset($box['desc_message']) && $box['desc_message']) { ?>
                             <p class="titillium text-paragraph mb-0 description text-white">
@@ -41,38 +41,38 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
 </div>
 
 <style>
-    .custom-styles .row {
+    .custom-styles-custom .row {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 20px;
     }
 
-    .custom-styles .card-wrapper {
+    .custom-styles-custom .card-wrapper-custom {
         width: 100%;
     }
 
-    .custom-styles .card {
+    .custom-styles-custom .card {
         display: flex;
         flex-direction: column;
         height: 100%;
     }
 
-    .custom-styles .card-body {
+    .custom-styles-custom .card-body {
         flex: 1;
         display: flex; /* Aggiunto per il flexbox */
         align-items: center; /* Centra verticalmente il contenuto */
     }
 
-    .custom-styles .card-title {
+    .custom-styles-custom .card-title-custom {
         margin-bottom: auto;
     }
 
-    .custom-styles .btn {
+    .custom-styles-custom .btn {
         width: max-content;
     }
 
     /* Nuovo CSS per l'icona */
-    .avatar {
+    .avatar-custom {
         width: 50px; /* Larghezza fissa aumentata */
         height: 50px; /* Altezza fissa aumentata */
         display: flex;
@@ -85,9 +85,10 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
         min-height: 50px; /* Dimensione minima per evitare schiacciamenti */
     }
 
-    .avatar i {
+    .avatar-custom i {
         font-size: 24px; /* Dimensione dell'icona aumentata */
         color: #007bff; /* Colore dell'icona */
     }
 </style>
+
 
