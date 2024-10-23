@@ -9,11 +9,11 @@ $box_accesso_rapido = $boxes;
     <div class="row g-4 custom-styles">
         <?php foreach ($boxes as $box) {
             // Recupero delle variabili dal box
-            $colore_sfondo = $box['colore'] ?? ''; // Mantieni il colore originale
-            $sfondo_scuro = !empty($colore_sfondo) ? is_this_dark_hex($colore_sfondo) : true; // Controlla se il colore è scuro
+            $colore_sfondo = $box['colore'] ?? false; // Aggiungi colore se disponibile
+            $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true; // Controlla se il colore è scuro
         ?>
             <div class="col-md-6 col-xl-4">
-                <a href="<?php echo $box['link_message']; ?>" style="<?= !empty($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>" class="card card-teaser rounded mt-0 p-3 shadow-sm border border-light" target="_blank">
+                <a href="<?php echo $box['link_message']; ?>" style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3 shadow-sm border border-light" target="_blank">
                     <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
                         <div class="card shadow-sm rounded">
                             <div class="card-body d-flex align-items-center"> <!-- Usato align-items-center per centrare verticalmente -->
@@ -71,6 +71,5 @@ $box_accesso_rapido = $boxes;
         width: max-content;
     }
 </style>
-
 
 
