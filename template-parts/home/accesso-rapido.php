@@ -85,7 +85,7 @@ $box_accesso_rapido = $boxes;
     }
 
     .avatar i {
-        font-size: 24px; /* Dimensione dell'icona aumentata */
+
         color: #007bff; /* Colore dell'icona */
     }
 </style>
