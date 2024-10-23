@@ -1,6 +1,6 @@
 <?php 
     global $posts;
-
+    
         $prefix = '_dci_unita_organizzativa_';
         $description = dci_get_meta('descrizione_breve');
         $incarichi = dci_get_meta('incarichi');
@@ -60,3 +60,4 @@
         </div>
     </div>
 <?php } } ?>
+
