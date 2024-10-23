@@ -39,7 +39,7 @@ $box_accesso_rapido = $boxes;
         <?php } ?>
     </div>
 </div>
-<?php } ?>
+
 <style>
     .custom-styles .row {
         display: grid;
