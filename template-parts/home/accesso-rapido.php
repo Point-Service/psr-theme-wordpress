@@ -16,7 +16,7 @@ $box_accesso_rapido = $boxes;
                 <a href="<?php echo $box['link_message']; ?>" style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3 shadow-sm border border-light" target="_blank">
                     <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
                         <div class="card shadow-sm rounded">
-                            <div class="card-body card-bg-blue d-flex align-items-start">
+                            <div class="card-body d-flex align-items-center"> <!-- Usato align-items-center per centrare verticalmente -->
                                 <?php if (array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
                                     <div class="avatar size-lg me-3" style="min-width: 50px; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%;">
                                         <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>" style="color: #007bff; font-size: 24px;"></i>
@@ -27,7 +27,7 @@ $box_accesso_rapido = $boxes;
                                         <?php echo $box['titolo_message']; ?>
                                     </h3>
                                     <?php if (isset($box['desc_message']) && $box['desc_message']) { ?>
-                                        <p class="titillium text-paragraph mb-0 description text-white <?= $sfondo_scuro ? 'text-white' : '' ?>">
+                                        <p class="card-text text-sans-serif mb-0 description text-white <?= $sfondo_scuro ? 'text-white' : '' ?>">
                                             <?php echo $box['desc_message']; ?>
                                         </p>
                                     <?php } ?>
@@ -64,12 +64,13 @@ $box_accesso_rapido = $boxes;
     }
 
     .custom-styles .card-title {
-        margin-bottom: auto;
+        margin-bottom: 0; /* Rimosso margine per mantenere il testo più compatto */
     }
 
     .custom-styles .btn {
         width: max-content;
     }
 </style>
+
 
 
