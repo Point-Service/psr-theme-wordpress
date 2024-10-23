@@ -14,8 +14,7 @@ $box_accesso_rapido = $boxes;
             <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
                 <div class="card shadow-sm rounded">
                     <div class="card-body card-bg-blue d-flex align-items-center">
-                    <?php 
-                      <?php 
+                    <?php  
                         if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
                             <div class="avatar size-lg me-3">
                                 <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>"></i>
