@@ -22,7 +22,7 @@ $box_accesso_rapido = $boxes;
                                         <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>" style="color: #007bff; font-size: 24px;"></i>
                                     </div>
                                 <?php } ?>
-                                <div class="flex-grow-1">
+                                <div class="flex-grow-1"> <!-- Contenitore per il titolo e la descrizione -->
                                     <h3 class="card-title t-primary title-xlarge text-white <?= $sfondo_scuro ? 'text-white' : 'text-dark' ?>">
                                         <?php echo $box['titolo_message']; ?>
                                     </h3>
