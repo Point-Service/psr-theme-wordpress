@@ -13,7 +13,7 @@ $box_accesso_rapido = $boxes;
             $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true; // Controlla se il colore è scuro
         ?>
             <div class="col-md-6 col-xl-4">
-                <a href="<?php echo $box['link_message']; ?>" style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3 shadow-sm" target="_blank"> <!-- Rimosso 'border border-light' -->
+                <a href="<?php echo $box['link_message']; ?>" style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3" target="_blank"> <!-- Rimosso 'border border-light' -->
                     <div class="cmp-card-simple card-wrapper pb-0 rounded"> <!-- Rimosso 'border-none' -->
                         <div style="border: none;"> <!-- Aggiunto 'style="border: none;"' -->
                             <div class="card-body d-flex align-items-center"> <!-- Usato align-items-center per centrare verticalmente -->
