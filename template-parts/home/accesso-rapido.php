@@ -15,13 +15,12 @@ $box_accesso_rapido = $boxes;
                 <div class="card shadow-sm rounded">
                     <div class="card-body card-bg-blue d-flex align-items-center">
                     <?php 
-                        if(array_key_exists('icona_message', $box)){
-                            if(array_key_exists('icon', $box)) { ?>
-                                <div class="avatar size-lg me-3">
-                                    <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>"></i>
-                                </div>
-                            <?php } ?>
-                        <?php }?>
+                      <?php 
+                        if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
+                            <div class="avatar size-lg me-3">
+                                <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>"></i>
+                            </div>
+                        <?php } ?>
                         <div class="content">
                         <a class="text-decoration-none card-bg-blue" href="<?php echo $box['link_message']; ?>" data-element="topic-element" target="_blank">
                             <h3 class="card-title t-primary title-xlarge text-white"><?php echo $box['titolo_message']; ?></h3>
