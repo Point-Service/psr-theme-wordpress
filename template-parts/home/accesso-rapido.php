@@ -80,8 +80,7 @@ $box_accesso_rapido = $boxes;
         background-color: #f0f0f0; /* Colore di sfondo per la visibilità */
         border-radius: 50%; /* Rende l'icona rotonda */
         margin-right: 1rem; /* Spaziatura a destra dell'icona */
-        min-width: 50px; /* Dimensione minima per evitare schiacciamenti */
-        min-height: 50px; /* Dimensione minima per evitare schiacciamenti */
+
     }
 
     .avatar i {
