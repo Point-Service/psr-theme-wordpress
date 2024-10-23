@@ -13,14 +13,14 @@ $box_accesso_rapido = $boxes;
     <div class="row g-4">
         <?php foreach($boxes as $box) { ?>
         <div class="col-md-6 col-xl-4">
-            <a href="<?php echo htmlspecialchars($box['link_message']); ?>" class="card card-teaser bg-primary rounded mt-0 p-3 shadow-sm border border-light" target="_blank" data-focus-mouse="false">
+            <a href="<?php echo htmlspecialchars($box['link_message']); ?>" class="card card-teaser bg-primary rounded mt-0 p-3 shadow-sm border border-light d-flex flex-column" target="_blank" data-focus-mouse="false">
                 <?php 
                 if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
                     <div class="avatar size-lg me-3" style="min-width: 50px; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%;">
                         <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>" style="color: #007bff; font-size: 24px;"></i>
                     </div>
                 <?php } ?>
-                <div class="card-body">
+                <div class="card-body flex-grow-1"> <!-- Aggiunta la classe flex-grow-1 -->
                     <h3 class="card-title sito-tematico titolo-sito-tematico text-white">
                         <?php echo htmlspecialchars($box['titolo_message']); ?>
                     </h3>
@@ -38,8 +38,8 @@ $box_accesso_rapido = $boxes;
 
 <style>
     .custom-styles .row {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        display: flex; /* Cambiato in flex per gestire l'allineamento */
+        flex-wrap: wrap; /* Permette la rottura su più righe */
         gap: 20px;
     }
 
@@ -51,4 +51,3 @@ $box_accesso_rapido = $boxes;
         flex: 1; /* Permette al card-body di occupare spazio disponibile */
     }
 </style>
-
