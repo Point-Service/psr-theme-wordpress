@@ -16,12 +16,12 @@ $box_accesso_rapido = $boxes;
             <div class="cmp-card-simple card-wrapper pb-0 rounded border-none">
                 <div class="card shadow-sm rounded">
                     <div class="card-body card-bg-blue d-flex align-items-center">
-<?php 
-if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
-    <div class="avatar size-lg me-3">
-        <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>"></i>
-    </div>
-<?php } ?>
+                    <?php 
+                    if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
+                        <div class="avatar size-lg me-3">
+                            <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>"></i>
+                        </div>
+                    <?php } ?>
                         <div class="content">
                         <a class="text-decoration-none card-bg-blue" href="<?php echo htmlspecialchars($box['link_message']); ?>" data-element="topic-element" target="_blank">
                             <h3 class="card-title t-primary title-xlarge text-white"><?php echo htmlspecialchars($box['titolo_message']); ?></h3>
@@ -73,8 +73,7 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
 
     /* Nuovo CSS per l'icona */
     .avatar {
-        width: 50px; /* Larghezza fissa aumentata */
-        height: 50px; /* Altezza fissa aumentata */
+
         display: flex;
         justify-content: center; /* Centra l'icona orizzontalmente */
         align-items: center; /* Centra l'icona verticalmente */
