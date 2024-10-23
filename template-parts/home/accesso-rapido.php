@@ -2,9 +2,9 @@
 global $boxes;
 $box_accesso_rapido = $boxes;
 ?>
-<head>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-</head>
+
 <div class="container py-5">
     <?php if (!empty($boxes)) { ?>
         <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
