@@ -73,7 +73,8 @@ $box_accesso_rapido = $boxes;
 
     /* Nuovo CSS per l'icona */
     .avatar {
-
+        width: 50px; /* Larghezza fissa aumentata */
+        height: 50px; /* Altezza fissa aumentata */
         display: flex;
         justify-content: center; /* Centra l'icona orizzontalmente */
         align-items: center; /* Centra l'icona verticalmente */
