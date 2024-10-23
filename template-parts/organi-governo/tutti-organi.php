@@ -1,6 +1,6 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
-
+    $count=0;
     $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 1000000;
     $load_posts = 6;
 
@@ -68,10 +68,12 @@ global $the_query, $load_posts, $load_card_type;
             <div class="row g-4" id="load-more">
                 <?php 
                     $load_card_type = 'unita_organizzativa';
-                    foreach ($posts as $post) {get_template_part('template-parts/organi-governo/cards-list');
+                    foreach ($posts as $post) {get_template_part('template-parts/organi-governo/cards-list');$count++;
                 }?>
             </div>
-            <?php get_template_part("template-parts/search/more-results"); ?>
+            <?php if($count>6){
+                get_template_part("template-parts/search/more-results");
+            } ?>
         </div>
     </form>
 </div>
