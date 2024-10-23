@@ -18,8 +18,8 @@ $box_accesso_rapido = $boxes;
                     <div class="card-body card-bg-blue d-flex align-items-center">
                     <?php 
                     if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
-                        <div class="avatar size-lg me-3">
-                            <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>"></i>
+                        <div style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%; margin-right: 1rem;">
+                            <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>" style="color: #007bff;"></i>
                         </div>
                     <?php } ?>
                         <div class="content">
@@ -70,22 +70,5 @@ $box_accesso_rapido = $boxes;
     .custom-styles .btn {
         width: max-content;
     }
-
-    /* Nuovo CSS per l'icona */
-    .avatar {
-        width: 50px; /* Larghezza fissa aumentata */
-        height: 50px; /* Altezza fissa aumentata */
-        display: flex;
-        justify-content: center; /* Centra l'icona orizzontalmente */
-        align-items: center; /* Centra l'icona verticalmente */
-        background-color: #f0f0f0; /* Colore di sfondo per la visibilità */
-        border-radius: 50%; /* Rende l'icona rotonda */
-        margin-right: 1rem; /* Spaziatura a destra dell'icona */
-
-    }
-
-    .avatar i {
-
-        color: #007bff; /* Colore dell'icona */
-    }
 </style>
+
