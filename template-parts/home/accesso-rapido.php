@@ -13,9 +13,9 @@ $box_accesso_rapido = $boxes;
     <div class="row g-4">
         <?php foreach($boxes as $box) { ?>
         <div class="col-md-6 col-xl-4">
-            <div class="cmp-card-custom card-wrapper-custom pb-0 rounded border-none">
+            <div class="cmp-card-simple card-wrapper-custom pb-0 rounded border-none">
                 <div class="card shadow-sm rounded">
-                    <div class="card-body card-bg-custom d-flex align-items-center">
+                    <div class="card-body card-bg-blue-custom d-flex align-items-center">
 <?php 
 if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
     <div class="avatar-custom size-lg me-3">
@@ -23,8 +23,8 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
     </div>
 <?php } ?>
                         <div class="content-custom">
-                        <a class="text-decoration-none card-bg-custom" href="<?php echo htmlspecialchars($box['link_message']); ?>" data-element="topic-element" target="_blank">
-                            <h3 class="card-title-custom t-primary title-xlarge text-white"><?php echo htmlspecialchars($box['titolo_message']); ?></h3>
+                        <a class="text-decoration-none card-bg-blue-custom" href="<?php echo htmlspecialchars($box['link_message']); ?>" data-element="topic-element" target="_blank">
+                            <h3 class="card-title t-primary title-xlarge text-white"><?php echo htmlspecialchars($box['titolo_message']); ?></h3>
                         </a>
                         <?php if (isset($box['desc_message']) && $box['desc_message']) { ?>
                             <p class="titillium text-paragraph mb-0 description text-white">
@@ -63,7 +63,7 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
         align-items: center; /* Centra verticalmente il contenuto */
     }
 
-    .custom-styles-custom .card-title-custom {
+    .custom-styles-custom .card-title {
         margin-bottom: auto;
     }
 
@@ -90,5 +90,6 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
         color: #007bff; /* Colore dell'icona */
     }
 </style>
+
 
 
