@@ -23,11 +23,11 @@ $box_accesso_rapido = $boxes;
                                     </div>
                                 <?php } ?>
                                 <div class="flex-grow-1"> <!-- Contenitore per il titolo e la descrizione -->
-                                    <h3 class="card-title t-primary title-xlarge text-white <?= $sfondo_scuro ? 'text-white' : 'text-dark' ?>">
+                                    <h3 class="card-title t-primary title-xlarge text-white <?= $sfondo_scuro ? 'text-white' : 'text-dark' ?>" style="font-size: 1.5rem; line-height: 1.2;"> <!-- Modifica della dimensione -->
                                         <?php echo $box['titolo_message']; ?>
                                     </h3>
                                     <?php if (isset($box['desc_message']) && $box['desc_message']) { ?>
-                                        <p class="card-text text-sans-serif mb-0 description text-white <?= $sfondo_scuro ? 'text-white' : '' ?>">
+                                        <p class="card-text text-sans-serif mb-0 description text-white <?= $sfondo_scuro ? 'text-white' : '' ?>" style="font-size: 1rem; line-height: 1.5;"> <!-- Modifica della dimensione -->
                                             <?php echo $box['desc_message']; ?>
                                         </p>
                                     <?php } ?>
@@ -71,4 +71,5 @@ $box_accesso_rapido = $boxes;
         width: max-content;
     }
 </style>
+
 
