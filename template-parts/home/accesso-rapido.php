@@ -2,7 +2,9 @@
 global $boxes;
 $box_accesso_rapido = $boxes;
 ?>
-<head><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"></head>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
 
 <div class="container py-5">
     <?php if (!empty($boxes)) { ?>
@@ -21,12 +23,12 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
     </div>
 <?php } ?>
                         <div class="content">
-                        <a class="text-decoration-none card-bg-blue" href="<?php echo $box['link_message']; ?>" data-element="topic-element" target="_blank">
-                            <h3 class="card-title t-primary title-xlarge text-white"><?php echo $box['titolo_message']; ?></h3>
+                        <a class="text-decoration-none card-bg-blue" href="<?php echo htmlspecialchars($box['link_message']); ?>" data-element="topic-element" target="_blank">
+                            <h3 class="card-title t-primary title-xlarge text-white"><?php echo htmlspecialchars($box['titolo_message']); ?></h3>
                         </a>
                         <?php if (isset($box['desc_message']) && $box['desc_message']) { ?>
                             <p class="titillium text-paragraph mb-0 description text-white">
-                                <?php echo $box['desc_message']; ?>            
+                                <?php echo htmlspecialchars($box['desc_message']); ?>            
                             </p>
                         <?php } ?>
                         </div> 
@@ -57,6 +59,8 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
 
     .custom-styles .card-body {
         flex: 1;
+        display: flex; /* Aggiunto per il flexbox */
+        align-items: center; /* Centra verticalmente il contenuto */
     }
 
     .custom-styles .card-title {
@@ -69,18 +73,21 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
 
     /* Nuovo CSS per l'icona */
     .avatar {
-        width: 40px; /* Larghezza fissa */
-        height: 40px; /* Altezza fissa */
+        width: 50px; /* Larghezza fissa aumentata */
+        height: 50px; /* Altezza fissa aumentata */
         display: flex;
         justify-content: center; /* Centra l'icona orizzontalmente */
         align-items: center; /* Centra l'icona verticalmente */
         background-color: #f0f0f0; /* Colore di sfondo per la visibilità */
         border-radius: 50%; /* Rende l'icona rotonda */
         margin-right: 1rem; /* Spaziatura a destra dell'icona */
+        min-width: 50px; /* Dimensione minima per evitare schiacciamenti */
+        min-height: 50px; /* Dimensione minima per evitare schiacciamenti */
     }
 
     .avatar i {
-        font-size: 20px; /* Dimensione dell'icona */
+        font-size: 24px; /* Dimensione dell'icona aumentata */
         color: #007bff; /* Colore dell'icona */
     }
 </style>
+
