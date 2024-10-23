@@ -39,23 +39,6 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
 </div>
 
 <style>
-        .avatar {
-            width: 40px; /* Imposta la larghezza desiderata */
-            height: 40px; /* Imposta l'altezza desiderata */
-            display: flex;
-            justify-content: center; /* Centra l'icona orizzontalmente */
-            align-items: center; /* Centra l'icona verticalmente */
-            background-color: #f0f0f0; /* Colore di sfondo per la visibilità */
-            border-radius: 50%; /* Opzionale: rende l'icona rotonda */
-            margin-right: 1rem; /* Spaziatura a destra dell'icona */
-        }
-        
-        .avatar i {
-            font-size: 20px; /* Imposta la dimensione dell'icona */
-            color: #007bff; /* Colore dell'icona */
-        }
-
-    
     .custom-styles .row {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -82,5 +65,22 @@ if (array_key_exists('icona_message', $box) && array_key_exists('icon', $box) &&
 
     .custom-styles .btn {
         width: max-content;
+    }
+
+    /* Nuovo CSS per l'icona */
+    .avatar {
+        width: 40px; /* Larghezza fissa */
+        height: 40px; /* Altezza fissa */
+        display: flex;
+        justify-content: center; /* Centra l'icona orizzontalmente */
+        align-items: center; /* Centra l'icona verticalmente */
+        background-color: #f0f0f0; /* Colore di sfondo per la visibilità */
+        border-radius: 50%; /* Rende l'icona rotonda */
+        margin-right: 1rem; /* Spaziatura a destra dell'icona */
+    }
+
+    .avatar i {
+        font-size: 20px; /* Dimensione dell'icona */
+        color: #007bff; /* Colore dell'icona */
     }
 </style>
