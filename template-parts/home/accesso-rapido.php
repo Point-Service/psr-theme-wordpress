@@ -8,7 +8,7 @@ $box_accesso_rapido = $boxes;
 
 <div class="container py-5">
     <?php if (!empty($boxes)) { ?>
-        <h2 class="title-xxlarge mb-4">Accesso rapido555555</h2>
+        <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
     <?php } ?>
     <div class="row g-4">
         <?php foreach($boxes as $box) { ?>
