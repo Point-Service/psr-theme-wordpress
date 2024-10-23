@@ -99,6 +99,13 @@
           "template_name": "eventi",
           "children": {}
         },
+        "Multimedia": {
+          "title": "Multimedia",
+          "slug": "multimedia",
+          "description": "video del comune",
+          "template_name": "multimeda",
+          "children": {}
+         },
         "Luoghi": {
           "title": "Luoghi",
           "slug": "luoghi",
