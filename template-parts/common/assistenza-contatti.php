@@ -42,7 +42,7 @@
                         <a class="list-item" href="<?php echo $prenota_appuntamento;?>" data-element="appointment-booking">
                           <svg class="icon icon-primary icon-sm" aria-hidden="true">
                             <use href="#it-calendar"></use>
-                          </svg><span>Prenota appuntamento11</span>
+                          </svg><span>Prenota appuntamento</span>
                         </a>
                       </li>
                     <?php } else{?>
@@ -50,7 +50,7 @@
                         <a class="list-item" href="<?php echo dci_get_template_page_url("page-templates/prenota-appuntamento.php");?>" data-element="appointment-booking">
                           <svg class="icon icon-primary icon-sm" aria-hidden="true">
                             <use href="#it-calendar"></use>
-                          </svg><span>Prenota appuntamento2</span>
+                          </svg><span>Prenota appuntamento</span>
                         </a>
                       </li>
                     <?php } ?>
