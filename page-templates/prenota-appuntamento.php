@@ -37,7 +37,7 @@ get_header();
                                 <section class="it-hero-wrapper bg-white align-items-start">
                                     <div class="it-hero-text-wrapper pt-0 ps-0 pb-3 pb-lg-4">
                                         <h1 class="text-black hero-title" data-element="page-name">
-                                            Prenotazione appuntamento 111
+                                            Prenotazione appuntamento
                                         </h1>
                                     </div>
                                 </section>
