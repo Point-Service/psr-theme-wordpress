@@ -7,6 +7,21 @@
  */
 global $post;
 
+
+
+
+// Se esiste un link Maggioli indirizza subito sulla loro pagina
+$prenota_appuntamento = dci_get_option("prenota_appuntamento");
+
+// Controlla se l'URL è presente
+if (!empty($prenota_appuntamento)) {
+    // Esegui il reindirizzamento immediato
+    header("Location: $prenota_appuntamento");
+    exit(); // Ferma l'esecuzione del codice per evitare output successivo
+}
+
+
+
 function dci_enqueue_dci_booking_script()  {
     wp_enqueue_script( 'dci-booking', get_template_directory_uri() . '/assets/js/booking.js', array(), false, true);
     wp_localize_script('dci-booking', "url", [get_template_directory_uri() . '/assets/json/calendar.json']);
