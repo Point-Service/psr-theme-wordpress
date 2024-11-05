@@ -42,7 +42,7 @@
                         <a class="list-item" href="<?php echo $prenota_appuntamento;?>" data-element="appointment-booking">
                           <svg class="icon icon-primary icon-sm" aria-hidden="true">
                             <use href="#it-calendar"></use>
-                          </svg><span>Prenota appuntamento</span>
+                          </svg><span>Prenota appuntamento11</span>
                         </a>
                       </li>
                     <?php } else{?>
