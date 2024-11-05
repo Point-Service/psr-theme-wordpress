@@ -58,7 +58,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		$prenota_appuntamento = dci_get_option("prenota_appuntamento");		
 		// Controlla se il titolo è "Prenota appuntamento" e la variabile non è nulla
 		if ($item->title == 'Prenota appuntamento' && !empty($prenota_appuntamento)) {
-		    $item->url = $prenota_appuntamento;
+		    $item->url = 'a';
 		}
 
 		
