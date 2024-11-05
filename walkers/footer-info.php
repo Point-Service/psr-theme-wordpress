@@ -52,6 +52,15 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 	            $item->url = '/page-templates/privacy';
 	        }
 
+		// Sovrascrivi l'URL per "Prenota Appuntamento se presente Link Maggioli"
+		// Recupera l'opzione dall'impostazione personalizzata
+		$prenota_appuntamento = dci_get_option("prenota_appuntamento");
+		
+		// Controlla se il titolo è "Prenota appuntamento" e la variabile non è nulla
+		if ($item->title == 'Prenota appuntamento' && !empty($prenota_appuntamento)) {
+		    $item->url = $prenota_appuntamento;
+		}
+
 		
 		$data_element = '';
 		   // Imposta data-elements
@@ -71,9 +80,6 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		            $data_element = "data-element='legal-notes'";
 		        }
 
-			if ($item->title == 'Prenotazione appuntamento') {
-		            $data_element = "data-element='JUNIOR'";
-		        }
 		
 		        if ($item->title == 'Informativa privacy') {
 		            $data_element = "data-element='privacy-policy-link'";
