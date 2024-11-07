@@ -200,14 +200,14 @@ get_header();
                                                     <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
                                                         <div class="accordion-body">
                                                             <ul class="link-list" data-element="page-index">
-                                                                <?php if ($incarico ) { ?>
+                                                                <?php if ($incarico) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#who-needs">
                                                                         <span>Incarico</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
-                                                                <?php if ( $tipo_incarico ) { ?>
+                                                                <?php if ($tipo_incarico) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#description">
                                                                         <span>Tipo di incarico</span>
@@ -310,22 +310,20 @@ get_header();
                     </div>
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
-           
- 
-                             <?php if ($incarico) { ?>
-                            <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="who-needs">Incarico</h2>
-                                <div class="richtext-wrapper lora">
-                                    <?php echo $incarico ?>
-                                </div>
-                            </section>
-                            <?php } ?>
-                            <?php if ($tipo_incarico) { ?>
-                            <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="description">Tipo di Incarico</h2>
-                                <div class="richtext-wrapper lora"><?php echo $tipo_incarico ?></div>
-                            </section>
-                            <?php } ?>
+                                <?php if ($incarico) { ?>
+                                <section class="it-page-section mb-30">
+                                    <h2 class="title-xxlarge mb-3" id="who-needs">Incarico</h2>
+                                    <div class="richtext-wrapper lora">
+                                        <?php echo $incarico ?>
+                                    </div>
+                                </section>
+                                <?php } ?>
+                                <?php if ($tipo_incarico) { ?>
+                                <section class="it-page-section mb-30">
+                                    <h2 class="title-xxlarge mb-3" id="description">Tipo di Incarico</h2>
+                                    <div class="richtext-wrapper lora"><?php echo $tipo_incarico ?></div>
+                                </section>
+                                <?php } ?>
                             <?php if ($compensi) { ?>
                             <section class="it-page-section mb-30">
                                 <h2 class="title-xxlarge mb-3" id="how-to">Compensi</h2>
