@@ -1,4 +1,4 @@
-<?php
+1<?php
 global $the_query, $load_posts, $load_card_type, $tax_query, $additional_filter, $filter_ids;
 
 $query = $_GET['search'] ?? null;
