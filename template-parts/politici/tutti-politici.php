@@ -86,13 +86,13 @@ $persone = $the_query->posts;
                     <strong><?php echo $the_query->found_posts; ?> </strong>risultati in ordine alfabetico
                 </p>
             </div>
-            <div  class="row g-2" id="load-more">
+        
                 <?php
 				    foreach ($persone as $post) {
                         get_template_part( 'template-parts/politici/cards-list' );
 				    }
 				?>
-            </div>
+          
 			<?php
 				$load_card_type = 'persona_pubblica';
 				get_template_part("template-parts/search/more-results");
