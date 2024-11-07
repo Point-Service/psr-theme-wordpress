@@ -28,18 +28,18 @@ $args_incarichi = array(
 );
 
 $incarichi = get_posts($args_incarichi);
-$persone_ids = array();
+$persone_incarichi = array(); // Array per raccogliere ID persone e incarichi
 
-// Recupera tutti gli ID delle persone associate agli incarichi, senza rimuovere duplicati
+// Recupera tutti gli ID delle persone e associa ogni incarico senza rimuovere duplicati
 foreach($incarichi as $incarico) {
     $persone = get_post_meta($incarico->ID, '_dci_incarico_persona');
     foreach($persone as $persona) {
-        $persone_ids[] = $persona; // Aggiungi tutti gli ID senza `array_unique`
+        $persone_incarichi[] = array('persona_id' => $persona, 'incarico_id' => $incarico->ID);
     }
 }
 
-// Usa tutti gli ID raccolti per filtrare le persone da visualizzare
-$filter_ids = $persone_ids;
+// Estrai solo gli ID delle persone per filtrare nella query principale
+$persone_ids = array_column($persone_incarichi, 'persona_id');
 
 $search_value = isset($_GET['search']) ? $_GET['search'] : null;
 $args = array(
@@ -49,7 +49,7 @@ $args = array(
     'post_status'       => 'publish',
     'orderby'           => 'post_title',
     'order'             => 'ASC',
-    'post__in'          => empty($persone_ids) ? [0] : $filter_ids,
+    'post__in'          => empty($persone_ids) ? [0] : array_unique($persone_ids),
 );
 
 $the_query = new WP_Query($args);
@@ -93,14 +93,17 @@ $persone = $the_query->posts;
             </div>
             <div class="row g-2" id="load-more">
                 <?php
-                    // Visualizza i risultati unici, evitando duplicati basati sull'ID della persona
-                    $visti = []; // Array per tracciare le persone già mostrate
-                    foreach ($persone as $post) {
-                        if (!in_array($post->ID, $visti)) {
-                            $visti[] = $post->ID;
-                            get_template_part('template-parts/politici/cards-list');
+                    foreach ($persone_incarichi as $assoc) {
+                        // Trova il post della persona
+                        foreach ($persone as $post) {
+                            if ($post->ID == $assoc['persona_id']) {
+                                setup_postdata($post);
+                                get_template_part('template-parts/politici/cards-list');
+                                break;
+                            }
                         }
                     }
+                    wp_reset_postdata();
                 ?>
             </div>
             <?php
@@ -110,4 +113,5 @@ $persone = $the_query->posts;
         </div>
     </form>
 </div>
+
 
