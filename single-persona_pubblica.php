@@ -113,7 +113,7 @@ get_header();
             foreach ($incarichi as $incarico) {
                 echo '<p>' . get_the_title($incarico) . '</p>';
             }
-        } 
+        
         }
     ?>
 </main>
