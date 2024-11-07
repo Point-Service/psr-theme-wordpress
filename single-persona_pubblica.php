@@ -316,9 +316,8 @@ get_header();
                                                     $tipo_incarico_terms = get_the_terms($incarico_id, 'tipi_incarico');
                                                     $tipo_incarico = (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms)) ? $tipo_incarico_terms[0]->name : 'N/A';
                         
-                                                    // Mostra ogni incarico
-                                                    echo '<div class="incarico-item">';
-                                                    echo '<h3>' . esc_html($incarico_title) . '</h3>';
+                                                    // Mostra ogni incarico                                                    
+                                                    echo ' <h2 class="title-xxlarge mb-3" id="description">' . esc_html($incarico_title) . '</h2>';
                                                     // Aggiungi ulteriori informazioni se necessario
                                                     echo '</div>';
                                                 }
