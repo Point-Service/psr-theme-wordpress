@@ -207,13 +207,6 @@ get_header();
                                                                         </a>
                                                                     </li>
                                                                 <?php } ?>
-                                                                <?php if ($tipo_incarico) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#description">
-                                                                        <span>Tipo di incarico</span>
-                                                                    </a>
-                                                                </li>
-                                                                <?php } ?>
                                                                 <?php if($compensi) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#how-to">
