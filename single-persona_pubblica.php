@@ -128,16 +128,6 @@ get_header();
                     }
             }</script>
 
-<style>
-    .hero-img .img-wrapper img {
-        width: auto; /* Mantiene le proporzioni dell'immagine */
-        height: auto; /* Adatta l'altezza automaticamente */
-        max-width: 100%; /* Limita la larghezza al contenitore */
-        object-fit: contain; /* Mostra l'immagine intera senza tagli */
-    }
-</style>
-
-
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-10">
@@ -188,17 +178,27 @@ get_header();
                                                 <div class="accordion-item">
                                                     <span class="accordion-header" id="accordion-title-one">
                                                         
-                                                        <?php if($img) { ?>
-                                                            <section class="hero-img mb-20 mb-lg-50">
-                                                                <div class="img-responsive-wrapper">
-                                                                    <center>
-                                                                        <div class="img-wrapper">
-                                                                            <img src="<?php echo esc_url($img[0]); ?>" width="300" title="titolo immagine" alt="descrizione immagine">
-                                                                        </div>
-                                                                    </center>
-                                                                </div>
-                                                            </section>
-                                                        <?php } ?>                                                            
+                                                              <!-- Sezione immagine con CSS aggiornato per mantenere proporzioni -->
+                                                            <style>
+                                                                .hero-img .img-wrapper img {
+                                                                    width: 100%; /* Adatta la larghezza dell'immagine al contenitore */
+                                                                    height: auto; /* Mantiene le proporzioni */
+                                                                    object-fit: contain; /* Assicura che l'immagine non venga ritagliata */
+                                                                    display: block; /* Evita spazi indesiderati */
+                                                                }
+                                                            </style>
+                
+                                                            <?php if($img) { ?>
+                                                                <section class="hero-img mb-20 mb-lg-50">
+                                                                    <div class="img-responsive-wrapper">
+                                                                        <center>
+                                                                            <div class="img-wrapper">
+                                                                                <img src="<?php echo esc_url($img[0]); ?>" title="titolo immagine" alt="descrizione immagine">
+                                                                            </div>
+                                                                        </center>
+                                                                    </div>
+                                                                </section>
+                                                            <?php } ?>                       
                                         
                                                         <button class="accordion-button pb-10 px-3 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
                                                             Indice della pagina
