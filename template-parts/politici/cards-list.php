@@ -36,14 +36,18 @@ foreach ($incarichi as $incarico) {
                         <!-- Dati a destra -->
                         <div class="col-8 col-md-9">
                             <div class="card-body p-2">
-                                <!-- Nome e Data di inizio incarico -->
+                                <!-- Nome con link -->
                                 <div class="category-top cmp-list-card-img__body">
-                                    <span class="category cmp-list-card-img__body-heading-title underline"><?php echo the_title(); ?></span>
-                                    <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
+                                    <a href="<?php echo get_permalink(); ?>" class="category cmp-list-card-img__body-heading-title underline">
+                                        <?php echo the_title(); ?>
+                                    </a>
                                 </div>
 
+                                <!-- Data di inizio incarico (ora sotto il nome) -->
+                                <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
+
                                 <!-- Elenco degli incarichi -->
-                                <div class="incarichi">
+                                <div class="incarichi mt-2">
                                     <?php
                                     // Stampa tutti gli incarichi associati a questa persona
                                     foreach ($incarichi as $incarico) {
