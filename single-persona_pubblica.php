@@ -127,6 +127,22 @@ get_header();
                         }
                     }
             }</script>
+
+                <style>
+                    .full-image-container {
+                        width: 100%;
+                        height: 300px; /* Imposta l'altezza fissa desiderata */
+                        overflow: hidden; /* Nasconde eventuali parti eccedenti */
+                    }
+                    
+                    .full-image-container img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain; /* Mostra l'intera immagine senza tagliarla */
+                    }
+                </style>
+
+
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-10">
@@ -301,6 +317,8 @@ get_header();
                             </nav>
                         </div>
                     </div>
+
+                        
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
                                     <?php if (!empty($incarichi)) { ?>
