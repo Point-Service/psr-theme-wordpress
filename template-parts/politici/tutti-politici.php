@@ -3,8 +3,7 @@ global $the_query, $load_posts, $load_card_type, $tax_query, $additional_filter,
 
 $query = $_GET['search'] ?? null;
 
-// Identifica la categoria in base alla pagina corrente
-switch ($post->post_name){
+switch ($post->post_name) {
     case 'politici': $tipo_incarico = 'politico'; $descrizione = 'del personale'; break;
     case 'personale-amministrativo': $tipo_incarico = 'amministrativo'; $descrizione = 'del personale'; break;
     case 'personale-sanitario': $tipo_incarico = 'sanitario'; $descrizione = 'del personale'; break;
@@ -12,7 +11,6 @@ switch ($post->post_name){
     case 'altro': $tipo_incarico = 'altro'; $descrizione = 'del personale'; break;
 }
 
-// Filtra gli incarichi in base al tipo di incarico identificato
 $tax_query = array(
     array (
         'taxonomy' => 'tipi_incarico',
@@ -28,37 +26,32 @@ $args_incarichi = array(
 );
 
 $incarichi = get_posts($args_incarichi);
-$persone_incarichi = array(); // Array per raccogliere ID persone e incarichi
+$persone_ids = array();
 
-// Recupera tutti gli incarichi per ogni persona
-foreach($incarichi as $incarico) {
-    $persone = get_post_meta($incarico->ID, '_dci_incarico_persona'); // Recupera le persone associate all'incarico
-    foreach($persone as $persona) {
-        // Aggiungi gli incarichi all'array associato alla persona
-        if (!isset($persone_incarichi[$persona])) {
-            $persone_incarichi[$persona] = array(); // Aggiunge un array per ogni persona
-        }
-        $persone_incarichi[$persona][] = $incarico->ID; // Aggiungi l'ID dell'incarico alla persona
+foreach ($incarichi as $incarico) {
+    $persone = get_post_meta($incarico->ID, '_dci_incarico_persona');
+    foreach ($persone as $persona) {
+        $persone_ids[] = $persona;
     }
 }
 
-// Estrai solo gli ID delle persone per la query principale
-$persone_ids = array_keys($persone_incarichi);
+$filter_ids = array_unique($persone_ids);
 
 $search_value = isset($_GET['search']) ? $_GET['search'] : null;
 $args = array(
-    's'                 => $search_value,
-    'posts_per_page'    => -1,
-    'post_type'         => 'persona_pubblica',
-    'post_status'       => 'publish',
-    'orderby'           => 'post_title',
-    'order'             => 'ASC',
-    'post__in'          => empty($persone_ids) ? [0] : array_unique($persone_ids),
+    's' => $search_value,
+    'posts_per_page' => -1,
+    'post_type' => 'persona_pubblica',
+    'post_status' => 'publish',
+    'orderby' => 'post_title',
+    'order' => 'ASC',
+    'post__in' => empty($persone_ids) ? [0] : $filter_ids,
 );
 
 $the_query = new WP_Query($args);
 $persone = $the_query->posts;
 ?>
+
 <div class="bg-grey-card py-3">
     <form role="search" id="search-form" method="get" class="search-form">
         <button type="submit" class="d-none"></button>
@@ -97,58 +90,57 @@ $persone = $the_query->posts;
             </div>
             <div class="row g-2" id="load-more">
                 <?php
-                    // Visualizza ogni persona con tutti gli incarichi associati
-                    foreach ($persone as $persona_post) {
-                        // Associa gli incarichi alla persona
-                        $persona_id = $persona_post->ID;
-                        if (isset($persone_incarichi[$persona_id])) {
-                            ?>
-                            <div class="col-md-4 col-lg-3 col-xl-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <!-- Mostra le informazioni della persona (foto, descrizione, ecc.) -->
-                                        <h5 class="card-title"><?php echo get_the_title($persona_post); ?></h5>
+                    // Ciclo per ogni persona e visualizzazione della sua card con incarichi
+                    foreach ($persone as $post) {
+                        // Recupera gli incarichi associati alla persona
+                        $persona_incarichi = get_post_meta($post->ID, '_dci_incarico_persona');
+                        
+                        // Mostra la card della persona
+                        ?>
+                        <div class="col-md-4 col-lg-3 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo get_the_title($post); ?></h5>
+                                    
+                                    <?php
+                                    // Visualizza la foto della persona (se presente)
+                                    if (has_post_thumbnail($post)) {
+                                        echo get_the_post_thumbnail($post, 'medium', ['class' => 'img-fluid']);
+                                    }
+                                    ?>
+                                    
+                                    <p class="card-text">
                                         <?php
-                                            // Mostra la foto della persona
-                                            if (has_post_thumbnail($persona_post)) {
-                                                echo get_the_post_thumbnail($persona_post, 'medium', ['class' => 'img-fluid']);
-                                            }
+                                        // Mostra la descrizione della persona (brevi parole)
+                                        echo wp_trim_words(get_the_excerpt($post), 20);
                                         ?>
-                                        <p class="card-text">
-                                            <?php
-                                                // Mostra la descrizione della persona
-                                                echo wp_trim_words(get_the_excerpt($persona_post), 20);
-                                            ?>
-                                        </p>
+                                    </p>
 
-                                        <!-- Mostra gli incarichi associati alla persona -->
-                                        <h6>Incarichi:</h6>
-                                        <ul class="list-unstyled">
-                                            <?php
-                                                // Elenco degli incarichi
-                                                foreach ($persone_incarichi[$persona_id] as $incarico_id) {
-                                                    $incarico = get_post($incarico_id);
-                                                    ?>
-                                                    <li><a href="<?php echo get_permalink($incarico_id); ?>"><?php echo get_the_title($incarico); ?></a></li>
-                                                    <?php
-                                                }
+                                    <!-- Mostra gli incarichi associati -->
+                                    <h6>Incarichi:</h6>
+                                    <ul class="list-unstyled">
+                                        <?php
+                                        // Elenco degli incarichi
+                                        foreach ($persona_incarichi as $incarico_id) {
+                                            $incarico = get_post($incarico_id);
                                             ?>
-                                        </ul>
-                                    </div>
+                                            <li><a href="<?php echo get_permalink($incarico_id); ?>"><?php echo get_the_title($incarico); ?></a></li>
+                                            <?php
+                                        }
+                                        ?>
+                                    </ul>
                                 </div>
                             </div>
-                            <?php
-                        }
+                        </div>
+                        <?php
                     }
-                    wp_reset_postdata();
                 ?>
             </div>
             <?php
                 $load_card_type = 'persona_pubblica';
                 get_template_part("template-parts/search/more-results");
-            ?>       
+            ?>
         </div>
     </form>
 </div>
-
 
