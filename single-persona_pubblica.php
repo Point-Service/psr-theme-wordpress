@@ -30,31 +30,27 @@ get_header();
         $responsabili = dci_get_meta("responsabile") ?? [];
         $responsabile = !empty($responsabili) ? $responsabili[0] : null;
 
-        // Recupero degli incarichi per il responsabile, se presente
-        if (!is_null($responsabile)) {
-            $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile) ?? [];
-        } else {
-            $incarichi = dci_get_meta("incarichi") ?? []; // Recupera gli incarichi direttamente dal post
-        }
-
-        // Verifica se ci sono incarichi e visualizzazione
-        if (!empty($incarichi)) {
-            echo '<h3>Incarichi associati</h3>';
-            foreach ($incarichi as $incarico) {
-                echo '<p>' . get_the_title($incarico) . '</p>';
+        $incarichi = !is_null($responsabile) ? dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile) : [];
+          // Controllo se ci sono incarichi e se il primo incarico esiste
+            if (!empty($incarichi) && isset($incarichi[0])) {
+                $incarico = get_the_title($incarichi[0]);
                 
-                // Recupero i termini di tipo incarico, se esistono
-                $tipo_incarico_terms = get_the_terms(get_post($incarico), 'tipi_incarico');
-                if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms)) {
+                // Recupero dei termini di tipo incarico
+                $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
+                
+                // Controllo se i termini di tipo incarico esistono e non ci sono errori
+                if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
                     $tipo_incarico = $tipo_incarico_terms[0]->name;
-                    echo '<p>Tipo di Incarico: ' . $tipo_incarico . '</p>';
+                } else {
+                    $tipo_incarico = ''; // Valore di fallback se non ci sono termini
                 }
+            } else {
+                $incarico = ''; // Valore di fallback se non ci sono incarichi
+                $tipo_incarico = ''; // Valore di fallback se non ci sono incarichi
             }
-        } else {
-            echo '';
-        }
 
-        // Recupero altri metadati
+        $compensi = !empty($incarichi) ? dci_get_meta("compensi", '_dci_incarico_', $incarichi[0]) : [];
+
         $organizzazioni = dci_get_meta("organizzazioni") ?? [];
         $biografia = dci_get_meta("biografia") ?? '';
         $curriculum_vitae = dci_get_meta("curriculum_vitae") ?? '';
@@ -102,23 +98,6 @@ get_header();
             $text = str_replace('&nbsp;', ' ', $text);
 
             return trim(strip_tags($text));
-        }
-
-        // Verifica se ci sono incarichi e stampa
-        if (!empty($incarichi)) {
-            echo '<h3>Incarichi associati</h3>';
-            foreach ($incarichi as $incarico) {
-                echo '<p>' . get_the_title($incarico) . '</p>';
-                
-                // Recupero i termini di tipo incarico, se esistono
-                $tipo_incarico_terms = get_the_terms(get_post($incarico), 'tipi_incarico');
-                if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms)) {
-                    $tipo_incarico = $tipo_incarico_terms[0]->name;
-                    echo '<p>Tipo di Incarico: ' . $tipo_incarico . '</p>';
-                }
-            }
-        } else {
-            echo '';
         }
     ?>
 </main>
