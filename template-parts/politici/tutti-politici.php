@@ -1,4 +1,4 @@
-ii<?php
+<?php
 global $the_query, $load_posts, $load_card_type, $tax_query, $additional_filter, $filter_ids;
 
 $query = $_GET['search'] ?? null;
@@ -34,7 +34,7 @@ $persone_incarichi = array(); // Array per raccogliere ID persone e incarichi
 foreach($incarichi as $incarico) {
     $persone = get_post_meta($incarico->ID, '_dci_incarico_persona'); // Recupera le persone associate all'incarico
     foreach($persone as $persona) {
-        // Raccoglie tutte le persone e gli incarichi in un array
+        // Aggiungi gli incarichi all'array associato alla persona
         if (!isset($persone_incarichi[$persona])) {
             $persone_incarichi[$persona] = array(); // Aggiunge un array per ogni persona
         }
@@ -98,33 +98,30 @@ $persone = $the_query->posts;
             <div class="row g-2" id="load-more">
                 <?php
                     // Visualizza ogni persona con tutti gli incarichi associati
-                    foreach ($persone_incarichi as $persona_id => $incarichi) {
-                        // Trova la persona
-                        foreach ($persone as $post) {
-                            if ($post->ID == $persona_id) {
-                                setup_postdata($post);
-                                ?>
-                                <div class="person-card">
-                                    <h3 class="person-name"><?php the_title(); ?></h3>
-                                    <ul class="incarichi-list">
-                                        <?php
-                                        // Visualizza tutti gli incarichi associati alla persona
-                                        foreach ($incarichi as $incarico_id) {
-                                            $incarico_post = get_post($incarico_id);
-                                            ?>
-                                            <li class="incarico-item">
-                                                <a href="<?php echo get_permalink($incarico_post->ID); ?>">
-                                                    <?php echo get_the_title($incarico_post->ID); ?>
-                                                </a>
-                                            </li>
+                    foreach ($persone as $persona_post) {
+                        // Associa gli incarichi alla persona
+                        $persona_id = $persona_post->ID;
+                        if (isset($persone_incarichi[$persona_id])) {
+                            ?>
+                            <div class="col-md-4 col-lg-3 col-xl-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo get_the_title($persona_post); ?></h5>
+                                        <ul class="list-unstyled">
                                             <?php
-                                        }
-                                        ?>
-                                    </ul>
+                                                // Elenco degli incarichi
+                                                foreach ($persone_incarichi[$persona_id] as $incarico_id) {
+                                                    $incarico = get_post($incarico_id);
+                                                    ?>
+                                                    <li><a href="<?php echo get_permalink($incarico_id); ?>"><?php echo get_the_title($incarico); ?></a></li>
+                                                    <?php
+                                                }
+                                            ?>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <?php
-                                break;
-                            }
+                            </div>
+                            <?php
                         }
                     }
                     wp_reset_postdata();
