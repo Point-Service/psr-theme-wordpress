@@ -122,6 +122,7 @@ $persone = $the_query->posts;
                                         </p>
 
                                         <!-- Mostra gli incarichi associati alla persona -->
+                                        <h6>Incarichi:</h6>
                                         <ul class="list-unstyled">
                                             <?php
                                                 // Elenco degli incarichi
