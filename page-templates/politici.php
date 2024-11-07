@@ -8,7 +8,7 @@
 global $post;
 get_header();
 
-?>tttttttttt
+?>
 	<main>
 		<?php
 		while ( have_posts() ) :
