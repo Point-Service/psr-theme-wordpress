@@ -317,7 +317,7 @@ get_header();
                                                     $tipo_incarico = (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms)) ? $tipo_incarico_terms[0]->name : 'N/A';
                         
                                                     // Mostra ogni incarico                                                    
-                                                    echo ' <h2 class="title-xxlarge mb-3" id="description">' . esc_html($incarico_title) . '</h2>';
+                                                    echo '<div class="richtext-wrapper lora">' . esc_html($incarico_title) . '</div>';
                                                     // Aggiungi ulteriori informazioni se necessario
                                                
                                                 }
