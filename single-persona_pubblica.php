@@ -30,29 +30,9 @@ get_header();
         $responsabili = dci_get_meta("responsabile") ?? [];
         $responsabile = !empty($responsabili) ? $responsabili[0] : null;
 
-        // Recupera gli incarichi, se esistono
-        $incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post
-
-        if (!empty($incarichi)) {
-            // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
-            $incarico = get_the_title($incarichi[0]);
-            
-            // Recupero dei termini di tipo incarico
-            $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
-            
-            // Controllo se i termini di tipo incarico esistono e non ci sono errori
-            if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
-                $tipo_incarico = $tipo_incarico_terms[0]->name;
-            } else {
-                $tipo_incarico = ''; // Valore di fallback se non ci sono termini
-            }
-        } else {
-            $incarico = ''; // Valore di fallback se non ci sono incarichi
-            $tipo_incarico = ''; // Valore di fallback se non ci sono incarichi
-        }
-
-        $compensi = !empty($incarichi) ? dci_get_meta("compensi", '_dci_incarico_', $incarichi[0]) : [];
-
+        $incarichi = !is_null($responsabile) ? dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile) : [];
+        
+        // Recupero di altri metadati
         $organizzazioni = dci_get_meta("organizzazioni") ?? [];
         $biografia = dci_get_meta("biografia") ?? '';
         $curriculum_vitae = dci_get_meta("curriculum_vitae") ?? '';
@@ -200,12 +180,12 @@ get_header();
                                                     <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
                                                         <div class="accordion-body">
                                                             <ul class="link-list" data-element="page-index">
-                                                                <?php if ($incarico) { ?>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#who-needs">
-                                                                        <span>Incarico</span>
-                                                                    </a>
-                                                                </li>
+                                                               <?php if ($incarichi) { ?>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" href="#who-needs">
+                                                                            <span>Incarichi</span>
+                                                                        </a>
+                                                                    </li>
                                                                 <?php } ?>
                                                                 <?php if ($tipo_incarico) { ?>
                                                                 <li class="nav-item">
@@ -310,14 +290,30 @@ get_header();
                     </div>
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
-                                <?php if ($incarico) { ?>
-                                <section class="it-page-section mb-30">
-                                    <h2 class="title-xxlarge mb-3" id="who-needs">Incarico</h2>
-                                    <div class="richtext-wrapper lora">
-                                        <?php echo $incarico ?>
-                                    </div>
-                                </section>
-                                <?php } ?>
+                                    <?php if (!empty($incarichi)) { ?>
+                                        <section class="it-page-section mb-30">
+                                            <h2 class="title-xxlarge mb-3" id="who-needs">Incarichi</h2>
+                                            <div class="richtext-wrapper lora">
+                                                <?php 
+                                                foreach ($incarichi as $incarico_id) {
+                                                    // Ottieni il titolo dell'incarico
+                                                    $incarico_title = get_the_title($incarico_id);
+                        
+                                                    // Recupera i termini di tipo incarico
+                                                    $tipo_incarico_terms = get_the_terms($incarico_id, 'tipi_incarico');
+                                                    $tipo_incarico = (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms)) ? $tipo_incarico_terms[0]->name : 'N/A';
+                        
+                                                    // Mostra ogni incarico
+                                                    echo '<div class="incarico-item">';
+                                                    echo '<h3>' . esc_html($incarico_title) . '</h3>';
+                                                    echo '<p><strong>Tipo di incarico:</strong> ' . esc_html($tipo_incarico) . '</p>';
+                                                    // Aggiungi ulteriori informazioni se necessario
+                                                    echo '</div>';
+                                                }
+                                                ?>
+                                            </div>
+                                        </section>
+                                    <?php } ?>
                                 <?php if ($tipo_incarico) { ?>
                                 <section class="it-page-section mb-30">
                                     <h2 class="title-xxlarge mb-3" id="description">Tipo di Incarico</h2>
