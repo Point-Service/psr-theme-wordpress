@@ -319,7 +319,7 @@ get_header();
                                                     // Mostra ogni incarico                                                    
                                                     echo ' <h2 class="title-xxlarge mb-3" id="description">' . esc_html($incarico_title) . '</h2>';
                                                     // Aggiungi ulteriori informazioni se necessario
-                                                    echo '</div>';
+                                               
                                                 }
                                                 ?>
                                             </div>
