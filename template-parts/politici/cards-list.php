@@ -2,71 +2,116 @@
 global $posts;
 
 $description = dci_get_meta('descrizione_breve');
-$incarichi = dci_get_meta('incarichi'); // Assicurati che questo contenga tutti gli incarichi della persona
+$incarichi = dci_get_meta('incarichi');
+$arrdata = explode( '-', dci_get_meta("data_inizio_incarico") );
+$tipo = get_the_terms($incarichi[0], 'tipi_incarico')[0];
 
-// Array per tenere traccia delle persone già visualizzate
-$visualizzati = [];
+$prefix = '_dci_incarico_';
+$nome_incarico = get_the_title($incarichi[0]);
 
-foreach ($incarichi as $incarico) {
-    $arrdata = explode( '-', dci_get_meta("data_inizio_incarico") );
-    $tipo = get_the_terms($incarico, 'tipi_incarico')[0];
-    $prefix = '_dci_incarico_';
-    $nome_incarico = get_the_title($incarico);
+$monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+$img = dci_get_meta('foto');
 
-    $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
-    $img = dci_get_meta('foto'); // Foto associata all'incarico
-    $persona_id = get_the_ID(); // ID della persona
+// Aggiungiamo la classe personalizzata per ingrandire l'immagine
+if ($tipo->name == "politico") {
+    if ($img) {
+?>
+    <div class="col-md-6 col-xl-4">
+        <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
+            <div class="card no-after rounded">
+                <div class="row g-2 g-md-0 flex-md-column">
+                    <!-- Foto ingrandita -->
+                    <div class="col-4 order-2 order-md-1">
+                        <?php dci_get_img($img, 'rounded-top img-fluid img-responsive img-custom'); ?>
+                    </div>
+                    <div class="col-8 order-1 order-md-2">
+                        <div class="card-body">
+                            <div class="category-top cmp-list-card-img__body">
+                                <?php if ($tipo) { ?> 
+                                    <span class="category cmp-list-card-img__body-heading-title underline"><?php echo $nome_incarico ? $nome_incarico : 'POLITICO'; ?></span>
+                                <?php } ?>                    
+                                <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
+                            </div>
+                            <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
+                                <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
+                            </a>
+                            <p class="card-text d-none d-md-block">
+                                <?php echo $description; ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php 
+    } else {
+?>
+    <div class="col-md-6 col-xl-4">
+        <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
+            <div class="card no-after rounded">
+                <div class="row g-2 g-md-0 flex-md-column">
+                    <div class="col-12 order-1 order-md-2">
+                        <div class="card-body card-img-none rounded-top">
+                            <div class="category-top cmp-list-card-img__body">
+                                <span class="category cmp-list-card-img__body-heading-title underline"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'POLITICO'; ?></span>
+                                <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
+                            </div>
+                            <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
+                                <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
+                            </a>
+                            <p class="card-text d-none d-md-block">
+                                <?php echo $description; ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php 
+    }
+} 
+?>
 
-    // Verifica se la persona è già stata visualizzata
-    if (!in_array($persona_id, $visualizzati)) {
-        // Aggiungi la persona all'array per evitare duplicazioni
-        $visualizzati[] = $persona_id;
+<!-- Codice per visualizzare tutti gli incarichi -->
+<div class="row">
+    <?php 
+        // Eseguiamo un ciclo per visualizzare tutti gli incarichi
+        if (!empty($incarichi)) {
+            foreach ($incarichi as $incarico_id) {
+                $incarico_title = get_the_title($incarico_id);
+                $arrdata_incarico = explode('-', dci_get_meta('data_inizio_incarico', $incarico_id));
+                $monthName_incarico = date_i18n('M', mktime(0, 0, 0, $arrdata_incarico[1], 10));
+                $tipo_incarico = get_the_terms($incarico_id, 'tipi_incarico')[0];
 
-        // Inizia la visualizzazione della persona
-        ?>
-        <div class="col-md-6 col-lg-4 col-xl-3">
+                // Visualizziamo ogni incarico
+    ?>
+        <div class="col-md-6 col-xl-4">
             <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
                 <div class="card no-after rounded">
-                    <div class="row g-2 g-md-0">
-                        <!-- Foto a sinistra -->
-                        <div class="col-4 col-md-3">
-                            <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
-                        </div>
-
-                        <!-- Dati a destra -->
-                        <div class="col-8 col-md-9">
-                            <div class="card-body p-2">
-                                <!-- Nome e Data di inizio incarico -->
+                    <div class="row g-2 g-md-0 flex-md-column">
+                        <div class="col-12 order-1 order-md-2">
+                            <div class="card-body card-img-none rounded-top">
                                 <div class="category-top cmp-list-card-img__body">
-                                    <span class="category cmp-list-card-img__body-heading-title underline"><?php echo the_title(); ?></span>
-                                    <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
+                                    <span class="category cmp-list-card-img__body-heading-title underline"><?php echo isset($tipo_incarico->name) ? strtoupper($tipo_incarico->name) : 'INCARICO'; ?></span>
+                                    <span class="data"><?php echo $arrdata_incarico[0].' '.strtoupper($monthName_incarico).' '.$arrdata_incarico[2] ?></span>
                                 </div>
-
-                                <!-- Elenco degli incarichi -->
-                                <div class="incarichi">
-                                    <?php
-                                    // Stampa tutti gli incarichi associati a questa persona
-                                    foreach ($incarichi as $incarico) {
-                                        $nome_incarico = get_the_title($incarico);
-                                        echo '<span class="badge bg-primary badge-sm">' . $nome_incarico . '</span><br>'; // Ogni incarico su una nuova riga
-                                    }
-                                    ?>
-                                </div>
-
-                                <!-- Descrizione -->
-                                <p class="card-text mt-2" style="font-size: 0.9rem;">
-                                    <?php echo $description; ?>
-                                </p>
+                                <a class="text-decoration-none" href="<?php echo get_permalink($incarico_id); ?>" data-element="administration-element">
+                                    <h3 class="h5 card-title"><?php echo $incarico_title; ?></h3>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <?php 
-    }
-}
-?>
+    <?php 
+            }
+        }
+    ?>
+</div>
+
 
 
 
