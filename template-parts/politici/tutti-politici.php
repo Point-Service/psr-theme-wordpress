@@ -30,15 +30,15 @@ $args_incarichi = array(
 $incarichi = get_posts($args_incarichi);
 $persone_incarichi = array(); // Array per raccogliere ID persone e incarichi
 
-// Recupera tutti gli ID delle persone e associa ogni incarico senza rimuovere duplicati
+// Recupera tutti gli incarichi per ogni persona
 foreach($incarichi as $incarico) {
-    $persone = get_post_meta($incarico->ID, '_dci_incarico_persona');
+    $persone = get_post_meta($incarico->ID, '_dci_incarico_persona'); // Recupera le persone associate all'incarico
     foreach($persone as $persona) {
         $persone_incarichi[] = array('persona_id' => $persona, 'incarico_id' => $incarico->ID);
     }
 }
 
-// Estrai solo gli ID delle persone per filtrare nella query principale
+// Estrai solo gli ID delle persone per la query principale (quindi la persona può comparire più volte se ha più incarichi)
 $persone_ids = array_column($persone_incarichi, 'persona_id');
 
 $search_value = isset($_GET['search']) ? $_GET['search'] : null;
@@ -93,8 +93,9 @@ $persone = $the_query->posts;
             </div>
             <div class="row g-2" id="load-more">
                 <?php
+                    // Visualizza ogni incarico per ogni persona
                     foreach ($persone_incarichi as $assoc) {
-                        // Trova il post della persona
+                        // Trova la persona
                         foreach ($persone as $post) {
                             if ($post->ID == $assoc['persona_id']) {
                                 setup_postdata($post);
@@ -113,5 +114,6 @@ $persone = $the_query->posts;
         </div>
     </form>
 </div>
+
 
 
