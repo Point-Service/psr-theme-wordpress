@@ -128,19 +128,14 @@ get_header();
                     }
             }</script>
 
-                <style>
-                    .full-image-container {
-                        width: 100%;
-                        height: 300px; /* Imposta l'altezza fissa desiderata */
-                        overflow: hidden; /* Nasconde eventuali parti eccedenti */
-                    }
-                    
-                    .full-image-container img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: contain; /* Mostra l'intera immagine senza tagliarla */
-                    }
-                </style>
+<style>
+    .hero-img .img-wrapper img {
+        width: auto; /* Mantiene le proporzioni dell'immagine */
+        height: auto; /* Adatta l'altezza automaticamente */
+        max-width: 100%; /* Limita la larghezza al contenitore */
+        object-fit: contain; /* Mostra l'immagine intera senza tagli */
+    }
+</style>
 
 
             <div class="container" id="main-container">
@@ -194,12 +189,16 @@ get_header();
                                                     <span class="accordion-header" id="accordion-title-one">
                                                         
                                                         <?php if($img) { ?>
-                                                            <section class="hero-img mb-20 mb-lg-50">               
-                                                                 <div class="img-responsive-wrapper">
-                                                                     <center><div class="img-wrapper"><img width="300" src="<?php echo $img[0]; ?>" title="titolo immagine" alt="descrizione immagine"></div></center>
-                                                                 </div> 
+                                                            <section class="hero-img mb-20 mb-lg-50">
+                                                                <div class="img-responsive-wrapper">
+                                                                    <center>
+                                                                        <div class="img-wrapper">
+                                                                            <img src="<?php echo esc_url($img[0]); ?>" width="300" title="titolo immagine" alt="descrizione immagine">
+                                                                        </div>
+                                                                    </center>
+                                                                </div>
                                                             </section>
-                                                        <?php } ?>
+                                                        <?php } ?>                                                            
                                         
                                                         <button class="accordion-button pb-10 px-3 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
                                                             Indice della pagina
@@ -316,9 +315,7 @@ get_header();
                                 </div>
                             </nav>
                         </div>
-                    </div>
-
-                        
+                    </div>                        
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
                                     <?php if (!empty($incarichi)) { ?>
