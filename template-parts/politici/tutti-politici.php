@@ -106,7 +106,22 @@ $persone = $the_query->posts;
                             <div class="col-md-4 col-lg-3 col-xl-3">
                                 <div class="card">
                                     <div class="card-body">
+                                        <!-- Mostra le informazioni della persona (foto, descrizione, ecc.) -->
                                         <h5 class="card-title"><?php echo get_the_title($persona_post); ?></h5>
+                                        <?php
+                                            // Mostra la foto della persona
+                                            if (has_post_thumbnail($persona_post)) {
+                                                echo get_the_post_thumbnail($persona_post, 'medium', ['class' => 'img-fluid']);
+                                            }
+                                        ?>
+                                        <p class="card-text">
+                                            <?php
+                                                // Mostra la descrizione della persona
+                                                echo wp_trim_words(get_the_excerpt($persona_post), 20);
+                                            ?>
+                                        </p>
+
+                                        <!-- Mostra gli incarichi associati alla persona -->
                                         <ul class="list-unstyled">
                                             <?php
                                                 // Elenco degli incarichi
@@ -134,6 +149,5 @@ $persone = $the_query->posts;
         </div>
     </form>
 </div>
-
 
 
