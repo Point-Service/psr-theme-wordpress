@@ -326,7 +326,6 @@ get_header();
                                                     // Mostra ogni incarico
                                                     echo '<div class="incarico-item">';
                                                     echo '<h3>' . esc_html($incarico_title) . '</h3>';
-                                                    echo '<p><strong>Tipo di incarico:</strong> ' . esc_html($tipo_incarico) . '</p>';
                                                     // Aggiungi ulteriori informazioni se necessario
                                                     echo '</div>';
                                                 }
