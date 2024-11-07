@@ -166,154 +166,156 @@ get_header();
                     <hr class="d-none d-lg-block mt-2"/>
                 </div>
             </div>
-<div class="container">
-    <div class="row row-column-menu-left mt-4 mt-lg-80 pb-lg-80 pb-40">
-        <div class="col-12 col-lg-3 mb-4 border-col">
-            <div class="cmp-navscroll sticky-top" aria-labelledby="accordion-title-one">
-                <nav class="navbar it-navscroll-wrapper navbar-expand-lg" aria-label="Indice della pagina" data-bs-navscroll>
-                    <div class="navbar-custom" id="navbarNavProgress">
-                        <div class="menu-wrapper">
-                            <div class="link-list-wrapper">
-                                <div class="accordion">
-                                    <div class="accordion-item">
-                                        <span class="accordion-header" id="accordion-title-one">
-                                            
-                                            <!-- Sezione immagine con CSS aggiornato per mantenere proporzioni -->
-                                            <style>
-                                                .hero-img .img-wrapper img {
-                                                    width: 100%; /* Adatta la larghezza dell'immagine al contenitore */
-                                                    height: auto; /* Mantiene le proporzioni */
-                                                    object-fit: contain; /* Assicura che l'immagine non venga ritagliata */
-                                                    display: block; /* Evita spazi indesiderati */
-                                                }
-                                            </style>
+            <div class="container">
+                <div class="row row-column-menu-left mt-4 mt-lg-80 pb-lg-80 pb-40">
+                    <div class="col-12 col-lg-3 mb-4 border-col">
+                        <div class="cmp-navscroll sticky-top" aria-labelledby="accordion-title-one">
+                            <nav class="navbar it-navscroll-wrapper navbar-expand-lg" aria-label="Indice della pagina" data-bs-navscroll>
+                                <div class="navbar-custom" id="navbarNavProgress">
+                                    <div class="menu-wrapper">
+                                        <div class="link-list-wrapper">
+                                            <div class="accordion">
+                                                <div class="accordion-item">
+                                                    <span class="accordion-header" id="accordion-title-one">
+                                                        
+                                                              <!-- Sezione immagine con CSS aggiornato per mantenere proporzioni -->
+                                                            <style>
+                                                                .hero-img .img-wrapper img {
+                                                                    width: 100%; /* Adatta la larghezza dell'immagine al contenitore */
+                                                                    height: auto; /* Mantiene le proporzioni */
+                                                                    object-fit: contain; /* Assicura che l'immagine non venga ritagliata */
+                                                                    display: block; /* Evita spazi indesiderati */
+                                                                }
+                                                            </style>
+                
+                                                            <?php if($img) { ?>
+                                                                <section class="hero-img mb-20 mb-lg-50">
+                                                                    <div class="img-responsive-wrapper">
+                                                                        <center>
+                                                                            <div class="img-wrapper">
+                                                                                <img src="<?php echo esc_url($img[0]); ?>" title="titolo immagine" alt="descrizione immagine">
+                                                                            </div>
+                                                                        </center>
+                                                                    </div>
+                                                                </section>
+                                                            <?php } ?>                       
+                                        
+                                                        <button class="accordion-button pb-10 px-3 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
+                                                            Indice della pagina
+                                                            <svg class="icon icon-xs right">
+                                                                <use href="#it-expand"></use>
+                                                            </svg>
+                                                        </button>
+                                                    </span>
 
-                                            <?php if($img) { ?>
-                                                <section class="hero-img mb-20 mb-lg-50">
-                                                    <div class="img-responsive-wrapper">
-                                                        <center>
-                                                            <div class="img-wrapper">
-                                                                <img src="<?php echo esc_url($img[0]); ?>" title="titolo immagine" alt="descrizione immagine">
-                                                            </div>
-                                                        </center>
+                                                    <div class="progress">
+                                                        <div class="progress-bar it-navscroll-progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
-                                                </section>
-                                            <?php } ?>
-                                            
-                                            <button class="accordion-button pb-10 px-3 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
-                                                Indice della pagina
-                                                <svg class="icon icon-xs right">
-                                                    <use href="#it-expand"></use>
-                                                </svg>
-                                            </button>
-                                        </span>
 
-                                        <div class="progress">
-                                            <div class="progress-bar it-navscroll-progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-
-                                        <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
-                                            <div class="accordion-body">
-                                                <ul class="link-list" data-element="page-index">
-                                                    <?php if ($incarichi) { ?>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#who-needs">
-                                                                <span>Incarichi</span>
-                                                            </a>
-                                                        </li>
-                                                    <?php } ?>
-                                                    <?php if($compensi) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#how-to">
-                                                            <span>Compensi</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#needed">
-                                                            <span>Data di <?php if($tipo_incarico == "politico") { echo 'Insediamento'; } else { echo 'inizio incarico'; } ?></span>
-                                                        </a>
-                                                    </li>
-                                                    <?php if ( $organizzazioni ) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#obtain">
-                                                            <span>Organizzazione</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                    <?php if ( $competenze ) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#obtain">
-                                                            <span>Competenze</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                    <?php if ( $biografia ) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#deadlines">
-                                                            <span>Biografia</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                    <?php if ( $contatti ) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#deadlines">
-                                                            <span>Contatti</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                    <?php if ( $curriculum_vitae ) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#costs">
-                                                            <span>Curriculum Vitae</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                    <?php if ( $situazione_patrimoniale ) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#situazione-patrimoniale">
-                                                            <span>Situazione patrimoniale</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                    <?php if ( $dichiarazione_redditi ) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#dichiarazione-redditi">
-                                                            <span>Dichiarazione dei redditi</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                    <?php if ( $spese_elettorali ) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#spese-elettorali">
-                                                            <span>Spese elettorali</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                    <?php if (isset($allegati) && !empty($allegati)) { ?>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#altre-cariche">
-                                                                <span>Allegati</span>
-                                                            </a>
-                                                        </li>
-                                                    <?php } ?>
+                                                    <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
+                                                        <div class="accordion-body">
+                                                            <ul class="link-list" data-element="page-index">
+                                                               <?php if ($incarichi) { ?>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" href="#who-needs">
+                                                                            <span>Incarichi</span>
+                                                                        </a>
+                                                                    </li>
+                                                                <?php } ?>
+                                                                <?php if($compensi) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#how-to">
+                                                                        <span>Compensi</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#needed">
+                                                                        <span>Data di <?php if($tipo_incarico == "politico") { echo 'Insediamento'; } else { echo 'inizio incarico'; } ?></span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php if ( $organizzazioni ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#obtain">
+                                                                        <span>Organizzazione</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if ( $competenze ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#obtain">
+                                                                        <span>Competenze</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if ( $biografia ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#deadlines">
+                                                                        <span>Biografia</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if ( $contatti ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#deadlines">
+                                                                        <span>Contatti</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if ( $curriculum_vitae ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#costs">
+                                                                        <span>Curriculum Vitae</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if ( $situazione_patrimoniale ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#situazione-patrimoniale">
+                                                                        <span>Situazione patrimoniale</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if ( $dichiarazione_redditi ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#dichiarazione-redditi">
+                                                                        <span>Dichiarazione dei redditi</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if ( $spese_elettorali ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#spese-elettorali">
+                                                                        <span>Spese elettorali</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                  <?php if (isset($allegati) && !empty($allegati)) { ?>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" href="#altre-cariche">
+                                                                                <span>Allegati</span>
+                                                                            </a>
+                                                                        </li>
+                                                                    <?php } ?>
        
-                                                    <?php if ( $uo_id ) { ?>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#contacts">
-                                                            <span>Contatti</span>
-                                                        </a>
-                                                    </li>
-                                                    <?php } ?>
-                                                </ul>
+                                                                <?php if ( $uo_id ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#contacts">
+                                                                        <span>Contatti</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </nav>
                         </div>
-                    </div>
-                  
+                    </div>                        
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
                                     <?php if (!empty($incarichi)) { ?>
@@ -552,4 +554,3 @@ get_footer();
  ?>
 
  ?>
-
