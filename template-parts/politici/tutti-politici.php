@@ -3,52 +3,51 @@ global $the_query, $load_posts, $load_card_type, $tax_query, $additional_filter,
 
 $query = $_GET['search'] ?? null;
 
-switch ($post->post_name) {
-    case 'politici': $tipo_incarico = 'politico'; $descrizione = 'del personale'; break;
-    case 'personale-amministrativo': $tipo_incarico = 'amministrativo'; $descrizione = 'del personale'; break;
-    case 'personale-sanitario': $tipo_incarico = 'sanitario'; $descrizione = 'del personale'; break;
-    case 'personale-socio-assistenziale': $tipo_incarico = 'socio-assistenziale'; $descrizione = 'del personale'; break;
-    case 'altro': $tipo_incarico = 'altro'; $descrizione = 'del personale'; break;
+switch ($post->post_name){
+	case 'politici': $tipo_incarico = 'politico'; $descrizione = 'del personale'; break;
+	case 'personale-amministrativo': $tipo_incarico = 'amministrativo'; $descrizione = 'del personale'; break;
+	case 'personale-sanitario': $tipo_incarico = 'sanitario'; $descrizione = 'del personale'; break;
+	case 'personale-socio-assistenziale': $tipo_incarico = 'socio-assistenziale'; $descrizione = 'del personale'; break;
+	case 'altro': $tipo_incarico = 'altro'; $descrizione = 'del personale'; break;
 }
 
 $tax_query = array(
-    array (
-        'taxonomy' => 'tipi_incarico',
-        'field' => 'slug',
-        'terms' => $tipo_incarico
-    )
-);
+	array (
+		'taxonomy' => 'tipi_incarico',
+		'field' => 'slug',
+		'terms' => $tipo_incarico
+	));
 
 $args_incarichi = array(
-    'post_type' => 'incarico',
-    'tax_query' => $tax_query,
+	'post_type' => 'incarico',
+	'tax_query' => $tax_query,
     'posts_per_page' => -1
 );
 
 $incarichi = get_posts($args_incarichi);
 $persone_ids = array();
 
-foreach ($incarichi as $incarico) {
-    $persone = get_post_meta($incarico->ID, '_dci_incarico_persona');
-    foreach ($persone as $persona) {
-        $persone_ids[] = $persona;
-    }
+foreach($incarichi as $incarico) {
+	$persone = get_post_meta($incarico->ID, '_dci_incarico_persona');
+	foreach($persone as $persona) {
+		$persone_ids[] = $persona;
+	}
 }
 
 $filter_ids = array_unique($persone_ids);
 
 $search_value = isset($_GET['search']) ? $_GET['search'] : null;
 $args = array(
-    's' => $search_value,
-    'posts_per_page' => -1,
-    'post_type' => 'persona_pubblica',
-    'post_status' => 'publish',
-    'orderby' => 'post_title',
-    'order' => 'ASC',
+	's'         => $search_value,
+	'posts_per_page'    => -1,
+	'post_type' => 'persona_pubblica',
+	'post_status' => 'publish',
+	'orderby'        => 'post_title',
+	'order'          => 'ASC',
     'post__in' => empty($persone_ids) ? [0] : $filter_ids,
 );
 
-$the_query = new WP_Query($args);
+$the_query = new WP_Query( $args );
 $persone = $the_query->posts;
 ?>
 
@@ -64,13 +63,13 @@ $persone = $the_query->posts;
                     <div class="input-group">
                         <label for="autocomplete-two" class="visually-hidden">Cerca una parola chiave</label>
                         <input
-                            type="search"
-                            class="autocomplete form-control"
-                            placeholder="Cerca una parola chiave"
-                            id="autocomplete-two"
-                            name="search"
-                            value="<?php echo $query; ?>"
-                            data-bs-autocomplete="[]"
+                                type="search"
+                                class="autocomplete form-control"
+                                placeholder="Cerca una parola chiave"
+                                id="autocomplete-two"
+                                name="search"
+                                value="<?php echo $query; ?>"
+                                data-bs-autocomplete="[]"
                         />
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" id="button-3">
@@ -79,8 +78,7 @@ $persone = $the_query->posts;
                         </div>
                         <span class="autocomplete-icon" aria-hidden="true">
                             <svg class="icon icon-sm icon-primary" role="img" aria-labelledby="autocomplete-label">
-                                <use href="#it-search"></use>
-                            </svg>
+                            <use href="#it-search"></use></svg>
                         </span>
                     </div>
                 </div>
@@ -88,59 +86,17 @@ $persone = $the_query->posts;
                     <strong><?php echo $the_query->found_posts; ?> </strong>risultati in ordine alfabetico
                 </p>
             </div>
-            <div class="row g-2" id="load-more">
+            <div  class="row g-2" id="load-more">
                 <?php
-                    // Ciclo per ogni persona e visualizzazione della sua card con incarichi
-                    foreach ($persone as $post) {
-                        // Recupera gli incarichi associati alla persona
-                        $persona_incarichi = get_post_meta($post->ID, '_dci_incarico_persona');
-                        
-                        // Mostra la card della persona
-                        ?>
-                        <div class="col-md-4 col-lg-3 col-xl-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo get_the_title($post); ?></h5>
-                                    
-                                    <?php
-                                    // Visualizza la foto della persona (se presente)
-                                    if (has_post_thumbnail($post)) {
-                                        echo get_the_post_thumbnail($post, 'medium', ['class' => 'img-fluid']);
-                                    }
-                                    ?>
-                                    
-                                    <p class="card-text">
-                                        <?php
-                                        // Mostra la descrizione della persona (brevi parole)
-                                        echo wp_trim_words(get_the_excerpt($post), 20);
-                                        ?>
-                                    </p>
-
-                                    <!-- Mostra gli incarichi associati -->
-                                    <h6>Incarichi:</h6>
-                                    <ul class="list-unstyled">
-                                        <?php
-                                        // Elenco degli incarichi
-                                        foreach ($persona_incarichi as $incarico_id) {
-                                            $incarico = get_post($incarico_id);
-                                            ?>
-                                            <li><a href="<?php echo get_permalink($incarico_id); ?>"><?php echo get_the_title($incarico); ?></a></li>
-                                            <?php
-                                        }
-                                        ?>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-                    }
-                ?>
+				    foreach ($persone as $post) {
+                        get_template_part( 'template-parts/politici/cards-list' );
+				    }
+				?>
             </div>
-            <?php
-                $load_card_type = 'persona_pubblica';
-                get_template_part("template-parts/search/more-results");
-            ?>
+			<?php
+				$load_card_type = 'persona_pubblica';
+				get_template_part("template-parts/search/more-results");
+			?>       
         </div>
     </form>
 </div>
-
