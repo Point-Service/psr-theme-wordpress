@@ -28,14 +28,14 @@ foreach ($incarichi as $incarico) {
             <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
                 <div class="card no-after rounded">
                     <div class="row g-2 g-md-0">
-                        <!-- Foto a sinistra -->
-                        <div class="col-4 col-md-3">
+                        <!-- Foto a sinistra con margine e padding -->
+                        <div class="col-4 col-md-3" style="padding-right: 10px;"> <!-- Aggiungi padding per distanziare -->
                             <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
                         </div>
 
                         <!-- Dati a destra -->
                         <div class="col-8 col-md-9">
-                            <div class="card-body p-2">
+                            <div class="card-body p-3"> <!-- Aggiungi padding interno per distanziare dal bordo -->
                                 <!-- Nome con link -->
                                 <div class="category-top cmp-list-card-img__body">
                                     <a href="<?php echo get_permalink(); ?>" class="category cmp-list-card-img__body-heading-title underline">
@@ -44,7 +44,7 @@ foreach ($incarichi as $incarico) {
                                 </div>
 
                                 <!-- Data di inizio incarico (ora sotto il nome) -->
-                                <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
+                                <span class="data" style="display: block; margin-top: 5px;"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
 
                                 <!-- Elenco degli incarichi -->
                                 <div class="incarichi mt-2">
