@@ -29,7 +29,7 @@ foreach ($incarichi as $incarico) {
                 <div class="card no-after rounded">
                     <div class="row g-2 g-md-0">
                         <!-- Foto a sinistra -->
-                        <div class="col-4 col-md-6">
+                        <div class="col-4 col-md-3">
                             <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
                         </div>
 
