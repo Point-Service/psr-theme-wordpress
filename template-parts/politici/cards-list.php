@@ -15,7 +15,7 @@ foreach ($incarichi as $incarico) {
     $img = dci_get_meta('foto'); // Foto associata all'incarico
     if($tipo->name == "politico") {
         ?>
-        <div class="col-md-12">
+        <div class="col-md-6 col-lg-4 col-xl-3"> <!-- Modifica per riquadri più piccoli -->
             <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
                 <div class="card no-after rounded">
                     <div class="row g-2 g-md-0">
@@ -26,7 +26,7 @@ foreach ($incarichi as $incarico) {
                         
                         <!-- Dati a destra -->
                         <div class="col-8 col-md-9">
-                            <div class="card-body">
+                            <div class="card-body p-2"> <!-- Aggiunto padding minore -->
                                 <!-- Nome e Data di inizio incarico -->
                                 <div class="category-top cmp-list-card-img__body">
                                     <span class="category cmp-list-card-img__body-heading-title underline"><?php echo $nome_incarico ? $nome_incarico : 'POLITICO'; ?></span>
@@ -39,13 +39,13 @@ foreach ($incarichi as $incarico) {
                                     // Stampa tutti gli incarichi associati
                                     foreach ($incarichi as $incarico) {
                                         $nome_incarico = get_the_title($incarico);
-                                        echo '<span class="badge bg-primary">' . $nome_incarico . '</span>';
+                                        echo '<span class="badge bg-primary badge-sm">' . $nome_incarico . '</span>'; // Badge più piccolo
                                     }
                                     ?>
                                 </div>
 
                                 <!-- Descrizione -->
-                                <p class="card-text mt-3">
+                                <p class="card-text mt-2" style="font-size: 0.9rem;">
                                     <?php echo $description; ?>
                                 </p>
                             </div>
