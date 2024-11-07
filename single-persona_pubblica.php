@@ -30,12 +30,16 @@ get_header();
         $responsabili = dci_get_meta("responsabile") ?? [];
         $responsabile = !empty($responsabili) ? $responsabili[0] : null;
 
-        $incarichi = !is_null($responsabile) ? dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile) : [];
-          // Controllo se ci sono incarichi e se il primo incarico esiste
+        // Controllo se la persona ha un responsabile e gli incarichi associati
+        if (!is_null($responsabile)) {
+            // Recupero gli incarichi per il responsabile
+            $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile) ?? [];
+
+            // Controllo se ci sono incarichi e se il primo incarico esiste
             if (!empty($incarichi) && isset($incarichi[0])) {
                 $incarico = get_the_title($incarichi[0]);
-                
-                // Recupero dei termini di tipo incarico
+
+                // Recupero i termini di tipo incarico
                 $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
                 
                 // Controllo se i termini di tipo incarico esistono e non ci sono errori
@@ -48,6 +52,9 @@ get_header();
                 $incarico = ''; // Valore di fallback se non ci sono incarichi
                 $tipo_incarico = ''; // Valore di fallback se non ci sono incarichi
             }
+        } else {
+            $incarichi = []; // Se non ci sono responsabili, settiamo incarichi come array vuoto
+        }
 
         $compensi = !empty($incarichi) ? dci_get_meta("compensi", '_dci_incarico_', $incarichi[0]) : [];
 
@@ -98,6 +105,16 @@ get_header();
             $text = str_replace('&nbsp;', ' ', $text);
 
             return trim(strip_tags($text));
+        }
+
+        // Verifica se gli incarichi sono presenti e stampa
+        if (!empty($incarichi)) {
+            echo '<h3>Incarichi associati</h3>';
+            foreach ($incarichi as $incarico) {
+                echo '<p>' . get_the_title($incarico) . '</p>';
+            }
+        } else {
+            echo '<p>Nessun incarico associato.</p>';
         }
     ?>
 </main>
