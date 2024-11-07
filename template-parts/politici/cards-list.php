@@ -24,7 +24,7 @@ foreach ($incarichi as $incarico) {
 
         // Inizia la visualizzazione della persona
         ?>
-        <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="col-md-6 col-lg-6 col-xl-3">
             <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
                 <div class="card no-after rounded">
                     <div class="row g-2 g-md-0">
