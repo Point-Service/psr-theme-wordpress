@@ -34,12 +34,16 @@ $persone_incarichi = array(); // Array per raccogliere ID persone e incarichi
 foreach($incarichi as $incarico) {
     $persone = get_post_meta($incarico->ID, '_dci_incarico_persona'); // Recupera le persone associate all'incarico
     foreach($persone as $persona) {
-        $persone_incarichi[] = array('persona_id' => $persona, 'incarico_id' => $incarico->ID);
+        // Raccoglie tutte le persone e gli incarichi in un array
+        if (!isset($persone_incarichi[$persona])) {
+            $persone_incarichi[$persona] = array(); // Aggiunge un array per ogni persona
+        }
+        $persone_incarichi[$persona][] = $incarico->ID; // Aggiungi l'ID dell'incarico alla persona
     }
 }
 
-// Estrai solo gli ID delle persone per la query principale (quindi la persona può comparire più volte se ha più incarichi)
-$persone_ids = array_column($persone_incarichi, 'persona_id');
+// Estrai solo gli ID delle persone per la query principale
+$persone_ids = array_keys($persone_incarichi);
 
 $search_value = isset($_GET['search']) ? $_GET['search'] : null;
 $args = array(
@@ -93,13 +97,32 @@ $persone = $the_query->posts;
             </div>
             <div class="row g-2" id="load-more">
                 <?php
-                    // Visualizza ogni incarico per ogni persona
-                    foreach ($persone_incarichi as $assoc) {
+                    // Visualizza ogni persona con tutti gli incarichi associati
+                    foreach ($persone_incarichi as $persona_id => $incarichi) {
                         // Trova la persona
                         foreach ($persone as $post) {
-                            if ($post->ID == $assoc['persona_id']) {
+                            if ($post->ID == $persona_id) {
                                 setup_postdata($post);
-                                get_template_part('template-parts/politici/cards-list');
+                                ?>
+                                <div class="person-card">
+                                    <h3 class="person-name"><?php the_title(); ?></h3>
+                                    <ul class="incarichi-list">
+                                        <?php
+                                        // Visualizza tutti gli incarichi associati alla persona
+                                        foreach ($incarichi as $incarico_id) {
+                                            $incarico_post = get_post($incarico_id);
+                                            ?>
+                                            <li class="incarico-item">
+                                                <a href="<?php echo get_permalink($incarico_post->ID); ?>">
+                                                    <?php echo get_the_title($incarico_post->ID); ?>
+                                                </a>
+                                            </li>
+                                            <?php
+                                        }
+                                        ?>
+                                    </ul>
+                                </div>
+                                <?php
                                 break;
                             }
                         }
