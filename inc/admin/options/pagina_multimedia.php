@@ -25,6 +25,22 @@ function dci_register_pagina_multimedia_options(){
     $media_options = new_cmb2_box( $args );
 
     $media_options->add_field( array(
+        'id' => $prefix . 'messages_istruzioni_g',
+        'name'        => __( 'Galleria Multimediale', 'design_comuni_italia' ),
+        'desc' => __( 'Da qui puoi gestire la tua Galleria Multimediale' , 'design_comuni_italia' ),
+        'type' => 'title',
+    ) );
+
+    $media_options->add_field( array(
+        'id' => $prefix . 'multimedia_title',
+        'name' => 'Nome galleria',
+        'desc' => 'Scegli il titolo da dare alla Galleria Multimediale.',
+        'type' => 'text',
+        'default' => 'Esplora i video del Comune'
+      ) 
+    );
+
+    $media_options->add_field( array(
         'id' => $prefix . 'messages_istruzioni',
         'name'        => __( 'Box in evidenza su Multimedia', 'design_comuni_italia' ),
         'desc' => __( 'Inserisci i video che verrano visualizzati nella pagina multimedia.' , 'design_comuni_italia' ),
@@ -62,6 +78,16 @@ function dci_register_pagina_multimedia_options(){
         'desc' => __( 'Link al video Youtube' , 'design_comuni_italia' ),
         'type' => 'text_url',
     ) );
+
+     $media_options->add_group_field( $media_group_id, array(
+        'name' => __('Video: ', 'design_comuni_italia'),
+        'desc' => __('Carica un video da mostrare se non è presente su youtube.', 'design_comuni_italia'),
+        'id' => $prefix . 'video_item',
+        'type' => 'file',
+        'preview_size' => array( 100, 100 ), // Default: array( 50, 50 )
+        'query_args' => array( 'type' => 'video' ),
+    )
+    );
 
 }
 
