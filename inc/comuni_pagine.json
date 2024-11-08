@@ -27,6 +27,13 @@
           "template_name": "unita-organizzative",
           "children": {}
         },
+        "Politici": {
+          "title": "Politici",
+          "slug": "politici",
+          "description": "Tutti i rappresentanti dei cittadini che compongono gli organi di indirizzo politico del Comune.",
+          "template_name": "politici",
+          "children": {}
+        },
         "Personale amministrativo": {
           "title": "Personale amministrativo",
           "slug": "personale-amministrativo",
@@ -102,10 +109,10 @@
         "Multimedia": {
           "title": "Multimedia",
           "slug": "multimedia",
-          "description": "video del comune",
-          "template_name": "multimeda",
+          "description": "Tutti i video del Comune.",
+          "template_name": "multimedia",
           "children": {}
-         },
+         }
         "Luoghi": {
           "title": "Luoghi",
           "slug": "luoghi",
