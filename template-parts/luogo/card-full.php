@@ -1,6 +1,7 @@
 <?php
 global $post;
 
+
 $prefix = '_dci_luogo_';
 $img = dci_get_meta('immagine', $prefix, $post->ID);
 $descrizione = dci_get_meta('descrizione_breve', $prefix, $post->ID);
@@ -25,7 +26,7 @@ $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
                         foreach ($tipi_luogo as $tipo_luogo) {
                     ?>
                         <?php echo $count == 1 ? '' : ' - '; ?>
-                        <a class="text-decoration-none fw-bold cmp-list-card-img__body-heading-title" href="#">
+                        <a class="text-decoration-none fw-bold cmp-list-card-img__body-heading-title" href="<?php echo get_term_link($tipo_luogo->term_id); ?>">
                             <?php 
                                 echo $tipo_luogo->name; 
                             ?>
