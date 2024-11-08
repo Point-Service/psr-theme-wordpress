@@ -190,12 +190,6 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
         'remove_default' => 'true',
     ) );
 
-    $home_options->add_field( array(
-        'id' => $prefix . 'mostra_testo_maiuscolo',
-        'name' => 'Attiva testo in maiuscolo',
-        'desc' => __( 'Abilita la visualizzazione del testo in maiuscolo. Se disattivato, il testo verrà mostrato normalmente.', 'design_comuni_italia' ),
-        'type' => 'checkbox',
-    ) ); 
 
     }
 
