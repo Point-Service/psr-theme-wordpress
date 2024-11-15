@@ -174,8 +174,8 @@ get_header();
                         <?php get_template_part('template-parts/single/image-large'); ?>      
                     </div>
                 </div>
-         
-
+   </div>       
+   <div class="col-12 col-lg-8 offset-lg-1">
 
             <div class="container">
 
