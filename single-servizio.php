@@ -389,6 +389,13 @@ get_header();
                                 <h3 class="h4 title mb-3">Copertura geografica</h3>                                        
                                 <div class="richtext-wrapper lora"><?php echo $copertura_geografica ?></div>
                             <?php } ?>
+
+
+				       <?php 
+				            $luoghi = array($copertura_geografica);
+				            get_template_part("template-parts/luogo/map"); 
+              				   ?>
+		
                             </section>
       
 
@@ -407,7 +414,8 @@ get_header();
                                     get_template_part("template-parts/luogo/card-title");
                                 } ?>
                             </section>
-                        <?php } ?>
+                         
+				<?php } ?>
 
 				
                             <?php if ($descrizione) { ?>
