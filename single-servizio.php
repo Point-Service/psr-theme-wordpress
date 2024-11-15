@@ -109,7 +109,7 @@ get_header();
     }
 }
 </script>
-
+   <div class="col-12 col-lg-8 offset-lg-1">
 
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
@@ -168,7 +168,13 @@ get_header();
                 </div>
             </div>
 
-           
+         
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-10">
+                        <?php get_template_part('template-parts/single/image-large'); ?>      
+                    </div>
+                </div>
+         
 
 
             <div class="container">
@@ -299,7 +305,7 @@ get_header();
                             </nav>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-8 offset-lg-1">
+
                         <div class="it-page-sections-container">
                             <section class="it-page-section mb-30">
                                 <h2 class="h3 mb-3" id="who-needs">A chi è rivolto</h2>
