@@ -387,7 +387,11 @@ get_header();
                                 ?>
                             <?php if (!empty($copertura_geografica)) { ?>
                                 <h3 class="h4 title mb-3">Copertura geografica</h3>                                        
-                                <div class="richtext-wrapper lora"><?php echo $copertura_geografica ?></div>
+                                <div class="richtext-wrapper lora">
+				    <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo $copertura_geografica ?><';" data-element="service-booking-access">
+                                        <span class="">>Copertura geografica</span>
+                                    </button>
+                                    </div>
                             <?php } ?>
                             </section>
       
