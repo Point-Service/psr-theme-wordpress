@@ -390,12 +390,7 @@ get_header();
                                 <div class="richtext-wrapper lora"><?php echo $copertura_geografica ?></div>
                             <?php } ?>
                             </section>
-                        <section class="it-page-section mb-30">
-                            <h2 class="h3 mb-3" id="who-needs">A chi è rivolto</h2>
-                            <div class="richtext-wrapper lora" data-element="service-addressed">
-                                <?php echo $destinatari ?>
-                            </div>
-                        </section>
+      
 
                         <?php if (is_array($canale_fisico_luoghi_id) && count($canale_fisico_luoghi_id)) { ?>
                             <section class="it-page-section mb-30">
