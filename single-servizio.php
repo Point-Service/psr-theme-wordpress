@@ -385,7 +385,11 @@ get_header();
                                         }
                                     }
                                 ?>
-
+                            <?php if (!empty($copertura_geografica)) { ?>
+                                <h3 class="h4 title mb-3">Copertura geografica</h3>
+                                        
+                                <div class="richtext-wrapper lora"><?php echo $copertura_geografica ?></div>
+                            <?php } ?>
                             </section>
                             <?php if ($descrizione) { ?>
                             <section class="it-page-section mb-30">
