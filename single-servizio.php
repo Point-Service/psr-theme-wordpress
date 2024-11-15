@@ -88,10 +88,6 @@ get_header();
         "@type": "Audience",
         "audienceType": <?php echo json_encode(convertToPlain($destinatari)); ?>
     },
-     <?php if (!empty($copertura_geografica)) : ?> "areaServed": {
-        "@type": "AdministrativeArea",
-        "name": "<?php echo convertToPlain($copertura_geografica); ?>"
-     },    
     "availableChannel": {
         "@type": "ServiceChannel",
         "name": "Dove rivolgersi"
