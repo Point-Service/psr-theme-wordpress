@@ -168,9 +168,15 @@ get_header();
                 </div>
             </div>
 
-            <?php get_template_part('template-parts/single/image-large'); ?>        
+           
 
-
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-10">
+                        <?php get_template_part('template-parts/single/image-large'); ?>      
+                    </div>
+                </div>
+            </div>
             <div class="container">
 
                 <?php if($stato == 'false') { ?>
