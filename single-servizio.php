@@ -385,16 +385,10 @@ get_header();
                                         }
                                     }
                                 ?>
-                            <?php if (!empty($copertura_geografica)) { ?>
-                                <h3 class="h4 title mb-3">Copertura geografica</h3>                                        
-                                <div class="richtext-wrapper lora"><?php echo $copertura_geografica ?></div>
-                            <?php } ?>
-
-
-				       <?php 
-				            $luoghi = array($copertura_geografica);
-				            get_template_part("template-parts/luogo/map"); 
-              				   ?>
+	                            <?php if (!empty($copertura_geografica)) { ?>
+	                                <h3 class="h4 title mb-3">Copertura geografica</h3>                                        
+	                                <div class="richtext-wrapper lora"><?php echo $copertura_geografica ?></div>
+	                            <?php } ?>
 		
                             </section>
       
