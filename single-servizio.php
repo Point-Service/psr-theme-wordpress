@@ -182,7 +182,6 @@ get_header();
                         <strong>Il servizio non è attivo.</strong> <?php echo $motivo_stato; ?>
                     </div>
                 <?php } ?>
-</div>
                 <div class="row border-top row-column-border row-column-menu-left border-light">
                     <div class="col-12 col-lg-3 mb-4 border-col">
                         <div class="cmp-navscroll sticky-top" aria-labelledby="accordion-title-one">
