@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Servizio template file
  *
@@ -7,112 +6,109 @@
  *
  * @package Design_Comuni_Italia
  */
+
 global $uo_id, $file_url, $hide_arguments;
 
 get_header();
 ?>
-<main>
-    <?php
-    while (have_posts()) :
-        the_post();
-        set_views($post->ID);
-        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
+    <main>
+        <?php
+        while ( have_posts() ) :
+            the_post();
+            $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
 
-        // prefix: _dci_servizio_
-        $stato = dci_get_meta("stato");
-        $motivo_stato = dci_get_meta("motivo_stato");
-        $sottotitolo = dci_get_meta("sottotitolo");
-        $descrizione_breve = dci_get_meta("descrizione_breve");
-        $destinatari = dci_get_wysiwyg_field("a_chi_e_rivolto");
-        // $destinatari_intro = dci_get_meta("destinatari_introduzione");
-        // $destinatari_list = dci_get_meta("destinatari_list");
-        $descrizione = dci_get_wysiwyg_field("descrizione_estesa");
-        $come_fare = dci_get_wysiwyg_field("come_fare");
-        $cosa_serve_intro = dci_get_wysiwyg_field("cosa_serve_introduzione");
-        $cosa_serve_list = dci_get_meta("cosa_serve_list");
-        $output = dci_get_wysiwyg_field("output");
-        $procedure_collegate = dci_get_wysiwyg_field("procedure_collegate");
-        $fasi_scadenze_intro = dci_get_wysiwyg_field("tempi_text");
-        $fasi_group_simple_scadenze = dci_get_meta("scadenze");
-        $fasi_scadenze = dci_get_meta("fasi");
-        $costi = dci_get_wysiwyg_field("costi");
-        //canali di prenotazione
-        $canale_digitale_text = dci_get_meta("canale_digitale_text");
-        $canale_digitale_label = dci_get_meta("canale_digitale_label");
-        $canale_digitale_link = dci_get_meta("canale_digitale_link");
-        $canale_fisico_text = dci_get_meta("canale_fisico_text");
-        $canale_fisico_luoghi_id = dci_get_meta("canale_fisico_luoghi") ?: [];
-        $mostra_prenota_appuntamento = dci_get_option("prenota_appuntamento", "servizi");
+            // prefix: _dci_servizio_
+            $stato = dci_get_meta("stato");
+            $motivo_stato = dci_get_meta("motivo_stato");
+            $sottotitolo = dci_get_meta("sottotitolo");
+            $descrizione_breve = dci_get_meta("descrizione_breve");
+            $destinatari = dci_get_wysiwyg_field("a_chi_e_rivolto");
+            // $destinatari_intro = dci_get_meta("destinatari_introduzione");
+            // $destinatari_list = dci_get_meta("destinatari_list");
+            $descrizione = dci_get_wysiwyg_field("descrizione_estesa");
+            $come_fare = dci_get_wysiwyg_field("come_fare");
+            $cosa_serve_intro = dci_get_wysiwyg_field("cosa_serve_introduzione");
+            $cosa_serve_list = dci_get_meta("cosa_serve_list");
+            $output = dci_get_wysiwyg_field("output");
+            $fasi_scadenze_intro = dci_get_wysiwyg_field("tempi_text");
+            $fasi_group_simple_scadenze = dci_get_meta("scadenze");
+            $fasi_scadenze = dci_get_meta("fasi");
+            $costi = dci_get_wysiwyg_field("costi");
+            //canali di prenotazione
+            $canale_digitale_text = dci_get_meta("canale_digitale_text");
+            $canale_digitale_label = dci_get_meta("canale_digitale_label");
+            $canale_digitale_link = dci_get_meta("canale_digitale_link");
+            $canale_fisico_text = dci_get_meta("canale_fisico_text");
+            $canale_fisico_luoghi_id = dci_get_meta("canale_fisico_luoghi");
+            $mostra_prenota_appuntamento = dci_get_option("prenota_appuntamento", "servizi");
+            $mostra_accedi_al_servizio = $canale_digitale_link || $canale_fisico_text || $mostra_prenota_appuntamento || $canale_fisico_luoghi_id;
 
-        $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
-        $condizioni_servizio = dci_get_meta("condizioni_servizio");
-        $casi_particolari = dci_get_meta("casi_particolari");
-        $vincoli = dci_get_meta("vincoli");
-        $uo_id = intval(dci_get_meta("unita_responsabile"));
-        $argomenti = get_the_terms($post, 'argomenti');
-        $documenti_ids = dci_get_meta("documenti");
+            $prenota_appuntamento = dci_get_option("prenota_appuntamento");
 
-        // valori per metatag
-        $categorie = get_the_terms($post, 'categorie_servizio');
-        $categoria_servizio = $categorie[0]->name;
-        $ipa = dci_get_meta('codice_ente_erogatore');
-        $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica");
-        if ($uo_id ?? null) {
-            $ufficio = get_post($uo_id);
-            $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID);
-            $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id);
-            $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id);
-            $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id);
-        }
-        function convertToPlain($text)
-        {
-            $text = str_replace(array("\r", "\n"), '', $text);
-            $text = str_replace('"', '\"', $text);
-            $text = str_replace('&nbsp;', ' ', $text);
+            $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
+            $condizioni_servizio = dci_get_meta("condizioni_servizio");     
+            $uo_id = intval(dci_get_meta("unita_responsabile"));
+            $argomenti = get_the_terms($post, 'argomenti');
+            $documenti_ids = dci_get_meta("documenti");
 
-            return trim(strip_tags($text));
-        };
-
-    ?>
-        <script type="application/ld+json" data-element="metatag">
-            {
-                "@context": "http://schema.org",
-                "@type": "GovernmentService",
-                "name": <?php echo json_encode($post->post_title); ?>,
-                "serviceType": <?php echo json_encode($categoria_servizio); ?>,
-                "serviceOperator": {
-                    "@type": "GovernmentOrganization",
-                    "name": <?php echo json_encode($ipa); ?>
-                },
-                <?php if (!empty($copertura_geografica)) : ?> "areaServed": {
-                        "@type": "AdministrativeArea",
-                        "name": "<?php echo convertToPlain($copertura_geografica); ?>"
-                    },
-                <?php endif; ?> "audience": {
-                    "@type": "Audience",
-                    "audienceType": "<?php echo convertToPlain($destinatari); ?>"
-                },
-                "availableChannel": {
-                    "@type": "ServiceChannel",
-                    "name": "Dove rivolgersi"
-                    <?php if (!empty($canale_digitale_link)) : ?>,
-                        "serviceUrl": <?php echo json_encode($canale_digitale_link); ?>
-                    <?php endif; ?>
-                    <?php if (!empty($ufficio)) : ?>,
-                        "serviceLocation": {
-                            "name": <?php echo json_encode($ufficio->post_title); ?>,
-                            "address": {
-                                "streetAddress": <?php echo json_encode($indirizzo); ?>,
-                                "postalCode": <?php echo json_encode((string)$cap); ?>
-                                <?php if (!empty($quartiere)) : ?>,
-                                    "addressLocality": <?php echo json_encode($quartiere); ?>
-                                <?php endif; ?>
-                            }
-                        }
-                    <?php endif; ?>
-                }
+            // valori per metatag
+            $categorie = get_the_terms($post, 'categorie_servizio');
+            $categoria_servizio = $categorie[0]->name;
+            $ipa = dci_get_meta('codice_ente_erogatore');
+            $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica");
+            if ($uo_id??null) {
+                $ufficio = get_post($uo_id);
+                $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID);
+                $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id);
+                $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id);
+                $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id);
             }
-        </script>
+            function convertToPlain($text) {
+                $text = str_replace(array("\r", "\n"), '', $text);
+                $text = str_replace('"', '\"', $text);
+                $text = str_replace('&nbsp;', ' ', $text);
+
+                return trim(strip_tags($text));
+            };
+
+            ?>
+      <script type="application/ld+json" data-element="metatag">
+{
+    "@context": "http://schema.org",
+    "@type": "GovernmentService",
+    "name": <?php echo json_encode($post->post_title); ?>,
+    "serviceType": <?php echo json_encode($categoria_servizio); ?>,
+    "serviceOperator": {
+        "name": <?php echo json_encode($ipa ? $ipa : "nessuno"); ?>
+    },
+    "areaServed": {
+        "name": <?php echo json_encode($copertura_geografica ? convertToPlain($copertura_geografica) : "nessuno"); ?>
+    },
+    "audience": {
+        "@type": "Audience",
+        "audienceType": <?php echo json_encode(convertToPlain($destinatari)); ?>
+    },
+    "availableChannel": {
+        "@type": "ServiceChannel",
+        "name": "Dove rivolgersi"
+	      
+        ,"serviceUrl": <?php echo json_encode($canale_digitale_link ? convertToPlain($canale_digitale_link) : "nessuno"); ?>	
+
+
+	      
+        <?php if (!empty($ufficio)) : ?>
+        ,"serviceLocation": {
+            "name": <?php echo json_encode($ufficio->post_title); ?>,
+            "address": {
+                "streetAddress": <?php echo json_encode($indirizzo); ?>,
+                "postalCode": <?php echo json_encode((string)$cap); ?>,
+                "addressLocality": <?php echo json_encode($quartiere ? $quartiere : "nessuno"); ?>
+            }
+        }
+        <?php endif; ?>
+    }
+}
+</script>
     
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
