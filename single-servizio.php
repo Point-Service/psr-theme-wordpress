@@ -110,7 +110,7 @@ get_header();
 }
 </script>
 
-
+                <div class="row border-top row-column-border row-column-menu-left border-light">
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-10">
@@ -185,7 +185,7 @@ get_header();
                     </div>
                 <?php } ?>
 
-                <div class="row border-top row-column-border row-column-menu-left border-light">
+
                     <div class="col-12 col-lg-3 mb-4 border-col">
                         <div class="cmp-navscroll sticky-top" aria-labelledby="accordion-title-one">
                             <nav class="navbar it-navscroll-wrapper navbar-expand-lg" aria-label="Indice della pagina" data-bs-navscroll>
