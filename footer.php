@@ -253,7 +253,7 @@
         </div>
     </div>
 </footer>
-
+ddddd
 <?php wp_footer(); ?>
 
 </body>
