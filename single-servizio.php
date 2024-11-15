@@ -108,7 +108,7 @@ get_header();
         <?php endif; ?>
     }
 }
-</script>
+</script>ffffffffff
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-10">
