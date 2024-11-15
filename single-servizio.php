@@ -109,7 +109,7 @@ get_header();
     }
 }
 </script>
-        <div class="col-12 col-lg-3">
+        <div class="col-12">
 
             <div class="container" id="main-container">
                 <div class="row justify-content-center">
