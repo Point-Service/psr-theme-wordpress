@@ -386,11 +386,35 @@ get_header();
                                     }
                                 ?>
                             <?php if (!empty($copertura_geografica)) { ?>
-                                <h3 class="h4 title mb-3">Copertura geografica</h3>
-                                        
+                                <h3 class="h4 title mb-3">Copertura geografica</h3>                                        
                                 <div class="richtext-wrapper lora"><?php echo $copertura_geografica ?></div>
                             <?php } ?>
                             </section>
+                        <section class="it-page-section mb-30">
+                            <h2 class="h3 mb-3" id="who-needs">A chi è rivolto</h2>
+                            <div class="richtext-wrapper lora" data-element="service-addressed">
+                                <?php echo $destinatari ?>
+                            </div>
+                        </section>
+
+                        <?php if (is_array($canale_fisico_luoghi_id) && count($canale_fisico_luoghi_id)) { ?>
+                            <section class="it-page-section mb-30">
+                                <h2 class="h3 mb-3" id="places">Luoghi</h2>
+                                
+                                <?php if (!empty($copertura_geografica)) { ?>
+                                    <p><?php echo $canale_fisico_text; ?></p>
+                                <?php } else { ?>
+                                    <p>Il servizio viene erogato nei seguenti luoghi.</p>
+                                <?php } ?>
+
+                                <?php foreach ($canale_fisico_luoghi_id as $luogo_id) {
+                                    $luogo = get_post($luogo_id);
+                                    get_template_part("template-parts/luogo/card-title");
+                                } ?>
+                            </section>
+                        <?php } ?>
+
+				
                             <?php if ($descrizione) { ?>
                             <section class="it-page-section mb-30">
                                 <h2 class="h3 mb-3" id="description">Descrizione</h2>
