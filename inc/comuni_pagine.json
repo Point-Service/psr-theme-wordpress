@@ -112,7 +112,7 @@
           "description": "Tutti i video del Comune.",
           "template_name": "multimedia",
           "children": {}
-         }
+         },
         "Luoghi": {
           "title": "Luoghi",
           "slug": "luoghi",
