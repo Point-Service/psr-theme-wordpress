@@ -263,14 +263,11 @@ document.addEventListener("DOMContentLoaded", function () {
   if (denyButton) {
     denyButton.addEventListener("click", function () {
       if (cookieBar) {
-        cookieBar.classList.add("fade-out"); // Aggiungi la classe di dissolvenza
-        setTimeout(() => {
-          cookieBar.classList.add("hidden"); // Nascondi completamente dopo la dissolvenza
-        }, 500); // 500ms corrisponde alla durata della transizione in CSS
+        cookieBar.style.display = "none"; // Nascondi la finestra
       }
     });
   }
-});	
+});
 </script>
 </body>
 </html>
