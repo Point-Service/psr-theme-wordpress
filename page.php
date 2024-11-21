@@ -6,8 +6,6 @@
  */
 global $post;
 get_header();
-
-?>jjjjjj
     <main>
         <?php
         while ( have_posts() ) :
