@@ -1,16 +1,21 @@
 <?php
 /* Template Name: Privacy
-/**
-  *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ *
+ * note legali template file
  *
  * @package Design_Comuni_Italia
  */
-
-global $uo_id, $inline;
-
+global $post;
 get_header();
+
 ?>
+	<main>
+		<?php
+		while ( have_posts() ) :
+			the_post();
+			?>
+			<?php get_template_part("template-parts/hero/hero"); ?>
+
 vvvvvvvvvvvvv
 <main>
 			<div class="container">
