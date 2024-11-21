@@ -12,7 +12,7 @@ global $uo_id, $inline;
 
 get_header();
 ?>
-
+vvvvvvvvvvvvv
 <main>
 			<div class="container">
     <div class="row mt-lg-50">
