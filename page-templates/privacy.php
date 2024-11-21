@@ -1,5 +1,5 @@
 <?php
-
+/* Template Name: Privacy
 /**
   *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
