@@ -256,7 +256,6 @@
 </footer>
 <?php wp_footer(); ?>
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
   const cookieBar = document.querySelector(".cookiebar");
   const denyButton = document.querySelector(".denyAllCookie");
@@ -264,12 +263,14 @@ document.addEventListener("DOMContentLoaded", function () {
   if (denyButton) {
     denyButton.addEventListener("click", function () {
       if (cookieBar) {
-        cookieBar.style.display = "none"; // Nascondi la finestra
+        cookieBar.classList.add("fade-out"); // Aggiungi la classe di dissolvenza
+        setTimeout(() => {
+          cookieBar.classList.add("hidden"); // Nascondi completamente dopo la dissolvenza
+        }, 500); // 500ms corrisponde alla durata della transizione in CSS
       }
     });
   }
-});
-	
+});	
 </script>
 </body>
 </html>
