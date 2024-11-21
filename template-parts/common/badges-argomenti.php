@@ -1,4 +1,4 @@
-K<?php
+<?php
 global $with_page_bottom;
 $argomenti = dci_get_argomenti_of_post();
 if(count($argomenti)) {?>
