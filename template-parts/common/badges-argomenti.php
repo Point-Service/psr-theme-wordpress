@@ -16,8 +16,20 @@ if(count($argomenti)) {?>
             </a>
         </li>
     <?php } ?>
-</ul>
 
+
+    <?php foreach ( $argomenti as $item ) { ?>
+        <li>
+            <a class="chip chip-simple"
+            href="<?php echo get_term_link($item); ?>"
+            >
+                <span class="chip-label"> 
+                    <?php echo $item->name; ?>
+                </span>
+            </a>
+        </li>
+    <?php } ?>
+</ul>
 
 <?php if ( $with_page_bottom )
     get_template_part("template-parts/single/bottom"); 
