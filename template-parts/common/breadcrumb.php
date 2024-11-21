@@ -26,4 +26,5 @@
     breadcrumb_trail($args);
   }
   ?>
-</div>JJJJ
+</div>
+
