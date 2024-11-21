@@ -16,7 +16,6 @@ get_header();
 			?>
 			<?php get_template_part("template-parts/hero/hero"); ?>
 
-vvvvvvvvvvvvv
 <main>
 			<div class="container">
     <div class="row mt-lg-50">
