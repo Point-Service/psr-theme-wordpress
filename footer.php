@@ -19,6 +19,7 @@
   </div>
 </section>
 
+
 <div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show back-to-top-show" style="overflow-hidden; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); background-color: white; transition: background-color 0.3s;">
   <svg class="icon">
     <use href="#it-collapse"></use>
@@ -254,6 +255,21 @@
     </div>
 </footer>
 <?php wp_footer(); ?>
+<script>
 
+document.addEventListener("DOMContentLoaded", function () {
+  const cookieBar = document.querySelector(".cookiebar");
+  const denyButton = document.querySelector(".denyAllCookie");
+
+  if (denyButton) {
+    denyButton.addEventListener("click", function () {
+      if (cookieBar) {
+        cookieBar.style.display = "none"; // Nascondi la finestra
+      }
+    });
+  }
+});
+	
+</script>
 </body>
 </html>
