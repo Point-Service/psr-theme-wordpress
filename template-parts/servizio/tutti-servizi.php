@@ -1,4 +1,4 @@
-FFFF<?php
+<?php
 global $posts, $the_query, $load_posts, $servizio, $load_card_type, $should_have_grey_background;
 $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 9;
 $load_posts = 30;
