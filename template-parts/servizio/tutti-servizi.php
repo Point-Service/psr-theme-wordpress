@@ -32,7 +32,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                         <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                             <div class="link-list-wrap">
                                 <h2 class="title-xsmall-semi-bold">
-                                    <span>SERVIZI IN EVIDENZA2</span>
+                                    <span>SERVIZI IN EVIDENZA</span>
                                 </h2>
                                 <ul class="link-list t-primary">
                                     <?php foreach ($servizi_evidenza as $servizio_id) { 
