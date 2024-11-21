@@ -75,7 +75,7 @@ $current_group = dci_get_current_group();
                     <?php endif ?>
                 <div class="it-search-wrapper">
                   <span class="d-none d-md-block">Cerca</span>
-                  <button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito">
+                  <button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito"  id="search-home">
                       <svg class="icon">
                         <use href="#it-search"></use>
                       </svg>
