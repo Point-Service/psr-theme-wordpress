@@ -19,42 +19,6 @@ get_header();
 <main>
   <div class="container">
     <div class="row mt-lg-50">
-        <div class="col-12 col-lg-3 d-lg-block mb-4 d-none">
-            <div class="cmp-navscroll sticky-top" aria-labelledby="accordion-title-one">
-                <nav class="navbar it-navscroll-wrapper navbar-expand-lg" data-bs-navscroll="">
-                    <div class="navbar-custom" id="navbarPageIndexNavProgress">
-                        <div class="menu-wrapper">
-                            <div class="link-list-wrapper">
-                                <div class="accordion">
-                                    <div class="accordion-item">
-                                        <span class="accordion-header" id="accordion-title-one">
-                                            <button class="accordion-button pb-10 px-3 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
-                                                Indice della pagina
-                                                <svg role="img" class="icon icon-xs right">
-                                                    <use href="https://comune.sedriano.mi.it/wp-content/themes/si-agid-pa-theme/node_modules/bootstrap-italia/dist/svg/sprites.svg#it-expand"></use>
-                                                </svg>
-                                            </button>
-                                        </span>
-                                        <div class="progress">
-                                            <div class="progress-bar it-navscroll-progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                                        </div>
-                                        <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
-                                            <div class="accordion-body">
-                                                <ul class="link-list" data-element="page-index">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active" href="#licenza"><span>Licenza dei contenuti</span></a>
-                                                    </li>
-                                                                                                                                                                                                                                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
 
 
 				<span id="Descrizione"><h2 class='titoloSezioneDettaglio'>Descrizione</h2></span><span style="display:inline-block;width:100%;"><p><strong>INFORMAZIONE SUL TRATTAMENTO DEI DATI PERSONALI PER QUESTO SITO WEB</strong> <strong>AI SENSI DELL&rsquo;ART. 13 REG. UE 679/2016</strong></p>
