@@ -16,11 +16,6 @@ $current_group = dci_get_current_group();
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="theme-color" content="#0968b4" />
-<link rel="preload" as="font" href="">
-<meta
-  http-equiv="Content-Security-Policy"
-  content="upgrade-insecure-requests" />
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -33,7 +28,7 @@ $current_group = dci_get_current_group();
     class="it-header-wrapper"
     data-bs-target="#header-nav-wrapper"
     style=""
-   >
+>
     <?php get_template_part("template-parts/header/slimheader"); ?> 
 
     <div class="it-nav-wrapper">
@@ -44,7 +39,7 @@ $current_group = dci_get_current_group();
             <div class="it-header-center-content-wrapper">
               <div class="it-brand-wrapper">
                 <a 
-                href="<?php echo home_url(); ?>" class="brand-title-text" 
+                href="<?php echo home_url(); ?>" 
                 <?php if(!is_front_page()) echo 'title="Vai alla Homepage"'; ?>>
                     <div class="it-brand-text d-flex align-items-center">
                       <?php get_template_part("template-parts/common/logo"); ?>
@@ -80,7 +75,7 @@ $current_group = dci_get_current_group();
                     <?php endif ?>
                 <div class="it-search-wrapper">
                   <span class="d-none d-md-block">Cerca</span>
-                  <button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito" id="search-home">
+                  <button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito">
                       <svg class="icon">
                         <use href="#it-search"></use>
                       </svg>
@@ -92,7 +87,6 @@ $current_group = dci_get_current_group();
         </div>
       </div>
     </div>
-  
     <div class="it-header-navbar-wrapper" id="header-nav-wrapper">
       <div class="container">
         <div class="row">
