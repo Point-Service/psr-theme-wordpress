@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Template name: Pagina Generica
- *
+  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
  * @package Design_Comuni_Italia
