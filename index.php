@@ -8,7 +8,7 @@
  */
 
 get_header();
-?>CCCCCCCCCCC
+?>
 	<main id="main-container" class="main-container petrol">
 
 		<?php get_template_part("template-parts/common/breadcrumb"); ?>
