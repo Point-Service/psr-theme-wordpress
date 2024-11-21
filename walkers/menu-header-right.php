@@ -33,6 +33,6 @@ class Menu_Header_Right_Walker extends Walker_Nav_Menu {
 			$output .= $item->title;
 		}
 		
-		$output .= '</a>';
+		$output .= '</a> BBBBBBBBBBBB';
 	}
 }
