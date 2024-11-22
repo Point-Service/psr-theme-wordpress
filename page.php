@@ -6,6 +6,8 @@
  */
 global $post;
 get_header();
+
+?>
     <main>
         <?php
         while ( have_posts() ) :
@@ -37,8 +39,7 @@ get_header();
                             <div class="col-lg-12">
                                 <?php
                                 the_content();
-                                ?>
-                               
+                                ?>                               
                             </div>
                         </div>
                         <div class="row variable-gutters">
