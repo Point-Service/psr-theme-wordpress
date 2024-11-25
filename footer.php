@@ -14,7 +14,7 @@
   <p>COOKIES - Si usano i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.</p>
   <div class="cookiebar-buttons">
     
-    <button class="cookiebar-btn" href="/privacy/">Preferenze<span class="visually-hidden"> i cookies</span></button>
+    <button class="cookiebar-btn" href="/privacy/">Preferenze   <span class="visually-hidden"> i cookies</span></button>
     <button data-bs-accept="cookiebar" class="cookiebar-btn cookiebar-confirm acceptAllCookie">Accetto<span class="visually-hidden"> i cookies</span></button>
     <button class="cookiebar-btn cookiebar-confirm denyAllCookie">Nega<span class="visually-hidden"> i cookies</span></button>
   </div>
