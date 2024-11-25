@@ -11,8 +11,8 @@
 ?>
 
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
-  <p>COOKIES - Si usano i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.</p>
-   <a href="/privacy/" class="cookiebar-btn">Info<span class="visually-hidden">cookies</span></a>
+  <p>COOKIES - Si usano i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.
+   <a href="/privacy/" class="cookiebar-btn">Info<span class="visually-hidden">cookies</span></a></p>
   <div class="cookiebar-buttons">
     <button data-bs-accept="cookiebar" class="cookiebar-btn cookiebar-confirm acceptAllCookie">Accetto<span class="visually-hidden"> i cookies</span></button>
     <button class="cookiebar-btn cookiebar-confirm denyAllCookie">Nega<span class="visually-hidden"> i cookies</span></button>
