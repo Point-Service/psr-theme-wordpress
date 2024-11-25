@@ -12,7 +12,8 @@
 
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
   <p>COOKIES - Si usano i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.
-   <a href="/privacy/" class="cookiebar-btn">Info Privacy<span class="visually-hidden">cookies</span></a></p>
+    <a href="/privacy/" class="cookiebar-btn">Info Privacy<span class="visually-hidden">cookies</span></a>
+  </p>
   <div class="cookiebar-buttons">
     <button data-bs-accept="cookiebar" class="cookiebar-btn cookiebar-confirm acceptAllCookie">Accetto<span class="visually-hidden"> i cookies</span></button>
     <button class="cookiebar-btn cookiebar-confirm denyAllCookie">Nega<span class="visually-hidden"> i cookies</span></button>
@@ -260,10 +261,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const cookieBar = document.querySelector(".cookiebar");
   const denyButton = document.querySelector(".denyAllCookie");
 
+  // Controlla se l'utente ha già negato i cookie
+  if (localStorage.getItem("cookieDenied") === "true") {
+    if (cookieBar) {
+      cookieBar.style.display = "none"; // Nascondi la finestra se i cookie sono stati negati
+    }
+  }
+
   if (denyButton) {
     denyButton.addEventListener("click", function () {
       if (cookieBar) {
         cookieBar.style.display = "none"; // Nascondi la finestra
+        localStorage.setItem("cookieDenied", "true"); // Salva la scelta dell'utente
       }
     });
   }
