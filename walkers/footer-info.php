@@ -52,6 +52,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 	            $item->url = '/page-templates/privacy';
 	        }
 
+		// Sovrascrivi l'URL per "Prenota Appuntamento" se è vuoto
 		 if ($item->title == 'Prenota appuntamento' && $item->url == '/prenotazioni') {
                    $item->url = '/page-templates/prenotazioni';
 		}
