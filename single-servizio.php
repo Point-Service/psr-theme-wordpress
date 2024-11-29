@@ -563,16 +563,9 @@ get_header();
                                 </button>
                                 <?php } ?>
                                 <p class="text-paragraph lora mt-4" data-element="service-generic-access"><?php echo $canale_fisico_text; ?></p>
-                                <?php if ($mostra_prenota_appuntamento) { 
-                                if($prenota_appuntamento != null){?>
-                                    <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo $prenota_appuntamento ?>';" data-element="service-booking-access">
-                                        <span class="">Prenota appuntamento</span>
-                                    </button>
-                                <?php } else {?>
                                     <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>';" data-element="service-booking-access">
                                         <span class="">Prenota appuntamento</span>
-                                    </button>
-                                <?php }?>
+                                    </button>                            
                             <?php }?>
                             </section>
                             <?php } ?>
