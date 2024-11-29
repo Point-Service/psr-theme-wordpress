@@ -10,7 +10,7 @@ global $post;
 
 
 
-// Se esiste un link Maggioli indirizza subito sulla loro pagina
+// Se esiste un link indirizza subito sulla loro pagina
 $prenota_appuntamento = dci_get_option("prenota_appuntamento");
 
 // Controlla se l'URL è presente
