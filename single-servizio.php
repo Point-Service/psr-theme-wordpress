@@ -566,7 +566,7 @@ get_header();
                                     <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>';" data-element="service-booking-access">
                                         <span class="">Prenota appuntamento</span>
                                     </button>                            
-                            <?php }?>
+                          
                             </section>
                             <?php } ?>
                             <?php if ( $condizioni_servizio ) {
