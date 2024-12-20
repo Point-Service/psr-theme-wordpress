@@ -25,7 +25,7 @@ get_header();
         $luogo = $post->ID;
 	$orario_pubblico = dci_get_meta("orario_pubblico", $prefix, $post->ID);
 	$punti_contatto = dci_get_meta("punti_contatto", $prefix, $post->ID);
-	$struttura_responsabile = dci_get_meta("struttura_responsabile", $prefix, $post->ID);+
+	$struttura_responsabile = dci_get_meta("struttura_responsabile", $prefix, $post->ID);
 	$modalita_accesso = dci_get_meta("modalita_accesso", $prefix, $post->ID);
 	  //media
 	  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
@@ -165,7 +165,14 @@ get_header();
 		
           <?php } ?>
 		  
-
+          <?php if($modalita_accesso) {?>
+          <article id="modalita-accesso" class="it-page-section mb-5">
+            <h2 class="mb-3">Modalità di accesso</h2>
+            <div class="richtext-wrapper font-serif">
+				<?php echo $modalita_accesso; ?>
+			</div>
+          </article>
+          <?php } ?>
 		  
          <?php if($indirizzo) {?>
             <article id="indirizzo" class="it-page-section mb-5">
