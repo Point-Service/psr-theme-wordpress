@@ -27,6 +27,8 @@ get_header();
 	$punti_contatto = dci_get_meta("punti_contatto", $prefix, $post->ID);
 	$struttura_responsabile = dci_get_meta("struttura_responsabile", $prefix, $post->ID);
 	$modalita_accesso = dci_get_meta("modalita_accesso", $prefix, $post->ID);
+	$ulteriori_informazioni = dci_get_wysiwyg_field("ulteriori_informazioni", $prefix, $post->ID); 
+	  
 	  //media
 	  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
 	  $video = dci_get_meta("video", $prefix, $post->ID);
