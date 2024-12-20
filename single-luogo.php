@@ -165,14 +165,7 @@ get_header();
 		
           <?php } ?>
 		  
-          <?php if($modalita_accesso) {?>
-          <article id="modalita-accesso" class="it-page-section mb-5">
-            <h2 class="mb-3">Modalità di accesso</h2>
-            <div class="richtext-wrapper font-serif">
-				<?php echo $modalita_accesso; ?>
-			</div>
-          </article>
-          <?php } ?>
+
 		  
          <?php if($indirizzo) {?>
             <article id="indirizzo" class="it-page-section mb-5">
