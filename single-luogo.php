@@ -18,19 +18,21 @@ get_header();
 
     $prefix= '_dci_luogo_';
 	$nome_alternativo = dci_get_meta("nome_alternativo", $prefix, $post->ID);
-  $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
+         $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
 	$descrizione_estesa = dci_get_meta("descrizione_estesa", $prefix, $post->ID);
 	$luoghi_collegati = dci_get_meta("luoghi_collegati", $prefix, $post->ID);
 	$indirizzo = dci_get_meta("indirizzo", $prefix, $post->ID);
-  $luogo = $post->ID;
+        $luogo = $post->ID;
 	$orario_pubblico = dci_get_meta("orario_pubblico", $prefix, $post->ID);
 	$punti_contatto = dci_get_meta("punti_contatto", $prefix, $post->ID);
-	$struttura_responsabile = dci_get_meta("struttura_responsabile", $prefix, $post->ID);
-  //media
-  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
-  $video = dci_get_meta("video", $prefix, $post->ID);
-  $trascrizione = dci_get_meta("trascrizione", $prefix, $post->ID);
-    
+	$struttura_responsabile = dci_get_meta("struttura_responsabile", $prefix, $post->ID);+
+	$modalita_accesso = dci_get_meta("modalita_accesso", $prefix, $post->ID);
+	  //media
+	  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
+	  $video = dci_get_meta("video", $prefix, $post->ID);
+	  $trascrizione = dci_get_meta("trascrizione", $prefix, $post->ID);
+  
+	  
     ?>
 
     <div class="container px-4 my-4" id="main-container">
@@ -160,8 +162,18 @@ get_header();
 					}?>
 			    </div>
 		  </article>
+		
           <?php } ?>
-          
+		  
+          <?php if($modalita_accesso) {?>
+          <article id="modalita-accesso" class="it-page-section mb-5">
+            <h2 class="mb-3">Modalità di accesso</h2>
+            <div class="richtext-wrapper font-serif">
+				<?php echo $modalita_accesso; ?>
+			</div>
+          </article>
+          <?php } ?>
+		  
          <?php if($indirizzo) {?>
             <article id="indirizzo" class="it-page-section mb-5">
               <h2 class="mb-3">Indirizzo</h2>         
