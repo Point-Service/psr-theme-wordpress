@@ -21,7 +21,7 @@ function dci_register_post_type_luogo() {
 		'hierarchical'  => true,
 		'public'        => true,
         'menu_position' => 5,
-        'rewrite' => array('slug' => 'vivere-il-comune/luoghi', 'with_front' => false),
+        'rewrite' => array('slug' => 'vivere-ente/luoghi', 'with_front' => false),
 		'menu_icon'     => 'dashicons-location-alt',
         'has_archive'           => false,    //archive page
         'capability_type' => array('luogo', 'luoghi'),
@@ -78,9 +78,13 @@ function dci_add_luogo_metaboxes() {
         'id'        => $prefix . 'tipo_luogo',
         //'name'      => __( 'Tipo di Luogo', 'design_comuni_italia' ),
         'desc'      => __( 'Non obbligatoria perché il luogo potrebbe non essere un POI', 'design_comuni_italia' ),
-        'type'           => 'taxonomy_multicheck_hierarchical',
+        'type'           => 'taxonomy_radio_hierarchical',
         'taxonomy'       => 'tipi_luogo',
-        'remove_default' => 'true'
+        'remove_default' => 'true',
+        'show_option_none' => true,
+        'attributes' => array(
+            'required' => 'required'
+        )
     ) );
 
     //argomenti
@@ -114,20 +118,6 @@ function dci_add_luogo_metaboxes() {
         'desc' => __( 'Nome alternativo o secondario del luogo. Ad es. "Anfiteatro Flavio".', 'design_comuni_italia' ),
         'type' => 'text',
     ) );
-
-
-    $cmb_apertura->add_field( array(
-            'name'       => __('Immagine', 'design_comuni_italia' ),
-            'desc' => __( 'Immagine principale del luogo *' , 'design_comuni_italia' ),
-            'id'             => $prefix . 'immagine',
-            'type' => 'file',
-            // 'preview_size' => array( 100, 100 ), // Default: array( 50, 50 )
-            'query_args' => array( 'type' => 'image' ), // Only images attachment
-            'attributes'    => array(
-                'required'    => 'required'
-            ),
-        )
-    );
 
     $cmb_apertura->add_field( array(
         'id'         => $prefix . 'descrizione_breve',
@@ -163,7 +153,7 @@ function dci_add_luogo_metaboxes() {
 
     $cmb_descrizione->add_field( array(
         'id' => $prefix . 'luoghi_collegati',
-        'name'        => __( 'Luoghi collegati', 'design_comuni_italia' ),
+        'name'        => __( 'Altri luoghi collegati', 'design_comuni_italia' ),
         'desc' => __( 'Elenco di eventuali altri luoghi d\'interesse collegati' , 'design_comuni_italia' ),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('luogo'),
@@ -172,7 +162,27 @@ function dci_add_luogo_metaboxes() {
         ),
     ) );
 
-    /**
+    $cmb_gallerie_multimediali = new_cmb2_box( array(
+        'id'           => $prefix . 'box_gallerie_multimediali',
+        'title'        => __( 'Gallerie multimediali', 'design_comuni_italia' ),
+        'object_types' => array( 'luogo' ),
+        'context'      => 'normal',
+        'priority'     => 'high',
+    ) );
+
+    $cmb_gallerie_multimediali->add_field( array(
+        'name'       => __('Galleria di immagini', 'design_comuni_italia' ),
+        'desc' => __( 'Solo per Persona Politica: gallery dell attività politica e istituzionale della persona.' , 'design_comuni_italia' ),
+        'id'             => $prefix . 'gallery',
+        'type' => 'file_list',
+        'query_args' => array( 'type' => 'image' ),
+        'attributes'    => array(
+            'data-conditional-id'     => $prefix.'tipologia_persona',
+            'data-conditional-value'  => "Persona Politica",
+        ),
+    ) );
+
+    /*
     $cmb_gallerie_multimediali = new_cmb2_box( array(
         'id'           => $prefix . 'box_gallerie_multimediali',
         'title'        => __( 'Gallerie multimediali', 'design_comuni_italia' ),
@@ -210,7 +220,7 @@ function dci_add_luogo_metaboxes() {
         'query_args' => array( 'type' => array('image','video') )
     ) );
 
-    /*** fine repeater gallerie **/
+    fine repeater gallerie */
 
 
     //SERVIZI
@@ -221,11 +231,22 @@ function dci_add_luogo_metaboxes() {
         'context'      => 'normal',
         'priority'     => 'high',
     ) );
+    
+    $cmb_servizi->add_field( array(
+        'id' => $prefix . 'servizi_erogati',
+        'name'        => __( 'Servizi erogati in questo luogo', 'design_comuni_italia' ),
+        'desc' => __( 'Scegli i servizi che vengono erogati in questo luogo' , 'design_comuni_italia' ),
+        'type'    => 'pw_multiselect',
+        'options' => dci_get_posts_options('servizio'),
+        'attributes' => array(
+            'placeholder' =>  __( 'Seleziona i servizi', 'design_comuni_italia' ),
+        ),
+    ) );
 
     $cmb_servizi->add_field( array(
         'id' => $prefix . 'servizi',
-        'name'        => __( 'Servizi presenti nel luogo', 'design_comuni_italia' ),
-        'desc' => __( 'Se il luogo presenta servizi di carattere privato, descrizione testuale del servizio e link esterno al servizio. Se il luogo è sede di unità organizzativa abbiamo i servizi collegati all\'Unità organizzativa' , 'design_comuni_italia' ),
+        'name'        => __( 'Servizi privati erogati nel luogo', 'design_comuni_italia' ),
+        'desc' => __( 'Se il luogo presenta servizi di carattere privato, descrizione testuale del servizio e link esterno al servizio.' , 'design_comuni_italia' ),
         'type' => 'wysiwyg',
         'options' => array(
             'media_buttons' => false, // show insert/upload button(s)
@@ -269,13 +290,22 @@ function dci_add_luogo_metaboxes() {
     ) );
 
     $cmb_dove->add_field( array(
+        'id'         => $prefix . 'childof',
+        'name'       => __( 'Il luogo è parte di ', 'design_comuni_italia' ),
+        'desc'       => __( 'Con questo campo è possibile stabilire una relazione tra il luogo che si sta creando e il luogo che lo contiene. Ad esempio: il luogo chiesetta è contenuto nell\'edificio principale.', 'design_scuole_italia' ),
+        'type'    => 'select',
+        'options' => dci_get_posts_options('luogo', true, true),
+    ) );
+
+    $cmb_dove->add_field( array(
         'id'         => $prefix . 'indirizzo',
         'name'       => __( 'Indirizzo *', 'design_comuni_italia' ),
         'desc'       => __( 'Indirizzo del luogo.', 'design_comuni_italia' ),
         'type'       => 'textarea',
         'attributes'    => array(
             'maxlength'  => '255',
-            'required'    => 'required'
+            'data-conditional-id'    => $prefix . 'childof',
+			'data-conditional-value' => '0',
         ),
     ) );
 
@@ -286,48 +316,12 @@ function dci_add_luogo_metaboxes() {
         'type'       => 'text',
         'attributes'    => array(
             'maxlength'  => '255',
+            'data-conditional-id'    => $prefix . 'childof',
+			'data-conditional-value' => '0',
         ),
     ) );
 
-    $cmb_dove->add_field( array(
-        'id'         => $prefix . 'circoscrizione',
-        'name'       => __( 'Circoscrizione', 'design_comuni_italia' ),
-        'desc'       => __( 'Se il territorio è mappato in circoscrizioni, riportare la Circoscrizione dove è situato il luogo.', 'design_comuni_italia' ),
-        'type'       => 'text',
-        'attributes'    => array(
-            'maxlength'  => '255',
-        ),
-    ) );
-
-    /**
-     *
-
-    $cmb_dove->add_field( array(
-        'id' => $prefix . 'gps_latitude',
-        'name'        => __( 'GPS latitude *', 'design_comuni_italia' ),
-        'desc' => __( 'latitudine' , 'design_comuni_italia' ),
-        'type' => 'text_small',
-        'attributes' => array(
-            //'type' => 'number',
-            'required'    => 'required'
-        ),
-    ) );
-
-    $cmb_dove->add_field( array(
-        'id' => $prefix . 'gps_longitude',
-        'name'        => __( 'GPS longitude *', 'design_comuni_italia' ),
-        'desc' => __( 'longitudine' , 'design_comuni_italia' ),
-        'type' => 'text_small',
-        'attributes' => array(
-            //'type' => 'number',
-            'required'    => 'required'
-        ),
-    ) );
-
-     */
-    /**mappa field GPS
-    /*
-     */
+    //mappa field GPS
     $cmb_dove->add_field( array(
         'id'         => $prefix . 'posizione_gps',
         'name'       => __( 'Posizione GPS *<br><small>NB: clicca sulla lente d\'ingrandimento e cerca l\'indirizzo, anche se lo hai già inserito nel campo precedente.<br>Questo permetterà una corretta georeferenziazione del luogo</small>', 'design_comuni_italia' ),
@@ -353,7 +347,8 @@ function dci_add_luogo_metaboxes() {
         'desc'       => __( 'Codice di avviamento postale del luogo', 'design_comuni_italia' ),
         'type'       => 'text_small',
         'attributes' => array(
-            'required' => 'required'
+            'data-conditional-id'    => $prefix . 'childof',
+			'data-conditional-value' => '0',
         ),
     ) );
 
@@ -411,7 +406,7 @@ function dci_add_luogo_metaboxes() {
 
     $cmb_informazioni->add_field( array(
         'id' => $prefix . 'struttura_responsabile',
-        'name'    => __( 'Struttura responsabile' ),
+        'name'    => __( 'Unità organizzativa responsabile' ),
         'desc' => __( 'Unità organizzativa che ha la responsabilità del luogo' , 'design_comuni_italia' ),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('unita_organizzativa'),
@@ -421,13 +416,16 @@ function dci_add_luogo_metaboxes() {
     ) );
 
     $cmb_informazioni->add_field( array(
-        'id' => $prefix . 'sede_di',
+        'id' => $prefix . 'sede_di_1',
         'name'    => __( 'Sede di: ', 'design_comuni_italia' ),
-        'desc' => __( 'Link alle strutture (segreteria, scuola, dirigenza) presenti nel luogo' , 'design_comuni_italia' ),
+        'desc' => __( 'Link alle unità organizzative (uffici, aree, organi) presenti nel luogo. Puoi modificare il luogo di un\'unità organizzativa nelle sue impostazioni.' , 'design_comuni_italia' ),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('unita_organizzativa'),
+        'default_cb' => 'set_to_current_luogo_sede_di',
         'attributes' => array(
             'placeholder' =>  __( 'Seleziona le Unità Organizzative', 'design_comuni_italia' ),
+            'disabled' => 'true',
+            'required' => 'required'
         )
     ) );
 
@@ -506,13 +504,6 @@ function dci_save_luogo( $post_id) {
 	add_action( 'save_post_luogo', 'dci_save_luogo' );
 }
 
-
-// relazione bidirezionale struttura / luoghi
-//new dci_bidirectional_cmb2("_dci_luogo_", "luogo", "link_strutture", "box_elementi_dati", "_dci_struttura_sedi");
-
-// relazione bidirezionale servizi / luoghi
-//new dci_bidirectional_cmb2("_dci_luogo_", "luogo", "servizi_presenti", "box_elementi_dati", "_dci_servizio_luoghi");
-
 /**
  * Valorizzo il post content in base al contenuto dei campi custom
  * @param $data
@@ -545,3 +536,16 @@ function dci_luogo_set_post_content( $data ) {
     return $data;
 }
 add_filter( 'wp_insert_post_data' , 'dci_luogo_set_post_content' , '99', 1 );
+
+// relazione bidirezionale struttura / luoghi
+new dci_bidirectional_cmb2("_dci_luogo_", "luogo", "sede_di", "box_informazioni", "_dci_unita_organizzativa_sede_principale");
+
+// relazione bidirezionale luoghi / luoghi
+new dci_bidirectional_cmb2("_dci_luogo_", "luogo", "luoghi_collegati", "box_descrizione", "_dci_luogo_luoghi_collegati");
+
+// relazione bidirezionale servizi / luoghi
+new dci_bidirectional_cmb2("_dci_luogo_", "luogo", "servizi_erogati", "box_servizi", "_dci_servizio_canale_fisico_luoghi");
+
+function set_to_current_luogo_sede_di($field_args, $field  ) {
+	return dci_get_meta("sede_di", "_dci_luogo_", $field->object_id) ?? [];
+}
