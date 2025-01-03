@@ -214,6 +214,7 @@ function dci_add_luogo_metaboxes() {
 
 
     //SERVIZI
+
     $cmb_servizi = new_cmb2_box( array(
         'id'           => $prefix . 'box_servizi',
         'title'        => __( 'Servizi', 'design_comuni_italia' ),
@@ -221,11 +222,22 @@ function dci_add_luogo_metaboxes() {
         'context'      => 'normal',
         'priority'     => 'high',
     ) );
+    
+    $cmb_servizi->add_field( array(
+        'id' => $prefix . 'servizi_erogati',
+        'name'        => __( 'Servizi erogati in questo luogo', 'design_comuni_italia' ),
+        'desc' => __( 'Scegli i servizi che vengono erogati in questo luogo' , 'design_comuni_italia' ),
+        'type'    => 'pw_multiselect',
+        'options' => dci_get_posts_options('servizio'),
+        'attributes' => array(
+            'placeholder' =>  __( 'Seleziona i servizi', 'design_comuni_italia' ),
+        ),
+    ) );
 
     $cmb_servizi->add_field( array(
         'id' => $prefix . 'servizi',
-        'name'        => __( 'Servizi presenti nel luogo', 'design_comuni_italia' ),
-        'desc' => __( 'Se il luogo presenta servizi di carattere privato, descrizione testuale del servizio e link esterno al servizio. Se il luogo è sede di unità organizzativa abbiamo i servizi collegati all\'Unità organizzativa' , 'design_comuni_italia' ),
+        'name'        => __( 'Servizi privati erogati nel luogo', 'design_comuni_italia' ),
+        'desc' => __( 'Se il luogo presenta servizi di carattere privato, descrizione testuale del servizio e link esterno al servizio.' , 'design_comuni_italia' ),
         'type' => 'wysiwyg',
         'options' => array(
             'media_buttons' => false, // show insert/upload button(s)
