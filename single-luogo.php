@@ -29,8 +29,8 @@ get_header();
 	$modalita_accesso = dci_get_meta("modalita_accesso", $prefix, $post->ID);
 	$ulteriori_informazioni = dci_get_wysiwyg_field("ulteriori_informazioni", $prefix, $post->ID); 
 	$sede_di = dci_get_meta('sede_di', $prefix, $post->ID); 
-	$servizi_privati = dci_get_wysiwyg_field("servizi");
-	$servizi = dci_get_meta("servizi", $prefix, $post->ID);
+        $servizi_privati = dci_get_wysiwyg_field("servizi");
+	
         $servizi = dci_get_meta('servizi_erogati', $prefix, $post->ID) ?: [];
 	  
 	  //media
