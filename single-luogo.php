@@ -98,6 +98,13 @@ get_header();
                                                     <span>Descrizione</span>
                                                     </a>
                                                     </li>
+							      <?php if ($sede_di && is_array($sede_di) && count($sede_di) > 0) { ?>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" href="#sede_di">
+                                                                            <span>Sede di</span>
+                                                                        </a>
+                                                                    </li>
+                                                                <?php } ?>
                                                                 <?php if ($luoghi_collegati && is_array($luoghi_collegati) && count($luoghi_collegati) > 0) { ?>
                                                                     <li class="nav-item">
                                                                         <a class="nav-link" href="#luoghi_collegati">
