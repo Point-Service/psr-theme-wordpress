@@ -253,7 +253,7 @@ get_header();
 
 
 
-                            <?php if ($servizi_privati || (is_array($servizi) && count($servizi))) { ?>
+                          <?php if ($servizi_privati || (is_array($servizi) && count($servizi))) { ?>
                                 <section id="servizi" class="it-page-section mb-4"> <?php 
                                     
                                     if (!empty($servizi) &&  is_array($servizi) && count($servizi)) {  ?>
@@ -282,7 +282,6 @@ get_header();
                                     <?php } ?>
                                 </section>
                             <?php } ?>
-
 			
 
 			
