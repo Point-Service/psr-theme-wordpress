@@ -98,13 +98,20 @@ get_header();
                                                     <span>Descrizione</span>
                                                     </a>
                                                     </li>
-                                                <?php if( $luoghi_collegati) { ?>
+                                               <?php if( $luoghi_collegati) { ?>
                                                     <li class="nav-item">
                                                     <a class="nav-link" href="#luoghi-collegati">
                                                     <span>Luoghi collegati</span>
                                                     </a>
                                                     </li>
                                                 <?php } ?>  
+                                                <?php if( $servizi) { ?>
+                                                    <li class="nav-item">
+                                                    <a class="nav-link" href="#servizi">
+                                                    <span>Servizi</span>
+                                                    </a>
+                                                    </li>
+                                                <?php } ?>
                                                 <?php if($indirizzo) { ?>
                                                     <li class="nav-item">
                                                     <a class="nav-link" href="#indirizzo">
