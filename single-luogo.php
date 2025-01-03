@@ -176,11 +176,12 @@ get_header();
                                  
                                             <?php foreach ($sede_di as $uo_id) {
                                             ?>		                          
-		                            <div class="col-xl-6 col-lg-8 col-md-6"><?php
+		                              <div class="col-xl-6 col-lg-8 col-md-12"><?php
                                                 $with_border = true;
                                                 get_template_part("template-parts/unita-organizzativa/card");
                                              ?>
-		                           </div>		  
+		                             </div>
+					<p></p>
 		                            <?php
                                             } ?>
                                            </div>
