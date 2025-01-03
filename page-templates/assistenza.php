@@ -50,8 +50,9 @@ get_header();
                     </div>
                     <p class="subtitle-small pb-40 mb-0">
                         Hai un’identità digitale SPID o CIE?
+			    
 			    <?php if(dci_get_option("area_riservata")) { ?>
-				<a class="btn btn-primary btn-icon btn-full" title="Accedi all'area personale" href="<?php echo dci_get_option("area_riservata"); ?>" data-element="personal-area-login"></a>					
+				<a class="title-small-semi-bold t-primary text-decoration-none" href="<?php echo dci_get_option("area_riservata"); ?>">Accedi</a>				
 			       <?php } else { ?>
 			      <a class="title-small-semi-bold t-primary text-decoration-none" href="#">Accedi</a>
 			    <?php } ?>
