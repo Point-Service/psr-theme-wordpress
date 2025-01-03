@@ -6,7 +6,6 @@
  *
  * @package Design_Comuni_Italia
  */
-
 get_header();
 ?>
 
