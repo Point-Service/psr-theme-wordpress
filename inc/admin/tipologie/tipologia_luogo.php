@@ -556,6 +556,19 @@ function dci_luogo_set_post_content( $data ) {
 
     return $data;
 }
+
+add_filter( 'wp_insert_post_data' , 'dci_luogo_set_post_content' , '99', 1 );
+
 // relazione bidirezionale servizi / luoghi
 new dci_bidirectional_cmb2("_dci_luogo_", "luogo", "servizi_erogati", "box_servizi", "_dci_servizio_canale_fisico_luoghi");
-add_filter( 'wp_insert_post_data' , 'dci_luogo_set_post_content' , '99', 1 );
+
+
+// relazione bidirezionale luoghi / luoghi
+new dci_bidirectional_cmb2("_dci_luogo_", "luogo", "luoghi_collegati", "box_descrizione", "_dci_luogo_luoghi_collegati");
+
+// relazione bidirezionale servizi / luoghi
+new dci_bidirectional_cmb2("_dci_luogo_", "luogo", "servizi_erogati", "box_servizi", "_dci_servizio_canale_fisico_luoghi");
+
+function set_to_current_luogo_sede_di($field_args, $field  ) {
+	return dci_get_meta("sede_di", "_dci_luogo_", $field->object_id) ?? [];
+}
