@@ -160,14 +160,14 @@ get_header();
             </div>
         </aside>
 
-        <section class="col-lg-8 it-page-sections-container border-light">
-	   <?php get_template_part('template-parts/single/image-large'); ?>	
-          <article id="cos-e" class="it-page-section mb-5" data-audio>
-              <h2 class="mb-3">Descrizione</h2>
-              <div class="richtext-wrapper font-serif">
-                  <?php echo $descrizione_estesa; ?>
-              </div>
-          </article>
+	        <section class="col-lg-8 it-page-sections-container border-light">
+		   <?php get_template_part('template-parts/single/image-large'); ?>	
+	          <article id="cos-e" class="it-page-section mb-5" data-audio>
+	              <h2 class="mb-3">Descrizione</h2>
+	              <div class="richtext-wrapper font-serif">
+	                  <?php echo $descrizione_estesa; ?>
+	              </div>
+	          </article>
                             <?php if ($sede_di && is_array($sede_di) && count($sede_di) > 0) { ?>
                                 <section id="sede_di" class="it-page-section mb-4">
                                     <h2 class="h3 my-2">Sede di</h2>
@@ -247,7 +247,16 @@ get_header();
                   get_template_part("template-parts/single/video");
               } ?>
         </article>
+                                                                <?php if ($servizi_privati || isset($servizi)) { ?>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" href="#servizi">
+                                                                            <span>Servizi presenti</span>
+                                                                        </a>
+                                                                    </li>
+                                                                <?php } ?>
 
+
+			
           <article id="contatti" class="it-page-section mb-30">
           <?php if( is_array($punti_contatto) && count($punti_contatto) ) { ?>
             <h2 class="title-xxlarge mb-3">Contatti</h2>
