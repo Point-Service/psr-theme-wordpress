@@ -271,7 +271,6 @@ function dci_add_luogo_metaboxes() {
         ),
     ) );
 
-    //DOVE
     $cmb_dove = new_cmb2_box( array(
         'id'           => $prefix . 'box_dove',
         'title'        => __( 'Dove', 'design_comuni_italia' ),
@@ -281,13 +280,22 @@ function dci_add_luogo_metaboxes() {
     ) );
 
     $cmb_dove->add_field( array(
+        'id'         => $prefix . 'childof',
+        'name'       => __( 'Il luogo è parte di ', 'design_comuni_italia' ),
+        'desc'       => __( 'Con questo campo è possibile stabilire una relazione tra il luogo che si sta creando e il luogo che lo contiene. Ad esempio: il luogo chiesetta è contenuto nell\'edificio principale.', 'design_scuole_italia' ),
+        'type'    => 'select',
+        'options' => dci_get_posts_options('luogo', true, true),
+    ) );
+
+    $cmb_dove->add_field( array(
         'id'         => $prefix . 'indirizzo',
         'name'       => __( 'Indirizzo *', 'design_comuni_italia' ),
         'desc'       => __( 'Indirizzo del luogo.', 'design_comuni_italia' ),
         'type'       => 'textarea',
         'attributes'    => array(
             'maxlength'  => '255',
-            'required'    => 'required'
+            'data-conditional-id'    => $prefix . 'childof',
+			'data-conditional-value' => '0',
         ),
     ) );
 
@@ -298,41 +306,39 @@ function dci_add_luogo_metaboxes() {
         'type'       => 'text',
         'attributes'    => array(
             'maxlength'  => '255',
+            'data-conditional-id'    => $prefix . 'childof',
+			'data-conditional-value' => '0',
         ),
     ) );
 
+    //mappa field GPS
     $cmb_dove->add_field( array(
-        'id'         => $prefix . 'circoscrizione',
-        'name'       => __( 'Circoscrizione', 'design_comuni_italia' ),
-        'desc'       => __( 'Se il territorio è mappato in circoscrizioni, riportare la Circoscrizione dove è situato il luogo.', 'design_comuni_italia' ),
-        'type'       => 'text',
-        'attributes'    => array(
-            'maxlength'  => '255',
-        ),
-    ) );
-
-    /**
-     *
-
-    $cmb_dove->add_field( array(
-        'id' => $prefix . 'gps_latitude',
-        'name'        => __( 'GPS latitude *', 'design_comuni_italia' ),
-        'desc' => __( 'latitudine' , 'design_comuni_italia' ),
-        'type' => 'text_small',
+        'id'         => $prefix . 'posizione_gps',
+        'name'       => __( 'Posizione GPS *<br><small>NB: clicca sulla lente d\'ingrandimento e cerca l\'indirizzo, anche se lo hai già inserito nel campo precedente.<br>Questo permetterà una corretta georeferenziazione del luogo</small>', 'design_comuni_italia' ),
+        'desc'       => __( 'Georeferenziazione del luogo e link a posizione in mappa', 'design_comuni_italia' ),
+        'type'       => 'leaflet_map',
         'attributes' => array(
-            //'type' => 'number',
-            'required'    => 'required'
-        ),
+            'searchbox_position'  => 'topleft', // topright, bottomright, topleft, bottomleft,
+            'search'              => __( 'Digita l\'indirizzo della Sede' , 'design_comuni_italia' ),
+            'not_found'           => __( 'Indirizzo non trovato' , 'design_comuni_italia' ),
+            'initial_coordinates' => [
+                'lat' => 41.894802, // Go Italy!
+                'lng' => 12.4853384  // Go Italy!
+            ],
+            'initial_zoom'        => 5, // Zoomlevel when there's no coordinates set,
+            'default_zoom'        => 12, // Zoomlevel after the coordinates have been set & page saved
+        )
     ) );
 
+
     $cmb_dove->add_field( array(
-        'id' => $prefix . 'gps_longitude',
-        'name'        => __( 'GPS longitude *', 'design_comuni_italia' ),
-        'desc' => __( 'longitudine' , 'design_comuni_italia' ),
-        'type' => 'text_small',
+        'id'         => $prefix . 'cap',
+        'name'       => __( 'CAP *', 'design_comuni_italia' ),
+        'desc'       => __( 'Codice di avviamento postale del luogo', 'design_comuni_italia' ),
+        'type'       => 'text_small',
         'attributes' => array(
-            //'type' => 'number',
-            'required'    => 'required'
+            'data-conditional-id'    => $prefix . 'childof',
+			'data-conditional-value' => '0',
         ),
     ) );
 
