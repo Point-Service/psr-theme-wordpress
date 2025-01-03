@@ -7,7 +7,7 @@
 global $post;
 get_header();
 
-?>nbvnbvnbvnbvnbvnbvnbvnbvnbvnbvnbv
+?>
     <main>
         <?php
         while ( have_posts() ) :
