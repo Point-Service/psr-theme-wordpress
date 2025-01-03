@@ -1,25 +1,29 @@
 <?php
-    global $uo_id, $with_border, $mostra_dettagli_sede;
+    global $uo_id, $with_border;
     $ufficio = get_post( $uo_id );
 
     $prefix = '_dci_unita_organizzativa_';
-	$descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $ufficio->ID);
+    $img = dci_get_meta('immagine', $prefix, $uo_id);
+	$sede_principale = dci_get_meta('sede_principale', $prefix, $uo_id);
+	$prefix = '_dci_luogo_';
+    $indirizzo = dci_get_meta('indirizzo', $prefix, $sede_principale);
 
-    $img = get_the_post_thumbnail_url($ufficio->ID);
-
+    $prefix = '_dci_luogo_';
+    
+    //  Ho rimosso i Contatti perchè non venivano utilizzati
+    
     if($with_border) {
 ?>
-
-<div class="card card-teaser card-teaser-info rounded shadow-sm p-3 mb-2">
+<div class="card card-teaser border rounded shadow p-4 flex-nowrap">
     <div class="card-body pe-3">
-        <h4 class="card-title text-paragraph-regular-medium-semi">
-            <a class="text-decoration-none" href="<?php echo get_permalink($ufficio->ID); ?>" data-element="service-area">
+        <h4 class="u-main-black mb-1 title-small-semi-bold-medium">
+            <a class="text-decoration-none" href="<?php echo get_permalink($ufficio->ID); ?>">
             <?php echo $ufficio->post_title; ?>
             </a>
         </h4>
-	   <?php if ($descrizione_breve && $mostra_dettagli_sede) {
-		        echo '<div class="card-text mt-3"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
-	   } ?>
+        <div class="card-text">
+            <p><?php echo $indirizzo; ?></p>
+        </div>
     </div>
     <?php if ($img) { ?>
     <div class="avatar size-xl">
@@ -32,14 +36,16 @@
 
 <div class="card card-teaser card-teaser-info rounded shadow-sm p-3 flex-nowrap">
     <div class="card-body pe-3">
-        <p class="card-title text-paragraph-regular-medium-semi">
+        <p class="card-title text-paragraph-regular-medium-semi mb-3">
             <a class="text-decoration-none" href="<?php echo get_permalink($ufficio->ID); ?>" data-element="service-area">
             <?php echo $ufficio->post_title; ?>
             </a>
-        </h4>
-	   <?php if ($descrizione_breve && $mostra_dettagli_sede) {
-		        echo '<div class="card-text mt-3"><p class="u-main-black">'.$descrizione_breve.'</p></div>';
-	   } ?>
+        </p>
+        <div class="card-text">
+            <p class="u-main-black">
+				<?php echo $indirizzo;  ?>
+			</p>
+        </div>
     </div>
     <?php if ($img) { ?>
         <div class="avatar size-xl">
