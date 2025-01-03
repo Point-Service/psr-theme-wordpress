@@ -28,6 +28,7 @@ get_header();
 	$struttura_responsabile = dci_get_meta("struttura_responsabile", $prefix, $post->ID);
 	$modalita_accesso = dci_get_meta("modalita_accesso", $prefix, $post->ID);
 	$ulteriori_informazioni = dci_get_wysiwyg_field("ulteriori_informazioni", $prefix, $post->ID); 
+	$sede_di = dci_get_meta('sede_di', $prefix, $post->ID); 
 	  
 	  //media
 	  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
