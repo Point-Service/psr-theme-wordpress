@@ -49,8 +49,7 @@ get_header();
                         </p>
                     </div>
                     <p class="subtitle-small pb-40 mb-0">
-                        Hai un’identità digitale SPID o CIE?
-			    
+                        Hai un’identità digitale SPID o CIE?			    
 			    <?php if(dci_get_option("area_riservata")) { ?>
 				<a class="title-small-semi-bold t-primary text-decoration-none" href="<?php echo dci_get_option("area_riservata"); ?>">Accedi</a>				
 			       <?php } else { ?>
