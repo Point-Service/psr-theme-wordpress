@@ -35,12 +35,35 @@ function dci_register_pagina_luoghi_options(){
         'type' => 'file',
         'query_args' => array( 'type' => 'image' ),
     ) );
+
+    
     $luoghi_options->add_field( array(
         'id' => $prefix . 'didascalia',
         'name'        => __( 'Didascalia', 'design_comuni_italia' ),
         //'desc' => __( 'didascalia.' , 'design_comuni_italia' ),
         'type' => 'text',
     ) );
+
+    
+    $luoghi_options->add_field( array(
+        'id' => $prefix . 'servizi_luoghi_tipo',
+        'name'        => __( 'Servizi nei luoghi', 'design_comuni_italia' ),
+        'desc' => __( 'Configurazione dei servizi nella pagina luoghi' , 'design_comuni_italia' ),
+        'type' => 'title',
+    ) );
+
+    $luoghi_options->add_field(array(
+        'name' => __('Stile servizi presenti', 'design_comuni_italia'),
+        'id' => $prefix . 'visual_servizi_luogo',
+        'type' => 'radio_inline',
+        'default' => 'enabled',
+        'options' => array(
+            'enabled' => 'Testo completo',
+			'disabled' => 'Semplice',
+            'custom' => 'Icona',
+        ),
+    ));
+    
     $luoghi_options->add_field(array(
             'name' => __('Luoghi in evidenza', 'design_comuni_italia'),
             'desc' => __('Seleziona i luoghi in evidenza. NB: Selezionane 3 o multipli di 3 per evitare buchi nell\'impaginazione.  ', 'design_comuni_italia'),
