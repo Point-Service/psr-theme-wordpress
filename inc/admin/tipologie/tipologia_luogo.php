@@ -40,7 +40,6 @@ function dci_luogo_add_content_after_title($post) {
 	if($post->post_type == "luogo")
 		_e('<span><i>il <b>Titolo</b> è il <b>Nome del Luogo</b> o il nome con cui il luogo è conosciuto.</i></span><br><br>', 'design_comuni_italia' );
 }
-
 /**
  * Crea i metabox del post type servizi
  */
