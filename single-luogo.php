@@ -168,7 +168,22 @@ get_header();
                   <?php echo $descrizione_estesa; ?>
               </div>
           </article>
-			
+                            <?php if ($sede_di && is_array($sede_di) && count($sede_di) > 0) { ?>
+                                <section id="sede_di" class="it-page-section mb-4">
+                                    <h2 class="h3 my-2">Sede di</h2>
+
+                                    <?php if ($sede_di) { ?>
+                                    <div class="row">
+                                            <?php foreach ($sede_di as $uo_id) {
+                                            ?><div class="col-xl-6 col-lg-8 col-md-12"><?php
+                                                $with_border = true;
+                                                get_template_part("template-parts/unita-organizzativa/card");
+                                            ?></div><?php
+                                            } ?>
+                                    </div>
+					 <?php } ?>
+                                </section>
+                            <?php } ?>			
                             <?php if ($luoghi_collegati && is_array($luoghi_collegati) && count($luoghi_collegati) > 0) { ?>
                                 <section id="luoghi_collegati" class="it-page-section mb-4">
                                     <h2 class="h3 my-2">Luoghi correlati</h2>
