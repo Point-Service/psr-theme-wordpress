@@ -6,6 +6,7 @@
  *
  * @package Design_Comuni_Italia
  */
+global $file_url, $hide_arguments, $luogo, $mostra_dettagli_servizi, $mostra_dettagli_sede;
 get_header();
 ?>
 
