@@ -98,13 +98,13 @@ get_header();
                                                     <span>Descrizione</span>
                                                     </a>
                                                     </li>
-                                               <?php if( $luoghi_collegati) { ?>
-                                                    <li class="nav-item">
-                                                    <a class="nav-link" href="#luoghi-collegati">
-                                                    <span>Luoghi collegati</span>
-                                                    </a>
-                                                    </li>
-                                                <?php } ?>  
+                                                                <?php if ($luoghi_collegati && is_array($luoghi_collegati) && count($luoghi_collegati) > 0) { ?>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" href="#luoghi_collegati">
+                                                                            <span>Luoghi correlati</span>
+                                                                        </a>
+                                                                    </li>
+                                                                <?php } ?>
                                                 <?php if( $servizi) { ?>
                                                     <li class="nav-item">
                                                     <a class="nav-link" href="#servizi">
@@ -162,18 +162,21 @@ get_header();
               </div>
           </article>
 			
-          <?php if(is_array($luoghi_collegati) && count($luoghi_collegati)) {?>
-          <article id="luoghi-collegati" class="it-page-section mb-5">
-              <h2 class="mb-3">Luoghi collegati</h2>
-				<div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-				<?php foreach ($luoghi_collegati as $luogo_id) {
-						$with_border=false;
-						get_template_part("template-parts/luogo/card-light");
-					}?>
-			    </div>
-		  </article>
-		
-          <?php } ?>
+                            <?php if ($luoghi_collegati && is_array($luoghi_collegati) && count($luoghi_collegati) > 0) { ?>
+                                <section id="luoghi_collegati" class="it-page-section mb-4">
+                                    <h2 class="h3 my-2">Luoghi correlati</h2>
+                                    
+                                    <div class="row">
+                                        <?php foreach ($luoghi_collegati as $luogo_id) {
+                                            ?><div class="col-xl-6 col-lg-8 col-md-12"><?php
+                                            $with_border = true;
+                                            $luogo = get_post( $luogo_id );
+                                            get_template_part("template-parts/luogo/card-title");
+                                            ?></div><?php
+                                        } ?>
+                                    </div>
+                                </section>
+                            <?php } ?>
 		  
           <?php if($modalita_accesso) {?>
           <article id="modalita-accesso" class="it-page-section mb-5">
