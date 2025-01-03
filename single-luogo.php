@@ -21,6 +21,7 @@ get_header();
          $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
 	$descrizione_estesa = dci_get_meta("descrizione_estesa", $prefix, $post->ID);
 	$luoghi_collegati = dci_get_meta("luoghi_collegati", $prefix, $post->ID);
+	$servizi = dci_get_meta("servizi", $prefix, $post->ID);
 	$indirizzo = dci_get_meta("indirizzo", $prefix, $post->ID);
         $luogo = $post->ID;
 	$orario_pubblico = dci_get_meta("orario_pubblico", $prefix, $post->ID);
