@@ -18,24 +18,18 @@ get_header();
 
     $prefix= '_dci_luogo_';
 	$nome_alternativo = dci_get_meta("nome_alternativo", $prefix, $post->ID);
-         $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
+    $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
 	$descrizione_estesa = dci_get_meta("descrizione_estesa", $prefix, $post->ID);
 	$luoghi_collegati = dci_get_meta("luoghi_collegati", $prefix, $post->ID);
 	$servizi = dci_get_meta("servizi", $prefix, $post->ID);
+	$modalita_accesso = dci_get_meta("modalita_accesso", $prefix, $post->ID);
 	$indirizzo = dci_get_meta("indirizzo", $prefix, $post->ID);
-        $luogo = $post->ID;
+    $luogo = $post->ID;
 	$orario_pubblico = dci_get_meta("orario_pubblico", $prefix, $post->ID);
 	$punti_contatto = dci_get_meta("punti_contatto", $prefix, $post->ID);
 	$struttura_responsabile = dci_get_meta("struttura_responsabile", $prefix, $post->ID);
-	$modalita_accesso = dci_get_meta("modalita_accesso", $prefix, $post->ID);
 	$ulteriori_informazioni = dci_get_wysiwyg_field("ulteriori_informazioni", $prefix, $post->ID); 
-	  
-	  //media
-	  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
-	  $video = dci_get_meta("video", $prefix, $post->ID);
-	  $trascrizione = dci_get_meta("trascrizione", $prefix, $post->ID);
-  
-	  
+    
     ?>
 
     <div class="container px-4 my-4" id="main-container">
@@ -62,6 +56,8 @@ get_header();
         </div>
       </div>
     </div>
+
+    <?php get_template_part('template-parts/single/image-large'); ?>
   
     <div class="container">
       <div class="row border-top row-column-border row-column-menu-left border-light">
@@ -98,7 +94,7 @@ get_header();
                                                     <span>Descrizione</span>
                                                     </a>
                                                     </li>
-                                               <?php if( $luoghi_collegati) { ?>
+                                                <?php if( $luoghi_collegati) { ?>
                                                     <li class="nav-item">
                                                     <a class="nav-link" href="#luoghi-collegati">
                                                     <span>Luoghi collegati</span>
@@ -109,6 +105,13 @@ get_header();
                                                     <li class="nav-item">
                                                     <a class="nav-link" href="#servizi">
                                                     <span>Servizi</span>
+                                                    </a>
+                                                    </li>
+                                                <?php } ?>
+                                                <?php if ($modalita_accesso) { ?>
+                                                    <li class="nav-item">
+                                                    <a class="nav-link" href="#modalita-accesso">
+                                                    <span>Modalità di accesso</span>
                                                     </a>
                                                     </li>
                                                 <?php } ?>
@@ -132,15 +135,14 @@ get_header();
                                                 <span>Contatti</span>
                                                 </a>
                                                 </li>
-                                                <?php } ?>		  
-                                                <?php if( is_array($struttura_responsabile) && count($struttura_responsabile) ) { ?>						
+                                                <?php } ?>
+                                                <?php if( is_array($struttura_responsabile) && count($struttura_responsabile) ) { ?>
                                                 <li class="nav-item">
                                                 <a class="nav-link" href="#struttura-responsabile">
                                                 <span>Struttura responsabile</span>
                                                 </a>
                                                 </li>
                                                 <?php } ?>
-		  
                                                 </ul>
                                             </div>
                                         </div>
@@ -154,7 +156,6 @@ get_header();
         </aside>
 
         <section class="col-lg-8 it-page-sections-container border-light">
-	   <?php get_template_part('template-parts/single/image-large'); ?>	
           <article id="cos-e" class="it-page-section mb-5" data-audio>
               <h2 class="mb-3">Descrizione</h2>
               <div class="richtext-wrapper font-serif">
@@ -172,9 +173,18 @@ get_header();
 					}?>
 			    </div>
 		  </article>
-		
           <?php } ?>
-		  
+          
+
+          <?php if($servizi) {?>
+          <article id="servizi" class="it-page-section mb-5">
+            <h2 class="mb-3">Servizi</h2>
+            <div class="richtext-wrapper font-serif">
+				<?php echo $servizi; ?>
+			</div>
+          </article>
+          <?php  } ?>
+
           <?php if($modalita_accesso) {?>
           <article id="modalita-accesso" class="it-page-section mb-5">
             <h2 class="mb-3">Modalità di accesso</h2>
@@ -183,64 +193,44 @@ get_header();
 			</div>
           </article>
           <?php } ?>
-		  
-         <?php if($indirizzo) {?>
-            <article id="indirizzo" class="it-page-section mb-5">
-              <h2 class="mb-3">Indirizzo</h2>         
-          <center>
-          <?php 
-            $luoghi = array($luogo);
-            get_template_part("template-parts/luogo/map"); 
-                 ?>
-                      </center>
-  
-                     <div class="richtext-wrapper font-serif mt-3">  
-          <?php echo $indirizzo; ?>
-         </div>
-            </article>
-          <?php } ?>  
 
+          <?php if($indirizzo) {?>
+          <article id="indirizzo" class="it-page-section mb-5">
+            <h2 class="mb-3">Indirizzo</h2>
+			<?php 
+				$luoghi = array($luogo);
+				get_template_part("template-parts/luogo/map"); 
+			?>
+            <div class="richtext-wrapper font-serif mt-3">
+				<?php echo $indirizzo; ?>
+			</div>
+          </article>
+          <?php } ?>	
 
           <?php if($orario_pubblico) {?>
           <article id="orario-pubblico" class="it-page-section mb-5">
             <h2 class="mb-3">Orario per il pubblico</h2>
             <div class="richtext-wrapper font-serif">
-				      <?php echo $orario_pubblico; ?>
-			      </div>
+				<?php echo $orario_pubblico; ?>
+			</div>
           </article>
           <?php } ?>
 
-          <article id="galleria" class="it-page-section mb-5" data-audio>
-            <?php if (is_array($gallery) && count($gallery)) {?>
-              <?php get_template_part("template-parts/single/gallery"); ?>
-          <?php } ?>
-          <?php if ($video) {
-                  get_template_part("template-parts/single/video");
-              } ?>
-        </article>
-
-          <article id="contatti" class="it-page-section mb-30">
+          <article id="contatti" class="it-page-section mb-5">
           <?php if( is_array($punti_contatto) && count($punti_contatto) ) { ?>
-            <h2 class="title-xxlarge mb-3">Contatti</h2>
-            <div class="richtext-wrapper lora">
-              <?php foreach ($punti_contatto as $pc_id) {
-                  get_template_part('template-parts/single/punto-contatto');
-              } ?>
-            </div>
-          <?php } ?>
-
-
-
-          <!-- <?php if( is_array($organizzatori) && count($organizzatori) ) { ?>
-            <h4 class="h5 mt-4">Con il supporto di:</h4>
-            <?php foreach ($organizzatori as $uo_id) {
-               get_template_part("template-parts/unita-organizzativa/card-full");
+            <h2 class="mb-3">Contatti</h2>
+            <?php foreach ($punti_contatto as $pc_id) {
+                get_template_part('template-parts/single/punto-contatto');
             } ?>
           <?php } ?>
-          </article> -->
-
-		  
-	  </br>
+          <?php if( is_array($organizzatori) && count($organizzatori) ) { ?>
+            <h4 class="h5 mt-4">Con il supporto di:</h4>
+            <?php foreach ($organizzatori as $uo_id) {
+                get_template_part("template-parts/unita-organizzativa/card-full");
+            } ?>
+          <?php } ?>
+          </article>
+			
           <?php if($struttura_responsabile) {?>
           <article id="struttura-responsabile" class="it-page-section mb-5">
             <h2 class="mb-3">Struttura responsabile</h2>
@@ -254,15 +244,14 @@ get_header();
 			</div>
           </article>
           <?php } ?>
-
+			
           <?php if($ulteriori_informazioni) {?>
-	          <article id="ulteriori-informazioni" class="it-page-section mb-5">
-	            <h2 class="mb-3">Ulteriori informazioni</h2>
-	            <p><?php echo $ulteriori_informazioni; ?></p>
-	          </article>
- 	   <?php } ?>
-			  		  
-		
+          <article id="ulteriori-informazioni" class="it-page-section mb-5">
+            <h2 class="mb-3">Ulteriori informazioni</h2>
+            <p><?php echo $ulteriori_informazioni; ?></p>
+          </article>
+ 		  <?php } ?>
+			  
           <?php get_template_part('template-parts/single/page_bottom'); ?>
           </section>
       </div>
