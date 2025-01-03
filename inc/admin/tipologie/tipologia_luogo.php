@@ -342,7 +342,7 @@ function dci_add_luogo_metaboxes() {
         ),
     ) );
 
-     */
+   
     /**mappa field GPS
     /*
      */
