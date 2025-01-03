@@ -253,7 +253,35 @@ get_header();
 
 
 
+                            <?php if ($servizi_privati || (is_array($servizi) && count($servizi))) { ?>
+                                <section id="servizi" class="it-page-section mb-4"> <?php 
+                                    
+                                    if (!empty($servizi) &&  is_array($servizi) && count($servizi)) {  ?>
+                                        <h2 class="h3 my-2">Servizi presenti nel luogo</h2>
+                                        <div class="row g-2"> <?php 
+                                            foreach ($servizi as $servizio_id) { ?>
+                                                <div class="col-lg-4 col-md-12">
+                                                    <?php
+                                                    $servizio = get_post($servizio_id);
+                                                    $with_map = false;
+                                                    if($tipo_visualizzazione_servizi == 'enabled' || $tipo_visualizzazione_servizi == 'disabled'){
+                                                        get_template_part("template-parts/servizio/card");
+                                                    } else
+                                                        get_template_part("template-parts/servizio/card-con-icona");?>
+                                                </div> <?php 
+                                            } ?>
+                                        </div> <?php
+                                        
+							        }
 
+                                    if ($servizi_privati) { 
+                                        if(is_array($servizi) && count($servizi)){ ?> <h3 class="h4 mt-4">Altri servizi</h3> <?php } ?>
+                                        <div class="richtext-wrapper lora">
+                                            <?php echo $servizi_privati ?>
+                                        </div>
+                                    <?php } ?>
+                                </section>
+                            <?php } ?>
 
 			
 
