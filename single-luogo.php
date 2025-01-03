@@ -31,7 +31,7 @@ get_header();
 	$sede_di = dci_get_meta('sede_di', $prefix, $post->ID); 
 	$servizi_privati = dci_get_wysiwyg_field("servizi");
 	$servizi = dci_get_meta("servizi", $prefix, $post->ID);
-
+        $servizi = dci_get_meta('servizi_erogati', $prefix, $post->ID) ?: [];
 	  
 	  //media
 	  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
