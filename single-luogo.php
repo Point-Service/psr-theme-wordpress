@@ -33,6 +33,16 @@ get_header();
         $servizi_privati = dci_get_wysiwyg_field("servizi");
 	
         $servizi = dci_get_meta('servizi_erogati', $prefix, $post->ID) ?: [];
+
+            $tipo_visualizzazione_servizi = dci_get_option('visual_servizi_luogo', 'luoghi');
+            if($tipo_visualizzazione_servizi == 'enabled'){
+                $mostra_dettagli_servizi = true;
+            } else {
+                 $mostra_dettagli_servizi = false;
+            }
+
+
+
 	  
 	  //media
 	  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
