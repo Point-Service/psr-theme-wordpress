@@ -180,8 +180,8 @@ get_header();
                                                 $with_border = true;
                                                 get_template_part("template-parts/unita-organizzativa/card");
                                              ?>
-		                             </div>
-					<p></p>
+		                               </div>
+					     <p></p>
 		                            <?php
                                             } ?>
                                            </div>
