@@ -556,4 +556,6 @@ function dci_luogo_set_post_content( $data ) {
 
     return $data;
 }
+// relazione bidirezionale servizi / luoghi
+new dci_bidirectional_cmb2("_dci_luogo_", "luogo", "servizi_erogati", "box_servizi", "_dci_servizio_canale_fisico_luoghi");
 add_filter( 'wp_insert_post_data' , 'dci_luogo_set_post_content' , '99', 1 );
