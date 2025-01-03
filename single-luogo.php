@@ -20,7 +20,7 @@ get_header();
          $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
 	$descrizione_estesa = dci_get_meta("descrizione_estesa", $prefix, $post->ID);
 	$luoghi_collegati = dci_get_meta("luoghi_collegati", $prefix, $post->ID);
-	$servizi = dci_get_meta("servizi", $prefix, $post->ID);
+
 	$indirizzo = dci_get_meta("indirizzo", $prefix, $post->ID);
         $luogo = $post->ID;
 	$orario_pubblico = dci_get_meta("orario_pubblico", $prefix, $post->ID);
@@ -29,6 +29,9 @@ get_header();
 	$modalita_accesso = dci_get_meta("modalita_accesso", $prefix, $post->ID);
 	$ulteriori_informazioni = dci_get_wysiwyg_field("ulteriori_informazioni", $prefix, $post->ID); 
 	$sede_di = dci_get_meta('sede_di', $prefix, $post->ID); 
+	$servizi_privati = dci_get_wysiwyg_field("servizi");
+	$servizi = dci_get_meta("servizi", $prefix, $post->ID);
+	$servizi = dci_get_meta('servizi_erogati', $prefix, $post->ID) ?: []; 
 	  
 	  //media
 	  $gallery = dci_get_meta("gallery", $prefix, $post->ID);
