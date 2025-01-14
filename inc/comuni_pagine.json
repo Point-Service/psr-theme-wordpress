@@ -95,17 +95,24 @@
         "Eventi": {
           "title": "Eventi",
           "slug": "eventi",
-          "description": "",
+          "description": "Tutti gli eventi proposti dall'Ente.",
           "template_name": "eventi",
           "children": {}
         },
         "Luoghi": {
           "title": "Luoghi",
           "slug": "luoghi",
-          "description": "",
+          "description": "Tutti i luoghi d'interesse dell'Ente.",
           "template_name": "luoghi",
           "children": {}
-        }
+        },
+        "Multimedia": {
+          "title": "Multimedia",
+          "slug": "multimedia",
+          "description": "Tutti i video del Comune.",
+          "template_name": "multimedia",
+          "children": {}
+        },
       }
     },
     "Argomenti": {
