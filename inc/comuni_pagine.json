@@ -13,11 +13,25 @@
           "template_name": "aree_amministrative",
           "children": {}
         },
+        "Organi governo": {
+          "title": "Organi di governo e controllo",
+          "slug": "organi-di-governo-e-controllo",
+          "description": "Le informazioni sul Consiglio di amministrazione, il Collegio dei revisori e il Nucleo di valutazione.",
+          "template_name": "unita-organizzative",
+          "children": {}
+        },        
         "Enti e fondazioni": {
           "title": "Enti e fondazioni",
           "slug": "enti-e-fondazioni",
           "description": "I consorzi, gli enti e le società partecipate di cui il Comune fa parte per rappresentare al meglio gli interessi della comunità.",
           "template_name": "enti-e-fondazioni",
+          "children": {}
+        },
+        "Aree gestionali": {
+          "title": "Aree gestionali",
+          "slug": "aree-gestionali",
+          "description": "La struttura organizzativa è suddivisa in aree di competenze che gestiscono i servizi erogati agli ospiti.",
+          "template_name": "unita-organizzative",
           "children": {}
         },
         "Organi di Governo": {
@@ -113,6 +127,20 @@
           "template_name": "multimedia",
           "children": {}
         },
+        "Storia": {
+          "title": "Storia",
+          "slug": "storia",
+          "description": "La storia dell'Ente.",
+          "template_name": "",
+          "children": {}
+        },
+        "Valori e obiettivi": {
+          "title": "Valori e obiettivi",
+          "slug": "valori-obiettivi",
+          "description": "I valori dell'Ente.",
+          "template_name": "",
+          "children": {}
+        },        
       }
     },
     "Argomenti": {
