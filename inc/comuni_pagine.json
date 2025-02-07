@@ -140,9 +140,10 @@
           "description": "I valori dell'Ente.",
           "template_name": "",
           "children": {}
-        },        
+        }      
       }
     },
+    
     "Argomenti": {
       "title": "Argomenti",
       "slug": "argomenti",
