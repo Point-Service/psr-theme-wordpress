@@ -20,16 +20,17 @@ $date = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pub
             <!-- <svg class="icon">
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
-            <span class="category fw-semibold" ><?php echo $page->post_title ?></span>
-                nnnnn
+            <span class="category fw-semibold" ><?php echo $page->post_title ?></span>           
+            </div>
+            <h3 class="card-title h5"><?php echo $post->post_title ?></h4>
+dsss
                               <div class="col-6">
                                 <small>Data:</small>
                                 <p class="fw-semibold font-monospace">
                                     <?php echo $date; ?>
                                 </p>
                             </div>
-            </div>
-            <h3 class="card-title h5"><?php echo $post->post_title ?></h4>
+            
             <p class="card-text text-secondary" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>
         </div>
         <div class="card-image card-image-rounded pb-5">            
@@ -56,16 +57,15 @@ $date = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pub
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
-            nnnnn
-                            <div class="col-6">
+        </div>
+        <h3 class="card-title h5">
+            <?php echo $post->post_title ?>fff
+                                          <div class="col-6">
                                 <small>Data:</small>
                                 <p class="fw-semibold font-monospace">
                                     <?php echo $date; ?>
                                 </p>
                             </div>
-        </div>
-        <h3 class="card-title h5">
-            <?php echo $post->post_title ?>
         </h3>
         <p class="card-text text-secondary">
             <?php echo $descrizione_breve ?>
