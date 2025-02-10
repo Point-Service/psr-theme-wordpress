@@ -49,7 +49,7 @@ $page_macro = get_page_by_path($page_macro_slug);
 
             <!-- Aggiunto spazio sotto la seconda riga -->
             <hr style="margin-bottom: 40px; width: 100px; height: 1px; background-color: grey; border: none;">
-        </div>
+        
         
         <div class="card-image card-image-rounded pb-5">            
             <?php dci_get_img($img); ?>
@@ -65,6 +65,7 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <use xlink:href="#it-arrow-right"></use>
             </svg>
         </a>
+            </div>
     </div>
 </div>
 
