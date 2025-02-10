@@ -6,8 +6,9 @@ $img = dci_get_meta('immagine');
 $descrizione_breve = dci_get_meta('descrizione_breve');
 $icon = dci_get_post_type_icon_by_id($post->ID);
 $page = get_page_by_path( dci_get_group($post->post_type) ); 
-
 $argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
+$luoghi = dci_get_meta("luoghi", '_dci_notizia_', $post->ID);
+
 
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
@@ -61,6 +62,10 @@ $page_macro = get_page_by_path($page_macro_slug);
         <p class="text-paragraph-card u-grey-light m-0">
             <?php echo $descrizione_breve ?>
                <hr align="left" size="1" width="200" color="red" noshade>
+                        <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                            Luoghi :  <?php get_template_part("template-parts/single/luoghi"); ?>
+                         <?php }?>
+            
               <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>            
                <hr align="left" size="1" width="200" color="red" noshade>
 
