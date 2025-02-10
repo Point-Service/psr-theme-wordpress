@@ -16,6 +16,7 @@ $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_',
 $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $descrizione_breve = dci_get_meta("descrizione_breve", '_dci_notizia_', $post->ID);
 $argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
+$luoghi = dci_get_meta("luoghi", '_dci_notizia_', $post->ID);
 
 // Popolo schede in evidenza
 //Se non è vuota l'aggiungo
@@ -54,6 +55,16 @@ for ($i = 1; $i <= 20; $i++) {
                                 </a>
                                 <p class="mb-4 font-serif pt-3">
                                     <?php echo $descrizione_breve ?>
+
+ <?php if(is_array($luoghi) && count($luoghi)) { ?>
+   <?php get_template_part("template-parts/single/luoghi"); ?>
+ <?php }?>
+
+
+
+
+
+                                    
                                 </p>
                                Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
