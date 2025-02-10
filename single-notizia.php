@@ -302,18 +302,18 @@ get_header();
                             <?php }?>
                         <p></p>
                             
-                      <?php if(is_array($luoghi) && count($luoghi)) { ?>
-                        <div class="col-12 col-sm-8">
-                         <h6><small>Luoghi</small></h6>
-                          <div class="card card-teaser border rounded shadow p-4 flex-nowrap">
-                            <div class="card-body pe-3">
-                                <p class="card-title text-paragraph-regular-medium-semi mb-3">
-                                    <?php get_template_part("template-parts/single/luoghi"); ?>
-                                </p>
+                          <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                            <div class="col-12 col-sm-8">
+                             <h6><small>Luoghi</small></h6>
+                              <div class="card card-teaser border rounded shadow p-4 flex-nowrap">
+                                <div class="card-body pe-3">
+                                    <p class="card-title text-paragraph-regular-medium-semi mb-3">
+                                        <?php get_template_part("template-parts/single/luoghi"); ?>
+                                    </p>
+                                </div>
+                             </div>
                             </div>
-                         </div>
-                        </div>
-                     <?php }?>
+                         <?php }?>
 
                        </div>
                     </div>
