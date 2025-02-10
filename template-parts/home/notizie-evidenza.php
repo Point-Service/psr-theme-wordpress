@@ -8,10 +8,9 @@ $icon = dci_get_post_type_icon_by_id($post->ID);
 $page = get_page_by_path( dci_get_group($post->post_type) ); 
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
-$data_pubblicazione_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
-$date = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pubblicazione_arr[0], $data_pubblicazione_arr[2]));
-?>
 
+?>
+jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
 <?php if ($img) { ?>
 <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
     <div class="card-image-wrapper with-read-more">
@@ -23,14 +22,6 @@ $date = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pub
             <span class="category fw-semibold" ><?php echo $page->post_title ?></span>           
             </div>
             <h3 class="card-title h5"><?php echo $post->post_title ?></h4>
-dsss
-                              <div class="col-6">
-                                <small>Data:</small>
-                                <p class="fw-semibold font-monospace">
-                                    <?php echo $date; ?>
-                                </p>
-                            </div>
-            
             <p class="card-text text-secondary" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>
         </div>
         <div class="card-image card-image-rounded pb-5">            
@@ -59,13 +50,7 @@ dsss
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
         </div>
         <h3 class="card-title h5">
-            <?php echo $post->post_title ?>fff
-                                          <div class="col-6">
-                                <small>Data:</small>
-                                <p class="fw-semibold font-monospace">
-                                    <?php echo $date; ?>
-                                </p>
-                            </div>
+            <?php echo $post->post_title ?>
         </h3>
         <p class="card-text text-secondary">
             <?php echo $descrizione_breve ?>
