@@ -24,6 +24,7 @@ $page_macro = get_page_by_path($page_macro_slug);
             <span class="category title-xsmall-semi-bold fw-semibold" ><?php echo $page->post_title ?></span>
             </div>
             <p class="card-title text-paragraph-medium u-grey-light"><?php echo $post->post_title ?></p>
+            <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>            
             <div class="card-body pb-5">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>    
                    
         </div>
