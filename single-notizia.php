@@ -302,9 +302,10 @@ get_header();
                             <?php }?>
                            <p></p>                            
                           <?php if(is_array($luoghi) && count($luoghi)) { ?>
-                            <div class="col-12 col-sm-8">
+                            <div class="col-12">
                              <h4 id="Luoghi">Luoghi</h4>
                               <div class="card card-teaser border rounded shadow p-4 flex-nowrap">
+                                  <h6><small>Luoghi collegati alla notizia.</small></h6>
                                 <div class="card-body pe-3">
                                     <p class="card-title text-paragraph-regular-medium-semi mb-3">
                                         <?php get_template_part("template-parts/single/luoghi"); ?>
