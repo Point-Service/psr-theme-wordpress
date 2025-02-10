@@ -36,7 +36,7 @@ $page_macro = get_page_by_path($page_macro_slug);
             <hr class="mb-3" align="left" size="1" width="200" color="red" noshade>
             
             <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>    
-            
+            u
             <!-- Aggiunto margine inferiore al secondo hr -->
             <hr class="mb-3" align="left" size="1" width="200" color="red" noshade>
         </div>
