@@ -46,7 +46,7 @@ for ($i = 1; $i <= 20; $i++) {
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
                                     <?php } ?>
-                                </div>
+                                </div>gggggggg
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                                     <h3 class="card-title">
                                         <?php echo $post->post_title ?>
