@@ -13,11 +13,6 @@ if ($post_id) {
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
     $luoghi = dci_get_meta("luoghi", $prefix, $post->ID); // Recupero dell'array dei luoghi
     
-    // Debug per $luoghi
-    echo '<pre>DEBUG $luoghi: ';
-    print_r($luoghi);
-    echo '</pre>';
-
     // Forziamo $luoghi ad essere un array, se non lo è già
     if (!is_array($luoghi)) {
         $luoghi = [];
