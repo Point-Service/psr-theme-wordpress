@@ -20,67 +20,83 @@ $page_macro = get_page_by_path($page_macro_slug);
     <div class="card-image-wrapper with-read-more">
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
-            <!-- <svg class="icon">
-                <use xlink:href="#<?php #echo $icon ?>"></use>
-            </svg> -->
-            <span class="category title-xsmall-semi-bold fw-semibold" ><?php echo $page->post_title ?></span>
-            <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                  <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
-             <?php } ?>
+                <!-- <svg class="icon">
+                    <use xlink:href="#<?php #echo $icon ?>"></use>
+                </svg> -->
+                <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title; ?></span>
+                
+                <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                    <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+                <?php } ?>
             </div>
-            <p class="card-title text-paragraph-medium u-grey-light"><?php echo $post->post_title ?></p>
-            <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>    
-            <hr align="left" size="1" width="200" color="red" noshade>
+            <p class="card-title text-paragraph-medium u-grey-light"><?php echo $post->post_title; ?></p>
+            <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve; ?></p>    
+            
+            <!-- Aggiunto margine inferiore all'hr -->
+            <hr class="mb-3" align="left" size="1" width="200" color="red" noshade>
+            
             <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>    
-            <hr align="left" size="1" width="200" color="red" noshade>
+            
+            <!-- Aggiunto margine inferiore al secondo hr -->
+            <hr class="mb-3" align="left" size="1" width="200" color="red" noshade>
         </div>
+        
         <div class="card-image card-image-rounded pb-5">            
             <?php dci_get_img($img); ?>
         </div>
-<p></p>
-     <a class="read-more ps-3"
-        href="<?php echo get_permalink($post->ID); ?>"
-        aria-label="Vai alla pagina <?php echo $post->post_title ?>" 
-        title="Vai alla pagina <?php echo $post->post_title ?>">
+
+        <!-- Aggiunto margine superiore al link "Vai alla pagina" -->
+        <a class="read-more ps-3 mt-3" href="<?php echo get_permalink($post->ID); ?>"
+           aria-label="Vai alla pagina <?php echo $post->post_title; ?>"
+           title="Vai alla pagina <?php echo $post->post_title; ?>">
             <span class="text">Vai alla pagina</span>
             <svg class="icon">
                 <use xlink:href="#it-arrow-right"></use>
             </svg>
         </a>
-
     </div>
-   
 </div>
+
 <?php } else { ?>
-    <div class="card card-teaser no-after rounded shadow-sm mb-0 border border-light">
-        <div class="card-body pb-5">
+<div class="card card-teaser no-after rounded shadow-sm mb-0 border border-light">
+    <div class="card-body pb-5">
         <div class="category-top">
-            <!-- <svg class="icon">
-                <use xlink:href="#<?php #echo $icon ?>"></use>
-            </svg> -->
-            <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
-            <?php if (is_array($arrdata) && count($arrdata)) { ?>
-              <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+            <span class="category title-xsmall-semi-bold fw-semibold">
+                <?php echo isset($page->post_title) ? esc_html($page->post_title) : ''; ?>
+            </span>
+            <?php if (!empty($arrdata) && is_array($arrdata) && count($arrdata) >= 3) { ?>
+                <span class="data fw-normal">
+                    <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
+                </span>
             <?php } ?>
         </div>
+        
         <p class="card-title text-paragraph-medium u-grey-light">
-            <?php echo $post->post_title ?>
+            <?php echo isset($post->post_title) ? esc_html($post->post_title) : ''; ?>
         </p>
+
         <p class="text-paragraph-card u-grey-light m-0">
-            <?php echo $descrizione_breve ?>
-               <hr align="left" size="1" width="200" color="red" noshade>
-              <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>            
-               <hr align="left" size="1" width="200" color="red" noshade>
-<p></p>
-            <a class="read-more" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo $post->post_title ?>" title="Vai alla pagina <?php echo $post->post_title ?>">
-                <span class="text">Vai alla pagina</span>
-                <svg class="icon ms-0">
-                    <use xlink:href="#it-arrow-right">                
-                    </use>
-                </svg>
-            </a>
-            
+            <?php echo isset($descrizione_breve) ? esc_html($descrizione_breve) : ''; ?>
+        </p>
+
+        <hr class="divider">
+
+        <div class="card-body">
+            <strong>Argomenti:</strong> 
+            <?php get_template_part("template-parts/common/badges-argomenti"); ?>
         </div>
-       
+        
+        <hr class="divider">
+
+        <a class="read-more" href="<?php echo esc_url(get_permalink($post->ID)); ?>" 
+           aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
+           title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
+            <span class="text">Vai alla pagina</span>
+            <svg class="icon ms-0">
+                <use xlink:href="#it-arrow-right"></use>
+            </svg>
+        </a>
     </div>
+</div>
+
 <?php } ?>
