@@ -128,11 +128,13 @@ get_header();
                                                                     <span class="title-medium">A cura di</span>
                                                                     </a>
                                                                 </li>
+                                                                <?php if(is_array($luoghi) && count($luoghi)) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#Luoghi">
+                                                                    <a class="nav-link" href="#luoghi">
                                                                     <span class="title-medium">Luoghi</span>
                                                                     </a>
                                                                 </li>
+                                                                <?php } ?>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -303,9 +305,9 @@ get_header();
                            <p></p>                            
                           <?php if(is_array($luoghi) && count($luoghi)) { ?>
                             <div class="col-12">
-                             <h4 id="Luoghi">Luoghi</h4>
+                             <h4 id="luoghi">Luoghi</h4>
                               <h6><small>Luoghi collegati alla notizia.</small></h6>
-                              <div class="card card-teaser border rounded shadow p-4 flex-nowrap">                               
+                              <div class="card card-teaser border rounded shadow p-4 flex-nowrap">                              
                                
                                     <div class="card-body pe-3">
                                         <p class="card-title text-paragraph-regular-medium-semi mb-3">
