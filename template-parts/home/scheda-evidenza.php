@@ -87,7 +87,6 @@ $page_macro = get_page_by_path($page_macro_slug);
         </div>
         
         <hr class="divider">
-j
         <a class="read-more ps-3 mt-3" href="<?php echo esc_url(get_permalink($post->ID)); ?>" 
            aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
            title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
