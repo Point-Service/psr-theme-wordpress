@@ -25,6 +25,7 @@ get_header();
             $persone = dci_get_meta("persone", $prefix, $post->ID);
             $descrizione = dci_get_wysiwyg_field("testo_completo", $prefix, $post->ID);
             $documenti = dci_get_meta("documenti", $prefix, $post->ID);
+            $luoghi = dci_get_meta("luoghi", $prefix, $post->ID);
             $allegati = dci_get_meta("allegati", $prefix, $post->ID);
             $datasets = dci_get_meta("dataset", $prefix, $post->ID);
             $a_cura_di = dci_get_meta("a_cura_di", $prefix, $post->ID);
@@ -281,7 +282,7 @@ get_header();
                             </div>
                         </article>
                         <?php } ?>
-                    <article class="it-page-section anchor-offset mt-5">
+                      <article class="it-page-section anchor-offset mt-5">
                         <h4 id="a-cura-di">A cura di</h4>
                         <div class="row">
                         <div class="col-12 col-sm-8">
@@ -290,13 +291,16 @@ get_header();
                                 $with_border = true;
                                 get_template_part("template-parts/unita-organizzativa/card");
                             } ?>
-                        </div>
-                        <?php if(is_array($persone) && count($persone)) { ?>
-                            <div class="col-12 col-sm-4">
-                                <h6><small>Persone</small></h6>
+                            <?php if(is_array($persone) && count($persone)) { ?>
+                            <h3 class="h6">Persone</h3>
                                 <?php get_template_part("template-parts/single/persone"); ?>
-                            </div>
-                        <?php } ?>
+                            <?php }?>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                        <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                            <h3 class="h6">Luoghi</h3>
+                                <?php get_template_part("template-parts/single/luoghi"); ?>
+                            <?php }?>
                         </div>
                     </article>
                     <!-- <article
