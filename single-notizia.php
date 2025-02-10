@@ -122,14 +122,12 @@ get_header();
                                                                     <span class="title-medium">Dataset</span>
                                                                     </a>
                                                                 </li>
-                                                                <?php } ?>
-                                                                <?php if(is_array(a_cura_di) && count(a_cura_di)) { ?>
+                                                                <?php } ?>                                                              
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#a-cura-di">
                                                                     <span class="title-medium">A cura di</span>
                                                                     </a>
-                                                                </li>
-                                                                <?php } ?>                                                                
+                                                                </li>                                                                                                                              
                                                                 <?php if(is_array($luoghi) && count($luoghi)) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#luoghi">
