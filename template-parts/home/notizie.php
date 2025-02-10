@@ -57,12 +57,9 @@ for ($i = 1; $i <= 20; $i++) {
                                 </a>
                                 <p class="mb-4 font-serif pt-3">
                                     <?php echo $descrizione_breve ?>
-
- <?php if(is_array($luoghi) && count($luoghi)) { ?>
-   <?php get_template_part("template-parts/single/luoghi"); ?>
- <?php }?>
-
-      
+                                         <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                                           <?php get_template_part("template-parts/single/luoghi"); ?>
+                                         <?php }?>
                                 </p>
                                Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
