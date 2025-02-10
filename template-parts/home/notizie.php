@@ -11,7 +11,7 @@ if ($post_id) {
     $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
-    $luogo = dci_get_meta("luoghi", $prefix, $post->ID); // Recupero del luogo
+    $luoghi = dci_get_meta("luoghi", $prefix, $post->ID); // Recupero dell'array dei luoghi
 }
 
 $schede = [];
@@ -36,9 +36,9 @@ for ($i = 1; $i <= 20; $i++) {
                                     <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
-                                    <?php } ?>jjj
-                                    <?php if (!empty($luogo)) { ?>
-                                        <span class="luogo fw-normal"> - <?php echo $luogo; ?></span>
+                                    <?php } ?>
+                                    <?php if (is_array($luoghi) && count($luoghi)) { ?>
+                                        <span class="luogo fw-normal"> - <?php echo implode(", ", $luoghi); ?></span>
                                     <?php } ?>
                                 </div>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
@@ -60,6 +60,7 @@ for ($i = 1; $i <= 20; $i++) {
         </div>
     </div>
 </section>
+
 
 
     
