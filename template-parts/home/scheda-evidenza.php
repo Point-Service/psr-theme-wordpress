@@ -9,8 +9,8 @@ $page = get_page_by_path( dci_get_group($post->post_type) );
 $argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
 $luoghi = dci_get_meta("luoghi", '_dci_notizia_', $post->ID);
 
-$data_pubblicazione_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
-$date = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pubblicazione_arr[0], $data_pubblicazione_arr[2]));
+$arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
+$monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
@@ -60,7 +60,7 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
-                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                                    <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
                                     <?php } ?>
         </div>
