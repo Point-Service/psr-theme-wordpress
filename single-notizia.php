@@ -306,6 +306,7 @@ get_header();
                              <h4 id="Luoghi">Luoghi</h4>
                               <div class="card card-teaser border rounded shadow p-4 flex-nowrap">
                                   <h6><small>Luoghi collegati alla notizia.</small></h6>
+                                  <p></p>
                                 <div class="card-body pe-3">
                                     <p class="card-title text-paragraph-regular-medium-semi mb-3">
                                         <?php get_template_part("template-parts/single/luoghi"); ?>
