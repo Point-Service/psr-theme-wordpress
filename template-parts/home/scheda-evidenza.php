@@ -25,9 +25,9 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category title-xsmall-semi-bold fw-semibold" ><?php echo $page->post_title ?></span>
-                              <div class="col-6">
-                                <small <?php echo $date; ?></small>
-                            </div>
+                                    <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                                        <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+                                    <?php } ?>
             </div>
             <p class="card-title text-paragraph-medium u-grey-light"><?php echo $post->post_title ?></p>
             <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>    
@@ -60,9 +60,9 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
-                              <div class="col-6">
-                                <small <?php echo $date; ?></small>
-                            </div>
+                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                                        <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+                                    <?php } ?>
         </div>
         <p class="card-title text-paragraph-medium u-grey-light">
             <?php echo $post->post_title ?>
