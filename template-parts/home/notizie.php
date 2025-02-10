@@ -47,9 +47,23 @@ for ($i = 1; $i <= 20; $i++) {
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal"><?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?></span>
                                     <?php } ?>
-                                    <?php if (count($luoghi)) { ?>
-                                        <span class="luogo fw-normal"> - <?php echo esc_html(implode(", ", $luoghi)); ?></span>
-                                    <?php } ?>
+<?php if (is_array($luoghi) && count($luoghi)) { ?>
+    <span class="luogo fw-normal"> - 
+        <?php 
+        // Recupera il nome del luogo per ogni ID in $luoghi
+        $luoghi_nomi = [];
+        foreach ($luoghi as $luogo_id) {
+            $luogo = get_post($luogo_id); // Ottieni il post associato all'ID
+            if ($luogo) {
+                $luoghi_nomi[] = $luogo->post_title; // Aggiungi il nome del luogo all'array
+            }
+        }
+        
+        // Unisci i nomi dei luoghi con una virgola e mostrali
+        echo implode(", ", $luoghi_nomi);
+        ?>
+    </span>
+<?php } ?>
                                 </div>
                                 <a href="<?php echo esc_url(get_permalink($post->ID)); ?>" class="text-decoration-none">
                                     <h3 class="card-title"><?php echo esc_html($post->post_title); ?></h3>
