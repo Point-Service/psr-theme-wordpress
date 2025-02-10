@@ -57,7 +57,7 @@ for ($i = 1; $i <= 20; $i++) {
                                 </a>
                                 <p class="mb-4 font-serif pt-3">
                                     <?php echo $descrizione_breve ?>
-
+yt
  <?php if(is_array($luoghi) && count($luoghi)) { ?>
    <?php get_template_part("template-parts/single/luoghi"); ?>
  <?php }?>
