@@ -33,7 +33,7 @@ $page_macro = get_page_by_path($page_macro_slug);
             </div>
             <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
             <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo esc_html($descrizione_breve); ?></p>    
-            <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: red; border: none;">
+            <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
             <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>   
             <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
         </div>
