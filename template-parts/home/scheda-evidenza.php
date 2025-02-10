@@ -25,13 +25,16 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category title-xsmall-semi-bold fw-semibold" ><?php echo $page->post_title ?></span>
-                                    <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                                        <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
-                                    <?php } ?>
+            <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                  <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+             <?php } ?>
             </div>
             <p class="card-title text-paragraph-medium u-grey-light"><?php echo $post->post_title ?></p>
             <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>    
             <hr align="left" size="1" width="200" color="red" noshade>
+                          <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                            Luoghi :  <?php get_template_part("template-parts/single/luoghi"); ?>
+                         <?php }?>
             <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>    
             <hr align="left" size="1" width="200" color="red" noshade>
         </div>
@@ -60,9 +63,9 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
-                                    <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                                        <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
-                                    <?php } ?>
+            <?php if (is_array($arrdata) && count($arrdata)) { ?>
+              <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+            <?php } ?>
         </div>
         <p class="card-title text-paragraph-medium u-grey-light">
             <?php echo $post->post_title ?>
