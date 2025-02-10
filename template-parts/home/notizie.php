@@ -11,7 +11,6 @@ if ($post_id) {
     $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
-
 }
 
 $schede = [];
@@ -33,14 +32,15 @@ for ($i = 1; $i <= 20; $i++) {
                                     <svg class="icon icon-sm" aria-hidden="true">
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
-                                    <span class="title-xsmall-semi-bold fw-semibold"><?php echo esc_html($post->post_type) ?></span>
+                                    <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                                        <span class="data fw-normal"><?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?></span>
+                                        <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+                                    <?php } ?>
                                 </div>
-                                <a href="<?php echo esc_url(get_permalink($post->ID)); ?>" class="text-decoration-none">
-                                    <h3 class="card-title"><?php echo esc_html($post->post_title); ?></h3>
+                                <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
+                                    <h3 class="card-title"><?php echo $post->post_title ?></h3>
                                 </a>
-                                <p class="mb-4 font-serif pt-3"><?php echo esc_html($descrizione_breve); ?></p>
+                                <p class="mb-4 font-serif pt-3"><?php echo $descrizione_breve ?></p>
                                 <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
                                 Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
@@ -56,8 +56,6 @@ for ($i = 1; $i <= 20; $i++) {
         </div>
     </div>
 </section>
-
-
 
     
 
