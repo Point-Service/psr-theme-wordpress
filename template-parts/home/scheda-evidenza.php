@@ -32,7 +32,7 @@ $page_macro = get_page_by_path($page_macro_slug);
         <div class="card-image card-image-rounded pb-5">            
             <?php dci_get_img($img); ?>
         </div>
-    </div><div class="card-body pb-5"><p></p>
+    </div>
     <a
     class="read-more ps-3"
     href="<?php echo get_permalink($post->ID); ?>"
@@ -43,7 +43,7 @@ $page_macro = get_page_by_path($page_macro_slug);
         <svg class="icon">
             <use xlink:href="#it-arrow-right"></use>
         </svg>
-    </a></div>
+    </a>
 </div>
 <?php } else { ?>
     <div class="card card-teaser no-after rounded shadow-sm mb-0 border border-light">
@@ -63,12 +63,12 @@ $page_macro = get_page_by_path($page_macro_slug);
               <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>            
                <hr align="left" size="1" width="200" color="red" noshade>
         </div>
-        <div class="card-body pb-5"><p></p>
+       
         <a class="read-more" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo $post->post_title ?>" title="Vai alla pagina <?php echo $post->post_title ?>"
         ><span class="text">Vai alla pagina</span>
         <svg class="icon ms-0">
             <use
             xlink:href="#it-arrow-right"
-            ></use></svg></a></div>
+            ></use></svg></a>
     </div>
 <?php } ?>
