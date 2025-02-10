@@ -59,6 +59,7 @@ $page_macro = get_page_by_path($page_macro_slug);
         </p>
         <p class="text-paragraph-card u-grey-light m-0">
             <?php echo $descrizione_breve ?>
+               <hr align="left" size="1" width="200" color="red" noshade>
               <div class="card-body pb-5">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>            
               
         </div>
