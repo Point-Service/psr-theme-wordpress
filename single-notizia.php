@@ -128,6 +128,11 @@ get_header();
                                                                     <span class="title-medium">A cura di</span>
                                                                     </a>
                                                                 </li>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#Luoghi">
+                                                                    <span class="title-medium">Luoghi</span>
+                                                                    </a>
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -298,7 +303,7 @@ get_header();
                         <p></p>
                         <div class="col-12 col-sm-4">
                           <?php if(is_array($luoghi) && count($luoghi)) { ?>
-                            <h3 class="h6">Luoghi</h3>
+                            <h4 id="Luoghi">Luoghi</h4>
                                 <?php get_template_part("template-parts/single/luoghi"); ?>
                             <?php }?>
                         </div>
