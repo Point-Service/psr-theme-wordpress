@@ -47,8 +47,7 @@ for ($i = 1; $i <= 20; $i++) {
                                     <svg class="icon icon-sm" aria-hidden="true">
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
-                                    <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
-                                    <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
+                                    <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>                         
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
                                     <?php } ?>
