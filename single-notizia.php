@@ -300,8 +300,7 @@ get_header();
                             <h3 class="h6">Persone</h3>
                                 <?php get_template_part("template-parts/single/persone"); ?>
                             <?php }?>
-                        <p></p>
-                            
+                           <p></p>                            
                           <?php if(is_array($luoghi) && count($luoghi)) { ?>
                             <div class="col-12 col-sm-8">
                              <h4 id="Luoghi">Luoghi</h4>
