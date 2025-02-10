@@ -8,8 +8,8 @@ $icon = dci_get_post_type_icon_by_id($post->ID);
 $page = get_page_by_path( dci_get_group($post->post_type) ); 
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
-$arrdata= dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
-$monthName= date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+$data_pubblicazione_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
+$date = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pubblicazione_arr[0], $data_pubblicazione_arr[2]));
 ?>
 
 <?php if ($img) { ?>
@@ -21,7 +21,12 @@ $monthName= date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category fw-semibold" ><?php echo $page->post_title ?></span>
-             <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
+                              <div class="col-6">
+                                <small>Data:</small>
+                                <p class="fw-semibold font-monospace">
+                                    <?php echo $date; ?>
+                                </p>
+                            </div>
             </div>
             <h3 class="card-title h5"><?php echo $post->post_title ?></h4>
             <p class="card-text text-secondary" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>
@@ -50,7 +55,12 @@ $monthName= date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
-            <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
+                            <div class="col-6">
+                                <small>Data:</small>
+                                <p class="fw-semibold font-monospace">
+                                    <?php echo $date; ?>
+                                </p>
+                            </div>
         </div>
         <h3 class="card-title h5">
             <?php echo $post->post_title ?>
