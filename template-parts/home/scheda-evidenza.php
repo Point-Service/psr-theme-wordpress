@@ -59,7 +59,7 @@ $page_macro = get_page_by_path($page_macro_slug);
         <a class="read-more ps-3" href="<?php echo get_permalink($post->ID); ?>"
            aria-label="Vai alla pagina <?php echo $post->post_title; ?>"
            title="Vai alla pagina <?php echo $post->post_title; ?>"
-           style="display: inline-flex; align-items: center; margin-top: 30px;">
+           style="display: inline-flex; align-items: center; margin-top: 60px;">
             <span class="text">Vai alla pagina</span>
             <svg class="icon">
                 <use xlink:href="#it-arrow-right"></use>
