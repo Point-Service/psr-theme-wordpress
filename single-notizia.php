@@ -301,12 +301,16 @@ get_header();
                                 <?php get_template_part("template-parts/single/persone"); ?>
                             <?php }?>
                         <p></p>
-                        <div class="col-12 col-sm-4">
-                          <?php if(is_array($luoghi) && count($luoghi)) { ?>
-                            <h4 id="Luoghi">Luoghi</h4>
-                                <?php get_template_part("template-parts/single/luoghi"); ?>
-                            <?php }?>
+                      <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                        <div class="card card-teaser card-teaser-info rounded shadow-sm p-3 flex-nowrap">
+                            <div class="card-body pe-3">
+                                <p class="card-title text-paragraph-regular-medium-semi mb-3">
+                                    <?php get_template_part("template-parts/single/luoghi"); ?>
+                                </p>
+                            </div>
                         </div>
+                        <?php }?>
+
                        </div>
                     </div>
                     </article>
