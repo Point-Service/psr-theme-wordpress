@@ -46,7 +46,7 @@ for ($i = 1; $i <= 20; $i++) {
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
                                     <?php } ?>
-                                </div>gggggggg
+                                </div>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                                     <h3 class="card-title">
                                         <?php echo $post->post_title ?>
@@ -55,7 +55,7 @@ for ($i = 1; $i <= 20; $i++) {
                                 <p class="mb-4 font-serif pt-3">
                                     <?php echo $descrizione_breve ?>
                                 </p>
-                                <?php get_template_part("template-parts/common/badges-argomenti"); ?>
+                               Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
                         </div>
                     </div>
