@@ -63,6 +63,7 @@ for ($i = 1; $i <= 20; $i++) {
                                   <?php if(is_array($luoghi) && count($luoghi)) { ?>
                                            <?php get_template_part("template-parts/single/luoghi"); ?>
                                   <?php }?>
+                               fffffffffff
                                Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
                         </div>
