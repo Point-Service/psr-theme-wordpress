@@ -309,7 +309,7 @@ get_header();
                                 </p>
                             </div>
                         </div>
-                        <?php }?>
+                     <?php }?>
 
                        </div>
                     </div>
