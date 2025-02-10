@@ -23,6 +23,7 @@ $page_macro = get_page_by_path($page_macro_slug);
             </div>
             <h3 class="card-title h5"><?php echo $post->post_title ?></h4>
             <p class="card-text text-secondary" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>
+             Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
         </div>
         <div class="card-image card-image-rounded pb-5">            
             <?php dci_get_img($img); ?>
