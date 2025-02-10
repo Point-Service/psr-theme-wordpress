@@ -11,12 +11,7 @@ if ($post_id) {
     $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
-    $luoghi = dci_get_meta("luoghi", $prefix, $post->ID); // Recupero dell'array dei luoghi
-    
-    // Forziamo $luoghi ad essere un array, se non lo è già
-    if (!is_array($luoghi)) {
-        $luoghi = [];
-    }
+
 }
 
 $schede = [];
@@ -41,24 +36,6 @@ for ($i = 1; $i <= 20; $i++) {
                                     <span class="title-xsmall-semi-bold fw-semibold"><?php echo esc_html($post->post_type) ?></span>
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal"><?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?></span>
-                                    <?php } ?>
-<?php if (is_array($luoghi) && count($luoghi)) { ?>
-    <span class="luogo fw-normal"> - 
-        <?php 
-        // Recupera il nome del luogo per ogni ID in $luoghi
-        $luoghi_nomi = [];
-        foreach ($luoghi as $luogo_id) {
-            $luogo = get_post($luogo_id); // Ottieni il post associato all'ID
-            if ($luogo) {
-                $luoghi_nomi[] = $luogo->post_title; // Aggiungi il nome del luogo all'array
-            }
-        }
-        
-        // Unisci i nomi dei luoghi con una virgola e mostrali
-        echo implode(", ", $luoghi_nomi);
-        ?>
-    </span>
-<?php } ?>
                                 </div>
                                 <a href="<?php echo esc_url(get_permalink($post->ID)); ?>" class="text-decoration-none">
                                     <h3 class="card-title"><?php echo esc_html($post->post_title); ?></h3>
