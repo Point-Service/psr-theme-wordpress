@@ -295,13 +295,14 @@ get_header();
                             <h3 class="h6">Persone</h3>
                                 <?php get_template_part("template-parts/single/persone"); ?>
                             <?php }?>
-                        </div>
+                        
                         <div class="col-12 col-sm-4">
-                        <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                          <?php if(is_array($luoghi) && count($luoghi)) { ?>
                             <h3 class="h6">Luoghi</h3>
                                 <?php get_template_part("template-parts/single/luoghi"); ?>
                             <?php }?>
                         </div>
+                       </div>
                     </article>
                     <!-- <article
                         id="ulteriori-informazioni"
