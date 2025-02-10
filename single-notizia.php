@@ -123,11 +123,13 @@ get_header();
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
+                                                                <?php if(is_array(a_cura_di) && count(a_cura_di)) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#a-cura-di">
                                                                     <span class="title-medium">A cura di</span>
                                                                     </a>
                                                                 </li>
+                                                                <?php } ?>                                                                
                                                                 <?php if(is_array($luoghi) && count($luoghi)) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#luoghi">
