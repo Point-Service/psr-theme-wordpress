@@ -7,7 +7,7 @@ $descrizione_breve = dci_get_meta('descrizione_breve');
 $icon = dci_get_post_type_icon_by_id($post->ID);
 $page = get_page_by_path( dci_get_group($post->post_type) ); 
 $argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
-$luogo_notizia = dci_get_meta("luogo", '_dci_notizia_', $post->ID); // Recupera il luogo della notizia
+$luogo_notizia = dci_get_meta("luoghi", '_dci_notizia_', $post->ID); // Recupera il luogo della notizia
 
 $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
 $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
