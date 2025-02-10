@@ -40,7 +40,7 @@ $page_macro = get_page_by_path($page_macro_slug);
             </p>    
 
             <!-- Aggiunto spazio sotto la riga per evitare sovrapposizioni -->
-            <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
+            <hr style="margin-bottom: 20px; width: 100px; height: 1px; background-color: grey; border: none;">
 
             <div class="card-body">
                 <strong>Argomenti:</strong> 
@@ -48,7 +48,7 @@ $page_macro = get_page_by_path($page_macro_slug);
             </div>   
 
             <!-- Aggiunto spazio sotto la seconda riga -->
-            <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
+            <hr style="margin-bottom: 40px; width: 100px; height: 1px; background-color: grey; border: none;">
         </div>
         
         <div class="card-image card-image-rounded pb-5">            
