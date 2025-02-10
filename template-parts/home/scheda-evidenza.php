@@ -25,7 +25,8 @@ $page_macro = get_page_by_path($page_macro_slug);
             </div>
             <p class="card-title text-paragraph-medium u-grey-light"><?php echo $post->post_title ?></p>
             <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>
-           <div> <p></p>Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?><p></p></div>
+            <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></p>
+           
         </div>
         <div class="card-image card-image-rounded pb-5">            
             <?php dci_get_img($img); ?>
