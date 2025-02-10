@@ -20,6 +20,8 @@ $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
 $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
 $luoghi = dci_get_meta("luoghi", $prefix, $post->ID);
 
+
+
 // Popolo schede in evidenza
 //Se non è vuota l'aggiungo
 $schede = [];
@@ -46,6 +48,7 @@ for ($i = 1; $i <= 20; $i++) {
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
                                     <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
+                                    <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
                                     <?php } ?>
@@ -61,10 +64,7 @@ for ($i = 1; $i <= 20; $i++) {
                                            <?php get_template_part("template-parts/single/luoghi"); ?>
                                          <?php }?>
                                 </p>
-                                
-                             <?php if(is_array($luoghi) && count($luoghi)) { ?>
-                                Luoghi :  <?php get_template_part("template-parts/single/luoghi"); ?>
-                             <?php }?>
+
                                Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
                         </div>
