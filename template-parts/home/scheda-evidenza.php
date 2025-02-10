@@ -26,10 +26,7 @@ $page_macro = get_page_by_path($page_macro_slug);
             </svg> -->
             <span class="category title-xsmall-semi-bold fw-semibold" ><?php echo $page->post_title ?></span>
                               <div class="col-6">
-                                <small>Data:</small>
-                                <p class="fw-semibold font-monospace">
-                                    <?php echo $date; ?>
-                                </p>
+                                <small <?php echo $date; ?></small>
                             </div>
             </div>
             <p class="card-title text-paragraph-medium u-grey-light"><?php echo $post->post_title ?></p>
@@ -63,11 +60,8 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
-                                          <div class="col-6">
-                                <small>Data:</small>
-                                <p class="fw-semibold font-monospace">
-                                    <?php echo $date; ?>
-                                </p>
+                              <div class="col-6">
+                                <small <?php echo $date; ?></small>
                             </div>
         </div>
         <p class="card-title text-paragraph-medium u-grey-light">
