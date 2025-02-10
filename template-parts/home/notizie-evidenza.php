@@ -8,7 +8,6 @@ $icon = dci_get_post_type_icon_by_id($post->ID);
 $page = get_page_by_path( dci_get_group($post->post_type) ); 
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
-$luoghi = dci_get_meta("luoghi", '_dci_notizia_', $post->ID);
 ?>
 
 <?php if ($img) { ?>
@@ -55,9 +54,6 @@ $luoghi = dci_get_meta("luoghi", '_dci_notizia_', $post->ID);
         <p class="card-text text-secondary">
             <?php echo $descrizione_breve ?>
         </p>
-                                         <?php if(is_array($luoghi) && count($luoghi)) { ?>
-                                Luoghi :  <?php get_template_part("template-parts/single/luoghi"); ?>
-                             <?php }?>
         </div>
         <a class="read-more" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo $post->post_title ?>" title="Vai alla pagina <?php echo $post->post_title ?>"
         ><span class="text">Vai alla pagina</span>
