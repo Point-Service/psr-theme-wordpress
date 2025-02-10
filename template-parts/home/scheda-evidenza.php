@@ -56,8 +56,8 @@ $page_macro = get_page_by_path($page_macro_slug);
             <?php echo $post->post_title ?>
         </p>
         <p class="text-paragraph-card u-grey-light m-0">
-            <?php echo $descrizione_breve ?>        
-             <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?><p>Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></p></p>
+            <?php echo $descrizione_breve ?>
+            Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
         </div>
         <a class="read-more" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo $post->post_title ?>" title="Vai alla pagina <?php echo $post->post_title ?>"
         ><span class="text">Vai alla pagina</span>
