@@ -303,6 +303,7 @@ get_header();
                             <?php }?>
                         </div>
                        </div>
+                    </div>
                     </article>
                     <!-- <article
                         id="ulteriori-informazioni"
