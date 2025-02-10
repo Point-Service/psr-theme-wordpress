@@ -6,7 +6,7 @@ $img = dci_get_meta('immagine');
 $descrizione_breve = dci_get_meta('descrizione_breve');
 $icon = dci_get_post_type_icon_by_id($post->ID);
 $page = get_page_by_path( dci_get_group($post->post_type) ); 
-$argomenti = dci_get_meta("argomenti");
+$argomenti = dci_get_meta("argomenti", $post->ID);
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
 ?>
