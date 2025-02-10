@@ -295,7 +295,7 @@ get_header();
                             <h3 class="h6">Persone</h3>
                                 <?php get_template_part("template-parts/single/persone"); ?>
                             <?php }?>
-                        
+                        <p></p>
                         <div class="col-12 col-sm-4">
                           <?php if(is_array($luoghi) && count($luoghi)) { ?>
                             <h3 class="h6">Luoghi</h3>
