@@ -21,6 +21,7 @@ $date = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pub
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
             <span class="category fw-semibold" ><?php echo $page->post_title ?></span>
+                nnnnn
                               <div class="col-6">
                                 <small>Data:</small>
                                 <p class="fw-semibold font-monospace">
