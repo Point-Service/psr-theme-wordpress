@@ -63,7 +63,6 @@ $page_macro = get_page_by_path($page_macro_slug);
                <hr align="left" size="1" width="200" color="red" noshade>
               <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>            
                <hr align="left" size="1" width="200" color="red" noshade>
-<p></p>
 
             <a class="read-more" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo $post->post_title ?>" title="Vai alla pagina <?php echo $post->post_title ?>">
                 <span class="text">Vai alla pagina</span>
