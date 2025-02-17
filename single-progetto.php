@@ -126,7 +126,7 @@ get_header();
                                                                 <?php if(isset($modalita_accesso) AND !empty($modalita_accesso)){ ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#modalita">
-                                                                    <span class="title-medium">ModalitÃ  di Accesso al Finanziamento</span>
+                                                                    <span class="title-medium">Modalità di Accesso al Finanziamento</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php }?>
@@ -223,7 +223,7 @@ get_header();
                    
                     <?php if(isset($modalita_accesso) AND !empty($modalita_accesso)){?>
                         <article class="it-page-section anchor-offset" data-audio>                        
-                            <h4 id="modalita">ModalitÃ  di Accesso al Finanziamento</h4>
+                            <h4 id="modalita">Modalità di Accesso al Finanziamento</h4>
                             <div class="richtext-wrapper lora">
                                 <?= $modalita_accesso; ?>
                             </div>
@@ -234,7 +234,7 @@ get_header();
                     
                     <?php if(isset($attivita_finanziata)AND !empty($attivita_finanziata)){?>
                         <article class="it-page-section anchor-offset" data-audio>                        
-                            <h4 id="attivita">ModalitÃ  di Accesso al Finanziamento</h4>
+                            <h4 id="attivita">Modalità di Accesso al Finanziamento</h4>
                             <div class="richtext-wrapper lora">
                                 <?= $attivita_finanziata; ?>
                             </div>
@@ -332,7 +332,7 @@ get_header();
                         <h4 id="a-cura-di">A cura di</h4>
                         <div class="row">
                         <div class="col-12 col-sm-8">
-                            <h6><small>Questa pagina Ã¨ gestita da</small></h6>
+                            <h6><small>Questa pagina è gestita da</small></h6>
                             <?php foreach ($a_cura_di as $uo_id) {
                                 $with_border = true;
                                 get_template_part("template-parts/unita-organizzativa/card");
