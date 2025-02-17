@@ -50,8 +50,8 @@ $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
                 </p>
                 <a class="read-more t-primary text-uppercase"
                     href="<?php echo get_permalink($post->ID); ?>"
-                    aria-label="Leggi di piÃ¹ sulla pagina di <?php echo $post->post_title ?>">
-                    <span class="text">Leggi di piÃ¹</span>
+                    aria-label="Leggi di più sulla pagina di <?php echo $post->post_title ?>">
+                    <span class="text">Leggi di più</span>
                     <span class="visually-hidden"></span>
                     <svg class="icon icon-primary icon-xs ml-10">
                         <use href="#it-arrow-right"></use>
