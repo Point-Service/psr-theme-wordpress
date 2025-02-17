@@ -20,7 +20,6 @@ if(isset($_GET["post_terms"]))
     <h2 class="visually-hidden" id="filter">filtri da applicare</h2>
     <fieldset>
         <div class="categoy-list pb-4">
-            </div>
             <legend class="h6 text-uppercase category-list__title">Tipologie</legend>
             <ul>
                 <?php 
@@ -52,7 +51,6 @@ if(isset($_GET["post_terms"]))
     </fieldset>    
     <fieldset>
         <div class="categoy-list pb-4">
-            </div>
             <legend class="h6 text-uppercase category-list__title">Argomenti</legend>
             <ul>
                 <?php 
@@ -85,4 +83,3 @@ if(isset($_GET["post_terms"]))
         </div>
     </fieldset>   
 </div>
-
