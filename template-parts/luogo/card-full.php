@@ -1,7 +1,6 @@
 <?php
 global $post;
 
-
 $prefix = '_dci_luogo_';
 $img = dci_get_meta('immagine', $prefix, $post->ID);
 $descrizione = dci_get_meta('descrizione_breve', $prefix, $post->ID);
@@ -41,8 +40,8 @@ $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
                 </p>
                 <a
                     class="read-more t-primary text-uppercase cmp-list-card-img__body-link"
-                    href="<?php echo get_permalink($post->ID); ?>" aria-label="Leggi di più sulla pagina di <?php echo $post->post_title ?>">
-                    <span class="text">Leggi di più</span>
+                    href="<?php echo get_permalink($post->ID); ?>" aria-label="Leggi di piÃ¹ sulla pagina di <?php echo $post->post_title ?>">
+                    <span class="text">Leggi di piÃ¹</span>
                     <span class="visually-hidden"
                     ></span
                     >
@@ -55,3 +54,4 @@ $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
         </div>
     </div>
 </div>
+
