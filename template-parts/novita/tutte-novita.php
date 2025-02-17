@@ -32,7 +32,7 @@ global $the_query, $load_posts, $load_card_type;
         <button type="submit" class="d-none"></button>
         <div class="container">
             <h2 class="title-xxlarge mb-4">
-                Esplora tutte le novitÃ 
+                Esplora tutte le novità
             </h2>
             <div>
                 <div class="cmp-input-search">
