@@ -4,15 +4,23 @@
     ));
 
     if (!is_wp_error($tipologie) && !empty($tipologie)) {
-?>test
+?>
 <div class="container py-5" id="tipologia">
     <h2 class="title-xxlarge mb-4">Esplora per categoria</h2>
     <div class="row g-4">       
         <?php foreach ($tipologie as $tipologia) { 
             if ($tipologia->count > 0) {
-                // Ottieni il link del termine e controlla se è valido
+                // Ottieni il link del termine
                 $term_link = get_term_link($tipologia->term_id);
-                $is_valid_link = !is_wp_error($term_link);
+
+                // Verifica che non ci siano errori con il link
+                if (!is_wp_error($term_link)) {
+                    // Effettua una richiesta HEAD per verificare se il link esiste
+                    $response = wp_remote_head($term_link);
+                    $is_valid_link = !is_wp_error($response) && wp_remote_retrieve_response_code($response) == 200;
+                } else {
+                    $is_valid_link = false;
+                }
         ?>
         <div class="col-md-6 col-xl-4">
             <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
