@@ -44,7 +44,7 @@ function dci_register_post_type_evento() {
 add_action( 'edit_form_after_title', 'dci_evento_add_content_after_title' );
 function dci_evento_add_content_after_title($post) {
     if($post->post_type == "evento")
-        _e('<span><i>il <b>Titolo</b> Ã¨ il <b>Nome dell\'Evento</b>.</i></span><br><br>', 'design_comuni_italia' );
+        _e('<span><i>il <b>Titolo</b> è il <b>Nome dell\'Evento</b>.</i></span><br><br>', 'design_comuni_italia' );
 }
 
 /**
@@ -166,7 +166,7 @@ function dci_add_eventi_metaboxes() {
     //COS'E'
     $cmb_descrizione = new_cmb2_box( array(
         'id'           => $prefix . 'box_descrizione',
-        'title'        => __( 'Cos\'Ã¨', 'design_comuni_italia' ),
+        'title'        => __( 'Cos\'è', 'design_comuni_italia' ),
         'object_types' => array( 'evento' ),
         'context'      => 'normal',
         'priority'     => 'high',
@@ -189,7 +189,7 @@ function dci_add_eventi_metaboxes() {
 
     $cmb_descrizione->add_field( array(
         'id' => $prefix . 'a_chi_e_rivolto',
-        'name'        => __( 'A chi Ã¨ rivolto *', 'design_comuni_italia' ),
+        'name'        => __( 'A chi è rivolto *', 'design_comuni_italia' ),
         'desc' => __( 'Descrizione testuale dei principali destinatari dell\'Evento' , 'design_comuni_italia' ),
         'type'    => 'wysiwyg',
         'attributes'    => array(
@@ -225,7 +225,7 @@ function dci_add_eventi_metaboxes() {
     $cmb_gallerie_multimediali->add_field( array(
         'id'         => $prefix . 'gallery',
         'name'       => __( 'Galleria di immagini', 'design_comuni_italia' ),
-        'desc'       => __( 'Una o piÃ¹ immagini corredate da didascalie', 'design_comuni_italia' ),
+        'desc'       => __( 'Una o più immagini corredate da didascalie', 'design_comuni_italia' ),
         'type' => 'file_list',
         'query_args' => array( 'type' => 'image' ),
     ) );
@@ -233,7 +233,7 @@ function dci_add_eventi_metaboxes() {
     $cmb_gallerie_multimediali->add_field( array(
         'id'         => $prefix . 'video',
         'name'       => __( 'Video', 'design_comuni_italia' ),
-        'desc'       => __( 'Un video rappresentativo dell\'evento (Ã¨ possibile insirerire un url esterno).', 'design_comuni_italia' ),
+        'desc'       => __( 'Un video rappresentativo dell\'evento (è possibile insirerire un url esterno).', 'design_comuni_italia' ),
         'type' => 'file',
         'query_args' => array( 'type' => 'video' ),
     ) );
@@ -357,11 +357,11 @@ function dci_add_eventi_metaboxes() {
     $cmb_informazioni->add_field( array(
         'id' => $prefix . 'organizzatore',
         'name'    => __( 'Organizzato da ', 'design_comuni_italia' ),
-        'desc' => __( 'Relazione con le unitÃ  organizzative che organizzano l\'evento, se presenti' , 'design_comuni_italia' ),
+        'desc' => __( 'Relazione con le unità organizzative che organizzano l\'evento, se presenti' , 'design_comuni_italia' ),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('unita_organizzativa'),
         'attributes' => array(
-            'placeholder' =>  __( 'Seleziona le UnitÃ  Organizzative', 'design_comuni_italia' ),
+            'placeholder' =>  __( 'Seleziona le Unità Organizzative', 'design_comuni_italia' ),
         ),
     ) );
 
