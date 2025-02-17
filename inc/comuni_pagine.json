@@ -140,10 +140,9 @@
           "description": "I valori dell'Ente.",
           "template_name": "",
           "children": {}
-        }      
+        }        
       }
     },
-    
     "Argomenti": {
       "title": "Argomenti",
       "slug": "argomenti",
@@ -164,6 +163,14 @@
       "description": "Un servizio aperto a tutti i cittadini per segnalare disservizi, guasti e criticità rilevati sul territorio comunale.",
       "template_name": "segnala-disservizio",
       "children": {}
-    }
+    },
+    "Progetti PNRR": {
+          "title": "Progetti PNRR",
+          "slug": "progetti",
+          "description": "Elenco dei progetti PNRR del comune",
+          "template_name": "progetti",
+          "children": {}
+        }
   }
 }
+
