@@ -21,7 +21,7 @@ function dci_register_post_type_progetto() {
         'hierarchical'  => false,
         'public'        => true,
         'menu_position' => 5,
-        'menu_icon'     => 'dashicons-media-default',
+        'menu_icon'     => 'dashicons-media-interactive',
         'has_archive'   => false,
         'rewrite' => array('slug' => 'progetti','with_front' => false),
         'map_meta_cap'    => true,
