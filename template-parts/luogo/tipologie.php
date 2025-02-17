@@ -6,7 +6,7 @@
 
     // Verifica che non sia un errore e che ci siano termini
     if (!is_wp_error($tipologie) && !empty($tipologie)) {
-?>
+?>nnnnnnnnnnnnnnnnnn
 <div class="container py-5" id="tipologia">
     <h2 class="title-xxlarge mb-4">Esplora per categoria</h2>
     <div class="row g-4">       
