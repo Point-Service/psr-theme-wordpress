@@ -1,10 +1,8 @@
 <?php
-    // Ottieni i termini con un controllo di errore
     $tipologie = get_terms('tipi_luogo', array(
         'hide_empty' => false,
     ));
 
-    // Verifica che non sia un errore e che ci siano termini
     if (!is_wp_error($tipologie) && !empty($tipologie)) {
 ?>
 <div class="container py-5" id="tipologia">
@@ -12,14 +10,23 @@
     <div class="row g-4">       
         <?php foreach ($tipologie as $tipologia) { 
             if ($tipologia->count > 0) {
+                // Ottieni il link del termine e controlla se è valido
+                $term_link = get_term_link($tipologia->term_id);
+                $is_valid_link = !is_wp_error($term_link);
         ?>
         <div class="col-md-6 col-xl-4">
             <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
               <div class="card shadow-sm rounded">
                 <div class="card-body">
-                    <a class="text-decoration-none" href="<?php echo get_term_link($tipologia->term_id); ?>" data-element="news-category-link">
+                    <?php if ($is_valid_link) { ?>
+                        <!-- Link cliccabile se la pagina esiste -->
+                        <a class="text-decoration-none" href="<?php echo esc_url($term_link); ?>" data-element="news-category-link">
+                            <h3 class="card-title t-primary title-xlarge"><?php echo ucfirst($tipologia->name); ?></h3>
+                        </a>
+                    <?php } else { ?>
+                        <!-- Testo non cliccabile se la pagina non esiste -->
                         <h3 class="card-title t-primary title-xlarge"><?php echo ucfirst($tipologia->name); ?></h3>
-                    </a>
+                    <?php } ?>
                     <p class="titillium text-paragraph mb-0 description">
                         <?php echo $tipologia->description; ?>
                     </p>
