@@ -42,7 +42,7 @@ if(!function_exists("dci_argomenti_array")){
             'Lavoro',
             'Matrimonio',
             'Mercato',
-            'MobilitÃ  sostenibile' ,
+            'Mobilità sostenibile' ,
             'Morte',
             'Nascita',
             'Parcheggi',
@@ -74,7 +74,7 @@ if(!function_exists("dci_argomenti_array")){
 }
 
 /**
- * Classificazione multi livello dei tipi di UnitÃ  organizzativa che distingue tra macro ambiti di un'amministrazione locale
+ * Classificazione multi livello dei tipi di Unità organizzativa che distingue tra macro ambiti di un'amministrazione locale
  */
 if(!function_exists("dci_tipi_unita_organizzativa_array")){
     function dci_tipi_unita_organizzativa_array() {
@@ -118,7 +118,7 @@ if(!function_exists("dci_categorie_servizio_array")){
             'Educazione e formazione',
             'Giustizia e sicurezza pubblica',
             'Imprese e commercio',
-            'MobilitÃ  e trasporti',
+            'Mobilità e trasporti',
             'Salute, benessere e assistenza',
             'Tributi, finanze e contravvenzioni',
             'Turismo',
@@ -165,8 +165,8 @@ if(!function_exists("dci_temi_dataset_array")){
             'salute',
             'tematiche internazionali',
             'giustizia, sistema giuridico e sicurezza pubblica',
-            'popolazione e societÃ ',
-            'regioni e cittÃ ',
+            'popolazione e società',
+            'regioni e città',
             'scienza e tecnologia',
             'trasporti',
         ];
@@ -272,8 +272,8 @@ if(!function_exists("dci_tipi_doc_albo_pretorio_array")){
                 ]
             ],
             'Atto dello stato civile' => [
-                'Provvedimento di cancellazione per irreperibilitÃ ' => [
-                    'Provvedimento di cancellazione per irreperibilitÃ '
+                'Provvedimento di cancellazione per irreperibilità' => [
+                    'Provvedimento di cancellazione per irreperibilità'
                 ],
                 'Pubblicazione cambio nome' => [
                     'Pubblicazione cambio nome'
@@ -309,8 +309,8 @@ if(!function_exists("dci_tipi_doc_albo_pretorio_array")){
 if(!function_exists("dci_eventi_vita_persone_array")){
     function dci_eventi_vita_persone_array() {
         $eventi_vita_persone_arr = [
-            'Iscrizione Scuola/UniversitÃ  e/o richiesta borsa di studio',
-            'InvaliditÃ ',
+            'Iscrizione Scuola/Università e/o richiesta borsa di studio',
+            'Invalidità',
             'Ricerca di lavoro, avvio nuovo lavoro, disoccupazione',
             'Pensionamento',
             'Richiesta o rinnovo patente',
@@ -322,7 +322,7 @@ if(!function_exists("dci_eventi_vita_persone_array")){
             'Richiesta passaporto, visto e assistenza viaggi internazionali',
             'Nascita di un bambino, richiesta adozioni',
             'Matrimonio e/o cambio stato civile',
-            'Morte ed ereditÃ ',
+            'Morte ed eredità',
             'Prenotazione e disdetta visite/esami',
             'Denuncia crimini',
             'Dichiarazione dei redditi, versamento e riscossione tributi/imposte e contributi',
@@ -340,15 +340,15 @@ if(!function_exists("dci_eventi_vita_impresa_array")){
     function dci_eventi_vita_impresa_array() {
         $eventi_vita_impresa_arr = [
             'Avvio impresa',
-            'Avvio nuova attivitÃ  professionale',
+            'Avvio nuova attività professionale',
             'Richiesta licenze, permessi e certificati',
             'Registrazione impresa transfrontaliera',
             'Avviso e registrazione filiale',
             'Finanziamento impresa',
             'Gestione personale',
             'Pagamento iva, tasse e dogane',
-            'Notifiche autoritÃ ',
-            'Chiusura impresa e attivitÃ  professionale',
+            'Notifiche autorità',
+            'Chiusura impresa e attività professionale',
             'Chiusura filiale',
             'Ristrutturazione impresa',
             'Vendita impresa',
@@ -360,7 +360,7 @@ if(!function_exists("dci_eventi_vita_impresa_array")){
 }
 
 /**
- *Classificazione multi livello dei Tipi di incarico che una persona puÃ² ricoprire presso un'amministrazione locale
+ *Classificazione multi livello dei Tipi di incarico che una persona può ricoprire presso un'amministrazione locale
  */
 if(!function_exists("dci_tipi_incarico_array")){
     function dci_tipi_incarico_array() {
@@ -384,7 +384,7 @@ if(!function_exists("dci_stati_pratica_array")){
             ],
             'Processo in corso',
             'Processo sospeso' => [
-                'Si richiede unâ€™azione da parte dell\'utente',
+                'Si richiede un’azione da parte dell\'utente',
                 'Si richiede un\'azione da parte della Pubblica Amministrazione'
             ],
             'Processo concluso' => [
@@ -413,9 +413,9 @@ if(!function_exists("dci_tipi_notizia_array")){
 if(!function_exists("dci_tipi_progetto_array")){
     function dci_tipi_progetto_array() {
         $tipi_progetto_arr = [
-            'M1 - Digitalizzazione, innovazione, competitivitÃ  e cultura',
+            'M1 - Digitalizzazione, innovazione, competitività e cultura',
             'M2 - Rivoluzione verde e transizione ecologica',
-            'M3 - Infrastrutture per una mobilitÃ  sostenibile',
+            'M3 - Infrastrutture per una mobilità sostenibile',
             'M4 - Istruzione e ricerca',
             'M5 - Inclusione e coesione',
             'M6 - Salute',
@@ -461,7 +461,7 @@ if(!function_exists("dci_luoghi_array")){
                 'Planetario',
                 'Scuola',
                 'Teatro',
-                'UniversitÃ /FacoltÃ ',
+                'Università/Facoltà',
                 'Parco Archeologico',
             ],
             'Edificio di culto'=>[
@@ -501,7 +501,7 @@ if(!function_exists("dci_luoghi_array")){
             'Bellezza naturale' => [
                 'Costa marittima',
                 'Lago',
-                'Corso dâ€™acqua',
+                'Corso d’acqua',
                 'Montagna',
                 'Ghiacciaio',
                 'Riserva Naturale',
@@ -513,7 +513,7 @@ if(!function_exists("dci_luoghi_array")){
                 'Piscina',
                 'Stadio',
                 'Terme',
-                'CasinÃ²',
+                'Casinò',
                 'Circolo sportivo',
                 'Piazza'
             ],
@@ -591,7 +591,7 @@ if(!function_exists("dci_tipi_evento_array")){
                     'Riunione esperti',
                     'Hackathon / Datathon'
                 ],
-                'Raduno di comunitÃ ' => [
+                'Raduno di comunità' => [
                     'Sfilata',
                     'Sagra',
                     'Torneo storico o Palio',
@@ -622,7 +622,7 @@ if(!function_exists("dci_tipi_evento_array")){
                     'Esposizione o Esposizione globale'
                 ],
                 'Riunione d\'affari' => [
-                    'Riunione dâ€™affari',
+                    'Riunione d’affari',
                     'Convention',
                     'Tavola rotonda'
                 ],
@@ -635,7 +635,7 @@ if(!function_exists("dci_tipi_evento_array")){
                     'Partita',
                     'Gara o Torneo o Competizione',
                     'Escursione',
-                    'GalÃ  sportivo',
+                    'Galà sportivo',
                     'Corsa',
                     'Raduno sportivo',
                 ]
@@ -656,7 +656,7 @@ if(!function_exists("dci_tipi_documento_array")){
             'Documento funzionamento interno',
             'Atto normativo',
             'Accordo tra enti',
-            'Documento attivitÃ  politica',
+            'Documento attività politica',
             'Documento (tecnico) di supporto',
             'Istanza',
             'Documento di programmazione e rendicontazione',
@@ -677,7 +677,7 @@ if(!function_exists("dci_tipi_documento_plural_array")){
             'Documento funzionamento interno' => 'Documenti funzionamento interno',
             'Atto normativo' => 'Atti normativi',
             'Accordo tra enti' => 'Accordi tra enti',
-            'Documento attivitÃ  politica' => 'Documenti attivitÃ  politica',
+            'Documento attività politica' => 'Documenti attività politica',
             'Documento (tecnico) di supporto' => 'Documenti (tecnici) di supporto',
             'Istanza' => 'Istanze',
             'Documento di programmazione e rendicontazione' => 'Documenti di programmazione e rendicontazione',
@@ -693,21 +693,21 @@ if(!function_exists("dci_tipi_documento_plural_array")){
 if(!function_exists('dci_get_categorie_servizio_descriptions_array')){
     function dci_get_categorie_servizio_descriptions_array(){
         $categorie_servizio_descriptions_arr = [
-            'Anagrafe e stato civile' => 'Documenti d\'identitÃ , cambio di residenza, servizi elettorali, cimiteriali e certificati per nascita, matrimoni e unioni civili.',
-            'Cultura e tempo libero' => 'Luoghi della cultura e dellâ€™arte, impianti sportivi e richieste di contributi per la cultura, lo spettacolo e lo sport.',
+            'Anagrafe e stato civile' => 'Documenti d\'identità, cambio di residenza, servizi elettorali, cimiteriali e certificati per nascita, matrimoni e unioni civili.',
+            'Cultura e tempo libero' => 'Luoghi della cultura e dell’arte, impianti sportivi e richieste di contributi per la cultura, lo spettacolo e lo sport.',
             'Vita lavorativa' => 'Lavoro, concorsi e selezioni, licenze, abilitazioni professionali e sicurezza sul lavoro.',
-            'Appalti pubblici' => 'Gare dâ€™appalto e avvisi per lavori, servizi e forniture al Comune.',
+            'Appalti pubblici' => 'Gare d’appalto e avvisi per lavori, servizi e forniture al Comune.',
             'Catasto e urbanistica' => 'Piani urbanistici, piani paesaggistici e tutti i certificati per immobili, case, terreni ed edifici.',
             'Turismo' => 'Sostegno e sviluppo del turismo, strutture ricettive e informazioni turistiche.',
-            'MobilitÃ  e trasporti' => 'Parcheggi, viabilitÃ , automobili e trasporto pubblico.',
-            'Educazione e formazione' => 'Iscrizioni, agevolazioni e servizi per nidi, scuole e universitÃ .',
+            'Mobilità e trasporti' => 'Parcheggi, viabilità, automobili e trasporto pubblico.',
+            'Educazione e formazione' => 'Iscrizioni, agevolazioni e servizi per nidi, scuole e università.',
             'Giustizia e sicurezza pubblica' => 'Polizia municipale, tribunale e Protezione civile.',
-            'Tributi, finanze e contravvenzioni' => 'Tasse e tributi su immobili, rifiuti, affissioni e pubblicitÃ ',
+            'Tributi, finanze e contravvenzioni' => 'Tasse e tributi su immobili, rifiuti, affissioni e pubblicità',
             'Ambiente' => 'Aree verdi e parchi, inquinamento, igiene urbana e rifiuti.',
-            'Salute, benessere e assistenza' => 'Servizi sanitari e di sostegno per minori, famiglie, anziani e persone con disabilitÃ .',
+            'Salute, benessere e assistenza' => 'Servizi sanitari e di sostegno per minori, famiglie, anziani e persone con disabilità.',
             'Autorizzazioni' => 'Autorizzazioni, permessi, licenze, concessioni di suolo, passi carrabili e prestito di beni del Comune.',
             'Agricoltura e pesca' => 'Autorizzazioni e politiche alimentari per agricoltura e pesca.',
-            'Imprese e commercio' => 'Avvio di unâ€™attivitÃ , commercio, autorizzazioni e concessioni per attivitÃ  produttive, mercati, incentivi e supporto alle imprese.'
+            'Imprese e commercio' => 'Avvio di un’attività, commercio, autorizzazioni e concessioni per attività produttive, mercati, incentivi e supporto alle imprese.'
         ];
         return $categorie_servizio_descriptions_arr;
     }
