@@ -446,15 +446,7 @@ class Breadcrumb_Trail {
                         $this->items[] = "<a href='".home_url("novita")."'>".__("NovitÃ ", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-                    }else if (is_tax(array("tipi_luogo"))){
-                        $this->items[] = "<a href='".home_url("luoghi")."'>".__("Luoghi", "design_comuni_italia")."</a>";
-                        $term_name = single_term_title( '', false );
-                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-                    }else if (is_tax(array("tipi_evento"))){
-                        $this->items[] = "<a href='".home_url("eventi")."'>".__("Eventi", "design_comuni_italia")."</a>";
-                        $term_name = single_term_title( '', false );
-                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-                    } else if (is_tax(array("tipi_progetto"))){
+                    }else if (is_tax(array("tipi_progetto"))){
                         $this->items[] = "<a href='".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
