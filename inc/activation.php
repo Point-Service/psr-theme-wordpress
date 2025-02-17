@@ -22,7 +22,7 @@ function dci_theme_activation() {
     //creo i menu
     createMenu();
 
-    // controllo se è una prima installazione
+    // controllo se Ã¨ una prima installazione
     $dci_has_installed = get_option("dci_has_installed");
     if(!$dci_has_installed){
     }
@@ -67,14 +67,14 @@ add_action( 'admin_menu', 'dci_add_update_theme_page' );
  */
 function recursionInsertTaxonomy($array, $tax_name, $parent_id = null) {
     foreach ($array as $key => $value) {
-        if (!is_numeric($key)) { //se NON è numerico, ha dei figli
+        if (!is_numeric($key)) { //se NON Ã¨ numerico, ha dei figli
             if (!term_exists( $key , $tax_name)) {
                 $parent = $parent_id !== null ? wp_insert_term( $key, $tax_name, array("parent" => $parent_id)) : wp_insert_term( $key, $tax_name );
                 if(is_array($parent)){
                     recursionInsertTaxonomy($value, $tax_name, $parent['term_taxonomy_id']);
                 }
             } else {
-                //se il padre esiste già ma il figlio no (get id del padre in base al termine...)
+                //se il padre esiste giÃ  ma il figlio no (get id del padre in base al termine...)
             }
         } else {
             $parent_id !== null ? wp_insert_term( $value, $tax_name, array("parent" => $parent_id)) : wp_insert_term( $value, $tax_name);
@@ -109,6 +109,13 @@ function insertCustomTaxonomyTerms() {
     $tipi_notizia_array = dci_tipi_notizia_array();
     recursionInsertTaxonomy($tipi_notizia_array, 'tipi_notizia');
 
+
+     /**
+     * Tipi di progetto
+     */
+    $tipi_progetto_array = dci_tipi_progetto_array();
+    recursionInsertTaxonomy($tipi_progetto_array, 'tipi_progetto');
+
     /**
      * Tipi di Evento
      */
@@ -116,7 +123,7 @@ function insertCustomTaxonomyTerms() {
     recursionInsertTaxonomy($tipi_evento_array, 'tipi_evento');
 
     /**
-     * Tipi di Unità organizzativa
+     * Tipi di UnitÃ  organizzativa
      */
     $tipi_unita_organizzativa_array = dci_tipi_unita_organizzativa_array();
     recursionInsertTaxonomy($tipi_unita_organizzativa_array, 'tipi_unita_organizzativa');
@@ -297,7 +304,7 @@ function createMenu()
     //creo i menu
     $menu_main = dci_create_menu(__('Main Menu', "design_comuni_italia"));
     $menu_amministrazione = dci_create_menu(__('Amministrazione', "design_comuni_italia"));
-    $menu_novita = dci_create_menu(__('Novità', "design_comuni_italia"));
+    $menu_novita = dci_create_menu(__('NovitÃ ', "design_comuni_italia"));
     $menu_servizi = dci_create_menu(__('Categorie di Servizio', "design_comuni_italia"));
     $menu_vivere_comune =  dci_create_menu(__('Vivere il Comune', "design_comuni_italia"));
     //$menu_documenti_dati = dci_create_menu(__('Tutti i documenti', "design_comuni_italia"));
@@ -310,7 +317,7 @@ function createMenu()
 
     //Main menu
     dci_create_page_menu_item(__( 'Amministrazione', 'design_comuni_italia'),$menu_main);
-    dci_create_page_menu_item(__( 'Novità', 'design_comuni_italia'),$menu_main);
+    dci_create_page_menu_item(__( 'NovitÃ ', 'design_comuni_italia'),$menu_main);
     dci_create_page_menu_item(__( 'Servizi', 'design_comuni_italia'),$menu_main);
     dci_create_page_menu_item(__( 'Vivere il Comune', 'design_comuni_italia'),$menu_main);
     //assegno menu a header main location
@@ -335,7 +342,7 @@ function createMenu()
     //assegno menu seconda colonna footer
     dci_add_menu_to_location($menu_servizi,'menu-footer-col-2');
 
-    //voici menu Novità
+    //voici menu NovitÃ 
     //placeholder
     dci_create_custom_menu_item(__( 'Notizie', 'design_comuni_italia'),$menu_novita, '/novita' );
     dci_create_custom_menu_item(__( 'Comunicati', 'design_comuni_italia'),$menu_novita, '/novita');
@@ -381,7 +388,7 @@ function createMenu()
     dci_create_custom_menu_item(__( 'Amministrazione trasparente', 'design_comuni_italia'),$menu_info_2);
     dci_create_custom_menu_item(__( 'Informativa privacy', 'design_comuni_italia'),$menu_info_2);
     dci_create_custom_menu_item(__( 'Note legali', 'design_comuni_italia'),$menu_info_2);
-    dci_create_custom_menu_item(__( 'Dichiarazione di accessibilità', 'design_comuni_italia'),$menu_info_2);
+    dci_create_custom_menu_item(__( 'Dichiarazione di accessibilitÃ ', 'design_comuni_italia'),$menu_info_2);
     //assegno menu a location
     dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
 
