@@ -38,7 +38,7 @@ function dci_register_post_type_luogo() {
 add_action( 'edit_form_after_title', 'dci_luogo_add_content_after_title' );
 function dci_luogo_add_content_after_title($post) {
 	if($post->post_type == "luogo")
-		_e('<span><i>il <b>Titolo</b> Ã¨ il <b>Nome del Luogo</b> o il nome con cui il luogo Ã¨ conosciuto.</i></span><br><br>', 'design_comuni_italia' );
+		_e('<span><i>il <b>Titolo</b> è il <b>Nome del Luogo</b> o il nome con cui il luogo è conosciuto.</i></span><br><br>', 'design_comuni_italia' );
 }
 
 /**
@@ -60,7 +60,7 @@ function dci_add_luogo_metaboxes() {
     $cmb_identificativo->add_field(array(
         'id' => $prefix . 'id',
         //'name' => __("Identificativo", 'design_comuni_italia'),
-        'desc' => __('Codice identificativo del luogo. Nel MIBAC c\'Ã¨ il codice del DBUnico per i luoghi della cultura e il codice ISIL per le biblioteche.', 'design_comuni_italia'),
+        'desc' => __('Codice identificativo del luogo. Nel MIBAC c\'è il codice del DBUnico per i luoghi della cultura e il codice ISIL per le biblioteche.', 'design_comuni_italia'),
         'after' => __("  ad uso interno", 'design_comuni_italia'),
         'type' => 'text_small',
     ));
@@ -77,7 +77,7 @@ function dci_add_luogo_metaboxes() {
     $cmb_tipo_luogo->add_field( array(
         'id'        => $prefix . 'tipo_luogo',
         //'name'      => __( 'Tipo di Luogo', 'design_comuni_italia' ),
-        'desc'      => __( 'Non obbligatoria perchÃ© il luogo potrebbe non essere un POI', 'design_comuni_italia' ),
+        'desc'      => __( 'Non obbligatoria perché il luogo potrebbe non essere un POI', 'design_comuni_italia' ),
         'type'           => 'taxonomy_multicheck_hierarchical',
         'taxonomy'       => 'tipi_luogo',
         'remove_default' => 'true'
@@ -185,7 +185,7 @@ function dci_add_luogo_metaboxes() {
         'id'          => $prefix . 'gallerie_multimediali',
         //'name'        => __('<h1>Fasi e Scadenze</h1>', 'design_comuni_italia' ),
         'type'        => 'group',
-        'description' => __( 'E\' possibile inserire piÃ¹ gallerie multimediali' , 'design_comuni_italia' ),
+        'description' => __( 'E\' possibile inserire più gallerie multimediali' , 'design_comuni_italia' ),
         'options'     => array(
             'group_title'    => __( 'Galleria {#}', 'design_comuni_italia' ), // {#} gets replaced by row number
             'add_button'     => __( 'Aggiungi una gallery', 'design_comuni_italia' ),
@@ -225,7 +225,7 @@ function dci_add_luogo_metaboxes() {
     $cmb_servizi->add_field( array(
         'id' => $prefix . 'servizi',
         'name'        => __( 'Servizi presenti nel luogo', 'design_comuni_italia' ),
-        'desc' => __( 'Se il luogo presenta servizi di carattere privato, descrizione testuale del servizio e link esterno al servizio. Se il luogo Ã¨ sede di unitÃ  organizzativa abbiamo i servizi collegati all\'UnitÃ  organizzativa' , 'design_comuni_italia' ),
+        'desc' => __( 'Se il luogo presenta servizi di carattere privato, descrizione testuale del servizio e link esterno al servizio. Se il luogo è sede di unità organizzativa abbiamo i servizi collegati all\'Unità organizzativa' , 'design_comuni_italia' ),
         'type' => 'wysiwyg',
         'options' => array(
             'media_buttons' => false, // show insert/upload button(s)
@@ -238,7 +238,7 @@ function dci_add_luogo_metaboxes() {
     //MODALITA' DI ACCESSO
     $cmb_accesso = new_cmb2_box( array(
         'id'           => $prefix . 'box_accesso',
-        'title'        => __( 'ModalitÃ  di accesso', 'design_comuni_italia' ),
+        'title'        => __( 'Modalità di accesso', 'design_comuni_italia' ),
         'object_types' => array( 'luogo' ),
         'context'      => 'normal',
         'priority'     => 'high',
@@ -246,8 +246,8 @@ function dci_add_luogo_metaboxes() {
 
     $cmb_accesso->add_field( array(
         'id' => $prefix . 'modalita_accesso',
-        'name'        => __( 'ModalitÃ  di accesso *', 'design_comuni_italia' ),
-        'desc' => __( 'Servizi disponibili sulle modalitÃ  di accesso al luogo con particolare attenzione agli accessi per disabili.' , 'design_comuni_italia' ),
+        'name'        => __( 'Modalità di accesso *', 'design_comuni_italia' ),
+        'desc' => __( 'Servizi disponibili sulle modalità di accesso al luogo con particolare attenzione agli accessi per disabili.' , 'design_comuni_italia' ),
         'type'       => 'wysiwyg',
         'options' => array(
             'media_buttons' => false, // show insert/upload button(s)
@@ -282,7 +282,7 @@ function dci_add_luogo_metaboxes() {
     $cmb_dove->add_field( array(
         'id'         => $prefix . 'quartiere',
         'name'       => __( 'Quartiere  ', 'design_comuni_italia' ),
-        'desc'       => __( 'Se il territorio Ã¨ mappato in quartieri, riportare il Quartiere dove Ã¨ situato il luogo.', 'design_comuni_italia' ),
+        'desc'       => __( 'Se il territorio è mappato in quartieri, riportare il Quartiere dove è situato il luogo.', 'design_comuni_italia' ),
         'type'       => 'text',
         'attributes'    => array(
             'maxlength'  => '255',
@@ -292,7 +292,7 @@ function dci_add_luogo_metaboxes() {
     $cmb_dove->add_field( array(
         'id'         => $prefix . 'circoscrizione',
         'name'       => __( 'Circoscrizione', 'design_comuni_italia' ),
-        'desc'       => __( 'Se il territorio Ã¨ mappato in circoscrizioni, riportare la Circoscrizione dove Ã¨ situato il luogo.', 'design_comuni_italia' ),
+        'desc'       => __( 'Se il territorio è mappato in circoscrizioni, riportare la Circoscrizione dove è situato il luogo.', 'design_comuni_italia' ),
         'type'       => 'text',
         'attributes'    => array(
             'maxlength'  => '255',
@@ -330,7 +330,7 @@ function dci_add_luogo_metaboxes() {
      */
     $cmb_dove->add_field( array(
         'id'         => $prefix . 'posizione_gps',
-        'name'       => __( 'Posizione GPS *<br><small>NB: clicca sulla lente d\'ingrandimento e cerca l\'indirizzo, anche se lo hai giÃ  inserito nel campo precedente.<br>Questo permetterÃ  una corretta georeferenziazione del luogo</small>', 'design_comuni_italia' ),
+        'name'       => __( 'Posizione GPS *<br><small>NB: clicca sulla lente d\'ingrandimento e cerca l\'indirizzo, anche se lo hai già inserito nel campo precedente.<br>Questo permetterà una corretta georeferenziazione del luogo</small>', 'design_comuni_italia' ),
         'desc'       => __( 'Georeferenziazione del luogo e link a posizione in mappa', 'design_comuni_italia' ),
         'type'       => 'leaflet_map',
         'attributes' => array(
@@ -412,11 +412,11 @@ function dci_add_luogo_metaboxes() {
     $cmb_informazioni->add_field( array(
         'id' => $prefix . 'struttura_responsabile',
         'name'    => __( 'Struttura responsabile' ),
-        'desc' => __( 'UnitÃ  organizzativa che ha la responsabilitÃ  del luogo' , 'design_comuni_italia' ),
+        'desc' => __( 'Unità organizzativa che ha la responsabilità del luogo' , 'design_comuni_italia' ),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('unita_organizzativa'),
         'attributes' => array(
-            'placeholder' =>  __( 'Seleziona le UnitÃ  Organizzative', 'design_comuni_italia' ),
+            'placeholder' =>  __( 'Seleziona le Unità Organizzative', 'design_comuni_italia' ),
         )
     ) );
 
@@ -427,7 +427,7 @@ function dci_add_luogo_metaboxes() {
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('unita_organizzativa'),
         'attributes' => array(
-            'placeholder' =>  __( 'Seleziona le UnitÃ  Organizzative', 'design_comuni_italia' ),
+            'placeholder' =>  __( 'Seleziona le Unità Organizzative', 'design_comuni_italia' ),
         )
     ) );
 
