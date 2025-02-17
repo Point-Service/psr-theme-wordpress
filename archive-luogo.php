@@ -33,7 +33,6 @@ $additional_filter['tipi_luogo'] = isset($obj->slug) ? $obj->slug : '';
 get_header();
 ?>
 
-sssssssssss
  <main>
     <?php 
       $title = isset($obj->name) ? $obj->name : 'Titolo'; 
