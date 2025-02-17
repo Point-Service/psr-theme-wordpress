@@ -14,8 +14,6 @@ else if($obj->taxonomy == "argomenti"){
 	get_template_part("archive-argomento");
 } else if ($obj->post_type=="tipi_luogo" || $obj->taxonomy == "tipi_luogo") {
 	get_template_part("archive-luogo");
-} else if($obj->post_type=="tipi_evento" ||  $obj->taxonomy == "tipi_evento"){
-	get_template_part( "taxonomy-tipi_evento" );
 } else if($obj->post_type=="tipi_progetto" ||  $obj->taxonomy == "tipi_progetto"){
 	get_template_part( "taxonomy-tipi_progetto" );
 }
