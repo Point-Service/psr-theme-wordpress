@@ -54,4 +54,3 @@ $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
         </div>
     </div>
 </div>
-
