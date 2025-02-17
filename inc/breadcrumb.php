@@ -32,7 +32,6 @@
  * @return void
  */
 function breadcrumb_trail( $args = array() ) {
-
 	$breadcrumb = apply_filters( 'breadcrumb_trail_object', null, $args );
 
 	if ( ! is_object( $breadcrumb ) )
@@ -347,7 +346,7 @@ class Breadcrumb_Trail {
             if (is_page()) {
                 $slug = get_queried_object()->post_name;
                 if ($slug == 'domande-frequenti') {
-                    $this->items[] = 'Domande più frequenti';
+                    $this->items[] = 'Domande piÃ¹ frequenti';
                     return;
                 }
             }
@@ -402,8 +401,8 @@ class Breadcrumb_Trail {
                         $this->items[] = get_the_title();
                         return;
                         break;
-                    case 'Novità':
-                        $this->items[] =  "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
+                    case 'NovitÃ ':
+                        $this->items[] =  "<a href='".home_url("novita")."'>".__("NovitÃ ", "design_comuni_italia")."</a>";
                         $this->items[] = get_the_title();
                         return;
                         break;
@@ -444,7 +443,19 @@ class Breadcrumb_Trail {
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }
                     else if (is_tax(array("tipi_notizia"))){
-                        $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
+                        $this->items[] = "<a href='".home_url("novita")."'>".__("NovitÃ ", "design_comuni_italia")."</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+                    }else if (is_tax(array("tipi_luogo"))){
+                        $this->items[] = "<a href='".home_url("luoghi")."'>".__("Luoghi", "design_comuni_italia")."</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+                    }else if (is_tax(array("tipi_evento"))){
+                        $this->items[] = "<a href='".home_url("eventi")."'>".__("Eventi", "design_comuni_italia")."</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+                    } else if (is_tax(array("tipi_progetto"))){
+                        $this->items[] = "<a href='".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }
@@ -1341,3 +1352,4 @@ class Breadcrumb_Trail {
 		}
 	}
 }
+
