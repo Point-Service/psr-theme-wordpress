@@ -31,7 +31,7 @@ $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
             <div class="card-body">
                 <div class="category-top">
                     <a class="category text-decoration-none"
-                        href="#">
+                        href="<?= get_term_link($tipo_evento->term_id); ?>">
                         <?php echo $tipo_evento->name; ?>
                     </a>
                     <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
@@ -50,8 +50,8 @@ $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
                 </p>
                 <a class="read-more t-primary text-uppercase"
                     href="<?php echo get_permalink($post->ID); ?>"
-                    aria-label="Leggi di più sulla pagina di <?php echo $post->post_title ?>">
-                    <span class="text">Leggi di più</span>
+                    aria-label="Leggi di piÃ¹ sulla pagina di <?php echo $post->post_title ?>">
+                    <span class="text">Leggi di piÃ¹</span>
                     <span class="visually-hidden"></span>
                     <svg class="icon icon-primary icon-xs ml-10">
                         <use href="#it-arrow-right"></use>
@@ -61,3 +61,4 @@ $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
         </div>
     </div>
 </div>
+
