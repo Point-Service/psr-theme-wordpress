@@ -38,7 +38,7 @@ function dci_register_post_type_progetto() {
 add_action( 'edit_form_after_title', 'dci_progetto_add_content_after_title' );
 function dci_Progetto_add_content_after_title($post) {
     if($post->post_type == "progetto")
-        _e('<span><i>il <b>Titolo</b> Ã¨ il <b>Titolo delle progetto PNRR</b>.</i></span><br><br>', 'design_comuni_italia' );
+        _e('<span><i>il <b>Titolo</b> è il <b>Titolo delle progetto PNRR</b>.</i></span><br><br>', 'design_comuni_italia' );
 }
 
 add_action( 'cmb2_init', 'dci_add_progetto_metaboxes' );
@@ -90,7 +90,7 @@ function dci_add_Progetto_metaboxes() {
         'options' => dci_get_posts_options('unita_organizzativa'),
         'attributes'    => array(
             'required'    => 'required',
-            'placeholder' =>  __( 'Seleziona le unitÃ  organizzative', 'design_comuni_italia' ),
+            'placeholder' =>  __( 'Seleziona le unità organizzative', 'design_comuni_italia' ),
         ),
     ) );
 
@@ -190,7 +190,7 @@ function dci_add_Progetto_metaboxes() {
 
     $cmb_modalita= new_cmb2_box( array(
         'id'           => $prefix . 'box_modalita',
-        'title'        => __( 'ModalitÃ / AttivitÃ ', 'design_comuni_italia' ),
+        'title'        => __( 'Modalità/ Attività', 'design_comuni_italia' ),
         'object_types' => array( 'progetto' ),
         'context'      => 'normal',
         'priority'     => 'low',
@@ -199,7 +199,7 @@ function dci_add_Progetto_metaboxes() {
 
     $cmb_modalita->add_field(array(
         'id' => $prefix . 'modalita',
-        'name'        => __( 'ModalitÃ  di Accesso al Finanziamento *', 'design_comuni_italia' ),
+        'name'        => __( 'Modalità di Accesso al Finanziamento *', 'design_comuni_italia' ),
         'type' => 'wysiwyg',
         'attributes'    => array(
             'required'    => 'required'
@@ -212,7 +212,7 @@ function dci_add_Progetto_metaboxes() {
 
     $cmb_modalita->add_field(array(
         'id' => $prefix . 'attivita',
-        'name'        => __( 'AttivitÃ  Finanziata *', 'design_comuni_italia' ),
+        'name'        => __( 'Attività Finanziata *', 'design_comuni_italia' ),
         'type' => 'wysiwyg',
         'attributes'    => array(
             'required'    => 'required'
