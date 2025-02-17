@@ -91,6 +91,7 @@ function dci_get_tassonomie_names(){
         'categorie_servizio',
         'tipi_evento',
         'tipi_notizia',
+        'tipi_progetto',
         'tipi_luogo',
         'argomenti',
         'tipi_unita_organizzativa',
@@ -224,7 +225,7 @@ if (is_array($terms) && array_key_exists($name, $terms)) {
     return $terms[$name];
 }
 
-// Se $terms è vuoto o non contiene la chiave $name, ritorna il nome con la prima lettera maiuscola
+// Se $terms Ã¨ vuoto o non contiene la chiave $name, ritorna il nome con la prima lettera maiuscola
 return ucfirst($name);
 }
 
@@ -242,6 +243,7 @@ function dci_get_admin_menu_order() {
         'edit.php?post_type=fase',
         'edit.php?post_type=evento',
         'edit.php?post_type=luogo',
+        'edit.php?post_type=progetto',
         'edit.php?post_type=documento_pubblico',
         'edit.php?post_type=dataset',
         'edit.php?post_type=unita_organizzativa',
@@ -294,4 +296,5 @@ function dci_get_all_values($array,$key){
     }
     return $result;
 }
+
 
