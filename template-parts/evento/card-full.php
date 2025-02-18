@@ -51,15 +51,6 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                     <?php echo $descrizione; ?>
                 </p>
                 
-         <?php if($luogo_evento) {?>
-          <article id="luogo" class="it-page-section mb-5">
-            <h2 class="mb-3">Luogo</h2>
-            <?php
-                $luogo = $luogo_evento;
-                get_template_part("template-parts/single/luogo");
-            ?>
-          </article>
-          <?php } ?>
                                       <?php if (($luogo_evento) && count($luogo_evento)) { ?>
                                             <span class="data fw-normal">📍 
                                                 <?php 
