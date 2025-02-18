@@ -81,13 +81,12 @@ for ($i = 1; $i <= 20; $i++) {
                     </div>
                 </div>
                 <div class="row my-4 justify-content-md-center">
-                    <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
-                        <button type="button" class="btn btn-outline-primary">Tutte le novità
-                            <svg class="icon">
-                                <use xlink:href="#it-arrow-right"></use>
-                            </svg>
-                        </button>
-                    </a>
+                     <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
+                         <svg class="icon icon-sm" aria-hidden="true">
+                           <use xlink:href="#it-calendar"></use>
+                          </svg>
+                          Visualizza tutte le novità
+                     </a>                 
                 </div>
             <?php } ?>
         </div>
