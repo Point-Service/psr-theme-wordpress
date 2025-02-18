@@ -311,7 +311,7 @@ get_header();
                                         <p class="card-title text-paragraph-regular-medium-semi mb-3">
                                             <?php
                                             $luogo = is_array($luoghi);                           
-                                            et_template_part("template-parts/single/luogo"); ?>
+                                            get_template_part("template-parts/single/luogo"); ?>
                                         </p>
                                     </div>
                              </div>
