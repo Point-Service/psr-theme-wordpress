@@ -51,24 +51,24 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                     <?php echo $descrizione; ?>
                 </p>
                 
-<?php if (!empty($luogo_evento)) { ?>
-    <span class="data fw-normal">📍 
-        <?php 
-        // Ottieni i dettagli del luogo
-        $luogo_post = get_post($luogo_evento);
-        
-        if ($luogo_post && !is_wp_error($luogo_post)) {
-            // Stampa il nome del luogo come link
-            echo '<font color="grey"><a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a></font>';
-        }
-        ?>
-    </span>
-<?php } elseif (!empty($luogo_notizia)) { ?>
-    <span class="data fw-normal"> | 📍 
-        <?php echo esc_html($luogo_notizia); ?>
-    </span>
-<?php } ?>
- <hr style="margin-bottom: 25px; width: 200px; height: 1px; background-color: grey; border: none;">
+                    <?php if (!empty($luogo_evento)) { ?>
+                        <span class="data fw-normal">📍 
+                            <?php 
+                            // Ottieni i dettagli del luogo
+                            $luogo_post = get_post($luogo_evento);
+                            
+                            if ($luogo_post && !is_wp_error($luogo_post)) {
+                                // Stampa il nome del luogo come link
+                                echo '<font color="grey"><a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a></font>';
+                            }
+                            ?>
+                        </span>
+                    <?php } elseif (!empty($luogo_notizia)) { ?>
+                        <span class="data fw-normal"> | 📍 
+                            <?php echo esc_html($luogo_notizia); ?>
+                        </span>
+                    <?php } ?>
+                     <hr style="margin-bottom: 25px; width: 200px; height: 1px; background-color: grey; border: none;">
 
                 
                 <a class="read-more t-primary text-uppercase"
