@@ -69,7 +69,7 @@ for ($i = 1; $i <= 20; $i++) {
                                         </div>
                                     </div>
                                   <small>Argomenti: </small><?php get_template_part("template-parts/common/badges-argomenti"); ?>
-                                    <div class="container">
+                                    
                                       <div class="row mb-2">
                                         <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                                                 <div class="row my-4 justify-content-md-center">                 
@@ -82,8 +82,7 @@ for ($i = 1; $i <= 20; $i++) {
                                               </div>
                                             </div>
                                           </div>
-                                    </div>
-
+                                    
                             </div>
                         </div>
                     </div>
