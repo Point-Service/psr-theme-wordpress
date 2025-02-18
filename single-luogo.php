@@ -224,7 +224,7 @@ get_header();
 			</div>
           </article>
           <?php } ?>
-		  dd
+		  
          <?php if($indirizzo) {?>
             <article id="indirizzo" class="it-page-section mb-5">
               <h2 class="mb-3">Indirizzo</h2>         
