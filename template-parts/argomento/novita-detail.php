@@ -17,7 +17,9 @@
             <div class="row pt-4 mt-lg-2 pb-lg-4">
                 <?php foreach ($posts as $post) { 
                     $description = dci_get_meta('descrizione_breve');
-                    $img = dci_get_meta('immagine');
+                    $img = dci_get_meta('immagine');                    
+
+    
                     if ($post->post_type == 'evento') {
                         if (dci_get_meta('data_orario_inizio')) {
                             $start_date = date('d-m-y', dci_get_meta('data_orario_inizio'));
@@ -73,6 +75,7 @@
                 <?php } else { 
                     //var_dump(get_the_terms($post->ID, 'tipi_notizia'));
                     $tipo_notizia = get_the_terms($post->ID, 'tipi_notizia')[0];
+                    $luogo_notizia = dci_get_meta("luoghi");
                     $tipo_notizia_link = $tipo_notizia != null ? get_term_link($tipo_notizia->term_id) : "#";
                     $tipo_notizia_name = $tipo_notizia != null ? $tipo_notizia->name : 'Notizie';
                     $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
@@ -93,7 +96,7 @@
                             <div class="card-body p-4">
                                 <div class="category-top">
                                     <a class="text-decoration-none fw-semibold" href="<?php echo $tipo_notizia_link; ?>">
-                                        <?php echo $tipo_notizia_name; ?>
+                                        <?php echo $tipo_notizia_name; ?>sss
                                     </a>
                                     <span class="data u-grey-light">
                                         <?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]?>
