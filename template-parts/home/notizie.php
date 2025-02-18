@@ -59,9 +59,9 @@ for ($i = 1; $i <= 20; $i++) {
                                             </span>
                                         <?php } ?>
 
-                                  <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
+                                  <p style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;"></p>
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                                        <span class="data fw-normal">Data di Pubblicazione: <?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+                                        <span class="data fw-normal">Data di Pubblicazione: <b><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></b></span>
                                     <?php } ?>
                                 
                                 <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
