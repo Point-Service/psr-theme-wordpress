@@ -1,7 +1,7 @@
 <?php
 global $gallery;
 ?>
-  
+ <head> 
   <!-- Include il CSS di Tobii -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@midzer/tobii/dist/tobii.min.css">
   
@@ -42,7 +42,7 @@ global $gallery;
     }
   </style>
 </head>
-<body>
+
 
 <div class="gallery">
   <?php foreach ($gallery as $photo) { ?>
