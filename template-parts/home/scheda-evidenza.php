@@ -65,23 +65,32 @@ $page_macro = get_page_by_path($page_macro_slug);
 <?php } else { ?>
 <div class="card card-teaser no-after rounded shadow-sm mb-0 border border-light">
     <div class="card-body pb-5">
-        <div class="category-top">ooooo
+        <div class="category-top">
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
-                <?php if (!empty($luogo_notizia) && is_array($luogo_notizia)) { ?>
-                    <span class="data fw-normal"> | 📍 
-                        <?php 
-                        foreach ($luogo_notizia as $luogo) {
-                            if (isset($luogo['name'], $luogo['url'])) {
-                                echo '<a href="' . esc_url($luogo['url']) . '" title="' . esc_attr($luogo['name']) . '">' . esc_html($luogo['name']) . '</a> ';
-                            }
-                        }
-                        ?>
-                    </span>
-                <?php } ?>
+<?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+    <span class="data fw-normal"> | 📍 
+        <?php 
+        foreach ($luogo_notizia as $luogo) {
+            // Assicurati che ogni elemento sia un array con 'name' e 'url'
+            if (is_array($luogo) && isset($luogo['name'], $luogo['url'])) {
+                echo '<a href="' . esc_url($luogo['url']) . '" title="' . esc_attr($luogo['name']) . '">' . esc_html($luogo['name']) . '</a> ';
+            } elseif (is_string($luogo)) {
+                // Se il luogo è una stringa, stampala
+                echo esc_html($luogo) . ' ';
+            }
+        }
+        ?>
+    </span>
+<?php } elseif (is_string($luogo_notizia) && !empty($luogo_notizia)) { ?>
+    <span class="data fw-normal"> | 📍 
+        <?php echo esc_html($luogo_notizia); ?>
+    </span>
+<?php } ?>
+
             <?php } ?>
         </div>
         <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
