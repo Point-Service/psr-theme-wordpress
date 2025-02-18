@@ -27,6 +27,20 @@ $luogo_notizia = dci_get_meta("luoghi", '_dci_notizia_', $post->ID); // Recupera
         <div class="card-image card-image-rounded pb-5">            
             <?php dci_get_img($img); ?>
         </div>
+          <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                            <div class="col-12">
+                             <h4 id="luoghi">Luoghi</h4>
+                              <h6><small>Luoghi collegati alla notizia.</small></h6>
+                              <div class="card card-teaser border rounded shadow p-4 flex-nowrap">                              
+                               
+                                    <div class="card-body pe-3">
+                                        <p class="card-title text-paragraph-regular-medium-semi mb-3">
+                                            <?php get_template_part("template-parts/single/luoghi"); ?>
+                                        </p>
+                                    </div>
+                             </div>
+                            </div>
+                         <?php }?>
     </div>
     <a
     class="read-more ps-3"
