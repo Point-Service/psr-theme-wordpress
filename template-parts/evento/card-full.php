@@ -68,7 +68,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
         <?php echo esc_html($luogo_notizia); ?>
     </span>
 <?php } ?>
- <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
+ <hr style="margin-bottom: 15px; width: 200px; height: 1px; background-color: grey; border: none;">
 
                 
                 <a class="read-more t-primary text-uppercase"
