@@ -14,14 +14,12 @@ get_header();
   <?php
   while ( have_posts() ) :
     the_post();
-    $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
-
-    $prefix= '_dci_luogo_';
+        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
+        $prefix= '_dci_luogo_';
 	$nome_alternativo = dci_get_meta("nome_alternativo", $prefix, $post->ID);
-         $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
+        $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
 	$descrizione_estesa = dci_get_meta("descrizione_estesa", $prefix, $post->ID);
 	$luoghi_collegati = dci_get_meta("luoghi_collegati", $prefix, $post->ID);
-
 	$indirizzo = dci_get_meta("indirizzo", $prefix, $post->ID);
         $luogo = $post->ID;
 	$orario_pubblico = dci_get_meta("orario_pubblico", $prefix, $post->ID);
@@ -232,7 +230,7 @@ get_header();
               <h2 class="mb-3">Indirizzo</h2>         
           <center>
           <?php 
-            $luoghi = array($luogo);
+            $luoghi = $indirizzo;
             get_template_part("template-parts/luogo/map"); 
                  ?>
                       </center>
