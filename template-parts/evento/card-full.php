@@ -59,7 +59,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                             
                             if ($luogo_post && !is_wp_error($luogo_post)) {
                                 // Stampa il nome del luogo come link
-                                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="t-primary">' . esc_html($luogo_post->post_title) . '</a>';
+                                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="t-secondary text-uppercase pb-3">' . esc_html($luogo_post->post_title) . '</a>';
                             }
                             ?>
                         </span>
