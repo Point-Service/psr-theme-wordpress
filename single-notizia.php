@@ -297,33 +297,41 @@ get_header();
                                 <?php get_template_part("template-parts/single/persone"); ?>
                             <?php }?>
                            <p></p>   
+                          
+
+
+                          <?php if ($luoghi && is_array($luoghi) && count($luoghi) > 0) { ?>
+                                <section id="luoghi_collegati" class="it-page-section mb-4">
+                                    <h2 class="h3 my-2">Luoghi correlati</h2>
+                                    
+                                    <div class="row">
+                                        <?php foreach ($luoghi as $luogo_id) {
+                                            ?><div class="col-xl-6 col-lg-8 col-md-12"><?php
+                                            $with_border = true;
+                                            $luogo = get_post( $luogo_id );
+                                            get_template_part("template-parts/luogo/card-title");
+                                            ?></div><?php
+                                        } ?>
+                                    </div>
+                                </section>
+                            <?php } ?>
                             
-                          <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                            
+                         <?php if(is_array($luoghi) && count($luoghi)) { ?>
                             <div class="col-12">
                              <h4 id="luoghi">Luoghi</h4>
                               <h6><small>Luoghi collegati alla notizia.</small></h6>
-                                                        
+                              <div class="card card-teaser border rounded shadow p-4 flex-nowrap">                              
                                
                                     <div class="card-body pe-3">
-                                        
+                                        <p class="card-title text-paragraph-regular-medium-semi mb-3">
                                             <?php get_template_part("template-parts/single/luoghi"); ?>
-                                        
+                                        </p>
                                     </div>
-                            
+                             </div>
                             </div>
-                         <?php }?>                            
+                         <?php }?>                       
         
-
-                            
-                         <?php if($luoghi) {?>
-                              <article id="luogo" class="it-page-section mb-5">
-                                <h2 class="mb-3">Luogo</h2>
-                                <?php
-                                    $luogo = $luoghi;
-                                    get_template_part("template-parts/single/luogo");
-                                ?>
-                              </article>
-                         <?php } ?>
 
                        </div>
                     </div>
