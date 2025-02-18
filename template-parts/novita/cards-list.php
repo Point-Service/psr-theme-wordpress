@@ -13,7 +13,6 @@ if ($tipo_terms && !is_wp_error($tipo_terms)) {
     $tipo = null;
 }
 
-var_dump($post);
 if ($img) {
 ?>
     <div class="col-12 col-md-6 col-xl-4">
