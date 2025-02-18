@@ -305,7 +305,7 @@ get_header();
                     
                                 <!-- Sezione per visualizzare i luoghi correlati -->
                                 <?php if ($luoghi && is_array($luoghi) && count($luoghi) > 0) { ?>
-                                    <p></p><p></p>
+                                      </br><br>
                                     <section id="luoghi" class="it-page-section mb-4">
                                         <h2 class="h4">Luoghi correlati</h2> 
                                         <h6><small>Luogo collegato alla notizia</small></h6>
