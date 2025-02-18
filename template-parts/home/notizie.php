@@ -34,9 +34,6 @@ for ($i = 1; $i <= 20; $i++) {
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
                                     <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
-                                    <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                                        <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
-                                    <?php } ?>
                                 </div>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                                     <h3 class="card-title"><?php echo $post->post_title ?></h3>
@@ -61,6 +58,12 @@ for ($i = 1; $i <= 20; $i++) {
                                                 <?php echo esc_html($luogo_notizia); ?>
                                             </span>
                                         <?php } ?>
+
+                                  <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
+                                    <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                                        <span class="data fw-normal">Data di Pubblicazione: <?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+                                    <?php } ?>
+                                
                                 <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
                                 Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
@@ -76,8 +79,6 @@ for ($i = 1; $i <= 20; $i++) {
         </div>
     </div>
 </section>
-
-    
 
     <div class="container">
       <div class="row mb-2">
