@@ -302,7 +302,8 @@ get_header();
                           <?php if ($luoghi && is_array($luoghi) && count($luoghi) > 0) { ?>
                                <p></p>
                                 <section id="luoghi" class="it-page-section mb-4">
-                                    <h2 class="h4">Luoghi correlati</h4>                                    
+                                    <h2 class="h4">Luoghi correlati</h4> 
+                                    <h6><small>Luogo collegato alla notizia</small></h6>
                                     <div class="row">
                                     <div class="col-12 col-sm-8">
                                         <?php foreach ($luoghi as $luogo_id) {
