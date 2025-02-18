@@ -80,7 +80,7 @@
                     $tipo_notizia_name = $tipo_notizia != null ? $tipo_notizia->name : 'Notizie';
                     $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
                     $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
-                ?>
+                ?>dddd
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="card-wrapper">
                         <div class="card card-img no-after sm-row">
