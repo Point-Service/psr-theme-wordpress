@@ -59,7 +59,7 @@ for ($i = 1; $i <= 20; $i++) {
                                             </span>
                                         <?php } ?>
 
-                                  <p style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;"></p>
+                                  <p></p>
                                     <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal">Data di Pubblicazione: <b><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></b></span>
                                     <?php } ?>
