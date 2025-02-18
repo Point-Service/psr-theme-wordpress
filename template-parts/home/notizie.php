@@ -105,7 +105,11 @@ for ($i = 1; $i <= 20; $i++) {
             </div>
           </div>
          </div>
-  
+     <script>
+        const descText = document.querySelector('#descrizione')?.closest('article').innerText;
+        const wordsNumber = descText.split(' ').length
+        document.querySelector('#readingTime').innerHTML = `${Math.ceil(wordsNumber / 200)} min`;
+    </script> 
 <p></p>
 <section id="calendario">
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
