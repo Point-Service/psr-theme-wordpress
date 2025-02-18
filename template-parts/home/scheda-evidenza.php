@@ -64,7 +64,7 @@ $page_macro = get_page_by_path($page_macro_slug);
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
                     <?php if(is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-                            
+                            8
                                     <div class="card-body pe-3">
                                         <p class="card-title text-paragraph-regular-medium-semi mb-3">
                                            📍 <?php get_template_part("template-parts/single/luoghi"); ?>
