@@ -51,17 +51,15 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                     <?php echo $descrizione; ?>
                 </p>
                 
-      <?php if (!empty($luogo_evento) && is_array($luogo_evento)) { ?>
+<?php if (!empty($luogo_evento)) { ?>
     <span class="data fw-normal">📍 
         <?php 
-        foreach ($luogo_evento as $luogo_id) {
-            // Ottieni i dettagli del luogo
-            $luogo_post = get_post($luogo_id);
-            
-            if ($luogo_post && !is_wp_error($luogo_post)) {
-                // Stampa il nome del luogo come link
-                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
-            }
+        // Ottieni i dettagli del luogo
+        $luogo_post = get_post($luogo_evento);
+        
+        if ($luogo_post && !is_wp_error($luogo_post)) {
+            // Stampa il nome del luogo come link
+            echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a>';
         }
         ?>
     </span>
@@ -70,6 +68,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
         <?php echo esc_html($luogo_notizia); ?>
     </span>
 <?php } ?>
+
 
                 
                 <a class="read-more t-primary text-uppercase"
