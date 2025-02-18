@@ -83,9 +83,8 @@ for ($i = 1; $i <= 20; $i++) {
         </div>
     </div>
 </section>
-
     <div class="container">
-      <div class="row mb-2">
+      <div class="">
         <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                 <div class="row my-4 justify-content-md-center">                 
                        <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
@@ -97,8 +96,7 @@ for ($i = 1; $i <= 20; $i++) {
               </div>
             </div>
           </div>
-         </div>
-
+    </div>
 
 <?php
 if ($schede && count($schede) > 0) { ?>
