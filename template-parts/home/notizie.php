@@ -39,37 +39,33 @@ for ($i = 1; $i <= 20; $i++) {
                                     <h3 class="card-title"><?php echo $post->post_title ?></h3>
                                 </a>
                                 <p class="mb-4 font-serif pt-3"><?php echo $descrizione_breve ?></p>
-                                        <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-                                            <span class="data fw-normal">📍 
-                                                <?php 
-                                                foreach ($luogo_notizia as $luogo_id) {
-                                                    // Ottieni i dettagli del luogo
-                                                    $luogo_post = get_post($luogo_id);
-                                                    
-                                                    if ($luogo_post && !is_wp_error($luogo_post)) {
-                                                        // Stampa il nome del luogo come link
-                                                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3">' . esc_html($luogo_post->post_title) . '</a> ';
-                                                    }
-                                                }
-                                                ?>
-                                            </span>
-                                        <?php } elseif (!empty($luogo_notizia)) { ?>
-                                            <span class="data fw-normal"> | 📍 
-                                                <?php echo esc_html($luogo_notizia); ?>
-                                            </span>
-                                        <?php } ?>
-                                      <div class="row mt-5 mb-4">
-                                        <div class="col-6">
-                                            <small>Data:</small>
-                                            <p class="fw-semibold font-monospace">
-                                                         <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                                                    <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></b></span>
-                                                <?php } ?>
-                                            </p>
-                                        </div>
+                                <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                    <span class="data fw-normal">📍 
+                                        <?php 
+                                        foreach ($luogo_notizia as $luogo_id) {
+                                            $luogo_post = get_post($luogo_id);
+                                            if ($luogo_post && !is_wp_error($luogo_post)) {
+                                                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3">' . esc_html($luogo_post->post_title) . '</a> ';
+                                            }
+                                        }
+                                        ?>
+                                    </span>
+                                <?php } elseif (!empty($luogo_notizia)) { ?>
+                                    <span class="data fw-normal"> | 📍 
+                                        <?php echo esc_html($luogo_notizia); ?>
+                                    </span>
+                                <?php } ?>
+                                <div class="row mt-5 mb-4">
+                                    <div class="col-6">
+                                        <small>Data:</small>
+                                        <p class="fw-semibold font-monospace">
+                                            <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                                                <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></b></span>
+                                            <?php } ?>
+                                        </p>
                                     </div>
-                                  <small>Argomenti: </small><?php get_template_part("template-parts/common/badges-argomenti"); ?>
-                                
+                                </div>
+                                <small>Argomenti: </small><?php get_template_part("template-parts/common/badges-argomenti"); ?>                                
                             </div>
                         </div>
                     </div>
@@ -83,35 +79,29 @@ for ($i = 1; $i <= 20; $i++) {
         </div>
     </div>
 </section>
-
-    <div class="container">
-      <div class="row mb-2">
+<div class="container">
+    <div class="row mb-2">
         <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                <div class="row my-4 justify-content-md-center">                 
-                       <a href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>" class="btn btn-primary-outline mt-40" >   
-                         <svg class="icon icon-sm" aria-hidden="true">
-                           <use xlink:href="#it-calendar"></use>
-                          </svg>
-                          Visualizza tutte le novità
-                     </a>                 
-              </div>
+            <div class="row my-4 justify-content-md-center">                 
+                <a href="<?php echo dci_get_template_page_url('page-templates/novita.php'); ?>" class="btn btn-primary-outline" style="margin-top: 10px;"><svg class="icon icon-sm" aria-hidden="true"><use xlink:href="#it-calendar"></use></svg>Visualizza tutte le novità</a>                 
             </div>
-          </div>
-         </div>
-
+        </div>
+    </div>
+</div>
 <p></p>
 <section id="calendario">
-  <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
-    <div class="container">
-      <div class="row mb-2">
-        <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-        <?php $count=1;
-        foreach ($schede as $scheda) {
-          if ($scheda) 
-            get_template_part("template-parts/home/scheda-evidenza");
-          ++$count;
-        } ?>
+    <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+                    <?php $count=1;
+                    foreach ($schede as $scheda) {
+                        if ($scheda) 
+                            get_template_part("template-parts/home/scheda-evidenza");
+                        ++$count;
+                    } ?>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-<!-- Tag section is closed in home.php -->
+</section>
