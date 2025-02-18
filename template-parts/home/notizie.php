@@ -66,7 +66,7 @@ for ($i = 1; $i <= 20; $i++) {
                                 <small>Data:</small>
                                 <p class="fw-semibold font-monospace">
                                              <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                                        <span class="data fw-normal">Data di Pubblicazione: <b><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></b></span>
+                                        <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></b></span>
                                     <?php } ?>
                                 </p>
                             </div>
