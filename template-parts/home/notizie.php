@@ -60,13 +60,21 @@ for ($i = 1; $i <= 20; $i++) {
                                         <?php } ?>
 
                                   <p></p>
-                                    <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                          
+                        <div class="row mt-5 mb-4">
+                            <div class="col-6">
+                                <small>Data:</small>
+                                <p class="fw-semibold font-monospace">
+                                             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                                         <span class="data fw-normal">Data di Pubblicazione: <b><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></b></span>
                                     <?php } ?>
+                                </p>
+                            </div>
                             <div class="col-6">
                                 <small>Tempo di lettura:</small>
                                 <p class="fw-semibold" id="readingTime"></p>
                             </div>
+                        </div>
                                 <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
                                 Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
