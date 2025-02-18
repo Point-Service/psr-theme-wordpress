@@ -71,26 +71,6 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
-<?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-    <span class="data fw-normal"> | 📍 
-        <?php 
-        foreach ($luogo_notizia as $luogo_id) {
-            // Ottieni i dettagli del luogo
-            $luogo_post = get_post($luogo_id);
-            
-            if ($luogo_post && !is_wp_error($luogo_post)) {
-                // Stampa il nome del luogo come link
-                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
-            }
-        }
-        ?>
-    </span>
-<?php } elseif (!empty($luogo_notizia)) { ?>
-    <span class="data fw-normal"> | 📍 
-        <?php echo esc_html($luogo_notizia); ?>
-    </span>
-<?php } ?>
-
             <?php } ?>
         </div>
         <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
@@ -98,6 +78,29 @@ $page_macro = get_page_by_path($page_macro_slug);
         <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
         <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>            
         <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
+        <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+            <span class="data fw-normal"> | 📍 
+                <?php 
+                foreach ($luogo_notizia as $luogo_id) {
+                    // Ottieni i dettagli del luogo
+                    $luogo_post = get_post($luogo_id);
+                    
+                    if ($luogo_post && !is_wp_error($luogo_post)) {
+                        // Stampa il nome del luogo come link
+                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
+                    }
+                }
+                ?>
+            </span>
+        <?php } elseif (!empty($luogo_notizia)) { ?>
+            <span class="data fw-normal"> | 📍 
+                <?php echo esc_html($luogo_notizia); ?>
+            </span>
+        <?php } ?>
+
+
+
+        
         <a class="read-more" href="<?php echo esc_url(get_permalink($post->ID)); ?>" 
            aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
            title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
