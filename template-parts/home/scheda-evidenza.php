@@ -64,24 +64,20 @@ $page_macro = get_page_by_path($page_macro_slug);
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
                 <?php if (!empty($luogo_notizia)) { ?>
-                    <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-                        <span class="data fw-normal"> | 📍 
-                            <div class="col-12">
-                                <div class="card card-teaser border rounded shadow p-4 flex-nowrap">
-                                    <div class="card-body pe-3">
-                                        <p class="card-title text-paragraph-regular-medium-semi mb-3">
-                                            <?php 
-                                            // Unisci i luoghi in una stringa separata da virgole
-                                            echo esc_html(implode(', ', $luogo_notizia)); 
-                                            ?>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </span>
-                    <?php } else { ?>
-                        <span class="data fw-normal"> | 📍 <?php echo esc_html($luogo_notizia); ?></span>
-                    <?php } ?>
+                    <span class="data fw-normal"> | 📍 
+                        <?php 
+                        // Se $luogo_notizia è un array
+                        if (is_array($luogo_notizia) && count($luogo_notizia)) {
+                            foreach ($luogo_notizia as $luogo) {
+                                // Supponiamo che $luogo abbia 'name' e 'url' come campi
+                                echo '<a href="' . esc_url($luogo['url']) . '" title="' . esc_attr($luogo['name']) . '">' . esc_html($luogo['name']) . '</a>';
+                            }
+                        } else {
+                            // Se $luogo_notizia è una stringa
+                            echo '<a href="#" title="' . esc_attr($luogo_notizia) . '">' . esc_html($luogo_notizia) . '</a>';
+                        }
+                        ?>
+                    </span>
                 <?php } ?>
             <?php } ?>
         </div>
@@ -101,5 +97,6 @@ $page_macro = get_page_by_path($page_macro_slug);
     </div>
 </div>
 <?php } ?>
+
 
 
