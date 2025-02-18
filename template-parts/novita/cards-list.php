@@ -6,6 +6,7 @@ $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_',
 $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $img = dci_get_meta('immagine');
 $tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
+$luogo_notizia = dci_get_meta("luoghi", '_dci_notizia_', $post->ID);
 
 if ($tipo_terms && !is_wp_error($tipo_terms)) {
     $tipo = $tipo_terms[0];
@@ -99,6 +100,28 @@ if ($img) {
                             <p class="card-text d-none d-md-block">
                                 <?php echo $description; ?>
                             </p>
+
+                             <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                            <span class="data fw-normal">📍 
+                                                <?php 
+                                                foreach ($luogo_notizia as $luogo_id) {
+                                                    // Ottieni i dettagli del luogo
+                                                    $luogo_post = get_post($luogo_id);
+                                                    
+                                                    if ($luogo_post && !is_wp_error($luogo_post)) {
+                                                        // Stampa il nome del luogo come link
+                                                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
+                                                    }
+                                                }
+                                                ?>
+                                            </span>
+                                        <?php } elseif (!empty($luogo_notizia)) { ?>
+                                            <span class="data fw-normal"> | 📍 
+                                                <?php echo esc_html($luogo_notizia); ?>
+                                            </span>
+                                        <?php } ?>
+
+                            
                         </div>
                     </div>
                 </div>
