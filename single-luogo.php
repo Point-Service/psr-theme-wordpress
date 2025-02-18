@@ -230,7 +230,7 @@ get_header();
               <h2 class="mb-3">Indirizzo</h2>         
           <center>
           <?php 
-            $luoghi = $indirizzo;
+            $luoghi = array($indirizzo);
             get_template_part("template-parts/luogo/map"); 
                  ?>
                       </center>
