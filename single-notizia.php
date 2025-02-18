@@ -283,47 +283,47 @@ get_header();
                             </div>
                         </article>
                         <?php } ?>
-       <article class="it-page-section anchor-offset mt-5">
-    <h4 id="a-cura-di">A cura di</h4>
-    <div class="row">
-        <!-- Colonna centrale per il contenuto -->
-        <div class="col-12 col-sm-8">
-            <!-- Piccolo testo introduttivo -->
-            <h6><small>Questa pagina è gestita da</small></h6>
-            
-            <!-- Loop per visualizzare le unità organizzative -->
-            <?php foreach ($a_cura_di as $uo_id) {
-                $with_border = true;
-                get_template_part("template-parts/unita-organizzativa/card");
-            } ?>
-
-            <!-- Sezione per visualizzare le persone, se ci sono -->
-            <?php if(is_array($persone) && count($persone)) { ?>
-                <h3 class="h6">Persone</h3>
-                <?php get_template_part("template-parts/single/persone"); ?>
-            <?php } ?>
-
-            <!-- Sezione per visualizzare i luoghi correlati -->
-            <?php if ($luoghi && is_array($luoghi) && count($luoghi) > 0) { ?>
-                <p></p>
-                <section id="luoghi" class="it-page-section mb-4">
-                    <h2 class="h4">Luoghi correlati</h2> 
-                    <h6><small>Luogo collegato alla notizia</small></h6>
-                    <div class="row">
-                        <?php foreach ($luoghi as $luogo_id) {
-                            ?><div class="col-xl-6 col-lg-8 col-md-12"><?php
-                            $with_border = true;
-                            $luogo = get_post($luogo_id);
-                            get_template_part("template-parts/luogo/card-title");
-                            ?></div><?php
-                        } ?>
-                    </div>
-                </section>
-            <?php } ?>
-        </div>
-
-    </div>
-</article>
+                       <article class="it-page-section anchor-offset mt-5">
+                        <h4 id="a-cura-di">A cura di</h4>
+                        <div class="row">
+                            <!-- Colonna centrale per il contenuto -->
+                            <div class="col-12 col-sm-8">
+                                <!-- Piccolo testo introduttivo -->
+                                <h6><small>Questa pagina è gestita da</small></h6>
+                                
+                                <!-- Loop per visualizzare le unità organizzative -->
+                                <?php foreach ($a_cura_di as $uo_id) {
+                                    $with_border = true;
+                                    get_template_part("template-parts/unita-organizzativa/card");
+                                } ?>
+                    
+                                <!-- Sezione per visualizzare le persone, se ci sono -->
+                                <?php if(is_array($persone) && count($persone)) { ?>
+                                    <h3 class="h6">Persone</h3>
+                                    <?php get_template_part("template-parts/single/persone"); ?>
+                                <?php } ?>
+                    
+                                <!-- Sezione per visualizzare i luoghi correlati -->
+                                <?php if ($luoghi && is_array($luoghi) && count($luoghi) > 0) { ?>
+                                    <p></p><p></p>
+                                    <section id="luoghi" class="it-page-section mb-4">
+                                        <h2 class="h4">Luoghi correlati</h2> 
+                                        <h6><small>Luogo collegato alla notizia</small></h6>
+                                        <div class="row">
+                                            <?php foreach ($luoghi as $luogo_id) {
+                                                ?><div class="col-xl-6 col-lg-8 col-md-12"><?php
+                                                $with_border = true;
+                                                $luogo = get_post($luogo_id);
+                                                get_template_part("template-parts/luogo/card-title");
+                                                ?></div><?php
+                                            } ?>
+                                        </div>
+                                    </section>
+                                <?php } ?>
+                            </div>
+                    
+                        </div>
+                    </article>
                     <article
                         id="ulteriori-informazioni"
                         class="it-page-section anchor-offset mt-5"
