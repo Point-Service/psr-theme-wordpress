@@ -12,6 +12,7 @@ $end_date = date_i18n('d/m', date($end_timestamp));
 $end_date_arr = explode('-', date_i18n('d-F-Y-H-i', date($end_timestamp)));
 $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
 $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
+$luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
 ?>
 
 <div class="col-lg-6 col-xl-4">
@@ -48,6 +49,27 @@ $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
                 <p class="card-text text-secondary pb-3">
                     <?php echo $descrizione; ?>
                 </p>
+                                      <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                            <span class="data fw-normal">📍 
+                                                <?php 
+                                                foreach ($luogo_notizia as $luogo_id) {
+                                                    // Ottieni i dettagli del luogo
+                                                    $luogo_post = get_post($luogo_id);
+                                                    
+                                                    if ($luogo_post && !is_wp_error($luogo_post)) {
+                                                        // Stampa il nome del luogo come link
+                                                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
+                                                    }
+                                                }
+                                                ?>
+                                            </span>
+                                        <?php } elseif (!empty($luogo_notizia)) { ?>
+                                            <span class="data fw-normal"> | 📍 
+                                                <?php echo esc_html($luogo_notizia); ?>
+                                            </span>
+                                        <?php } ?>
+
+                
                 <a class="read-more t-primary text-uppercase"
                     href="<?php echo get_permalink($post->ID); ?>"
                     aria-label="Leggi di più sulla pagina di <?php echo $post->post_title ?>">
