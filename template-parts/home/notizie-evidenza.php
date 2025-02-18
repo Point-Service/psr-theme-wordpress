@@ -8,7 +8,8 @@ $icon = dci_get_post_type_icon_by_id($post->ID);
 $page = get_page_by_path( dci_get_group($post->post_type) ); 
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
-$luogo_notizia = dci_get_meta("luoghi", '_dci_notizia_', $post->ID); // Recupera il luogo della notizia
+$luogo_notizia = dci_get_meta('luoghi');
+
 
 ?>
 <?php if ($img) { ?>
@@ -69,7 +70,7 @@ $luogo_notizia = dci_get_meta("luoghi", '_dci_notizia_', $post->ID); // Recupera
         <p class="card-text text-secondary">
             <?php echo $descrizione_breve ?>
         </p>
-   <?php if(is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+<?php if(is_array($luogo_notizia) && count($luogo_notizia)) { ?>
     <div class="col-12">
         <h4 id="luoghi">Luoghi</h4>
         <h6><small>Luoghi collegati alla notizia.</small></h6>
@@ -82,6 +83,7 @@ $luogo_notizia = dci_get_meta("luoghi", '_dci_notizia_', $post->ID); // Recupera
         </div>
     </div>
 <?php } ?>
+
 
         </div>
         
