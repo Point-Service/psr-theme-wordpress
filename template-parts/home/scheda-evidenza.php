@@ -20,7 +20,7 @@ $page_macro = get_page_by_path($page_macro_slug);
 <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
     <div class="card-image-wrapper with-read-more">
         <div class="card-body p-3 u-grey-light">
-            <div class="category-top">kkk
+            <div class="category-top">
                 <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
                 <?php if (is_array($arrdata) && count($arrdata)) { ?>
                     <span class="data fw-normal">
@@ -65,7 +65,7 @@ $page_macro = get_page_by_path($page_macro_slug);
 <?php } else { ?>
 <div class="card card-teaser no-after rounded shadow-sm mb-0 border border-light">
     <div class="card-body pb-5">
-        <div class="category-top">
+        <div class="category-top">ooooo
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
