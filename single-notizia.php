@@ -296,7 +296,11 @@ get_header();
                             <h3 class="h6">Persone</h3>
                                 <?php get_template_part("template-parts/single/persone"); ?>
                             <?php }?>
-                           <p></p>                            
+                           <p></p>   
+                            
+        
+
+                            
                           <?php if(is_array($luoghi) && count($luoghi)) { ?>
                             <div class="col-12">
                              <h4 id="luoghi">Luoghi</h4>
@@ -305,7 +309,9 @@ get_header();
                                
                                     <div class="card-body pe-3">
                                         <p class="card-title text-paragraph-regular-medium-semi mb-3">
-                                            <?php get_template_part("template-parts/single/luoghi"); ?>
+                                            <?php
+                                            $luogo = is_array($luoghi);                           
+                                            et_template_part("template-parts/single/luogo"); ?>
                                         </p>
                                     </div>
                              </div>
