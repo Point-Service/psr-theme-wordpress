@@ -27,7 +27,7 @@ $luogo_notizia = dci_get_meta('luoghi');
         </div>
         <div class="card-image card-image-rounded pb-5">            
             <?php dci_get_img($img); ?>
-        </div>
+        </div>c
           <?php if(is_array($luoghi) && count($luoghi)) { ?>
                             <div class="col-12">
                              <h4 id="luoghi">Luoghi</h4>
@@ -69,7 +69,7 @@ $luogo_notizia = dci_get_meta('luoghi');
         </h3>
         <p class="card-text text-secondary">
             <?php echo $descrizione_breve ?>
-        </p>
+        </p>s
 <?php if(is_array($luogo_notizia) && count($luogo_notizia)) { ?>
     <div class="col-12">
         <h4 id="luoghi">Luoghi</h4>
