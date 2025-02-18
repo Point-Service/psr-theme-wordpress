@@ -49,7 +49,9 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                 </h3>
                 <p class="card-text text-secondary pb-3">
                     <?php echo $descrizione; ?>
-                </p>          <?php if($luogo_evento) {?>
+                </p>
+                
+         <?php if($luogo_evento) {?>
           <article id="luogo" class="it-page-section mb-5">
             <h2 class="mb-3">Luogo</h2>
             <?php
@@ -58,7 +60,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
             ?>
           </article>
           <?php } ?>
-                                      <?php if (is_array($luogo_evento) && count($luogo_evento)) { ?>
+                                      <?php if (($luogo_evento) && count($luogo_evento)) { ?>
                                             <span class="data fw-normal">📍 
                                                 <?php 
                                                 foreach ($luogo_evento as $luogo_id) {
