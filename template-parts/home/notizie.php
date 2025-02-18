@@ -58,10 +58,7 @@ for ($i = 1; $i <= 20; $i++) {
                                                 <?php echo esc_html($luogo_notizia); ?>
                                             </span>
                                         <?php } ?>
-
-                                  <p></p>
-                          
-                        <div class="row mt-5 mb-4">
+                          <div class="row mt-5 mb-4">
                             <div class="col-6">
                                 <small>Data:</small>
                                 <p class="fw-semibold font-monospace">
@@ -70,7 +67,6 @@ for ($i = 1; $i <= 20; $i++) {
                                     <?php } ?>
                                 </p>
                             </div>
-
                         </div>
                                 <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
                                 Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
