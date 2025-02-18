@@ -63,18 +63,26 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
-                    <?php if (!empty($luogo_notizia)) { ?>
+                <?php if (!empty($luogo_notizia)) { ?>
+                    <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
                         <span class="data fw-normal"> | 📍 
-                            <?php 
-                            if (is_array($luogo_notizia)) {
-                                echo esc_html(implode(', ', $luogo_notizia));
-                            } else {
-                                echo esc_html($luogo_notizia);
-                            }
-                            ?>
-                        </span>                  
+                            <div class="col-12">
+                                <div class="card card-teaser border rounded shadow p-4 flex-nowrap">
+                                    <div class="card-body pe-3">
+                                        <p class="card-title text-paragraph-regular-medium-semi mb-3">
+                                            <?php 
+                                            // Unisci i luoghi in una stringa separata da virgole
+                                            echo esc_html(implode(', ', $luogo_notizia)); 
+                                            ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    <?php } else { ?>
+                        <span class="data fw-normal"> | 📍 <?php echo esc_html($luogo_notizia); ?></span>
                     <?php } ?>
-
+                <?php } ?>
             <?php } ?>
         </div>
         <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
@@ -93,4 +101,5 @@ $page_macro = get_page_by_path($page_macro_slug);
     </div>
 </div>
 <?php } ?>
+
 
