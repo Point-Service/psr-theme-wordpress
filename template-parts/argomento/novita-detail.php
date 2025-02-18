@@ -3,7 +3,6 @@
 
     $posts = dci_get_grouped_posts_by_term( 'novita-evento' , 'argomenti', $argomento->slug, 3 );
 ?>
-j
 <section id="novita">
     <div class="bg-grey-card pt-40 pt-md-100 pb-50">
         <div class="container">
