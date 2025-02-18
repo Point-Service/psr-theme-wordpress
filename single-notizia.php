@@ -299,12 +299,12 @@ get_header();
                            <p></p>   
                           
 
-
                           <?php if ($luoghi && is_array($luoghi) && count($luoghi) > 0) { ?>
                                <p></p>
                                 <section id="luoghi" class="it-page-section mb-4">
                                     <h2 class="h4">Luoghi correlati</h4>                                    
                                     <div class="row">
+                                    <div class="col-12 col-sm-8">
                                         <?php foreach ($luoghi as $luogo_id) {
                                             ?><div class="col-xl-6 col-lg-8 col-md-12"><?php
                                             $with_border = true;
@@ -312,6 +312,7 @@ get_header();
                                             get_template_part("template-parts/luogo/card-title");
                                             ?></div><?php
                                         } ?>
+                                     </div>
                                     </div>
                                 </section>
                             <?php } ?>
