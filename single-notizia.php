@@ -7,7 +7,7 @@
  * @package Design_Comuni_Italia
  */
 
-global $uo_id, $inline;
+global $uo_id, $inline, $audio;
 
 get_header();
 ?>
@@ -29,7 +29,12 @@ get_header();
             $allegati = dci_get_meta("allegati", $prefix, $post->ID);
             $datasets = dci_get_meta("dataset", $prefix, $post->ID);
             $a_cura_di = dci_get_meta("a_cura_di", $prefix, $post->ID);
-            $galleria = dci_get_meta("multimedia", $prefix, $post->ID);
+            
+
+            $gallery = dci_get_meta("gallery", $prefix, $post->ID);
+            $video = dci_get_meta("video", $prefix, $post->ID);
+            $trascrizione = dci_get_meta("trascrizione", $prefix, $post->ID);
+            $audio= dci_get_meta("audio", $prefix, $post->ID);
             ?>
             <div class="container" id="main-container">
                 <div class="row">
@@ -102,6 +107,13 @@ get_header();
                                                                     <span class="title-medium">Descrizione</span>
                                                                     </a>
                                                                 </li>
+                                                                <?php if(!empty($gallery) OR !empty($video) OR !empty($audio)){?> 
+                                                                    <li class="nav-item">
+                                                                    <a class="nav-link" href="#media">
+                                                                    <span class="title-medium">Media</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php }?>
                                                                 <?php if( is_array($documenti) && count($documenti) ) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#documenti">
@@ -156,61 +168,43 @@ get_header();
                     </article>
 
                        
-                        <?php if($galleria) { ?>
-                            <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5">
-                                <h4 id="documenti">Media</h4>
-                                <div class="grid-row">
-                                    <?php foreach ($galleria as $img_url) {
-                        
-                                        $immagine = get_post(attachment_url_to_postid($img_url));
-                                        $image_alt = get_post_meta($immagine->ID, '_wp_attachment_image_alt', true);
-                                        $extension = pathinfo($img_url, PATHINFO_EXTENSION); // Estrai l'estensione del file    
-                                    ?>
-                                       <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                                        <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                            <div class="img-responsive-wrapper">
-                                                <div class="img-responsive">
-                                                    <?php 
-                                                        // Array di formati audio supportati
-                                                        $audio_formats = array('mp3', 'wav', 'ogg', 'aac');
-                                                        
-                                                        // Array di formati immagine supportati
-                                                        $image_formats = array('jpg', 'jpeg', 'png', 'gif', 'webp');
-                        
-                                                        // Verifica se l'estensione è un formato audio
-                                                        if (in_array($extension, $audio_formats)) { ?>
-                                                            <div class="audio-wrapper">
-                                                                <div class="custom-audio-player">
-                                                                    <audio id="audio-<?php echo md5($img_url); ?>" controls>
-                                                                        <source src="<?php echo $img_url; ?>" type="audio/<?php echo $extension; ?>">
-                                                                        Il tuo browser non supporta l'elemento audio.
-                                                                    </audio>
-                                                                    <div class="audio-controls">
-                                                                        <button onclick="playAudio('audio-<?php echo md5($img_url); ?>')">Play</button>
-                                                                        <button onclick="pauseAudio('audio-<?php echo md5($img_url); ?>')">Pause</button>
-                                                                        <button onclick="stopAudio('audio-<?php echo md5($img_url); ?>')">Stop</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        <?php } 
-                                                        // Verifica se l'estensione è un formato immagine
-                                                        elseif (in_array($extension, $image_formats)) { ?>
-                                                            <div class="img-wrapper">
-                                                                <img src="<?php echo $img_url; ?>" alt="<?php echo $image_alt; ?>">
-                                                            </div>
-                                                        <?php } else { ?>
-                                                            <div class="other-file">
-                                                                File non supportato.
-                                                            </div>
-                                                        <?php } ?>
+                    <?php if(!empty($gallery) OR !empty($video) OR !empty($audio)){?>                        
+                            <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5" id="madia">
+                                <?php if (is_array($gallery) && count($gallery)) {?>
+                                    <h3 class="h3">Multimedia</h3>
+                                    <?php get_template_part("template-parts/single/gallery");
+                                } ?>
+                                <?php if ($video) {?>
+                                    <?php get_template_part("template-parts/single/video");
+                                }?>
+                                <?php if (!empty($audio)) { ?>
+                                    <div class="mb-4">
+                                        <h3 class="h3">File Audio</h3>
+                                        <div class="grid-row">
+                                            <?php foreach($audio as $audio_id){
+                                                $extension = pathinfo($audio_id, PATHINFO_EXTENSION);
+                                                ?>
+                                                <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                                                <div class="audio-wrapper">
+                                                    <div class="custom-audio-player">
+                                                        <audio id="<?= $audio_id;?>" controls>
+                                                            <source src="<?= $audio_id;?>" type="audio/<?= $extension;?>">
+                                                                Il tuo browser non supporta l'elemento audio.
+                                                            </audio>
+                                                        <div class="audio-controls">
+                                                            <button onclick="playAudio('<?php echo $audio_id; ?>')">Play</button>
+                                                            <button onclick="pauseAudio('<?php echo $audio_id; ?>')">Pause</button>
+                                                            <button onclick="stopAudio('<?php echo $audio_id; ?>')">Stop</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <?php }?>                                            
                                         </div>
                                     </div>
-                                    <?php } ?>
-                                </div>
+                                <?php } ?>
                             </article>
-                        <?php } ?>
+                    <?php } ?>
                             
 
                     <?php if( is_array($documenti) && count($documenti) ) { ?>
@@ -321,12 +315,12 @@ get_header();
                        </div>
                     </div>
                     </article>
-                    <!-- <article
+                    <article
                         id="ulteriori-informazioni"
                         class="it-page-section anchor-offset mt-5"
                     >
                         <h4 class="mb-3">Ulteriori informazioni</h4>
-                    </article> -->
+                    </article>
                     <?php get_template_part('template-parts/single/page_bottom'); ?>
                     </section>
                 </div>
@@ -344,6 +338,11 @@ get_header();
         const wordsNumber = descText.split(' ').length
         document.querySelector('#readingTime').innerHTML = `${Math.ceil(wordsNumber / 200)} min`;
     </script>
+
+
+<?php
+get_footer();?>
+
 <style>
 .it-grid-item-wrapper {
     /* Imposta una larghezza fissa per il contenitore dell'immagine/audio se necessario */
