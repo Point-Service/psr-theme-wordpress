@@ -310,7 +310,7 @@ get_header();
                                             ?><div class="col-xl-6 col-lg-8 col-md-12"><?php
                                             $with_border = true;
                                             $luogo = get_post( $luogo_id );
-                                            get_template_part("template-parts/luogo/card-title");
+                                            get_template_part("template-parts/luogo/luogo");
                                             ?></div><?php
                                         } ?>
                                      </div>
