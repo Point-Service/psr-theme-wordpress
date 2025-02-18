@@ -302,14 +302,14 @@ get_header();
                             <div class="col-12">
                              <h4 id="luoghi">Luoghi</h4>
                               <h6><small>Luoghi collegati alla notizia.</small></h6>
-                              <div class="card card-teaser border rounded shadow p-4 flex-nowrap">                              
+                                                        
                                
                                     <div class="card-body pe-3">
                                         
                                             <?php get_template_part("template-parts/single/luoghi"); ?>
                                         
                                     </div>
-                             </div>
+                            
                             </div>
                          <?php }?>                            
         
