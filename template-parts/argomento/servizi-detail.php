@@ -13,7 +13,7 @@
                         Servizi
                     </h3>
                 </div>
-            </div>kkkkkkk
+            </div>
             <div class="row mx-0">
                 <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                     <?php foreach ($posts as $post) { 
