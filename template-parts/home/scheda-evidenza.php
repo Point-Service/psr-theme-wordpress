@@ -22,29 +22,14 @@ $page_macro = get_page_by_path($page_macro_slug);
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
                 <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
-
-
-
-                
                 <?php if (is_array($arrdata) && count($arrdata)) { ?>
                     <span class="data fw-normal">
                         <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                     </span>
-                                                                  
-                     <?php if(is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-                            6
-                                    <div class="card-body pe-3">
-                                        <p class="card-title text-paragraph-regular-medium-semi mb-3">
-                                           📍 <?php get_template_part("template-parts/single/luoghi"); ?>
-                                        </p>
-                                    </div>                            
-                      <?php }?>
-
-
-                
-                 
+                    <?php if (!empty($luogo_notizia)) { ?>
+                        <span class="data fw-normal"> | 📍 <?php echo esc_html($luogo_notizia); ?></span>
+                    <?php } ?>
                 <?php } ?>
-    
             </div>
             <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
             <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo esc_html($descrizione_breve); ?></p>    
@@ -78,9 +63,14 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
-                <?php if (!empty($luogo_notizia)) { ?>
-                    <span class="data fw-normal"> | 📍 <?php echo esc_html($luogo_notizia); ?></span>
-                <?php } ?>
+                    <?php if(is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                            
+                                    <div class="card-body pe-3">
+                                        <p class="card-title text-paragraph-regular-medium-semi mb-3">
+                                           📍 <?php get_template_part("template-parts/single/luoghi"); ?>
+                                        </p>
+                                    </div>                            
+                      <?php }?>
             <?php } ?>
         </div>
         <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
@@ -99,4 +89,3 @@ $page_macro = get_page_by_path($page_macro_slug);
     </div>
 </div>
 <?php } ?>
-
