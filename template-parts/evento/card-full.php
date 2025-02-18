@@ -48,7 +48,7 @@ $luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
                 </h3>
                 <p class="card-text text-secondary pb-3">
                     <?php echo $descrizione; ?>
-                </p>
+                </p>uuuu
                                       <?php if (is_array($luogo_evento) && count($luogo_evento)) { ?>
                                             <span class="data fw-normal">📍 
                                                 <?php 
