@@ -13,6 +13,7 @@ $end_date_arr = explode('-', date_i18n('d-F-Y-H-i', date($end_timestamp)));
 $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
 $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
 $luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
+if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
 ?>
 
 <div class="col-lg-6 col-xl-4">
@@ -48,7 +49,7 @@ $luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
                 </h3>
                 <p class="card-text text-secondary pb-3">
                     <?php echo $descrizione; ?>
-                </p>uuuu
+                </p>
                                       <?php if (is_array($luogo_evento) && count($luogo_evento)) { ?>
                                             <span class="data fw-normal">📍 
                                                 <?php 
