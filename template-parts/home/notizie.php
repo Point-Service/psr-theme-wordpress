@@ -19,7 +19,7 @@ for ($i = 1; $i <= 20; $i++) {
     $schede[] = dci_get_option("schede_evidenziate_$i", 'homepage', true)[0] ?? null;
 }
 ?>
-i
+
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
@@ -70,10 +70,7 @@ i
                                     <?php } ?>
                                 </p>
                             </div>
-                            <div class="col-6">
-                                <small>Tempo di lettura:</small>
-                                <p class="fw-semibold" id="readingTime"></p>
-                            </div>
+
                         </div>
                                 <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
                                 Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
@@ -105,11 +102,7 @@ i
             </div>
           </div>
          </div>
-     <script>
-        const descText = document.querySelector('#descrizione')?.closest('article').innerText;
-        const wordsNumber = descText.split(' ').length
-        document.querySelector('#readingTime').innerHTML = `${Math.ceil(wordsNumber / 200)} min`;
-    </script> 
+
 <p></p>
 <section id="calendario">
   <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
