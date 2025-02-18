@@ -11,6 +11,7 @@ if ($post_id) {
     $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
+    $luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
 }
 
 $schede = [];
@@ -41,6 +42,25 @@ for ($i = 1; $i <= 20; $i++) {
                                     <h3 class="card-title"><?php echo $post->post_title ?></h3>
                                 </a>
                                 <p class="mb-4 font-serif pt-3"><?php echo $descrizione_breve ?></p>
+                                        <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                            <span class="data fw-normal">📍 
+                                                <?php 
+                                                foreach ($luogo_notizia as $luogo_id) {
+                                                    // Ottieni i dettagli del luogo
+                                                    $luogo_post = get_post($luogo_id);
+                                                    
+                                                    if ($luogo_post && !is_wp_error($luogo_post)) {
+                                                        // Stampa il nome del luogo come link
+                                                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
+                                                    }
+                                                }
+                                                ?>
+                                            </span>
+                                        <?php } elseif (!empty($luogo_notizia)) { ?>
+                                            <span class="data fw-normal"> | 📍 
+                                                <?php echo esc_html($luogo_notizia); ?>
+                                            </span>
+                                        <?php } ?>
                                 <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
                                 Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
