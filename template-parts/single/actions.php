@@ -135,18 +135,3 @@ if ($hide_arguments) $argomenti = array();
     </ul>
 </div>
 <?php } ?>
-
-<?php if (is_array($category) && count($category) ) { ?>
-<div class="mt-4 mb-4">
-    <span class="subtitle-small">Argomenti</span>
-    <ul class="d-flex flex-wrap gap-1">
-        <?php foreach ($category as $argomento) { ?>
-        <li>
-            <a class="chip chip-simple" href="<?php echo get_term_link($argomento->term_id); ?>" data-element="service-topic">
-                <span class="chip-label"><?php echo $argomento->name; ?></span>
-            </a>
-        </li>
-        <?php } ?>
-    </ul>
-</div>
-<?php } ?>
