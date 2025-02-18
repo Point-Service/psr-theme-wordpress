@@ -61,7 +61,7 @@ if ($img) {
             </div>
         </div>
     </div>
-<?php } else { ?>
+<?php } else { ?>sssss
     <div class="col-md-6 col-xl-4">
         <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
             <div class="card no-after rounded">
