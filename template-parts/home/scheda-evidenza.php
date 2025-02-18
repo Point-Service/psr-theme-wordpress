@@ -39,7 +39,7 @@ $page_macro = get_page_by_path($page_macro_slug);
                     
                     if ($luogo_post && !is_wp_error($luogo_post)) {
                         // Stampa il nome del luogo come link
-                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
+                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3">' . esc_html($luogo_post->post_title) . '</a> ';
                     }
                 }
                 ?>
@@ -92,7 +92,7 @@ $page_macro = get_page_by_path($page_macro_slug);
                     
                     if ($luogo_post && !is_wp_error($luogo_post)) {
                         // Stampa il nome del luogo come link
-                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
+                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3">' . esc_html($luogo_post->post_title) . '</a> ';
                     }
                 }
                 ?>
