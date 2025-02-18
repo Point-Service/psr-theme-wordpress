@@ -19,6 +19,7 @@
                     $description = dci_get_meta('descrizione_breve');
                     $img = dci_get_meta('immagine');                    
                     $luogo_notizia = dci_get_meta("luoghi");
+                    $argomenti = dci_get_meta("argomenti");
     
                     if ($post->post_type == 'evento') {
                         if (dci_get_meta('data_orario_inizio')) {
@@ -109,7 +110,7 @@
                                 <p class="pt-3 d-none d-lg-block text-paragraph-card u-grey-light">
                                     <?php echo $description; ?>
                                 </p>
-               <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
                                             <span class="data fw-normal">📍 
                                                 <?php 
                                                 foreach ($luogo_notizia as $luogo_id) {
@@ -127,8 +128,9 @@
                                             <span class="data fw-normal"> | 📍 
                                                 <?php echo esc_html($luogo_notizia); ?>
                                             </span>
-                                        <?php } ?>
-                                
+                                <?php } ?>
+                                <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
+                                Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
                         </div>
                     </div>
