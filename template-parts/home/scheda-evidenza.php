@@ -70,22 +70,22 @@ $page_macro = get_page_by_path($page_macro_slug);
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
-                </span>o
+                </span>
 <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
     <span class="data fw-normal"> | 📍 
         <?php 
-        foreach ($luogo_notizia as $luogo) {
-            // Assicurati che ogni elemento sia un array con 'name' e 'url'
-            if (is_array($luogo) && isset($luogo['name'], $luogo['url'])) {
-                echo '<a href="' . esc_url($luogo['url']) . '" title="' . esc_attr($luogo['name']) . '">' . esc_html($luogo['name']) . '</a> ';
-            } elseif (is_string($luogo)) {
-                // Se il luogo è una stringa, stampala
-                echo esc_html($luogo) . ' ';
+        foreach ($luogo_notizia as $luogo_id) {
+            // Ottieni i dettagli del luogo
+            $luogo_post = get_post($luogo_id);
+            
+            if ($luogo_post && !is_wp_error($luogo_post)) {
+                // Stampa il nome del luogo come link
+                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
             }
         }
         ?>
     </span>
-<?php } elseif (is_string($luogo_notizia) && !empty($luogo_notizia)) { ?>
+<?php } elseif (!empty($luogo_notizia)) { ?>
     <span class="data fw-normal"> | 📍 
         <?php echo esc_html($luogo_notizia); ?>
     </span>
