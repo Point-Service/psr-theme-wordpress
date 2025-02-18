@@ -301,6 +301,7 @@ get_header();
 
 
                           <?php if ($luoghi && is_array($luoghi) && count($luoghi) > 0) { ?>
+                               <p></p>
                                 <section id="luoghi_collegati" class="it-page-section mb-4">
                                     <h2 class="h3 my-2">Luoghi correlati</h2>
                                     
@@ -315,23 +316,7 @@ get_header();
                                     </div>
                                 </section>
                             <?php } ?>
-                            
-                            
-                         <?php if(is_array($luoghi) && count($luoghi)) { ?>
-                            <div class="col-12">
-                             <h4 id="luoghi">Luoghi</h4>
-                              <h6><small>Luoghi collegati alla notizia.</small></h6>
-                              <div class="card card-teaser border rounded shadow p-4 flex-nowrap">                              
-                               
-                                    <div class="card-body pe-3">
-                                        <p class="card-title text-paragraph-regular-medium-semi mb-3">
-                                            <?php get_template_part("template-parts/single/luoghi"); ?>
-                                        </p>
-                                    </div>
-                             </div>
-                            </div>
-                         <?php }?>                       
-        
+                              
 
                        </div>
                     </div>
