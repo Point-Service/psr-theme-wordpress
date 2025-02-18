@@ -68,7 +68,7 @@ for ($i = 1; $i <= 20; $i++) {
                                             </p>
                                         </div>
                                     </div>
-                                <hr style="margin-bottom: 1px; width: 200px; height: 1px; background-color: grey; border: none;">
+                                <hr style="margin-bottom: -1px; width: 200px; height: 1px; background-color: grey; border: none;">
                                 Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
                         </div>
