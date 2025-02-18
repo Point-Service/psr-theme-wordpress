@@ -1,48 +1,6 @@
 <?php
 global $gallery;
 ?>
- <head> 
-  <!-- Include il CSS di Tobii -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@midzer/tobii/dist/tobii.min.css">
-  
-  <style>
-    /* Stile per la griglia della gallery */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      justify-content: center;
-      background-color: #f7f7f7;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .image-container {
-      position: relative;
-      padding-bottom: 100%;
-      border: 1px solid #ccc;
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .image-container img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease-in-out;
-    }
-
-    .image-container img:hover {
-      transform: scale(1.05);
-    }
-  </style>
-</head>
-
 
 <div class="gallery">
   <?php foreach ($gallery as $photo) { ?>
