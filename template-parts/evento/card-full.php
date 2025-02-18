@@ -12,7 +12,7 @@ $end_date = date_i18n('d/m', date($end_timestamp));
 $end_date_arr = explode('-', date_i18n('d-F-Y-H-i', date($end_timestamp)));
 $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
 $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
-$luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
+$luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
 ?>
 
 <div class="col-lg-6 col-xl-4">
@@ -49,10 +49,10 @@ $luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
                 <p class="card-text text-secondary pb-3">
                     <?php echo $descrizione; ?>
                 </p>
-                                      <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                      <?php if (is_array($luogo_evento) && count($luogo_evento)) { ?>
                                             <span class="data fw-normal">📍 
                                                 <?php 
-                                                foreach ($luogo_notizia as $luogo_id) {
+                                                foreach ($luogo_evento as $luogo_id) {
                                                     // Ottieni i dettagli del luogo
                                                     $luogo_post = get_post($luogo_id);
                                                     
