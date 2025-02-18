@@ -38,7 +38,7 @@ $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
                 <p class="cmp-list-card-img__body-description">
                     <?php echo $descrizione; ?>
                 </p>
-                 <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
+                 <hr style="margin-bottom: 25px; width: 200px; height: 1px; background-color: grey; border: none;">
                 <a
                     class="read-more t-primary text-uppercase cmp-list-card-img__body-link"
                     href="<?php echo get_permalink($post->ID); ?>" aria-label="Leggi di più sulla pagina di <?php echo $post->post_title ?>">
