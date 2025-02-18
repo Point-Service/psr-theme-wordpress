@@ -63,19 +63,17 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
-<?php if (!empty($luogo_notizia)) { ?>
-    <span class="data fw-normal"> | 📍 
-        <?php 
-        if (is_array($luogo_notizia)) {
-            echo esc_html(implode(', ', $luogo_notizia));
-        } else {
-            echo esc_html($luogo_notizia);
-        }
-        ?>
-    </span>
-<?php } else { ?>
-    <span class="data fw-normal"> | 📍 Informazione non disponibile</span>
-<?php } ?>
+                    <?php if (!empty($luogo_notizia)) { ?>
+                        <span class="data fw-normal"> | 📍 
+                            <?php 
+                            if (is_array($luogo_notizia)) {
+                                echo esc_html(implode(', ', $luogo_notizia));
+                            } else {
+                                echo esc_html($luogo_notizia);
+                            }
+                            ?>
+                        </span>                  
+                    <?php } ?>
 
             <?php } ?>
         </div>
