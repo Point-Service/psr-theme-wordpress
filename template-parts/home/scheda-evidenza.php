@@ -70,7 +70,7 @@ $page_macro = get_page_by_path($page_macro_slug);
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
-                </span>
+                </span>o
 <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
     <span class="data fw-normal"> | 📍 
         <?php 
