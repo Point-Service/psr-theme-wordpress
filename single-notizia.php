@@ -305,15 +305,15 @@ get_header();
                                     <h2 class="h4">Luoghi correlati</h4> 
                                     <h6><small>Luogo collegato alla notizia</small></h6>
                                     <div class="row">
-                                    <div class="col-12 col-sm-8">
+                                   
                                         <?php foreach ($luoghi as $luogo_id) {
                                             ?><div class="col-xl-6 col-lg-8 col-md-12"><?php
                                             $with_border = true;
                                             $luogo = get_post( $luogo_id );
-                                            get_template_part("template-parts/luogo/luogo");
+                                            get_template_part("template-parts/luogo/card-title");
                                             ?></div><?php
                                         } ?>
-                                     </div>
+                                     
                                     </div>
                                 </section>
                             <?php } ?>
