@@ -306,7 +306,7 @@ get_header();
                                
                                     <div class="card-body pe-3">
                                         <p class="card-title text-paragraph-regular-medium-semi mb-3">
-                                            <?php get_template_part("template-parts/single/luogo"); ?>
+                                            <?php get_template_part("template-parts/single/luoghi"); ?>
                                         </p>
                                     </div>
                              </div>
