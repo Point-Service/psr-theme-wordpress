@@ -26,8 +26,16 @@ $page_macro = get_page_by_path($page_macro_slug);
                     <span class="data fw-normal">
                         <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                     </span>
-                    <?php if (!empty($luogo_notizia)) { ?>
-                        <span class="data fw-normal"> | 📍 <?php echo esc_html($luogo_notizia); ?></span>
+                    <?php if (!empty($luogo_notizia) && is_array($luogo_notizia)) { ?>
+                        <span class="data fw-normal"> | 📍 
+                            <?php 
+                            foreach ($luogo_notizia as $luogo) {
+                                if (isset($luogo['name'], $luogo['url'])) {
+                                    echo '<a href="' . esc_url($luogo['url']) . '" title="' . esc_attr($luogo['name']) . '">' . esc_html($luogo['name']) . '</a> ';
+                                }
+                            }
+                            ?>
+                        </span>
                     <?php } ?>
                 <?php } ?>
             </div>
@@ -63,14 +71,17 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
-                    <?php if(is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-                            8
-                                    <div class="card-body pe-3">
-                                        <p class="card-title text-paragraph-regular-medium-semi mb-3">
-                                           📍 <?php get_template_part("template-parts/single/luoghi"); ?>
-                                        </p>
-                                    </div>                            
-                      <?php }?>
+                <?php if (!empty($luogo_notizia) && is_array($luogo_notizia)) { ?>
+                    <span class="data fw-normal"> | 📍 
+                        <?php 
+                        foreach ($luogo_notizia as $luogo) {
+                            if (isset($luogo['name'], $luogo['url'])) {
+                                echo '<a href="' . esc_url($luogo['url']) . '" title="' . esc_attr($luogo['name']) . '">' . esc_html($luogo['name']) . '</a> ';
+                            }
+                        }
+                        ?>
+                    </span>
+                <?php } ?>
             <?php } ?>
         </div>
         <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
