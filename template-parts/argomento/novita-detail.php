@@ -69,6 +69,25 @@
                                 <p class="pt-3 d-none d-lg-block text-paragraph-card u-grey-light">
                                     <?php echo $description; ?>
                                 </p>
+                                   <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                            <span class="data fw-normal">📍 
+                                                <?php 
+                                                foreach ($luogo_notizia as $luogo_id) {
+                                                    // Ottieni i dettagli del luogo
+                                                    $luogo_post = get_post($luogo_id);
+                                                    
+                                                    if ($luogo_post && !is_wp_error($luogo_post)) {
+                                                        // Stampa il nome del luogo come link
+                                                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
+                                                    }
+                                                }
+                                                ?>
+                                            </span>
+                                        <?php } elseif (!empty($luogo_notizia)) { ?>
+                                            <span class="data fw-normal"> | 📍 
+                                                <?php echo esc_html($luogo_notizia); ?>
+                                            </span>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -80,7 +99,7 @@
                     $tipo_notizia_name = $tipo_notizia != null ? $tipo_notizia->name : 'Notizie';
                     $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
                     $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
-                ?>dddd
+                ?>
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="card-wrapper">
                         <div class="card card-img no-after sm-row">
