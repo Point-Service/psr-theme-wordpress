@@ -18,7 +18,7 @@
                 <?php foreach ($posts as $post) { 
                     $description = dci_get_meta('descrizione_breve');
                     $img = dci_get_meta('immagine');                    
-
+                    $luogo_notizia = dci_get_meta("luoghi");
     
                     if ($post->post_type == 'evento') {
                         if (dci_get_meta('data_orario_inizio')) {
@@ -74,8 +74,7 @@
                 </div>
                 <?php } else { 
                     //var_dump(get_the_terms($post->ID, 'tipi_notizia'));
-                    $tipo_notizia = get_the_terms($post->ID, 'tipi_notizia')[0];
-                    $luogo_notizia = dci_get_meta("luoghi");
+                    $tipo_notizia = get_the_terms($post->ID, 'tipi_notizia')[0];                    
                     $tipo_notizia_link = $tipo_notizia != null ? get_term_link($tipo_notizia->term_id) : "#";
                     $tipo_notizia_name = $tipo_notizia != null ? $tipo_notizia->name : 'Notizie';
                     $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_notizia_', $post->ID);
@@ -96,7 +95,7 @@
                             <div class="card-body p-4">
                                 <div class="category-top">
                                     <a class="text-decoration-none fw-semibold" href="<?php echo $tipo_notizia_link; ?>">
-                                        <?php echo $tipo_notizia_name; ?>sss
+                                        <?php echo $tipo_notizia_name; ?>
                                     </a>
                                     <span class="data u-grey-light">
                                         <?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]?>
@@ -110,6 +109,26 @@
                                 <p class="pt-3 d-none d-lg-block text-paragraph-card u-grey-light">
                                     <?php echo $description; ?>
                                 </p>
+               <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                            <span class="data fw-normal">📍 
+                                                <?php 
+                                                foreach ($luogo_notizia as $luogo_id) {
+                                                    // Ottieni i dettagli del luogo
+                                                    $luogo_post = get_post($luogo_id);
+                                                    
+                                                    if ($luogo_post && !is_wp_error($luogo_post)) {
+                                                        // Stampa il nome del luogo come link
+                                                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '">' . esc_html($luogo_post->post_title) . '</a> ';
+                                                    }
+                                                }
+                                                ?>
+                                            </span>
+                                        <?php } elseif (!empty($luogo_notizia)) { ?>
+                                            <span class="data fw-normal"> | 📍 
+                                                <?php echo esc_html($luogo_notizia); ?>
+                                            </span>
+                                        <?php } ?>
+                                
                             </div>
                         </div>
                     </div>
