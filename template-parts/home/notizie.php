@@ -71,7 +71,7 @@ $overlapping = "";
                     </div>
                 </div>
 
-           <?php }
+            <?php }
             if ($posts && is_array($posts) && count($posts) > 0) { ?>
                 <?php if (!$post_id) { ?>
                     <div class="row row-title pt-lg-60 pb-3">
