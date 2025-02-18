@@ -7,6 +7,7 @@ $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $img = dci_get_meta('immagine');
 $tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
 $luogo_notizia = dci_get_meta("luoghi", '_dci_notizia_', $post->ID);
+    $argomenti = dci_get_meta("argomenti", '_dci_notizia_', $post->ID);
 
 if ($tipo_terms && !is_wp_error($tipo_terms)) {
     $tipo = $tipo_terms[0];
@@ -120,7 +121,8 @@ if ($img) {
                                                 <?php echo esc_html($luogo_notizia); ?>
                                             </span>
                                         <?php } ?>
-
+                             <hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
+                                Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             
                         </div>
                     </div>
