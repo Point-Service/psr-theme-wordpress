@@ -11,7 +11,7 @@ $pagine = dci_get_children_pages("Vivere Il Comune");
                <div class="card-body">
                   <a class="text-decoration-none" href="<?php echo get_permalink($argomento["id"]); ?>">
                      <h3 class="card-title t-primary title-xlarge"><?php echo $argomento["title"]; ?></h3>
-                  </a>
+                  </a>kkkkkk
                   <p class="titillium text-paragraph mb-0 description"><?php echo $argomento["descrizione"]; ?>
                   </p>
                </div>
