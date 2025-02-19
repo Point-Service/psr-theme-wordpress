@@ -15,7 +15,6 @@ $pagine = dci_get_children_pages("Vivere Il Comune");
                   </a>
                   <p class="titillium text-paragraph mb-0 description"><?php echo $argomento["description"]; ?>
                   </p>
-                  <?php echo $argomento["slug"]; ?>
                </div>
             </div>
          </div>
