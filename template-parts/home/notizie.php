@@ -20,19 +20,20 @@ for ($i = 1; $i <= 20; $i++) {
 }
 ?>
 <style>
-/* Stile specifico per scheda-evidenza */
-.scheda-evidenza {
-    max-width: 350px; /* Ridotta larghezza della scheda */
-    margin: auto; /* Centra le schede rispetto al contenitore */
+/* Allinea la larghezza della card in evidenza alla larghezza della container */
+.card-teaser-wrapper {
+    max-width: 100%; /* Assicurati che la larghezza non superi quella del contenitore */
+    margin: 0 auto; /* Centrato nel contenitore */
+    gap: 10px; /* Riduci lo spazio tra le schede */
 }
 
-/* Allineamento delle schede evidenziate */
-.card-teaser-wrapper {
-    gap: 10px; /* Ridotto spazio tra le schede */
-    justify-content: center; /* Centra le schede nella riga */
-    display: flex;
-    flex-wrap: wrap;
-}   
+/* Ridurre la larghezza delle singole schede per allinearle meglio */
+.scheda-evidenza {
+    max-width: 100%; /* Scheda non deve superare la larghezza del contenitore */
+    margin: 0 auto; /* Centrato */
+    flex: 0 0 32%; /* Tre colonne per visualizzare le schede affiancate */
+}
+
 </style>
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
