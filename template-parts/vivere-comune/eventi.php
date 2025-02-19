@@ -9,7 +9,7 @@
     if (is_array($eventi) && count($eventi)) {
 ?>
 
-<div class="bg-grey-dsk py-5">
+<div class="bg-dsk py-5">
     <div class="container">
         <h2 class="title-xxlarge mb-4">Eventi in evidenza</h2>
         <div class="row g-4">
