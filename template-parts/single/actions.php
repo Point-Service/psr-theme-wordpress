@@ -1,7 +1,9 @@
 <?php
-global $post, $inline, $hide_arguments, $tipi_luogo;
+global $post, $inline, $hide_arguments;
 $argomenti = get_the_terms($post, 'argomenti');
 $post_url = get_permalink();
+
+$tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
 
 if ($hide_arguments) $argomenti = array();
 ?>
