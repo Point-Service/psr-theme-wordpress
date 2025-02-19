@@ -22,6 +22,11 @@ $page_macro = get_page_by_path($page_macro_slug);
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
                 <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
+                <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                    <span class="data fw-normal">
+                        <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
+                    </span>          
+                <?php } ?>
             </div>
             <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
             <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo esc_html($descrizione_breve); ?></p> 
@@ -44,11 +49,6 @@ $page_macro = get_page_by_path($page_macro_slug);
                 <?php echo esc_html($luogo_notizia); ?>
             </span>
         <?php } ?>
-            <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                    <span class="data fw-normal">
-                        <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
-                    </span>          
-            <?php } ?>
             <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
             <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>   
             <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
@@ -75,19 +75,11 @@ $page_macro = get_page_by_path($page_macro_slug);
     <div class="card-body pb-5">
         <div class="category-top">
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
-                                <!-- Data pubblicazione -->
-                                <div class="row mt-3 mb-2">
-                                    <div class="col-6">
-                                        <small>Data:</small>
-                                        <p class="fw-semibold font-monospace">
-                                            <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                                                <span class="data fw-normal">
-                                                    <?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?>
-                                                </span>
-                                            <?php } ?>
-                                        </p>
-                                    </div>
-                                </div>
+            <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                <span class="data fw-normal">
+                    <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
+                </span>
+            <?php } ?>
         </div>
         <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
         <p class="text-paragraph-card u-grey-light m-0"><?php echo esc_html($descrizione_breve); ?></p>  
