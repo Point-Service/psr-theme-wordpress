@@ -33,7 +33,6 @@ for ($i = 1; $i <= 20; $i++) {
     margin: 0 auto; /* Centrato */
     flex: 0 0 32%; /* Tre colonne per visualizzare le schede affiancate */
 }
-
 </style>
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
