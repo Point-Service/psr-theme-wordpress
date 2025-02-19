@@ -1,6 +1,11 @@
 <?php
     $argomenti = dci_get_terms_options('argomenti');
     $arr_ids = array_keys((array)$argomenti);
+
+echo "<pre>";
+print_r($argomenti); // Mostra l'intero array con le chiavi e i valori
+echo "</pre>";
+
 ?>
 <div class="container py-5" id="argomento">
     <h2 class="title-xxlarge mb-4">Esplora per argomento</h2>
