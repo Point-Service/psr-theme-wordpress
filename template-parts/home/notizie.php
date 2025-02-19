@@ -78,7 +78,6 @@ for ($i = 1; $i <= 20; $i++) {
                             </div>
                         </div>
                     </div>
-
                     <!-- Colonna con l'immagine -->
                     <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                         <?php if ($img) {
@@ -86,8 +85,7 @@ for ($i = 1; $i <= 20; $i++) {
                         } ?>
                     </div>
                 </div>
-
-              <div class="row mb-2">
+              <div class="row mb-1">
                     <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                    <?php 
                     $count = 1;
