@@ -20,18 +20,33 @@ for ($i = 1; $i <= 20; $i++) {
 }
 ?>
 <style>
-/* Allinea la larghezza della card in evidenza alla larghezza della container */
-.card-teaser-wrapper {
-    max-width: 100%; /* Assicurati che la larghezza non superi quella del contenitore */
-    margin: 0 auto; /* Centrato nel contenitore */
-    gap: 10px; /* Riduci lo spazio tra le schede */
+/* Allinea la sezione delle schede alla larghezza del contenitore */
+#notizie .card-wrapper {
+    max-width: 100%; /* Limita la larghezza a quella del contenitore */
+    margin: 0 auto;  /* Centrato orizzontalmente */
+    padding: 0;      /* Rimuove il padding extra */
 }
 
-/* Ridurre la larghezza delle singole schede per allinearle meglio */
-.scheda-evidenza {
-    max-width: 100%; /* Scheda non deve superare la larghezza del contenitore */
-    margin: 0 auto; /* Centrato */
-    flex: 0 0 32%; /* Tre colonne per visualizzare le schede affiancate */
+/* Per la sezione delle schede evidenziate */
+.card-teaser-wrapper {
+    display: flex; /* Usa Flexbox per gestire la disposizione */
+    flex-wrap: wrap; /* Le schede andranno su più righe se necessario */
+    gap: 10px; /* Distanza tra le schede */
+    justify-content: space-between; /* Distribuisce le schede uniformemente */
+}
+
+/* Riduci la larghezza delle singole schede per allinearle correttamente */
+.card-teaser-wrapper .card {
+    max-width: 32%; /* Le schede non occupano più di un terzo della larghezza */
+    flex: 0 0 32%; /* Imposta la larghezza fissa delle schede */
+}
+
+/* Rendi le schede responsabili (più piccole su schermi piccoli) */
+@media (max-width: 768px) {
+    .card-teaser-wrapper .card {
+        max-width: 100%; /* Su schermi piccoli, ogni scheda occupa l'intera larghezza */
+        flex: 0 0 100%;
+    }
 }
 </style>
 <section id="notizie" aria-describedby="novita-in-evidenza">
