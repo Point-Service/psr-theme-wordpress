@@ -3,7 +3,7 @@
 
  if (!$custom_class) $custom_class = '';
 ?>
-
+d
 <div class="cmp-breadcrumbs <?php echo $custom_class; ?>" role="navigation">
   <?php
   if ( function_exists( 'breadcrumb_trail' ) ) {
@@ -27,4 +27,4 @@
   }
   ?>
 </div>
-
+d
