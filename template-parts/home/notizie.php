@@ -88,7 +88,8 @@ for ($i = 1; $i <= 20; $i++) {
                 </div>
             <?php } ?>
         </div>
-
+    </div>
+</section>
 
 <!-- Pulsante Visualizza tutte le novità -->
 <div class="container">
@@ -138,5 +139,4 @@ for ($i = 1; $i <= 20; $i++) {
         </div>
     </div>
 </section>
-    </div>
-</section>
+
