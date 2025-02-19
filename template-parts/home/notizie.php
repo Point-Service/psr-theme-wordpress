@@ -91,7 +91,7 @@ for ($i = 1; $i <= 20; $i++) {
     </div>
 </section>
 
-<section id="novità">
+<section aria-describedby="contenuti_evidenza">
     <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
         <div class="container">
             <div class="row mb-2">
