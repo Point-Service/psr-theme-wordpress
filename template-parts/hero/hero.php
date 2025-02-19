@@ -6,7 +6,7 @@
     if (!$title) $title = get_the_title();
     if (!$description && $post) $description = dci_get_meta('descrizione','_dci_page_',$post->ID);
 ?>
-k
+
 <div class="container" id="main-container">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
