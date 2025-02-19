@@ -89,13 +89,15 @@ for ($i = 1; $i <= 20; $i++) {
 
               <div class="row mb-2">
                     <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                        <?php
-                        foreach ($posts as $post) {
-                            if ($post) {
-                                get_template_part("template-parts/home/notizia-evidenza");
-                            }
+                   <?php 
+                    $count = 1;
+                    foreach ($schede as $scheda) {
+                        if ($scheda) {
+                            get_template_part("template-parts/home/scheda-evidenza");
                         }
-                        ?>
+                        ++$count;
+                    } 
+                    ?>
                     </div>
                 </div>
                 <div class="row my-4 justify-content-md-center">
