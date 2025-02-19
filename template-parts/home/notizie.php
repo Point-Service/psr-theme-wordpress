@@ -19,30 +19,7 @@ for ($i = 1; $i <= 20; $i++) {
     $schede[] = dci_get_option("schede_evidenziate_$i", 'homepage', true)[0] ?? null;
 }
 ?>
-<style>
-/* Allinea la sezione delle schede alla larghezza del contenitore */
-#notizie .card-wrapper {
-    max-width: 98%; /* Limita la larghezza a quella del contenitore */
-    margin: 0 auto;  /* Centrato orizzontalmente */
-    padding: 0;      /* Rimuove il padding extra */
-}
 
-
-#notizieevidenza .card-wrapper {
-    max-width: 98%; /* Limita la larghezza a quella del contenitore */
-    margin: 0 auto;  /* Centrato orizzontalmente */
-    padding: 0;      /* Rimuove il padding extra */
-}    
-
-/* Per la sezione delle schede evidenziate */
-.card-teaser-wrapper {
-    display: flex; /* Usa Flexbox per gestire la disposizione */
-    flex-wrap: wrap; /* Le schede andranno su più righe se necessario */
-    gap: 10px; /* Distanza tra le schede */
-    justify-content: space-between; /* Distribuisce le schede uniformemente */
-}
-
-</style>
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
@@ -122,8 +99,7 @@ for ($i = 1; $i <= 20; $i++) {
                             }
                             ++$count;
                         } 
-                        ?>
-                        
+                        ?>                        
                         <!-- Pulsante "Tutte le novità" -->
                         <div class="row my-3 justify-content-md-center"> <!-- Ridotto margine con my-3 -->
                             <a class="read-more pb-2" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>"> <!-- Ridotto padding con pb-2 -->
