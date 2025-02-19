@@ -22,7 +22,7 @@ for ($i = 1; $i <= 20; $i++) {
 <style>
 /* Allinea la sezione delle schede alla larghezza del contenitore */
 #notizie .card-wrapper {
-    max-width: 90%; /* Limita la larghezza a quella del contenitore */
+    max-width: 99%; /* Limita la larghezza a quella del contenitore */
     margin: 0 auto;  /* Centrato orizzontalmente */
     padding: 0;      /* Rimuove il padding extra */
 }
