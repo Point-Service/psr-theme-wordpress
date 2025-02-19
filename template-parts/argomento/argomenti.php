@@ -3,7 +3,7 @@
     $arr_ids = array_keys((array)$argomenti);
 
 echo "<pre>";
-print_r($argomenti); // Mostra l'intero array con le chiavi e i valori
+print_r($arr_ids); // Mostra l'intero array con le chiavi e i valori
 echo "</pre>";
 
 ?>
