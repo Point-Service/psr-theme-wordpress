@@ -19,6 +19,19 @@ for ($i = 1; $i <= 20; $i++) {
     $schede[] = dci_get_option("schede_evidenziate_$i", 'homepage', true)[0] ?? null;
 }
 ?>
+<style>
+#notizie .container {
+    max-width: 1200px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.card-teaser-wrapper {
+    gap: 10px;
+}
+.card {
+    margin: 0;
+}    
+</style>
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
