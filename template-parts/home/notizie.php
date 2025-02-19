@@ -19,115 +19,67 @@ for ($i = 1; $i <= 20; $i++) {
     $schede[] = dci_get_option("schede_evidenziate_$i", 'homepage', true)[0] ?? null;
 }
 ?>
+<!-- Tag section is opened in home.php -->
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
             <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
-            <?php if ($post_id) { ?>
+            <?php if ($post_id) {
+                $overlapping = "card-overlapping";
+            ?>
                 <div class="row">
-                    <!-- Colonna con i dettagli della notizia -->
                     <div class="col-lg-5 order-2 order-lg-1">
                         <div class="card mb-1">
-                            <div class="card-body pb-4">
+                            <div class="card-body pb-5">
                                 <div class="category-top">
                                     <svg class="icon icon-sm" aria-hidden="true">
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
                                     <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
+                                    <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                                        <span class="data fw-normal"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></span>
+                                    <?php } ?>
                                 </div>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                    <h3 class="card-title"><?php echo $post->post_title; ?></h3>
+                                    <h3 class="card-title">
+                                        <?php echo $post->post_title ?>
+                                    </h3>
                                 </a>
-                                <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
-                                
-                                <!-- Luoghi -->
-                                <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-                                    <span class="data fw-normal">📍 
-                                        <?php 
-                                        foreach ($luogo_notizia as $luogo_id) {
-                                            $luogo_post = get_post($luogo_id);
-                                            if ($luogo_post && !is_wp_error($luogo_post)) {
-                                                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-1">' . esc_html($luogo_post->post_title) . '</a> ';
-                                            }
-                                        }
-                                        ?>
-                                    </span>
-                                <?php } elseif (!empty($luogo_notizia)) { ?>
-                                    <span class="data fw-normal">📍 
-                                        <?php echo esc_html($luogo_notizia); ?>
-                                    </span>
-                                <?php } ?>
-
-                                <!-- Data pubblicazione -->
-                                <div class="row mt-3 mb-2">
-                                    <div class="col-6">
-                                        <small>Data:</small>
-                                        <p class="fw-semibold font-monospace">
-                                            <?php if (is_array($arrdata) && count($arrdata)) { ?>
-                                                <span class="data fw-normal">
-                                                    <?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?>
-                                                </span>
-                                            <?php } ?>
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Argomenti -->
-                                <small>Argomenti: </small>
-                                <?php get_template_part("template-parts/common/badges-argomenti"); ?>                                
+                                <p class="mb-4 font-serif pt-3">
+                                    <?php echo $descrizione_breve ?>
+                                </p>
+                                <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Colonna con l'immagine -->
                     <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                         <?php if ($img) {
                             dci_get_img($img, 'img-fluid');
                         } ?>
                     </div>
                 </div>
-            <?php } ?>
-        </div>
-    </div>
-</section>
 
-<!-- Pulsante Visualizza tutte le novità -->
-<div class="container">
-    <div class="row mb-2">
-        <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-            <div class="row my-4 justify-content-md-center">                 
-                <a href="<?php echo dci_get_template_page_url('page-templates/novita.php'); ?>" 
-                   class="btn btn-primary-outline read-more mb-3" 
-                   style="margin-top: 5px; color: inherit;"> 
-                   <svg class="icon icon-sm" aria-hidden="true">
-                       <use xlink:href="#it-calendar"></use>
-                   </svg>
-                   Visualizza tutte le novità
-                </a>                 
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<section id="novità">
-    <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
-        <div class="container">
-            <div class="row mb-2">
-                <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                    <?php 
-                    $count = 1;
-                    foreach ($schede as $scheda) {
-                        if ($scheda) {
-                            get_template_part("template-parts/home/scheda-evidenza");
+            <?php }
+            if ($posts && is_array($posts) && count($posts) > 0) { ?>
+                <?php if (!$post_id) { ?>
+                    <div class="row row-title pt-lg-60 pb-3">
+                        <div class="col-12 d-lg-flex justify-content-between">
+                            <h2 id="ultime-news" class="mb-lg-0">Ultime news</h2>
+                        </div>
+                    </div>
+                <?php } ?>
+                <div class="row mb-2">
+                    <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+                        <?php
+                        foreach ($posts as $post) {
+                            if ($post) {
+                                get_template_part("template-parts/home/notizia-evidenza");
+                            }
                         }
-                        ++$count;
-                    } 
-                    ?>
+                        ?>
+                    </div>
                 </div>
-            </div>
-              <div class="row my-4 justify-content-md-center">
+                <div class="row my-4 justify-content-md-center">
                     <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
                         <button type="button" class="btn btn-outline-primary">Tutte le novità
                             <svg class="icon">
@@ -136,7 +88,34 @@ for ($i = 1; $i <= 20; $i++) {
                         </button>
                     </a>
                 </div>
+            <?php } ?>
         </div>
     </div>
 </section>
-
+<?php
+if ($schede && count($schede) > 0) { ?>
+    <section aria-describedby="contenuti_evidenza">
+        <div class="section-content">
+            <div class="section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
+                <div class="container">
+                    <div class="row row-title pt-5 pt-lg-60 pb-3">
+                        <div class="col-12 d-lg-flex justify-content-between">
+                            <h2 id="contenuti_evidenza" class="mb-lg-0">Contenuti in evidenza</h2>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="card-wrapper px-0 card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+                            <?php $count = 1;
+                            foreach ($schede as $scheda) {
+                                if ($scheda) {
+                                    get_template_part("template-parts/home/scheda-evidenza");
+                                }
+                                ++$count;
+                            } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php } ?>
