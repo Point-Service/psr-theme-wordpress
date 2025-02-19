@@ -116,6 +116,7 @@ for ($i = 1; $i <= 20; $i++) {
                     </div>
                 </div>
 
+             
                 <!-- Sezione delle schede -->
                 <div class="row mb-1"> <!-- Ridotto spazio tra schede -->
                     <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
