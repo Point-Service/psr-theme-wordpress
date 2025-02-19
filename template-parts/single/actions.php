@@ -4,7 +4,7 @@ $argomenti = get_the_terms($post, 'argomenti');
 $post_url = get_permalink();
 
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
-$tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
+$tipo_evento = get_the_terms($post->ID,'tipi_evento');
 
 if ($hide_arguments) $argomenti = array();
 ?>
