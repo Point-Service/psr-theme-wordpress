@@ -4,6 +4,7 @@ $argomenti = get_the_terms($post, 'argomenti');
 $post_url = get_permalink();
 
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
+$tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
 
 if ($hide_arguments) $argomenti = array();
 ?>
@@ -139,13 +140,28 @@ if ($hide_arguments) $argomenti = array();
 
 <?php if ($tipi_luogo && is_array($tipi_luogo) && count($tipi_luogo) ) { ?>
 <div class="mt-4 mb-4">
-    <span class="subtitle-small">Tipi luogo</span>
+    <span class="subtitle-small">Tipi evento</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_luogo as $tipo_luogo) { ?>
         <li>
             <a class="chip chip-simple" href="<?php echo get_term_link($tipo_luogo->term_id); ?>">
                 <span class="chip-label"><?php echo $tipo_luogo->name; ?></span>
             </a>
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>
+
+<?php if ($tipo_evento && is_array($tipo_evento) && count($tipo_evento) ) { ?>
+<div class="mt-4 mb-4">
+    <span class="subtitle-small">Tipi luogo</span>
+    <ul class="d-flex flex-wrap gap-1">
+        <?php foreach ($tipi_eventi as $tipo_evento) { ?>
+        <li>
+       
+                <span class="chip-label"><?php echo $tipi_eventi->name; ?></span>
+            
         </li>
         <?php } ?>
     </ul>
