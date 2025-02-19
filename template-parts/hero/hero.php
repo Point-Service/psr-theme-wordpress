@@ -1,10 +1,8 @@
 <?php
     global $title, $description, $with_shadow, $data_element;
 
-    if($title == 'notizia') $title = 'Notizie';
-
     if (!$title) $title = get_the_title();
-    if (!$description && $post) $description = dci_get_meta('descrizione','_dci_page_',$post->ID);
+    if (!$description) $description = dci_get_meta('descrizione','_dci_page_',$post->ID ?? null);
 ?>
 
 <div class="container" id="main-container">
@@ -20,7 +18,7 @@
             <div class="cmp-hero">
                 <section class="it-hero-wrapper bg-white align-items-start">
                     <div class="it-hero-text-wrapper pt-0 ps-0 pb-4 pb-lg-60">
-                        <h1 class="text-black hero-title" <?php echo $data_element ? $data_element : 'data-element="page-name"' ?>>
+                        <h1 class="text-black hero-title" <?php echo $data_element ? $data_element : null ?>>
                             <?php echo $title; ?>
                         </h1>
                         <div class="hero-text">
