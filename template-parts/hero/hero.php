@@ -14,9 +14,9 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row justify-content-start <?php echo $with_shadow ? 'row-shadow' : '' ?>"> <!-- Modificato per allineare a sinistra -->
-        <div class="col-12 col-lg-10"> <!-- Classe personalizzata -->
+<div class="container" id="custom-section"> <!-- ID specifico per questa sezione -->
+    <div class="row justify-content-start <?php echo $with_shadow ? 'row-shadow' : '' ?>"> 
+        <div class="col-12 col-lg-10 custom-content-wrapper"> 
             <div class="cmp-hero">
                 <section class="it-hero-wrapper bg-white align-items-start">
                     <div class="it-hero-text-wrapper pt-0 ps-0 pb-4 pb-lg-60">
@@ -32,4 +32,19 @@
         </div>
     </div>	
 </div>
+
+<style>
+/* Stili applicati solo alla sezione specifica */
+#custom-section .custom-content-wrapper {
+    margin-left: 0; /* Elimina margini extra */
+    text-align: left; /* Assicura il testo allineato a sinistra */
+}
+
+/* Se necessario, puoi anche ridurre la larghezza per enfatizzare l'allineamento */
+@media (min-width: 992px) {
+    #custom-section .custom-content-wrapper {
+        max-width: 100%;
+    }
+}    
+</style>
 
