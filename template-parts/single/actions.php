@@ -1,7 +1,6 @@
 <?php
-global $post, $inline, $hide_arguments;
+global $post, $inline, $hide_arguments, $tipi_luogo;
 $argomenti = get_the_terms($post, 'argomenti');
-$category = get_the_terms($post, 'category');
 $post_url = get_permalink();
 
 if ($hide_arguments) $argomenti = array();
@@ -135,3 +134,34 @@ if ($hide_arguments) $argomenti = array();
     </ul>
 </div>
 <?php } ?>
+
+<?php if (is_array($argomenti) && count($argomenti) ) { ?>
+<div class="mt-4 mb-4">
+    <span class="subtitle-small">Argomenti</span>
+    <ul class="d-flex flex-wrap gap-1">
+        <?php foreach ($argomenti as $argomento) { ?>
+        <li>
+            <a class="chip chip-simple" href="<?php echo get_term_link($argomento->term_id); ?>" data-element="service-topic">
+                <span class="chip-label"><?php echo $argomento->name; ?></span>
+            </a>
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>
+
+<?php if ($tipi_luogo && is_array($tipi_luogo) && count($tipi_luogo) ) { ?>
+<div class="mt-4 mb-4">
+    <span class="subtitle-small">Tipi luogo</span>
+    <ul class="d-flex flex-wrap gap-1">
+        <?php foreach ($tipi_luogo as $tipo_luogo) { ?>
+        <li>
+            <a class="chip chip-simple" href="<?php echo get_term_link($tipo_luogo->term_id); ?>">
+                <span class="chip-label"><?php echo $tipo_luogo->name; ?></span>
+            </a>
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>
+
