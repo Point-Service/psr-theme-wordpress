@@ -28,7 +28,7 @@ for ($i = 1; $i <= 20; $i++) {
                 <div class="row">
                     <div class="col-lg-5 order-2 order-lg-1">
                         <div class="card mb-1">
-                            <div class="card-body pb-5">
+                            <div class="card-body pb-4">
                                 <div class="category-top">
                                     <svg class="icon icon-sm" aria-hidden="true">
                                         <use xlink:href="#it-calendar"></use>
@@ -38,14 +38,14 @@ for ($i = 1; $i <= 20; $i++) {
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                                     <h3 class="card-title"><?php echo $post->post_title ?></h3>
                                 </a>
-                                <p class="mb-4 font-serif pt-3"><?php echo $descrizione_breve ?></p>
+                                <p class="mb-2 font-serif"><?php echo $descrizione_breve ?></p>
                                 <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
                                     <span class="data fw-normal">📍 
                                         <?php 
                                         foreach ($luogo_notizia as $luogo_id) {
                                             $luogo_post = get_post($luogo_id);
                                             if ($luogo_post && !is_wp_error($luogo_post)) {
-                                                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3">' . esc_html($luogo_post->post_title) . '</a> ';
+                                                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-1">' . esc_html($luogo_post->post_title) . '</a> ';
                                             }
                                         }
                                         ?>
@@ -55,7 +55,7 @@ for ($i = 1; $i <= 20; $i++) {
                                         <?php echo esc_html($luogo_notizia); ?>
                                     </span>
                                 <?php } ?>
-                                <div class="row mt-5 mb-4">
+                                <div class="row mt-3 mb-2">
                                     <div class="col-6">
                                         <small>Data:</small>
                                         <p class="fw-semibold font-monospace">
