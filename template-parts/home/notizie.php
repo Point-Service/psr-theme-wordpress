@@ -26,7 +26,7 @@ for ($i = 1; $i <= 20; $i++) {
             <?php if ($post_id) { ?>
                 <div class="row">
                     <!-- Colonna con i dettagli della notizia -->
-                    <div class="col-lg-6 order-2 order-lg-1">
+                    <div class="col-lg-5 order-2 order-lg-1">
                         <div class="card mb-0"> <!-- Ridotto spazio con mb-0 -->
                             <div class="card-body pb-2"> <!-- Ridotto spazio con pb-2 -->
                                 <div class="category-top">
