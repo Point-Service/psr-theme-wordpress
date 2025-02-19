@@ -4,10 +4,6 @@
 
 ?>
 
-<?php foreach ($arr_ids as $arg_id) { 
-    $argomento = get_term_by('term_id', $arg_id, 'argomenti');    
-?>
-
 <div class="container py-5" id="argomento">
     <h2 class="title-xxlarge mb-4">Esplora per argomento</h2>
     <div class="row g-4">       
@@ -22,6 +18,8 @@
                     <p class="titillium text-paragraph mb-0 description">
                         <?php echo $argomento->description; ?>
                     </p>
+                    <?php echo $argomento->term_group; ?>
+                    <?php echo echo $argomento->taxonomy; ?>
                 </div>
               </div>
             </div>
