@@ -7,7 +7,7 @@
 ?>
 
 <div class="container" id="main-container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-start"> <!-- Modificato per allineare a sinistra -->
         <div class="col-12 col-lg-10">
             <?php get_template_part("template-parts/common/breadcrumb"); ?>
         </div>
@@ -15,7 +15,7 @@
 </div>
 
 <div class="container">
-    <div class="row justify-content-center <?php echo $with_shadow ? 'row-shadow' : '' ?>">
+    <div class="row justify-content-start <?php echo $with_shadow ? 'row-shadow' : '' ?>"> <!-- Modificato per allineare a sinistra -->
         <div class="col-12 col-lg-10 custom-content-wrapper"> <!-- Classe personalizzata -->
             <div class="cmp-hero">
                 <section class="it-hero-wrapper bg-white align-items-start">
@@ -32,4 +32,17 @@
         </div>
     </div>	
 </div>
+<style>
+/* Allinea il contenuto a sinistra */
+.custom-content-wrapper {
+    margin-left: 0; /* Elimina margini extra */
+    text-align: left; /* Assicura il testo allineato a sinistra */
+}
 
+/* Se necessario, puoi anche ridurre la larghezza per enfatizzare l'allineamento */
+@media (min-width: 992px) {
+    .custom-content-wrapper {
+        max-width: 100%;
+    }
+}    
+</style>
