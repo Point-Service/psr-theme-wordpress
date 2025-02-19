@@ -35,19 +35,6 @@ for ($i = 1; $i <= 20; $i++) {
     justify-content: space-between; /* Distribuisce le schede uniformemente */
 }
 
-/* Riduci la larghezza delle singole schede per allinearle correttamente */
-.card-teaser-wrapper .card {
-    max-width: 32%; /* Le schede non occupano più di un terzo della larghezza */
-    flex: 0 0 32%; /* Imposta la larghezza fissa delle schede */
-}
-
-/* Rendi le schede responsabili (più piccole su schermi piccoli) */
-@media (max-width: 768px) {
-    .card-teaser-wrapper .card {
-        max-width: 100%; /* Su schermi piccoli, ogni scheda occupa l'intera larghezza */
-        flex: 0 0 100%;
-    }
-}
 </style>
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
