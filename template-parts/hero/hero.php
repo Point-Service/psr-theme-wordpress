@@ -13,9 +13,10 @@
         </div>
     </div>
 </div>
+
 <div class="container">
     <div class="row justify-content-center <?php echo $with_shadow? 'row-shadow' : ''?>">
-        <div class="col-12 col-lg-10">
+        <div class="col-12 col-lg-10 custom-content-wrapper"> <!-- Aggiunta classe personalizzata -->
             <div class="cmp-hero">
                 <section class="it-hero-wrapper bg-white align-items-start">
                     <div class="it-hero-text-wrapper pt-0 ps-0 pb-4 pb-lg-60">
