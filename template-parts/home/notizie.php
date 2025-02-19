@@ -80,14 +80,20 @@ for ($i = 1; $i <= 20; $i++) {
     </div>
 </section>
 <div class="container">
-    <div class="row mb-2">
+    <div class="row mb-1"> <!-- Ridotto il margine inferiore generale -->
         <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-            <div class="row my-2 justify-content-md-center"> <!-- Modificato da my-4 a my-2 -->
-                <a href="<?php echo dci_get_template_page_url('page-templates/novita.php'); ?>" class="btn btn-primary-outline" style="margin-top: 0;"><svg class="icon icon-sm" aria-hidden="true"><use xlink:href="#it-calendar"></use></svg>Visualizza tutte le novità</a>                 
+            <div class="row mt-3 justify-content-md-center"> <!-- Ridotto margine superiore a mt-3 -->
+                <a href="<?php echo dci_get_template_page_url('page-templates/novita.php'); ?>" class="btn btn-primary-outline">
+                    <svg class="icon icon-sm" aria-hidden="true">
+                        <use xlink:href="#it-calendar"></use>
+                    </svg>
+                    Visualizza tutte le novità
+                </a>
             </div>
         </div>
     </div>
 </div>
+
 <p></p>
 <section id="calendario">
     <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
