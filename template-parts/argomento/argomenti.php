@@ -2,7 +2,7 @@
     $argomenti = dci_get_terms_options('argomenti');
     $arr_ids = array_keys((array)$argomenti);
 ?>
-
+mm
 <div class="container py-5" id="argomento">
     <h2 class="title-xxlarge mb-4">Esplora per argomento</h2>
     <div class="row g-4">       
