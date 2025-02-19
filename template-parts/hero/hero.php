@@ -16,7 +16,7 @@
 
 <div class="container">
     <div class="row justify-content-start <?php echo $with_shadow ? 'row-shadow' : '' ?>"> <!-- Modificato per allineare a sinistra -->
-        <div class="col-12 col-lg-10 custom-content-wrapper"> <!-- Classe personalizzata -->
+        <div class="col-12 col-lg-10"> <!-- Classe personalizzata -->
             <div class="cmp-hero">
                 <section class="it-hero-wrapper bg-white align-items-start">
                     <div class="it-hero-text-wrapper pt-0 ps-0 pb-4 pb-lg-60">
