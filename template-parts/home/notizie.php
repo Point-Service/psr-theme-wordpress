@@ -86,28 +86,19 @@ for ($i = 1; $i <= 20; $i++) {
                         } ?>
                     </div>
                 </div>
-            <?php } ?>
-        </div>
-    </div>
-</section>
 
-<section aria-describedby="contenuti_evidenza">
-    <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
-        <div class="container">
-            <div class="row mb-2">
-                <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                    <?php 
-                    $count = 1;
-                    foreach ($schede as $scheda) {
-                        if ($scheda) {
-                            get_template_part("template-parts/home/scheda-evidenza");
+              <div class="row mb-2">
+                    <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+                        <?php
+                        foreach ($posts as $post) {
+                            if ($post) {
+                                get_template_part("template-parts/home/notizia-evidenza");
+                            }
                         }
-                        ++$count;
-                    } 
-                    ?>
+                        ?>
+                    </div>
                 </div>
-            </div>
-              <div class="row my-4 justify-content-md-center">
+                <div class="row my-4 justify-content-md-center">
                     <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
                         <button type="button" class="btn btn-outline-primary">Tutte le novità
                             <svg class="icon">
@@ -116,6 +107,16 @@ for ($i = 1; $i <= 20; $i++) {
                         </button>
                     </a>
                 </div>
+
+
+
+
+
+
+            
+            <?php } ?>
         </div>
     </div>
 </section>
+
+
