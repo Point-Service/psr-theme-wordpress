@@ -96,8 +96,8 @@ for ($i = 1; $i <= 20; $i++) {
     <div class="row mb-2">
         <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
             <div class="row my-4 justify-content-md-center">                 
-                <a class="read-more mb-3" href="<?php echo dci_get_template_page_url('page-templates/novita.php'); ?>" 
-                   class="btn btn-primary-outline" 
+                <a href="<?php echo dci_get_template_page_url('page-templates/novita.php'); ?>" 
+                   class="read-more mb-3" 
                    style="margin-top: 5px; color: inherit;">
                    <svg class="icon icon-sm" aria-hidden="true">
                        <use xlink:href="#it-calendar"></use>
