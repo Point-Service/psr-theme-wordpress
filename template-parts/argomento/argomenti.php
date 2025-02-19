@@ -16,8 +16,6 @@
                     <p class="titillium text-paragraph mb-0 description">
                         <?php echo $argomento->description; ?>
                     </p>
-                    <?php echo $argomento->term_group; ?>
-                    <?php echo $argomento->taxonomy; ?>
                 </div>
               </div>
             </div>
