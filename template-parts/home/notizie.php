@@ -117,7 +117,7 @@ for ($i = 1; $i <= 20; $i++) {
                             ++$count;
                         } 
                         ?>
-                        
+                        <p></p>
                         <!-- Pulsante "Tutte le novità" -->
                         <div class="row my-3 justify-content-md-center">
                             <a class="read-more pb-2" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
