@@ -20,17 +20,19 @@ for ($i = 1; $i <= 20; $i++) {
 }
 ?>
 <style>
-#notizie .container {
-    max-width: 1200px;
-    padding-left: 15px;
-    padding-right: 15px;
+/* Stile specifico per scheda-evidenza */
+.scheda-evidenza {
+    max-width: 350px; /* Ridotta larghezza della scheda */
+    margin: auto; /* Centra le schede rispetto al contenitore */
 }
+
+/* Allineamento delle schede evidenziate */
 .card-teaser-wrapper {
-    gap: 10px;
-}
-.card {
-    margin: 0;
-}    
+    gap: 10px; /* Ridotto spazio tra le schede */
+    justify-content: center; /* Centra le schede nella riga */
+    display: flex;
+    flex-wrap: wrap;
+}   
 </style>
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
