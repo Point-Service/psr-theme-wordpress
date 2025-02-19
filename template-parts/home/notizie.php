@@ -27,6 +27,13 @@ for ($i = 1; $i <= 20; $i++) {
     padding: 0;      /* Rimuove il padding extra */
 }
 
+
+#notizieevidenza .card-wrapper {
+    max-width: 98%; /* Limita la larghezza a quella del contenitore */
+    margin: 0 auto;  /* Centrato orizzontalmente */
+    padding: 0;      /* Rimuove il padding extra */
+}    
+
 /* Per la sezione delle schede evidenziate */
 .card-teaser-wrapper {
     display: flex; /* Usa Flexbox per gestire la disposizione */
