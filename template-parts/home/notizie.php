@@ -20,6 +20,30 @@ for ($i = 1; $i <= 20; $i++) {
 }
 ?>
 
+<style>
+/* Allinea la sezione delle schede alla larghezza del contenitore */
+#notizie .card-wrapper {
+    max-width: 98%; /* Limita la larghezza a quella del contenitore */
+    margin: 0 auto;  /* Centrato orizzontalmente */
+    padding: 0;      /* Rimuove il padding extra */
+}
+
+
+#notizieevidenza .card-wrapper {
+    max-width: 98%; /* Limita la larghezza a quella del contenitore */
+    margin: 0 auto;  /* Centrato orizzontalmente */
+    padding: 0;      /* Rimuove il padding extra */
+}    
+
+/* Per la sezione delle schede evidenziate */
+.card-teaser-wrapper {
+    display: flex; /* Usa Flexbox per gestire la disposizione */
+    flex-wrap: wrap; /* Le schede andranno su più righe se necessario */
+    gap: 10px; /* Distanza tra le schede */
+    justify-content: space-between; /* Distribuisce le schede uniformemente */
+}
+
+</style>
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
