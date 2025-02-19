@@ -27,8 +27,8 @@ for ($i = 1; $i <= 20; $i++) {
                 <div class="row">
                     <!-- Colonna con i dettagli della notizia -->
                     <div class="col-lg-5 order-2 order-lg-1">
-                        <div class="card mb-1">
-                            <div class="card-body pb-4">
+                        <div class="card mb-0"> <!-- Ridotto spazio con mb-0 -->
+                            <div class="card-body pb-2"> <!-- Ridotto spazio con pb-2 -->
                                 <div class="category-top">
                                     <svg class="icon icon-sm" aria-hidden="true">
                                         <use xlink:href="#it-calendar"></use>
@@ -59,7 +59,7 @@ for ($i = 1; $i <= 20; $i++) {
                                 <?php } ?>
 
                                 <!-- Data pubblicazione -->
-                                <div class="row mt-3 mb-2">
+                                <div class="row mt-2 mb-1"> <!-- Ridotto margine tra elementi -->
                                     <div class="col-6">
                                         <small>Data:</small>
                                         <p class="fw-semibold font-monospace">
@@ -85,31 +85,33 @@ for ($i = 1; $i <= 20; $i++) {
                         } ?>
                     </div>
                 </div>
-              <div class="row mb-1">
+
+                <!-- Sezione delle schede -->
+                <div class="row mb-1"> <!-- Ridotto spazio tra schede -->
                     <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                   <?php 
-                    $count = 1;
-                    foreach ($schede as $scheda) {
-                        if ($scheda) {
-                            get_template_part("template-parts/home/scheda-evidenza");
-                        }
-                        ++$count;
-                    } 
-                    ?>
-                            <div class="row my-4 justify-content-md-center">
-                                <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
-                                    <button type="button" class="btn btn-outline-primary">Tutte le novità
-                                        <svg class="icon">
-                                            <use xlink:href="#it-arrow-right"></use>
-                                        </svg>
-                                    </button>
-                                </a>
-                            </div>                        
+                        <?php 
+                        $count = 1;
+                        foreach ($schede as $scheda) {
+                            if ($scheda) {
+                                get_template_part("template-parts/home/scheda-evidenza");
+                            }
+                            ++$count;
+                        } 
+                        ?>
+                        
+                        <!-- Pulsante "Tutte le novità" -->
+                        <div class="row my-3 justify-content-md-center"> <!-- Ridotto margine con my-3 -->
+                            <a class="read-more pb-2" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>"> <!-- Ridotto padding con pb-2 -->
+                                <button type="button" class="btn btn-outline-primary">Tutte le novità
+                                    <svg class="icon">
+                                        <use xlink:href="#it-arrow-right"></use>
+                                    </svg>
+                                </button>
+                            </a>
+                        </div>                        
                     </div>                  
                 </div>
             <?php } ?>
         </div>
     </div>
 </section>
-
-
