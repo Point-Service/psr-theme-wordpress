@@ -98,7 +98,7 @@ for ($i = 1; $i <= 20; $i++) {
             <div class="row my-4 justify-content-md-center">                 
                 <a href="<?php echo dci_get_template_page_url('page-templates/novita.php'); ?>" 
                    class="btn btn-primary-outline read-more mb-3" 
-                   style="margin-top: 5px; color: inherit;">
+                   style="margin-top: 5px; color: inherit;"> 
                    <svg class="icon icon-sm" aria-hidden="true">
                        <use xlink:href="#it-calendar"></use>
                    </svg>
