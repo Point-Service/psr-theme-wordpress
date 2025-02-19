@@ -1,8 +1,5 @@
 <?php
 $pagine = dci_get_children_pages("Vivere Il Comune");
-echo "<pre>";
-print_r($pagine); // Mostra l'intero array con le chiavi e i valori
-echo "</pre>";
 ?>
 
 <div class="container py-5" id="argomento">
@@ -18,6 +15,7 @@ echo "</pre>";
                   </a>
                   <p class="titillium text-paragraph mb-0 description"><?php echo $argomento["description"]; ?>
                   </p>
+                  <?php echo $argomento["slug"]; ?>
                </div>
             </div>
          </div>
