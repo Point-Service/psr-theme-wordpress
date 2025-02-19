@@ -23,13 +23,13 @@ for ($i = 1; $i <= 20; $i++) {
 <style>
 /* CSS mirato alla sezione delle schede evidenziate */
 #notizie .card-teaser-wrapper {
-    max-width: 98%; /* Riduce la larghezza della sezione delle schede evidenziate */
+    max-width: 90%; /* Riduce la larghezza della sezione delle schede evidenziate */
     margin: 0 auto; /* Centra la sezione orizzontalmente */
 }
 
 /* Riduci la larghezza delle singole schede per allinearle correttamente */
 #notizie .card-teaser-wrapper .card {
-    max-width: 0%; /* Imposta le schede al 30% della larghezza */
+    max-width: 30%; /* Imposta le schede al 30% della larghezza */
     flex: 0 0 30%;  /* Imposta una larghezza fissa per le schede */
 }
 
