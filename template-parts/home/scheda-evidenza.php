@@ -76,7 +76,7 @@ $page_macro = get_page_by_path($page_macro_slug);
         <div class="category-top">
             <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
-               <small>Data: </small>
+               Data:
                  <span class="data fw-normal">
                    <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
