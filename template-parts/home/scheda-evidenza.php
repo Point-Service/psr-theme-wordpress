@@ -116,12 +116,4 @@ $page_macro = get_page_by_path($page_macro_slug);
     </div>
 </div>
 <?php } ?>
-                <div class="row my-4 justify-content-md-center">
-                    <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
-                        <button type="button" class="btn btn-outline-primary">Tutte le novità
-                            <svg class="icon">
-                                <use xlink:href="#it-arrow-right"></use>
-                            </svg>
-                        </button>
-                    </a>
-                </div>
+
