@@ -83,19 +83,19 @@ for ($i = 1; $i <= 20; $i++) {
     <div class="row mb-2">
         <div class="card-wrapper px-0 card-overlapping card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
             <!-- Pulsante Visualizza tutte le novità -->
-            <div class="row mt-3 justify-content-md-center align-items-center"> 
-                <div class="col-auto"> <!-- Contenitore per il pulsante -->
-                    <a href="<?php echo dci_get_template_page_url('page-templates/novita.php'); ?>" class="btn btn-primary-outline">
-                        <svg class="icon icon-sm" aria-hidden="true">
-                            <use xlink:href="#it-calendar"></use>
-                        </svg>
-                        Visualizza tutte le novità
-                    </a>
-                </div>
+            <div class="d-flex justify-content-center mt-3"> <!-- Usato d-flex per controllo preciso -->
+                <a href="<?php echo dci_get_template_page_url('page-templates/novita.php'); ?>" 
+                   class="btn btn-primary-outline d-inline-block">
+                    <svg class="icon icon-sm" aria-hidden="true">
+                        <use xlink:href="#it-calendar"></use>
+                    </svg>
+                    Visualizza tutte le novità
+                </a>
             </div>
         </div>
     </div>
 </div>
+
 <p></p>
 <section id="calendario">
     <div class="section section-muted pb-90 pb-lg-50 px-lg-5 pt-0">
