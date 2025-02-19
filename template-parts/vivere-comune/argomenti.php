@@ -1,6 +1,10 @@
 <?php
 $pagine = dci_get_children_pages("Vivere Il Comune");
+echo "<pre>";
+print_r($pagine); // Mostra l'intero array con le chiavi e i valori
+echo "</pre>";
 ?>
+
 <div class="container py-5" id="argomento">
    <h2 class="title-xxlarge mb-4">Esplora per categoria</h2>
    <div class="row g-4">
@@ -11,13 +15,14 @@ $pagine = dci_get_children_pages("Vivere Il Comune");
                <div class="card-body">
                   <a class="text-decoration-none" href="<?php echo get_permalink($argomento["id"]); ?>">
                      <h3 class="card-title t-primary title-xlarge"><?php echo $argomento["title"]; ?></h3>
-                  </a>kkkkkk
+                  </a>
                   <p class="titillium text-paragraph mb-0 description"><?php echo $argomento["descrizione"]; ?>
                   </p>
                </div>
             </div>
          </div>
       </div>
+      
    <?php } ?>
    </div>
 </div>
