@@ -1,9 +1,7 @@
 <?php
     $argomenti = dci_get_terms_options('argomenti');
     $arr_ids = array_keys((array)$argomenti);
-
 ?>
-
 <div class="container py-5" id="argomento">
     <h2 class="title-xxlarge mb-4">Esplora per argomento</h2>
     <div class="row g-4">       
@@ -18,8 +16,6 @@
                     <p class="titillium text-paragraph mb-0 description">
                         <?php echo $argomento->description; ?>
                     </p>
-                    <?php echo $argomento->term_group; ?>
-                    <?php echo echo $argomento->taxonomy; ?>
                 </div>
               </div>
             </div>
@@ -27,3 +23,5 @@
         <?php } ?>
     </div>
 </div>
+
+
