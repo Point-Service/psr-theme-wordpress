@@ -21,32 +21,24 @@ for ($i = 1; $i <= 20; $i++) {
 ?>
 
 <style>
-/* Allinea la sezione delle schede alla larghezza del contenitore */
-#notizie .card-wrapper {
-    max-width: 98%; /* Limita la larghezza a quella del contenitore */
-    margin: 0 auto;  /* Centrato orizzontalmente */
-    padding: 0;      /* Rimuove il padding extra */
+/* CSS mirato alla sezione delle schede evidenziate */
+#notizie .card-teaser-wrapper {
+    max-width: 98%; /* Riduce la larghezza della sezione delle schede evidenziate */
+    margin: 0 auto; /* Centra la sezione orizzontalmente */
 }
 
-
-#notizieevidenza .card-wrapper {
-    max-width: 98%; /* Limita la larghezza a quella del contenitore */
-    margin: 0 auto;  /* Centrato orizzontalmente */
-    padding: 0;      /* Rimuove il padding extra */
-}    
-
-/* Per la sezione delle schede evidenziate */
-.card-teaser-wrapper {
-    display: flex; /* Usa Flexbox per gestire la disposizione */
-    flex-wrap: wrap; /* Le schede andranno su più righe se necessario */
-    gap: 10px; /* Distanza tra le schede */
-    justify-content: space-between; /* Distribuisce le schede uniformemente */
-}
-    
 /* Riduci la larghezza delle singole schede per allinearle correttamente */
-.card-teaser-wrapper .card {
-    max-width: 32%; /* Le schede non occupano più di un terzo della larghezza */
-    flex: 0 0 32%; /* Imposta la larghezza fissa delle schede */
+#notizie .card-teaser-wrapper .card {
+    max-width: 30%; /* Imposta le schede al 30% della larghezza */
+    flex: 0 0 30%;  /* Imposta una larghezza fissa per le schede */
+}
+
+/* Rendi le schede responsabili (più piccole su schermi piccoli) */
+@media (max-width: 768px) {
+    #notizie .card-teaser-wrapper .card {
+        max-width: 100%; /* Su schermi piccoli, ogni scheda occupa l'intera larghezza */
+        flex: 0 0 100%;
+    }
 }
 </style>
 <section id="notizie" aria-describedby="novita-in-evidenza">
@@ -118,7 +110,7 @@ for ($i = 1; $i <= 20; $i++) {
 
              
                 <!-- Sezione delle schede -->
-                <div class="row mb-1"> <!-- Ridotto spazio tra schede -->
+                <div class="row mb-1">
                     <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
                         <?php 
                         $count = 1;
@@ -128,10 +120,11 @@ for ($i = 1; $i <= 20; $i++) {
                             }
                             ++$count;
                         } 
-                        ?>                        
+                        ?>
+                        
                         <!-- Pulsante "Tutte le novità" -->
-                        <div class="row my-3 justify-content-md-center"> <!-- Ridotto margine con my-3 -->
-                            <a class="read-more pb-2" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>"> <!-- Ridotto padding con pb-2 -->
+                        <div class="row my-3 justify-content-md-center">
+                            <a class="read-more pb-2" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
                                 <button type="button" class="btn btn-outline-primary">Tutte le novità
                                     <svg class="icon">
                                         <use xlink:href="#it-arrow-right"></use>
@@ -141,6 +134,7 @@ for ($i = 1; $i <= 20; $i++) {
                         </div>                        
                     </div>                  
                 </div>
+
             <?php } ?>
         </div>
     </div>
