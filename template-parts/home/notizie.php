@@ -94,7 +94,7 @@ for ($i = 1; $i <= 20; $i++) {
                                 <small>Argomenti: </small>
                                 <?php get_template_part("template-parts/common/badges-argomenti"); ?>     
 
-                <a class="read-more ps-3"
+                <a class="read-more"
                    href="<?php echo get_permalink($post->ID); ?>"
                    aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
                    title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
