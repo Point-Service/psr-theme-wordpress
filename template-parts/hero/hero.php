@@ -13,7 +13,7 @@
         </div>
     </div>
 </div>
-g
+
 <div class="container" id="custom-section"> <!-- ID specifico per questa sezione -->
     <div class="row justify-content-start <?php echo $with_shadow ? 'row-shadow' : '' ?>"> 
         <div class="col-12 col-lg-10 custom-content-wrapper"> 
