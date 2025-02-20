@@ -33,19 +33,6 @@
     </div>	
 </div>
 
-<style>
-/* Stili applicati solo alla sezione specifica */
-#custom-section .custom-content-wrapper {
-    margin-left: 0; /* Elimina margini extra */
-    text-align: left; /* Assicura il testo allineato a sinistra */
-}
 
-/* Se necessario, puoi anche ridurre la larghezza per enfatizzare l'allineamento */
-@media (min-width: 992px) {
-    #custom-section .custom-content-wrapper {
-        max-width: 100%;
-    }
-}    
-</style>
 
 
