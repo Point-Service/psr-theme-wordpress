@@ -1,20 +1,11 @@
 <?php
 global $post, $inline, $hide_arguments;
 $argomenti = get_the_terms($post, 'argomenti');
-$categoria= get_the_terms($post, 'category');
+$categoria= get_the_terms($post, 'tipi_notizia');
 $post_url = get_permalink();
 
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
 $tipo_evento = get_the_terms($post->ID,'tipi_evento');
-
-// Ottieni tutte le tassonomie associate al post
-$taxonomies = get_object_taxonomies($post, 'names');
-
-// Stampa tutte le tassonomie disponibili
-echo '<pre>';
-print_r($taxonomies);
-echo '</pre>';
-
 
 
 if ($hide_arguments) $argomenti = array();
