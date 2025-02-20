@@ -157,11 +157,9 @@ if ($hide_arguments) $argomenti = array();
 <div class="mt-4 mb-4">
     <span class="subtitle-small">Tipi evento</span>
     <ul class="d-flex flex-wrap gap-1">
-        <?php foreach ($tipi_eventi as $tipo_evento) { ?>
+        <?php foreach ($tipo_evento as $evento) { ?>
         <li>
-       
-                <span class="chip-label"><?php echo $tipi_eventi->name; ?></span>
-            
+            <span class="chip-label"><?php echo $evento->name; ?></span>
         </li>
         <?php } ?>
     </ul>
