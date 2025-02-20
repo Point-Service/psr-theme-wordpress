@@ -58,6 +58,38 @@ if ($img) {
                     <p class="card-text d-none d-md-block">
                         <?php echo $description; ?>
                     </p>
+                                               <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                <span class="data fw-normal">📍 
+                                    <?php foreach ($luogo_notizia as $luogo_id) {
+                                        $luogo_post = get_post($luogo_id);
+                                        if ($luogo_post && !is_wp_error($luogo_post)) {
+                                            echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3">' . esc_html($luogo_post->post_title) . '</a> ';
+                                        }
+                                    } ?>
+                                </span>
+                            <?php } elseif (!empty($luogo_notizia)) { ?>
+                                <span class="data fw-normal">📍 
+                                    <?php echo esc_html($luogo_notizia); ?>
+                                </span>
+                            <?php } ?>
+                            
+                            <?php if (is_array($argomenti) && count($argomenti)) { ?>
+                                <div class="mt-2">
+                                    <span class="subtitle-small">Argomenti:</span>
+                                    <ul class="d-flex flex-wrap gap-1">
+                                        <?php foreach ($argomenti as $argomento) { 
+                                            if ($argomento && !is_wp_error($argomento)) { ?>
+                                                <li>
+                                                    <a href="<?php echo esc_url(get_term_link($argomento->term_id)); ?>" class="chip chip-simple">
+                                                        <span class="chip-label"><?php echo esc_html($argomento->name); ?></span>
+                                                    </a>
+                                                </li>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </ul>
+                                </div>
+                            <?php } ?>
+
                 </div>
                 </div>
             </div>
@@ -102,44 +134,38 @@ if ($img) {
                             <p class="card-text d-none d-md-block">
                                 <?php echo $description; ?>
                             </p>
-
-<p class="card-text d-none d-md-block">
-    <?php echo $description; ?>
-</p>
-
-<?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-    <span class="data fw-normal">📍 
-        <?php foreach ($luogo_notizia as $luogo_id) {
-            $luogo_post = get_post($luogo_id);
-            if ($luogo_post && !is_wp_error($luogo_post)) {
-                echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3">' . esc_html($luogo_post->post_title) . '</a> ';
-            }
-        } ?>
-    </span>
-<?php } elseif (!empty($luogo_notizia)) { ?>
-    <span class="data fw-normal">📍 
-        <?php echo esc_html($luogo_notizia); ?>
-    </span>
-<?php } ?>
-
-<?php if (is_array($argomenti) && count($argomenti)) { ?>
-    <div class="mt-2">
-        <span class="subtitle-small">Argomenti:</span>
-        <ul class="d-flex flex-wrap gap-1">
-            <?php foreach ($argomenti as $argomento) { 
-                if ($argomento && !is_wp_error($argomento)) { ?>
-                    <li>
-                        <a href="<?php echo esc_url(get_term_link($argomento->term_id)); ?>" class="chip chip-simple">
-                            <span class="chip-label"><?php echo esc_html($argomento->name); ?></span>
-                        </a>
-                    </li>
-                <?php } ?>
-            <?php } ?>
-        </ul>
-    </div>
-<?php } else { ?>
-    <p class="text-muted">Nessun argomento associato.</p>
-<?php } ?>
+                            
+                            <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                <span class="data fw-normal">📍 
+                                    <?php foreach ($luogo_notizia as $luogo_id) {
+                                        $luogo_post = get_post($luogo_id);
+                                        if ($luogo_post && !is_wp_error($luogo_post)) {
+                                            echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3">' . esc_html($luogo_post->post_title) . '</a> ';
+                                        }
+                                    } ?>
+                                </span>
+                            <?php } elseif (!empty($luogo_notizia)) { ?>
+                                <span class="data fw-normal">📍 
+                                    <?php echo esc_html($luogo_notizia); ?>
+                                </span>
+                            <?php } ?>
+                            
+                            <?php if (is_array($argomenti) && count($argomenti)) { ?>
+                                <div class="mt-2">
+                                    <span class="subtitle-small">Argomenti:</span>
+                                    <ul class="d-flex flex-wrap gap-1">
+                                        <?php foreach ($argomenti as $argomento) { 
+                                            if ($argomento && !is_wp_error($argomento)) { ?>
+                                                <li>
+                                                    <a href="<?php echo esc_url(get_term_link($argomento->term_id)); ?>" class="chip chip-simple">
+                                                        <span class="chip-label"><?php echo esc_html($argomento->name); ?></span>
+                                                    </a>
+                                                </li>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </ul>
+                                </div>
+                            <?php } ?>
 
 
                         </div>
