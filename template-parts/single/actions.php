@@ -2,6 +2,8 @@
 global $post, $inline, $hide_arguments;
 $argomenti = get_the_terms($post, 'argomenti');
 $tipi_notizia= get_the_terms($post, 'tipi_notizia');
+$categorie_servizio= get_the_terms($post, 'categorie_servizio');
+
 $post_url = get_permalink();
 
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
@@ -137,10 +139,10 @@ if ($hide_arguments) $argomenti = array();
 <div class="mt-4 mb-4">
     <span class="subtitle-small">Tipo Notizia</span>
     <ul class="d-flex flex-wrap gap-1">
-        <?php foreach ($tipi_notizia as $cat) { ?>
+        <?php foreach ($tipi_notizia as $tip_not) { ?>
         <li>
-            <a class="chip chip-simple" href="<?php echo get_term_link($cat->term_id); ?>">
-                <span class="chip-label"><?php echo $cat->name; ?></span>
+            <a class="chip chip-simple" href="<?php echo get_term_link($tip_not->term_id); ?>">
+                <span class="chip-label"><?php echo $tip_not->name; ?></span>
             </a>
         </li>
         <?php } ?>
@@ -162,7 +164,22 @@ if ($hide_arguments) $argomenti = array();
     </ul>
 </div>
 <?php } ?>
-
+    
+<?php if ($categorie_servizio && is_array($categorie_servizio) && count($categorie_servizio) ) { ?>
+<div class="mt-4 mb-4">
+    <span class="subtitle-small">Categorie Servizio</span>
+    <ul class="d-flex flex-wrap gap-1">
+        <?php foreach ($categorie_servizio as $cat_serv) { ?>
+        <li>
+            <a class="chip chip-simple" href="<?php echo get_term_link($cat_serv->term_id); ?>">
+                <span class="chip-label"><?php echo $cat_serv->name; ?></span>
+            </a>
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>
+    
 <?php if ($tipo_evento && is_array($tipo_evento) && count($tipo_evento) ) { ?>
 <div class="mt-4 mb-4">
     <span class="subtitle-small">Tipi evento</span>
