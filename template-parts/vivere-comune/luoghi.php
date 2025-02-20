@@ -8,7 +8,7 @@
     $url_luoghi = get_permalink( get_page_by_title('Luoghi') );
     if (is_array($luoghi) && count($luoghi)) {
 ?>
-<div class="bg-dsk py-5">
+<div class="bg-grey-dsk py-5">
     <div class="container">
         <h2 class="title-xxlarge mb-4">Luoghi in evidenza</h2>
         <div class="row g-4">
