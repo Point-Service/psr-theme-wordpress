@@ -11,6 +11,9 @@
 		
  
          <div class="it-header-slim-right-zone" role="navigation">
+
+
+		 
             <?php if(dci_get_option("link_ammtrasparente")) { ?>
             <div class="it-user-wrapper nav-item dropdown">
                <a aria-expanded="false" class="d-lg-block navbar-brand" data-toggle="dropdown" target="_blank" aria-label="Amministrazione trasparente" href=" <?php echo dci_get_option("link_ammtrasparente"); ?>" data-focus-mouse="false">
@@ -33,12 +36,11 @@
         				if ($shortcode_output !== '[google-translator]') {
         				    echo $shortcode_output;
         				}
-			       ?>
+	     ?>
 
+
+		 
               <?php
-
-
-
               if (!is_user_logged_in()) {
                       get_template_part("template-parts/header/header-anon");  
               } else {
