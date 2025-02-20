@@ -1,10 +1,14 @@
 <?php
 global $post, $inline, $hide_arguments;
 $argomenti = get_the_terms($post, 'argomenti');
+$categoria= get_the_terms($post, 'categoria');
 $post_url = get_permalink();
 
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
 $tipo_evento = get_the_terms($post->ID,'tipi_evento');
+
+
+
 
 if ($hide_arguments) $argomenti = array();
 ?>
@@ -123,6 +127,22 @@ if ($hide_arguments) $argomenti = array();
         </div>
     </div>
 </div>
+
+<?php if ($categoria && is_array($categoria) && count($categoria) ) { ?>
+<div class="mt-4 mb-4">
+    <span class="subtitle-small">Categorie</span>
+    <ul class="d-flex flex-wrap gap-1">
+        <?php foreach ($categoria as $cat) { ?>
+        <li>
+            <a class="chip chip-simple" href="<?php echo get_term_link($cat->term_id); ?>">
+                <span class="chip-label"><?php echo $cat->name; ?></span>
+            </a>
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>
+
 <?php if (is_array($argomenti) && count($argomenti) ) { ?>
 <div class="mt-4 mb-4">
     <span class="subtitle-small">Argomenti</span>
