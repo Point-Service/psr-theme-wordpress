@@ -107,15 +107,15 @@ $page_macro = get_page_by_path($page_macro_slug);
         <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
         <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>            
         <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">    
-        <p></p>
-        <a class="read-more" href="<?php echo esc_url(get_permalink($post->ID)); ?>" 
-           aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
-           title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
-            <span class="text">Vai alla pagina</span>
-            <svg class="icon ms-0">
-                <use xlink:href="#it-arrow-right"></use>
-            </svg>
-        </a>
+        
+        <!-- Pulsante "Tutte le novità" con stile inline -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="URL_DELLE_NOVITA" 
+               title="Tutte le novità" 
+               style="display: inline-block; background-color: #007bff; color: #fff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; text-transform: uppercase;">
+                Tutte le novità
+            </a>
+        </div>
     </div>
 </div>
 <?php } ?>
