@@ -89,8 +89,17 @@ if ($img) {
                                     </ul>
                                 </div>
                             <?php } ?>
-
-                </div>
+                     </div>
+                     <a class="read-more ps-3"
+                       href="<?php echo esc_url(get_permalink($post->ID)); ?>"
+                       aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
+                       title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
+                       style="display: inline-flex; align-items: center; margin-top: 30px;">
+                        <span class="text">Vai alla pagina</span>
+                        <svg class="icon">
+                            <use xlink:href="#it-arrow-right"></use>
+                        </svg>
+                    </a>
                 </div>
             </div>
             </div>
