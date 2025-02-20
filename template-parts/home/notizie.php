@@ -102,7 +102,6 @@ for ($i = 1; $i <= 20; $i++) {
                             dci_get_img($img, 'img-fluid');
                         } ?>
                     </div>
-                </div>
                 <a class="read-more ps-3"
                    href="<?php echo get_permalink($post->ID); ?>"
                    aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
@@ -113,6 +112,8 @@ for ($i = 1; $i <= 20; $i++) {
                         <use xlink:href="#it-arrow-right"></use>
                     </svg>
                 </a>
+                </div>
+
              
                 <!-- Sezione delle schede -->
                 <div class="row mb-1">
