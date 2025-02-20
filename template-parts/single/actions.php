@@ -3,6 +3,8 @@ global $post, $inline, $hide_arguments;
 $argomenti = get_the_terms($post, 'argomenti');
 $tipi_notizia= get_the_terms($post, 'tipi_notizia');
 $categorie_servizio= get_the_terms($post, 'categorie_servizio');
+$tipi_unita_organizzativa= get_the_terms($post, 'tipi_unita_organizzativa');
+
 
 $post_url = get_permalink();
 
@@ -179,6 +181,22 @@ if ($hide_arguments) $argomenti = array();
     </ul>
 </div>
 <?php } ?>
+
+<?php if ($tipi_unita_organizzativa && is_array($tipi_unita_organizzativa) && count($tipi_unita_organizzativa) ) { ?>
+<div class="mt-4 mb-4">
+    <span class="subtitle-small">Tipo</span>
+    <ul class="d-flex flex-wrap gap-1">
+        <?php foreach ($tipi_unita_organizzativa as $tipo) { ?>
+        <li>
+            <a class="chip chip-simple" href="<?php echo get_term_link($tipo->term_id); ?>">
+                <span class="chip-label"><?php echo $tipo->name; ?></span>
+            </a>
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>
+
     
 <?php if ($tipo_evento && is_array($tipo_evento) && count($tipo_evento) ) { ?>
 <div class="mt-4 mb-4">
