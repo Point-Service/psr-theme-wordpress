@@ -5,7 +5,6 @@
     if (!$title) $title = get_the_title();
     if (!$description) $description = dci_get_meta('descrizione','_dci_page_', $post->ID ?? null);
 ?>
-jjjjjjjj
 <div class="container" id="main-container">
     <div class="row justify-content-start"> <!-- Modificato per allineare a sinistra -->
         <div class="col-12 col-lg-10">
