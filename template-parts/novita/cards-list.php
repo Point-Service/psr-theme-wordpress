@@ -90,6 +90,7 @@ if ($img) {
                                 </div>
                             <?php } ?>
                      </div>
+                    <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
                      <a class="read-more ps-3"
                        href="<?php echo esc_url(get_permalink($post->ID)); ?>"
                        aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
