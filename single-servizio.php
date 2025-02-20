@@ -120,7 +120,13 @@ get_header();
     
 
 
-
+          <div class="container" id="main-container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-10">
+                        <?php get_template_part("template-parts/common/breadcrumb"); ?>
+                    </div>
+                </div>
+            </div>
 
 
 	    
