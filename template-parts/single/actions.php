@@ -140,7 +140,7 @@ if ($hide_arguments) $argomenti = array();
 
 <?php if ($tipi_luogo && is_array($tipi_luogo) && count($tipi_luogo) ) { ?>
 <div class="mt-4 mb-4">
-    <span class="subtitle-small">Tipi evento</span>
+    <span class="subtitle-small">Tipi luogo</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_luogo as $tipo_luogo) { ?>
         <li>
@@ -155,7 +155,7 @@ if ($hide_arguments) $argomenti = array();
 
 <?php if ($tipo_evento && is_array($tipo_evento) && count($tipo_evento) ) { ?>
 <div class="mt-4 mb-4">
-    <span class="subtitle-small">Tipi luogo</span>
+    <span class="subtitle-small">Tipi evento</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_eventi as $tipo_evento) { ?>
         <li>
