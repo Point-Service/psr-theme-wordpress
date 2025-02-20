@@ -92,16 +92,8 @@ for ($i = 1; $i <= 20; $i++) {
 
                                 <!-- Argomenti -->
                                 <small>Argomenti: </small>
-                                <?php get_template_part("template-parts/common/badges-argomenti"); ?>                                
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Colonna con l'immagine -->
-                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                        <?php if ($img) {
-                            dci_get_img($img, 'img-fluid');
-                        } ?>
-                    </div>
+                                <?php get_template_part("template-parts/common/badges-argomenti"); ?>     
+
                 <a class="read-more ps-3"
                    href="<?php echo get_permalink($post->ID); ?>"
                    aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
@@ -112,6 +104,17 @@ for ($i = 1; $i <= 20; $i++) {
                         <use xlink:href="#it-arrow-right"></use>
                     </svg>
                 </a>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Colonna con l'immagine -->
+                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                        <?php if ($img) {
+                            dci_get_img($img, 'img-fluid');
+                        } ?>
+                    </div>
                 </div>
 
              
