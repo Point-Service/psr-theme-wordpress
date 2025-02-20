@@ -1,7 +1,7 @@
 <?php
 global $post, $inline, $hide_arguments;
 $argomenti = get_the_terms($post, 'argomenti');
-$categoria= get_the_terms($post, 'tipi_notizia');
+$tipi_notizia= get_the_terms($post, 'tipi_notizia');
 $post_url = get_permalink();
 
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
@@ -126,11 +126,11 @@ if ($hide_arguments) $argomenti = array();
     </div>
 </div>
 
-<?php if ($categoria && is_array($categoria) && count($categoria) ) { ?>
+<?php if ($tipi_notizia && is_array($tipi_notizia) && count($tipi_notizia) ) { ?>
 <div class="mt-4 mb-4">
-    <span class="subtitle-small">Categorie</span>
+    <span class="subtitle-small">Tipo Notizia</span>
     <ul class="d-flex flex-wrap gap-1">
-        <?php foreach ($categoria as $cat) { ?>
+        <?php foreach ($tipi_notizia as $cat) { ?>
         <li>
             <a class="chip chip-simple" href="<?php echo get_term_link($cat->term_id); ?>">
                 <span class="chip-label"><?php echo $cat->name; ?></span>
