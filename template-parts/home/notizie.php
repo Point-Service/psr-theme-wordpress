@@ -52,10 +52,8 @@ for ($i = 1; $i <= 20; $i++) {
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
                                     <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
-                                </div>
-                                <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                    <h3 class="card-title"><?php echo $post->post_title; ?></h3>
-                                </a>
+                                </div>                               
+                                <h3 class="card-title"><?php echo $post->post_title; ?></h3>                               
                                 <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
                                 
                                 <!-- Luoghi -->
