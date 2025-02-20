@@ -121,14 +121,11 @@ if ($img) {
     </span>
 <?php } ?>
 
-<!-- Integrazione degli argomenti -->
-<hr style="margin-bottom: 10px; width: 200px; height: 1px; background-color: grey; border: none;">
 <?php if (is_array($argomenti) && count($argomenti)) { ?>
     <div class="mt-2">
         <span class="subtitle-small">Argomenti:</span>
         <ul class="d-flex flex-wrap gap-1">
-            <?php foreach ($argomenti as $argomento_id) { 
-                $argomento = get_term($argomento_id);
+            <?php foreach ($argomenti as $argomento) { 
                 if ($argomento && !is_wp_error($argomento)) { ?>
                     <li>
                         <a href="<?php echo esc_url(get_term_link($argomento->term_id)); ?>" class="chip chip-simple">
@@ -142,6 +139,7 @@ if ($img) {
 <?php } else { ?>
     <p class="text-muted">Nessun argomento associato.</p>
 <?php } ?>
+
 
                         </div>
                     </div>
