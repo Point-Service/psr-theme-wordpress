@@ -138,6 +138,21 @@ if ($hide_arguments) $argomenti = array();
 </div>
 <?php } ?>
 
+<?php if ($tipo_evento && is_array($tipo_evento) && count($tipo_evento) ) { ?>
+<div class="mt-4 mb-4">
+    <span class="subtitle-small">Tipi evento</span>
+    <ul class="d-flex flex-wrap gap-1">
+        <?php foreach ($tipo_evento as $evento) { ?>
+        <li>
+            <a class="chip chip-simple" href="<?php echo get_term_link($evento->term_id); ?>">
+                <span class="chip-label"><?php echo $evento->name; ?></span>
+            </a>
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>
+
 <?php if ($tipi_luogo && is_array($tipi_luogo) && count($tipi_luogo) ) { ?>
 <div class="mt-4 mb-4">
     <span class="subtitle-small">Tipi luogo</span>
@@ -147,19 +162,6 @@ if ($hide_arguments) $argomenti = array();
             <a class="chip chip-simple" href="<?php echo get_term_link($tipo_luogo->term_id); ?>">
                 <span class="chip-label"><?php echo $tipo_luogo->name; ?></span>
             </a>
-        </li>
-        <?php } ?>
-    </ul>
-</div>
-<?php } ?>
-
-<?php if ($tipo_evento && is_array($tipo_evento) && count($tipo_evento) ) { ?>
-<div class="mt-4 mb-4">
-    <span class="subtitle-small">Tipi evento</span>
-    <ul class="d-flex flex-wrap gap-1">
-        <?php foreach ($tipo_evento as $evento) { ?>
-        <li>
-            <span class="chip-label"><?php echo $evento->name; ?></span>
         </li>
         <?php } ?>
     </ul>
