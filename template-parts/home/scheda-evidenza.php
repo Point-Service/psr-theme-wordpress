@@ -110,8 +110,3 @@ $page_macro = get_page_by_path($page_macro_slug);
     </div>     
 </div>
 <?php } ?>
-  <button type="button" class="btn btn-outline-primary">Tutte le novità
-                            <svg class="icon">
-                                <use xlink:href="#it-arrow-right"></use>
-                            </svg>
- </button>
