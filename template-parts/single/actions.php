@@ -1,7 +1,7 @@
 <?php
 global $post, $inline, $hide_arguments;
 $argomenti = get_the_terms($post, 'argomenti');
-$categoria= get_the_terms($post, 'categoria');
+$categoria= get_the_terms($post, 'category');
 $post_url = get_permalink();
 
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
