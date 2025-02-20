@@ -120,65 +120,48 @@ get_header();
     
 
 
-          <div class="container" id="main-container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-10">
-                        <?php get_template_part("template-parts/common/breadcrumb"); ?>
+<div class="container px-4 my-4" id="main-container">
+    <div class="row">
+        <div class="col px-lg-4">
+            <?php get_template_part("template-parts/common/breadcrumb"); ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 px-lg-4 py-lg-2">
+            <h1 class="title-xxxlarge" data-element="service-title">
+                <?php the_title(); ?>
+            </h1>
+            <?php if ($sottotitolo) { ?>
+                <h2 class="h4 py-2">
+                    <?php echo $sottotitolo; ?>
+                </h2>
+            <?php } ?>
+            <ul class="d-flex flex-wrap gap-1 my-3">
+                <li>
+                    <div class="chip chip-simple" data-element="service-status">
+                        <span class="chip-label">
+                            <?php echo ($stato == 'true') ? 'Servizio attivo' : 'Servizio non attivo'; ?>
+                        </span>
                     </div>
-                </div>
-            </div>
-
-
-	    
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-10">
-                        <div class="cmp-heading pb-3 pb-lg-4">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <h1 class="title-xxxlarge" data-element="service-title">
-                                        <?php the_title(); ?>
-                                    </h1>
-                                    <h2 class="visually-hidden">Dettagli del servizio</h2>
-                                    <?php if($sottotitolo){ ?>
-                                    <div>
-                                    <p class="subtitle-small mb-3" data-element="service-description">
-                                        <strong><?php echo $sottotitolo ?></strong>
-                                    </p>
-                                    </div>
-                                    <?php } ?>
-                                    <ul class="d-flex flex-wrap gap-1 my-3">
-                                        <li>
-                                            <div class="chip chip-simple" data-element="service-status">
-                                                <span class="chip-label">
-                                                <?php if ( $stato == 'true' ) {
-                                                    echo 'Servizio attivo';
-                                                } else echo 'Servizio non attivo'
-                                                ?>
-                                                </span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <p class="subtitle-small mb-3" data-element="service-description">
-                                        <?php echo $descrizione_breve ?>
-                                    </p>
-                                    <?php if ($canale_digitale_link) { ?>
-                                    <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
-                                        <span class=""><?php echo $canale_digitale_label; ?></span>
-                                    </button>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
-                                    <?php
-                                        $hide_arguments = true;
-                                        get_template_part('template-parts/single/actions');
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                </li>
+            </ul>
+            <p class="subtitle-small mb-3">
+                <?php echo $descrizione_breve; ?>
+            </p>
+            <?php if ($canale_digitale_link) { ?>
+                <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
+                    <span><?php echo $canale_digitale_label; ?></span>
+                </button>
+            <?php } ?>
+        </div>
+        <div class="col-lg-3 offset-lg-1 px-lg-4 py-lg-2">
+            <?php
+            $inline = true;
+            get_template_part('template-parts/single/actions');
+            ?>
+        </div>
+    </div>
+</div>
 
            
 
