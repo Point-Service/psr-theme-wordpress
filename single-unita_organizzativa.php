@@ -269,16 +269,19 @@ get_header();
                                 <div class="richtext-wrapper lora"><?php echo $tipologia; ?></div>
                             </section>
                             <?php } ?>
-                            <?php if ( $area_riferimento ) { ?>
-                            <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="costs">Area di Riferimento</h2>
-                                <div class="richtext-wrapper lora">
-                                    <?php foreach ($area_riferimento as $uo_id) {
-                                        get_template_part("template-parts/unita-organizzativa/card-full");
-                                    } ?>
-                                </div>
-                            </section>
-                            <?php } ?>
+										
+				<?php if ( !empty($area_riferimento) ) { ?>
+				    <section class="it-page-section mb-30">
+				        <h2 class="title-xxlarge mb-3" id="costs">Area di Riferimento</h2>
+				        <div class="richtext-wrapper lora">
+				            <?php foreach ($area_riferimento as $uo_id) {
+				                get_template_part("template-parts/unita-organizzativa/card-full");
+				            } ?>
+				        </div>
+				    </section>
+				<?php } ?>
+
+										
 	                         <?php 
 					// Assicurati che la variabile sia definita prima di usarla
 					$costi = $costi ?? null; // Imposta a null se non è definita
