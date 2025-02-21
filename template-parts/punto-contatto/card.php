@@ -27,7 +27,7 @@ $other_contacts = array(
             
             <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) 
            
-                    $luoghi = array($indirizzo);
+                    $luoghi = array($full_contatto['indirizzo']);
                     get_template_part("template-parts/luogo/map"); 
                  {?>
                 echo '<div class="mb-3">';
