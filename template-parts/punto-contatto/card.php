@@ -25,22 +25,18 @@ $other_contacts = array(
         </h5>
         <div class="card-text">
             
-<?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])): {?>
-         
-            <article id="indirizzo" class="it-page-section mb-5">
-         
-          <center>
-          <?php 
-            $luoghi = array($indirizzo);
-            get_template_part("template-parts/luogo/map"); 
-                 ?>
-                      </center>
-  
-                     <div class="richtext-wrapper font-serif mt-3">  
-          <?php echo $indirizzo; ?>
-         </div>
-            </article>
-          <?php } ?>  
+            <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) 
+           
+                    $luoghi = array($indirizzo);
+                    get_template_part("template-parts/luogo/map"); 
+                 {?>
+                echo '<div class="mb-3">';
+                foreach ($full_contatto['indirizzo'] as $value) {        
+                    if($value) { echo $value; }
+                    echo '</p>';
+                } 
+                echo '</div>';
+            } ?>
 
     
             <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
