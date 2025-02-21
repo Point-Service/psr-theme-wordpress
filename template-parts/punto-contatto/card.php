@@ -27,8 +27,7 @@ $other_contacts = array(
             
 <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])): ?>
 
-<article id="indirizzo" class="it-page-section mb-5">
-    <h2 class="mb-3">Indirizzo</h2>         
+<article id="indirizzo" class="it-page-section mb-5">     
     <center>
         <?php 
             $luoghi = $full_contatto['indirizzo']; // Ho usato $full_contatto['indirizzo'] invece di $indirizzo
