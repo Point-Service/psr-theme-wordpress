@@ -385,7 +385,7 @@ get_header();
                                                 <p class="card-title text-paragraph-regular-medium-semi mb-3">
                                                     <a href="<?php echo get_permalink($sede_principale); ?>"><?php echo dci_get_meta('nome_alternativo', '_dci_luogo_', $sede_principale); ?></a>
                                                 </p>
-                                                <div class="card-text">
+                                                <div class="card-text">gggggggg
                                                      <p><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?></p>
                                                          <p><?php echo dci_get_meta("descrizione_breve", '_dci_luogo_', $sede_principale); ?></
                                                 </div>
@@ -398,21 +398,21 @@ get_header();
                             <?php } ?>
 
    				
-                <?php if ($allegati && is_array($allegati) && count($allegati) > 0) { ?>
-                            <section id="allegati" class="it-page-section mb-4">
-                                <h2 class="h3 my-2">Documenti</h2>
-                                <div class="row">
-                                    <?php foreach ($allegati as $allegato_id) { ?>
-                                        <div class="col-md-6 col-sm-12 mb-3 card-wrapper">
-                                            <?php
-                                            $documento = get_post($allegato_id);
-                                            $with_border = true;
-                                            get_template_part("template-parts/documento/card"); ?>
-                                        </div>
-                                    <?php  } ?>
-                                </div>
-                            </section>
-                        <?php } ?>
+	                <?php if ($allegati && is_array($allegati) && count($allegati) > 0) { ?>
+	                            <section id="allegati" class="it-page-section mb-4">
+	                                <h2 class="h3 my-2">Documenti</h2>
+	                                <div class="row">
+	                                    <?php foreach ($allegati as $allegato_id) { ?>
+	                                        <div class="col-md-6 col-sm-12 mb-3 card-wrapper">
+	                                            <?php
+	                                            $documento = get_post($allegato_id);
+	                                            $with_border = true;
+	                                            get_template_part("template-parts/documento/card"); ?>
+	                                        </div>
+	                                    <?php  } ?>
+	                                </div>
+	                            </section>
+	                        <?php } ?>
 
 				
                             <section class="it-page-section mb-30">
