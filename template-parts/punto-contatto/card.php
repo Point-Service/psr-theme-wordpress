@@ -25,22 +25,22 @@ $other_contacts = array(
         </h5>
         <div class="card-text">
             
-<?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])): ?>
-
-<article id="indirizzo" class="it-page-section mb-5">     
-    <center>
-        <?php 
-            $luoghi = $full_contatto['indirizzo']; // Ho usato $full_contatto['indirizzo'] invece di $indirizzo
+<?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])): {?>
+         
+            <article id="indirizzo" class="it-page-section mb-5">
+         
+          <center>
+          <?php 
+            $luoghi = array($indirizzo);
             get_template_part("template-parts/luogo/map"); 
-        ?>
-    </center>
-
-    <div class="richtext-wrapper font-serif mt-3">  
-        <?php echo $full_contatto['indirizzo']; // Modifica per stampare l'indirizzo dal corretto array ?>
-    </div>
-</article>
-
-<?php endif; ?>
+                 ?>
+                      </center>
+  
+                     <div class="richtext-wrapper font-serif mt-3">  
+          <?php echo $indirizzo; ?>
+         </div>
+            </article>
+          <?php } ?>  
 
     
             <?php if (array_key_exists('telefono', $full_contatto) && is_array($full_contatto['telefono']) && count ($full_contatto['telefono']) ) {
