@@ -92,17 +92,8 @@ $other_contacts = array(
                     </p>
                <?php }
             } ?>
-        <?php foreach ($other_contacts as $type) {
-                if (array_key_exists($type, $full_contatto) &&  is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
-                    foreach ($full_contatto[$type] as $value) {
-                        echo '<p><svg class="icon">
-                            <use xlink:href="#it-list"></use>
-                            </svg>'.$type.': '.$value.'</p>';
-                    }
-                } 
 
-    
-            } ?>
+            
   
         </div>
     </div>
