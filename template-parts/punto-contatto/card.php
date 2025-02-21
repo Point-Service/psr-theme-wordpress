@@ -29,7 +29,7 @@ $other_contacts = array(
            
                     $luoghi = array($full_contatto['indirizzo']);
                     get_template_part("template-parts/luogo/map"); 
-                 {?>
+                 {
                 echo '<div class="mb-3">';
                 foreach ($full_contatto['indirizzo'] as $value) {        
                     if($value) { echo $value; }
