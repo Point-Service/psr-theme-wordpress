@@ -25,14 +25,15 @@ $other_contacts = array(
         </h5>
         <div class="card-text">
             
-            <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) ) 
-           
-                    $luoghi = array($full_contatto['indirizzo']);
-                    get_template_part("template-parts/luogo/map"); 
+            <?php if (array_key_exists('indirizzo', $full_contatto) && is_array($full_contatto['indirizzo']) && count ($full_contatto['indirizzo']) )   
                  {
                 echo '<div class="mb-3">';
                 foreach ($full_contatto['indirizzo'] as $value) {        
-                    if($value) { echo $value; }
+                    if($value) { 
+                     $luoghi = $value;
+                    get_template_part("template-parts/luogo/map"); 
+                        
+                        echo $value; }
                     echo '</p>';
                 } 
                 echo '</div>';
