@@ -107,6 +107,16 @@ $page_macro = get_page_by_path($page_macro_slug);
         <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
         <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>            
         <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">    
+         <a class="read-more ps-3"
+           href="<?php echo esc_url(get_permalink($post->ID)); ?>"
+           aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
+           title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
+           style="display: inline-flex; align-items: center; margin-top: 30px;">
+            <span class="text">Vai alla pagina</span>
+            <svg class="icon">
+                <use xlink:href="#it-arrow-right"></use>
+            </svg>
+        </a>
     </div>     
 </div>
 <?php } ?>
