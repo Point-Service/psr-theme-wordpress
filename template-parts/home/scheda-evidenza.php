@@ -112,7 +112,7 @@ $page_macro = get_page_by_path($page_macro_slug);
            aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
            title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
            style="display: inline-flex; align-items: center; margin-top: 30px;">
-            <span class="text">Vai alla pagina</span>
+            <span class="text">Vai alla pagina1</span>
             <svg class="icon">
                 <use xlink:href="#it-arrow-right"></use>
             </svg>
