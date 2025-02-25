@@ -11,6 +11,7 @@ global $the_query, $load_posts, $load_card_type;
         'orderby'        => 'post_title',
         'order'          => 'Desc'
      );
+
      $the_query = new WP_Query( $args );
 
      $posts = $the_query->posts;
