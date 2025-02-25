@@ -9,7 +9,7 @@ global $the_query, $load_posts, $load_card_type;
         'posts_per_page' => $max_posts,
         'post_type'      => array('documento_pubblico', 'dataset'),
         'orderby'        => 'post_title',
-        'order'          => 'ASC'
+        'order'          => 'Desc'
      );
      $the_query = new WP_Query( $args );
 
