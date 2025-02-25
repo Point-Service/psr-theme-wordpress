@@ -11,7 +11,7 @@
 global $the_query, $load_posts, $load_card_type, $documento, $tax_query, $title, $description, $data_element, $hide_categories;
 
 $obj = get_queried_object();
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
 $load_posts = 3;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $args = array(
@@ -20,7 +20,7 @@ $args = array(
     'post_type'      => 'documento_pubblico',
     'tipi_documento' => $obj->slug,
     'orderby'        => 'post_title',
-    'order'          => 'DESC'
+    'order'          => 'ASC'
 );
 $the_query = new WP_Query( $args );
 $documenti = $the_query->posts;
@@ -44,7 +44,6 @@ get_header();
   
     <div class="bg-grey-card">
       <form role="search" id="search-form" method="get" class="search-form">
-          <button type="submit" class="d-none"></button>
           <div class="container">
             <div class="row ">
               <h2 class="visually-hidden">Esplora tutti i documenti</h2>
@@ -88,7 +87,11 @@ get_header();
     </div>
     
     <?php echo get_template_part( 'template-parts/common/valuta-servizio'); ?>
-    <?php echo get_template_part( 'template-parts/common/assistenza-contatti'); ?>
+    <?php 
+        $visualizza_contatto = dci_get_option('visualizzaContatto', 'footer');
+        if($visualizza_contatto == 'visible')
+            get_template_part("template-parts/common/assistenza-contatti"); 
+    ?>
   </main>
 <?php
 get_footer();
