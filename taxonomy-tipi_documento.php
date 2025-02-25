@@ -11,7 +11,7 @@
 global $the_query, $load_posts, $load_card_type, $documento, $tax_query, $title, $description, $data_element, $hide_categories;
 
 $obj = get_queried_object();
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
 $load_posts = 3;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $args = array(
@@ -20,7 +20,7 @@ $args = array(
     'post_type'      => 'documento_pubblico',
     'tipi_documento' => $obj->slug,
     'orderby'        => 'post_title',
-    'order'          => 'ASC'
+    'order'          => 'DESC'
 );
 $the_query = new WP_Query( $args );
 $documenti = $the_query->posts;
