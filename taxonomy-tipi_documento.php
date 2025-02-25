@@ -2,9 +2,6 @@
 /**
  * Archivio Tassonomia Tipi Documento
  *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#custom-taxonomies
- * @link https://italia.github.io/design-comuni-pagine-statiche/sito/tipi_documento.html
- *
  * @package Design_Comuni_Italia
  */
 
@@ -14,27 +11,29 @@ $obj = get_queried_object();
 $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
 $load_posts = 3;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+
+// Aggiungi un filtro tax_query per limitare i risultati ai documenti della tassonomia selezionata
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
     'post_type'      => 'documento_pubblico',
-    'tipi_documento' => $obj->slug,
     'orderby'        => 'post_title',
-    'order'          => 'DESC'
+    'order'          => 'DESC',
+    'tax_query'      => array(
+        array(
+            'taxonomy' => 'tipi_documento', // La tassonomia personalizzata
+            'field'    => 'slug',           // Filtra per slug
+            'terms'    => $obj->slug,       // Ottieni il termine della tassonomia selezionata
+        ),
+    ),
 );
-$the_query = new WP_Query( $args );
-$documenti = $the_query->posts;
 
-$tax_query = array(
-	array (
-		'taxonomy' => 'tipi_documento',
-		'field' => 'slug',
-		'terms' => $obj->slug
-	));
+$the_query = new WP_Query($args);
+$documenti = $the_query->posts;
 
 get_header();
 ?>
- <main>
+<main>
     <?php 
       $title = $obj->name;
       $description = $obj->description;
@@ -89,6 +88,7 @@ get_header();
     
     <?php echo get_template_part( 'template-parts/common/valuta-servizio'); ?>
     <?php echo get_template_part( 'template-parts/common/assistenza-contatti'); ?>
-  </main>
+</main>
 <?php
 get_footer();
+?>
