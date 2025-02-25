@@ -8,7 +8,6 @@
 
     if (is_array($posts_evidenza) && count($posts_evidenza)) {
 ?>
-hhhhhhhh
 <div class="bg-grey-card py-5">
     <div class="container">
         <h2 class="title-xxlarge mb-4">
