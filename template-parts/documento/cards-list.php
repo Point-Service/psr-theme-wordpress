@@ -21,13 +21,13 @@
     }
 
     // Verifica se la data modificata è disponibile e valida
-    $data_modifica = dci_get_meta("data_modifica");
-    if (!empty($data_modifica)) {
-        $arrdata = explode('-', date('d-m-Y', $data_modifica));
-    } else {
+   // $data_modifica = dci_get_meta("data_modifica");
+   //  if (!empty($data_modifica)) {
+   //     $arrdata = explode('-', date('d-m-Y', $data_modifica));
+   // } else {
         // Usa la data di protocollo se la data di modifica non è valida
-        $arrdata = explode('-', dci_get_meta("data_protocollo"));
-    }
+    //    $arrdata = explode('-', dci_get_meta("data_protocollo"));
+   // }
 
     // Se $arrdata è vuoto, prendi la data di pubblicazione del post
     if (empty($arrdata) || count($arrdata) !== 3) {
