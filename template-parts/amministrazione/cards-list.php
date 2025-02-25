@@ -7,6 +7,7 @@
         Esplora l'amministrazione
     </h2>
     <div class="row g-4">
+gfg
         <?php foreach ($arr_pages as $key => $page_name) { 
             $page = $pages[$page_name]; ?>
         <div class="col-12 col-md-6 col-lg-4">
