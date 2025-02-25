@@ -1,28 +1,37 @@
 <?php 
     global $post;
 
-        $description = dci_get_meta('descrizione_breve');
-        if ($post->post_type == 'documento_pubblico') {
-          $ufficio_id = dci_get_meta('ufficio_responsabile', '_dci_documento_pubblico_', $post->ID)[0] ?? '';
-          $ufficio = get_post($ufficio_id);
+    $description = dci_get_meta('descrizione_breve');
+    if ($post->post_type == 'documento_pubblico') {
+        $ufficio_id = dci_get_meta('ufficio_responsabile', '_dci_documento_pubblico_', $post->ID)[0] ?? '';
+        $ufficio = get_post($ufficio_id);
 
-          $url_documento = dci_get_meta('url_documento', '_dci_documento_pubblico_', $post->ID) ?? '';
-            $file_documento = dci_get_meta('file_documento', '_dci_documento_pubblico_', $post->ID);
-            $link_documento = ($url_documento!='') ? $url_documento : $file_documento;
-            //var_dump($link_documento);
-        }
-        if ($post->post_type == 'dataset') {
-            $tipo = '';
-            $arrdata = explode( '-', date('d-m-Y', dci_get_meta("data_modifica")));
-        }
-        else {
-            $arrdata = explode( '-', dci_get_meta("data_protocollo") );
-            $tipo = get_the_terms($post->term_id, 'tipi_documento')[0];
-        }
-        $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
-        $img = dci_get_meta('immagine');
-        if ($img) {
+        $url_documento = dci_get_meta('url_documento', '_dci_documento_pubblico_', $post->ID) ?? '';
+        $file_documento = dci_get_meta('file_documento', '_dci_documento_pubblico_', $post->ID);
+        $link_documento = ($url_documento!='') ? $url_documento : $file_documento;
+        //var_dump($link_documento);
+    }
+
+    if ($post->post_type == 'dataset') {
+        $tipo = '';
+        $arrdata = explode( '-', date('d-m-Y', dci_get_meta("data_modifica")));
+    }
+    else {
+        $arrdata = explode( '-', dci_get_meta("data_protocollo") );
+        $tipo = get_the_terms($post->term_id, 'tipi_documento')[0];
+    }
+
+    // Se $arrdata è vuoto, prendi la data di pubblicazione del post
+    if (empty($arrdata)) {
+        $arrdata = explode('-', get_the_date('d-m-Y', $post->ID));
+    }
+
+    $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+
+    $img = dci_get_meta('immagine');
+    if ($img) {
 ?>
+
     <div class="col-md-6 col-xl-4">
         <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
             <div class="card no-after rounded">
