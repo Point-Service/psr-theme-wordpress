@@ -26,6 +26,7 @@
         $arrdata = explode('-', get_the_date('d-m-Y', $post->ID));
     }
 
+
     $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 
     $img = dci_get_meta('immagine');
