@@ -7,7 +7,7 @@ global $the_query, $load_posts, $load_card_type;
     $args = array(
         's' => $query,
         'posts_per_page' => $max_posts,
-        'post_type'      => array('documento_pubblico', 'dataset'),
+        'post_type'      => array('documento', 'dataset'),
         'orderby'        => 'post_title',
         'order'          => 'Desc'
      );
