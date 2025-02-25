@@ -60,15 +60,8 @@ if ($the_query->have_posts()) {
 <?php }
 wp_reset_postdata(); ?>
 
-<!-- Navigazione Paginazione -->
-<nav class="pagination-wrapper" aria-label="Navigazione della pagina">
-    <?php
-    echo paginate_links([
-        'total'   => $the_query->max_num_pages,
-        'current' => $paged,
-        'prev_text' => '&laquo;',
-        'next_text' => '&raquo;',
-    ]);
-    ?>
-</nav>
+<!-- Pagination -->
+<!-- <nav class="pagination-wrapper" aria-label="Navigazione della pagina">
+    <?php #echo dci_bootstrap_pagination(); ?>
+</nav> -->
 
