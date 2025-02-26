@@ -402,8 +402,10 @@ class Breadcrumb_Trail {
                         return;
                         break;
                     case 'Novità':
-                        $this->items[] =  "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
-                        $this->items[] = get_the_title();
+                        $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+                        $this->items[] .= get_the_title();
                         return;
                         break;
                 }
