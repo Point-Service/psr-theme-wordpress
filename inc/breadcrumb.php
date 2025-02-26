@@ -386,10 +386,31 @@ class Breadcrumb_Trail {
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
-                       case 'Vivere il comune' :
+                    case 'Vivere il comune' :
                         $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";
 
-                                  
+  
+		                // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
+				$terms = get_the_terms(get_the_ID(), 'tipi_luogo');	
+	
+					    
+			        if ($terms && !is_wp_error($terms)) {
+			        // Se ci sono termini, prendi il nome del primo termine
+			        $term_name = $terms[0]->name;
+			        
+			        // Ottieni il link del termine
+			        $term_link = get_term_link($terms[0]);
+			
+			        // Verifica che il link del termine non contenga errori
+			        if (!is_wp_error($term_link)) {
+			            // Aggiungi il termine come link
+			            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";				
+			        }
+				}
+
+
+
+				    
                         $this->items[] = get_the_title();
                         return;
                         break;
@@ -467,7 +488,12 @@ class Breadcrumb_Trail {
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }
-			    			    
+                    else if (is_tax(array("tipi_luogo"))){
+                        $this->items[] = "<a href='".home_url("luoghi")."'>".__("luoghi", "design_comuni_italia")."</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+		    }
+			    
                     else if (is_tax(array("tipi_notizia"))){
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
