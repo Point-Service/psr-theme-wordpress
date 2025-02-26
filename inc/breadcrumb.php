@@ -409,12 +409,7 @@ class Breadcrumb_Trail {
 			            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";				
 			        }	  
 			    }		
-
-
-
-
-
-				    
+  
 				    
                         $this->items[] = get_the_title();
                         return;
@@ -495,7 +490,7 @@ class Breadcrumb_Trail {
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		    }
-			    s
+			    
                     else if (is_tax(array("tipi_notizia"))){
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
