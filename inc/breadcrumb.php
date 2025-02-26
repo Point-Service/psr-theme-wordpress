@@ -32,6 +32,7 @@
  * @return void
  */
 function breadcrumb_trail( $args = array() ) {
+
 	$breadcrumb = apply_filters( 'breadcrumb_trail_object', null, $args );
 
 	if ( ! is_object( $breadcrumb ) )
@@ -444,10 +445,6 @@ class Breadcrumb_Trail {
                     }
                     else if (is_tax(array("tipi_notizia"))){
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
-                        $term_name = single_term_title( '', false );
-                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-                    }else if (is_tax(array("tipi_progetto"))){
-                        $this->items[] = "<a href='".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }
