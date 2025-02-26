@@ -390,13 +390,7 @@ class Breadcrumb_Trail {
                     case 'Vivere il comune' :
                         $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
 				    
-                                     $terms = get_the_terms(get_the_ID(),'tipo-luogo');
-					if($terms){
-					  foreach ($terms as $term) {
-						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipo_luogo' ) ), $term->name );
-					  }
-					}							    
-	    		  
+                          
 				    
                         $this->items[] = get_the_title();
                         return;
