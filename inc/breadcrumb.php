@@ -386,7 +386,7 @@ class Breadcrumb_Trail {
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
-                    case 'Vivere il comune' :
+                       case 'Vivere il comune' :
                         $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";
 
                                     $terms = get_the_terms(get_the_ID(),'tipo_luogo');
@@ -473,12 +473,7 @@ class Breadcrumb_Trail {
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }
-                    else if (is_tax(array("tipi_luogo"))){
-                        $this->items[] = "<a href='".home_url("luoghi")."'>".__("luoghi", "design_comuni_italia")."</a>";
-                        $term_name = single_term_title( '', false );
-                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-		    }
-			    
+			    			    
                     else if (is_tax(array("tipi_notizia"))){
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
