@@ -389,28 +389,13 @@ class Breadcrumb_Trail {
                     case 'Vivere il comune' :
                         $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";
 
-  
-		                // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
-				$terms = get_the_terms(get_the_ID(), 'tipo_luogo');	
-	
-					    
-			        if ($terms && !is_wp_error($terms)) {
-			        // Se ci sono termini, prendi il nome del primo termine
-			        $term_name = $terms[0]->name;
-			        
-			        // Ottieni il link del termine
-			        $term_link = get_term_link($terms[0]);
-			
-			        // Verifica che il link del termine non contenga errori
-			        if (!is_wp_error($term_link)) {
-			            // Aggiungi il termine come link
-			            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";				
-			        }
-				}
+                                    $terms = get_the_terms(get_the_ID(),'tipo_luogo');
+					if($terms){
+					  foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipo_luogo' ) ), $term->name );
+					  }
+					}
 
-
-
-				    
                         $this->items[] = get_the_title();
                         return;
                         break;
