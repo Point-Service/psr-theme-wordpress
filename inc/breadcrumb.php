@@ -402,13 +402,21 @@ class Breadcrumb_Trail {
                         return;
                         break;
                     case 'Novità':
-                        $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
-                        $term_name = single_term_title( '', false );
-                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-                        $this->items[] .= get_the_title();
-                        return;
-                        break;
-                }
+			  $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
+			    
+			    // Ottieni i termini associati al post corrente nella tassonomia 'novita'
+			    $terms = get_the_terms(get_the_ID(), 'novita');
+			    
+			    if ($terms && !is_wp_error($terms)) {
+			        // Se ci sono termini, prendi il nome del primo termine
+			        $term_name = $terms[0]->name;
+			        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+			    }
+			    
+			    $this->items[] .= get_the_title();
+			    return;
+			    break;
+			                }
 
                 $this->add_singular_items();
                 //console_log( $this->items);
