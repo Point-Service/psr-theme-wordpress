@@ -391,7 +391,7 @@ class Breadcrumb_Trail {
                         $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";
 				    
 	    		   // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
-				$terms = get_the_terms(get_the_ID(), 'tipo_luogo');
+				$terms = get_the_terms(get_the_ID(), 'luogo');
 	
 					    
 			        if ($terms && !is_wp_error($terms)) {
