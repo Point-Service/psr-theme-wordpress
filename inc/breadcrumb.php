@@ -405,7 +405,7 @@ class Breadcrumb_Trail {
 			  $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
 			    
 			    // Ottieni i termini associati al post corrente nella tassonomia 'novita'
-			    $terms = get_the_terms(get_the_ID(), 'tipi_notizie');
+			    $terms = get_the_terms(get_the_ID(), 'tipi_notizia');
 			    
 			    if ($terms && !is_wp_error($terms)) {
 			        // Se ci sono termini, prendi il nome del primo termine
