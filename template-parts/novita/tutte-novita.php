@@ -1,31 +1,27 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 9;
-    $load_posts = 9;
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
+    $load_posts = 3;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
-        's'         => $query,
-        'post_type' => 'notizia'
+        'post_type' => 'notizia',
+        'meta_query' => array(
+            array(
+                'key' => '_dci_notizia_data_pubblicazione',
+            )
+        ),
+        'meta_type' => 'text_date_timestamp',
+        'orderby'   => 'meta_value_num',
+        'order'     => 'desc',
+        'posts_per_page'    => $max_posts,
+        'paged' => 1,
     );
 
     $the_query = new WP_Query( $args );
     $posts = $the_query->posts;
 
-    usort($posts, function($a, $b) {
-        return dci_get_data_pubblicazione_ts("data_pubblicazione", '_dci_notizia_', $b->ID) - dci_get_data_pubblicazione_ts("data_pubblicazione", '_dci_notizia_', $a->ID);
-    });
-    $posts = array_slice($posts, 0, $max_posts);
-
-    $args = array(
-        's'                 => $query,
-        'posts_per_page'    => $max_posts,
-        'post_type'         => 'notizia'
-    );
-
-    $the_query = new WP_Query( $args );
 ?>
-
 
 <div class="bg-grey-card py-5">
     <form role="search" id="search-form" method="get" class="search-form">
@@ -40,7 +36,7 @@ global $the_query, $load_posts, $load_card_type;
                         <div class="input-group">
                             <label for="autocomplete-two" class="visually-hidden">Cerca</label>
                             <input type="search" class="autocomplete form-control" placeholder="Cerca per parola chiave"
-                                id="autocomplete-two" name="search" value="<?php echo $query; ?>"
+                                id="autocomplete-two" name="search" value="<?php echo esc_attr($query); ?>"
                                 data-bs-autocomplete="[]" />
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit" id="button-3">
