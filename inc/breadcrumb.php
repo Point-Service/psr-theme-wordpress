@@ -410,7 +410,7 @@ class Breadcrumb_Trail {
 			    if ($terms && !is_wp_error($terms)) {
 			        // Se ci sono termini, prendi il nome del primo termine
 			        $term_name = $terms[0]->name;
-			        $this->items[] = "<a href='tipi_notizia/".$term_name."'>".__(dci_get_breadcrumb_label($term_name), "design_comuni_italia")."</a>";
+			        $this->items[] = "<a href='tipi_notizia/". $terms[0]->name."'>".__(dci_get_breadcrumb_label($term_name), "design_comuni_italia")."</a>";
 			    }
 			    
 			    $this->items[] .= get_the_title();
