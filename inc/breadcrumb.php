@@ -486,7 +486,7 @@ class Breadcrumb_Trail {
                     }
 			    
                     else if (is_tax(array("tipi_luogo"))){		
-                        $this->items[] = "<a href='".home_url("vivere-il-comune")."'>".__("vivere-il-comune", "design_comuni_italia")."</a>";			    
+                        $this->items[] = "<a href='".home_url("vivere-il-comune")."'>".__("vivere-il-comune", "design_comuni_italia")."</a> / Luoghi /";			    
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		    }
