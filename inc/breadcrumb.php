@@ -389,9 +389,25 @@ class Breadcrumb_Trail {
 			    switch ($group_name) {
                     case 'Vivere il comune' :
                         $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
-				    
 
-                              // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
+				    
+ // Ottieni tutte le tassonomie
+$taxonomies = get_taxonomies( array(), 'objects' );
+
+// Se ci sono tassonomie disponibili
+if ( !empty($taxonomies) ) {
+    echo '<ul>';
+    // Loop attraverso ogni tassonomia
+    foreach ( $taxonomies as $taxonomy ) {
+        echo '<li>' . $taxonomy->name . ' - ' . $taxonomy->label . '</li>';
+    }
+    echo '</ul>';
+} else {
+    echo 'Nessuna tassonomia trovata.';
+}
+
+
+                              // Ottieni i termini associati al post corrente nella tassonomia
 				$terms = get_the_terms(get_the_ID(), 'tipi-luogo');	
 	
 					    
