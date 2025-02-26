@@ -383,15 +383,25 @@ class Breadcrumb_Trail {
 					return;
 				}
 
+		    
+				if (get_post_type() == 'luoghi') {
+					$this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("vivere-il-comune", "design_comuni_italia")."</a>";
+					$terms = get_the_terms(get_the_ID(),'tipo_luogo');
+					if($terms){
+					  foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipp_luogo' ) ), $term->name );
+					  }
+					}
+					$this->items[] = get_the_title();
+					return;
+				}
+		    
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
                     case 'Vivere il comune' :
                         $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";
-
-
-
-				    
+	    
                         $this->items[] = get_the_title();
                         return;
                         break;
