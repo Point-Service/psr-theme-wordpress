@@ -393,7 +393,7 @@ class Breadcrumb_Trail {
 				    $terms = get_the_terms(get_the_ID(),'tipi-luogo');
 					if($terms){
 					  foreach ($terms as $term) {
-						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipo_luogo' ) ), $term->name );
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi-luogo' ) ), $term->name );
 					  }
 					}				    
 	    		  
