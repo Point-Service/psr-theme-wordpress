@@ -391,24 +391,24 @@ class Breadcrumb_Trail {
                         $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
 
 				    
- // Ottieni tutte le tassonomie
-$taxonomies = get_taxonomies( array(), 'objects' );
+$terms = get_terms( array(
+    'taxonomy' => 'tipi_luogo', // Sostituisci con la tassonomia desiderata
+    'hide_empty' => false, // Mostra anche i termini che non sono associati a nessun post
+) );
 
-// Se ci sono tassonomie disponibili
-if ( !empty($taxonomies) ) {
+if ( !is_wp_error( $terms ) && !empty( $terms ) ) {
     echo '<ul>';
-    // Loop attraverso ogni tassonomia
-    foreach ( $taxonomies as $taxonomy ) {
-        echo '<li>' . $taxonomy->name . ' - ' . $taxonomy->label . '</li>';
+    foreach ( $terms as $term ) {
+        echo '<li><a href="' . esc_url( get_term_link( $term ) ) . '">' . esc_html( $term->name ) . '</a></li>';
     }
     echo '</ul>';
 } else {
-    echo 'Nessuna tassonomia trovata.';
+    echo 'Nessun termine trovato per questa tassonomia.';
 }
 
 
                               // Ottieni i termini associati al post corrente nella tassonomia
-				$terms = get_the_terms(get_the_ID(), 'tipi-luogo');	
+				$terms = get_the_terms(get_the_ID(), 'tipi_luogo');	
 	
 					    
 			        if ($terms && !is_wp_error($terms)) {
