@@ -411,10 +411,7 @@ class Breadcrumb_Trail {
         // Se ci sono termini, prendi il nome del primo termine e crei un link cliccabile
         $term_name = $terms[0]->name;
         $term_link = get_term_link($terms[0]); // Ottieni il link del termine
-        if (!is_wp_error($term_link)) {
-            // Aggiungi il termine come link
-            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url($term_link), $term_name);
-        }
+        
     }
     
     $this->items[] .= get_the_title();
