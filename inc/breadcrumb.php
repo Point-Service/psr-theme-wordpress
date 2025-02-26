@@ -406,7 +406,7 @@ class Breadcrumb_Trail {
 			            // Aggiungi il termine come link
 			            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";				
 			        }
-	
+				}
 
 
 
