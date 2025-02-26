@@ -388,8 +388,7 @@ class Breadcrumb_Trail {
 			    //console_log($group_name);
 			    switch ($group_name) {
                     case 'Vivere il comune' :
-                        $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";
-				    echo 'dd' ;
+                        $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."ggffffffff</a>";			
 	    		   // Ottieni i termini associati al post corrente nella tassonomia
 				$terms = get_the_terms(get_the_ID(), 'tipi-luogo');	
 					    
