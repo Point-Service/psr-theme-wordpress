@@ -402,30 +402,30 @@ class Breadcrumb_Trail {
                         return;
                         break;
              case 'Novità':
-    $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
-    
-    // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
-    $terms = get_the_terms(get_the_ID(), 'tipi_notizia');
-    
-    if ($terms && !is_wp_error($terms)) {
-        // Se ci sono termini, prendi il nome del primo termine
-        $term_name = $terms[0]->name;
-        
-        // Ottieni il link del termine
-        $term_link = get_term_link($terms[0]);
-
-        // Verifica che il link del termine non contenga errori
-        if (!is_wp_error($term_link)) {
-            // Aggiungi il termine come link
-            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";
-        }
-    }
-    
-    // Aggiungi il titolo del post
-    $this->items[] .= get_the_title();
-    return;
-    break;
-
+		    $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
+		    
+		    // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
+		    $terms = get_the_terms(get_the_ID(), 'tipi_notizia');
+		    
+		    if ($terms && !is_wp_error($terms)) {
+		        // Se ci sono termini, prendi il nome del primo termine
+		        $term_name = $terms[0]->name;
+		        
+		        // Ottieni il link del termine
+		        $term_link = get_term_link($terms[0]);
+		
+		        // Verifica che il link del termine non contenga errori
+		        if (!is_wp_error($term_link)) {
+		            // Aggiungi il termine come link
+		            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";
+		        }
+		    }
+		    
+		    // Aggiungi il titolo del post
+		    $this->items[] .= get_the_title();
+		    return;
+		    break;
+			    }
                 $this->add_singular_items();
                 //console_log( $this->items);
             }
