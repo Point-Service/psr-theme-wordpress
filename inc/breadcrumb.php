@@ -391,7 +391,7 @@ class Breadcrumb_Trail {
 
   
 		                // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
-				$terms = get_the_terms(get_the_ID(), 'tipi_luoghi');	
+				$terms = get_the_terms(get_the_ID(), 'tipi_luogo');	
 	
 					    
 			        if ($terms && !is_wp_error($terms)) {
