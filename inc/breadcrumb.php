@@ -494,29 +494,12 @@ class Breadcrumb_Trail {
                 //if(is_post_type_archive(dci_get_post_types_grouped('vivere-il-comune')))
                     //$this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";
 
-if (is_post_type_archive()) {
-    $this->add_post_type_archive_items();
-
-    $categories = get_categories(array(
-        'taxonomy' => 'category', // Specifica la tassonomia di default (categorie predefinite di WordPress)
-        'hide_empty' => false, // Mostra anche le categorie vuote
-    ));
-
-    // Variabile per monitorare se la categoria "Notizie" è stata trovata
-    $found_notizie = false;
-
-    // Cicla tutte le categorie per cercare "Notizie"
-    foreach ($categories as $category) {
-	    echo $category->name;
-       
-    }
-
-    // Se la categoria "Notizie" non è stata trovata, stampiamo "Ciao"
-    if (!$found_notizie) {
-        echo 'Ciao';
-    }
-	
-}
+		if (is_post_type_archive()) {
+		    $this->add_post_type_archive_items();
+		
+		 
+			
+		}
 
                 elseif ( is_category() || is_tag() || is_tax() ){
 
