@@ -144,7 +144,7 @@ class Breadcrumb_Trail {
 
 		// Set the labels and post taxonomy properties.
 		$this->set_labels();
-		$this->set_post_taxonomy();
+		//$this->set_post_taxonomy();
 
 		// Let's find some items to add to the trail!
 		$this->add_items();
@@ -304,27 +304,17 @@ class Breadcrumb_Trail {
 	 * @access protected
 	 * @return void
 	 */
+
 	protected function set_post_taxonomy() {
 
-	$defaults = array();
+		$defaults = array();
 
-// Se il permalink del post è impostato su %postname%, utilizza la tassonomia 'category'
-if ( '%postname%' === trim( get_option( 'permalink_structure' ), '/' ) ) {
-    $defaults['post'] = 'category';
-}
+		// If post permalink is set to `%postname%`, use the `category` taxonomy.
+		if ( '%postname%' === trim( get_option( 'permalink_structure' ), '/' ) )
+			$defaults['post'] = 'category';
 
-// Applica i filtri per la tassonomia del post
-$this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
-
-// Sostituisci "Notizie" con "Novità" nel nome della categoria
-add_filter('get_term', function($term) {
-    // Verifica se il termine è una categoria e se il suo nome è "Notizie"
-    if ($term->taxonomy === 'category' && $term->name === 'Notizie') {
-        // Modifica il nome della categoria in "Novità"
-        $term->name = 'Novità';
-    }
-    return $term;
-});
+		$this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
+	}
 
 
 	}
