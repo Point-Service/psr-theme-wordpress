@@ -388,37 +388,44 @@ class Breadcrumb_Trail {
 			    //console_log($group_name);
 			    switch ($group_name) {
 				    
- case 'Vivere il comune' :
-    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
+case 'Vivere il comune' :
+    // Link alla pagina "Vivere Il Comune"
+    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";
 
-    // Ottieni tutte le tassonomie associate al post corrente
-    $taxonomies = get_object_taxonomies(get_post_type(), 'objects');
-    
-    // Per ogni tassonomia, aggiungi un link se esistono termini associati al post
-    foreach ($taxonomies as $taxonomy) {
-        // Ottieni i termini associati al post per la tassonomia
-        $terms = get_the_terms(get_the_ID(), $taxonomy->name);
-        
-        if ($terms && !is_wp_error($terms)) {
-            // Per ogni termine associato, aggiungi il relativo link
-            foreach ($terms as $term) {
-                // Ottieni il link del termine
-                $term_link = get_term_link($term);
+    // Recupera tutte le pagine figlie di "Vivere Il Comune"
+    $args = array(
+        'post_type' => 'page',  // Tipo di post: pagina
+        'post_parent' => get_page_by_path('vivere-il-comune')->ID,  // Ottieni l'ID della pagina "Vivere Il Comune"
+        'posts_per_page' => -1,  // Recupera tutte le pagine figlie
+    );
+    $pages = get_posts($args);
 
-                // Verifica che il link del termine non contenga errori
-                if (!is_wp_error($term_link)) {
+    // Per ogni pagina figlia di "Vivere Il Comune", aggiungi un link
+    if ($pages) {
+        foreach ($pages as $page) {
+            // Ottieni i termini associati alla pagina figlia
+            $terms = get_the_terms($page->ID, 'category'); // Usa la tassonomia appropriata, ad esempio 'category'
+
+            if ($terms && !is_wp_error($terms)) {
+                foreach ($terms as $term) {
                     // Aggiungi il termine come link
-                    $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term->name), "design_comuni_italia") . "</a>";
+                    $term_link = get_term_link($term);
+                    if (!is_wp_error($term_link)) {
+                        $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term->name), "design_comuni_italia") . "</a>";
+                    }
                 }
             }
-        }
-    }
 
-    // Aggiungi il titolo del post
-    $this->items[] = get_the_title();
+            // Aggiungi il link alla pagina figlia
+            $this->items[] = "<a href='" . get_permalink($page->ID) . "'>" . $page->post_title . "</a>";
+        }
+    } else {
+        $this->items[] = __("Nessuna sottocategoria trovata", "design_comuni_italia");
+    }
 
     return;
     break;
+
 
 
 
