@@ -27,6 +27,8 @@ for ($i = 1; $i <= 20; $i++) {
     margin: 0 auto; /* Centra la sezione orizzontalmente */
 }
 
+
+
 /* Rendi le schede responsabili (più piccole su schermi piccoli) */
 @media (max-width: 768px) {
     #notizie .card-teaser-wrapper .card {
@@ -35,7 +37,6 @@ for ($i = 1; $i <= 20; $i++) {
     }
 }
 </style>
-
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
@@ -50,14 +51,12 @@ for ($i = 1; $i <= 20; $i++) {
                                     <svg class="icon icon-sm" aria-hidden="true">
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
-                                    <!-- Modifica il titolo della categoria con la prima lettera maiuscola e il resto minuscolo -->
-                                    <span class="title-xsmall-semi-bold fw-semibold"><?php echo esc_html(ucwords(strtolower($post->post_type))); ?></span>
+                                    <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
                                 </div> 
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                 <!-- Modifica il titolo del post con la prima lettera maiuscola e il resto minuscolo -->
-                                 <h3 class="card-title"><?php echo esc_html(ucwords(strtolower($post->post_title))); ?></h3> 
+                                 <h3 class="card-title"><?php echo $post->post_title; ?></h3> 
                                 </a>
-                                <p class="mb-2 font-serif"><?php echo esc_html($descrizione_breve); ?></p>
+                                <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
                                 
                                 <!-- Luoghi -->
                                 <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
@@ -106,7 +105,7 @@ for ($i = 1; $i <= 20; $i++) {
                     </svg>
                 </a>
 
-                                 
+                                
                             </div>
                         </div>
                     </div>
@@ -118,6 +117,7 @@ for ($i = 1; $i <= 20; $i++) {
                     </div>
                 </div>
 
+             
                 <!-- Sezione delle schede -->
                 <div class="row mb-1">
                     <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
@@ -130,6 +130,7 @@ for ($i = 1; $i <= 20; $i++) {
                             ++$count;
                         } 
                         ?>                      
+                    
                     </div>                  
                 </div>
               <div class="row my-4 justify-content-md-center">
@@ -145,4 +146,3 @@ for ($i = 1; $i <= 20; $i++) {
         </div>
     </div>
 </section>
-
