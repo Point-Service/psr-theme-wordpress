@@ -390,6 +390,7 @@ class Breadcrumb_Trail {
 				    
 			case 'Vivere il comune' :
 				// Aggiungi il link alla pagina principale "Vivere il Comune"
+			
 $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";    
 
 // Ottieni l'URL corrente
@@ -407,28 +408,32 @@ if (isset($path_parts[2])) {
         $category_link = home_url("vivere-il-comune/luoghi");
         $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
         
-        // Aggiungi la tipologia del luogo, se presente, tramite la tassonomia
+        // Aggiungi la tipologia del luogo, se presente
         if (is_singular('luoghi')) {
-            $terms = get_the_terms(get_the_ID(), 'place_type'); // 'place_type' è il nome della tassonomia per la tipologia del luogo
-            if ($terms && !is_wp_error($terms)) {
-                // Otteniamo la tipologia e la collegiamo a un link
-                $place_type = $terms[0]->name; // Otteniamo il nome della prima tipologia
-                $place_type_link = home_url("vivere-il-comune/luoghi/" . sanitize_title($place_type));
-                $this->items[] = "<a href='" . esc_url($place_type_link) . "'>" . ucfirst($place_type) . "</a>";
+            // Recuperiamo la tipologia direttamente come nel tuo codice
+            $tipi_notizia = get_the_terms(get_the_ID(), 'place_type'); // 'place_type' è la tassonomia per il tipo di luogo
+
+            if ($tipi_notizia && is_array($tipi_notizia) && count($tipi_notizia)) {
+                foreach ($tipi_notizia as $tip_not) {
+                    $place_type_link = get_term_link($tip_not->term_id);
+                    $this->items[] = "<a href='" . esc_url($place_type_link) . "'>" . esc_html($tip_not->name) . "</a>";
+                }
             }
         }
     } elseif ($category === 'eventi') {
         $category_link = home_url("vivere-il-comune/eventi");
         $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
         
-        // Aggiungi la tipologia dell'evento, se presente, tramite la tassonomia
+        // Aggiungi la tipologia dell'evento, se presente
         if (is_singular('eventi')) {
-            $terms = get_the_terms(get_the_ID(), 'event_type'); // 'event_type' è il nome della tassonomia per la tipologia dell'evento
-            if ($terms && !is_wp_error($terms)) {
-                // Otteniamo la tipologia e la collegiamo a un link
-                $event_type = $terms[0]->name; // Otteniamo il nome della prima tipologia
-                $event_type_link = home_url("vivere-il-comune/eventi/" . sanitize_title($event_type));
-                $this->items[] = "<a href='" . esc_url($event_type_link) . "'>" . ucfirst($event_type) . "</a>";
+            // Recuperiamo la tipologia direttamente come nel tuo codice
+            $tipi_notizia = get_the_terms(get_the_ID(), 'tipo_evento'); // 'tipo_evento' è la tassonomia per il tipo di evento
+
+            if ($tipi_notizia && is_array($tipi_notizia) && count($tipi_notizia)) {
+                foreach ($tipi_notizia as $tip_not) {
+                    $event_type_link = get_term_link($tip_not->term_id);
+                    $this->items[] = "<a href='" . esc_url($event_type_link) . "'>" . esc_html($tip_not->name) . "</a>";
+                }
             }
         }
     }
