@@ -421,7 +421,12 @@ class Breadcrumb_Trail {
 				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
 				        
 
-
+                                       $terms = get_the_terms(get_the_ID(),'tipo_evento');
+					if($terms){
+					  foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_luogo' ) ), $term->name );
+					  }
+					}
 
 					    
 					    
