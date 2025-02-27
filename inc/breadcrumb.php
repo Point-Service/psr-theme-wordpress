@@ -394,21 +394,23 @@ case 'Vivere il comune' :
 
     // Ottieni l'URL corrente
     $current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
-    
+
+    // Debug: Stampa l'URL corrente
+    echo '<p><strong>URL corrente:</strong> ' . esc_html($current_url) . '</p>';
+
     // Estrarre il percorso dall'URL
     $url_path = parse_url($current_url, PHP_URL_PATH);
     $path_parts = explode('/', trim($url_path, '/'));
 
-    // Debug: Stampa il percorso per il debug
-    error_log('URL corrente: ' . $current_url);
-    error_log('Parte del percorso: ' . print_r($path_parts, true));
+    // Debug: Stampa il percorso dell'URL per verificare le sue parti
+    echo '<p><strong>Percorso dell\'URL:</strong> ' . print_r($path_parts, true) . '</p>';
 
     // Determina la categoria dalla struttura dell'URL
     if (isset($path_parts[2])) { 
-        $category = $path_parts[2]; // "luoghi" o "eventi" 
+        $category = $path_parts[2]; // "luoghi" o "eventi"
         
-        // Echo per visualizzare la categoria letta a video
-        echo '<p><strong>Categoria letta: </strong>' . esc_html($category) . '</p>';  // Questo echo stamperà la categoria a video!
+        // Debug: Mostra quale categoria è stata letta
+        echo '<p><strong>Categoria letta:</strong> ' . esc_html($category) . '</p>';
 
         if ($category === 'luoghi') {
             $category_link = home_url("vivere-il-comune/luoghi");
@@ -417,12 +419,12 @@ case 'Vivere il comune' :
             $category_link = home_url("vivere-il-comune/eventi");
             $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
         } else {
-            // Se la categoria non è né 'luoghi' né 'eventi', puoi aggiungere un fallback
-            error_log('Categoria non riconosciuta: ' . $category);
+            // Se la categoria non è né 'luoghi' né 'eventi', aggiungi un messaggio di debug
+            echo '<p><strong>Categoria non riconosciuta:</strong> ' . esc_html($category) . '</p>';
         }
     } else {
-        // Debug: Se non ci sono abbastanza parti nell'URL, lo segnaliamo
-        error_log('Struttura URL non riconosciuta');
+        // Debug: Se il percorso non ha abbastanza parti, stampa un messaggio
+        echo '<p><strong>Struttura URL non riconosciuta. Percorso troppo corto:</strong> ' . print_r($path_parts, true) . '</p>';
     }
 
     // Aggiungi il titolo dell'articolo corrente
