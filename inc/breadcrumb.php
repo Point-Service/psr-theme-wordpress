@@ -456,7 +456,12 @@ class Breadcrumb_Trail {
 			
 			    // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
 			    $terms = get_the_terms(get_the_ID(), 'tipi_notizia');
-			
+			if (!empty($terms) && !is_wp_error($terms)) {
+    $term_names = wp_list_pluck($terms, 'name'); // Estrae solo i nomi dei termini
+    echo implode(', ', $term_names);
+} else {
+    echo 'Nessun termine trovato.';
+}
 			    if ($terms && !is_wp_error($terms)) {
 			        // Se ci sono termini, prendi il nome del primo termine
 			        $term_name = $terms[0]->name;
@@ -528,7 +533,7 @@ class Breadcrumb_Trail {
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-			    echo'd';
+		
                     }else if (is_tax(array("tipi_progetto"))){
                         $this->items[] = "<a href='".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
