@@ -390,30 +390,35 @@ class Breadcrumb_Trail {
 			case 'Vivere il comune' :
 			    $this->items[] = "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
 			
-			    // Aggiungi la categoria "Luoghi" come sottocategoria di "Vivere il Comune"
-			    $luoghi_link = home_url("vivere-il-comune/luoghi");
-			    $this->items[] = "<a href='" . esc_url($luoghi_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
+			    // Identifica la categoria corretta (può essere "luoghi", "eventi", ecc.)
+			    $category = get_the_terms(get_the_ID(), 'category'); // Cambia 'category' con la tassonomia corretta, se diversa
 			
-			    // Ottieni i termini associati al post corrente nella tassonomia
-			    $terms = get_the_terms(get_the_ID(), 'tipi_luogo');	
+			    if ($category && !is_wp_error($category)) {
+			        $first_category = $category[0]; // Prendi la prima categoria associata
+			        $category_link = get_term_link($first_category);
+			
+			        if (!is_wp_error($category_link)) {
+			            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . esc_html($first_category->name) . "</a>";
+			        }
+			    }
+			
+			    // Ottieni il termine specifico se presente (es. "Chiesa" o altro)
+			    $terms = get_the_terms(get_the_ID(), 'tipi_luogo');
 			
 			    if ($terms && !is_wp_error($terms)) {
-			        // Prendi il primo termine disponibile
 			        $term = $terms[0];
-			
-			        // Ottieni il link del termine
 			        $term_link = get_term_link($term);
 			
-			        // Verifica che il link del termine non contenga errori
 			        if (!is_wp_error($term_link)) {
-			            // Aggiungi il termine come link (es. "Chiesa")
 			            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term->name), "design_comuni_italia") . "</a>";				
 			        }	  
 			    }        
 			
+			    // Titolo della pagina
 			    $this->items[] = get_the_title();
 			    return;
 			    break;
+
 
 
                     case 'Amministrazione':
