@@ -308,14 +308,15 @@ class Breadcrumb_Trail {
 
 	$defaults = array();
 
-// If post permalink is set to `%postname%`, use the `category` taxonomy.
-if ( '%postname%' === trim( get_option( 'permalink_structure' ), '/' ) )
+// Se il permalink del post è impostato su %postname%, utilizza la tassonomia 'category'
+if ( '%postname%' === trim( get_option( 'permalink_structure' ), '/' ) ) {
     $defaults['post'] = 'category';
+}
 
-// Apply filters for post taxonomy
+// Applica i filtri per la tassonomia del post
 $this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
 
-// Sostituisci "Notizie" con "Novità"
+// Sostituisci "Notizie" con "Novità" nel nome della categoria
 add_filter('get_term', function($term) {
     // Verifica se il termine è una categoria e se il suo nome è "Notizie"
     if ($term->taxonomy === 'category' && $term->name === 'Notizie') {
@@ -324,6 +325,7 @@ add_filter('get_term', function($term) {
     }
     return $term;
 });
+
 
 	}
 
