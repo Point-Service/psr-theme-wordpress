@@ -409,10 +409,10 @@ class Breadcrumb_Trail {
 				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
 				        $terms = get_the_terms(get_the_ID(),'categorie_servizio');
 					
-			$terms = get_the_terms(get_the_ID(),'tipi_luogo');
+			              $terms = get_the_terms(get_the_ID(),'tipi_luogo');
 					if($terms){
 					  foreach ($terms as $term) {
-						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'categorie_servizio' ) ), $term->name );
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_luogo' ) ), $term->name );
 					  }
 					}
 				        
@@ -420,18 +420,13 @@ class Breadcrumb_Trail {
 				        $category_link = home_url("vivere-il-comune/eventi");
 				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
 				        
-				        // Aggiungi la tipologia dell'evento, se presente
-				        if (is_singular('eventi')) {
-				            // Recuperiamo la tipologia direttamente come nel tuo codice
-				            $tipi_notizia = get_the_terms(get_the_ID(), 'tipo_evento'); // 'tipo_evento' è la tassonomia per il tipo di evento
-				
-				            if ($tipi_notizia && is_array($tipi_notizia) && count($tipi_notizia)) {
-				                foreach ($tipi_notizia as $tip_not) {
-				                    $event_type_link = get_term_link($tip_not->term_id);
-				                    $this->items[] = "<a href='" . esc_url($event_type_link) . "'>" . esc_html($tip_not->name) . "</a>";
-				                }
-				            }
-				        }
+				       	$terms = get_the_terms(get_the_ID(),'tipo_evento');
+					if($terms){
+					  foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipo_evento' ) ), $term->name );
+					  }
+					}
+					    
 				    }
 				}
 
