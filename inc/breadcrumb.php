@@ -389,28 +389,43 @@ class Breadcrumb_Trail {
 			    switch ($group_name) {
 				    
 			case 'Vivere il comune' :
-			    // Aggiungi il link alla pagina principale "Vivere il Comune"
-			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";    
-			
-			    // Ottieni l'URL corrente
-			    $current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
-			
-			    // Estrarre il percorso dall'URL
-			    $url_path = parse_url($current_url, PHP_URL_PATH);
-			    $path_parts = explode('/', trim($url_path, '/'));
-			
-			    // Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
-			    if (isset($path_parts[2])) { 
-			        $category = $path_parts[1]; // La categoria è la seconda parte del percorso, quindi $path_parts[1]
-			
-			        if ($category === 'luoghi') {
-			            $category_link = home_url("vivere-il-comune/luoghi");
-			            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
-			        } elseif ($category === 'eventi') {
-			            $category_link = home_url("vivere-il-comune/eventi");
-			            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
-			        }
-			    }
+// Aggiungi il link alla pagina principale "Vivere il Comune"
+$this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";    
+
+// Ottieni l'URL corrente
+$current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
+
+// Estrarre il percorso dall'URL
+$url_path = parse_url($current_url, PHP_URL_PATH);
+$path_parts = explode('/', trim($url_path, '/'));
+
+// Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
+if (isset($path_parts[2])) { 
+    $category = $path_parts[1]; // La categoria è la seconda parte del percorso, quindi $path_parts[1]
+
+    if ($category === 'luoghi') {
+        $category_link = home_url("vivere-il-comune/luoghi");
+        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
+        
+        // Aggiungi la tipologia del luogo, se presente (terza parte dell'URL)
+        if (isset($path_parts[3])) {
+            $place_type = $path_parts[2]; // La tipologia è la terza parte del percorso, quindi $path_parts[2]
+            $place_type_link = home_url("vivere-il-comune/luoghi/" . $place_type);
+            $this->items[] = "<a href='" . esc_url($place_type_link) . "'>" . ucfirst($place_type) . "</a>"; // La prima lettera maiuscola della tipologia
+        }
+    } elseif ($category === 'eventi') {
+        $category_link = home_url("vivere-il-comune/eventi");
+        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
+        
+        // Aggiungi la tipologia dell'evento, se presente (terza parte dell'URL)
+        if (isset($path_parts[3])) {
+            $event_type = $path_parts[2]; // La tipologia è la terza parte del percorso, quindi $path_parts[2]
+            $event_type_link = home_url("vivere-il-comune/eventi/" . $event_type);
+            $this->items[] = "<a href='" . esc_url($event_type_link) . "'>" . ucfirst($event_type) . "</a>"; // La prima lettera maiuscola della tipologia
+        }
+    }
+}
+
 			
 			    // Aggiungi il titolo dell'articolo corrente
 			    $this->items[] = get_the_title();
