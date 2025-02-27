@@ -388,33 +388,32 @@ class Breadcrumb_Trail {
 			    //console_log($group_name);
 			    switch ($group_name) {
 				    
-case: 'Vivere il comune' :
-    $this->items[] = "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
+case 'Vivere il comune' :
+    // Aggiungi il link alla pagina principale "Vivere il Comune"
+    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";    
 
-    // Aggiungi la categoria "Luoghi" come sottocategoria di "Vivere il Comune"
-    $luoghi_link = home_url("vivere-il-comune/luoghi");
-    $this->items[] = "<a href='" . esc_url($luoghi_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
+    // Ottieni l'URL corrente per determinare la categoria
+    $current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
+    $url_path = parse_url($current_url, PHP_URL_PATH); 
+    $path_parts = explode('/', trim($url_path, '/')); 
 
-    // Ottieni i termini associati al post corrente nella tassonomia
-    $terms = get_the_terms(get_the_ID(), 'tipi_luogo');	
+    // Determina la categoria dalla struttura dell'URL
+    if (isset($path_parts[2])) { 
+        $category = $path_parts[2]; // "luoghi" o "eventi" 
+        if ($category === 'luoghi') {
+            $category_link = home_url("vivere-il-comune/luoghi");
+            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
+        } elseif ($category === 'eventi') {
+            $category_link = home_url("vivere-il-comune/eventi");
+            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
+        }
+    }
 
-    if ($terms && !is_wp_error($terms)) {
-        // Prendi il primo termine disponibile
-        $term = $terms[0];
-
-        // Ottieni il link del termine
-        $term_link = get_term_link($term);
-
-        // Verifica che il link del termine non contenga errori
-        if (!is_wp_error($term_link)) {
-            // Aggiungi il termine come link (es. "Chiesa")
-            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term->name), "design_comuni_italia") . "</a>";				
-        }	  
-    }        
-
+    // Aggiungi il titolo dell'articolo corrente
     $this->items[] = get_the_title();
     return;
     break;
+
                     case 'Amministrazione':
                         $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
                         $this->items[] = get_the_title();
