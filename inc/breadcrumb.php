@@ -388,35 +388,37 @@ class Breadcrumb_Trail {
 			    //console_log($group_name);
 			    switch ($group_name) {
 				    
-                        case 'Vivere il comune':
+ case 'Vivere il comune' :
+    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
 
-			    $this->items[] = "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
+    // Ottieni tutte le tassonomie associate al post corrente
+    $taxonomies = get_object_taxonomies(get_post_type(), 'objects');
+    
+    // Per ogni tassonomia, aggiungi un link se esistono termini associati al post
+    foreach ($taxonomies as $taxonomy) {
+        // Ottieni i termini associati al post per la tassonomia
+        $terms = get_the_terms(get_the_ID(), $taxonomy->name);
+        
+        if ($terms && !is_wp_error($terms)) {
+            // Per ogni termine associato, aggiungi il relativo link
+            foreach ($terms as $term) {
+                // Ottieni il link del termine
+                $term_link = get_term_link($term);
 
-				    
-			    // Aggiungi la categoria "Luoghi" come sottocategoria di "Vivere il Comune"
-			    $luoghi_link = home_url("vivere-il-comune/luoghi");
-			    $this->items[] = "<a href='" . esc_url($luoghi_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
-			
-			    // Ottieni i termini associati al post corrente nella tassonomia	 
-			    $terms = get_the_terms(get_the_ID(), 'tipi_luogo');				    
-			    if ($terms && !is_wp_error($terms)) {
-			        // Prendi il primo termine disponibile
-			        $term = $terms[0];
-			
-			        // Ottieni il link del termine
-			        $term_link = get_term_link($term);
-			
-			        // Verifica che il link del termine non contenga errori
-			        if (!is_wp_error($term_link)) {
-			            // Aggiungi il termine come link (es. "Chiesa")
-			            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term->name), "design_comuni_italia") . "</a>";				
-			        }	  
-			    }        
-			
-			    $this->items[] = get_the_title();
-			    return;
-			    break;
+                // Verifica che il link del termine non contenga errori
+                if (!is_wp_error($term_link)) {
+                    // Aggiungi il termine come link
+                    $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term->name), "design_comuni_italia") . "</a>";
+                }
+            }
+        }
+    }
 
+    // Aggiungi il titolo del post
+    $this->items[] = get_the_title();
+
+    return;
+    break;
 
 
 
