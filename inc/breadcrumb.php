@@ -387,29 +387,29 @@ class Breadcrumb_Trail {
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
-case 'Vivere il comune' :
-    $this->items[] = "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
+case 'Vivere il comune':
+    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";
 
-    // Trova la categoria principale (Eventi, Luoghi, Storia, ecc.)
-    $category_terms = get_the_terms(get_the_ID(), 'tipi_luogo'); // Controlla se 'tipi_luogo' è la tassonomia giusta
+    // Ottieni i termini associati al post corrente nella tassonomia 'argomenti'
+    $terms = get_the_terms(get_the_ID(), 'argomenti');
 
-    if (!$category_terms || is_wp_error($category_terms)) {
-        $category_terms = get_the_terms(get_the_ID(), 'tipi_evento'); // Se non trova in 'tipi_luogo', prova 'tipi_evento'
-    }
+    if ($terms && !is_wp_error($terms)) {
+        // Prendi il primo termine disponibile
+        $term = $terms[0];
+        // Ottieni il link del termine
+        $term_link = get_term_link($term);
 
-    if ($category_terms && !is_wp_error($category_terms)) {
-        $main_category = $category_terms[0]; // Prendi la prima categoria trovata
-        $category_link = get_term_link($main_category);
-
-        if (!is_wp_error($category_link)) {
-            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . esc_html($main_category->name) . "</a>";
+        if (!is_wp_error($term_link)) {
+            // Aggiungi il termine come link
+            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . esc_html($term->name) . "</a>";
         }
     }
 
-    // Titolo della pagina
+    // Aggiungi il titolo del post corrente
     $this->items[] = get_the_title();
     return;
     break;
+
 
 
 
