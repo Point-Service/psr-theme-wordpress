@@ -392,10 +392,16 @@ case 'Vivere il comune' :
     // Aggiungi il link alla pagina principale "Vivere il Comune"
     $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";    
 
-    // Ottieni l'URL corrente per determinare la categoria
+    // Ottieni l'URL corrente
     $current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
-    $url_path = parse_url($current_url, PHP_URL_PATH); 
-    $path_parts = explode('/', trim($url_path, '/')); 
+    
+    // Estrarre il percorso dall'URL
+    $url_path = parse_url($current_url, PHP_URL_PATH);
+    $path_parts = explode('/', trim($url_path, '/'));
+
+    // Debug: Stampa il percorso per il debug
+    error_log('URL corrente: ' . $current_url);
+    error_log('Parte del percorso: ' . print_r($path_parts, true));
 
     // Determina la categoria dalla struttura dell'URL
     if (isset($path_parts[2])) { 
@@ -406,13 +412,20 @@ case 'Vivere il comune' :
         } elseif ($category === 'eventi') {
             $category_link = home_url("vivere-il-comune/eventi");
             $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
+        } else {
+            // Se la categoria non è né 'luoghi' né 'eventi', puoi aggiungere un fallback
+            error_log('Categoria non riconosciuta: ' . $category);
         }
+    } else {
+        // Debug: Se non ci sono abbastanza parti nell'URL, lo segnaliamo
+        error_log('Struttura URL non riconosciuta');
     }
 
     // Aggiungi il titolo dell'articolo corrente
     $this->items[] = get_the_title();
     return;
     break;
+
 
                     case 'Amministrazione':
                         $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
