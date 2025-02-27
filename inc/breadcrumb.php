@@ -406,6 +406,10 @@ case 'Vivere il comune' :
     // Determina la categoria dalla struttura dell'URL
     if (isset($path_parts[2])) { 
         $category = $path_parts[2]; // "luoghi" o "eventi" 
+        
+        // Echo per visualizzare la categoria letta a video
+        echo '<p><strong>Categoria letta: </strong>' . esc_html($category) . '</p>';  // Questo echo stamperà la categoria a video!
+
         if ($category === 'luoghi') {
             $category_link = home_url("vivere-il-comune/luoghi");
             $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
@@ -425,6 +429,7 @@ case 'Vivere il comune' :
     $this->items[] = get_the_title();
     return;
     break;
+
 
 
                     case 'Amministrazione':
