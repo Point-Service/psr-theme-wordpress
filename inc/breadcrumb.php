@@ -456,12 +456,14 @@ class Breadcrumb_Trail {
 			
 			    // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
 			    $terms = get_the_terms(get_the_ID(), 'tipi_notizia');
+				    
 			if (!empty($terms) && !is_wp_error($terms)) {
-    $term_names = wp_list_pluck($terms, 'name'); // Estrae solo i nomi dei termini
-    echo implode(', ', $term_names);
-} else {
-    echo 'Nessun termine trovato.';
-}
+			    $term_names = wp_list_pluck($terms, 'name'); // Estrae solo i nomi dei termini
+			    echo implode(', ', $term_names);
+			} else {
+			    echo 'Nessun termine trovato.';
+			}
+				    echo 'i';
 			    if ($terms && !is_wp_error($terms)) {
 			        // Se ci sono termini, prendi il nome del primo termine
 			        $term_name = $terms[0]->name;
