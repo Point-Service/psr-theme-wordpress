@@ -445,7 +445,7 @@ class Breadcrumb_Trail {
 			        // Verifica che il link del termine non contenga errori
 			        if (!is_wp_error($term_link)) {
 			            // Aggiungi il termine come link
-			            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";				
+			          //  $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";				
 			        }	  
 			    }		
 			    
