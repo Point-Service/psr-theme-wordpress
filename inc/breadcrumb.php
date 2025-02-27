@@ -304,7 +304,6 @@ class Breadcrumb_Trail {
 	 * @access protected
 	 * @return void
 	 */
-
 	protected function set_post_taxonomy() {
 
 		$defaults = array();
@@ -314,9 +313,6 @@ class Breadcrumb_Trail {
 			$defaults['post'] = 'category';
 
 		$this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
-	}
-
-
 	}
 
 	/**
@@ -449,7 +445,7 @@ class Breadcrumb_Trail {
 			        // Verifica che il link del termine non contenga errori
 			        if (!is_wp_error($term_link)) {
 			            // Aggiungi il termine come link
-			           $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";				
+			            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";				
 			        }	  
 			    }		
 			    
