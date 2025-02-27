@@ -497,16 +497,31 @@ class Breadcrumb_Trail {
 if (is_post_type_archive()) {
     $this->add_post_type_archive_items();
 
-    echo '<ul>';
     $categories = get_categories(array(
-        'taxonomy' => 'category', // Specifica la tassonomia (category = categorie predefinite di WordPress)
-        'hide_empty' => false, // Mostra anche le categorie senza post
+        'taxonomy' => 'category', // Specifica la tassonomia di default (categorie predefinite di WordPress)
+        'hide_empty' => false, // Mostra anche le categorie vuote
     ));
 
+    // Variabile per monitorare se la categoria "Notizie" è stata trovata
+    $found_notizie = false;
+
+    // Cicla tutte le categorie per cercare "Notizie"
     foreach ($categories as $category) {
-        echo '<li><a href="' . get_category_link($category->term_id) . '">' . esc_html($category->name) . '</a></li>';
+        if ($category->name === 'Notizie') {
+            // Se troviamo la categoria "Notizie", mettiamo la variabile su true e la stampiamo
+            echo '<ul>';
+            echo '<li><a href="' . get_category_link($category->term_id) . '">' . esc_html($category->name) . '</a></li>';
+            echo '</ul>';
+            $found_notizie = true;
+            break; // Esce dal ciclo una volta che trova "Notizie"
+        }
     }
-    echo '</ul>';
+
+    // Se la categoria "Notizie" non è stata trovata, stampiamo "Ciao"
+    if (!$found_notizie) {
+        echo 'Ciao';
+    }
+	
 }
 
                 elseif ( is_category() || is_tag() || is_tax() ){
