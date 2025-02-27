@@ -527,9 +527,17 @@ class Breadcrumb_Trail {
                     else if (is_tax(array("tipi_notizia"))){
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
+			
+			    if (!empty($term_name) && !is_wp_error($term_name)) {
+			    $term_names = wp_list_pluck($term_name, 'name'); // Estrae solo i nomi dei termini
+			    echo implode(', ', $term_names);
+			} else {
+			    echo 'Nessun termine trovato.';
+			}
+			    
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 			    
-		echo 'i';
+	
 			    
                     }else if (is_tax(array("tipi_progetto"))){
                         $this->items[] = "<a href='".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
