@@ -390,34 +390,27 @@ class Breadcrumb_Trail {
 case 'Vivere il comune' :
     $this->items[] = "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
 
-    // Ottieni tutte le tassonomie associate al post
-    $taxonomies = array('tipi_luogo', 'tipi_evento'); // Aggiungi qui altre tassonomie se necessario
-    $found_category = false;
+    // Trova la categoria principale (Eventi, Luoghi, Storia, ecc.)
+    $category_terms = get_the_terms(get_the_ID(), 'tipi_luogo'); // Controlla se 'tipi_luogo' è la tassonomia giusta
 
-    foreach ($taxonomies as $taxonomy) {
-        $terms = get_the_terms(get_the_ID(), $taxonomy);
-
-        if ($terms && !is_wp_error($terms)) {
-            $term = $terms[0]; // Prendi la prima categoria trovata
-            $term_link = get_term_link($term);
-
-            if (!is_wp_error($term_link)) {
-                $this->items[] = "<a href='" . esc_url($term_link) . "'>" . esc_html($term->name) . "</a>";
-                $found_category = true;
-                break; // Esci dal ciclo se trovi una categoria valida
-            }
-        }
+    if (!$category_terms || is_wp_error($category_terms)) {
+        $category_terms = get_the_terms(get_the_ID(), 'tipi_evento'); // Se non trova in 'tipi_luogo', prova 'tipi_evento'
     }
 
-    // Se non ha trovato nessuna categoria, mostra un link generico
-    if (!$found_category) {
-        $this->items[] = "<a href='" . home_url("vivere-il-comune/luoghi") . "'>" . __("Luoghi", "design_comuni_italia") . "</a>";  
+    if ($category_terms && !is_wp_error($category_terms)) {
+        $main_category = $category_terms[0]; // Prendi la prima categoria trovata
+        $category_link = get_term_link($main_category);
+
+        if (!is_wp_error($category_link)) {
+            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . esc_html($main_category->name) . "</a>";
+        }
     }
 
     // Titolo della pagina
     $this->items[] = get_the_title();
     return;
     break;
+
 
 
                     case 'Amministrazione':
