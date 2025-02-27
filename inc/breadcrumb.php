@@ -507,14 +507,8 @@ if (is_post_type_archive()) {
 
     // Cicla tutte le categorie per cercare "Notizie"
     foreach ($categories as $category) {
-        if ($category->name === 'Notizie') {
-            // Se troviamo la categoria "Notizie", mettiamo la variabile su true e la stampiamo
-            echo '<ul>';
-            echo '<li><a href="' . get_category_link($category->term_id) . '">' . esc_html($category->name) . '</a></li>';
-            echo '</ul>';
-            $found_notizie = true;
-            break; // Esce dal ciclo una volta che trova "Notizie"
-        }
+	    echo $category->name;
+       
     }
 
     // Se la categoria "Notizie" non è stata trovata, stampiamo "Ciao"
