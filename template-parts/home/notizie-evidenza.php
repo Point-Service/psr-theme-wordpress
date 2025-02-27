@@ -8,8 +8,8 @@ $icon = dci_get_post_type_icon_by_id($post->ID);
 $page = get_page_by_path( dci_get_group($post->post_type) ); 
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
-?>
 
+?>
 <?php if ($img) { ?>
 <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
     <div class="card-image-wrapper with-read-more">
@@ -18,12 +18,10 @@ $page_macro = get_page_by_path($page_macro_slug);
             <!-- <svg class="icon">
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
-            <!-- Modifica il titolo della pagina con la prima lettera maiuscola e il resto minuscolo -->
-            <span class="category fw-semibold"><?php echo esc_html(ucwords(strtolower($page->post_title))); ?></span>           
+            <span class="category fw-semibold" ><?php echo $page->post_title ?></span>           
             </div>
-            <!-- Modifica il titolo del post con la prima lettera maiuscola e il resto minuscolo -->
-            <h3 class="card-title h5"><?php echo esc_html(ucwords(strtolower($post->post_title))); ?></h3>
-            <p class="card-text text-secondary" style="margin-bottom: 40px!important;"><?php echo esc_html($descrizione_breve); ?></p>
+            <h3 class="card-title h5"><?php echo $post->post_title ?></h4>
+            <p class="card-text text-secondary" style="margin-bottom: 40px!important;"><?php echo $descrizione_breve ?></p>
         </div>
         <div class="card-image card-image-rounded pb-5">            
             <?php dci_get_img($img); ?>
@@ -32,8 +30,8 @@ $page_macro = get_page_by_path($page_macro_slug);
     <a
     class="read-more ps-3"
     href="<?php echo get_permalink($post->ID); ?>"
-    aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
-    title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
+    aria-label="Vai alla pagina <?php echo $post->post_title ?>" 
+    title="Vai alla pagina <?php echo $post->post_title ?>"
     >
         <span class="text">Vai alla pagina</span>
         <svg class="icon">
@@ -48,20 +46,20 @@ $page_macro = get_page_by_path($page_macro_slug);
             <!-- <svg class="icon">
                 <use xlink:href="#<?php #echo $icon ?>"></use>
             </svg> -->
-            <!-- Modifica il titolo della pagina con la prima lettera maiuscola e il resto minuscolo -->
-            <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html(ucwords(strtolower($page->post_title))); ?></span>
+            <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $page->post_title ?></span>
         </div>
-        <!-- Modifica il titolo del post con la prima lettera maiuscola e il resto minuscolo -->
         <h3 class="card-title h5">
-            <?php echo esc_html(ucwords(strtolower($post->post_title))); ?>
+            <?php echo $post->post_title ?>
         </h3>
         <p class="card-text text-secondary">
-            <?php echo esc_html($descrizione_breve); ?>
+            <?php echo $descrizione_breve ?>
         </p>
         </div>
-        <a class="read-more" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
+        <a class="read-more" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo $post->post_title ?>" title="Vai alla pagina <?php echo $post->post_title ?>"
         ><span class="text">Vai alla pagina</span>
         <svg class="icon ms-0">
-            <use xlink:href="#it-arrow-right"></use></svg></a>
+            <use
+            xlink:href="#it-arrow-right"
+            ></use></svg></a>
     </div>
 <?php } ?>
