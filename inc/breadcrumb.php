@@ -530,7 +530,7 @@ class Breadcrumb_Trail {
 
 				// Ottieni l'oggetto del termine corrente
 			$term = get_queried_object();
-			
+			echo 's';
 			if ($term instanceof WP_Term) {
 			    $term_name = $term->name; // Nome del termine
 			    $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
