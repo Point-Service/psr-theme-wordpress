@@ -429,6 +429,7 @@ class Breadcrumb_Trail {
                         return;
                         break;
 	             case 'Novità':
+		     case 'Notizie':
 			    $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
 			    
 		                // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
