@@ -407,21 +407,13 @@ class Breadcrumb_Trail {
 				    if ($category === 'luoghi') {
 				        $category_link = home_url("vivere-il-comune/luoghi");
 				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
-				        
-				        // Aggiungi la tipologia del luogo, se presente
-				        if (is_singular('luoghi')) {
-						echo 'dddd';
-				            // Recuperiamo la tipologia direttamente come nel tuo codice
-				            $tipi_notizia = get_the_terms(get_the_ID(), 'place_type'); // 'place_type' è la tassonomia per il tipo di luogo
-		
-
-
-				            if ($tipi_notizia && is_array($tipi_notizia) && count($tipi_notizia)) {
-				                foreach ($tipi_notizia as $tip_not) {
-				                    $place_type_link = get_term_link($tip_not->term_id);
-				                    $this->items[] = "<a href='" . esc_url($place_type_link) . "'>" . esc_html($tip_not->name) . "</a>";
-				                }
-				            }
+				        $terms = get_the_terms(get_the_ID(),'categorie_servizio');
+					if($terms){
+					  foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_luogo' ) ), $term->name );
+					  }
+					}
+			
 				        }
 				    } elseif ($category === 'eventi') {
 				        $category_link = home_url("vivere-il-comune/eventi");
