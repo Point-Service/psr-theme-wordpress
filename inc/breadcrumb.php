@@ -311,7 +311,7 @@ class Breadcrumb_Trail {
 		// If post permalink is set to `%postname%`, use the `category` taxonomy.
 		if ( '%postname%' === trim( get_option( 'permalink_structure' ), '/' ) )
 			$defaults['post'] = 'category';
-
+echo'd';
 		$this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
 	}
 
@@ -502,7 +502,6 @@ class Breadcrumb_Trail {
 			    $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 			}
                     else if (is_tax(array("tipi_notizia"))){
-			    echo'd';
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");		    
