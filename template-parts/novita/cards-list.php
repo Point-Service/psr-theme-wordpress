@@ -52,7 +52,7 @@ if ($img) {
                     <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                     </div>
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                        <h3 class="h5 card-title u-grey-light"><?php echo the_title(); ?></h3>
+                        <h3 class="h5 card-title u-grey-light"><?php echo ucfirst(strtolower(the_title())); ?></h3>
                     </a>
                     <p class="card-text d-none d-md-block">
                         <?php echo $description; ?>
@@ -139,7 +139,7 @@ if ($img) {
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                             </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                                <h3 class="h5 card-title u-grey-light"><?php echo the_title(); ?></h3>
+                                <h3 class="h5 card-title u-grey-light"><?php echo ucfirst(strtolower(the_title())); ?></h3>
                             </a>
                             <p class="card-text d-none d-md-block">
                                 <?php echo $description; ?>
@@ -194,4 +194,5 @@ if ($img) {
         </div>
     </div>
 <?php } ?>
+
 
