@@ -460,7 +460,8 @@ class Breadcrumb_Trail {
 			    if ($terms && !is_wp_error($terms)) {
 			        // Se ci sono termini, prendi il nome del primo termine
 			        $term_name = $terms[0]->name;
-			
+				    
+			echo $terms[0]->name;
 			
 			        // Ottieni il link del termine
 			        $term_link = get_term_link($terms[0]);
@@ -512,7 +513,7 @@ class Breadcrumb_Trail {
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }
 			    
-			else if (is_tax(array("tipi_luogo"))) {		
+		   else if (is_tax(array("tipi_luogo"))) {		
 			    // Link a "Vivere il Comune"
 			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
 			
@@ -527,10 +528,8 @@ class Breadcrumb_Trail {
                     else if (is_tax(array("tipi_notizia"))){
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
 
-
-				// Ottieni l'oggetto del termine corrente
-			$term = get_queried_object();
-			echo 's';
+			// Ottieni l'oggetto del termine corrente
+			$term = get_queried_object();			
 			if ($term instanceof WP_Term) {
 			    $term_name = $term->name; // Nome del termine
 			    $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
