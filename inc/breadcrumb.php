@@ -409,7 +409,7 @@ class Breadcrumb_Trail {
 				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
 				        $terms = get_the_terms(get_the_ID(),'categorie_servizio');
 					
-			$terms = get_the_terms(get_the_ID(),'categorie_servizio');
+			$terms = get_the_terms(get_the_ID(),'tipi_luogo');
 					if($terms){
 					  foreach ($terms as $term) {
 						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'categorie_servizio' ) ), $term->name );
