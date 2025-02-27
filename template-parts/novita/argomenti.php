@@ -7,12 +7,7 @@
 <div class="container py-5" id="argomento">
     <h2 class="title-xxlarge mb-4">Esplora per categoria</h2>
     <div class="row g-4">       
-        <?php foreach ($argomenti as $argomento) { 
-            // Se il nome dell'argomento è "Notizia", saltiamo questa iterazione
-            if (strcasecmp($argomento->name, 'Notizie') === 0) {
-                wp_redirect('/novita');
-                exit;
-            }
+        <?php foreach ($argomenti as $argomento) {           
         ?>
         <div class="col-md-6 col-xl-4">
             <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
