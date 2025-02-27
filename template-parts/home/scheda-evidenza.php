@@ -19,14 +19,16 @@ $page_macro = get_page_by_path($page_macro_slug);
     <div class="card-image-wrapper with-read-more">
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
-                <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
+                <!-- Modifica il titolo della pagina con la prima lettera maiuscola e il resto minuscolo -->
+                <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html(ucwords(strtolower($page->post_title))); ?></span>
                 <?php if (is_array($arrdata) && count($arrdata)) { ?>
                     <span class="data fw-normal">
                         <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                     </span>          
                 <?php } ?>
             </div>
-            <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
+            <!-- Modifica il titolo del post con la prima lettera maiuscola e il resto minuscolo -->
+            <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html(ucwords(strtolower($post->post_title))); ?></p>
             <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo esc_html($descrizione_breve); ?></p> 
             <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?><br><br>
             <span class="data fw-normal">📍 
@@ -72,14 +74,15 @@ $page_macro = get_page_by_path($page_macro_slug);
 <div class="card card-teaser no-after rounded shadow-sm mb-0 border border-light">
     <div class="card-body pb-5">
         <div class="category-top">
-            <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
+            <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html(ucwords(strtolower($page->post_title))); ?></span>
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
                 </span>
             <?php } ?>
         </div>
-        <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html($post->post_title); ?></p>
+        <!-- Modifica il titolo del post con la prima lettera maiuscola e il resto minuscolo -->
+        <p class="card-title text-paragraph-medium u-grey-light"><?php echo esc_html(ucwords(strtolower($post->post_title))); ?></p>
         <p class="text-paragraph-card u-grey-light m-0"><?php echo esc_html($descrizione_breve); ?></p>  
         <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?><br><br>
             <span class="data fw-normal">📍 
@@ -116,3 +119,4 @@ $page_macro = get_page_by_path($page_macro_slug);
     </div>     
 </div>
 <?php } ?>
+
