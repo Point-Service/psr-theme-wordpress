@@ -3,13 +3,13 @@
         'hide_empty' => false,
     ) );
 ?>
-
+jjj
 <div class="container py-5" id="argomento">
     <h2 class="title-xxlarge mb-4">Esplora per categoria</h2>
     <div class="row g-4">       
         <?php foreach ($argomenti as $argomento) { 
             // Se il nome dell'argomento è "Notizia", saltiamo questa iterazione
-            if (strcasecmp($argomento->name, 'Notizia') === 0) {
+            if (strcasecmp($argomento->name, 'Notizie') === 0) {
                 continue;
             }
         ?>
