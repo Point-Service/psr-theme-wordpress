@@ -389,37 +389,42 @@ class Breadcrumb_Trail {
 			    switch ($group_name) {
 				    
 case 'Vivere il comune' :
-    // Link alla pagina "Vivere Il Comune"
-    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";
+    // Aggiungi il link alla pagina principale "Vivere Il Comune"
+    $this->items[] = "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
 
-    // Recupera tutte le pagine figlie di "Vivere Il Comune"
+    // Recupera tutte le pagine figlie della pagina "Vivere Il Comune"
     $args = array(
-        'post_type' => 'page',  // Tipo di post: pagina
-        'post_parent' => get_page_by_path('vivere-il-comune')->ID,  // Ottieni l'ID della pagina "Vivere Il Comune"
-        'posts_per_page' => -1,  // Recupera tutte le pagine figlie
+        'post_type' => 'page', // Tipo di post: pagina
+        'post_parent' => get_page_by_path('vivere-il-comune')->ID, // ID della pagina principale
+        'posts_per_page' => -1, // Recupera tutte le pagine figlie
     );
     $pages = get_posts($args);
 
-    // Per ogni pagina figlia di "Vivere Il Comune", aggiungi un link
+    // Per ogni pagina figlia di "Vivere Il Comune"
     if ($pages) {
         foreach ($pages as $page) {
             // Ottieni i termini associati alla pagina figlia
-            $terms = get_the_terms($page->ID, 'category'); // Usa la tassonomia appropriata, ad esempio 'category'
+            $terms = get_the_terms($page->ID, 'category'); // Usa la tassonomia 'category' o quella appropriata
 
+            // Verifica se ci sono termini associati e non ci sono errori
             if ($terms && !is_wp_error($terms)) {
                 foreach ($terms as $term) {
-                    // Aggiungi il termine come link
+                    // Ottieni il link del termine
                     $term_link = get_term_link($term);
                     if (!is_wp_error($term_link)) {
+                        // Aggiungi il termine come link
                         $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term->name), "design_comuni_italia") . "</a>";
                     }
                 }
             }
 
-            // Aggiungi il link alla pagina figlia
+            // Aggiungi il titolo della pagina figlia
             $this->items[] = "<a href='" . get_permalink($page->ID) . "'>" . $page->post_title . "</a>";
         }
-    } else {
+    }
+
+    // Se non ci sono pagine figlie o categorie, mostra un messaggio di default
+    if (empty($pages)) {
         $this->items[] = __("Nessuna sottocategoria trovata", "design_comuni_italia");
     }
 
