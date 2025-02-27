@@ -410,15 +410,11 @@ class Breadcrumb_Trail {
 				        
 				        // Aggiungi la tipologia del luogo, se presente
 				        if (is_singular('luoghi')) {
+						echo 'dddd';
 				            // Recuperiamo la tipologia direttamente come nel tuo codice
 				            $tipi_notizia = get_the_terms(get_the_ID(), 'place_type'); // 'place_type' è la tassonomia per il tipo di luogo
 		
 
-
-    // Debugging: cicliamo attraverso i termini e stampiamo i loro nomi
-    foreach ($tipi_notizia as $tip_not) {
-        echo $tip_not->name; // Stampa il nome del termine
-    }
 
 				            if ($tipi_notizia && is_array($tipi_notizia) && count($tipi_notizia)) {
 				                foreach ($tipi_notizia as $tip_not) {
