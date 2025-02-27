@@ -27,8 +27,6 @@ for ($i = 1; $i <= 20; $i++) {
     margin: 0 auto; /* Centra la sezione orizzontalmente */
 }
 
-
-
 /* Rendi le schede responsabili (più piccole su schermi piccoli) */
 @media (max-width: 768px) {
     #notizie .card-teaser-wrapper .card {
@@ -37,6 +35,7 @@ for ($i = 1; $i <= 20; $i++) {
     }
 }
 </style>
+
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
@@ -54,7 +53,7 @@ for ($i = 1; $i <= 20; $i++) {
                                     <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
                                 </div> 
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                 <h3 class="card-title"><?php echo $post->post_title; ?></h3> 
+                                 <h3 class="card-title"><?php echo ucfirst(strtolower($post->post_title)); ?></h3> 
                                 </a>
                                 <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
                                 
@@ -104,8 +103,7 @@ for ($i = 1; $i <= 20; $i++) {
                         <use xlink:href="#it-arrow-right"></use>
                     </svg>
                 </a>
-
-                                
+                                  
                             </div>
                         </div>
                     </div>
@@ -117,7 +115,6 @@ for ($i = 1; $i <= 20; $i++) {
                     </div>
                 </div>
 
-             
                 <!-- Sezione delle schede -->
                 <div class="row mb-1">
                     <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
