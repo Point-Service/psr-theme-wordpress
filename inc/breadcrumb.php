@@ -306,13 +306,25 @@ class Breadcrumb_Trail {
 	 */
 	protected function set_post_taxonomy() {
 
-		$defaults = array();
+	$defaults = array();
 
-		// If post permalink is set to `%postname%`, use the `category` taxonomy.
-		if ( '%postname%' === trim( get_option( 'permalink_structure' ), '/' ) )
-			$defaults['post'] = 'category';
-echo'd';
-		$this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
+// If post permalink is set to `%postname%`, use the `category` taxonomy.
+if ( '%postname%' === trim( get_option( 'permalink_structure' ), '/' ) )
+    $defaults['post'] = 'category';
+
+// Apply filters for post taxonomy
+$this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
+
+// Sostituisci "Notizie" con "Novità"
+add_filter('get_term', function($term) {
+    // Verifica se il termine è una categoria e se il suo nome è "Notizie"
+    if ($term->taxonomy === 'category' && $term->name === 'Notizie') {
+        // Modifica il nome della categoria in "Novità"
+        $term->name = 'Novità';
+    }
+    return $term;
+});
+
 	}
 
 	/**
