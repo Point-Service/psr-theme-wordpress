@@ -450,12 +450,9 @@ class Breadcrumb_Trail {
                         $this->items[] = get_the_title();
                         return;
                         break;
-		    case 'Notizie':
-			echo 'd';
-			return;
-                        break;	    
+    
 		    case 'Novità':
-			echo 'd';
+		
 			    $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
 			
 			    // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
@@ -499,7 +496,7 @@ class Breadcrumb_Trail {
 
                 if ( is_post_type_archive() ){
                     $this->add_post_type_archive_items();
-
+echo 'd';
                 }
                 elseif ( is_category() || is_tag() || is_tax() ){
 
