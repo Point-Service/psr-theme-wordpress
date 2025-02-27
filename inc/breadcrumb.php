@@ -451,7 +451,7 @@ class Breadcrumb_Trail {
                         return;
                         break;
 case 'Novità':
-case 'Notizie': // Gestisci entrambi i casi
+
     $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
 
     // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
@@ -461,10 +461,6 @@ case 'Notizie': // Gestisci entrambi i casi
         // Se ci sono termini, prendi il nome del primo termine
         $term_name = $terms[0]->name;
 
-        // Sostituisci "Notizie" con "Novità" nel nome della categoria
-        if ($term_name === 'Notizie') {
-            $term_name = 'Novità';
-        }
 
         // Ottieni il link del termine
         $term_link = get_term_link($terms[0]);
