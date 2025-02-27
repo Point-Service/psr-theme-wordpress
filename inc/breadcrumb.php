@@ -418,8 +418,6 @@ class Breadcrumb_Trail {
 			    break;
 
 
-
-
                     case 'Amministrazione':
                         $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
                         $this->items[] = get_the_title();
