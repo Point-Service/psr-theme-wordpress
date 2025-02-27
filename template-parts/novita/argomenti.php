@@ -10,7 +10,8 @@
         <?php foreach ($argomenti as $argomento) { 
             // Se il nome dell'argomento è "Notizia", saltiamo questa iterazione
             if (strcasecmp($argomento->name, 'Notizie') === 0) {
-                continue;
+                wp_redirect('/novita');
+                exit;
             }
         ?>
         <div class="col-md-6 col-xl-4">
