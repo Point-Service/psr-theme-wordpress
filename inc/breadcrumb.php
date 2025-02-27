@@ -528,22 +528,13 @@ class Breadcrumb_Trail {
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
 
 
-// Ottieni il termine attuale
-$term = get_queried_object();
-
-if ($term instanceof WP_Term) {
-    $term_name = $term->name; // Nome del termine
-    $this->items[] = dci_get_breadcrumb_label($term_name);
-}
-
-
-
-			    
-                        $term_name = single_term_title( '', false );
-
-                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-			    
-	
+				// Ottieni l'oggetto del termine corrente
+			$term = get_queried_object();
+			
+			if ($term instanceof WP_Term) {
+			    $term_name = $term->name; // Nome del termine
+			    $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
+			}
 			    
                     }else if (is_tax(array("tipi_progetto"))){
                         $this->items[] = "<a href='".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
