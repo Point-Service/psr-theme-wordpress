@@ -2,7 +2,7 @@
 $pagine = dci_get_children_pages("Vivere Il Comune");
 ?>
 <div class="container py-5" id="argomento">
-   <h2 class="title-xxlarge mb-4">Esplora per categoriaj</h2>
+   <h2 class="title-xxlarge mb-4">Esplora per categoria</h2>
    <div class="row g-4">
       <?php foreach ($pagine as $argomento) { ?>
       <div class="col-md-6 col-xl-4">
