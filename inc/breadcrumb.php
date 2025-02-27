@@ -405,9 +405,9 @@ case 'Vivere il comune' :
     // Debug: Stampa il percorso dell'URL per verificare le sue parti
     echo '<p><strong>Percorso dell\'URL:</strong> ' . print_r($path_parts, true) . '</p>';
 
-    // Determina la categoria dalla struttura dell'URL
+    // Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
     if (isset($path_parts[2])) { 
-        $category = $path_parts[2]; // "luoghi" o "eventi"
+        $category = $path_parts[1]; // La categoria è la seconda parte del percorso, quindi $path_parts[1] (non $path_parts[2])
         
         // Debug: Mostra quale categoria è stata letta
         echo '<p><strong>Categoria letta:</strong> ' . esc_html($category) . '</p>';
@@ -431,6 +431,7 @@ case 'Vivere il comune' :
     $this->items[] = get_the_title();
     return;
     break;
+
 
 
 
