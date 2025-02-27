@@ -414,27 +414,6 @@ case 'Vivere il comune':
         }
     }
 
-    // Aggiungi la categoria "Luoghi" come sottocategoria di "Vivere il Comune"
-    $luoghi_link = home_url("vivere-il-comune/luoghi");
-    $this->items[] = "<a href='" . esc_url($luoghi_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>";
-
-    // Ottieni i termini associati al post corrente nella tassonomia "tipi_luogo"
-    $terms = get_the_terms(get_the_ID(), 'tipi_luogo');
-
-    if ($terms && !is_wp_error($terms)) {
-        // Prendi il primo termine disponibile
-        $term = $terms[0];
-
-        // Ottieni il link del termine
-        $term_link = get_term_link($term);
-
-        // Verifica che il link del termine non contenga errori
-        if (!is_wp_error($term_link)) {
-            // Aggiungi il termine come link (es. "Chiesa")
-            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term->name), "design_comuni_italia") . "</a>";
-        }
-    }
-
     // Aggiungi il titolo del post
     $this->items[] = get_the_title();
 
@@ -515,18 +494,18 @@ case 'Vivere il comune':
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }
 			    
-else if (is_tax(array("tipi_luogo"))) {		
-    // Link a "Vivere il Comune"
-    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
-
-    // Link a "Luoghi" (sottocategoria di Vivere il Comune)
-    $luoghi_link = home_url("vivere-il-comune/luoghi");
-    $this->items[] = "<a href='" . esc_url($luoghi_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
-
-    // Nome della categoria attuale (es. "Chiesa")
-    $term_name = single_term_title('', false);
-    $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-}
+			else if (is_tax(array("tipi_luogo"))) {		
+			    // Link a "Vivere il Comune"
+			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
+			
+			    // Link a "Luoghi" (sottocategoria di Vivere il Comune)
+			    $luoghi_link = home_url("vivere-il-comune/luoghi");
+			    $this->items[] = "<a href='" . esc_url($luoghi_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
+			
+			    // Nome della categoria attuale (es. "Chiesa")
+			    $term_name = single_term_title('', false);
+			    $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+			}
                     else if (is_tax(array("tipi_notizia"))){
                         $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
