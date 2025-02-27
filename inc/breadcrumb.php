@@ -388,54 +388,33 @@ class Breadcrumb_Trail {
 			    //console_log($group_name);
 			    switch ($group_name) {
 				    
-case 'Vivere il comune' :
-    // Aggiungi il link alla pagina principale "Vivere il Comune"
+case: 'Vivere il comune' :
     $this->items[] = "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";	
 
-    // Ottieni le sottocategorie della pagina "Vivere Il Comune"
-    $parent_page = get_page_by_path('vivere-il-comune'); // Recupera la pagina "Vivere il Comune" usando il path
-    if ($parent_page) {
-        // Recupera le categorie figlie di "Vivere il Comune" (tipicamente, pagine con un post_parent associato)
-        $args = array(
-            'post_type' => 'page', // Tipo di post: pagina
-            'post_parent' => $parent_page->ID, // ID della pagina principale "Vivere Il Comune"
-            'posts_per_page' => -1, // Recupera tutte le pagine figlie
-        );
-        $sub_pages = get_posts($args); // Ottieni tutte le pagine figlie di "Vivere Il Comune"
+    // Aggiungi la categoria "Luoghi" come sottocategoria di "Vivere il Comune"
+    $luoghi_link = home_url("vivere-il-comune/luoghi");
+    $this->items[] = "<a href='" . esc_url($luoghi_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
 
-        // Per ogni pagina figlia di "Vivere Il Comune" (es. "Luoghi", "Eventi")
-        if ($sub_pages) {
-            foreach ($sub_pages as $sub_page) {
-                // Ottieni i termini associati alla pagina figlia nella tassonomia
-                $terms = get_the_terms($sub_page->ID, 'category'); // Usa la tassonomia 'category' o una tassonomia pertinente
+    // Ottieni i termini associati al post corrente nella tassonomia
+    $terms = get_the_terms(get_the_ID(), 'tipi_luogo');	
 
-                if ($terms && !is_wp_error($terms)) {
-                    // Per ogni termine trovato (come "Luoghi", "Eventi", ecc.)
-                    foreach ($terms as $term) {
-                        // Se il termine è "Luoghi" o "Eventi", crea il link
-                        if ($term->name === 'Luoghi') {
-                            $luoghi_link = home_url("vivere-il-comune/luoghi");
-                            $this->items[] = "<a href='" . esc_url($luoghi_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>";
-                        } elseif ($term->name === 'Eventi') {
-                            $eventi_link = home_url("vivere-il-comune/eventi");
-                            $this->items[] = "<a href='" . esc_url($eventi_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
-                        }
-                    }
-                }
+    if ($terms && !is_wp_error($terms)) {
+        // Prendi il primo termine disponibile
+        $term = $terms[0];
 
-                // Aggiungi il link alla pagina figlia (es. "Luoghi", "Eventi")
-                $this->items[] = "<a href='" . get_permalink($sub_page->ID) . "'>" . $sub_page->post_title . "</a>";
-            }
-        }
-    }
+        // Ottieni il link del termine
+        $term_link = get_term_link($term);
 
+        // Verifica che il link del termine non contenga errori
+        if (!is_wp_error($term_link)) {
+            // Aggiungi il termine come link (es. "Chiesa")
+            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term->name), "design_comuni_italia") . "</a>";				
+        }	  
+    }        
+
+    $this->items[] = get_the_title();
     return;
     break;
-
-
-
-
-
                     case 'Amministrazione':
                         $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
                         $this->items[] = get_the_title();
