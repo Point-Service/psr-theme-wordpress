@@ -388,49 +388,34 @@ class Breadcrumb_Trail {
 			    //console_log($group_name);
 			    switch ($group_name) {
 				    
-case 'Vivere il comune' :
-    // Aggiungi il link alla pagina principale "Vivere il Comune"
-    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";    
-
-    // Ottieni l'URL corrente
-    $current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
-
-    // Debug: Stampa l'URL corrente
-    echo '<p><strong>URL corrente:</strong> ' . esc_html($current_url) . '</p>';
-
-    // Estrarre il percorso dall'URL
-    $url_path = parse_url($current_url, PHP_URL_PATH);
-    $path_parts = explode('/', trim($url_path, '/'));
-
-    // Debug: Stampa il percorso dell'URL per verificare le sue parti
-    echo '<p><strong>Percorso dell\'URL:</strong> ' . print_r($path_parts, true) . '</p>';
-
-    // Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
-    if (isset($path_parts[2])) { 
-        $category = $path_parts[1]; // La categoria è la seconda parte del percorso, quindi $path_parts[1] (non $path_parts[2])
-        
-        // Debug: Mostra quale categoria è stata letta
-        echo '<p><strong>Categoria letta:</strong> ' . esc_html($category) . '</p>';
-
-        if ($category === 'luoghi') {
-            $category_link = home_url("vivere-il-comune/luoghi");
-            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
-        } elseif ($category === 'eventi') {
-            $category_link = home_url("vivere-il-comune/eventi");
-            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
-        } else {
-            // Se la categoria non è né 'luoghi' né 'eventi', aggiungi un messaggio di debug
-            echo '<p><strong>Categoria non riconosciuta:</strong> ' . esc_html($category) . '</p>';
-        }
-    } else {
-        // Debug: Se il percorso non ha abbastanza parti, stampa un messaggio
-        echo '<p><strong>Struttura URL non riconosciuta. Percorso troppo corto:</strong> ' . print_r($path_parts, true) . '</p>';
-    }
-
-    // Aggiungi il titolo dell'articolo corrente
-    $this->items[] = get_the_title();
-    return;
-    break;
+			case 'Vivere il comune' :
+			    // Aggiungi il link alla pagina principale "Vivere il Comune"
+			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";    
+			
+			    // Ottieni l'URL corrente
+			    $current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
+			
+			    // Estrarre il percorso dall'URL
+			    $url_path = parse_url($current_url, PHP_URL_PATH);
+			    $path_parts = explode('/', trim($url_path, '/'));
+			
+			    // Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
+			    if (isset($path_parts[2])) { 
+			        $category = $path_parts[1]; // La categoria è la seconda parte del percorso, quindi $path_parts[1]
+			
+			        if ($category === 'luoghi') {
+			            $category_link = home_url("vivere-il-comune/luoghi");
+			            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
+			        } elseif ($category === 'eventi') {
+			            $category_link = home_url("vivere-il-comune/eventi");
+			            $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
+			        }
+			    }
+			
+			    // Aggiungi il titolo dell'articolo corrente
+			    $this->items[] = get_the_title();
+			    return;
+			    break;
 
 
 
