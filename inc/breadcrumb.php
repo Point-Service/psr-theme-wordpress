@@ -144,7 +144,7 @@ class Breadcrumb_Trail {
 
 		// Set the labels and post taxonomy properties.
 		$this->set_labels();
-		//$this->set_post_taxonomy();
+		$this->set_post_taxonomy();
 
 		// Let's find some items to add to the trail!
 		$this->add_items();
