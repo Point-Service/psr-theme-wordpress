@@ -33,7 +33,7 @@ function dci_register_post_type_notizia() {
 
     remove_post_type_support( 'notizia', 'editor');
 }
-
+ECHO'Djjj';
 /**
  * Aggiungo label sotto il titolo
  */
