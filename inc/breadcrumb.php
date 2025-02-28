@@ -373,7 +373,7 @@ class Breadcrumb_Trail {
 
 
                                 if (get_post_type() == 'documento_pubblico' || get_post_type() == 'documenti_e_dati') {
-				echo 'ss;'
+				echo 'ss';
 				    // Cambia il link per indirizzare alla nuova struttura
 				    $this->items[] =  "<a href='" . home_url("amministrazione/documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
 				    
