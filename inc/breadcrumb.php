@@ -404,7 +404,7 @@ class Breadcrumb_Trail {
 					        $term_name = ($term->slug === 'area') ? __("Aree Amministrative", "design_comuni_italia") : $term->name;
 					
 					        $this->items[] = sprintf(
-					            '<a href="%s"> $term_nam</a>',
+					            '<a href="%s">%s</a>',
 					            esc_url(get_term_link($term, 'tipi_unita_organizzativa')),
 					            esc_html($term_name)
 					        );
