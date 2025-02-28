@@ -378,10 +378,10 @@ class Breadcrumb_Trail {
 				    // Cambia il link per indirizzare alla nuova struttura
 				    $this->items[] =  "<a href='" . home_url("amministrazione/documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
 				    
-				    $terms = get_the_terms(get_the_ID(), 'tipi_documento');
+				    $terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
 				    if ($terms) {
 				        foreach ($terms as $term) {
-				            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_documento')), $term->name);
+				            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_unita_organizzativa')), $term->name);
 				        }
 				    }
 				
