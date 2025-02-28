@@ -403,7 +403,7 @@ class Breadcrumb_Trail {
 				        foreach ($terms as $term) {
 						
 				            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-				        if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE'|| strtoupper(esc_html($term->name)) == 'UFFICIO') {
+				        if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
 				                // Link Politici
 				                $politici_link = home_url("amministrazione/politici");
 				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; 
@@ -431,6 +431,11 @@ class Breadcrumb_Trail {
 				            // Crea un link alla pagina "amministrazione/aree-amministrative"
 				            $aree_amministrative_link = home_url("amministrazione/aree-amministrative");
 				            $this->items[] = "<a href='" . esc_url($aree_amministrative_link) . "'>Aree Amministrative</a>";
+			
+				        if (in_array('uffici', $referer_parts)) {
+			
+				            $_link = home_url("amministrazione/aree-amministrative");
+				            $this->items[] = "<a href='" . esc_url($_link) . "'>ùùùùùùùùùùùùù</a>";
 				        } elseif (in_array('organi-di-governo', $referer_parts)) {
 				            // Crea un link alla pagina "amministrazione/organi-di-governo"
 				            $organidigoverno_link = home_url("amministrazione/organi-di-governo");
