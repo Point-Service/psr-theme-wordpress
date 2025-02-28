@@ -78,7 +78,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
 <div class="card card-teaser no-after rounded shadow-sm mb-0 border border-light">
     <div class="card-body pb-5">
         <div class="category-top">
-            <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
+            <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $post_type_label; ?></span>
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
