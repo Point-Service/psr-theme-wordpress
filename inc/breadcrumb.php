@@ -395,7 +395,7 @@ class Breadcrumb_Trail {
 				//	print_r(get_post());
 				    $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
 				    // Cambia il link per indirizzare alla nuova struttura
-				    $this->items[] =  "<a href='" . home_url("amministrazione/documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
+				   // $this->items[] =  "<a href='" . home_url("unita_organizzativa/area-amministrativa") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
 				    
 				    $terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
 				    if ($terms) {
@@ -404,7 +404,7 @@ class Breadcrumb_Trail {
 				        }
 				    }
 				
-					
+			
 					
 				    $this->items[] = get_the_title();
 				    return;
