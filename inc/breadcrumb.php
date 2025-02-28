@@ -459,7 +459,7 @@ class Breadcrumb_Trail {
             $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
         
         // Se la tassonomia associata alla pagina è "struttura-politica"
-        } elseif (has_term('struttura-politica', 'tipi_persona_pubblica', get_the_ID())) {
+        } elseif (has_term('struttura-politica', 'tipi_unita_organizzativa', get_the_ID())) {
             // Forza il link come se provenisse dalla pagina "politici"
             $politici_link = home_url("amministrazione/politici");
             $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
