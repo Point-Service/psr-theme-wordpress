@@ -421,19 +421,22 @@ class Breadcrumb_Trail {
 				if (get_post_type() == 'persona_pubblica') {	
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 
-echo 'ss';
+
                                  // Ottieni l'URL corrente
 				$current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
 				
 				// Estrarre il percorso dall'URL
 				$url_path = parse_url($current_url, PHP_URL_PATH);
 				$path_parts = explode('/', trim($url_path, '/'));
-				
+
+				echo  $path_parts[1];
+				echo  $path_parts[2];
+					
 				// Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
 				if (isset($path_parts[2])) { 
 				    $category = $path_parts[1]; // La categoria è la seconda parte del percorso, quindi $path_parts[1]
 					
-				echo  $category;
+				
 					
 				    if ($category === 'luoghi') {
 				        $category_link = home_url("vivere-il-comune/luoghi");
