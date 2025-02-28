@@ -73,11 +73,12 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		   $item->url = '/page-templates/privacy';
 		}
 		
-
 		// Sovrascrivi l'URL per "Dichiarazione di accessibilità" se è vuoto
-		if ($item->title == 'Dichiarazione di accessibilità' && $item->url == '#') {
-		    $item->url = dci_get_option("dichiarazioneaccessibilita");
+		$accessibilita_url = dci_get_option("dichiarazioneaccessibilita");		
+		if ($item->title == 'Dichiarazione di accessibilità' && $item->url == '#' && !empty($accessibilita_url)) {
+		    $item->url = $accessibilita_url;
 		}
+
 		
 		$data_element = '';
 		   // Imposta data-elements
