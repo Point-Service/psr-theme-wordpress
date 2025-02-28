@@ -416,14 +416,14 @@ class Breadcrumb_Trail {
 					return;
 					
 				}
-global $post;
-setup_postdata($post);
-$post_type = get_post_type();
-echo 'Tipologia pagina: ' . esc_html($post_type);
+//global $post;
+//setup_postdata($post);
+//$post_type = get_post_type();
+//echo 'Tipologia pagina: ' . esc_html($post_type);
 
 
 		                        if (get_post_type() == 'persona_pubblica') {	
-				      //	print_r(get_post());
+				      	print_r(get_post());
 
 	                              $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 					
