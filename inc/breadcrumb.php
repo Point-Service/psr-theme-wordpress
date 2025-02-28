@@ -422,17 +422,18 @@ class Breadcrumb_Trail {
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 
 					
-                                 // Ottieni l'URL corrente
-				$current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 				
-				// Estrarre il percorso dall'URL
-				$url_path = parse_url($current_url, PHP_URL_PATH);
-				$path_parts = explode('/', trim($url_path, '/'));
-
-				echo  $path_parts[1];
-				echo  $path_parts[2];
+	                                 // Ottieni l'URL corrente
+					$current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 				
+					// Estrarre il percorso dall'URL
+					$url_path = parse_url($current_url, PHP_URL_PATH);
+					$path_parts = explode('/', trim($url_path, '/'));
+	
+					echo  $path_parts[1];
+					echo  $path_parts[2];
+					echo  $path_parts[3];
 					
-				// Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
-				
+					// Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
+					
 
 					
 				    // Aggiunge il titolo della pagina corrente
