@@ -466,6 +466,22 @@ class Breadcrumb_Trail {
         }
     }
 
+
+// Recupera i termini associati alla tassonomia 'tipi_unita_organizzativa'
+$terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
+
+// Verifica se ci sono termini associati
+if ($terms && !is_wp_error($terms)) {
+    foreach ($terms as $term) {
+        // Stampa il nome del termine
+        echo '<p>' . esc_html($term->name) . '</p>';
+    }
+} else {
+    echo 'Nessun termine trovato per questa tassonomia.';
+}
+
+
+	 
     // Aggiungi il titolo della pagina corrente
     $this->items[] = get_the_title();
     return;
