@@ -433,7 +433,30 @@ class Breadcrumb_Trail {
  if (get_post_type() == 'unita_organizzativa') {
     // Aggiungi il link alla pagina "amministrazione"
     $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
-    
+
+
+// Recupera i termini associati alla tassonomia 'tipi_unita_organizzativa'
+$terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
+
+// Verifica se ci sono termini associati
+if ($terms && !is_wp_error($terms)) {
+    foreach ($terms as $term) {
+        // Stampa il nome del termine
+        echo '<p>' . esc_html($term->name) . '</p>';
+    }
+} else {
+    echo 'Nessun termine trovato per questa tassonomia.';
+}
+
+
+
+
+
+
+
+
+
+	 
     // Ottieni i termini associati alla tassonomia 'tipi_persona_pubblica' o quella che desideri
     $terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
     
@@ -467,18 +490,6 @@ class Breadcrumb_Trail {
     }
 
 
-// Recupera i termini associati alla tassonomia 'tipi_unita_organizzativa'
-$terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
-
-// Verifica se ci sono termini associati
-if ($terms && !is_wp_error($terms)) {
-    foreach ($terms as $term) {
-        // Stampa il nome del termine
-        echo '<p>' . esc_html($term->name) . '</p>';
-    }
-} else {
-    echo 'Nessun termine trovato per questa tassonomia.';
-}
 
 
 	 
