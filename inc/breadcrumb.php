@@ -416,14 +416,23 @@ class Breadcrumb_Trail {
 					return;
 					
 				}
-//global $post;
-//setup_postdata($post);
-//$post_type = get_post_type();
-//echo 'Tipologia pagina: ' . esc_html($post_type);
+
 
 				if (get_post_type() == 'persona_pubblica') {	
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
-				
+
+
+
+
+global $post;
+setup_postdata($post);
+$post_type = get_post_type();
+echo 'Tipologia pagina: ' . esc_html($post_type);
+
+
+
+
+					
 				    // Recupera i termini della tassonomia 'tipi_persona_pubblica'
 				    $terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
 					
