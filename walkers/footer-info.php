@@ -76,7 +76,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		// Sovrascrivi l'URL per "Dichiarazione di accessibilità" se è vuoto richiama il link sul pannello Admin solo se compilato
 		$accessibilita_url = dci_get_option("dichiarazioneaccessibilita");		
 		if ($item->title == 'Dichiarazione di accessibilità' && $item->url == '#' && !empty($accessibilita_url)) {
-		    $item->url = esc_url(dci_get_option("accessibilita_url")) . '" target="_blank" ';
+		    $item->url = esc_url(dci_get_option("dichiarazioneaccessibilita")) . '" target="_blank" ';
 		}
 
 		
