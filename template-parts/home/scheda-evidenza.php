@@ -17,7 +17,7 @@ $post_type = get_post_type($post->ID);
 // Recupera il nome del tipo di post (tipologia) in una forma leggibile
 $post_type_object = get_post_type_object($post_type);
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
-?>
+
 ?>
 
 <?php if ($img) { ?>
