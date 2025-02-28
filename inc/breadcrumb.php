@@ -394,7 +394,17 @@ class Breadcrumb_Trail {
 				    // Aggiungi il link alla pagina di amministrazione
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 			
-                                echo get_the_terms($post, 'tipi_unita_organizzativa');
+                               $terms = get_the_terms($post, 'tipi_unita_organizzativa');
+
+if ($terms && !is_wp_error($terms)) {
+    // Cicla attraverso ogni termine e stampane il nome
+    foreach ($terms as $term) {
+        echo 'Termine: ' . esc_html($term->name) . '<br>';
+    }
+} else {
+    echo 'Nessun termine trovato o errore.';
+}
+
 
 
 	
