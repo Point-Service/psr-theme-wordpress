@@ -68,6 +68,11 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		   $item->url =  esc_url(dci_get_option("link_ammtrasparente")) . '" target="_blank" ';
 		}
 
+		// Sovrascrivi l'URL per "Informativa privacy" se è vuoto
+		if ($item->title == 'Informativa privacy' && $item->url == '#') {
+		   $item->url = '/page-templates/privacy';
+		}
+
 	
 		$data_element = '';
 		   // Imposta data-elements
