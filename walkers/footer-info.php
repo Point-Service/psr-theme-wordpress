@@ -65,7 +65,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		
 		// Sovrascrivi l'URL per "Amministrazione trasparente" se è vuoto
 		if ($item->title == 'Amministrazione trasparente' && $item->url == '#') {
-		   $item->url =  . esc_url(dci_get_option("link_ammtrasparente")) . '" target="_blank" ';
+		   $item->url =  esc_url(dci_get_option("link_ammtrasparente")) . '" target="_blank" ';
 		}
 
 	
