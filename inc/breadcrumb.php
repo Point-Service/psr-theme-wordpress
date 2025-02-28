@@ -421,26 +421,28 @@ class Breadcrumb_Trail {
 //$post_type = get_post_type();
 //echo 'Tipologia pagina: ' . esc_html($post_type);
 
-if (get_post_type() == 'persona_pubblica') {	
-    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
-
-    // Recupera i termini della tassonomia 'tipi_persona_pubblica'
-    $terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
-
-    if ($terms && !is_wp_error($terms)) {
-        foreach ($terms as $term) {
-            $this->items[] = sprintf(
-                '<a href="%s">%s</a>',
-                esc_url(get_term_link($term, 'tipi_persona_pubblica')),
-                esc_html($term->name)
-            );
-        }
-    }
-
-    // Aggiunge il titolo della pagina corrente
-    $this->items[] = get_the_title();
-    return;
-}
+				if (get_post_type() == 'persona_pubblica') {	
+				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+				
+				    // Recupera i termini della tassonomia 'tipi_persona_pubblica'
+				    $terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
+					
+				var_dump(get_object_taxonomies('persona_pubblica')); 
+					
+				    if ($terms && !is_wp_error($terms)) {
+				        foreach ($terms as $term) {
+				            $this->items[] = sprintf(
+				                '<a href="%s">%s</a>',
+				                esc_url(get_term_link($term, 'tipi_persona_pubblica')),
+				                esc_html($term->name)
+				            );
+				        }
+				    }
+				
+				    // Aggiunge il titolo della pagina corrente
+				    $this->items[] = get_the_title();
+				    return;
+				}
 
 		    
 			    $group_name = dci_get_group_name(get_post_type());
