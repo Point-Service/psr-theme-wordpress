@@ -183,7 +183,7 @@ if ($hide_arguments) $argomenti = array();
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_unita_organizzativa as $tipo) { ?>
         <li>
-            <a class="chip chip-simple" href="<?php echo get_term_link($tipo->term_id); ?>">
+            <a class="chip chip-simple" >
                 <span class="chip-label"><?php echo $tipo->name; ?></span>
             </a>
         </li>
