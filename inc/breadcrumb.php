@@ -432,17 +432,13 @@ if (get_post_type() == 'persona_pubblica') {
 
         // Verifica se il referrer corrisponde a "politici" o "personale-amministrativo"
         if (in_array('politici', $referer_parts)) {
-            $this->items[] = "<p>Richiamato da: Politici</p>"; // Azione per 'politici'
+            // Crea un link alla pagina "amministrazione/politici"
+            $politici_link = home_url("amministrazione/politici");
+            $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
         } elseif (in_array('personale-amministrativo', $referer_parts)) {
-            $this->items[] = "<p>Richiamato da: Personale Amministrativo</p>"; // Azione per 'personale-amministrativo'
-        }
-    }
-
-    // Recupera i termini della tassonomia 'tipi_persona_pubblica'
-    $terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
-    if ($terms && !is_wp_error($terms)) {
-        foreach ($terms as $term) {
-            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_persona_pubblica')), $term->name);
+            // Crea un link alla pagina "amministrazione/personale-amministrativo"
+            $personale_link = home_url("amministrazione/personale-amministrativo");
+            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
         }
     }
 
@@ -450,6 +446,7 @@ if (get_post_type() == 'persona_pubblica') {
     $this->items[] = get_the_title();
     return;
 }
+
 
 
 
