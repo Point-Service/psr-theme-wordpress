@@ -401,7 +401,7 @@ class Breadcrumb_Trail {
 				        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
 				        foreach ($terms as $term) {
 				            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-				            if (esc_html($term->name) == 'Struttura Politica') {
+				            if (esc_html($term->name) == 'struttura politica') {
 				                // Link Politici
 				                $politici_link = home_url("amministrazione/politici");
 				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; 
