@@ -78,6 +78,11 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		if ($item->title == 'Dichiarazione di accessibilità' && $item->url == '#' && !empty($accessibilita_url)) {
 		    $item->url = esc_url(dci_get_option("dichiarazioneaccessibilita")) . '" target="_blank" ';
 		}
+		
+		// Sovrascrivi l'URL per "note-legali" se è vuoto
+		if ($item->title == 'Note legali' && $item->url == '#') {
+		   $item->url = '/page-templates/note-legali';
+		}		
 
 		
 		$data_element = '';
