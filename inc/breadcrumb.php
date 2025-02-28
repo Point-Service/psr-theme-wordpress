@@ -418,39 +418,38 @@ class Breadcrumb_Trail {
 				}
 
 
-				if (get_post_type() == 'persona_pubblica') {	
-				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+if (get_post_type() == 'persona_pubblica') {
+    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 
-$post_type = 'persona_pubblica';
-$taxonomies = get_object_taxonomies($post_type, 'names');
+    // Ottieni l'URL corrente
+    $current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
 
-echo '<pre>';
-print_r($taxonomies); // Visualizza le tassonomie disponibili
-echo '</pre>';
-// Verifica dei termini per la tassonomia 'tipi_persona_pubblica'
-$terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
+    // Estrai il percorso dell'URL
+    $url_path = parse_url($current_url, PHP_URL_PATH);
+    $path_parts = explode('/', trim($url_path, '/'));
 
-if ($terms && !is_wp_error($terms)) {
-    echo '<pre>';
-    print_r($terms); // Stampa i termini associati
-    echo '</pre>';
-} else {
-    echo "Nessun termine trovato per questa tassonomia.";
+    // Verifica il percorso per determinare l'azione
+    if (in_array('politici', $path_parts)) {
+        // Se il percorso contiene "politici"
+        $this->items[] = "<p>Richiamato da: Politici</p>"; // Azione per 'politici'
+    } elseif (in_array('personale-amministrativo', $path_parts)) {
+        // Se il percorso contiene "personale-amministrativo"
+        $this->items[] = "<p>Richiamato da: Personale Amministrativo</p>"; // Azione per 'personale-amministrativo'
+    }
+
+    // Recupera i termini della tassonomia 'tipi_persona_pubblica'
+    $terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
+    if ($terms && !is_wp_error($terms)) {
+        foreach ($terms as $term) {
+            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_persona_pubblica')), $term->name);
+        }
+    }
+
+    // Aggiunge il titolo della pagina corrente
+    $this->items[] = get_the_title();
+    return;
 }
 
-
-
-					
-                                        // Recupera i termini della tassonomia 'tipi_persona_pubblica'
-					$terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
-
-					
-					
-					
-				    // Aggiunge il titolo della pagina corrente
-				    $this->items[] = get_the_title();
-				    return;
-				}
 
 		    
 			    $group_name = dci_get_group_name(get_post_type());
