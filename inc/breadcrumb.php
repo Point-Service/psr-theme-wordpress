@@ -394,7 +394,7 @@ class Breadcrumb_Trail {
 				    // Aggiungi il link alla pagina di amministrazione
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 			
-
+                                echo get_the_terms($post, 'tipi_unita_organizzativa');
 
 
 	
