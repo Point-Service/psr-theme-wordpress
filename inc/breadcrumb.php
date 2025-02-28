@@ -449,7 +449,7 @@ class Breadcrumb_Trail {
 				        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
 				
 				    // Se la tipologia della pagina è "struttura-politica" e il referrer non è "politici"
-				    } elseif (get_post_type() == 'struttura-politica' && !in_array('politici', $referer_parts)) {
+				    } elseif (get_post_type() == 'struttura-politica' && !in_array('persona_pubblica', $referer_parts)) {
 				        // Crea un link alla pagina "amministrazione/politici" come se venisse dal link "politici"
 				        $politici_link = home_url("amministrazione/politici");
 				        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
