@@ -390,6 +390,7 @@ class Breadcrumb_Trail {
 				}
 
 
+
 	                      if (get_post_type() == 'unita_organizzativa') {
 				    // Aggiungi il link alla pagina di amministrazione
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
@@ -402,7 +403,7 @@ class Breadcrumb_Trail {
 				        foreach ($terms as $term) {
 						
 				            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-				        if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
+				        if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE'|| strtoupper(esc_html($term->name)) == 'UFFICIO') {
 				                // Link Politici
 				                $politici_link = home_url("amministrazione/politici");
 				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; 
