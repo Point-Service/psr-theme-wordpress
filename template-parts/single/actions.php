@@ -183,9 +183,9 @@ if ($hide_arguments) $argomenti = array();
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_unita_organizzativa as $tipo) { ?>
         <li>
-            
+            <div class="chip chip-simple">
                 <span class="chip-label"><?php echo $tipo->name; ?></span>
-            
+            </div>
         </li>
         <?php } ?>
     </ul>
