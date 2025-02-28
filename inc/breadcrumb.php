@@ -463,7 +463,7 @@ class Breadcrumb_Trail {
 				// Aggiunge il titolo della pagina corrente
 				$this->items[] = get_the_title();
 				return;
-				
+				}
 
 
 
