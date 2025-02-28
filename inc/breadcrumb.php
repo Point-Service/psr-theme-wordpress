@@ -430,73 +430,41 @@ class Breadcrumb_Trail {
 
 
 
- if (get_post_type() == 'unita_organizzativa') {
-    // Aggiungi il link alla pagina "amministrazione"
-    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+				if (get_post_type() == 'persona_pubblica') {
+				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+				
+				 // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
+				$referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+				echo $get_post_type();
+				// Verifica se il referrer è presente e contiene una delle parole chiave per distinguere la pagina
+				if (!empty($referer_url)) {
+				    // Estrai il percorso del referrer
+				    $referer_path = parse_url($referer_url, PHP_URL_PATH);
+				    $referer_parts = explode('/', trim($referer_path, '/'));
+				
+				    // Verifica se il referrer corrisponde a "politici"
+				    if (in_array('politici', $referer_parts)) {
+				        // Crea un link alla pagina "amministrazione/politici"
+				        $politici_link = home_url("amministrazione/politici");
+				        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+				
+				    // Se la tipologia della pagina è "struttura-politica" e il referrer non è "politici"
+				    } elseif (get_post_type() == 'struttura-politica' && !in_array('persona_pubblica', $referer_parts)) {
+				        // Crea un link alla pagina "amministrazione/politici" come se venisse dal link "politici"
+				        $politici_link = home_url("amministrazione/politici");
+				        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+				    } elseif (in_array('personale-amministrativo', $referer_parts)) {
+				        // Crea un link alla pagina "amministrazione/personale-amministrativo"
+				        $personale_link = home_url("amministrazione/personale-amministrativo");
+				        $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
+				    }
+				}
+				
+				// Aggiunge il titolo della pagina corrente
+				$this->items[] = get_the_title();
+				return;
+				}
 
-
-// Recupera i termini associati alla tassonomia 'tipi_unita_organizzativa'
-$terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
-
-// Verifica se ci sono termini associati
-if ($terms && !is_wp_error($terms)) {
-    foreach ($terms as $term) {
-        // Stampa il nome del termine
-        echo '<p>' . esc_html($term->name) . '</p>';
-    }
-} else {
-    echo 'Nessun termine trovato per questa tassonomia.';
-}
-
-
-
-
-
-
-
-
-
-	 
-    // Ottieni i termini associati alla tassonomia 'tipi_persona_pubblica' o quella che desideri
-    $terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
-    
-    // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
-    $referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-    
-    // Verifica se il referrer è presente e contiene una delle parole chiave per distinguere la pagina
-    if (!empty($referer_url)) {
-        // Estrai il percorso del referrer
-        $referer_path = parse_url($referer_url, PHP_URL_PATH);
-        $referer_parts = explode('/', trim($referer_path, '/'));
-        
-        // Verifica se il referrer corrisponde a "politici"
-        if (in_array('politici', $referer_parts)) {
-            // Crea un link alla pagina "amministrazione/politici"
-            $politici_link = home_url("amministrazione/politici");
-            $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
-        
-        // Verifica se il referrer proviene dalla pagina "personale-amministrativo"
-        } elseif (in_array('personale-amministrativo', $referer_parts)) {
-            // Crea un link alla pagina "amministrazione/personale-amministrativo"
-            $personale_link = home_url("amministrazione/personale-amministrativo");
-            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
-        
-        // Se la tassonomia associata alla pagina è "struttura-politica"
-        } elseif (has_term('struttura-politica', 'tipi_unita_organizzativa', get_the_ID())) {
-            // Forza il link come se provenisse dalla pagina "politici"
-            $politici_link = home_url("amministrazione/politici");
-            $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
-        }
-    }
-
-
-
-
-	 
-    // Aggiungi il titolo della pagina corrente
-    $this->items[] = get_the_title();
-    return;
-}
 
 
 
