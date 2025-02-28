@@ -34,6 +34,61 @@ function dci_register_post_type_notizia() {
     remove_post_type_support( 'notizia', 'editor');
 }
 
+
+
+
+/**
+ * Funzione di validazione per evitare due lettere maiuscole consecutive
+ */
+function dci_validate_no_consecutive_uppercase($text) {
+    // Usa una regex per verificare due lettere maiuscole consecutive
+    if (preg_match('/[A-Z]{2,}/', $text)) {
+        return false; // Ritorna false se trova due lettere maiuscole consecutive
+    }
+    return true; // Ritorna true se la validazione passa
+}
+
+/**
+ * Funzione per il controllo del titolo e della descrizione
+ */
+function dci_check_title_and_description($post_id) {
+    // Evita il controllo per i salvataggi automatici
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+
+    // Ottieni il post
+    $post = get_post($post_id);
+
+    // Verifica se il post è di tipo 'notizia'
+    if ($post->post_type == 'notizia') {
+
+        // Controllo sul titolo
+        $title = $post->post_title;
+        if (!dci_validate_no_consecutive_uppercase($title)) {
+            // Restituisce un errore se il titolo contiene due lettere maiuscole consecutive
+            wp_die(__('Errore: Il titolo non può contenere due lettere maiuscole consecutive.'));
+        }
+
+        // Controllo sulla descrizione breve
+        $descrizione_breve = get_post_meta($post_id, '_dci_notizia_descrizione_breve', true);
+        if (!dci_validate_no_consecutive_uppercase($descrizione_breve)) {
+            // Restituisce un errore se la descrizione breve contiene due lettere maiuscole consecutive
+            wp_die(__('Errore: La descrizione breve non può contenere due lettere maiuscole consecutive.'));
+        }
+    }
+}
+
+// Aggiungi l'hook per eseguire il controllo al momento del salvataggio del post
+add_action('save_post', 'dci_check_title_and_description');
+
+
+
+
+
+
+
+
+
+
 /**
  * Aggiungo label sotto il titolo
  */
