@@ -59,7 +59,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 
 		
                // Sovrascrivi l'URL per "Segnalazione disservizio" se è vuoto
-		 if ($item->title == 'Segnalazione disservizio' && $item->url == '/#') {
+		 if ($item->title == 'Segnalazione disservizio' && $item->url == '#') {
                    $item->url = '/page-templates/prenotazioni';
 		}
 
