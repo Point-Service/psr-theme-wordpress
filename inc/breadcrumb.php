@@ -421,20 +421,21 @@ class Breadcrumb_Trail {
 if (get_post_type() == 'persona_pubblica') {
     $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 
-    // Ottieni l'URL corrente
-    $current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
+    // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
+    $referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 
-    // Estrai il percorso dell'URL
-    $url_path = parse_url($current_url, PHP_URL_PATH);
-    $path_parts = explode('/', trim($url_path, '/'));
+    // Verifica se il referrer è presente e contiene una delle parole chiave per distinguere la pagina
+    if (!empty($referer_url)) {
+        // Estrai il percorso del referrer
+        $referer_path = parse_url($referer_url, PHP_URL_PATH);
+        $referer_parts = explode('/', trim($referer_path, '/'));
 
-    // Verifica il percorso per determinare l'azione
-    if (in_array('politici', $path_parts)) {
-        // Se il percorso contiene "politici"
-        $this->items[] = "<p>Richiamato da: Politici</p>"; // Azione per 'politici'
-    } elseif (in_array('personale-amministrativo', $path_parts)) {
-        // Se il percorso contiene "personale-amministrativo"
-        $this->items[] = "<p>Richiamato da: Personale Amministrativo</p>"; // Azione per 'personale-amministrativo'
+        // Verifica se il referrer corrisponde a "politici" o "personale-amministrativo"
+        if (in_array('politici', $referer_parts)) {
+            $this->items[] = "<p>Richiamato da: Politici</p>"; // Azione per 'politici'
+        } elseif (in_array('personale-amministrativo', $referer_parts)) {
+            $this->items[] = "<p>Richiamato da: Personale Amministrativo</p>"; // Azione per 'personale-amministrativo'
+        }
     }
 
     // Recupera i termini della tassonomia 'tipi_persona_pubblica'
@@ -449,6 +450,7 @@ if (get_post_type() == 'persona_pubblica') {
     $this->items[] = get_the_title();
     return;
 }
+
 
 
 		    
