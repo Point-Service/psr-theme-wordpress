@@ -393,59 +393,17 @@ class Breadcrumb_Trail {
                                 if (get_post_type() == 'unita_organizzativa') {	
 				//	print_r(get_post());
 
-
-
-$this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
-
-// Recupera la categoria del documento (sostituisci 'categoria_documento' con la tassonomia corretta)
-$terms = get_the_terms(get_the_ID(), 'categoria_documento');
-
-if ($terms && !is_wp_error($terms)) {
-    foreach ($terms as $term) {
-        $this->items[] = sprintf(
-            '<a href="%s">%s</a>',
-            esc_url(get_term_link($term, 'categoria_documento')),
-            esc_html($term->name)
-        );
-    }
-}
-
-
-$post_type = get_post_type();
-$taxonomies = get_object_taxonomies($post_type, 'objects');
-
-echo '<pre>';
-print_r($taxonomies);
-echo '</pre>';
+	                                $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+					$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+					
+					$this->items[] = get_the_title();
+					return;
+					
 					
 
-// Aggiunge il titolo della pagina corrente
-$this->items[] = get_the_title();
-return;
-
-
-
-
-					
-				    return;
 				}
 
 		    
-
-
-
-
-
-
-
-
-
-
-
-		    
-   
-
-
 		    
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
