@@ -11,7 +11,7 @@ function dci_register_post_type_notizia() {
         'singular_name' => _x( 'Notizia', 'Post Type Singular Name', 'design_comuni_italia' ),
         'add_new'       => _x( 'Aggiungi una Notizia', 'Post Type Singular Name', 'design_comuni_italia' ),
         'add_new_item'  => _x( 'Aggiungi una nuova Notizia', 'Post Type Singular Name', 'design_comuni_italia' ),
-        'edit_item'     => _x( 'Modifica la Notizia', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'edit_item'       => _x( 'Modifica la Notizia', 'Post Type Singular Name', 'design_comuni_italia' ),
         'featured_image' => __( 'Immagine di riferimento', 'design_comuni_italia' ),
     );
     $args   = array(
@@ -24,6 +24,7 @@ function dci_register_post_type_notizia() {
         'menu_icon'     => 'dashicons-media-interactive',
         'has_archive'   => false,
         'rewrite' => array('slug' => 'tipi_notizia/notizie','with_front' => false),
+        //'rewrite' => array('slug' => 'novita','with_front' => false),
         'capability_type' => array('notizia', 'notizie'),
         'map_meta_cap'    => true,
         'description'    => __( "Tipologia che struttura le informazioni relative a agli aggiornamenti d un comune", 'design_comuni_italia' ),
@@ -41,44 +42,6 @@ function dci_notizia_add_content_after_title($post) {
     if($post->post_type == "notizia")
         _e('<span><i>il <b>Titolo</b> è il <b>Titolo della News o del Comunicato</b>.</i></span><br><br>', 'design_comuni_italia' );
 }
-
-/**
- * Aggiungi il controllo JavaScript per impedire l'inserimento di due lettere maiuscole consecutive
- */
-add_action('admin_footer', 'dci_notizia_admin_script');
-function dci_notizia_admin_script() {
-    ?>
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            // Funzione per verificare se ci sono due lettere maiuscole consecutive
-            function hasConsecutiveUppercase(text) {
-                return /[A-Z]{2,}/.test(text);
-            }
-
-            // Funzione per impedire l'inserimento di lettere maiuscole consecutive
-            function preventConsecutiveUppercase(input) {
-                var value = input.val();
-                // Se ci sono due lettere maiuscole consecutive, rimuoviamo l'ultimo carattere
-                if (hasConsecutiveUppercase(value)) {
-                    input.val(value.slice(0, -1));
-                }
-            }
-
-            // Controlla il campo titolo
-            $('#title').on('input', function() {
-                preventConsecutiveUppercase($(this)); // Previeni l'inserimento
-            });
-
-            // Controlla il campo descrizione breve (se esiste)
-            $('#_dci_notizia_descrizione_breve').on('input', function() {
-                preventConsecutiveUppercase($(this)); // Previeni l'inserimento
-            });
-        });
-    </script>
-    <?php
-} ?>
-
-
 
 add_action( 'cmb2_init', 'dci_add_notizia_metaboxes' );
 function dci_add_notizia_metaboxes() {
