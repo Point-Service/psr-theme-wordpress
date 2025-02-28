@@ -383,11 +383,26 @@ class Breadcrumb_Trail {
 				            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_documento')), $term->name);
 				        }
 				    }
+
+					
+				    $terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
+				    if ($terms) {
+				        foreach ($terms as $term) {
+				            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_unita_organizzativa')), $term->name);
+				        }
+				    }
+					
+					
 				    $this->items[] = get_the_title();
 				    return;
 				}
 
-		
+
+
+   
+
+
+		    
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
@@ -519,10 +534,7 @@ class Breadcrumb_Trail {
                         $this->items[] = "<a href='".home_url("documenti-e-dati")."'>".__("Documenti e dati", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-                    }
-                    else if (is_tax(array("tipi_unita_organizzativa"))){
-                       echo 'ddd';
-                    }			    
+                    }		    
 		   else if (is_tax(array("tipi_luogo"))) {		
 			    // Link a "Vivere il Comune"
 			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
