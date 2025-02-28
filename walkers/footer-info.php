@@ -62,7 +62,11 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		if ($item->title == 'Segnalazione disservizio' && $item->url == '#') {
 		    $item->url = 'mailto:' . dci_get_option("email_principale");
 		}
-
+		
+		// Sovrascrivi l'URL per "Amministrazione trasparente" se è vuoto
+		if ($item->title == 'Amministrazione trasparente' && $item->url == '#') {
+		    $item->url = dci_get_option("link_ammtrasparente");
+		}
 
 	
 		$data_element = '';
