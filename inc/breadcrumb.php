@@ -435,7 +435,7 @@ class Breadcrumb_Trail {
 				
 				 // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
 				$referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-				
+				echo $get_post_type();
 				// Verifica se il referrer è presente e contiene una delle parole chiave per distinguere la pagina
 				if (!empty($referer_url)) {
 				    // Estrai il percorso del referrer
