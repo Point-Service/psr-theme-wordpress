@@ -421,20 +421,20 @@ class Breadcrumb_Trail {
 				if (get_post_type() == 'persona_pubblica') {	
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 
-					
-	                                 // Ottieni l'URL corrente
-					$current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 				
-					// Estrarre il percorso dall'URL
-					$url_path = parse_url($current_url, PHP_URL_PATH);
-					$path_parts = explode('/', trim($url_path, '/'));
-	
-					echo  $path_parts[1];
-					echo  $path_parts[2];
-					echo  $path_parts[3];
-					
-					// Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
-					
+$post_type = 'persona_pubblica';
+$taxonomies = get_object_taxonomies($post_type, 'names');
 
+echo '<pre>';
+print_r($taxonomies);
+echo '</pre>';
+
+
+					
+                                        // Recupera i termini della tassonomia 'tipi_persona_pubblica'
+					$terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
+
+					
+					
 					
 				    // Aggiunge il titolo della pagina corrente
 				    $this->items[] = get_the_title();
