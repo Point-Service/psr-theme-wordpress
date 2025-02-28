@@ -372,8 +372,8 @@ class Breadcrumb_Trail {
 				}
 
 
-      
-				if (get_post_type() == 'documento_pubblico') {
+                                if (get_post_type() == 'documento_pubblico' || get_post_type() == 'documenti_e_dati') {
+				
 				    // Cambia il link per indirizzare alla nuova struttura
 				    $this->items[] =  "<a href='" . home_url("amministrazione/documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
 				    
@@ -446,8 +446,7 @@ class Breadcrumb_Trail {
 
                     case 'Amministrazione':
                         $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
-                        $this->items[] = get_the_title();
-				    echo 'dddd';
+                        $this->items[] = get_the_title();				 
                         return;
                         break;
                     case 'Servizi':
