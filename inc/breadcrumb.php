@@ -502,7 +502,7 @@ class Breadcrumb_Trail {
 		    $this->add_post_type_archive_items();
 		
 		 
-			
+			echo 'dddd';
 		}
 
                 elseif ( is_category() || is_tag() || is_tax() ){
@@ -518,7 +518,6 @@ class Breadcrumb_Trail {
                     else if (is_tax(array("tipi_documento"))){
                         $this->items[] = "<a href='".home_url("documenti-e-dati")."'>".__("Documenti e dati", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
-			    echo'dddd';
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }
 			    
