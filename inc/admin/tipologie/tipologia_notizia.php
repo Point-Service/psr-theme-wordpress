@@ -22,7 +22,7 @@ function dci_register_post_type_notizia() {
         'public'        => true,
         'menu_position' => 5,
         'menu_icon'     => 'dashicons-media-interactive',
-        'has_archive'   => true,
+        'has_archive'   => false,
         'rewrite' => array('slug' => 'tipi_notizia/notizie','with_front' => false),
         //'rewrite' => array('slug' => 'novita','with_front' => false),
         'capability_type' => array('notizia', 'notizie'),
