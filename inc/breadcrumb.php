@@ -425,8 +425,19 @@ $post_type = 'persona_pubblica';
 $taxonomies = get_object_taxonomies($post_type, 'names');
 
 echo '<pre>';
-print_r($taxonomies);
+print_r($taxonomies); // Visualizza le tassonomie disponibili
 echo '</pre>';
+// Verifica dei termini per la tassonomia 'tipi_persona_pubblica'
+$terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
+
+if ($terms && !is_wp_error($terms)) {
+    echo '<pre>';
+    print_r($terms); // Stampa i termini associati
+    echo '</pre>';
+} else {
+    echo "Nessun termine trovato per questa tassonomia.";
+}
+
 
 
 					
