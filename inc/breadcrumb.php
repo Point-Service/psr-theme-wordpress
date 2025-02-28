@@ -420,7 +420,7 @@ class Breadcrumb_Trail {
 
 				if (get_post_type() == 'persona_pubblica') {	
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
-
+					
 
                                  // Ottieni l'URL corrente
 				$current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
