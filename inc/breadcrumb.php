@@ -394,13 +394,17 @@ class Breadcrumb_Trail {
 				//	print_r(get_post());
 
 	                                $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
-					$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+
+					  $terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
+					    if ($terms) {
+					        foreach ($terms as $term) {
+					            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_documento')), $term->name);
+					        }
+					    }
 					
 					$this->items[] = get_the_title();
 					return;
 					
-					
-
 				}
 
 		    
