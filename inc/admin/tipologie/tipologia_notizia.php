@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Definisce post type Notizia
+ * Definisce il post type Notizia
  */
 add_action( 'init', 'dci_register_post_type_notizia');
 function dci_register_post_type_notizia() {
@@ -24,7 +24,6 @@ function dci_register_post_type_notizia() {
         'menu_icon'     => 'dashicons-media-interactive',
         'has_archive'   => false,
         'rewrite' => array('slug' => 'tipi_notizia/notizie','with_front' => false),
-        //'rewrite' => array('slug' => 'novita','with_front' => false),
         'capability_type' => array('notizia', 'notizie'),
         'map_meta_cap'    => true,
         'description'    => __( "Tipologia che struttura le informazioni relative a agli aggiornamenti d un comune", 'design_comuni_italia' ),
@@ -33,61 +32,6 @@ function dci_register_post_type_notizia() {
 
     remove_post_type_support( 'notizia', 'editor');
 }
-
-
-
-
-/**
- * Funzione di validazione per evitare due lettere maiuscole consecutive
- */
-function dci_validate_no_consecutive_uppercase($text) {
-    // Usa una regex per verificare due lettere maiuscole consecutive
-    if (preg_match('/[A-Z]{2,}/', $text)) {
-        return false; // Ritorna false se trova due lettere maiuscole consecutive
-    }
-    return true; // Ritorna true se la validazione passa
-}
-
-/**
- * Funzione per il controllo del titolo e della descrizione
- */
-function dci_check_title_and_description($post_id) {
-    // Evita il controllo per i salvataggi automatici
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-
-    // Ottieni il post
-    $post = get_post($post_id);
-
-    // Verifica se il post è di tipo 'notizia'
-    if ($post->post_type == 'notizia') {
-
-        // Controllo sul titolo
-        $title = $post->post_title;
-        if (!dci_validate_no_consecutive_uppercase($title)) {
-            // Restituisce un errore se il titolo contiene due lettere maiuscole consecutive
-            wp_die(__('Errore: Il titolo non può contenere due lettere maiuscole consecutive.'));
-        }
-
-        // Controllo sulla descrizione breve
-        $descrizione_breve = get_post_meta($post_id, '_dci_notizia_descrizione_breve', true);
-        if (!dci_validate_no_consecutive_uppercase($descrizione_breve)) {
-            // Restituisce un errore se la descrizione breve contiene due lettere maiuscole consecutive
-            wp_die(__('Errore: La descrizione breve non può contenere due lettere maiuscole consecutive.'));
-        }
-    }
-}
-
-// Aggiungi l'hook per eseguire il controllo al momento del salvataggio del post
-add_action('save_post', 'dci_check_title_and_description');
-
-
-
-
-
-
-
-
-
 
 /**
  * Aggiungo label sotto il titolo
@@ -119,7 +63,7 @@ function dci_add_notizia_metaboxes() {
         'remove_default' => 'true',
     ) );
 
-    //APERTURA
+    // APERTURA
     $cmb_apertura = new_cmb2_box( array(
         'id'           => $prefix . 'box_apertura',
         'title'        => __( 'Apertura', 'design_comuni_italia' ),
@@ -140,38 +84,7 @@ function dci_add_notizia_metaboxes() {
         ),
     ) );
 
-    $cmb_apertura->add_field( array(
-        'id' => $prefix . 'numero_comunicato',
-        'name'        => __( 'Numero progressivo comunicato stampa', 'design_comuni_italia' ),
-        'desc' => __( 'Se è un comunicato stampa, indica un\'eventuale numero progressivo del comunicato stampa' , 'design_comuni_italia' ),
-        'type' => 'text',
-        'attributes'    => array(
-            'maxlength'  => '255',
-            'data-conditional-id'     => $prefix.'tipo_notizia',
-            'data-conditional-value'  => 'comunicato-stampa',
-        ),
-    ) );
-
-    $cmb_apertura->add_field( array(
-        'id' => $prefix . 'a_cura_di',
-        'name'    => __( 'A cura di *', 'design_comuni_italia' ),
-        'desc' => __( 'Ufficio che ha curato il comunicato (presumibilmente l\'ufficio comunicazione)' , 'design_comuni_italia' ),
-        'type'    => 'pw_multiselect',
-        'options' => dci_get_posts_options('unita_organizzativa'),
-        'attributes'    => array(
-            'required'    => 'required',
-            'placeholder' =>  __( 'Seleziona le unità organizzative', 'design_comuni_italia' ),
-        ),
-    ) );
-
-    $cmb_apertura->add_field( array(
-        'name'       => __('Immagine', 'design_comuni_italia' ),
-        'desc' => __( 'Immagine principale della notizia' , 'design_comuni_italia' ),
-        'id'             => $prefix . 'immagine',
-        'type' => 'file',
-        'query_args' => array( 'type' => 'image' ),
-    ) );
-
+    // Campo Descrizione Breve
     $cmb_apertura->add_field( array(
         'id' => $prefix . 'descrizione_breve',
         'name'        => __( 'Descrizione breve *', 'design_comuni_italia' ),
@@ -183,44 +96,7 @@ function dci_add_notizia_metaboxes() {
         ),
     ) );
 
-    $cmb_apertura->add_field( array(
-        'id' => $prefix . 'data_pubblicazione',
-        'name'    => __( 'Data della notizia', 'design_comuni_italia' ),
-        'desc' => __( 'Data di pubblicazione della notizia. Se non compilato a front end viene mostrata la data di pubblicazione del post.' , 'design_comuni_italia' ),
-        'type'    => 'text_date_timestamp',
-        'date_format' => 'd-m-Y',
-    ) );
-
-    $cmb_apertura->add_field( array(
-        'id' => $prefix . 'data_scadenza',
-        'name'    => __( 'Data di scadenza', 'design_comuni_italia' ),
-        'desc' => __( 'Data di pubblicazione della notizia. Eventuale data di scadenza (in caso di avviso pubblicato)' , 'design_comuni_italia' ),
-        'type'    => 'text_date_timestamp',
-        'date_format' => 'd-m-Y',
-    ) );
-
-    $cmb_apertura->add_field( array(
-        'id' => $prefix . 'persone',
-        'name'    => __( 'Persone', 'design_comuni_italia' ),
-        'desc' => __( 'Riferimenti a persone dell\'amministrazione citate nella notizia' , 'design_comuni_italia' ),
-        'type'    => 'pw_multiselect',
-        'options' => dci_get_posts_options('persona_pubblica'),
-        'attributes' => array(
-            'placeholder' =>  __( 'Seleziona le Persone Pubbliche', 'design_comuni_italia' ),
-        ),
-    ) );
-    $cmb_apertura->add_field( array(
-        'id' => $prefix . 'luoghi',
-        'name'    => __( 'Luoghi', 'design_comuni_italia' ),
-        'desc' => __( 'Riferimenti a luoghi del Comune citati nella notizia' , 'design_comuni_italia' ),
-        'type'    => 'pw_multiselect',
-        'options' => dci_get_posts_options('luogo'),
-        'attributes' => array(
-            'placeholder' =>  __( 'Seleziona i Luoghi', 'design_comuni_italia' ),
-        ),
-    ) );
-
-    //CORPO
+    // Corso
     $cmb_corpo = new_cmb2_box( array(
         'id'           => $prefix . 'box_corpo',
         'title'        => __( 'Corpo', 'design_comuni_italia' ),
@@ -236,114 +112,62 @@ function dci_add_notizia_metaboxes() {
         'attributes'    => array(
             'required'    => 'required'
         ),
-        'options' => array(
-            'textarea_rows' => 10, // rows="..."
-            'teeny' => false, // output the minimal editor config used in Press This
-        ),
     ) );
-    
-    
-    // MEDIA
-    $cmb_gallerie_multimediali = new_cmb2_box( array(
-        'id'           => $prefix . 'box_gallerie_multimediali',
-        'title'        => __( 'Gallerie multimediali', 'design_comuni_italia' ),
-        'object_types' => array( 'notizia' ),
-        'context'      => 'normal',
-        'priority'     => 'high',
-    ) );
-
-    $cmb_gallerie_multimediali->add_field( array(
-        'id'         => $prefix . 'gallery',
-        'name'       => __( 'Galleria di immagini', 'design_comuni_italia' ),
-        'desc'       => __( 'Una o più immagini corredate da didascalie', 'design_comuni_italia' ),
-        'type' => 'file_list',
-        'query_args' => array( 'type' => 'image' ),
-    ) );
-
-    $cmb_gallerie_multimediali->add_field( array(
-        'id'         => $prefix . 'video',
-        'name'       => __( 'Video', 'design_comuni_italia' ),
-        'desc'       => __( 'Un video da collegare alla notizia (è possibile inserire un url esterno).', 'design_comuni_italia' ),
-        'type' => 'file',
-        'query_args' => array( 'type' => 'video' ),
-    ) );
-
-    $cmb_gallerie_multimediali->add_field( array(
-        'id'         => $prefix . 'trascrizione',
-        'name'       => __( 'Trascrizione', 'design_comuni_italia' ),
-        'desc'       => __( 'Trascrizione del video', 'design_comuni_italia' ),
-        'type' => 'textarea'
-    ) );
-
-    $cmb_gallerie_multimediali->add_field( array(
-        'id'         => $prefix . 'audio',
-        'name'       => __( 'File Audio', 'design_comuni_italia' ),
-        'desc'       => __( 'Possibilità di includere nel corpo della notizia un file audio in riferimento alla notizia' ,'design_comuni_italia' ),
-        'type' => 'file_list',
-        'query_args' => array( 'type' => 'audio' ),
-    ) );
-
-    //DOCUMENTI
-    $cmb_documenti = new_cmb2_box( array(
-        'id'           => $prefix . 'box_documenti',
-        'title'        => __( 'Documenti', 'design_comuni_italia' ),
-        'object_types' => array( 'notizia' ),
-        'context'      => 'normal',
-        'priority'     => 'low',
-    ) );
-
-    $cmb_documenti->add_field( array(
-        'id' => $prefix . 'documenti',
-        'name'        => __( 'Documenti', 'design_comuni_italia' ),
-        'desc' => __( 'Link a schede di Documenti' , 'design_comuni_italia' ),
-        'type'    => 'pw_multiselect',
-        'options' => dci_get_posts_options('documento_pubblico'),
-        'attributes' => array(
-            'placeholder' =>  __( 'Seleziona i Documenti Pubblici', 'design_comuni_italia' ),
-        ),
-    ) );
-
-    $cmb_documenti->add_field( array(
-        'id' => $prefix . 'allegati',
-        'name'        => __( 'Allegati', 'design_comuni_italia' ),
-        'desc' => __( 'Elenco di documenti allegati alla struttura' , 'design_comuni_italia' ),
-        'type' => 'file_list',
-    ) );
-
-    //DATASET
-    $cmb_documenti = new_cmb2_box( array(
-        'id'           => $prefix . 'box_documenti',
-        'title'        => __( 'Documenti', 'design_comuni_italia' ),
-        'object_types' => array( 'notizia' ),
-        'context'      => 'normal',
-        'priority'     => 'low',
-    ) );
-
-    $cmb_documenti->add_field( array(
-        'id' => $prefix . 'dataset',
-        'name'        => __( 'Dataset ', 'design_comuni_italia' ),
-        'desc' => __( 'Lista schede Dataset collegate alla notizia' , 'design_comuni_italia' ),
-        'type'    => 'pw_multiselect',
-        'options' => dci_get_posts_options('dataset'),
-        'attributes' => array(
-            'placeholder' =>  __( 'Seleziona i Dataset', 'design_comuni_italia' ),
-        ),
-    ) );
-
 }
 
+/**
+ * Aggiungi script JS per il controllo in tempo reale
+ */
+add_action( 'admin_enqueue_scripts', 'dci_enqueue_admin_scripts' );
+function dci_enqueue_admin_scripts($hook) {
+    if ('post.php' !== $hook && 'post-new.php' !== $hook) return;
+    global $post;
+    if ($post && $post->post_type === 'notizia') {
+        wp_enqueue_script('notizia-admin-validation', get_template_directory_uri() . '/js/notizia-validation.js', array('jquery'), null, true);
+    }
+}
 
 /**
- * aggiungo js per controllo compilazione campi
+ * JavaScript per il controllo delle lettere maiuscole consecutive
  */
-
-add_action( 'admin_print_scripts-post-new.php', 'dci_notizia_admin_script', 11 );
-add_action( 'admin_print_scripts-post.php', 'dci_notizia_admin_script', 11 );
-
 function dci_notizia_admin_script() {
-    global $post_type;
-    if( 'notizia' == $post_type )
-        wp_enqueue_script( 'notizia-admin-script', get_template_directory_uri() . '/inc/admin-js/notizia.js' );
+    ?>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Funzione per verificare se ci sono due lettere maiuscole consecutive
+            function hasConsecutiveUppercase(text) {
+                return /[A-Z]{2,}/.test(text);
+            }
+
+            // Messaggio di errore per la validazione
+            var errorMessage = $('<p style="color: red; font-weight: bold;">Errore: non possono esserci due lettere maiuscole consecutive.</p>');
+
+            // Controlla il campo titolo
+            $('#title').on('input', function() {
+                var title = $(this).val();
+                if (hasConsecutiveUppercase(title)) {
+                    if ($('#title-error').length === 0) {
+                        $(this).after(errorMessage.clone().attr('id', 'title-error'));
+                    }
+                } else {
+                    $('#title-error').remove();
+                }
+            });
+
+            // Controlla il campo descrizione breve
+            $('#_dci_notizia_descrizione_breve').on('input', function() {
+                var description = $(this).val();
+                if (hasConsecutiveUppercase(description)) {
+                    if ($('#description-error').length === 0) {
+                        $(this).after(errorMessage.clone().attr('id', 'description-error'));
+                    }
+                } else {
+                    $('#description-error').remove();
+                }
+            });
+        });
+    </script>
+    <?php
 }
 
 /**
@@ -373,3 +197,4 @@ function dci_notizia_set_post_content( $data ) {
     return $data;
 }
 add_filter( 'wp_insert_post_data' , 'dci_notizia_set_post_content' , '99', 1 );
+?>
