@@ -171,7 +171,7 @@ function dci_register_comune_options(){
     $header_options->add_field( array(
         'id'    => $prefix . 'dichiarazioneaccessibilita',
         'name' => __('Dichiarazione Accessibilità', 'design_comuni_italia' ),
-        'desc' => __( 'Inserisci qui l'url della dichiarazione d'accessibilità'),
+        'desc' => __( 'Inserisci qui link della dichiarazione d''accessibilità'),
         'type' => 'text'
     ));
 
