@@ -58,14 +58,13 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		}
 
 		
-               // Sovrascrivi l'URL per "Segnalazione disservizio" se è vuoto
-		 if ($item->title == 'Segnalazione disservizio' && $item->url == '#') {
-                   $item->url = '/page-templates/prenotazioni';
+		// Sovrascrivi l'URL per "Segnalazione disservizio" se è vuoto
+		if ($item->title == 'Segnalazione disservizio' && $item->url == '#') {
+		    $item->url = 'mailto:' . dci_get_option("email_principale");
 		}
 
 
-
-		
+	
 		$data_element = '';
 		   // Imposta data-elements
 		        if ($item->title == 'Leggi le FAQ') {
