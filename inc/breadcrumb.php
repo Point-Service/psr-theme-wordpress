@@ -412,10 +412,10 @@ class Breadcrumb_Trail {
 				            // Crea un link alla pagina "amministrazione/aree-amministrative"
 				            $aree_amministrative_link = home_url("amministrazione/aree-amministrative");
 				            $this->items[] = "<a href='" . esc_url($aree_amministrative_link) . "'>Aree Amministrative</a>"; // Link Aree Amministrative
-				        } elseif (in_array('personale-amministrativo', $referer_parts)) {
-				            // Crea un link alla pagina "amministrazione/personale-amministrativo"
-				            $personale_link = home_url("amministrazione/personale-amministrativo");
-				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
+				        } elseif (in_array('organi-di-governo', $referer_parts)) {
+				            // Crea un link alla pagina "amministrazione/organi-di-governo"
+				            $organidigoverno_link = home_url("amministrazione/organi-di-governo");
+				            $this->items[] = "<a href='" . esc_url($organidigoverno_link) . "'>Organi di Governo</a>"; // Link Personale Organi
 				        }
 				    }
 
