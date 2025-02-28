@@ -410,6 +410,15 @@ if ($terms && !is_wp_error($terms)) {
     }
 }
 
+
+$post_type = get_post_type();
+$taxonomies = get_object_taxonomies($post_type, 'objects');
+
+echo '<pre>';
+print_r($taxonomies);
+echo '</pre>';
+					
+
 // Aggiunge il titolo della pagina corrente
 $this->items[] = get_the_title();
 return;
