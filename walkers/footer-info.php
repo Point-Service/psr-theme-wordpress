@@ -57,6 +57,13 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
                    $item->url = '/page-templates/prenotazioni';
 		}
 
+		
+               // Sovrascrivi l'URL per "Segnalazione disservizio" se è vuoto
+		 if ($item->title == 'Segnalazione disservizio' && $item->url == '/#') {
+                   $item->url = '/page-templates/prenotazioni';
+		}
+
+
 
 		
 		$data_element = '';
@@ -76,7 +83,6 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		        if ($item->title == 'Note legali') {
 		            $data_element = "data-element='legal-notes'";
 		        }
-
 		
 		        if ($item->title == 'Informativa privacy') {
 		            $data_element = "data-element='privacy-policy-link'";
