@@ -395,17 +395,29 @@ class Breadcrumb_Trail {
 
 
 
-					$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
-					$terms = get_the_terms(get_the_ID(),'tipi_unita_organizzativa');
-					if($terms){
-					  foreach ($terms as $term) {
-						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_unita_organizzativa' ) ), $term->name );
-					  }
-					}
-					$this->items[] = get_the_title();
-					return;
+$this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+
+// Recupera la categoria del documento (sostituisci 'categoria_documento' con la tassonomia corretta)
+$terms = get_the_terms(get_the_ID(), 'categoria_documento');
+
+if ($terms && !is_wp_error($terms)) {
+    foreach ($terms as $term) {
+        $this->items[] = sprintf(
+            '<a href="%s">%s</a>',
+            esc_url(get_term_link($term, 'categoria_documento')),
+            esc_html($term->name)
+        );
+    }
+}
+
+// Aggiunge il titolo della pagina corrente
+$this->items[] = get_the_title();
+return;
+
+
+
+
 					
-				
 				    return;
 				}
 
