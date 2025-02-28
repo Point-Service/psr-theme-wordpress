@@ -13,7 +13,7 @@ $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
 ?>
-
+mmm
 <?php if ($img) { ?>
 <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
     <div class="card-image-wrapper with-read-more">
