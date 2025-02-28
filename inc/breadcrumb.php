@@ -390,24 +390,30 @@ class Breadcrumb_Trail {
 				}
 
 
-	                        if (get_post_type() == 'unita_organizzativa') {	
+	                      if (get_post_type() == 'unita_organizzativa') {
 				    // Aggiungi il link alla pagina di amministrazione
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
-			
-                               $terms = get_the_terms($post, 'tipi_unita_organizzativa');
-
-if ($terms && !is_wp_error($terms)) {
-    // Cicla attraverso ogni termine e stampane il nome
-    foreach ($terms as $term) {
-        echo 'Termine: ' . esc_html($term->name) . '<br>';
-    }
-} else {
-    echo 'Nessun termine trovato o errore.';
-}
-
-
-
-	
+				
+				    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
+				    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
+				
+				    if ($terms && !is_wp_error($terms)) {
+				        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
+				        foreach ($terms as $term) {
+				            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
+				            if (esc_html($term->name) == 'Struttura Politica') {
+				                // Link Politici
+				                $politici_link = home_url("amministrazione/politici");
+				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; 
+				            }
+				            // Altri termini
+				            else {
+				                // Stampa il termine (opzionale, per debugging o altro scopo)
+				                echo 'Termine: ' . esc_html($term->name) . '<br>';
+				            }
+				        }
+				    }
+				
 				    // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
 				    $referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 				
@@ -421,19 +427,15 @@ if ($terms && !is_wp_error($terms)) {
 				        if (in_array('aree-amministrative', $referer_parts)) {
 				            // Crea un link alla pagina "amministrazione/aree-amministrative"
 				            $aree_amministrative_link = home_url("amministrazione/aree-amministrative");
-				            $this->items[] = "<a href='" . esc_url($aree_amministrative_link) . "'>Aree Amministrative</a>"; // Link Aree Amministrative
+				            $this->items[] = "<a href='" . esc_url($aree_amministrative_link) . "'>Aree Amministrative</a>";
 				        } elseif (in_array('organi-di-governo', $referer_parts)) {
 				            // Crea un link alla pagina "amministrazione/organi-di-governo"
 				            $organidigoverno_link = home_url("amministrazione/organi-di-governo");
-				            $this->items[] = "<a href='" . esc_url($organidigoverno_link) . "'>Organi di Governo</a>"; // Link Personale Organi
+				            $this->items[] = "<a href='" . esc_url($organidigoverno_link) . "'>Organi di Governo</a>";
 				        }
 				    }
-
-
-
-
-					
-				    // Aggiunge il titolo della pagina corrente
+				
+				    // Aggiungi il titolo della pagina corrente
 				    $this->items[] = get_the_title();
 				    return;
 				}
