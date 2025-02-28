@@ -416,13 +416,10 @@ class Breadcrumb_Trail {
 					return;
 					
 				}
-
+global $post;
+setup_postdata($post);
 $post_type = get_post_type();
-$taxonomies = get_object_taxonomies($post_type, 'objects');
-
-echo '<pre>';
-print_r($taxonomies);
-echo '</pre>';
+echo 'Tipologia pagina: ' . esc_html($post_type);
 
 
 		                          if (get_post_type() == 'unita_organizzativa') {	
