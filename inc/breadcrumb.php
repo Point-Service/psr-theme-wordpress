@@ -422,32 +422,48 @@ class Breadcrumb_Trail {
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 
 
-
-
-global $post;
-setup_postdata($post);
-$post_type = get_post_type();
-echo 'Tipologia pagina: ' . esc_html($post_type);
-
-
-
-
-					
-				    // Recupera i termini della tassonomia 'tipi_persona_pubblica'
-				    $terms = get_the_terms(get_the_ID(), 'tipi_persona_pubblica');
-					
-				var_dump(get_object_taxonomies('persona_pubblica')); 
-					
-				    if ($terms && !is_wp_error($terms)) {
-				        foreach ($terms as $term) {
-				            $this->items[] = sprintf(
-				                '<a href="%s">%s</a>',
-				                esc_url(get_term_link($term, 'tipi_persona_pubblica')),
-				                esc_html($term->name)
-				            );
-				        }
-				    }
+                                 // Ottieni l'URL corrente
+				$current_url = home_url(add_query_arg(array(), $_SERVER['REQUEST_URI'])); 
 				
+				// Estrarre il percorso dall'URL
+				$url_path = parse_url($current_url, PHP_URL_PATH);
+				$path_parts = explode('/', trim($url_path, '/'));
+				
+				// Determina la categoria dalla struttura dell'URL (la categoria è la seconda parte)
+				if (isset($path_parts[2])) { 
+				    $category = $path_parts[1]; // La categoria è la seconda parte del percorso, quindi $path_parts[1]
+				echo  $category;
+				    if ($category === 'luoghi') {
+				        $category_link = home_url("vivere-il-comune/luoghi");
+				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Luoghi", "design_comuni_italia") . "</a>"; 
+				        $terms = get_the_terms(get_the_ID(),'categorie_servizio');
+					
+			              $terms = get_the_terms(get_the_ID(),'tipi_luogo');
+					if($terms){
+					  foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_luogo' ) ), $term->name );
+					  }
+					}
+				        
+				    } elseif ($category === 'eventi') {
+				        $category_link = home_url("vivere-il-comune/eventi");
+				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
+				        
+                                       $terms = get_the_terms(get_the_ID(),'tipi_evento');
+					if($terms){
+					  foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_evento' ) ), $term->name );
+					  }
+					}
+					    
+					    
+				    }
+				}
+
+
+
+
+					
 				    // Aggiunge il titolo della pagina corrente
 				    $this->items[] = get_the_title();
 				    return;
