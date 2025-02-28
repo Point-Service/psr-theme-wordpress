@@ -39,7 +39,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 	
                // Sovrascrivi l'URL per "Comunicati" se è vuoto
 	        if ($item->title == 'Comunicati' && $item->url == '/novita') {
-	            $item->url = '/tipi_notizia/comunicato-stampa';
+	            $item->url = '/tipi_notizia/comunicati';
 	        }
 
                // Sovrascrivi l'URL per "Notizie" se è vuoto
