@@ -17,7 +17,7 @@ $post_type = get_post_type($post->ID);
 // Recupera il nome del tipo di post (tipologia) in una forma leggibile
 $post_type_object = get_post_type_object($post_type);
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
-
+echo $post_type_label;
 ?>
 
 <?php if ($img) { ?>
@@ -25,7 +25,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
     <div class="card-image-wrapper with-read-more">
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
-                <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($post_type_label->post_title); ?></span>
+                <span class="category title-xsmall-semi-bold fw-semibold"><?php echo esc_html($page->post_title); ?></span>
                 <?php if (is_array($arrdata) && count($arrdata)) { ?>
                     <span class="data fw-normal">
                         <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
