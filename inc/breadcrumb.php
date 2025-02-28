@@ -414,16 +414,48 @@ class Breadcrumb_Trail {
 					// Aggiunge il titolo della pagina corrente
 					$this->items[] = get_the_title();
 					return;
+					
+				}
 
+$post_type = get_post_type();
+$taxonomies = get_object_taxonomies($post_type, 'objects');
+
+echo '<pre>';
+print_r($taxonomies);
+echo '</pre>';
+
+
+		                          if (get_post_type() == 'unita_organizzativa') {	
+				//	print_r(get_post());
+
+	                              $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+					
+					// Recupera i termini della tassonomia 'tipi_unita_organizzativa'
+					$terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
+					
+					if ($terms && !is_wp_error($terms)) {
+					    foreach ($terms as $term) {
+					        // Se il termine è "area", sostituisci con "Aree Amministrative"
+					        $term_name = ($term->slug === 'area') ? __("Aree Amministrative", "design_comuni_italia") : $term->name;
+					
+					        $this->items[] = sprintf(
+					            '<a href="amministrazione/aree-amministrative">Aree Amministrative</a>',
+					            esc_url(get_term_link($term, 'tipi_unita_organizzativa')),
+					            esc_html($term_name)
+					        );
+					    }
+					}
+					
+					// Aggiunge il titolo della pagina corrente
+					$this->items[] = get_the_title();
+					return;
 					
 				}
 
 		    
-		    
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
-				    
 			case 'Vivere il comune' :
 				// Aggiungi il link alla pagina principale "Vivere il Comune"
 			
