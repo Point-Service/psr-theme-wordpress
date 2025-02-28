@@ -394,23 +394,34 @@ class Breadcrumb_Trail {
 				//	print_r(get_post());
 
 	                              $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+
+
+
+
+	                                // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
+					    $referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 					
-					// Recupera i termini della tassonomia 'tipi_unita_organizzativa'
-					$terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
+					    // Verifica se il referrer è presente e contiene una delle parole chiave per distinguere la pagina
+					    if (!empty($referer_url)) {
+					        // Estrai il percorso del referrer
+					        $referer_path = parse_url($referer_url, PHP_URL_PATH);
+					        $referer_parts = explode('/', trim($referer_path, '/'));
 					
-					if ($terms && !is_wp_error($terms)) {
-					    foreach ($terms as $term) {
-					        // Se il termine è "area", sostituisci con "Aree Amministrative"
-					        $term_name = ($term->slug === 'area') ? __("Aree Amministrative", "design_comuni_italia") : $term->name;
-					
-					        $this->items[] = sprintf(
-					            '<a href="amministrazione/aree-amministrative">Aree Amministrative</a>',
-					            esc_url(get_term_link($term, 'tipi_unita_organizzativa')),
-					            esc_html($term_name)
-					        );
+					        // Verifica se il referrer corrisponde a "Aree Amministrative"
+					        if (in_array('aree-amministrative', $referer_parts)) {
+					            // Crea un link alla pagina "amministrazione/aree-amministrative"
+					            $aree-amministrative_link = home_url("amministrazione/aree-amministrative");
+					            $this->items[] = "<a href='" . esc_url($aree-amministrative_link) . "'>Aree Amministrative</a>"; // Link Aree Amministrative
+							
+					        } elseif (in_array('personale-amministrativo', $referer_parts)) {
+					            // Crea un link alla pagina "amministrazione/personale-amministrativo"
+					            $personale_link = home_url("amministrazione/personale-amministrativo");
+					            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
+					        }
 					    }
-					}
-					
+				
+
+
 					// Aggiunge il titolo della pagina corrente
 					$this->items[] = get_the_title();
 					return;
@@ -418,34 +429,35 @@ class Breadcrumb_Trail {
 				}
 
 
-if (get_post_type() == 'persona_pubblica') {
-    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
-
-    // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
-    $referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-
-    // Verifica se il referrer è presente e contiene una delle parole chiave per distinguere la pagina
-    if (!empty($referer_url)) {
-        // Estrai il percorso del referrer
-        $referer_path = parse_url($referer_url, PHP_URL_PATH);
-        $referer_parts = explode('/', trim($referer_path, '/'));
-
-        // Verifica se il referrer corrisponde a "politici" o "personale-amministrativo"
-        if (in_array('politici', $referer_parts)) {
-            // Crea un link alla pagina "amministrazione/politici"
-            $politici_link = home_url("amministrazione/politici");
-            $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
-        } elseif (in_array('personale-amministrativo', $referer_parts)) {
-            // Crea un link alla pagina "amministrazione/personale-amministrativo"
-            $personale_link = home_url("amministrazione/personale-amministrativo");
-            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
-        }
-    }
-
-    // Aggiunge il titolo della pagina corrente
-    $this->items[] = get_the_title();
-    return;
-}
+				if (get_post_type() == 'persona_pubblica') {
+				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+				
+				    // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
+				    $referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+				
+				    // Verifica se il referrer è presente e contiene una delle parole chiave per distinguere la pagina
+				    if (!empty($referer_url)) {
+				        // Estrai il percorso del referrer
+				        $referer_path = parse_url($referer_url, PHP_URL_PATH);
+				        $referer_parts = explode('/', trim($referer_path, '/'));
+				
+				        // Verifica se il referrer corrisponde a "politici" o "personale-amministrativo"
+				        if (in_array('politici', $referer_parts)) {
+				            // Crea un link alla pagina "amministrazione/politici"
+				            $politici_link = home_url("amministrazione/politici");
+				            $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+						
+				        } elseif (in_array('personale-amministrativo', $referer_parts)) {
+				            // Crea un link alla pagina "amministrazione/personale-amministrativo"
+				            $personale_link = home_url("amministrazione/personale-amministrativo");
+				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
+				        }
+				    }
+				
+				    // Aggiunge il titolo della pagina corrente
+				    $this->items[] = get_the_title();
+				    return;
+				}
 
 
 
