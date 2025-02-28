@@ -447,7 +447,6 @@ class Breadcrumb_Trail {
                     case 'Amministrazione':
                         $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
                         $this->items[] = get_the_title();
-				
                         return;
                         break;
                     case 'Servizi':
@@ -500,9 +499,10 @@ class Breadcrumb_Trail {
                     //$this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";
 
 		if (is_post_type_archive()) {
-		    $this->add_post_type_archive_items();		
+		    $this->add_post_type_archive_items();
+		
 		 
-		ì
+			
 		}
 
                 elseif ( is_category() || is_tag() || is_tax() ){
