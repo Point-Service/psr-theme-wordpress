@@ -516,6 +516,13 @@ class Breadcrumb_Trail {
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }
+
+                    else if (is_tax(array("documento_pubblico"))){
+                        $this->items[] = "<a href='".home_url("documenti-e-dati")."'>".__("Documenti e dati", "design_comuni_italia")."</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+                    }
+
 			    
 		   else if (is_tax(array("tipi_luogo"))) {		
 			    // Link a "Vivere il Comune"
