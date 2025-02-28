@@ -405,6 +405,10 @@ class Breadcrumb_Trail {
 				                // Link Politici
 				                $politici_link = home_url("amministrazione/politici");
 				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; 
+						    
+						$politici_link = home_url("amministrazione/organi-di-governo");
+				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>organi-di-governo</a>"; 
+						   
 				            }
 				            // Altri termini
 				            else {
