@@ -78,7 +78,7 @@ function dci_notizia_admin_script() {
     <?php
 } ?>
 
-<?php
+
 
 add_action( 'cmb2_init', 'dci_add_notizia_metaboxes' );
 function dci_add_notizia_metaboxes() {
