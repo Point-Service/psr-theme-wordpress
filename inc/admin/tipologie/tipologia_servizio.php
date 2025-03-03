@@ -79,6 +79,18 @@ function dci_add_servizi_metaboxes() {
 			"false" => __( 'Disattivo', 'design_comuni_italia' ),
 		),
 	) );
+    
+    $cmb_stato->add_field( array(
+		'id'        => $prefix .'periodo',
+		'name'       => __( 'Periodo', 'design_comuni_italia' ),
+        'desc'       => __( 'Indica un periodo in cui il servizio e attivo.' , 'design_comuni_italia' ),
+        'type'       => 'text',
+        'attributes' => array(
+            'maxlength'  => '21',
+        ),
+	) );
+
+
 
 	$cmb_stato->add_field(array(
 		'id'         => $prefix . 'motivo_stato',
@@ -87,7 +99,7 @@ function dci_add_servizi_metaboxes() {
 		'type'       => 'textarea_small',
 		'attributes' => array(
 			'data-conditional-id'    => $prefix.'stato',
-			'data-conditional-value' => "false",
+			'data-conditional-value' => "true",
 		),
 	) );
 
@@ -684,3 +696,4 @@ function dci_servizio_set_post_content( $data ) {
     return $data;
 }
 add_filter( 'wp_insert_post_data' , 'dci_servizio_set_post_content' , '99', 1 );
+
