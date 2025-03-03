@@ -480,7 +480,9 @@ class Breadcrumb_Trail {
 					    // Estrai il percorso del referrer
 					    $referer_path = parse_url($referer_url, PHP_URL_PATH);
 					    $referer_parts = explode('/', trim($referer_path, '/'));
-					
+                                            
+					    echo $referer_parts ;
+						
 					    // Verifica se il referrer corrisponde a "politici"
 					    if (in_array('politici', $referer_parts)) {
 					        // Crea un link alla pagina "amministrazione/politici"
@@ -493,6 +495,7 @@ class Breadcrumb_Trail {
 					        $politici_link = home_url("amministrazione/politici");
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
 						    
+					     // Se la tipologia della pagina è "struttura-politica" e il referrer non è "politici"
 					    } elseif (in_array('personale-amministrativo', $referer_parts)) {
 					        // Crea un link alla pagina "amministrazione/personale-amministrativo"
 					        $personale_link = home_url("amministrazione/personale-amministrativo");
