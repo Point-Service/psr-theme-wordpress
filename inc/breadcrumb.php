@@ -527,6 +527,9 @@ if (get_post_type() == 'persona_pubblica') {
                     case 'altro':  // Se l'incarico è 'altro'
                         $destinazione = 'https://www.sito.com/pagina-altro';  // URL per altro
                         break;
+		    case '':  // Se l'incarico è 'vuoto'
+                        $destinazione = 'https://www.sito.com/amministrativo';  // URL per altro
+                        break;
                     default:  // Se non ci sono corrispondenze
                         $destinazione = 'https://www.sito.com/pagina-default';  // URL di default
                         break;
