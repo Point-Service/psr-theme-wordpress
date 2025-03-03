@@ -240,7 +240,7 @@
 						<ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
                             <li class="list-inline-item d-flex">
                                 <small>  © <?php echo dci_get_option("nome_comune"); ?>
-				    <small> &nbsp;| Sviluppato da <a class="text-primary" style="text-decoration:none;" target="_Black" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">
+				    <small>&nbsp;&nbsp;|&nbsp;&nbsp;Sviluppato da <a class="text-primary" style="text-decoration:none;" target="_Black" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">
                                     <span id="footerCompanyLabel" style="color: #fff">
                                         &nbsp;Point Service S.r.l
                                     </span>					    
