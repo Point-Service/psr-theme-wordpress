@@ -397,20 +397,12 @@ class Breadcrumb_Trail {
 				
 				    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
 				    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
-				echo 's';
+			
 				    if ($terms && !is_wp_error($terms)) {
 				        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
 				        foreach ($terms as $term) {
 						
-				            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-				        if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
-				                // Link Politici
-				                $politici_link = home_url("amministrazione/politici");
-				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; 
-						    
-						$politici_link = home_url("amministrazione/organi-di-governo");
-				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Organi Di Governo</a>"; 						   
-				            }
+			
 					
 				           											
 						
