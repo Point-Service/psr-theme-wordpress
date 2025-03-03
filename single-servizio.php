@@ -181,8 +181,17 @@ get_header();
                     <div class="chip chip-simple" data-element="service-status">
                         <span class="chip-label">
                             <?php echo ($stato == 'true') ? 'Servizio attivo' : 'Servizio non attivo'; ?>
-                        </span>
+                        </span>			    
                     </div>
+			<?php
+			// Controlla se le due date sono presenti
+			if ($startDate && $endDate) {
+			    // Se entrambe le date sono presenti, mostra il periodo
+			    echo '<div class="service-period">';
+			    echo '<strong>Periodo di validità:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y');
+			    echo '</div>';
+			}
+			?>
                 </li>
             </ul>
             <p class="subtitle-small mb-3">
