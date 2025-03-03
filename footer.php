@@ -242,8 +242,7 @@
 	                                <small>  © <?php echo dci_get_option("nome_comune"); ?>
 					   <?php
 						// Recupera il valore dell'opzione 'firma_nostra'
-						$firma_nostra = get_option( $prefix . 'firma_nostra', 'false' );
-						
+						$firma_nostra =  dci_get_option("firma_nostra",'header');						
 						// Se l'opzione è impostata su 'false', mostra la firma
 						if ( $firma_nostra == 'false' ) : ?>
 						    &nbsp;&nbsp;-&nbsp;&nbsp;Sviluppato da 
