@@ -81,6 +81,7 @@ get_header();
             function isDateInPeriod($date, $startDate, $endDate) {
             //    $checkDate = DateTime::createFromFormat('d/m/Y', $date);
             //    return ($checkDate >= $startDate && $checkDate <= $endDate);
+		    echo 'scaduto';
             }
 
             ?>
