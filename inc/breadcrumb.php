@@ -482,6 +482,7 @@ class Breadcrumb_Trail {
 					    $referer_parts = explode('/', trim($referer_path, '/'));
 						
                                             echo get_post_type();
+					  
 					   						
 					    // Verifica se il referrer corrisponde a "politici"
 					    if (in_array('politici', $referer_parts)) {
@@ -498,8 +499,15 @@ class Breadcrumb_Trail {
 					    
 					    } elseif (get_post_type() == 'persona_pubblica' && !in_array('persona_pubblica', $referer_parts)) {
 					       
-					        $politici_link = home_url("persona_pubblica");
-					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Persona Pubblica</a>"; 
+				                 $politici_link = home_url("amministrazione/politici");
+					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+
+						    
+                                             } elseif (get_post_type() == 'persona_pubblica' && !in_array('consiglio-comunale', $referer_parts)) {					       
+				                $politici_link = home_url("amministrazione/politici");
+					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+
+						    
 					     } elseif (get_post_type() == 'persona_pubblica') {
 						   				       
 					        $politici_link = home_url("persona_pubblica");
