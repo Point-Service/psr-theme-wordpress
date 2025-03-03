@@ -516,8 +516,8 @@ class Breadcrumb_Trail {
 						    
 					     } elseif (get_post_type() == 'persona_pubblica') {
 						   				       
-					        $politici_link = home_url("amministrazione/politici");
-					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+				                $politici_link = home_url("amministrazione/personale-amministrativo");
+					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Personale Amministrativo</a>"; // Link Politici
 						    
 					     // Se la tipologia della pagina è "struttura-politica" e il referrer non è "politici"
 					    } elseif (in_array('personale-amministrativo', $referer_parts)) {
