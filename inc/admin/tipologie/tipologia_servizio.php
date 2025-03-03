@@ -110,47 +110,6 @@ function dci_add_servizi_metaboxes() {
 		
 
 
-
-// Aggiungi una funzione di convalida per le date
-add_filter( 'cmb2_validate_text', 'validate_servizio_dates', 10, 5 );
-function validate_servizio_dates( $check, $value, $field_args, $field ) {
-
-    // Controlla se il campo è uno dei campi data
-    if ( $field->id() === '_dci_servizio_data_inizio_servizio' || $field->id() === '_dci_servizio_data_fine_servizio' ) {
-
-        // Verifica se la data è vuota
-        if ( empty( $value ) ) {
-            return $check; // Non fa nulla se il campo è vuoto
-        }
-
-        // Verifica se la data è valida
-        $date = DateTime::createFromFormat('d/m/Y', $value);
-
-        if ( ! $date || $date->format('d/m/Y') !== $value ) {
-            return 'La data inserita non è valida. Usa il formato gg/mm/aaaa.';
-        }
-
-        // Se la data di fine è presente, verifica che sia successiva alla data di inizio
-        if ( $field->id() === '_dci_servizio_data_fine_servizio' ) {
-            $data_inizio = get_post_meta( get_the_ID(), '_dci_servizio_data_inizio_servizio', true );
-            if ( ! empty( $data_inizio ) ) {
-                $start_date = DateTime::createFromFormat('d/m/Y', $data_inizio);
-                $end_date = DateTime::createFromFormat('d/m/Y', $value);
-
-                if ( $end_date <= $start_date ) {
-                    return 'La data di fine deve essere successiva alla data di inizio.';
-                }
-            }
-        }
-    }
-
-    return $check;
-}
-
-
-
-
-
 	
 
 	$cmb_stato->add_field(array(
