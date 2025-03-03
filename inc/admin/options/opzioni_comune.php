@@ -167,7 +167,15 @@ function dci_register_comune_options(){
     ));
 
 
-    $header_options->add_field(array(
+    $header_options->add_field( array(
+        'id'    => $prefix . 'dichiarazioneaccessibilita',
+        'name'  => __( 'Dichiarazione Accessibilità', 'design_comuni_italia' ),
+        'desc'  => __( 'Inserisci qui il link della dichiarazione di accessibilità', 'design_comuni_italia' ),
+        'type'  => 'text'
+    ));
+
+    
+      $header_options->add_field(array(
         'id' => $prefix . 'firma_nostra',
         'name' => __('Nascondi la nostra firma.', 'design_comuni_italia'),
         'desc' => __('Opzione per nascondere dal footer la nostra firma.', 'design_comuni_italia'),
@@ -181,13 +189,5 @@ function dci_register_comune_options(){
             'data-conditional-value' => "false",
         ),
     ));
-
-    
-    $header_options->add_field( array(
-        'id'    => $prefix . 'dichiarazioneaccessibilita',
-        'name'  => __( 'Dichiarazione Accessibilità', 'design_comuni_italia' ),
-        'desc'  => __( 'Inserisci qui il link della dichiarazione di accessibilità', 'design_comuni_italia' ),
-        'type'  => 'text'
-    ));
-    
+  
 }
