@@ -17,8 +17,44 @@ get_header();
             the_post();
             $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
 
+
+		
+		 // Recupera le date di inizio e fine del servizio
+		        $data_inizio_servizio = dci_get_meta("_dci_servizio_data_inizio_servizio");
+		        $data_fine_servizio = dci_get_meta("_dci_servizio_data_fine_servizio");
+		
+		        // Recupera lo stato del servizio
+		        $stato = dci_get_meta("_dci_servizio_stato");
+		
+		        // Converte le date in formato DateTime
+		        $oggi = new DateTime(); // data di oggi
+		        $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
+		        $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
+		
+		       
+			// Controlla se entrambe le date sono presenti e che la data di inizio sia inferiore alla data di fine
+			if ($startDate && $endDate && $startDate < $endDate) {
+			    // Verifica se la data di oggi è all'interno del periodo
+			    if ($oggi >= $startDate && $oggi <= $endDate) {
+			        // Servizio attivo
+			        $stato = "true";
+			    } else {
+			        // Servizio disattivato automaticamente
+			        $stato = "false";
+			    }
+			
+			    // Aggiorna lo stato del servizio nel database solo se entra in questa condizione
+			    update_post_meta($post->ID, "_dci_servizio_stato", $stato);
+			} else {
+			    // Se le date non sono valide (entrambe mancanti o data inizio >= data fine), stato è "false"
+			    $stato = "false";
+			    // Non aggiorno lo stato nel database se non entra in questa condizione
+			}
+
+
+
             // prefix: _dci_servizio_
-            $stato = dci_get_meta("stato");
+            $stato = dci_get_meta("stato");		
             $periodo = dci_get_meta("periodo"); 
             $motivo_stato = dci_get_meta("motivo_stato");
             $sottotitolo = dci_get_meta("sottotitolo");
@@ -73,16 +109,14 @@ get_header();
             };
             
 
-            // Conversione del periodo in un array
-            $dates = explode('-', $periodo);
-            $startDate = DateTime::createFromFormat('d/m/Y', trim($dates[0]));
-            $endDate = DateTime::createFromFormat('d/m/Y', trim($dates[1]));
 
-            function isDateInPeriod($date, $startDate, $endDate) {
-            //    $checkDate = DateTime::createFromFormat('d/m/Y', $date);
-            //    return ($checkDate >= $startDate && $checkDate <= $endDate);
-		    echo 'scaduto';
-            }
+
+
+
+
+
+
+		
 
             ?>
       <script type="application/ld+json" data-element="metatag">
