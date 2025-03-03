@@ -521,8 +521,9 @@ class Breadcrumb_Trail {
 				            $personale_link = home_url("amministrazione/personale-amministrativo");
 				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
 				        } else {
-				            // Se l'incarico non è "Politico" e non è vuoto, usa una logica di default o altro
-				            // Puoi aggiungere qui altri incarichi come "amministrativo", "altro", ecc.
+				            // Se il tipo di incarico è vuoto, crea un link alla pagina "amministrazione/personale-amministrativo"
+				            $personale_link = home_url("amministrazione/personale-amministrativo");
+				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
 				        }
 				    } else {
 				        // Se non ci sono incarichi, mostra i termini associati al post
