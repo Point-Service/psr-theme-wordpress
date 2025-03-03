@@ -237,13 +237,14 @@
 						
 			                      
 						
-			 <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
+			  <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
 	                            <li class="list-inline-item d-flex">
 	                                <small>  © <?php echo dci_get_option("nome_comune"); ?>
 					   <?php
 						// Recupera il valore dell'opzione 'firma_nostra'
 						$firma_nostra =  dci_get_option("firma_nostra",'header');						
 						// Se l'opzione è impostata su 'false', mostra la firma
+echo $firma_nostra;
 						if ( $firma_nostra == 'false' ) : ?>
 						    &nbsp;&nbsp;-&nbsp;&nbsp;Sviluppato da 
 						        <a class="text-primary" style="text-decoration:none;" target="_blank" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">
