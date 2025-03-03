@@ -468,96 +468,71 @@ class Breadcrumb_Trail {
 				}
 				
 				
-if (get_post_type() == 'persona_pubblica') {
-    // Aggiungi il link per l'amministrazione
-    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+				if (get_post_type() == 'persona_pubblica') {
+				    // Aggiungi il link per l'amministrazione
+				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+				
+				    // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
+				    $referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+				
+				    // Verifica se il referrer è presente
+				    if (!empty($referer_url)) {
+				        // Estrai il percorso del referrer
+				        $referer_path = parse_url($referer_url, PHP_URL_PATH);
+				        $referer_parts = explode('/', trim($referer_path, '/'));
+				    }
+				
+				    // Recupera gli incarichi, se esistono
+				    $incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post
+				
+				    if (!empty($incarichi)) {
+				        // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
+				        $incarico = get_the_title($incarichi[0]);
+				
+				        // Recupero dei termini di tipo incarico
+				        $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
+				
+				        // Controllo se i termini di tipo incarico esistono e non ci sono errori
+				        if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
+				            $tipo_incarico = $tipo_incarico_terms[0]->name;
+				        } else {
+				            $tipo_incarico = ''; // Valore di fallback se non ci sono termini
+				        }
+				
+				        // Se ci sono incarichi, determina la destinazione in base all'incarico
+				        $destinazione = '';
+				        
+				        // Aggiungi il tipo di incarico (opzionale, per debugging o altro scopo)
+				        echo $tipo_incarico;
+				
+				        // Determina la destinazione in base al tipo di incarico
+				        if ($tipo_incarico == 'Politico') {
+				            // Se l'incarico è "Politico", crea un link alla pagina "amministrazione/politici"
+				            $politici_link = home_url("amministrazione/politici");
+				            $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+				        } elseif (empty($tipo_incarico)) {
+				            // Se il tipo di incarico è vuoto, crea un link alla pagina "amministrazione/personale-amministrativo"
+				            $personale_link = home_url("amministrazione/personale-amministrativo");
+				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
+				        } else {
+				            // Se l'incarico non è "Politico" e non è vuoto, usa una logica di default o altro
+				            // Puoi aggiungere qui altri incarichi come "amministrativo", "altro", ecc.
+				        }
+				    } else {
+				        // Se non ci sono incarichi, mostra i termini associati al post
+				        $terms = get_the_terms(get_the_ID(), 'tipi_documento');
+				        if (!empty($terms) && !is_wp_error($terms)) {
+				            foreach ($terms as $term) {
+				                $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_documento')), $term->name);
+				            }
+				        }
+				    }
+				
+				    // Aggiungi il titolo della pagina corrente
+				    $this->items[] = get_the_title();
+				    return;
+				}
 
-    // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
-    $referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-
-    // Verifica se il referrer è presente
-    if (!empty($referer_url)) {
-        // Estrai il percorso del referrer
-        $referer_path = parse_url($referer_url, PHP_URL_PATH);
-        $referer_parts = explode('/', trim($referer_path, '/'));
-
-	    
-           // Recupera gli incarichi, se esistono
-                $incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post
-        
-                if (!empty($incarichi)) {
-                    // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
-                    $incarico = get_the_title($incarichi[0]);
-                    
-                    // Recupero dei termini di tipo incarico
-                    $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
-                    
-                    // Controllo se i termini di tipo incarico esistono e non ci sono errori
-                    if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
-                        $tipo_incarico = $tipo_incarico_terms[0]->name;
-                    } else {
-                        $tipo_incarico = ''; // Valore di fallback se non ci sono termini
-                    }
-                } else {
-                    $incarico = ''; // Valore di fallback se non ci sono incarichi
-                    $tipo_incarico = ''; // Valore di fallback se non ci sono incarichi
-                }
-	    
-
-
-
-	    
-        // Se ci sono incarichi
-        if (!empty($incarichi)) {
-          
-                // Determina la destinazione in base all'incarico
-                $destinazione = '';
- 
-		echo $tipo_incarico;
-
-                // Usa uno switch per determinare la destinazione in base all'incarico
-                switch ($tipo_incarico) {
-			
-                    case 'amministrativo':  // Se l'incarico è 'amministrativo'
-                        $destinazione = 'https://www.sito.com/pagina-amministrativa';  // URL per amministrativo
-                        break;
-                    case 'politico':  // Se l'incarico è 'politico'
-			 $politici_link = home_url("amministrazione/politici");
-			 $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
-                        $destinazione = 'https://www.sito.com/pagina-politica';  // URL per politico
-                        break;
-                    case 'altro':  // Se l'incarico è 'altro'
-                        $destinazione = 'https://www.sito.com/pagina-altro';  // URL per altro
-                        break;
-		    case '':  // Se l'incarico è 'vuoto'
-                        $destinazione = 'https://www.sito.com/amministrativo';  // URL per altro
-                        break;
-                    default:  // Se non ci sono corrispondenze
-                        $destinazione = 'https://www.sito.com/pagina-default';  // URL di default
-                        break;
-                }
-		
-   		
-                // Aggiungi il link con la destinazione
-                if ($destinazione) {
-                 //   $this->items[] = sprintf('<a href="%s">%s</a>', esc_url($destinazione), ucfirst($incarico));
-                }
-            }
-         else {
-            // Se non ci sono incarichi, mostra i termini associati al post
-            $terms = get_the_terms(get_the_ID(), 'tipi_documento');
-            if (!empty($terms) && !is_wp_error($terms)) {
-                foreach ($terms as $term) {
-                    $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_documento')), $term->name);
-                }
-            }
-        }
-    }
-
-    // Aggiungi il titolo della pagina corrente
-    $this->items[] = get_the_title();
-    return;
-}
 
 
 
