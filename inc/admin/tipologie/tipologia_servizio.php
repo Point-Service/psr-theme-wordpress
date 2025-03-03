@@ -79,30 +79,55 @@ function dci_add_servizi_metaboxes() {
 			"false" => __( 'Disattivo', 'design_comuni_italia' ),
 		),
 	) );
-    
-	// Gruppo per periodo di validità del servizio
-	$cmb_stato->add_field(array(
-	    'id'   => $prefix . 'periodo_servizio',
-	    'name' => __( 'Periodo di validità', 'design_comuni_italia' ),
-	    'desc' => __( 'Imposta un intervallo di date per definire il periodo in cui il servizio sarà attivo. Se lasciato vuoto, il servizio sarà considerato sempre attivo.', 'design_comuni_italia' ),
-	    'type' => 'title',
-	));
+
+
 	
-	$cmb_stato->add_field( array(
-	    'id'          => $prefix . 'data_inizio_servizio',
-	    'name'        => __( 'Data di inizio', 'design_comuni_italia' ),
-	    'desc'        => __( 'Seleziona la data a partire dalla quale il servizio sarà disponibile.', 'design_comuni_italia' ),
-	    'type'        => 'text_date',
-	    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
-	) );
-	
-	$cmb_stato->add_field( array(
-	    'id'          => $prefix . 'data_fine_servizio',
-	    'name'        => __( 'Data di fine', 'design_comuni_italia' ),
-	    'desc'        => __( 'Seleziona la data in cui il servizio terminerà. Se lasciato vuoto, il servizio resterà attivo fino a nuova modifica.', 'design_comuni_italia' ),
-	    'type'        => 'text_date',
-	    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
-	) );
+		// Gruppo per periodo di validità del servizio
+		$cmb_stato->add_field(array(
+		    'id'   => $prefix . 'periodo_servizio',
+		    'name' => __( 'Periodo di validità', 'design_comuni_italia' ),
+		    'desc' => __( 'Imposta un intervallo di date per definire il periodo in cui il servizio sarà attivo. Se lasciato vuoto, il servizio sarà considerato sempre attivo.', 'design_comuni_italia' ),
+		    'type' => 'title',
+		));
+		
+		$cmb_stato->add_field( array(
+		    'id'          => $prefix . 'data_inizio_servizio',
+		    'name'        => __( 'Data di inizio', 'design_comuni_italia' ),
+		    'desc'        => __( 'Seleziona la data a partire dalla quale il servizio sarà disponibile.', 'design_comuni_italia' ),
+		    'type'        => 'text_date',
+		    'date_format' => 'd/m/Y',
+		    'sanitization_cb' => 'dci_validate_date_range', // Callback per validazione
+		) );
+		
+		$cmb_stato->add_field( array(
+		    'id'          => $prefix . 'data_fine_servizio',
+		    'name'        => __( 'Data di fine', 'design_comuni_italia' ),
+		    'desc'        => __( 'Seleziona la data in cui il servizio terminerà. Se lasciato vuoto, il servizio resterà attivo fino a nuova modifica.', 'design_comuni_italia' ),
+		    'type'        => 'text_date',
+		    'date_format' => 'd/m/Y',
+		    'sanitization_cb' => 'dci_validate_date_range', // Callback per validazione
+		) );
+		
+		/**
+		 * Validazione per le date di inizio e fine servizio.
+		 */
+		function dci_validate_date_range( $override_value, $value, $object_id, $field_args, $sanitizer_object ) {
+		    $data_inizio = isset( $_POST['_dci_servizio_data_inizio_servizio'] ) ? $_POST['_dci_servizio_data_inizio_servizio'] : '';
+		    $data_fine = isset( $_POST['_dci_servizio_data_fine_servizio'] ) ? $_POST['_dci_servizio_data_fine_servizio'] : '';
+		
+		    if ( !empty( $data_inizio ) && !empty( $data_fine ) ) {
+		        $inizio = DateTime::createFromFormat('d/m/Y', $data_inizio);
+		        $fine = DateTime::createFromFormat('d/m/Y', $data_fine);
+		
+		        if ( $inizio && $fine && $inizio > $fine ) {
+		            add_settings_error( $field_args['id'], 'invalid_date_range', __( 'La data di inizio deve essere antecedente alla data di fine.', 'design_comuni_italia' ) );
+		            return ''; // Impedisce il salvataggio se la data è errata
+		        }
+		    }
+		
+		    return $value;
+		}
+
 
 
 
