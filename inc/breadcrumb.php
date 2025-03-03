@@ -390,10 +390,12 @@ class Breadcrumb_Trail {
 				}
 
 
-
 if (get_post_type() == 'unita_organizzativa') {
     // Aggiungi il link alla pagina di amministrazione
     $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+
+    // Array per tracciare i link già aggiunti
+    $added_links = [];
 
     // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
     $terms = get_the_terms($post, 'tipi_unita_organizzativa');
@@ -404,26 +406,29 @@ if (get_post_type() == 'unita_organizzativa') {
             // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
             if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
                 
-                // Controlliamo se il link Politici è già stato aggiunto
+                // Controlliamo e aggiungiamo il link Politici solo se non è già presente
                 $politici_link = home_url("amministrazione/politici");
                 $politici_text = "Politici";
-
-                // Aggiungi solo se non è già presente
-                if (!array_search($politici_text, array_map(function($item) { return strip_tags($item); }, $this->items))) {
+                
+                // Controlliamo se il link è già stato aggiunto
+                if (!in_array($politici_link, $added_links)) {
                     $this->items[] = "<a href='" . esc_url($politici_link) . "'>$politici_text</a>";
+                    $added_links[] = $politici_link; // Aggiungiamo il link all'array dei link aggiunti
                 }
 
-                // Controlliamo se il link Organi di Governo è già stato aggiunto
+                // Controlliamo e aggiungiamo il link Organi di Governo solo se non è già presente
                 $organi_link = home_url("amministrazione/organi-di-governo");
                 $organi_text = "Organi Di Governo";
-
-                // Aggiungi solo se non è già presente
-                if (!array_search($organi_text, array_map(function($item) { return strip_tags($item); }, $this->items))) {
+                
+                // Controlliamo se il link è già stato aggiunto
+                if (!in_array($organi_link, $added_links)) {
                     $this->items[] = "<a href='" . esc_url($organi_link) . "'>$organi_text</a>";
+                    $added_links[] = $organi_link; // Aggiungiamo il link all'array dei link aggiunti
                 }
             }
         }
     }
+
 
 				
 
