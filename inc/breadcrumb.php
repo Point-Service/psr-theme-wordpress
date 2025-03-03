@@ -468,7 +468,7 @@ class Breadcrumb_Trail {
 				}
 				
 				
-			if (get_post_type() == 'persona_pubblica') {
+if (get_post_type() == 'persona_pubblica') {
     // Aggiungi il link per l'amministrazione
     $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 
@@ -486,21 +486,8 @@ class Breadcrumb_Trail {
 
         // Se ci sono incarichi
         if (!empty($incarichi)) {
-            foreach ($incarico as $incarico_id) {
-                // Recupera il nome dell'incarico
-                $incarico_title = get_the_title($incarico_id); // Nome dell'incarico
-
-                // Recupero dei termini di tipo incarico
-                $tipo_incarico_terms = get_the_terms($incarico_id, 'tipi_incarico');
-                
-                // Determina il tipo di incarico
-                if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
-                    $tipo_incarico = $tipo_incarico_terms[0]->name; // Nome del tipo di incarico
-                } else {
-                    $tipo_incarico = 'Tipo di incarico non specificato'; // Fallback se non ci sono termini
-                }
-
-                // Determina la pagina di destinazione in base all'incarico
+            foreach ($incarichi as $incarico) {
+                // Determina la destinazione in base all'incarico
                 $destinazione = '';
 
                 // Usa uno switch per determinare la destinazione in base all'incarico
@@ -521,12 +508,7 @@ class Breadcrumb_Trail {
 
                 // Aggiungi il link con la destinazione
                 if ($destinazione) {
-                    $this->items[] = sprintf(
-                        '<a href="%s">%s - %s</a>', 
-                        esc_url($destinazione), 
-                        ucfirst($incarico_title),  // Nome incarico
-                        ucfirst($tipo_incarico)   // Tipo incarico
-                    );
+                    $this->items[] = sprintf('<a href="%s">%s</a>', esc_url($destinazione), ucfirst($incarico));
                 }
             }
         } else {
@@ -544,6 +526,7 @@ class Breadcrumb_Trail {
     $this->items[] = get_the_title();
     return;
 }
+
 
 
 
