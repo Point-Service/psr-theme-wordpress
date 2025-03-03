@@ -540,7 +540,7 @@ if (get_post_type() == 'persona_pubblica') {
    		
                 // Aggiungi il link con la destinazione
                 if ($destinazione) {
-                    $this->items[] = sprintf('<a href="%s">%s</a>', esc_url($destinazione), ucfirst($incarico));
+                 //   $this->items[] = sprintf('<a href="%s">%s</a>', esc_url($destinazione), ucfirst($incarico));
                 }
             }
          else {
