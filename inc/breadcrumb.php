@@ -499,7 +499,11 @@ class Breadcrumb_Trail {
 					    } elseif (get_post_type() == 'persona_pubblica' && !in_array('persona_pubblica', $referer_parts)) {
 					       
 					        $politici_link = home_url("persona_pubblica");
-					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Persona Pubblica</a>"; // Link Politici
+					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Persona Pubblica</a>"; 
+					     } elseif (get_post_type() == 'persona_pubblica') {
+						   				       
+					        $politici_link = home_url("persona_pubblica");
+					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Persona Pubblica</a>"; 
 						    
 					     // Se la tipologia della pagina è "struttura-politica" e il referrer non è "politici"
 					    } elseif (in_array('personale-amministrativo', $referer_parts)) {
