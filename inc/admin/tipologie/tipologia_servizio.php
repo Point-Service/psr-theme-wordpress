@@ -81,17 +81,7 @@ function dci_add_servizi_metaboxes() {
 	) );
 
 
-	
-		// Gruppo per periodo di validità del servizio
-		$cmb_stato->add_field(array(
-		    'id'   => $prefix . 'periodo_servizio',
-		    'name' => __( 'Periodo di validità', 'design_comuni_italia' ),
-		    'desc' => __( 'Imposta un intervallo di date per definire il periodo in cui il servizio sarà attivo. Se lasciato vuoto, il servizio sarà considerato sempre attivo.', 'design_comuni_italia' ),
-		    'type' => 'title',
-		));
-
-
-	
+		
 	// Gruppo per periodo di validità del servizio
 	$cmb_stato->add_field(array(
 	    'id'   => $prefix . 'periodo_servizio',
