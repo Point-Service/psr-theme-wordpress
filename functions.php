@@ -12,9 +12,6 @@
  */
 require get_template_directory() . '/inc/funzionalita_trasversali.php';
 
-require get_template_directory() . '/inc/admin/tassonomie/tassonomia_persona_pubblica.php';
-
-
 /**
  * Load more posts
  */
