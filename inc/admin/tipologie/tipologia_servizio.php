@@ -111,13 +111,13 @@ function dci_add_servizi_metaboxes() {
 	    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
 	) );
 
-	// Data fine
 	$cmb_stato->add_field( array(
 	    'id'          => $prefix . 'data_fine_servizio',
 	    'name'        => __( 'Data di fine', 'design_comuni_italia' ),
 	    'desc'        => __( 'Seleziona la data in cui il servizio terminerà. Se lasciato vuoto, il servizio resterà attivo fino a nuova modifica.', 'design_comuni_italia' ),
-	    'type'        => 'text',
+	    'type'        => 'text_date',
 	    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
+	    'default'      => '', // Imposta il valore di default se necessario
 	) );
 
 
