@@ -522,6 +522,8 @@ if (get_post_type() == 'persona_pubblica') {
                         $destinazione = 'https://www.sito.com/pagina-amministrativa';  // URL per amministrativo
                         break;
                     case 'politico':  // Se l'incarico è 'politico'
+			 $politici_link = home_url("amministrazione/politici");
+			 $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
                         $destinazione = 'https://www.sito.com/pagina-politica';  // URL per politico
                         break;
                     case 'altro':  // Se l'incarico è 'altro'
