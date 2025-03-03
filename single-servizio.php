@@ -186,8 +186,8 @@ get_header();
 			if ($startDate && $endDate) {
 			    // Se entrambe le date sono presenti, mostra il periodo
 			    echo '<div class="service-period">';
-			    echo '<strong>Periodo di validità:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y');
-			    echo '</div>';
+			    echo '<small><strong>Periodo di validità:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y');
+			    echo '</small></div>';
 			}
 			?>
                 </li>
