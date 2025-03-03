@@ -117,9 +117,7 @@ function dci_add_servizi_metaboxes() {
 		'name'       => __( 'Motivo dello stato *', 'design_comuni_italia' ),
 		'desc'       => __( 'Descrizione testuale del motivo per cui un servizio non è attivo. Es. Servizio momentaneamente disattivato perché....Servizio attivo dal...', 'design_comuni_italia' ),
 		'type'       => 'textarea_small',
-		'attributes' => array(
-			'data-conditional-id'    => $prefix.'stato',
-			'data-conditional-value' => "true",
+
 		),
 	) );
 
