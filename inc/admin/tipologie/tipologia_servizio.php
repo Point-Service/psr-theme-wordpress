@@ -80,15 +80,21 @@ function dci_add_servizi_metaboxes() {
 		),
 	) );
     
-    $cmb_stato->add_field( array(
-		'id'        => $prefix .'periodo',
-		'name'       => __( 'Periodo', 'design_comuni_italia' ),
-        'desc'       => __( 'Indica un periodo in cui il servizio e attivo.' , 'design_comuni_italia' ),
-        'type'       => 'text',
-        'attributes' => array(
-            'maxlength'  => '21',
-        ),
-	) );
+$cmb_stato->add_field( array(
+    'id'          => $prefix . 'data_inizio_servizio',
+    'name'        => __( 'Data inizio servizio', 'design_comuni_italia' ),
+    'desc'        => __( 'Seleziona la data di inizio del servizio.', 'design_comuni_italia' ),
+    'type'        => 'text_date',
+    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
+) );
+
+$cmb_stato->add_field( array(
+    'id'          => $prefix . 'data_fine_servizio',
+    'name'        => __( 'Data fine servizio', 'design_comuni_italia' ),
+    'desc'        => __( 'Seleziona la data di fine del servizio.', 'design_comuni_italia' ),
+    'type'        => 'text_date',
+    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
+) );
 
 
 
