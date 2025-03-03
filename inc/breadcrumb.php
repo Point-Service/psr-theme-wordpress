@@ -489,7 +489,10 @@ if (get_post_type() == 'persona_pubblica') {
             foreach ($incarichi as $incarico) {
                 // Determina la destinazione in base all'incarico
                 $destinazione = '';
-
+ 
+                    // Recupero dei termini di tipo incarico
+                 $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
+		    echo $tipo_incarico_terms;
                 // Usa uno switch per determinare la destinazione in base all'incarico
                 switch ($incarico) {
                     case 'amministrativo':  // Se l'incarico è 'amministrativo'
