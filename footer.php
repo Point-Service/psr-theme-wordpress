@@ -235,7 +235,7 @@
 			          
 						<a id="area_personale_admin" href="<?php echo get_admin_url(); ?>">Area Riservata</a>
 								                      
-						<?php echo dci_get_option("firma_nostra",'header'); ?>
+				
 
 			  <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
 	                            <li class="list-inline-item d-flex">
