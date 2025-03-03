@@ -39,25 +39,19 @@ function load_more(){
         's' => $_POST['search'],
         'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
         'post_type'      => $post_types,
-		'post_status'    => 'publish',
+        'orderby'        => 'date',
         'order'          => 'DESC',
-		'meta_query' => array(
-            array(
-                'key' => '_dci_notizia_data_pubblicazione',
-            )
-        ),
-        'meta_type' => 'text_date_timestamp',
-        'orderby'   => 'meta_value_num',
+	'post_status' => 'publish' 
     );
 	
-	if ( $post_types != "notizia" ) {
+	if ( $post_types != "notizia" && $post_types != "evento") {
 		$args = array(
 			's' => $_POST['search'],
-	    	'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
-	    	'post_type'      => $post_types,
-			'post_status'    => 'publish',
-			'orderby' => 'post_title',
-			'order'   => 'ASC'
+	    'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+	    'post_type'      => $post_types,
+			'orderby' => 'date',
+			'order'   => 'DESC',
+			'post_status' => 'publish' 
 		);
 	}
 
@@ -106,14 +100,15 @@ function load_more(){
 		if ($load_card_type == "global-search"){
 			$out .= load_template_part("template-parts/search/item");  
 		}	
+		if ($load_card_type == "personale-amministrativo"){
+			$out .= load_template_part("template-parts/personale-amministrativo/cards-list");  
+		}
 		if ($load_card_type == "domanda-frequente"){
 			$out .= load_template_part("template-parts/domanda-frequente/item");  
-		}
+		}	
 		if ($load_card_type == "luogo"){
 			$out .= load_template_part("template-parts/luogo/card-full");  
-		}	
- 
- 
+		}	 
 		endwhile;
  
 	endif;
