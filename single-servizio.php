@@ -31,6 +31,8 @@ get_header();
 		        $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
 		        $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
 		
+		echo $startDate;
+                echo $endDate;	
 		       
 			// Controlla se entrambe le date sono presenti e che la data di inizio sia inferiore alla data di fine
 			if ($startDate && $endDate && $startDate < $endDate) {
@@ -50,8 +52,7 @@ get_header();
 			    $stato = "false";
 			    // Non aggiorno lo stato nel database se non entra in questa condizione
 			}
-echo $startDate;
-echo $endDate;	
+
 
 
             // prefix: _dci_servizio_
