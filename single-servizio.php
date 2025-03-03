@@ -19,47 +19,6 @@ get_header();
 
             // prefix: _dci_servizio_
             $stato = dci_get_meta("stato");
-            $periodo = dci_get_meta("periodo"); 
-            $motivo_stato = dci_get_meta("motivo_stato");
-            $sottotitolo = dci_get_meta("sottotitolo");
-            $descrizione_breve = dci_get_meta("descrizione_breve");
-            $destinatari = dci_get_wysiwyg_field("a_chi_e_rivolto");
-            // $destinatari_intro = dci_get_meta("destinatari_introduzione");
-            // $destinatari_list = dci_get_meta("destinatari_list");
-            $descrizione = dci_get_wysiwyg_field("descrizione_estesa");
-            $come_fare = dci_get_wysiwyg_field("come_fare");
-            $cosa_serve_intro = dci_get_wysiwyg_field("cosa_serve_introduzione");
-            $cosa_serve_list = dci_get_meta("cosa_serve_list");
-            $output = dci_get_wysiwyg_field("output");
-            $fasi_scadenze_intro = dci_get_wysiwyg_field("tempi_text");
-            $fasi_group_simple_scadenze = dci_get_meta("scadenze");
-            $fasi_scadenze = dci_get_meta("fasi");
-            $costi = dci_get_wysiwyg_field("costi");
-            //canali di prenotazione
-            $canale_digitale_text = dci_get_meta("canale_digitale_text");
-            $canale_digitale_label = dci_get_meta("canale_digitale_label");
-            $canale_digitale_link = dci_get_meta("canale_digitale_link");
-            $canale_fisico_text = dci_get_meta("canale_fisico_text");<?php
-/**
- * Servizio template file
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package Design_Comuni_Italia
- */
-
-global $uo_id, $file_url, $hide_arguments;
-
-get_header();
-?>
-    <main>
-        <?php
-        while ( have_posts() ) :
-            the_post();
-            $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
-
-            // prefix: _dci_servizio_
-            $stato = dci_get_meta("stato");
             $motivo_stato = dci_get_meta("motivo_stato");
             $sottotitolo = dci_get_meta("sottotitolo");
             $descrizione_breve = dci_get_meta("descrizione_breve");
