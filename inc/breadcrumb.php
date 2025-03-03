@@ -420,7 +420,7 @@ class Breadcrumb_Trail {
 				            }
 				        }
 				    }
-				}
+				
 
 				
 				    // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
