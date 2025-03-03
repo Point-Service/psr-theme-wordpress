@@ -514,12 +514,9 @@ if (get_post_type() == 'persona_pubblica') {
                 // Determina la destinazione in base all'incarico
                 $destinazione = '';
  
-                
-
-		    echo $tipo_incarico;
 		    
                 // Usa uno switch per determinare la destinazione in base all'incarico
-                switch ($incarico) {
+                switch ($tipo_incarico) {
                     case 'amministrativo':  // Se l'incarico è 'amministrativo'
                         $destinazione = 'https://www.sito.com/pagina-amministrativa';  // URL per amministrativo
                         break;
