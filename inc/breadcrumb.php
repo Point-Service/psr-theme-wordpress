@@ -509,7 +509,7 @@ if (get_post_type() == 'persona_pubblica') {
 	    
         // Se ci sono incarichi
         if (!empty($incarichi)) {
-            foreach ($incarichi as $incarico) {
+          
                 // Determina la destinazione in base all'incarico
                 $destinazione = '';
  
@@ -537,7 +537,7 @@ if (get_post_type() == 'persona_pubblica') {
                     $this->items[] = sprintf('<a href="%s">%s</a>', esc_url($destinazione), ucfirst($incarico));
                 }
             }
-        } else {
+         else {
             // Se non ci sono incarichi, mostra i termini associati al post
             $terms = get_the_terms(get_the_ID(), 'tipi_documento');
             if (!empty($terms) && !is_wp_error($terms)) {
