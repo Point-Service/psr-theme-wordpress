@@ -403,7 +403,16 @@ class Breadcrumb_Trail {
 				        foreach ($terms as $term) {
 						
 			
-					
+					// Se trovi il termine "struttura politica", crea un link alla pagina "politici"
+				        if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
+						echo 'a';
+				                // Link Politici
+				                $politici_link = home_url("amministrazione/politici");
+				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; 
+						    
+						$politici_link = home_url("amministrazione/organi-di-governo");
+				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Organi Di Governo</a>"; 						   
+				            }
 				           											
 						
 				        }
