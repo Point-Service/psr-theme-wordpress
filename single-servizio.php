@@ -1,4 +1,4 @@
-oi<?php
+<?php
 /**
  * Servizio template file
  *
