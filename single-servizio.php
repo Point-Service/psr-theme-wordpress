@@ -186,7 +186,7 @@ get_header();
             </div>
             <div class="container">
 
-                <?php if($stato == 'false' ) { ?>
+                <?php if ($stato === 'false')  { ?>
                     <div class="alert alert-danger" role="alert">
                         <strong>Il servizio non è attivo.</strong> <?php echo $motivo_stato; ?>
                     </div>
