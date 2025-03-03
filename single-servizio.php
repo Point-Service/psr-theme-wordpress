@@ -158,57 +158,57 @@ get_header();
     
 
 
-<div class="container px-4 my-4" id="main-container">
-    <div class="row">
-        <div class="col px-lg-4">
-            <?php get_template_part("template-parts/common/breadcrumb"); ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-8 px-lg-4 py-lg-2">
-            <h1 class="title-xxxlarge" data-element="service-title">
-                <?php the_title(); ?>
-            </h1>
-            <?php if ($sottotitolo) { ?>
-                <h2 class="h4 py-2">
-                    <?php echo $sottotitolo; ?>
-                </h2>
-            <?php } ?>
-            <ul class="d-flex flex-wrap gap-1 my-3">
-                <li>
-                    <div class="chip chip-simple" data-element="service-status">
-                        <span class="chip-label">
-                            <?php echo ($stato == 'true') ? 'Servizio attivo' : 'Servizio non attivo'; ?>
-                        </span>			    
-                    </div>
-			<?php
-			// Controlla se le due date sono presenti
-			if ($startDate && $endDate) {
-			    // Se entrambe le date sono presenti, mostra il periodo
-			    echo '<div class="service-period">';
-			    echo '<small><strong>Periodo di validità:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y');
-			    echo '</small></div>';
-			}
-			?>
-                </li>
-            </ul>
-            <p class="subtitle-small mb-3">
-                <?php echo $descrizione_breve; ?>
-            </p>
-            <?php if ($canale_digitale_link and $stato == 'true') { ?>
-                <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
-                    <span><?php echo $canale_digitale_label; ?></span>
-                </button>
-            <?php } ?>
-        </div>
-        <div class="col-lg-3 offset-lg-1 px-lg-4 py-lg-2">
-            <?php
-            $inline = true;
-            get_template_part('template-parts/single/actions');
-            ?>
-        </div>
-    </div>
-</div>
+	<div class="container px-4 my-4" id="main-container">
+	    <div class="row">
+	        <div class="col px-lg-4">
+	            <?php get_template_part("template-parts/common/breadcrumb"); ?>
+	        </div>
+	    </div>
+	    <div class="row">
+	        <div class="col-lg-8 px-lg-4 py-lg-2">
+	            <h1 class="title-xxxlarge" data-element="service-title">
+	                <?php the_title(); ?>
+	            </h1>
+	            <?php if ($sottotitolo) { ?>
+	                <h2 class="h4 py-2">
+	                    <?php echo $sottotitolo; ?>
+	                </h2>
+	            <?php } ?>
+	            <ul class="d-flex flex-wrap gap-1 my-3">
+	                <li>
+	                    <div class="chip chip-simple" data-element="service-status">
+	                        <span class="chip-label">
+	                            <?php echo ($stato == 'true') ? '<font color="Green">Servizio attivo</font>' : '<font color="Red">Servizio non attivo</font>'; ?>
+	                        </span>			    
+	                    </div>
+				<?php
+				// Controlla se le due date sono presenti
+				if ($startDate && $endDate) {
+				    // Se entrambe le date sono presenti, mostra il periodo
+				    echo '<div class="service-period">';
+				    echo '<small><strong>Periodo di validità:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y');
+				    echo '</small></div>';
+				}
+				?>
+	                </li>
+	            </ul>
+	            <p class="subtitle-small mb-3">
+	                <?php echo $descrizione_breve; ?>
+	            </p>
+	            <?php if ($canale_digitale_link and $stato == 'true') { ?>
+	                <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
+	                    <span><?php echo $canale_digitale_label; ?></span>
+	                </button>
+	            <?php } ?>
+	        </div>
+	        <div class="col-lg-3 offset-lg-1 px-lg-4 py-lg-2">
+	            <?php
+	            $inline = true;
+	            get_template_part('template-parts/single/actions');
+	            ?>
+	        </div>
+	    </div>
+	</div>
 
            
 
