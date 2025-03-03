@@ -239,7 +239,8 @@
 
 			  <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
 	                            <li class="list-inline-item d-flex">
-	                                <small>  © <?php echo dci_get_option($firma_nostra); ?>
+	                                <small>  © <?php echo dci_get_option("nome_comune"); ?>
+                                         <?php echo dci_get_option("firma_nostra"); ?>
 					   <?php						 
 						if ($firma_nostra == 'false' ) : ?>
 						    &nbsp;&nbsp;-&nbsp;&nbsp;Sviluppato da 
