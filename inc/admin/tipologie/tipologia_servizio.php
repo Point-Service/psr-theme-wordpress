@@ -81,20 +81,6 @@ function dci_add_servizi_metaboxes() {
 	) );
 
 
-		
-    // Aggiungi controllo per vedere se la data è salvata
-	add_action( 'edit_form_after_title', function($post) {
-		if ($post->post_type == 'servizio') {
-			$data_inizio = get_post_meta($post->ID, '_dci_servizio_data_inizio_servizio', true);
-			$data_fine = get_post_meta($post->ID, '_dci_servizio_data_fine_servizio', true);
-			echo "<pre>";
-			print_r($data_inizio);
-			echo "<br>";
-			print_r($data_fine);
-			echo "</pre>";
-		}
-	});
-	
 
 		// Gruppo per periodo di validità del servizio
 		$cmb_stato->add_field(array(
@@ -107,7 +93,7 @@ function dci_add_servizi_metaboxes() {
 		// Data inizio
 		$cmb_stato->add_field( array(
 		    'id'          => $prefix . 'data_inizio_servizio',
-		    'name'        => __( 'Data di inizio', 'design_comuni_italia' ),
+		    'name'        => __( 'Data di inizio gg/mm/aaaa', 'design_comuni_italia' ),
 		    'desc'        => __( 'Seleziona la data a partire dalla quale il servizio sarà disponibile.', 'design_comuni_italia' ),
 		    'type'        => 'text_date',
 		    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
@@ -116,11 +102,10 @@ function dci_add_servizi_metaboxes() {
 		// Data fine
 		$cmb_stato->add_field( array(
 		    'id'          => $prefix . 'data_fine_servizio',
-		    'name'        => __( 'Data di fine', 'design_comuni_italia' ),
+		    'name'        => __( 'Data di fine gg/mm/aaaa', 'design_comuni_italia' ),
 		    'desc'        => __( 'Seleziona la data in cui il servizio terminerà. Se lasciato vuoto, il servizio resterà attivo fino a nuova modifica.', 'design_comuni_italia' ),
-		    'type'        => 'text_date',
+		    'type'        => 'text',
 		    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
-		    'default'     => '', // Imposta il valore di default se necessario
 		) );
 		
 
