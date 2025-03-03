@@ -243,16 +243,14 @@
 					    <?php
 						// Recupera il valore dell'opzione 'firma_nostra'
 						$firma_nostra = get_option( $prefix . 'firma_nostra', 'false' );
-						
 						// Se l'opzione è impostata su 'true', nascondi la firma
 						if ( $firma_nostra == 'true' ) : ?>
-						    <p>&nbsp;&nbsp;-&nbsp;&nbsp;Sviluppato da 
+						    <&nbsp;&nbsp;-&nbsp;&nbsp;Sviluppato da 
 						        <a class="text-primary" style="text-decoration:none;" target="_blank" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">
 						            <span id="footerCompanyLabel" style="color: #fff">
 						                &nbsp;Point Service S.r.l
 						            </span>
-						        </a>  
-						    </p>
+						        </a> 
 						<?php endif; ?>
 				      </small>
 	                            </li>
