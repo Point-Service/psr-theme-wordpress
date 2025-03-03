@@ -39,11 +39,51 @@ get_header();
             $canale_digitale_text = dci_get_meta("canale_digitale_text");
             $canale_digitale_label = dci_get_meta("canale_digitale_label");
             $canale_digitale_link = dci_get_meta("canale_digitale_link");
+            $canale_fisico_text = dci_get_meta("canale_fisico_text");<?php
+/**
+ * Servizio template file
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ *
+ * @package Design_Comuni_Italia
+ */
+
+global $uo_id, $file_url, $hide_arguments;
+
+get_header();
+?>
+    <main>
+        <?php
+        while ( have_posts() ) :
+            the_post();
+            $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
+
+            // prefix: _dci_servizio_
+            $stato = dci_get_meta("stato");
+            $motivo_stato = dci_get_meta("motivo_stato");
+            $sottotitolo = dci_get_meta("sottotitolo");
+            $descrizione_breve = dci_get_meta("descrizione_breve");
+            $destinatari = dci_get_wysiwyg_field("a_chi_e_rivolto");
+            // $destinatari_intro = dci_get_meta("destinatari_introduzione");
+            // $destinatari_list = dci_get_meta("destinatari_list");
+            $descrizione = dci_get_wysiwyg_field("descrizione_estesa");
+            $come_fare = dci_get_wysiwyg_field("come_fare");
+            $cosa_serve_intro = dci_get_wysiwyg_field("cosa_serve_introduzione");
+            $cosa_serve_list = dci_get_meta("cosa_serve_list");
+            $output = dci_get_wysiwyg_field("output");
+            $fasi_scadenze_intro = dci_get_wysiwyg_field("tempi_text");
+            $fasi_group_simple_scadenze = dci_get_meta("scadenze");
+            $fasi_scadenze = dci_get_meta("fasi");
+            $costi = dci_get_wysiwyg_field("costi");
+            //canali di prenotazione
+            $canale_digitale_text = dci_get_meta("canale_digitale_text");
+            $canale_digitale_label = dci_get_meta("canale_digitale_label");
+            $canale_digitale_link = dci_get_meta("canale_digitale_link");
             $canale_fisico_text = dci_get_meta("canale_fisico_text");
             $canale_fisico_luoghi_id = dci_get_meta("canale_fisico_luoghi");
             $mostra_prenota_appuntamento = dci_get_option("prenota_appuntamento", "servizi");
             $mostra_accedi_al_servizio = $canale_digitale_link || $canale_fisico_text || $mostra_prenota_appuntamento || $canale_fisico_luoghi_id;
-           
+
             $prenota_appuntamento = dci_get_option("prenota_appuntamento");
 
             $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
@@ -71,17 +111,6 @@ get_header();
 
                 return trim(strip_tags($text));
             };
-            
-
-            // Conversione del periodo in un array
-            $dates = explode('-', $periodo);
-            $startDate = DateTime::createFromFormat('d/m/Y', trim($dates[0]));
-            $endDate = DateTime::createFromFormat('d/m/Y', trim($dates[1]));
-
-            function isDateInPeriod($date, $startDate, $endDate) {
-                $checkDate = DateTime::createFromFormat('d/m/Y', $date);
-                return ($checkDate >= $startDate && $checkDate <= $endDate);
-            }
 
             ?>
       <script type="application/ld+json" data-element="metatag">
@@ -160,7 +189,7 @@ get_header();
             <p class="subtitle-small mb-3">
                 <?php echo $descrizione_breve; ?>
             </p>
-            <?php if ($canale_digitale_link and isDateInPeriod(date('d/m/Y'),$startDate, $endDate)) { ?>
+            <?php if ($canale_digitale_link) { ?>
                 <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
                     <span><?php echo $canale_digitale_label; ?></span>
                 </button>
@@ -186,7 +215,7 @@ get_header();
             </div>
             <div class="container">
 
-                <?php if($stato == 'false' || !isDateInPeriod(date('d/m/Y'),$startDate, $endDate)) { ?>
+                <?php if($stato == 'false') { ?>
                     <div class="alert alert-danger" role="alert">
                         <strong>Il servizio non è attivo.</strong> <?php echo $motivo_stato; ?>
                     </div>
@@ -556,18 +585,16 @@ get_header();
                             <?php if ( $mostra_accedi_al_servizio ) {  ?>
                             <section class="it-page-section mb-30 has-bg-grey p-4">
                                 <h2 class="mb-3" id="submit-request">Accedi al servizio</h2>
-                                <?php if ($canale_digitale_link AND isDateInPeriod(date('d/m/Y'),$startDate, $endDate)) { ?>
+                                <?php if ($canale_digitale_link) { ?>
                                 <p class="text-paragraph lora mb-4" data-element="service-generic-access"><?php echo $canale_digitale_text; ?></p>
                                 <button type="button" class="btn btn-primary mobile-full" onclick="location.href='<?php echo $canale_digitale_link; ?>';" data-element="service-online-access">
                                     <span class=""><?php echo $canale_digitale_label; ?></span>
                                 </button>
                                 <?php } ?>
                                 <p class="text-paragraph lora mt-4" data-element="service-generic-access"><?php echo $canale_fisico_text; ?></p>
-                                <?php if($mostra_prenota_appuntamento=="true"){?>
                                     <button type="button" class="btn btn-outline-primary t-primary bg-white mobile-full" onclick="location.href='<?php echo dci_get_template_page_url('page-templates/prenota-appuntamento.php'); ?>';" data-element="service-booking-access">
                                         <span class="">Prenota appuntamento</span>
-                                    </button>      
-                                <?php } ?>
+                                    </button>                            
                           
                             </section>
                             <?php } ?>
