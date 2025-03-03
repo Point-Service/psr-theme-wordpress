@@ -391,35 +391,40 @@ class Breadcrumb_Trail {
 
 
 
-	                    if (get_post_type() == 'unita_organizzativa') {
-				    // Aggiungi il link alla pagina di amministrazione
-				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
-				
-				    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
-				    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
-				
-				    if ($terms && !is_wp_error($terms)) {
-				        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
-				        foreach ($terms as $term) {
-				            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-				            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
-				                // Link Politici
-				                $politici_link = home_url("amministrazione/politici");
-				
-				                // Aggiungi solo se non è già presente
-				                if (!in_array("<a href='" . esc_url($politici_link) . "'>Politici</a>", $this->items)) {
-				                    $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>";
-				                }
-				
-				                $politici_link = home_url("amministrazione/organi-di-governo");
-				
-				                // Aggiungi solo se non è già presente
-				                if (!in_array("<a href='" . esc_url($politici_link) . "'>Organi Di Governo</a>", $this->items)) {
-				                    $this->items[] = "<a href='" . esc_url($politici_link) . "'>Organi Di Governo</a>";
-				                }
-				            }
-				        }
-				    }
+if (get_post_type() == 'unita_organizzativa') {
+    // Aggiungi il link alla pagina di amministrazione
+    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+
+    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
+    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
+
+    if ($terms && !is_wp_error($terms)) {
+        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
+        foreach ($terms as $term) {
+            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
+            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
+                
+                // Controlliamo se il link Politici è già stato aggiunto
+                $politici_link = home_url("amministrazione/politici");
+                $politici_text = "Politici";
+
+                // Aggiungi solo se non è già presente
+                if (!array_search($politici_text, array_map(function($item) { return strip_tags($item); }, $this->items))) {
+                    $this->items[] = "<a href='" . esc_url($politici_link) . "'>$politici_text</a>";
+                }
+
+                // Controlliamo se il link Organi di Governo è già stato aggiunto
+                $organi_link = home_url("amministrazione/organi-di-governo");
+                $organi_text = "Organi Di Governo";
+
+                // Aggiungi solo se non è già presente
+                if (!array_search($organi_text, array_map(function($item) { return strip_tags($item); }, $this->items))) {
+                    $this->items[] = "<a href='" . esc_url($organi_link) . "'>$organi_text</a>";
+                }
+            }
+        }
+    }
+
 				
 
 				
