@@ -511,7 +511,7 @@ class Breadcrumb_Trail {
 						                    break;
 						            }
 							}
-
+						    }
 							
 						    else{
 	                                             $terms = get_the_terms(get_the_ID(),'tipi_documento');
