@@ -497,7 +497,7 @@ class Breadcrumb_Trail {
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
 				
 					    
-					    } elseif (get_post_type() == 'persona_pubblica' && !in_array('persona_pubblica', $referer_parts)) {
+					    } elseif (!in_array('persona_pubblica', $referer_parts)) {
 					       
 				                 $politici_link = home_url("amministrazione/politici");
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
@@ -506,6 +506,10 @@ class Breadcrumb_Trail {
                                              } elseif (get_post_type() == 'persona_pubblica' && !in_array('consiglio-comunale', $referer_parts)) {					       
 				                $politici_link = home_url("amministrazione/politici");
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+						    
+                                             } elseif (get_post_type() == 'persona_pubblica' && !in_array('personale-amministrativo', $referer_parts)) {					       
+				                $politici_link = home_url("amministrazione/personale-amministrativo");
+					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Personale Amministrativo</a>"; // Link Politici
 
 						    
 					     } elseif (get_post_type() == 'persona_pubblica') {
