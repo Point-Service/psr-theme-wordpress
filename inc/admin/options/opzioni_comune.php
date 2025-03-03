@@ -182,7 +182,6 @@ function dci_register_comune_options(){
         ),
     ));
 
-
     
     $header_options->add_field( array(
         'id'    => $prefix . 'dichiarazioneaccessibilita',
