@@ -503,7 +503,7 @@ if (get_post_type() == 'persona_pubblica') {
                     }
 
 
-		    
+		    echo $tipo_incarico_terms;
 		    echo $tipo_incarico;
                 // Usa uno switch per determinare la destinazione in base all'incarico
                 switch ($incarico) {
