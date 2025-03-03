@@ -52,8 +52,8 @@ function dci_register_pagina_servizi_options(){
     
     $servizi_options->add_field(array(
         'id' => $prefix . 'prenota_appuntamento',
-        'name' => __('Mostra pulsanti per la richiesta di assistenza', 'design_comuni_italia'),
-        'desc' => __('Se abilitata, vengono mostrati i collegamenti per il modulo di richiesta assistenza (richiede collegamento informatico al servizio utilizzato dall\'ente)', 'design_comuni_italia'),
+        'name' => __('Mostra pulsanti per il prenota appuntamento', 'design_comuni_italia'),
+        'desc' => __('Se abilitata, vengono mostrati i collegamenti per il modulo di prenota appuntamento (richiede collegamento informatico al servizio utilizzato dall\'ente)', 'design_comuni_italia'),
         'type' => 'radio_inline',
         'default' => 'false',
         'options' => array(
