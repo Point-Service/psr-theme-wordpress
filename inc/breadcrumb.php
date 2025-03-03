@@ -496,7 +496,7 @@ class Breadcrumb_Trail {
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
 				
 					    
-					    } elseif (get_post_type() == 'personale-amministrativo' && !in_array('persona_pubblica', $referer_parts)) {
+					    } elseif (get_post_type() == 'persona_pubblica' && !in_array('persona_pubblica', $referer_parts)) {
 					       
 					        $politici_link = home_url("persona_pubblica");
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Persona Pubblica</a>"; // Link Politici
