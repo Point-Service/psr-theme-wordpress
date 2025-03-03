@@ -480,9 +480,7 @@ class Breadcrumb_Trail {
 					    // Estrai il percorso del referrer
 					    $referer_path = parse_url($referer_url, PHP_URL_PATH);
 					    $referer_parts = explode('/', trim($referer_path, '/'));
-						
-                                            echo get_post_type();
-					  
+											  
 					   						
 					    // Verifica se il referrer corrisponde a "politici"
 					    if (in_array('politici', $referer_parts)) {
@@ -507,10 +505,14 @@ class Breadcrumb_Trail {
 				                $politici_link = home_url("amministrazione/politici");
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
 						    
+
+						    
                                              } elseif (get_post_type() == 'persona_pubblica' && !in_array('personale-amministrativo', $referer_parts)) {					       
 				                $politici_link = home_url("amministrazione/personale-amministrativo");
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Personale Amministrativo</a>"; // Link Politici
 
+
+						    
 						    
 					     } elseif (get_post_type() == 'persona_pubblica') {
 						   				       
