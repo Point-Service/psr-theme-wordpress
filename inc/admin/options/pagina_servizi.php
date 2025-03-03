@@ -52,26 +52,20 @@ function dci_register_pagina_servizi_options(){
     
     $servizi_options->add_field(array(
         'id' => $prefix . 'prenota_appuntamento',
-        'name' => __('Mostra pulsanti per la prenotazione degli appuntamenti', 'design_comuni_italia'),
-        'desc' => __('Se abilitata, vengono mostrati i collegamenti per il modulo di prenotazione degli appuntamenti (richiede collegamento informatico al servizio utilizzato dall\'ente)', 'design_comuni_italia'),
+        'name' => __('Mostra pulsanti per la richiesta di assistenza', 'design_comuni_italia'),
+        'desc' => __('Se abilitata, vengono mostrati i collegamenti per il modulo di richiesta assistenza (richiede collegamento informatico al servizio utilizzato dall\'ente)', 'design_comuni_italia'),
         'type' => 'radio_inline',
-        'default' => '',
+        'default' => 'false',
         'options' => array(
             'true' => __('Si', 'design_comuni_italia'),
-            '' => __('No', 'design_comuni_italia'),
+            'false' => __('No', 'design_comuni_italia'),
         ),
         'attributes' => array(
             'data-conditional-value' => "false",
         ),
     ));
 
-
-
-
-
-
-    
-     $servizi_options->add_field( array(
+    $servizi_options->add_field( array(
         'id'    => $prefix . 'servizi_maggioli_url',
         'name' => __('Servizi Maggioli URL', 'design_comuni_italia' ),
         'desc' => __( 'Utilizzare questo Campo solo se bisogna caricare servizi esterni da Maggioli (Aggiungendo un URL al campo verranno caricati i servizi presenti sulla pagina di destinazione automaticamente.)'),
@@ -79,3 +73,4 @@ function dci_register_pagina_servizi_options(){
     ));   
     
 }
+
