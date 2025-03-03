@@ -32,8 +32,20 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
                     </span>          
                 <?php } ?>
             </div>
-            <p class="card-title text-paragraph-medium u-grey-light"><?php echo ucfirst(strtolower(esc_html($post->post_title))); ?></p>
-            <p class="text-paragraph-card u-grey-light m-0" style="margin-bottom: 40px!important;"><?php echo esc_html($descrizione_breve); ?></p> 
+            <?php
+                // Controllo se il titolo contiene almeno 5 caratteri maiuscoli consecutivi
+                if (preg_match('/[A-Z]{5,}/', $post->post_title)) {
+                    echo  '<p class="card-title text-paragraph-medium u-grey-light">'.ucfirst(strtolower($post->post_title)).'</p>';
+                } else {
+                    echo '<p class="card-title text-paragraph-medium u-grey-light">'.$post->post_title.'</p>';
+                }
+                // Faccio lo stesso controllo per la descrizione
+                if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                    echo  '<p class="text-paragraph-card u-grey-light m-0">'.ucfirst(strtolower($descrizione_breve)).'</p>';
+                } else {
+                    echo '<p class="text-paragraph-card u-grey-light m-0">'.$descrizione_breve.'</p>';
+                }
+                ?>
             <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?><br><br>
             <span class="data fw-normal">📍 
                 <?php 
@@ -85,8 +97,21 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
                 </span>
             <?php } ?>
         </div>
-        <p class="card-title text-paragraph-medium u-grey-light"><?php echo ucfirst(strtolower(esc_html($post->post_title))); ?></p>
-        <p class="text-paragraph-card u-grey-light m-0"><?php echo esc_html($descrizione_breve); ?></p>  
+        
+            <?php
+                // Controllo se il titolo contiene almeno 5 caratteri maiuscoli consecutivi
+                if (preg_match('/[A-Z]{5,}/', $post->post_title)) {
+                    echo  '<p class="card-title text-paragraph-medium u-grey-light">'.ucfirst(strtolower($post->post_title)).'</p>';
+                } else {
+                    echo '<p class="card-title text-paragraph-medium u-grey-light">'.$post->post_title.'</p>';
+                }
+                // Faccio lo stesso controllo per la descrizione
+                if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                    echo  '<p class="text-paragraph-card u-grey-light m-0">'.ucfirst(strtolower($descrizione_breve)).'</p>';
+                } else {
+                    echo '<p class="text-paragraph-card u-grey-light m-0">'.$descrizione_breve.'</p>';
+                }
+                ?>
         <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?><br><br>
             <span class="data fw-normal">📍 
                 <?php 
