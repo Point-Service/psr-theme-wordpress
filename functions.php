@@ -14,8 +14,6 @@ require get_template_directory() . '/inc/funzionalita_trasversali.php';
 
 
 
-
-
 /**
  * Load more posts
  */
@@ -88,6 +86,12 @@ require get_template_directory() . '/walkers/menu-header-right.php';
  * footer info walker
  */
 require get_template_directory() . '/walkers/footer-info.php';
+
+
+
+require get_template_directory() . '/inc/admin/tassonomie/tassonomia_persona_pubblica.php';
+
+
 
 /**
  * Filters
