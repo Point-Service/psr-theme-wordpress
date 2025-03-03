@@ -82,7 +82,7 @@ function dci_add_servizi_metaboxes() {
 
 
 		
-// Aggiungi controllo per vedere se la data è salvata
+    // Aggiungi controllo per vedere se la data è salvata
 	add_action( 'edit_form_after_title', function($post) {
 		if ($post->post_type == 'servizio') {
 			$data_inizio = get_post_meta($post->ID, '_dci_servizio_data_inizio_servizio', true);
@@ -113,10 +113,10 @@ function dci_add_servizi_metaboxes() {
 
 	// Data fine
 	$cmb_stato->add_field( array(
-	    'id'          => $prefix . 'datafineservizio',
+	    'id'          => $prefix . 'data_fine_servizio',
 	    'name'        => __( 'Data di fine', 'design_comuni_italia' ),
 	    'desc'        => __( 'Seleziona la data in cui il servizio terminerà. Se lasciato vuoto, il servizio resterà attivo fino a nuova modifica.', 'design_comuni_italia' ),
-	    'type'        => 'text_date',
+	    'type'        => 'text',
 	    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
 	) );
 
