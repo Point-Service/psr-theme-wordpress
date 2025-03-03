@@ -556,7 +556,7 @@ get_header();
                             <?php if ( $mostra_accedi_al_servizio ) {  ?>
                             <section class="it-page-section mb-30 has-bg-grey p-4">
                                 <h2 class="mb-3" id="submit-request">Accedi al servizio</h2>
-                                <?php if ($canale_digitale_link AND isDateInPeriod(date('d/m/Y'),$startDate, $endDate)) { ?>
+                                <?php if ($canale_digitale_link and and $stato == 'true') { ?>
                                 <p class="text-paragraph lora mb-4" data-element="service-generic-access"><?php echo $canale_digitale_text; ?></p>
                                 <button type="button" class="btn btn-primary mobile-full" onclick="location.href='<?php echo $canale_digitale_link; ?>';" data-element="service-online-access">
                                     <span class=""><?php echo $canale_digitale_label; ?></span>
