@@ -531,7 +531,7 @@ if (get_post_type() == 'persona_pubblica') {
                         $destinazione = 'https://www.sito.com/pagina-default';  // URL di default
                         break;
                 }
-
+echo $destinazione:
                 // Aggiungi il link con la destinazione
                 if ($destinazione) {
                     $this->items[] = sprintf('<a href="%s">%s</a>', esc_url($destinazione), ucfirst($incarico));
