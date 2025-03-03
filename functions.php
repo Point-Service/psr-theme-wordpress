@@ -89,7 +89,6 @@ require get_template_directory() . '/walkers/footer-info.php';
 
 
 
-require get_template_directory() . '/inc/admin/tassonomie/tassonomia_persona_pubblica.php';
 
 
 
