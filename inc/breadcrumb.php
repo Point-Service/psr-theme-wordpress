@@ -397,7 +397,7 @@ class Breadcrumb_Trail {
 				
 				    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
 				    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
-				
+				echo 's';
 				    if ($terms && !is_wp_error($terms)) {
 				        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
 				        foreach ($terms as $term) {
@@ -471,6 +471,7 @@ class Breadcrumb_Trail {
 					        // Crea un link alla pagina "amministrazione/politici" come se venisse dal link "politici"
 					        $politici_link = home_url("amministrazione/politici");
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+						    
 					    } elseif (in_array('personale-amministrativo', $referer_parts)) {
 					        // Crea un link alla pagina "amministrazione/personale-amministrativo"
 					        $personale_link = home_url("amministrazione/personale-amministrativo");
