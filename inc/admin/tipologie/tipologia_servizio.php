@@ -118,7 +118,7 @@ function dci_add_servizi_metaboxes() {
 		'desc'       => __( 'Descrizione testuale del motivo per cui un servizio non è attivo. Es. Servizio momentaneamente disattivato perché....Servizio attivo dal...', 'design_comuni_italia' ),
 		'type'       => 'textarea_small',
 
-		),
+		
 	) );
 
 	//APERTURA
