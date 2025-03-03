@@ -510,7 +510,8 @@ if (get_post_type() == 'persona_pubblica') {
         // Se ci sono incarichi
         if (!empty($incarichi)) {
           
-                        
+                // Determina la destinazione in base all'incarico
+                $destinazione = '';
  
 		echo $tipo_incarico;
 
@@ -518,22 +519,24 @@ if (get_post_type() == 'persona_pubblica') {
                 switch ($tipo_incarico) {
 			
                     case 'amministrativo':  // Se l'incarico è 'amministrativo'
-                       
+                        $destinazione = 'https://www.sito.com/pagina-amministrativa';  // URL per amministrativo
                         break;
                     case 'politico':  // Se l'incarico è 'politico'
-			$politici_link = home_url("amministrazione/politici");
-			 $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
-                       
+                        $destinazione = 'https://www.sito.com/pagina-politica';  // URL per politico
                         break;
                     case 'altro':  // Se l'incarico è 'altro'
-                     
+                        $destinazione = 'https://www.sito.com/pagina-altro';  // URL per altro
                         break;
                     default:  // Se non ci sono corrispondenze
-                      
+                        $destinazione = 'https://www.sito.com/pagina-default';  // URL di default
                         break;
                 }
-
-
+echo $destinazione;
+		
+                // Aggiungi il link con la destinazione
+                if ($destinazione) {
+                    $this->items[] = sprintf('<a href="%s">%s</a>', esc_url($destinazione), ucfirst($incarico));
+                }
             }
          else {
             // Se non ci sono incarichi, mostra i termini associati al post
