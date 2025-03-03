@@ -31,9 +31,7 @@ get_header();
 		        $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
 		        $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
 		
-		echo $data_inizio_servizio;
-                echo $endDate;	
-		       
+			       
 			// Controlla se entrambe le date sono presenti e che la data di inizio sia inferiore alla data di fine
 			if ($startDate && $endDate && $startDate < $endDate) {
 			    // Verifica se la data di oggi è all'interno del periodo
