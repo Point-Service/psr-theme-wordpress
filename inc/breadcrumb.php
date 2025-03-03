@@ -482,17 +482,7 @@ if (get_post_type() == 'persona_pubblica') {
         $referer_parts = explode('/', trim($referer_path, '/'));
 
 	    
-	// Recupera l'ID del termine selezionato nel campo 'tipo_incarico'
-	$tipo_incarico_id = get_post_meta(get_the_ID(), $prefix . 'tipo_incarico', true);
-
-	    
-        // Se ci sono incarichi
-        if (!empty($incarichi)) {
-            foreach ($incarichi as $incarico) {
-                // Determina la destinazione in base all'incarico
-                $destinazione = '';
- 
-                   // Recupera gli incarichi, se esistono
+           // Recupera gli incarichi, se esistono
                 $incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post
         
                 if (!empty($incarichi)) {
@@ -512,6 +502,19 @@ if (get_post_type() == 'persona_pubblica') {
                     $incarico = ''; // Valore di fallback se non ci sono incarichi
                     $tipo_incarico = ''; // Valore di fallback se non ci sono incarichi
                 }
+	    
+	    echo $tipo_incarico;
+
+
+
+	    
+        // Se ci sono incarichi
+        if (!empty($incarichi)) {
+            foreach ($incarichi as $incarico) {
+                // Determina la destinazione in base all'incarico
+                $destinazione = '';
+ 
+                
 
 		    echo $tipo_incarico;
 		    
