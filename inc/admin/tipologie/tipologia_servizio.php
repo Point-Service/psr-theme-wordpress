@@ -110,9 +110,6 @@ function dci_add_servizi_metaboxes() {
 		
 
 
-
-
-
 	$cmb_stato->add_field(array(
 		'id'         => $prefix . 'motivo_stato',
 		'name'       => __( 'Motivo dello stato *', 'design_comuni_italia' ),
