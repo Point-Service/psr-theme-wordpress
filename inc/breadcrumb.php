@@ -510,7 +510,7 @@ class Breadcrumb_Trail {
 						                    $destinazione = 'https://www.sito.com/pagina-default';  // URL di default
 						                    break;
 						            }
-
+							}
 
 							
 						    else{
