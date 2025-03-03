@@ -12,6 +12,11 @@
  */
 require get_template_directory() . '/inc/funzionalita_trasversali.php';
 
+
+'Persone Pubbliche
+require_once get_template_directory() . '/inc/admin/tassonomie/tassonomia_persona_pubblica.php';
+
+
 /**
  * Load more posts
  */
