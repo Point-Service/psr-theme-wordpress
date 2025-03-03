@@ -160,7 +160,7 @@ get_header();
             <p class="subtitle-small mb-3">
                 <?php echo $descrizione_breve; ?>
             </p>
-            <?php if ($canale_digitale_link and isDateInPeriod(date('d/m/Y'),$startDate, $endDate)) { ?>
+            <?php if ($canale_digitale_link and $stato == 'true') { ?>
                 <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo $canale_digitale_link; ?>';">
                     <span><?php echo $canale_digitale_label; ?></span>
                 </button>
