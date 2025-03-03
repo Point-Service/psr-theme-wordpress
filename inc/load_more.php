@@ -39,19 +39,25 @@ function load_more(){
         's' => $_POST['search'],
         'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
         'post_type'      => $post_types,
-        'orderby'        => 'date',
+		'post_status'    => 'publish',
         'order'          => 'DESC',
-	'post_status' => 'publish' 
+		'meta_query' => array(
+            array(
+                'key' => '_dci_notizia_data_pubblicazione',
+            )
+        ),
+        'meta_type' => 'text_date_timestamp',
+        'orderby'   => 'meta_value_num',
     );
 	
-	if ( $post_types != "notizia" && $post_types != "evento") {
+	if ( $post_types != "notizia" ) {
 		$args = array(
 			's' => $_POST['search'],
-	    'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
-	    'post_type'      => $post_types,
-			'orderby' => 'date',
-			'order'   => 'DESC',
-			'post_status' => 'publish' 
+	    	'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+	    	'post_type'      => $post_types,
+			'post_status'    => 'publish',
+			'orderby' => 'post_title',
+			'order'   => 'ASC'
 		);
 	}
 
