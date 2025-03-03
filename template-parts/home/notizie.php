@@ -21,19 +21,22 @@ for ($i = 1; $i <= 20; $i++) {
 ?>
 
 <style>
-/* CSS mirato alla sezione delle schede evidenziate */
-#notizie .card-teaser-wrapper {
-    max-width: 98%; /* Riduce la larghezza della sezione delle schede evidenziate */
-    margin: 0 auto; /* Centra la sezione orizzontalmente */
-}
-
-/* Rendi le schede responsabili (più piccole su schermi piccoli) */
-@media (max-width: 768px) {
-    #notizie .card-teaser-wrapper .card {
-        max-width: 100%; /* Su schermi piccoli, ogni scheda occupa l'intera larghezza */
-        flex: 0 0 100%;
+    /* CSS mirato alla sezione delle schede evidenziate */
+    #notizie .card-teaser-wrapper {
+        max-width: 98%;
+        /* Riduce la larghezza della sezione delle schede evidenziate */
+        margin: 0 auto;
+        /* Centra la sezione orizzontalmente */
     }
-}
+
+    /* Rendi le schede responsabili (più piccole su schermi piccoli) */
+    @media (max-width: 768px) {
+        #notizie .card-teaser-wrapper .card {
+            max-width: 100%;
+            /* Su schermi piccoli, ogni scheda occupa l'intera larghezza */
+            flex: 0 0 100%;
+        }
+    }
 </style>
 
 <section id="notizie" aria-describedby="novita-in-evidenza">
@@ -51,16 +54,33 @@ for ($i = 1; $i <= 20; $i++) {
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
                                     <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
-                                </div> 
+                                </div>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                 <h3 class="card-title"><?php echo $post->post_title ; ?></h3> 
+                                    <?php
+                                    // Controllo se il titolo contiene almeno 5 caratteri maiuscoli consecutivi
+                                    if (preg_match('/[A-Z]{5,}/', $post->post_title)) {
+                                        $titolo = ucfirst(strtolower($post->post_title));
+                                    } else {
+                                        $titolo = $post->post_title;
+                                    }
+                                    ?>
+                                    <h3 class="card-title"><?php echo $titolo; ?></h3>
                                 </a>
+
+                                <?php
+                                // Controllo sulla descrizione breve (stessa logica)
+                                if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                                    $descrizione_breve = ucfirst(strtolower($descrizione_breve));
+                                }
+                                ?>
+
                                 <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
-                                
+
+
                                 <!-- Luoghi -->
                                 <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-                                    <span class="data fw-normal">📍 
-                                        <?php 
+                                    <span class="data fw-normal">📍
+                                        <?php
                                         foreach ($luogo_notizia as $luogo_id) {
                                             $luogo_post = get_post($luogo_id);
                                             if ($luogo_post && !is_wp_error($luogo_post)) {
@@ -70,7 +90,7 @@ for ($i = 1; $i <= 20; $i++) {
                                         ?>
                                     </span>
                                 <?php } elseif (!empty($luogo_notizia)) { ?>
-                                    <span class="data fw-normal">📍 
+                                    <span class="data fw-normal">📍
                                         <?php echo esc_html($luogo_notizia); ?>
                                     </span>
                                 <?php } ?>
@@ -91,19 +111,18 @@ for ($i = 1; $i <= 20; $i++) {
 
                                 <!-- Argomenti -->
                                 <small>Argomenti: </small>
-                                <?php get_template_part("template-parts/common/badges-argomenti"); ?>     
+                                <?php get_template_part("template-parts/common/badges-argomenti"); ?>
 
-                <a class="read-more"
-                   href="<?php echo get_permalink($post->ID); ?>"
-                   aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
-                   title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
-                   style="display: inline-flex; align-items: center; margin-top: 30px;">
-                    <span class="text">Vai alla pagina</span>
-                    <svg class="icon">
-                        <use xlink:href="#it-arrow-right"></use>
-                    </svg>
-                </a>
-                                  
+                                <a class="read-more" href="<?php echo get_permalink($post->ID); ?>"
+                                    aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
+                                    title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
+                                    style="display: inline-flex; align-items: center; margin-top: 30px;">
+                                    <span class="text">Vai alla pagina</span>
+                                    <svg class="icon">
+                                        <use xlink:href="#it-arrow-right"></use>
+                                    </svg>
+                                </a>
+
                             </div>
                         </div>
                     </div>
@@ -117,20 +136,21 @@ for ($i = 1; $i <= 20; $i++) {
 
                 <!-- Sezione delle schede -->
                 <div class="row mb-1">
-                    <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                        <?php 
+                    <div
+                        class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+                        <?php
                         $count = 1;
                         foreach ($schede as $scheda) {
                             if ($scheda) {
                                 get_template_part("template-parts/home/scheda-evidenza");
                             }
                             ++$count;
-                        } 
-                        ?>                      
-                    
-                    </div>                  
+                        }
+                        ?>
+
+                    </div>
                 </div>
-              <div class="row my-4 justify-content-md-center">
+                <div class="row my-4 justify-content-md-center">
                     <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
                         <button type="button" class="btn btn-outline-primary">Tutte le novità
                             <svg class="icon">
