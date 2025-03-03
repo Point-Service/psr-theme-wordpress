@@ -391,32 +391,37 @@ class Breadcrumb_Trail {
 
 
 
-	                      if (get_post_type() == 'unita_organizzativa') {
+	                    if (get_post_type() == 'unita_organizzativa') {
 				    // Aggiungi il link alla pagina di amministrazione
 				    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
 				
 				    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
 				    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
-			
+				
 				    if ($terms && !is_wp_error($terms)) {
 				        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
 				        foreach ($terms as $term) {
-						
-			
-					// Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-				        if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
-						echo 'a';
+				            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
+				            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
 				                // Link Politici
 				                $politici_link = home_url("amministrazione/politici");
-				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; 
-						    
-						$politici_link = home_url("amministrazione/organi-di-governo");
-				                $this->items[] = "<a href='" . esc_url($politici_link) . "'>Organi Di Governo</a>"; 						   
+				
+				                // Aggiungi solo se non è già presente
+				                if (!in_array("<a href='" . esc_url($politici_link) . "'>Politici</a>", $this->items)) {
+				                    $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>";
+				                }
+				
+				                $politici_link = home_url("amministrazione/organi-di-governo");
+				
+				                // Aggiungi solo se non è già presente
+				                if (!in_array("<a href='" . esc_url($politici_link) . "'>Organi Di Governo</a>", $this->items)) {
+				                    $this->items[] = "<a href='" . esc_url($politici_link) . "'>Organi Di Governo</a>";
+				                }
 				            }
-				           											
-						
 				        }
 				    }
+				}
+
 				
 				    // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
 				    $referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
