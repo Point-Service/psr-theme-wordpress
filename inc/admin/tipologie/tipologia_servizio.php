@@ -89,6 +89,7 @@ function dci_add_servizi_metaboxes() {
 			$data_fine = get_post_meta($post->ID, '_dci_servizio_data_fine_servizio', true);
 			echo "<pre>";
 			print_r($data_inizio);
+			echo "<br>";
 			print_r($data_fine);
 			echo "</pre>";
 		}
