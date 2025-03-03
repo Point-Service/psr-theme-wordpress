@@ -234,15 +234,15 @@
 						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
 			          
 						<a id="area_personale_admin" href="<?php echo get_admin_url(); ?>">Area Riservata</a>
-						jjjjjjjvb
-			                      
+								                      
 						<?php echo dci_get_option("firma_nostra",'header'); ?>
+
 			  <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
 	                            <li class="list-inline-item d-flex">
 	                                <small>  © <?php echo dci_get_option("nome_comune"); ?>
 					   <?php
 						// Recupera il valore dell'opzione 'firma_nostra'
-						$firma_nostra =  dci_get_option("firma_nostra",'header');						
+						$firma_nostra = get_option( $prefix . 'firma_nostra', 'false' );						
 						// Se l'opzione è impostata su 'false', mostra la firma
 echo $firma_nostra;
 						if ( $firma_nostra == 'false' ) : ?>
