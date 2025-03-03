@@ -45,7 +45,7 @@ get_header();
                 <div class="row">
                     <div class="col-lg-8 px-lg-4 py-lg-2">
                     <?php if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-                                   echo '<h1 data-audio>'.get_the_title().'</h1>';
+                                   echo '<h1 data-audio>'.ucfirst(strtolower(get_the_title())).'</h1>';
                                 }else{
                                     echo '<h1 data-audio>'. get_the_title().'</h1>';
                                 }
@@ -424,4 +424,5 @@ function stopAudio(id) {
 
 <?php
 get_footer();
+
 
