@@ -153,9 +153,20 @@ function dci_register_comune_options(){
         'type' => 'text'
     ));
 
-
-
-
+    $servizi_options->add_field(array(
+        'id' => $prefix . 'nascondi_firma',
+        'name' => __('Nascondi la nostra firma.', 'design_comuni_italia'),
+        'desc' => __('Questa opzione ti permette di nascondere la nostra firma presente nel Footer.', 'design_comuni_italia'),
+        'type' => 'radio_inline',
+        'default' => 'false',
+        'options' => array(
+            'true' => __('Si', 'design_comuni_italia'),
+            'false' => __('No', 'design_comuni_italia'),
+        ),
+        'attributes' => array(
+            'data-conditional-value' => "false",
+        ),
+    ));
     
   $header_options->add_field( array(
         'id'    => $prefix . 'favicon',
