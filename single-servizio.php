@@ -1,4 +1,4 @@
-<?php
+oi<?php
 /**
  * Servizio template file
  *
@@ -51,7 +51,8 @@ get_header();
 			    // Non aggiorno lo stato nel database se non entra in questa condizione
 			}
 
-
+echo $startDate;
+echo $endDate;		
 
             // prefix: _dci_servizio_
             $stato = dci_get_meta("stato");		
