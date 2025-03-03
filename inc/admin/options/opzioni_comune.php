@@ -166,7 +166,7 @@ function dci_register_comune_options(){
         'attributes' => array(
             'data-conditional-value' => "false",
         ),
-    ));
+
     
   $header_options->add_field( array(
         'id'    => $prefix . 'favicon',
