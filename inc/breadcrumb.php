@@ -492,19 +492,29 @@ if (get_post_type() == 'persona_pubblica') {
                 // Determina la destinazione in base all'incarico
                 $destinazione = '';
  
+                   // Recupera gli incarichi, se esistono
+                $incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post
+        
+                if (!empty($incarichi)) {
+                    // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
+                    $incarico = get_the_title($incarichi[0]);
+                    
                     // Recupero dei termini di tipo incarico
-                 $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
-		    
-                 // Controllo se i termini di tipo incarico esistono e non ci sono errori
+                    $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
+                    
+                    // Controllo se i termini di tipo incarico esistono e non ci sono errori
                     if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
                         $tipo_incarico = $tipo_incarico_terms[0]->name;
                     } else {
                         $tipo_incarico = ''; // Valore di fallback se non ci sono termini
                     }
+                } else {
+                    $incarico = ''; // Valore di fallback se non ci sono incarichi
+                    $tipo_incarico = ''; // Valore di fallback se non ci sono incarichi
+                }
 
-
-		    echo $tipo_incarico_terms;
 		    echo $tipo_incarico;
+		    
                 // Usa uno switch per determinare la destinazione in base all'incarico
                 switch ($incarico) {
                     case 'amministrativo':  // Se l'incarico è 'amministrativo'
