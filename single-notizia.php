@@ -44,12 +44,19 @@ get_header();
                 </div>
                 <div class="row">
                     <div class="col-lg-8 px-lg-4 py-lg-2">
-                        <h1 data-audio><?php the_title(); ?></h1>
+                    <?php if (preg_match('/[A-Z]{5,}/', get_the_title())) {
+                                   echo '<h1 data-audio>'.ucfirst(strtolower(get_the_title())).'</h1>';
+                                }else{
+                                    echo '<h1 data-audio>'. get_the_title().'</h1>';
+                                }
+                        ?>
                         <h2 class="visually-hidden" data-audio>Dettagli della notizia</h2>
-                        <p data-audio>
-                            <?php echo $descrizione_breve; ?>
-                        </p>
-            
+                        <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                                   echo '<p data-audio>'.ucfirst(strtolower($descrizione_breve)).'</p>';
+                                }else{
+                                    echo '<p data-audio>'. $descrizione_breve.'</p>';
+                                }
+                        ?>            
                         <div class="row mt-5 mb-4">
                             <div class="col-6">
                                 <small>Data:</small>
@@ -163,7 +170,12 @@ get_header();
                     <article class="it-page-section anchor-offset" data-audio>                        
                         <h4 id="descrizione">Descrizione</h4>
                         <div class="richtext-wrapper lora">
-                            <?php echo $descrizione; ?>
+                            <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                                   echo ucfirst(strtolower($descrizione_breve));
+                                }else{
+                                    echo $descrizione_breve;
+                                }
+                            ?>
                         </div>
                     </article>
 
@@ -412,3 +424,4 @@ function stopAudio(id) {
 
 <?php
 get_footer();
+
