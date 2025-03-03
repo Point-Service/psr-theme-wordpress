@@ -480,9 +480,9 @@ class Breadcrumb_Trail {
 					    // Estrai il percorso del referrer
 					    $referer_path = parse_url($referer_url, PHP_URL_PATH);
 					    $referer_parts = explode('/', trim($referer_path, '/'));
-                                            
-					    echo $referer_parts ;
 						
+                                            echo get_post_type();
+					   						
 					    // Verifica se il referrer corrisponde a "politici"
 					    if (in_array('politici', $referer_parts)) {
 					        // Crea un link alla pagina "amministrazione/politici"
