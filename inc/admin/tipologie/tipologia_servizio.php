@@ -99,7 +99,7 @@ function dci_add_servizi_metaboxes() {
 	) );
 	
 	$cmb_stato->add_field( array(
-	    'id'          => $prefix . 'data_fineservizio',
+	    'id'          => $prefix . 'data_fine_servizio',
 	    'name'        => __( 'Data di fine', 'design_comuni_italia' ),
 	    'desc'        => __( 'Seleziona la data in cui il servizio terminerà. Se lasciato vuoto, il servizio resterà attivo fino a nuova modifica.', 'design_comuni_italia' ),
 	    'type'        => 'text_date',
