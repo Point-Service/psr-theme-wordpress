@@ -19,9 +19,9 @@ get_header();
 
 
 		
-		 // Recupera le date di inizio e fine del servizio
-		        $data_inizio_servizio = dci_get_meta("_dci_servizio_data_inizio_servizio");
-		        $data_fine_servizio = dci_get_meta("_dci_servizio_data_fine_servizio");
+		      // Recupera le date di inizio e fine del servizio
+		        $data_inizio_servizio = dci_get_meta("data_inizio_servizio");
+		        $data_fine_servizio = dci_get_meta("data_fine_servizio");
 		
 		        // Recupera lo stato del servizio
 		        $stato = dci_get_meta("_dci_servizio_stato");
