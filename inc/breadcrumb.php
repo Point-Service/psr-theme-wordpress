@@ -494,12 +494,27 @@ class Breadcrumb_Trail {
 					        // Crea un link alla pagina "amministrazione/politici" come se venisse dal link "politici"
 					        $politici_link = home_url("amministrazione/politici");
 					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
+				
+					    
+					    } elseif (get_post_type() == 'personale-amministrativo' && !in_array('persona_pubblica', $referer_parts)) {
+					       
+					        $politici_link = home_url("persona_pubblica");
+					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Persona Pubblica</a>"; // Link Politici
 						    
 					     // Se la tipologia della pagina è "struttura-politica" e il referrer non è "politici"
 					    } elseif (in_array('personale-amministrativo', $referer_parts)) {
 					        // Crea un link alla pagina "amministrazione/personale-amministrativo"
 					        $personale_link = home_url("amministrazione/personale-amministrativo");
 					        $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
+					    }
+					    else{
+                                             $terms = get_the_terms(get_the_ID(),'tipi_documento');
+					  if($terms){
+					   foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_documento' ) ), $term->name );
+					  }
+					}
+						    
 					    }
 					}
 					
