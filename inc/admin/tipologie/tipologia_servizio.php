@@ -95,7 +95,7 @@ function dci_add_servizi_metaboxes() {
 		    'id'          => $prefix . 'data_inizio_servizio',
 		    'name'        => __( 'Data di inizio gg/mm/aaaa', 'design_comuni_italia' ),
 		    'desc'        => __( 'Seleziona la data a partire dalla quale il servizio sarà disponibile.', 'design_comuni_italia' ),
-		    'type'        => 'text_date',
+		    'type'        => 'text',
 		    'date_format' => 'd/m/Y', // Formato gg/mm/aaaa
 		) );
 		
