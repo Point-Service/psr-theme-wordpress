@@ -1,4 +1,4 @@
-oi<?php
+<?php
 /**
  * Servizio template file
  *
@@ -110,13 +110,6 @@ get_header();
             
 
 
-
-
-
-
-
-
-		
 
             ?>
       <script type="application/ld+json" data-element="metatag">
