@@ -482,9 +482,9 @@ class Breadcrumb_Trail {
 				        $referer_parts = explode('/', trim($referer_path, '/'));
 				    }
 				
-				    // Recupera gli incarichi, se esistono
-				    $incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post				
-				
+					// Recupera gli incarichi, se esistono
+					$incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post				
+					
 				        // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
 				        $incarico = get_the_title($incarichi[0]);
 				
@@ -498,12 +498,8 @@ class Breadcrumb_Trail {
 				            $tipo_incarico = ''; // Valore di fallback se non ci sono termini
 				        }
 				
-				        // Se ci sono incarichi, determina la destinazione in base all'incarico
-				        $destinazione = '';
-				        
-				        // Aggiungi il tipo di incarico (opzionale, per debugging o altro scopo)
-				        echo $tipo_incarico;
-				
+
+			
 				        // Determina la destinazione in base al tipo di incarico
 				        if (strtolower($tipo_incarico) === 'politico') {
 				            // Se l'incarico è "Politico", crea un link alla pagina "amministrazione/politici"
