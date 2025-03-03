@@ -511,7 +511,7 @@ class Breadcrumb_Trail {
 				            $politici_link = home_url("amministrazione/politici");
 				            $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
 
-				        if (strtolower($tipo_incarico) === 'amministrativo') {
+					} elseif (strtolower($tipo_incarico) === 'amministrativo') {
 				            // Se l'incarico è "Politico", crea un link alla pagina "amministrazione/politici"
 					    $personale_link = home_url("amministrazione/personale-amministrativo");
 				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
