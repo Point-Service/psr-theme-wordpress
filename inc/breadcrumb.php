@@ -483,9 +483,8 @@ class Breadcrumb_Trail {
 				    }
 				
 				    // Recupera gli incarichi, se esistono
-				    $incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post
+				    $incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post				
 				
-				    if (!empty($incarichi)) {
 				        // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
 				        $incarico = get_the_title($incarichi[0]);
 				
@@ -525,15 +524,8 @@ class Breadcrumb_Trail {
 				            $personale_link = home_url("amministrazione/personale-amministrativo");
 				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
 				        }
-				    } else {
-				        // Se non ci sono incarichi, mostra i termini associati al post
-				        $terms = get_the_terms(get_the_ID(), 'tipi_documento');
-				        if (!empty($terms) && !is_wp_error($terms)) {
-				            foreach ($terms as $term) {
-				                $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_documento')), $term->name);
-				            }
-				        }
-				    }
+				    
+				  
 				
 				    // Aggiungi il titolo della pagina corrente
 				    $this->items[] = get_the_title();
