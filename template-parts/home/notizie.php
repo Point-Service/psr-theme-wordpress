@@ -53,7 +53,7 @@ for ($i = 1; $i <= 20; $i++) {
                                     <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
                                 </div> 
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                 <h3 class="card-title"><?php echo ucfirst(strtolower($post->post_title)); ?></h3> 
+                                 <h3 class="card-title"><?php echo $post->post_title ; ?></h3> 
                                 </a>
                                 <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
                                 
