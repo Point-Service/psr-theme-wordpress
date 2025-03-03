@@ -474,65 +474,53 @@ class Breadcrumb_Trail {
 				
 					 // Ottieni l'URL del referrer (la pagina che ha fatto il collegamento)
 					$referer_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+
+
+
 					
-					// Verifica se il referrer è presente e contiene una delle parole chiave per distinguere la pagina
-					if (!empty($referer_url)) {
-					    // Estrai il percorso del referrer
-					    $referer_path = parse_url($referer_url, PHP_URL_PATH);
-					    $referer_parts = explode('/', trim($referer_path, '/'));
-											  
-					   						
-					    // Verifica se il referrer corrisponde a "politici"
-					    if (in_array('politici', $referer_parts)) {
-					        // Crea un link alla pagina "amministrazione/politici"
-					        $politici_link = home_url("amministrazione/politici");
-					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
-					
-					    // Se la tipologia della pagina è "struttura-politica" e il referrer non è "politici"
-					    } elseif (get_post_type() == 'struttura-politica' && !in_array('persona_pubblica', $referer_parts)) {
-					        // Crea un link alla pagina "amministrazione/politici" come se venisse dal link "politici"
-					        $politici_link = home_url("amministrazione/politici");
-					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
-				
-					    
-					    } elseif (!in_array('persona_pubblica', $referer_parts)) {
-					       
-				                 $politici_link = home_url("amministrazione/politici");
-					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
-
-						    
-                                             } elseif (get_post_type() == 'persona_pubblica' && !in_array('consiglio-comunale', $referer_parts)) {					       
-				                $politici_link = home_url("amministrazione/politici");
-					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
-						    
-
-						    
-                                             } elseif (get_post_type() == 'persona_pubblica' && !in_array('personale-amministrativo', $referer_parts)) {					       
-				                $politici_link = home_url("amministrazione/personale-amministrativo");
-					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Personale Amministrativo</a>"; // Link Politici
+						// Verifica se il referrer è presente e contiene una delle parole chiave per distinguere la pagina
+						if (!empty($referer_url)) {
+						    // Estrai il percorso del referrer
+						    $referer_path = parse_url($referer_url, PHP_URL_PATH);
+						    $referer_parts = explode('/', trim($referer_path, '/'));
+												  
+						   						
+						 // Recupera gli incarichi associati al post tramite dci_get_meta
+						    $incarichi = dci_get_meta("incarichi") ?? [];  // Recupera gli incarichi, se esistono
+						
+						  // Se gli incarichi sono presenti
+						    if (!empty($incarichi)) {
+						        foreach ($incarichi as $incarico) {
+						            // Crea una logica per determinare la pagina di destinazione in base all'incarico
+						            $destinazione = '';
+						            echo $incarico;
+								
+						            // Usa un "switch" o un "if" per determinare la destinazione in base all'incarico
+						            switch ($incarico) {
+						                case 'incarico1':  // Se l'incarico è 'incarico1'
+						                    $destinazione = 'https://www.sito.com/pagina-incarico1';  // URL per incarico1
+						                    break;
+						                case 'incarico2':  // Se l'incarico è 'incarico2'
+						                    $destinazione = 'https://www.sito.com/pagina-incarico2';  // URL per incarico2
+						                    break;
+						                case 'incarico3':  // Se l'incarico è 'incarico3'
+						                    $destinazione = 'https://www.sito.com/pagina-incarico3';  // URL per incarico3
+						                    break;
+						                default:  // Se non ci sono corrispondenze
+						                    $destinazione = 'https://www.sito.com/pagina-default';  // URL di default
+						                    break;
+						            }
 
 
-						    
-						    
-					     } elseif (get_post_type() == 'persona_pubblica') {
-						   				       
-				                $politici_link = home_url("amministrazione/personale-amministrativo");
-					        $this->items[] = "<a href='" . esc_url($politici_link) . "'>Personale Amministrativo</a>"; // Link Politici
-						    
-					     // Se la tipologia della pagina è "struttura-politica" e il referrer non è "politici"
-					    } elseif (in_array('personale-amministrativo', $referer_parts)) {
-					        // Crea un link alla pagina "amministrazione/personale-amministrativo"
-					        $personale_link = home_url("amministrazione/personale-amministrativo");
-					        $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
-					    }
-					    else{
-                                             $terms = get_the_terms(get_the_ID(),'tipi_documento');
-					  if($terms){
-					   foreach ($terms as $term) {
-						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_documento' ) ), $term->name );
-					  }
-					}
-						    
+							
+						    else{
+	                                             $terms = get_the_terms(get_the_ID(),'tipi_documento');
+						  if($terms){
+						   foreach ($terms as $term) {
+							  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_documento' ) ), $term->name );
+						  }
+						}
+							    
 					    }
 					}
 					
