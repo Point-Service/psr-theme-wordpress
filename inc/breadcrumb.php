@@ -482,8 +482,33 @@ if (get_post_type() == 'persona_pubblica') {
         $referer_parts = explode('/', trim($referer_path, '/'));
 
         // Recupera gli incarichi associati al post tramite dci_get_meta
-        $incarichi = dci_get_meta("incarichi") ?? [];  // Recupera gli incarichi, se esistono
+        $incarichi = dci_get_meta("tipi_incarichi") ?? [];  // Recupera gli incarichi, se esistono
 
+if ($tipo_incarico_id) {
+    // Recupera il termine dalla tassonomia 'tipi_incarico' usando l'ID
+    $tipo_incarico_term = get_term($tipo_incarico_id, 'tipi_incarico');
+
+    if (!is_wp_error($tipo_incarico_term)) {
+        // Ottieni il nome del termine
+        $tipo_incarico = $tipo_incarico_term->name;
+    } else {
+        // Fallback se c'è un errore nel recupero del termine
+        $tipo_incarico = 'Tipo di incarico non valido';
+    }
+} else {
+    // Se non è selezionato alcun incarico, fornisce un valore di fallback
+    $tipo_incarico = 'Nessun incarico selezionato';
+}
+echo $tipo_incarico;
+
+
+
+
+	    
+	// Recupera l'ID del termine selezionato nel campo 'tipo_incarico'
+	$tipo_incarico_id = get_post_meta(get_the_ID(), $prefix . 'tipo_incarico', true);
+
+	    
         // Se ci sono incarichi
         if (!empty($incarichi)) {
             foreach ($incarichi as $incarico) {
