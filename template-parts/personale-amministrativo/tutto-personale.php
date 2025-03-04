@@ -1,54 +1,50 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
+// Definisco i parametri per la query di ricerca
 $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
 $load_posts = 6;
-
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
-// Prima query per ottenere il numero totale di post escludendo i "politici"
-$total_args = array(
-    's'              => $query,
-    'posts_per_page' => -1, // -1 per ottenere tutti i risultati
-    'post_type'      => 'persona_pubblica',
-    'orderby'        => 'post_title',
-    'order'          => 'ASC',
+// Prima query: conta tutti i post senza includere i "politici"
+$count_args = array(
+    's' => $query,
+    'posts_per_page' => -1, // ottieni tutti i post senza limiti
+    'post_type' => 'persona_pubblica',
+    'orderby' => 'post_title',
+    'order' => 'ASC',
     'tax_query' => array(
         array(
             'taxonomy' => 'tipi_incarico',
-            'field'    => 'slug',
-            'terms'    => 'politico',
-            'operator' => 'NOT IN' // Escludi "politico"
+            'field' => 'slug',
+            'terms' => 'politico',  // Escludi i "politici"
+            'operator' => 'NOT IN'  // Escludi
         )
-    ),
+    )
 );
+$count_query = new WP_Query($count_args);
+$total_posts = $count_query->found_posts; // Totale senza politici
 
-$total_query = new WP_Query($total_args);
-
-// Ottieni il totale dei post (senza i politici)
-$total_found_posts = $total_query->found_posts;
-
-// Seconda query per ottenere i post limitati (per la visualizzazione)
+// Seconda query: ottieni i post visibili (limitato a $max_posts)
 $args = array(
-    's'              => $query,
-    'posts_per_page' => $max_posts, // Limita a 6 post per pagina
-    'post_type'      => 'persona_pubblica',
-    'orderby'        => 'post_title',
-    'order'          => 'ASC',
+    's' => $query,
+    'posts_per_page' => $max_posts,
+    'post_type' => 'persona_pubblica',
+    'orderby' => 'post_title',
+    'order' => 'ASC',
     'tax_query' => array(
         array(
             'taxonomy' => 'tipi_incarico',
-            'field'    => 'slug',
-            'terms'    => 'politico',
-            'operator' => 'NOT IN' // Escludi "politico"
+            'field' => 'slug',
+            'terms' => 'politico',  // Escludi i "politici"
+            'operator' => 'NOT IN'  // Escludi
         )
-    ),
+    )
 );
 
 $the_query = new WP_Query($args);
 $posts = $the_query->posts;
 ?>
-
 
 
 
