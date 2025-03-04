@@ -532,9 +532,13 @@ class Breadcrumb_Trail {
 				        }
 				    
 				  
-				
-				    // Aggiungi il titolo della pagina corrente
-				    $this->items[] = get_the_title();
+				            if (preg_match('/[A-Z]{5,}/', get_the_title())) {
+		                                   echo $this->items[] = ucfirst(strtolower(get_the_title()));
+		                                }else{
+		                                    // Aggiungi il titolo della pagina corrente
+				                      $this->items[] = get_the_title();
+		                                }
+		                        
 				    return;
 				}
 
@@ -593,9 +597,13 @@ class Breadcrumb_Trail {
 
 
 
-			
-			    // Aggiungi il titolo dell'articolo corrente
-			    $this->items[] = get_the_title();
+			               if (preg_match('/[A-Z]{5,}/', get_the_title())) {
+		                                   echo $this->items[] = ucfirst(strtolower(get_the_title()));
+		                                }else{
+		                                    // Aggiungi il titolo della pagina corrente
+				                      $this->items[] = get_the_title();
+		                                }
+		                        
 			    return;
 			    break;
 
@@ -633,9 +641,15 @@ class Breadcrumb_Trail {
 			            $this->items[] = "<a href='" . esc_url($term_link) . "'>" . __(dci_get_breadcrumb_label($term_name), "design_comuni_italia") . "</a>";
 			        }  
 			    }
-			
-			    // Aggiungi il titolo del post
-			    $this->items[] .= get_the_title();
+
+                                    if (preg_match('/[A-Z]{5,}/', get_the_title())) {
+		                                   echo $this->items[] .= ucfirst(strtolower(get_the_title()));
+		                                }else{
+		                                    // Aggiungi il titolo della pagina corrente
+				                      $this->items[] .= get_the_title();
+		                                }
+		                        
+	
 			    return;
 			    break;
 				    }
