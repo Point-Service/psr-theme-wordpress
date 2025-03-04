@@ -1,19 +1,20 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
-    $load_posts = 6;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
+$load_posts = 6;
 
-    $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-    $args = array(
-        's' => $query,
-        'posts_per_page' => $max_posts,
-        'post_type'      => 'persona_pubblica',
-        'orderby'        => 'post_title',
-        'order'          => 'ASC'        
-     );
-     $the_query = new WP_Query($args);
-     $posts = $the_query->posts;
+$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+$args = array(
+    's' => $query,
+    'posts_per_page' => $max_posts,
+    'post_type'      => 'persona_pubblica',
+    'orderby'        => 'post_title',
+    'order'          => 'ASC'        
+);
+
+$the_query = new WP_Query($args);
+$posts = $the_query->posts;
 
 if ($the_query->have_posts()) {
     while ($the_query->have_posts()) {
@@ -24,7 +25,7 @@ if ($the_query->have_posts()) {
 
         // Ottieni i termini associati alla tassonomia 'tipi_incarico' per il post
         $incarico_terms = get_the_terms($post_id, 'tipi_incarico');
-
+        
         echo "<h3>Incarico per il post: " . get_the_title() . " (ID: $post_id)</h3>";
         echo "<pre>";
 
@@ -32,10 +33,11 @@ if ($the_query->have_posts()) {
         if (!empty($incarico_terms) && !is_wp_error($incarico_terms)) {
             foreach ($incarico_terms as $incarico_term) {
                 // Stampa il nome del tipo di incarico
-                echo "<strong>Nome dell'incarico:</strong> " . $incarico_term->name . "<br>";
+                echo "<strong>Nome dell'incarico:</strong> " . esc_html($incarico_term->name) . "<br>";
             }
         } else {
-            echo "Nessun incarico trovato per questo post.";
+            // Se non ci sono termini associati, mostra il messaggio di errore
+            echo "Nessun incarico associato a questo post.<br>";
         }
 
         echo "</pre>";
@@ -45,6 +47,7 @@ if ($the_query->have_posts()) {
     echo "Nessun risultato trovato.";
 }
 ?>
+
 
 
 
