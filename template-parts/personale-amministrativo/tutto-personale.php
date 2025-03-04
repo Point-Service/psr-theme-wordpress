@@ -5,6 +5,7 @@ $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
 $load_posts = 6;
 
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
@@ -14,9 +15,9 @@ $args = array(
     'tax_query'      => array(
         array(
             'taxonomy' => 'tipi_incarico',
-            'field'    => 'slug',
-            'terms'    => 'politico',
-            'operator' => 'NOT IN',  // Escludi il termine "politico"
+            'field'    => 'slug',  // Assicurati che 'slug' sia l'argomento giusto
+            'terms'    => 'politico',  // Il termine che vuoi escludere
+            'operator' => 'NOT IN', // Escludi il termine 'politico'
         ),
     ),
 );
@@ -60,6 +61,7 @@ if ($the_query->have_posts()) {
     echo "Nessun risultato trovato.";
 }
 ?>
+
 
 
 
