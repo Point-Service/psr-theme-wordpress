@@ -9,6 +9,7 @@ global $the_query, $load_posts, $load_card_type;
         's' => $query,
         'posts_per_page' => $max_posts,
         'post_type'      => 'persona_pubblica',
+        'tipo_incarico'  => 'amministrativo',
         'orderby'        => 'post_title',
         'order'          => 'ASC'
      );
