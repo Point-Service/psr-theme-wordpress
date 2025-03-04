@@ -12,14 +12,6 @@ $args = array(
     'post_type'      => 'persona_pubblica',
     'orderby'        => 'post_title',
     'order'          => 'ASC',
-    'tax_query'      => array(
-        array(
-            'taxonomy' => 'tipi_incarico',
-            'field'    => 'slug',  // Assicurati che 'slug' sia l'argomento giusto
-            'terms'    => 'politico',  // Il termine che vuoi escludere
-            'operator' => 'NOT IN', // Escludi il termine 'politico'
-        ),
-    ),
 );
 
 $the_query = new WP_Query($args);
@@ -28,7 +20,7 @@ $posts = $the_query->posts;
 if ($the_query->have_posts()) {
     while ($the_query->have_posts()) {
         $the_query->the_post();
-        
+
         // Ottieni l'ID del post corrente
         $post_id = get_the_ID();
 
@@ -44,6 +36,12 @@ if ($the_query->have_posts()) {
                 // Verifica se ci sono termini di tipo incarico
                 if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms)) {
                     $tipo_incarico = $tipo_incarico_terms[0]->name;  // Prende il nome del tipo di incarico
+
+                    // Se il tipo di incarico è "politico", salta questo elemento
+                    if (esc_html($tipo_incarico) === 'politico') {
+                        continue;  // Salta questo ciclo del while e passa al prossimo post
+                    }
+
                     echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
                     echo "<strong>Tipo di incarico: </strong>" . esc_html($tipo_incarico) . "<br>";
                 } else {
@@ -61,6 +59,7 @@ if ($the_query->have_posts()) {
     echo "Nessun risultato trovato.";
 }
 ?>
+
 
 
 
