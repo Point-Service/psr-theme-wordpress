@@ -32,7 +32,15 @@
                 <div class="col-8 order-1 order-md-2">
                 <div class="card-body">
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
-                        <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
+                                    <?php
+                                    // Controllo se il titolo contiene almeno 5 caratteri maiuscoli consecutivi
+                                    if (preg_match('/[A-Z]{5,}/', $post->post_title)) {
+                                        $titolo = ucfirst(strtolower($post->post_title));
+                                    } else {
+                                        $titolo = $post->post_title;
+                                    }
+                                    ?>                       
+                        <h3 class="h5 card-title"><?php echo $titolo; ?></h3>
                     </a>
                     <p class="card-text d-none d-md-block">
                         <?php echo $description; ?>
