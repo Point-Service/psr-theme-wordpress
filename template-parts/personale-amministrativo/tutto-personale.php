@@ -6,17 +6,37 @@ $load_posts = 6;
 
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
-$args = array(
-    's' => $query,
-    'posts_per_page' => $max_posts,
+// Prima query per il conteggio corretto
+$count_args = array(
+    's'              => $query,
+    'posts_per_page' => -1,  // Non limitare il numero di post, vogliamo il conteggio totale
     'post_type'      => 'persona_pubblica',
     'orderby'        => 'post_title',
     'order'          => 'ASC',
     'tax_query' => array(
         array(
-            'taxonomy' => 'tipi_incarico', // Assicurati che questa sia la tassonomia giusta
+            'taxonomy' => 'tipi_incarico',
             'field'    => 'slug',
-            'terms'    => 'politico', // Escludiamo i post che appartengono a "politico"
+            'terms'    => 'politico',
+            'operator' => 'NOT IN' // Escludi "politico"
+        )
+    )
+);
+$count_query = new WP_Query($count_args);
+$total_found_posts = $count_query->found_posts;  // Numero corretto di post, senza "politico"
+
+// Seconda query per il recupero dei post
+$args = array(
+    's'              => $query,
+    'posts_per_page' => $max_posts, // Limitiamo a 6 post per il caricamento
+    'post_type'      => 'persona_pubblica',
+    'orderby'        => 'post_title',
+    'order'          => 'ASC',
+    'tax_query' => array(
+        array(
+            'taxonomy' => 'tipi_incarico',
+            'field'    => 'slug',
+            'terms'    => 'politico',
             'operator' => 'NOT IN' // Escludi "politico"
         )
     )
