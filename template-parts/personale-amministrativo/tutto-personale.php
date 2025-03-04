@@ -12,12 +12,7 @@ $args = array(
     'post_type'      => 'persona_pubblica',
     'orderby'        => 'post_title',
     'order'          => 'ASC',
-    'meta_query'     => array(
-        array(
-            'key'     => '_dci_incarico_', // Assicurati che sia il nome corretto del meta field
-            'value'   => 'personale_amministrativo',
-            'compare' => '='
-        )
+ 
     ),
 );
 
