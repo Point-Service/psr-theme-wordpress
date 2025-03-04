@@ -138,10 +138,9 @@ if ($img) {
                             <?php } ?>
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                             </div>
-                            <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                                <h3 class="h5 card-title u-grey-light">              
-                                  <?php 
-                                  // Recupera il titolo della pagina
+                            <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">                                
+                                    <h3 class="h5 card-title u-grey-light"><?php
+                                        // Recupera il titolo della pagina
                     					$title = the_title();					
                     					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
                     					if (strlen($title) > 100) {
@@ -151,9 +150,12 @@ if ($img) {
                     					if (preg_match('/[A-Z]{5,}/', $title)) {
                     					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
                     					    $title = ucfirst(strtolower($title));
-                    					}					
-                    					// Aggiunge il titolo alla lista degli elementi
-                    					$this->items[] = $title;</h3>
+                    					}				
+
+                                        echo $title;
+                                       ?>
+                                    </h3>
+                               
                             </a>
                             <p class="card-text d-none d-md-block">                                       
                                   <?php 
