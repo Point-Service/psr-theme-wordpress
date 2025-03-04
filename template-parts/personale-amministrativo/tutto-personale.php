@@ -48,22 +48,13 @@ if ($the_query->have_posts()) {
                     // Incrementa il conteggio totale dei record senza "politico"
                     $total_records++;
 
-                    echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
-                    echo "<strong>Tipo di incarico: </strong>" . esc_html($tipo_incarico) . "<br>";
-                } else {
-                    echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
-                    echo "Nessun tipo di incarico trovato per questo post.<br>";
                 }
             }
-        } else {
-            echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
-            echo "Nessun incarico associato a questo post.<br>";
-        }
+        } 
     }
 
     wp_reset_postdata();
 }
-
 
 
 echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records . "</p>";
@@ -122,7 +113,7 @@ echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_reco
                         id="autocomplete-label"
                         class="u-grey-light text-paragraph-card mt-2 mb-4 mt-lg-3 mb-lg-40"
                         >
-                        <?php echo $the_query->found_posts; ?> amministratori trovati in ordine alfabetico
+                        <?php echo $total_records; ?> amministratori trovati in ordine alfabetico
                         </p>
                     </div>
                 </div>
