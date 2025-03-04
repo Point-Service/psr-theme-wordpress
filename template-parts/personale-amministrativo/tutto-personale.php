@@ -56,8 +56,6 @@ if ($the_query->have_posts()) {
     wp_reset_postdata();
 }
 
-
-echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records . "</p>";
 ?>
 
 
