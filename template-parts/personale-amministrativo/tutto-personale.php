@@ -17,6 +17,9 @@ $args = array(
 $the_query = new WP_Query($args);
 $posts = $the_query->posts;
 
+// Variabile per il conteggio totale dei record senza il tipo "politico"
+$total_records = 0;
+
 if ($the_query->have_posts()) {
     while ($the_query->have_posts()) {
         $the_query->the_post();
@@ -42,6 +45,9 @@ if ($the_query->have_posts()) {
                         continue;  // Salta questo ciclo del while e passa al prossimo post
                     }
 
+                    // Incrementa il conteggio totale dei record senza "politico"
+                    $total_records++;
+
                     echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
                     echo "<strong>Tipo di incarico: </strong>" . esc_html($tipo_incarico) . "<br>";
                 } else {
@@ -54,10 +60,14 @@ if ($the_query->have_posts()) {
             echo "Nessun incarico associato a questo post.<br>";
         }
     }
+
     wp_reset_postdata();
 } else {
     echo "Nessun risultato trovato.";
 }
+
+// Stampa il totale dei record senza "politico"
+echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records . "</p>";
 ?>
 
 
