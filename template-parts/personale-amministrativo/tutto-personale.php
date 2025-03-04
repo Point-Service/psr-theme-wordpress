@@ -15,7 +15,20 @@ $args = array(
 
 );
 
-
+if ($the_query->have_posts()) {
+    while ($the_query->have_posts()) {
+        $the_query->the_post();
+        $post_id = get_the_ID();
+        
+        echo "<h3>Meta Key per il post: " . get_the_title() . " (ID: $post_id)</h3>";
+        echo "<pre>";
+        var_dump(get_post_meta($post_id)); // Stampa tutte le meta key e i relativi valori
+        echo "</pre>";
+    }
+    wp_reset_postdata();
+} else {
+    echo "Nessun risultato trovato.";
+}
 
 $the_query = new WP_Query($args); 
 
