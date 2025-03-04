@@ -23,13 +23,15 @@ $tax_query = array(
 
 
 $args_incarichi = array(
-	'post_type' => 'persona_pubblica',
+	'post_type' => 'incarico',
 	'tax_query' => $tax_query,
     'posts_per_page' => -1
 );
 
 $incarichi = get_posts($args_incarichi);
 $persone_ids = array();
+
+var_dump $incarichi;
 
 foreach($incarichi as $incarico) {
 	$persone = get_post_meta($incarico->ID, '_dci_incarico_persona');
