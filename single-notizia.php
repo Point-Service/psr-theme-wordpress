@@ -265,8 +265,8 @@ get_header();
                                       <?php  // Recupera il titolo della pagina
                     					$title_allegato = $allegato->post_title;					
                     				
-                    					if (strlen($title_allegato) > 20) {
-                    					    $title_allegato = substr($title_allegato, 0, 20) . '...';
+                    					if (strlen($title_allegato) > 50) {
+                    					    $title_allegato = substr($title_allegato, 0, 50) . '...';
                     					}					
                     					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
                     					if (preg_match('/[A-Z]{5,}/', $title_allegato)) {
