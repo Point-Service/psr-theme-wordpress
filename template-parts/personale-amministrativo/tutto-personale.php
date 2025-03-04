@@ -1,21 +1,33 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
-    $load_posts = 6;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
+$load_posts = 6;
 
-    $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-    $args = array(
-        's' => $query,
-        'posts_per_page' => $max_posts,
-        'post_type'      => 'personale-amministrativo',
-        'orderby'        => 'post_title',
-        'order'          => 'ASC'
-     );
-     $the_query = new WP_Query($args);
+$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
-     $posts = $the_query->posts;
+$args = array(
+    's'              => $query,
+    'posts_per_page' => $max_posts,
+    'post_type'      => 'persona_pubblica',
+    'orderby'        => 'post_title',
+    'order'          => 'ASC',
+    'meta_query'     => array(
+        array(
+            'key'     => 'tipo_personale', // Assicurati che sia il nome corretto del meta field
+            'value'   => 'personale_amministrativo',
+            'compare' => '='
+        )
+    ),
+);
+
+$meta_test = get_post_meta($posts[0]->ID);
+var_dump($meta_test);
+
+$the_query = new WP_Query($args);
+$posts = $the_query->posts;
 ?>
+
 
 
 <div class="bg-grey-card py-5">
