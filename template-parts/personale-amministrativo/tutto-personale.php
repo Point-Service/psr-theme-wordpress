@@ -82,7 +82,7 @@ $total_count_query = new WP_Query($count_all_posts_args);
 // Conta i post senza incarico politico (totale)
 $total_records_without_politico = $total_count_query->found_posts;
 
-echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records_without_politico . "</p>";
+echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records . "</p>";
 ?>
 
 
