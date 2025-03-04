@@ -6,7 +6,6 @@ $load_posts = 6;
 
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
-// Query per recuperare i post da visualizzare (con il limite di $max_posts)
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
@@ -49,43 +48,44 @@ if ($the_query->have_posts()) {
                     // Incrementa il conteggio totale dei record senza "politico"
                     $total_records++;
 
+
                 } else {
-                     $total_records++; // Se non c'è incarico, conta comunque il post
-                }
+                  $total_records++;
+                 }
             }
         } else {
-             $total_records++; // Se non ci sono incarichi, conta comunque il post
+              $total_records++;
         }
     }
 
     wp_reset_postdata();
+} else {
+    echo "Nessun risultato trovato.";
 }
 
-// Esegui una query separata per contare **tutti i post** senza il limite di max_posts e senza incarico "politico"
-$count_all_posts_args = array(
-    's' => $query,  // Mantieni la stessa ricerca
+// Esegui una query separata per contare i post senza incarico politico
+$total_count_args = array(
     'post_type' => 'persona_pubblica',
-    'posts_per_page' => -1,  // Recupera tutti i post (senza limitazione)
+    'posts_per_page' => -1, // Recupera tutti i post
     'post_status' => 'publish',
+    's' => $query, // Mantieni la stessa ricerca
     'tax_query' => array(
         array(
             'taxonomy' => 'tipi_incarico',
             'field' => 'name',
             'terms' => 'politico',
-            'operator' => 'NOT IN', // Escludi i post con incarico "politico"
+            'operator' => 'NOT IN', // Esclude i post con incarico "politico"
         ),
     ),
 );
 
-$total_count_query = new WP_Query($count_all_posts_args);
+$total_count_query = new WP_Query($total_count_args);
 
-// Conta i post senza incarico politico (totale)
+// Conta i post senza incarico politico
 $total_records_without_politico = $total_count_query->found_posts;
 
 echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records_without_politico . "</p>";
-
 ?>
-
 
 
 
