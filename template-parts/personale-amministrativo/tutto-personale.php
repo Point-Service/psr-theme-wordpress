@@ -61,7 +61,7 @@ if ($the_query->have_posts()) {
     wp_reset_postdata();
 }
 
-// Esegui una query separata per contare **tutti i post** senza il limite di max_posts
+// Esegui una query separata per contare **tutti i post** senza il limite di max_posts e senza incarico "politico"
 $count_all_posts_args = array(
     's' => $query,  // Mantieni la stessa ricerca
     'post_type' => 'persona_pubblica',
@@ -82,8 +82,10 @@ $total_count_query = new WP_Query($count_all_posts_args);
 // Conta i post senza incarico politico (totale)
 $total_records_without_politico = $total_count_query->found_posts;
 
-echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records . "</p>";
+echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records_without_politico . "</p>";
+
 ?>
+
 
 
 
