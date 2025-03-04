@@ -14,7 +14,7 @@ $args = array(
     'order'          => 'ASC',
     'meta_query'     => array(
         array(
-            'key'     => '_dci_incarico_', // Controlla se questo è il nome giusto
+            'key'     => 'amministrativo', // Controlla se questo è il nome giusto
             'value'   => 'personale_amministrativo',
             'compare' => '='
         )
