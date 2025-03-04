@@ -40,7 +40,7 @@ function load_more(){
         'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
         'post_type'      => $post_types,
 		'post_status'    => 'publish',
-        'order'          => 'DESC',
+        'order'          => 'ASC',
 		'meta_query' => array(
             array(
                 'key' => '_dci_notizia_data_pubblicazione',
