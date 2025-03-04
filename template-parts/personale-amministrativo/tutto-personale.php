@@ -1,51 +1,55 @@
 <?php
-global $the_query, $load_posts, $load_card_type;
+global $the_query, $load_posts, $load_card_type, $tax_query, $additional_filter, $filter_ids;
 
-// Impostazioni per il numero di post
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
-$load_posts = 6;
+$query = $_GET['search'] ?? null;
 
-// Recupera la query di ricerca
-$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+switch ($post->post_name){
+	case 'politici': $tipo_incarico = 'politico'; $descrizione = 'del personale'; break;
+	case 'personale-amministrativo': $tipo_incarico = 'amministrativo'; $descrizione = 'del personale'; break;
+	case 'personale-sanitario': $tipo_incarico = 'sanitario'; $descrizione = 'del personale'; break;
+	case 'personale-socio-assistenziale': $tipo_incarico = 'socio-assistenziale'; $descrizione = 'del personale'; break;
+	case 'altro': $tipo_incarico = 'altro'; $descrizione = 'del personale'; break;
+}
 
-// Configura i parametri della query
-$args = array(
-    's'              => $query,
-    'posts_per_page' => $max_posts,
-    'post_type'      => 'persona_pubblica',
-    'orderby'        => 'post_title',
-    'order'          => 'ASC',
-    'meta_query'     => array(
-        array(
-            'key'     => '_dci_persona_pubblica_incarichi', // Nome della meta key
-            'value'   => 'amministrativo', // Il nome del tipo che stai cercando
-            'compare' => 'LIKE'  // Usa LIKE per cercare all'interno del valore serializzato
-        )
-    ),
+$tax_query = array(
+	array (
+		'taxonomy' => 'tipi_incarico',
+		'field' => 'slug',
+		'terms' => $tipo_incarico
+	));
+
+$args_incarichi = array(
+	'post_type' => 'incarico',
+	'tax_query' => $tax_query,
+    'posts_per_page' => -1
 );
 
-// Esegui la query
-$the_query = new WP_Query($args);
+$incarichi = get_posts($args_incarichi);
+$persone_ids = array();
 
-// Verifica se ci sono post
-if ($the_query->have_posts()) {
-    while ($the_query->have_posts()) {
-        $the_query->the_post();
-        $post_id = get_the_ID();
-
-        // Stampa il titolo del post e tutte le meta chiavi
-        echo "<h3>Meta Key per il post: " . get_the_title() . " (ID: $post_id)</h3>";
-        echo "<pre>";
-        var_dump(get_post_meta($post_id)); // Stampa tutte le meta key e i relativi valori
-        echo "</pre>";
-    }
-    wp_reset_postdata();
-} else {
-    // Nessun post trovato
-    echo "Nessun risultato trovato.";
+foreach($incarichi as $incarico) {
+	$persone = get_post_meta($incarico->ID, '_dci_incarico_persona');
+	foreach($persone as $persona) {
+		$persone_ids[] = $persona;
+	}
 }
-?>
 
+$filter_ids = array_unique($persone_ids);
+
+$search_value = isset($_GET['search']) ? $_GET['search'] : null;
+$args = array(
+	's'         => $search_value,
+	'posts_per_page'    => -1,
+	'post_type' => 'persona_pubblica',
+	'post_status' => 'publish',
+	'orderby'        => 'post_title',
+	'order'          => 'ASC',
+    'post__in' => empty($persone_ids) ? [0] : $filter_ids,
+);
+
+$the_query = new WP_Query( $args );
+$persone = $the_query->posts;
+?>
 
 
 
