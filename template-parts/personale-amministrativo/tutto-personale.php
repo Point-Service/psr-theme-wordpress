@@ -22,24 +22,21 @@ if ($the_query->have_posts()) {
         // Ottieni l'ID del post corrente
         $post_id = get_the_ID();
 
-        // Ottieni le tassonomie associate al post
-        $taxonomies = get_object_incarico('persona_pubblica');  // Ottieni tutte le tassonomie per il post type
+        // Ottieni i termini associati alla tassonomia 'tipi_incarico' per il post
+        $incarico_terms = get_the_terms($post_id, 'tipi_incarico');
 
-        echo "<h3>Tassonomie per il post: " . get_the_title() . " (ID: $post_id)</h3>";
+        echo "<h3>Tipo di Incarico per il post: " . get_the_title() . " (ID: $post_id)</h3>";
         echo "<pre>";
 
-        // Itera su ogni tassonomia
-        foreach ($taxonomies as $taxonomy) {
-            $terms = get_the_terms($post_id, $taxonomy);  // Ottieni i termini per questa tassonomia
-
-            if (!empty($terms) && !is_wp_error($terms)) {
-                echo "<strong>" . $taxonomy . ":</strong> ";
-                foreach ($terms as $term) {
-                    echo $term->name . " ";  // Stampa il nome del termine
-                }
-                echo "<br>";
+        // Verifica se esistono termini per la tassonomia 'tipi_incarico'
+        if (!empty($incarico_terms) && !is_wp_error($incarico_terms)) {
+            foreach ($incarico_terms as $incarico_term) {
+                echo "<strong>Tipo di Incarico:</strong> " . $incarico_term->name . "<br>"; // Stampa il nome del tipo di incarico
             }
+        } else {
+            echo "Nessun tipo di incarico trovato.";
         }
+
         echo "</pre>";
     }
     wp_reset_postdata();
