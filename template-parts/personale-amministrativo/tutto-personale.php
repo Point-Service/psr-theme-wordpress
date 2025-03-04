@@ -21,8 +21,6 @@ $args = array(
     ),
 );
 
-$meta_test = get_post_meta($posts[0]->ID);
-var_dump($meta_test);
 
 $the_query = new WP_Query($args);
 $posts = $the_query->posts;
