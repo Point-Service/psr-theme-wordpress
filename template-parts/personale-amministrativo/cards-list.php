@@ -67,10 +67,27 @@
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
-                                <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
+                                 <?php
+                                    // Controllo se il titolo contiene almeno 5 caratteri maiuscoli consecutivi
+                                    if (preg_match('/[A-Z]{5,}/', $post->post_title)) {
+                                        $titolo = ucfirst(strtolower($post->post_title));
+                                    } else {
+                                        $titolo = $post->post_title;
+                                    }
+                                    ?>                       
+                                <h3 class="h5 card-title"><?php echo $titolo; ?></h3>
+                             
                             </a>
-                            <p class="card-text d-none d-md-block">
-                                <?php echo $description; ?>
+                            <p class="card-text d-none d-md-block">                             
+                                     <?php
+                                    // Controllo se il titolo contiene almeno 5 caratteri maiuscoli consecutivi
+                                    if (preg_match('/[A-Z]{5,}/', $description)) {
+                                        $descrizione = ucfirst(strtolower($description));
+                                    } else {
+                                        $descrizione = $description;
+                                    }
+                                    ?>    
+                                 <?php echo $descrizione; ?>
                             </p>
                         </div>
                     </div>
