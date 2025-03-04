@@ -28,36 +28,45 @@ add_action("wp_ajax_load_more" , "load_more");
 add_action("wp_ajax_nopriv_load_more" , "load_more");
 function load_more(){
 	global $wp_query, $servizio, $i, $hide_categories;
-	
+
     // prepare our arguments for the query
 	$load_card_type = $_POST['load_card_type'];
 	$post_types = json_decode( stripslashes( $_POST['post_types'] ), true );
 	$url_query_params =  json_decode( stripslashes( $_POST['query_params'] ), true );
 	$additional_filter =  json_decode( stripslashes( $_POST['additional_filter'] ), true );
+	//$query_args =  json_decode( stripslashes( $_POST['query'] ), true );
+	$filter_ids =  json_decode( stripslashes( $_POST['filter_ids'] ), true );
+	$tax_query =  json_decode( stripslashes( $_POST['tax_query'] ), true );
 
 	$args = array(
-        's' => $_POST['search'],
-        'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
-        'post_type'      => $post_types,
+		's' => $_POST['search'],
+		'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+		'post_type'      => $post_types,
 		'post_status'    => 'publish',
-        'order'          => 'DESC',
-		'meta_query' => array(
-            array(
-                'key' => '_dci_notizia_data_pubblicazione',
-            )
-        ),
-        'meta_type' => 'text_date_timestamp',
-        'orderby'   => 'meta_value_num',
-    );
+		'orderby' => 'post_title',
+		'order'   => 'ASC'
+	);
 	
-	if ( $post_types != "notizia" ) {
+	if ( $post_types == "notizia" ) {
 		$args = array(
 			's' => $_POST['search'],
-	    	'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
-	    	'post_type'      => $post_types,
+			'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+			'post_type'      => $post_types,
 			'post_status'    => 'publish',
-			'orderby' => 'post_title',
-			'order'   => 'ASC'
+			'orderby'        => 'date',
+			'order'          => 'DESC'
+		);
+	}
+
+	if ( $post_types == "evento" ) {
+		$args = array(
+			's' => $_POST['search'],
+			'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+			'post_type'      => $post_types,
+			'post_status'    => 'publish',
+			'orderby' => 'meta_value',
+			'order' => 'DESC',
+			'meta_key' => '_dci_evento_data_orario_inizio',
 		);
 	}
 
@@ -69,54 +78,80 @@ function load_more(){
 				'terms' => $url_query_params["post_terms"]
 			)
 		);
-	
+
 		$args['tax_query'] = $taxquery;
 	}
+
+	if ( isset($tax_query) ){
+        $args['tax_query'] = $tax_query;
+    }
+
+	if ( isset($filter_ids) )
+		$args['post__in'] = $filter_ids;
+
 	if ( isset($url_query_params["post_types"]) ) $args['post_type'] = $url_query_params["post_types"];
 	if ( isset($url_query_params["s"]) ) $args['s'] = $url_query_params["s"];
-	if ( isset($additional_filter) ) $args = $args + $additional_filter;
- 
+	
+
 	// it is always better to use WP_Query but not here
 	$new_query = query_posts( $args );
 
 	$out = '';
     if( have_posts() ) :
-		
+
 		$i = 0;
 		// run the loop
-		while( have_posts() ): the_post();
-		$post = get_post();
-		++$i;
+		while( have_posts() ):
+            the_post();
+            $post = get_post();
+            ++$i;
 
-		if ($load_card_type == "servizio"){
-			$servizio = $post;
-			$out .= load_template_part("template-parts/servizio/card");  
+
+    switch ($load_card_type) {
+		case "categoria_servizio":
+				$servizio = $post;
+				$hide_categories = true;
+				$out .= load_template_part("template-parts/servizio/card");
+			break;
+		case "documento":
+                $out .= load_template_part("template-parts/documento/cards-list");
+			break;
+		case "domanda-frequente":
+                $out .= load_template_part("template-parts/domanda-frequente/item");
+			break;
+		case "incarico":
+                $out .= load_template_part("template-parts/incarico/cards-list");
+			break;
+		case "persona_pubblica":
+                $out .= load_template_part("template-parts/persona_pubblica/cards-list");
+			break;
+		case "global-search":
+                $out .= load_template_part("template-parts/search/item");
+			break;
+		case "notizia":
+                $out .= load_template_part("template-parts/novita/cards-list");
+			break;
+		case "evento":
+				$out .= load_template_part("template-parts/evento/card-full");
+			break;
+		case "servizio":
+				$servizio = $post;
+				$out .= '<div class="col-12 col-lg-4">'.load_template_part("template-parts/servizio/card").'</div>';
+			break;
+		case "unita-organizzativa":
+                $out .= load_template_part("template-parts/unita-organizzativa/cards-list");
+			break;
+        case "luogo":
+            $out .= load_template_part("template-parts/luogo/card-full");
+			break;
+		case "contatto":
+			$out .= load_template_part("template-parts/punto-contatto/lista-contatti");
+		default:
+			break;
 		}
-		if ($load_card_type == "categoria_servizio"){
-			$servizio = $post;
-			$hide_categories = true;
-			$out .= load_template_part("template-parts/servizio/card");  
-		}
-		if ($load_card_type == "notizia"){
-			$out .= load_template_part("template-parts/novita/cards-list");  
-		}
-		if ($load_card_type == "documento"){
-			$out .= load_template_part("template-parts/documento/cards-list");  
-		}
-		if ($load_card_type == "global-search"){
-			$out .= load_template_part("template-parts/search/item");  
-		}	
-		if ($load_card_type == "personale-amministrativo"){
-			$out .= load_template_part("template-parts/personale-amministrativo/cards-list");  
-		}
-		if ($load_card_type == "domanda-frequente"){
-			$out .= load_template_part("template-parts/domanda-frequente/item");  
-		}	
-		if ($load_card_type == "luogo"){
-			$out .= load_template_part("template-parts/luogo/card-full");  
-		}	 
+
 		endwhile;
- 
+
 	endif;
 
 	$res = array();
