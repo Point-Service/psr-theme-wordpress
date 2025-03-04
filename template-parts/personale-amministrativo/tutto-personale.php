@@ -48,11 +48,7 @@ if ($the_query->have_posts()) {
                     // Incrementa il conteggio totale dei record senza "politico"
                     $total_records++;
 
-                    echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
-                    echo "<strong>Tipo di incarico: </strong>" . esc_html($tipo_incarico) . "<br>";
-                } else {
-                    echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
-                    echo "Nessun tipo di incarico trovato per questo post.<br>";
+
                 }
             }
         } else {
