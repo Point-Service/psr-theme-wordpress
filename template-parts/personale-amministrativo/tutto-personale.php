@@ -11,13 +11,8 @@ $args = array(
     'posts_per_page' => $max_posts,
     'post_type'      => 'persona_pubblica',
     'orderby'        => 'post_title',
-    'order'          => 'ASC',
-    'meta_query'     => array(
-        array(
-            'key'     => 'dci_tipi_incarico', // Controlla se questo è il nome giusto
-            'value'   => 'amministrativo',
-            'compare' => '='
-        )
+    'order'          => 'ASC'
+
     ),
 );
 
