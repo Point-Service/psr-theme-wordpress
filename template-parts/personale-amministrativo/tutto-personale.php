@@ -15,7 +15,7 @@ $args = array(
     'meta_query'     => array(
         array(
             'key'     => 'dci_tipi_incarico', // Controlla se questo è il nome giusto
-            'value'   => 'personale_amministrativo',
+            'value'   => 'amministrativo',
             'compare' => '='
         )
     ),
