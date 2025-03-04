@@ -14,6 +14,7 @@ $count_args = array(
     'orderby' => 'post_title',
     'order' => 'ASC',
     'tax_query' => array(
+        'relation' => 'AND',
         array(
             'taxonomy' => 'tipi_incarico',
             'field' => 'slug',
@@ -22,6 +23,8 @@ $count_args = array(
         )
     )
 );
+
+// Query per contare i post senza i "politici"
 $count_query = new WP_Query($count_args);
 $total_posts = $count_query->found_posts; // Totale senza politici
 
@@ -33,6 +36,7 @@ $args = array(
     'orderby' => 'post_title',
     'order' => 'ASC',
     'tax_query' => array(
+        'relation' => 'AND',
         array(
             'taxonomy' => 'tipi_incarico',
             'field' => 'slug',
