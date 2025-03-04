@@ -463,12 +463,19 @@ class Breadcrumb_Trail {
 				    }
 
 					
-		                               if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-		                                     $this->items[] = ucfirst(strtolower(get_the_title()));
-		                                }else{
-		                                    // Aggiungi il titolo della pagina corrente
-				                      $this->items[] = get_the_title();
-		                                }
+					// Recupera il titolo della pagina
+					$title = get_the_title();					
+					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+					if (strlen($title) > 100) {
+					    $title = substr($title, 0, 97) . '...';
+					}					
+					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+					if (preg_match('/[A-Z]{5,}/', $title)) {
+					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+					    $title = ucfirst(strtolower($title));
+					}					
+					// Aggiunge il titolo alla lista degli elementi
+					$this->items[] = $title;
 		                        
 
 
@@ -532,12 +539,20 @@ class Breadcrumb_Trail {
 				        }
 				    
 				  
-				            if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-		                                      $this->items[] = ucfirst(strtolower(get_the_title()));
-		                                }else{
-		                                    // Aggiungi il titolo della pagina corrente
-				                      $this->items[] = get_the_title();
-		                                }
+					// Recupera il titolo della pagina
+					$title = get_the_title();					
+					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+					if (strlen($title) > 100) {
+					    $title = substr($title, 0, 97) . '...';
+					}					
+					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+					if (preg_match('/[A-Z]{5,}/', $title)) {
+					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+					    $title = ucfirst(strtolower($title));
+					}					
+					// Aggiunge il titolo alla lista degli elementi
+					$this->items[] = $title;
+
 		                        
 				    return;
 				}
@@ -597,13 +612,20 @@ class Breadcrumb_Trail {
 
 
 
-			                         if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-		                                   $this->items[] = ucfirst(strtolower(get_the_title()));
-		                                }else{
-		                                    // Aggiungi il titolo della pagina corrente
-				                      $this->items[] = get_the_title();
-		                                }
-		                        
+					// Recupera il titolo della pagina
+					$title = get_the_title();					
+					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+					if (strlen($title) > 100) {
+					    $title = substr($title, 0, 97) . '...';
+					}					
+					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+					if (preg_match('/[A-Z]{5,}/', $title)) {
+					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+					    $title = ucfirst(strtolower($title));
+					}					
+					// Aggiunge il titolo alla lista degli elementi
+					$this->items[] = $title;
+				    
 			    return;
 			    break;
 
@@ -642,13 +664,20 @@ class Breadcrumb_Trail {
 			        }  
 			    }
 
-                                    if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-		                                     $this->items[] .= ucfirst(strtolower(get_the_title()));
-		                                }else{
-		                                    // Aggiungi il titolo della pagina corrente
-				                      $this->items[] .= get_the_title();
-		                                }
-		                        
+					// Recupera il titolo della pagina
+					$title = get_the_title();					
+					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+					if (strlen($title) > 100) {
+					    $title = substr($title, 0, 97) . '...';
+					}					
+					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+					if (preg_match('/[A-Z]{5,}/', $title)) {
+					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+					    $title = ucfirst(strtolower($title));
+					}					
+					// Aggiunge il titolo alla lista degli elementi
+					$this->items[] = $title;
+				    
 	
 			    return;
 			    break;
