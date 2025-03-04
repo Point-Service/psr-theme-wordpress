@@ -11,8 +11,7 @@ $args = array(
     'posts_per_page' => $max_posts,
     'post_type'      => 'persona_pubblica',
     'orderby'        => 'post_title',
-    'order'          => 'ASC',
- 
+    'order'          => 'ASC'
     ),
 );
 
