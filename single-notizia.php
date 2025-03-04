@@ -261,7 +261,7 @@ get_header();
                                 <div class="card-body">
                                 <h5 class="card-title">
                                     <a class="text-decoration-none" href="<?php echo get_the_guid($allegato); ?>" aria-label="Scarica l'allegato <?php echo $allegato->post_title; ?>" title="Scarica l'allegato <?php echo $allegato->post_title; ?>">
-fffff
+
                                       <?php  // Recupera il titolo della pagina
                     					$title_allegato = $allegato->post_title;					
                     				
