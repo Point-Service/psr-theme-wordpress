@@ -1,25 +1,32 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
+// Impostazioni per il numero di post
 $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
 $load_posts = 6;
 
+// Recupera la query di ricerca
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
+// Configura i parametri della query
 $args = array(
     's'              => $query,
     'posts_per_page' => $max_posts,
     'post_type'      => 'persona_pubblica',
     'orderby'        => 'post_title',
-    'order'          => 'ASC'
-
+    'order'          => 'ASC',
 );
 
+// Esegui la query
+$the_query = new WP_Query($args);
+
+// Verifica se ci sono post
 if ($the_query->have_posts()) {
     while ($the_query->have_posts()) {
         $the_query->the_post();
         $post_id = get_the_ID();
-        
+
+        // Stampa il titolo del post e tutte le meta chiavi
         echo "<h3>Meta Key per il post: " . get_the_title() . " (ID: $post_id)</h3>";
         echo "<pre>";
         var_dump(get_post_meta($post_id)); // Stampa tutte le meta key e i relativi valori
@@ -27,14 +34,11 @@ if ($the_query->have_posts()) {
     }
     wp_reset_postdata();
 } else {
+    // Nessun post trovato
     echo "Nessun risultato trovato.";
 }
-
-$the_query = new WP_Query($args); 
-
-$posts = $the_query->posts;
-
 ?>
+
 
 
 
