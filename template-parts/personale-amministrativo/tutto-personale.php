@@ -1,28 +1,23 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-// Definisco i parametri per la query di ricerca
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
-$load_posts = 6;
-$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
+    $load_posts = 6;
 
-// Prima query: conta tutti i post senza includere i "politici"
-$count_args = array(
-    's' => $query,
-    'posts_per_page' => -1, // ottieni tutti i post senza limiti
-    'post_type' => 'persona_pubblica',
-    'orderby' => 'post_title',
-    'order' => 'ASC',
-    'tax_query' => array(
-        'relation' => 'AND',
-        array(
-            'taxonomy' => 'tipi_incarico',
-            'field' => 'slug',
-            'terms' => 'politico',  // Escludi i "politici"
-            'operator' => 'NOT IN'  // Escludi
-        )
-    )
-);
+    $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+    $args = array(
+        's' => $query,
+        'posts_per_page' => $max_posts,
+        'post_type'      => 'persona_pubblica',
+        'orderby'        => 'post_title',
+        'order'          => 'ASC'
+     );
+     $the_query = new WP_Query($args);
+
+     $posts = $the_query->posts;
+?>
+
+
 
 // Query per contare i post senza i "politici"
 $count_query = new WP_Query($count_args);
