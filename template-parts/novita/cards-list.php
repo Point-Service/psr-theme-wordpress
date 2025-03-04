@@ -139,10 +139,37 @@ if ($img) {
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                             </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                                <h3 class="h5 card-title u-grey-light"><?php echo ucfirst(strtolower(the_title())); ?></h3>
+                                <h3 class="h5 card-title u-grey-light">              
+                                  <?php 
+                                  // Recupera il titolo della pagina
+                    					$title = the_title();					
+                    					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+                    					if (strlen($title) > 100) {
+                    					    $title = substr($title, 0, 97) . '...';
+                    					}					
+                    					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+                    					if (preg_match('/[A-Z]{5,}/', $title)) {
+                    					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                    					    $title = ucfirst(strtolower($title));
+                    					}					
+                    					// Aggiunge il titolo alla lista degli elementi
+                    					$this->items[] = $title;</h3>
                             </a>
-                            <p class="card-text d-none d-md-block">
-                                <?php echo $description; ?>
+                            <p class="card-text d-none d-md-block">                                       
+                                  <?php 
+                                  // Recupera il titolo della pagina
+                    					$description1 = $description;					
+                    					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+                    					if (strlen($description1) > 100) {
+                    					    $description1 = substr($description1, 0, 97) . '...';
+                    					}					
+                    					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+                    					if (preg_match('/[A-Z]{5,}/', $description1)) {
+                    					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                    					    $description1 = ucfirst(strtolower($description1));
+                    					}					
+                    					// Aggiunge il titolo alla lista degli elementi
+                                <?php echo $description1; ?>
                             </p>
                             
                             <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
