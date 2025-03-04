@@ -1,7 +1,7 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 160;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 300;
 $load_posts = 6;
 
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
