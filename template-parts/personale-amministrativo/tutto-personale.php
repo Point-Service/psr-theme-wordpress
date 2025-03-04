@@ -7,7 +7,7 @@ $query = $_GET['search'] ?? null;
 switch ($post->post_name){
 	case 'politici': $tipo_incarico = 'politico'; $descrizione = 'del personale'; break;
 	case 'personale-amministrativo': $tipo_incarico = 'amministrativo'; $descrizione = 'del personale'; break;
-	case '': $tipo_incarico = 'amministrativo'; $descrizione = 'del personale'; break;
+	case '': $tipo_incarico = ''; $descrizione = 'del personale'; break;
 	case 'personale-sanitario': $tipo_incarico = 'sanitario'; $descrizione = 'del personale'; break;
 	case 'personale-socio-assistenziale': $tipo_incarico = 'socio-assistenziale'; $descrizione = 'del personale'; break;
 	case 'altro': $tipo_incarico = 'altro'; $descrizione = 'del personale'; break;
