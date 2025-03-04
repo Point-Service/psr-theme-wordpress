@@ -16,37 +16,6 @@ global $the_query, $load_posts, $load_card_type;
      $posts = $the_query->posts;
 
 
-if ($the_query->have_posts()) {
-    while ($the_query->have_posts()) {
-        $the_query->the_post();
-        
-        // Ottieni l'ID del post corrente
-        $post_id = get_the_ID();
-
-        // Ottieni le tassonomie associate al post
-        $taxonomies = get_object_taxonomies('persona_pubblica');  // Ottieni tutte le tassonomie per il post type
-
-        echo "<h3>Tassonomie per il post: " . get_the_title() . " (ID: $post_id)</h3>";
-        echo "<pre>";
-
-        // Itera su ogni tassonomia
-        foreach ($taxonomies as $taxonomy) {
-            $terms = get_the_terms($post_id, $taxonomy);  // Ottieni i termini per questa tassonomia
-
-            if (!empty($terms) && !is_wp_error($terms)) {
-                echo "<strong>" . $taxonomy . ":</strong> ";
-                foreach ($terms as $term) {
-                    echo $term->name . " ";  // Stampa il nome del termine
-                }
-                echo "<br>";
-            }
-        }
-        echo "</pre>";
-    }
-    wp_reset_postdata();
-} else {
-    echo "Nessun risultato trovato.";
-}
 ?>
 
 
