@@ -6,6 +6,7 @@ $load_posts = 6;
 
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
+// Query per recuperare i post da visualizzare (con il limite di $max_posts)
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
@@ -49,19 +50,39 @@ if ($the_query->have_posts()) {
                     $total_records++;
 
                 } else {
-                     $total_records++;
+                     $total_records++; // Se non c'è incarico, conta comunque il post
                 }
             }
         } else {
-             $total_records++;
+             $total_records++; // Se non ci sono incarichi, conta comunque il post
         }
     }
 
     wp_reset_postdata();
 }
 
-// Stampa il totale dei record senza "politico"
-echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records . "</p>";
+// Esegui una query separata per contare **tutti i post** senza il limite di max_posts
+$count_all_posts_args = array(
+    's' => $query,  // Mantieni la stessa ricerca
+    'post_type' => 'persona_pubblica',
+    'posts_per_page' => -1,  // Recupera tutti i post (senza limitazione)
+    'post_status' => 'publish',
+    'tax_query' => array(
+        array(
+            'taxonomy' => 'tipi_incarico',
+            'field' => 'name',
+            'terms' => 'politico',
+            'operator' => 'NOT IN', // Escludi i post con incarico "politico"
+        ),
+    ),
+);
+
+$total_count_query = new WP_Query($count_all_posts_args);
+
+// Conta i post senza incarico politico (totale)
+$total_records_without_politico = $total_count_query->found_posts;
+
+echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records_without_politico . "</p>";
 ?>
 
 
