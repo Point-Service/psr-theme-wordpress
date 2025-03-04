@@ -261,14 +261,22 @@ get_header();
                                 <div class="card-body">
                                 <h5 class="card-title">
                                     <a class="text-decoration-none" href="<?php echo get_the_guid($allegato); ?>" aria-label="Scarica l'allegato <?php echo $allegato->post_title; ?>" title="Scarica l'allegato <?php echo $allegato->post_title; ?>">
+fffff
+                                      <?php  // Recupera il titolo della pagina
+                    					$title_allegato = $allegato->post_title;					
+                    				
+                    					if (strlen($title_allegato) > 20) {
+                    					    $title_allegato = substr($title_allegato, 0, 20) . '...';
+                    					}					
+                    					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+                    					if (preg_match('/[A-Z]{5,}/', $title_allegato)) {
+                    					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                    					    $title_allegato = ucfirst(strtolower($title_allegato));
+                    					}					
+                    				                                
+                                      echo $title_allegato; ?>
 
 
-
-
-
-
-                                        
-                                
                                     </a>
                                 </h5>
                                 </div>
