@@ -15,6 +15,13 @@ $args = array(
     'post_type'      => 'persona_pubblica',
     'orderby'        => 'post_title',
     'order'          => 'ASC',
+    'meta_query'     => array(
+        array(
+            'key'     => '_dci_persona_pubblica_incarichi', // Nome della meta key
+            'value'   => 'amministrativo', // Il nome del tipo che stai cercando
+            'compare' => 'LIKE'  // Usa LIKE per cercare all'interno del valore serializzato
+        )
+    ),
 );
 
 // Esegui la query
@@ -38,6 +45,7 @@ if ($the_query->have_posts()) {
     echo "Nessun risultato trovato.";
 }
 ?>
+
 
 
 
