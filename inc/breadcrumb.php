@@ -252,7 +252,7 @@ class Breadcrumb_Trail {
 		$breadcrumb = apply_filters( 'breadcrumb_trail', $breadcrumb, $this->args );
 
 		if ( false === $this->args['echo'] )
-			return $breadcrumb;
+		return $breadcrumb;
 
 		echo $breadcrumb;
 	}
@@ -461,9 +461,19 @@ class Breadcrumb_Trail {
 					}
 
 				    }
-				
-				    // Aggiungi il titolo della pagina corrente
-				    $this->items[] = get_the_title();
+
+					
+		                               if (preg_match('/[A-Z]{5,}/', get_the_title())) {
+		                                   echo $this->items[] = ucfirst(strtolower(get_the_title()));
+		                                }else{
+		                                    // Aggiungi il titolo della pagina corrente
+				                      $this->items[] = get_the_title();
+		                                }
+		                        
+
+
+					
+				    
 				    return;
 				}
 				
