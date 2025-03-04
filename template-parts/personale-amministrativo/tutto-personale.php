@@ -90,7 +90,7 @@ $posts = $the_query->posts;
                         id="autocomplete-label"
                         class="u-grey-light text-paragraph-card mt-2 mb-4 mt-lg-3 mb-lg-40"
                         >
-                        <?php echo $total_found_posts; ?> amministratori trovati in ordine alfabetico
+                        <?php echo $total_posts; ?> amministratori trovati in ordine alfabetico
                         </p>
                     </div>
                 </div>
