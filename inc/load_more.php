@@ -44,7 +44,7 @@ function load_more(){
 		'post_type'      => $post_types,
 		'post_status'    => 'publish',
 		'orderby' => 'post_title',
-		'order'   => 'ASC'
+		'order'   => 'DESC'
 	);
 	
 	if ( $post_types == "notizia" ) {
@@ -122,6 +122,7 @@ function load_more(){
 		case "incarico":
                 $out .= load_template_part("template-parts/incarico/cards-list");
 			break;
+	    
 		case "persona_pubblica":
                 $out .= load_template_part("template-parts/persona_pubblica/cards-list");
 			break;
