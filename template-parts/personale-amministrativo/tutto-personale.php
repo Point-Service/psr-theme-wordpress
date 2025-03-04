@@ -48,13 +48,16 @@ if ($the_query->have_posts()) {
                     // Incrementa il conteggio totale dei record senza "politico"
                     $total_records++;
 
-
+                    echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
+                    echo "<strong>Tipo di incarico: </strong>" . esc_html($tipo_incarico) . "<br>";
                 } else {
-                  $total_records++;
-                 }
+                    echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
+                    echo "Nessun tipo di incarico trovato per questo post.<br>";
+                }
             }
         } else {
-     
+            echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
+            echo "Nessun incarico associato a questo post.<br>";
         }
     }
 
@@ -86,6 +89,7 @@ $total_records_without_politico = $total_count_query->found_posts;
 
 echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records_without_politico . "</p>";
 ?>
+
 
 
 
