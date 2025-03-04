@@ -31,7 +31,7 @@ $args_incarichi = array(
 $incarichi = get_posts($args_incarichi);
 $persone_ids = array();
 
-var_dump $incarichi;
+var_dump($incarichi);
 
 foreach($incarichi as $incarico) {
 	$persone = get_post_meta($incarico->ID, '_dci_incarico_persona');
