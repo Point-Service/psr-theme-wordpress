@@ -42,19 +42,49 @@ if ($the_query->have_posts()) {
 
                     // Se il tipo di incarico è "politico", salta questo elemento
                     if (esc_html($tipo_incarico) === 'politico') {
-                         $total_records++;
+                        continue;  // Salta questo ciclo del while e passa al prossimo post
                     }
-     
-                }
-            }       
+
+                    // Incrementa il conteggio totale dei record senza "politico"
+                    $total_records++;
+
+
+                } else {
+                  $total_records++;
+                 }
+            }
+        } else {
+              $total_records++;
         }
     }
 
     wp_reset_postdata();
+} else {
+    echo "Nessun risultato trovato.";
 }
 
-// Stampa il totale dei record senza "politico"
-echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records . "</p>";
+// Esegui una query separata per contare i post senza incarico politico
+$total_count_args = array(
+    'post_type' => 'persona_pubblica',
+    'posts_per_page' => -1, // Recupera tutti i post
+    'post_status' => 'publish',
+    's' => $query, // Mantieni la stessa ricerca
+    'tax_query' => array(
+        array(
+            'taxonomy' => 'tipi_incarico',
+            'field' => 'name',
+            'terms' => 'politico',
+            'operator' => 'NOT IN', // Esclude i post con incarico "politico"
+        ),
+    ),
+);
+
+$total_count_query = new WP_Query($total_count_args);
+
+// Conta i post senza incarico politico
+$total_records_without_politico = $total_count_query->found_posts;
+
+echo "<p><strong>Totale record senza incarico politico: </strong>" . $total_records_without_politico . "</p>";
 ?>
 
 
