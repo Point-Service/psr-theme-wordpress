@@ -10,7 +10,15 @@ $args = array(
     'posts_per_page' => $max_posts,
     'post_type'      => 'persona_pubblica',
     'orderby'        => 'post_title',
-    'order'          => 'ASC'        
+    'order'          => 'ASC',
+    'tax_query'      => array(
+        array(
+            'taxonomy' => 'tipi_incarico',
+            'field'    => 'slug',
+            'terms'    => 'politico',
+            'operator' => 'NOT IN',  // Escludi il termine "politico"
+        ),
+    ),
 );
 
 $the_query = new WP_Query($args);
@@ -52,6 +60,7 @@ if ($the_query->have_posts()) {
     echo "Nessun risultato trovato.";
 }
 ?>
+
 
 
 
@@ -101,7 +110,7 @@ if ($the_query->have_posts()) {
                         id="autocomplete-label"
                         class="u-grey-light text-paragraph-card mt-2 mb-4 mt-lg-3 mb-lg-40"
                         >
-                        <?php echo $total_posts; ?> amministratori trovati in ordine alfabetico
+                        <?php echo $the_query->found_posts; ?> amministratori trovati in ordine alfabetico
                         </p>
                     </div>
                 </div>
