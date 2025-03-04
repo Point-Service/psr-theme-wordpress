@@ -23,30 +23,36 @@ if ($the_query->have_posts()) {
         // Ottieni l'ID del post corrente
         $post_id = get_the_ID();
 
-        // Ottieni i termini associati alla tassonomia 'tipi_incarico' per il post
-        $incarico_terms = get_the_terms($post_id, 'tipi_incarico');
-        
-        echo "<h3>Incarico per il post: " . get_the_title() . " (ID: $post_id)</h3>";
-        echo "<pre>";
+        // Recupera gli incarichi associati al post
+        $incarichi = dci_get_meta('incarichi') ?? [];  // Recupera gli incarichi associati
 
-        // Verifica se ci sono termini associati alla tassonomia 'tipi_incarico'
-        if (!empty($incarico_terms) && !is_wp_error($incarico_terms)) {
-            foreach ($incarico_terms as $incarico_term) {
-                // Stampa il nome del tipo di incarico
-                echo "<strong>Nome dell'incarico:</strong> " . esc_html($incarico_term->name) . "<br>";
+        // Se ci sono incarichi
+        if (!empty($incarichi)) {
+            foreach ($incarichi as $incarico_id) {
+                // Recupera il tipo di incarico associato
+                $tipo_incarico_terms = get_the_terms($incarico_id, 'tipi_incarico');
+                
+                // Verifica se ci sono termini di tipo incarico
+                if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms)) {
+                    $tipo_incarico = $tipo_incarico_terms[0]->name;  // Prende il nome del tipo di incarico
+                    echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
+                    echo "<strong>Tipo di incarico: </strong>" . esc_html($tipo_incarico) . "<br>";
+                } else {
+                    echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
+                    echo "Nessun tipo di incarico trovato per questo post.<br>";
+                }
             }
         } else {
-            // Se non ci sono termini associati, mostra il messaggio di errore
+            echo "<strong>Incarico per il post: </strong>" . get_the_title() . " (ID: $post_id)<br>";
             echo "Nessun incarico associato a questo post.<br>";
         }
-
-        echo "</pre>";
     }
     wp_reset_postdata();
 } else {
     echo "Nessun risultato trovato.";
 }
 ?>
+
 
 
 
