@@ -464,7 +464,7 @@ class Breadcrumb_Trail {
 
 					
 		                               if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-		                                   echo $this->items[] = ucfirst(strtolower(get_the_title()));
+		                                     $this->items[] = ucfirst(strtolower(get_the_title()));
 		                                }else{
 		                                    // Aggiungi il titolo della pagina corrente
 				                      $this->items[] = get_the_title();
@@ -533,7 +533,7 @@ class Breadcrumb_Trail {
 				    
 				  
 				            if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-		                                   echo $this->items[] = ucfirst(strtolower(get_the_title()));
+		                                      $this->items[] = ucfirst(strtolower(get_the_title()));
 		                                }else{
 		                                    // Aggiungi il titolo della pagina corrente
 				                      $this->items[] = get_the_title();
@@ -597,8 +597,8 @@ class Breadcrumb_Trail {
 
 
 
-			               if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-		                                   echo $this->items[] = ucfirst(strtolower(get_the_title()));
+			                         if (preg_match('/[A-Z]{5,}/', get_the_title())) {
+		                                   $this->items[] = ucfirst(strtolower(get_the_title()));
 		                                }else{
 		                                    // Aggiungi il titolo della pagina corrente
 				                      $this->items[] = get_the_title();
@@ -643,7 +643,7 @@ class Breadcrumb_Trail {
 			    }
 
                                     if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-		                                   echo $this->items[] .= ucfirst(strtolower(get_the_title()));
+		                                     $this->items[] .= ucfirst(strtolower(get_the_title()));
 		                                }else{
 		                                    // Aggiungi il titolo della pagina corrente
 				                      $this->items[] .= get_the_title();
