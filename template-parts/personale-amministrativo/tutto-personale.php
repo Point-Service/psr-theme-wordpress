@@ -13,7 +13,6 @@ $args = array(
     'orderby'        => 'post_title',
     'order'          => 'ASC'
 
-    ),
 );
 
 if ($the_query->have_posts()) {
