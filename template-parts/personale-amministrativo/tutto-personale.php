@@ -25,7 +25,7 @@ $total_args = array(
 
 $total_query = new WP_Query($total_args);
 
-// Ottieni il totale dei post (senza limiti)
+// Ottieni il totale dei post (senza i politici)
 $total_found_posts = $total_query->found_posts;
 
 // Seconda query per ottenere i post limitati (per la visualizzazione)
