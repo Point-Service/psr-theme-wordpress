@@ -43,7 +43,15 @@
                         <h3 class="h5 card-title"><?php echo $titolo; ?></h3>
                     </a>
                     <p class="card-text d-none d-md-block">
-                        <?php echo $description; ?>
+                                     <?php
+                                    // Controllo se il titolo contiene almeno 5 caratteri maiuscoli consecutivi
+                                    if (preg_match('/[A-Z]{5,}/', $description)) {
+                                        $descrizione = ucfirst(strtolower($description));
+                                    } else {
+                                        $descrizione = $description;
+                                    }
+                                    ?>    
+                        <?php echo $descrizione; ?>
                     </p>
                 </div>
                 </div>
