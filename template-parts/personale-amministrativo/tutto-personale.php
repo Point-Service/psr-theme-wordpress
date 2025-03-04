@@ -1,20 +1,29 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
-    $load_posts = 6;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
+$load_posts = 6;
 
-    $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-    $args = array(
-        's' => $query,
-        'posts_per_page' => $max_posts,
-        'post_type'      => 'persona_pubblica',
-        'orderby'        => 'post_title',
-        'order'          => 'ASC'
-     );
-     $the_query = new WP_Query($args);
+$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
-     $posts = $the_query->posts;
+$args = array(
+    's' => $query,
+    'posts_per_page' => $max_posts,
+    'post_type'      => 'persona_pubblica',
+    'orderby'        => 'post_title',
+    'order'          => 'ASC',
+    'tax_query' => array(
+        array(
+            'taxonomy' => 'tipi_incarico', // Assicurati che questa sia la tassonomia giusta
+            'field'    => 'slug',
+            'terms'    => 'politico', // Escludiamo i post che appartengono a "politico"
+            'operator' => 'NOT IN' // Escludi "politico"
+        )
+    )
+);
+
+$the_query = new WP_Query($args);
+$posts = $the_query->posts;
 ?>
 
 
