@@ -14,7 +14,7 @@ $args = array(
     'order'          => 'ASC',
     'meta_query'     => array(
         array(
-            'key'     => 'tipo_personale', // Assicurati che sia il nome corretto del meta field
+            'key'     => '_dci_incarico', // Assicurati che sia il nome corretto del meta field
             'value'   => 'personale_amministrativo',
             'compare' => '='
         )
