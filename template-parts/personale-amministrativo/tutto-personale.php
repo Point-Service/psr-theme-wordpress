@@ -8,8 +8,7 @@ global $the_query, $load_posts, $load_card_type;
     $args = array(
         's' => $query,
         'posts_per_page' => $max_posts,
-        'post_type'      => 'persona_pubblica',
-        'tipo_incarico'  => 'amministrativo',
+        'post_type'      => 'personale-amministrativo',
         'orderby'        => 'post_title',
         'order'          => 'ASC'
      );
