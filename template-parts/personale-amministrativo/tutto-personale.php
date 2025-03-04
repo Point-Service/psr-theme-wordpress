@@ -20,8 +20,10 @@ $tax_query = array(
 		'terms' => $tipo_incarico
 	));
 
+
+
 $args_incarichi = array(
-	'post_type' => 'incarico',
+	'post_type' => 'persona_pubblica',
 	'tax_query' => $tax_query,
     'posts_per_page' => -1
 );
