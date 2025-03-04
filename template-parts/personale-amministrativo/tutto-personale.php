@@ -1,6 +1,8 @@
 <?php
 global $the_query, $load_posts, $load_card_type, $tax_query, $additional_filter, $filter_ids;
 
+echo 'zubili';
+
 $query = $_GET['search'] ?? null;
 
 switch ($post->post_name){
