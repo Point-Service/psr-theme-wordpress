@@ -49,7 +49,7 @@ function load_more(){
         'meta_type' => 'text_date_timestamp',
         'orderby'   => 'meta_value_num',
     );
-	echo $post_types;
+
 	if ( $post_types != "notizia" ) {
 		$args = array(
 			's' => $_POST['search'],
