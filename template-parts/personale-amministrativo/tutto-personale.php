@@ -23,7 +23,7 @@ if ($the_query->have_posts()) {
         $post_id = get_the_ID();
 
         // Ottieni le tassonomie associate al post
-        $taxonomies = get_object_taxonomies('persona_pubblica');  // Ottieni tutte le tassonomie per il post type
+        $taxonomies = get_object_incarico('persona_pubblica');  // Ottieni tutte le tassonomie per il post type
 
         echo "<h3>Tassonomie per il post: " . get_the_title() . " (ID: $post_id)</h3>";
         echo "<pre>";
