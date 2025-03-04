@@ -1,13 +1,13 @@
 <?php
 global $the_query, $load_posts, $load_card_type, $tax_query, $additional_filter, $filter_ids;
 
-echo 'zubili';
 
 $query = $_GET['search'] ?? null;
 
 switch ($post->post_name){
 	case 'politici': $tipo_incarico = 'politico'; $descrizione = 'del personale'; break;
 	case 'personale-amministrativo': $tipo_incarico = 'amministrativo'; $descrizione = 'del personale'; break;
+	case '': $tipo_incarico = 'amministrativo'; $descrizione = 'del personale'; break;
 	case 'personale-sanitario': $tipo_incarico = 'sanitario'; $descrizione = 'del personale'; break;
 	case 'personale-socio-assistenziale': $tipo_incarico = 'socio-assistenziale'; $descrizione = 'del personale'; break;
 	case 'altro': $tipo_incarico = 'altro'; $descrizione = 'del personale'; break;
