@@ -54,7 +54,7 @@ if ($the_query->have_posts()) {
                  }
             }
         } else {
-              $total_records++;
+     
         }
     }
 
