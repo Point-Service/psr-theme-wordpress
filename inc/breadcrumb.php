@@ -415,7 +415,7 @@ class Breadcrumb_Trail {
 					
 					    if ($terms && !is_wp_error($terms)) {
 
-echo 'a';
+echo $terms;
 
 						    
 					        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
