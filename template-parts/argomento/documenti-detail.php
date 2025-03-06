@@ -27,9 +27,34 @@
                                         <a class="title-xsmall-semi-bold fw-semibold text-decoration-none" href="<?php echo get_term_link($tipo_documento->term_id); ?>"><?php echo $tipo_documento->name; ?></a>
                                     </div>
                                     <h4 class="card-title text-paragraph-medium u-grey-light">
-                                        <a href="<?php echo get_permalink(); ?>" class="text-decoration-none"><?php echo the_title(); ?></a>
+                                        <a href="<?php echo get_permalink(); ?>" class="text-decoration-none">
+                                        <?php
+                                                // Recupera il titolo della pagina
+                                                $title = get_the_title();
+                                                // Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+                                                if (strlen($title) > 100) {
+                                                    $title = substr($title, 0, 97) . '...';
+                                                }
+                                                // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+                                                if (preg_match('/[A-Z]{5,}/', $title)) {
+                                                    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                                                    $title = ucfirst(strtolower($title));
+                                                }
+
+                                                echo $title;
+                                                ?>
+                                        </a>
                                     </h4>
-                                    <p class="text-paragraph-card u-grey-light m-0"><?php echo $description; ?></p>
+                                    <p class="text-paragraph-card u-grey-light m-0"><?php
+                                            // Recupera il titolo della pagina
+                                            $description1 = $description;
+                                            // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+                                            if (preg_match('/[A-Z]{5,}/', $description1)) {
+                                                // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                                                $description1 = ucfirst(strtolower($description1));
+                                            }
+                                            // Aggiunge il titolo alla lista degli elementi
+                                            echo $description1; ?></p>
                                 </div>
                             </div>          
                         </div>
