@@ -54,7 +54,7 @@ if ($img) {
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
                           <h3 class="h5 card-title u-grey-light"><?php
                                         // Recupera il titolo della pagina
-                    					$title = the_title();					
+                    					$title = get_the_title();					
                     					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
                     					if (strlen($title) > 100) {
                     					    $title = substr($title, 0, 97) . '...';
@@ -164,7 +164,7 @@ if ($img) {
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">                                
                                     <h3 class="h5 card-title u-grey-light"><?php
                                         // Recupera il titolo della pagina
-                    					$title = the_title();					
+                    					$title = get_the_title();					
                     					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
                     					if (strlen($title) > 100) {
                     					    $title = substr($title, 0, 97) . '...';
@@ -242,5 +242,7 @@ if ($img) {
         </div>
     </div>
 <?php } ?>
+
+
 
 
