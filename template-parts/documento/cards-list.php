@@ -119,7 +119,10 @@
                                 <span class="category cmp-list-card-img__body-heading-title underline">
                                     <svg class="icon icon-sm" aria-hidden="true">
                                      <use href="#it-file"></use>
-                                   </svg><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?>
+                                   </svg>
+                                     <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
+                                          <?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?>                             
+                                     </a>
                                 </span>
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                             </div>
