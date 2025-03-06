@@ -140,7 +140,7 @@
                                         echo $title;
                                        ?></h3>
                             </a>
-                            <h5><font color="grey"><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></font></h5>
+                            <font color="grey" size="1"><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></font
                             <p class="card-text d-none d-md-block">                              
                             <?php 
                            
