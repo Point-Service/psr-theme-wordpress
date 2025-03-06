@@ -17,8 +17,7 @@ $luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
 
 if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
 ?>
-<?php echo $start_timestamp; ?>
-<?php echo $start_date_arr[1]; ?>
+
 
 <div class="col-lg-6 col-xl-4">
     <div class="card-wrapper shadow-sm rounded border border-light pb-0">
