@@ -14,11 +14,11 @@ $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
 $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
 $luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
 
-echo $start_timestamp; 
 
 if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
 ?>
-
+<?php echo $start_date_arr[0]; ?>
+<?php echo $start_date_arr[1]; ?>
 <div class="col-lg-6 col-xl-4">
     <div class="card-wrapper shadow-sm rounded border border-light pb-0">
         <div class="card no-after rounded">
