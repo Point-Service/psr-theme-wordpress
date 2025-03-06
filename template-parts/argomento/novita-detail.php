@@ -29,6 +29,7 @@ $posts = dci_get_grouped_posts_by_term('novita-evento', 'argomenti', $argomento-
                             $end_date = date('d-m-y', dci_get_meta('data_orario_fine'));
                             $end_date_arr = explode('-', $end_date);
                             $monthName = date_i18n('M', mktime(0, 0, 0, $end_date_arr[1], 10));
+                            $annoName = date_i18n('Y', mktime(0, 0, 0, $end_date_arr[1], 10));
                         }
 
                         $url_eventi = get_permalink(get_page_by_title('Eventi'));
@@ -45,7 +46,8 @@ $posts = dci_get_grouped_posts_by_term('novita-evento', 'argomenti', $argomento-
                                                 <div class="card-calendar d-flex flex-column justify-content-center">
                                                     <span
                                                         class="card-date"><?php echo $start_date_arr[0] . '-' . $end_date_arr[0] ?></span>
-                                                    <span class="card-day"><?php echo $monthName; ?></span>
+                                                        <span class="card-day"><?php echo $monthName; ?></span>
+                                                        <span class="card-day"><?php echo $annoName; ?></span>
                                                 </div>
                                             </div>
                                         </div>
