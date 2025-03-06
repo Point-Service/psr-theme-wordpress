@@ -30,7 +30,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                     <div class="card-calendar d-flex flex-column justify-content-center">
                         <span class="card-date"><?php echo $arrdata[0]; ?></span>
                         <span class="card-day"><?php echo $arrdata[1]; ?></span>
-                        <span class="card-date"><?php echo $arrdata[2]; ?></span>
+                        <span class="card-day"><?php echo $arrdata[2]; ?></span>
                     </div>
                 </div>
             </div>
