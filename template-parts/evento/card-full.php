@@ -46,8 +46,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         data-element="live-category-link">
                         <?php echo $post->post_title ?>
                     </a>
-                </h3>
-                ssssssssssssssssssssssssssssssssssssssss
+                </h3>                
                 <p class="card-text text-secondary pb-3">
                     <?php echo $descrizione; ?>
                 </p>
