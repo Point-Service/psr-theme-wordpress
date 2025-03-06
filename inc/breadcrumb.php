@@ -420,7 +420,7 @@ class Breadcrumb_Trail {
 					        foreach ($terms as $term) {
 
 
-echo strtoupper(esc_html($term->name);
+echo strtoupper(esc_html($term->name));
 							
 					            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
 					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
