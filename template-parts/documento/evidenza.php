@@ -8,7 +8,7 @@
     $contenuti_evidenza = dci_get_option('contenuti_evidenziati','documenti');
 
     if (is_array($contenuti_evidenza) && count($contenuti_evidenza)) {
-?>nnnnnnnnnnn
+?>
 <div class="container py-5">
     <h2 class="title-xxlarge mb-4">In evidenza</h2>
     <div class="row g-4">
@@ -29,9 +29,7 @@
                                 </svg>
                                 <span class="text fw-semibold">
                                 <?php if ($post->post_type == "documento_pubblico") { ?>
-                                <svg class="icon icon-sm" aria-hidden="true">
-                                  <use href="#it-file"></use>
-                                </svg><a class="text-decoration-none" href="<?php echo get_term_link($tipo_documento->term_id); ?>"><?php echo $tipo_documento->name; ?></a>
+                                  <a class="text-decoration-none" href="<?php echo get_term_link($tipo_documento->term_id); ?>"><?php echo $tipo_documento->name; ?></a>
                                 <?php } else { ?>
                                     <a href="<?php echo get_post_type_archive_link( 'dataset' ); ?>">Dataset</a>
                                 <?php } ?>
