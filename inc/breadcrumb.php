@@ -466,11 +466,9 @@ class Breadcrumb_Trail {
 				            // Crea un link alla pagina "amministrazione/aree-amministrative"
 				            $aree_amministrative_link = home_url("amministrazione/aree-amministrative");
 				            $this->items[] = "<a href='" . esc_url($aree_amministrative_link) . "'>Aree Amministrative</a>";	
-						
-			                } elseif (in_array('uffici', $referer_parts) || strtoupper(esc_html($term->name))="UFFICIO") {				        
-				            $link_link = home_url("amministrazione/uffici");
-				            $this->items[] = "<a href='" . esc_url($link_link) . "'>Uffici</a>";
-						
+					} elseif (in_array('uffici', $referer_parts) || strtoupper(esc_html($term->name)) == "UFFICIO") { 
+					    $link_link = home_url("amministrazione/uffici");
+					    $this->items[] = "<a href='" . esc_url($link_link) . "'>Uffici</a>";
 					} elseif (in_array('organi-di-governo', $referer_parts)) {						
 					    // Crea un link alla pagina "amministrazione/organi-di-governo" solo se non è già presente
 					    $organidigoverno_link = home_url("amministrazione/organi-di-governo");
