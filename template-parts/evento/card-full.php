@@ -13,6 +13,9 @@ $end_date_arr = explode('-', date_i18n('d-F-Y-H-i', date($end_timestamp)));
 $tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
 $arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
 $luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
+
+echo $start_timestamp; 
+
 if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
 ?>
 
