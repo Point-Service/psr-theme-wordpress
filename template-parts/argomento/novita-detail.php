@@ -47,7 +47,7 @@ $posts = dci_get_grouped_posts_by_term('novita-evento', 'argomenti', $argomento-
                                                     <span
                                                         class="card-date"><?php echo $start_date_arr[0] . '-' . $end_date_arr[0] ?></span>
                                                         <span class="card-day"><?php echo $monthName; ?></span>
-                                                        <span class="card-date"><?php echo $annoName; ?></span>
+                                                        <span class="card-day"><?php echo $annoName; ?></span>
                                                 </div>
                                             </div>
                                         </div>
