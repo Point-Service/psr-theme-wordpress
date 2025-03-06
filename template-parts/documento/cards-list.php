@@ -138,9 +138,10 @@
                     					}				
 
                                         echo $title;
-                                       ?><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></h3>
+                                       ?></h3>
                             </a>
                             <p class="card-text d-none d-md-block">
+                              <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                             <?php 
                            
                            $description1 = $description;			
