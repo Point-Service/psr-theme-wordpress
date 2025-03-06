@@ -376,10 +376,10 @@ class Breadcrumb_Trail {
 				    $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
 				    // Cambia il link per indirizzare alla nuova struttura
 				    $this->items[] =  "<a href='" . home_url("amministrazione/documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
-				    
+				   			       
 				    $terms = get_the_terms(get_the_ID(), 'tipi_documento');
 				    if ($terms) {
-				        foreach ($terms as $term) {
+				        foreach ($terms as $term) {				
 				            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_documento')), $term->name);
 				        }
 				    }
@@ -402,7 +402,7 @@ class Breadcrumb_Trail {
 				    return;
 				}
 
-echo strtoupper(esc_html($term->name));
+
 		    
 				if (get_post_type() == 'unita_organizzativa') {
 					    // Aggiungi il link alla pagina di amministrazione
