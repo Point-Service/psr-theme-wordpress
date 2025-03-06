@@ -116,16 +116,15 @@
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
                             <div class="category-top cmp-list-card-img__body">
-                                <span class="category cmp-list-card-img__body-heading-title underline">
-                                    
+                                <span class="category cmp-list-card-img__body-heading-title underline">                                    
                                     <span class="text fw-semibold">
                                         <svg class="icon icon-sm" aria-hidden="true">
                                             <use href="#it-file"></use>
-                                        </svg>
-                                                            <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></a>
-                                       </span>
-                               
-                            </div>
+                                        </svg><font color="black"><a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></a></font>
+                                        <font color="grey" size="1"><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></font>
+                                    </span>      
+                                </span>
+                              </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
                                 <h3 class="h5 card-title"><?php
                                         // Recupera il titolo della pagina
@@ -143,7 +142,7 @@
                                         echo $title;
                                        ?></h3>
                             </a>
-                            <font color="grey" size="1"><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></font
+                            
                             <p class="card-text d-none d-md-block">                              
                             <?php 
                            
