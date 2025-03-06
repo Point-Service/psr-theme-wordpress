@@ -52,7 +52,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                 </p>
                 
                     <?php if (!empty($luogo_evento)) { ?>
-                        <span class="data fw-normal">📍 
+                        <span class="data fw-normal">
                             <?php 
                             // Ottieni i dettagli del luogo
                             $luogo_post = get_post($luogo_evento);
@@ -64,7 +64,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                             ?>
                         </span>
                     <?php } elseif (!empty($luogo_notizia)) { ?>
-                        <span class="data fw-normal"> | 📍 
+                        <span class="data fw-normal"> | 
                             <?php echo esc_html($luogo_notizia); ?>
                         </span>
                     <?php } ?>
