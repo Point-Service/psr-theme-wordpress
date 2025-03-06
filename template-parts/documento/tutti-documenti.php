@@ -1,15 +1,15 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
-    $load_posts = 3;
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
+    $load_posts = 6;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
         's' => $query,
         'posts_per_page' => $max_posts,
         'post_type'      => array('documento_pubblico', 'dataset'),
-        'orderby'        => 'post_title',
-        'order'          => 'Desc'
+        'orderby'        => 'text_date_timestamp',
+        'order'          => 'DESC'
      );
 
      $the_query = new WP_Query( $args );
@@ -59,3 +59,5 @@ global $the_query, $load_posts, $load_card_type;
   </form>
 </div>
 <?php wp_reset_query(); ?>
+
+
