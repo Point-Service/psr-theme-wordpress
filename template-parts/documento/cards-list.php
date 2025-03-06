@@ -120,7 +120,7 @@
                                     <span class="text fw-semibold">
                                         <svg class="icon icon-sm" aria-hidden="true">
                                             <use href="#it-file"></use>
-                                        </svg><font color="black"><a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></a></font>
+                                        </svg><a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font></a>
                                         <font color="grey" size="1"><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></font>
                                     </span>      
                                 </span>
