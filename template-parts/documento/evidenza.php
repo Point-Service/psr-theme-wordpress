@@ -8,7 +8,7 @@
     $contenuti_evidenza = dci_get_option('contenuti_evidenziati','documenti');
 
     if (is_array($contenuti_evidenza) && count($contenuti_evidenza)) {
-?>
+?>nnnnnnnnnnn
 <div class="container py-5">
     <h2 class="title-xxlarge mb-4">In evidenza</h2>
     <div class="row g-4">
