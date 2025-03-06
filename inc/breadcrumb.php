@@ -403,6 +403,7 @@ class Breadcrumb_Trail {
 				}
 
 echo strtoupper(esc_html($term->name));
+		    
 				if (get_post_type() == 'unita_organizzativa') {
 					    // Aggiungi il link alla pagina di amministrazione
 					    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
