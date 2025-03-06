@@ -44,7 +44,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                     <span class="data u-grey-light">dal <?php echo $start_date; ?> al <?php echo $end_date; ?></span>
                     <?php } ?>
                 </div>
-                <h3 class="card-title">
+                <h3 class="h5 card-title u-grey-light mb-0">
                     <a class="text-decoration-none"
                         href="<?php echo get_permalink($post->ID); ?>"
                         data-element="live-category-link">
