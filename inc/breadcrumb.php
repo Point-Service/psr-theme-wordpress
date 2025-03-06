@@ -414,6 +414,10 @@ class Breadcrumb_Trail {
 					    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
 					
 					    if ($terms && !is_wp_error($terms)) {
+
+echo $terms;
+
+						    
 					        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
 					        foreach ($terms as $term) {
 					            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
@@ -459,7 +463,8 @@ class Breadcrumb_Trail {
 				        if (in_array('aree-amministrative', $referer_parts)) {
 				            // Crea un link alla pagina "amministrazione/aree-amministrative"
 				            $aree_amministrative_link = home_url("amministrazione/aree-amministrative");
-				            $this->items[] = "<a href='" . esc_url($aree_amministrative_link) . "'>Aree Amministrative</a>";			
+				            $this->items[] = "<a href='" . esc_url($aree_amministrative_link) . "'>Aree Amministrative</a>";	
+						
 			                } elseif (in_array('uffici', $referer_parts)) {				        
 				            $link_link = home_url("amministrazione/uffici");
 				            $this->items[] = "<a href='" . esc_url($link_link) . "'>Uffici</a>";
