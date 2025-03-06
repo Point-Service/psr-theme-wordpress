@@ -117,10 +117,13 @@
                         <div class="card-body card-img-none rounded-top">
                             <div class="category-top cmp-list-card-img__body">
                                 <span class="category cmp-list-card-img__body-heading-title underline">
-                                    <svg class="icon icon-sm" aria-hidden="true">
-                                     <use href="#it-file"></use>
-                                   </svg><a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></a>
-                                </span>
+                                    
+                                    <span class="text fw-semibold">
+                                        <svg class="icon icon-sm" aria-hidden="true">
+                                            <use href="#it-file"></use>
+                                        </svg>
+                                                            <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></a>
+                                       </span>
                                
                             </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
