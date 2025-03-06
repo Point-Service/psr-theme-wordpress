@@ -420,7 +420,7 @@ class Breadcrumb_Trail {
 					        foreach ($terms as $term) {
 
 
-echo strtoupper(esc_html($term->name));
+
 							
 					            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
 					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE') {
@@ -467,7 +467,7 @@ echo strtoupper(esc_html($term->name));
 				            $aree_amministrative_link = home_url("amministrazione/aree-amministrative");
 				            $this->items[] = "<a href='" . esc_url($aree_amministrative_link) . "'>Aree Amministrative</a>";	
 						
-			                } elseif (in_array('uffici', $referer_parts)) {				        
+			                } elseif (in_array('uffici', $referer_parts) || strtoupper(esc_html($term->name))="UFFICIO") {				        
 				            $link_link = home_url("amministrazione/uffici");
 				            $this->items[] = "<a href='" . esc_url($link_link) . "'>Uffici</a>";
 						
