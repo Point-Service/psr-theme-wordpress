@@ -36,7 +36,7 @@ if ($post_type_label == 'Servizio') {
         $tipo_name = 'Servizio'; // Imposta il nome del tipo direttamente come 'Servizio'
         $url_tipo = '/servizi-categoria/' . sanitize_title($tipo->name); // URL corretto per i servizi
     }
-} elseif ($post_type_label == 'Luogo1') {
+} elseif ($post_type_label == 'Luogo') {
     // Se il post_type_label è "Luogo", recupera i termini associati al post nel taxonomy 'tipi_luogo'
     $tipo_terms = get_the_terms($post->ID, 'tipi_luogo');
     if ($tipo_terms && !is_wp_error($tipo_terms)) {
@@ -44,7 +44,7 @@ if ($post_type_label == 'Servizio') {
         $tipo_name = 'Luogo'; // Imposta il nome del tipo direttamente come 'Luogo'
         $url_tipo = '/tipi-luogo/' . sanitize_title($tipo->name); // URL corretto per i luoghi
     }
-} elseif ($post_type_label == 'Evento1') {
+} elseif ($post_type_label == 'Evento') {
     // Se il post_type_label è "Evento", recupera i termini associati al post nel taxonomy 'tipi_evento'
     $tipo_terms = get_the_terms($post->ID, 'tipi_evento');
     if ($tipo_terms && !is_wp_error($tipo_terms)) {
