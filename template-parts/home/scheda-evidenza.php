@@ -35,22 +35,23 @@ if ($post_type_label == 'Servizio') {
         $tipo = $tipo_terms[0]; // Assegna il primo termine
         $tipo_name = 'Servizio'; // Imposta il nome del tipo direttamente come 'Servizio'
         $url_tipo = '/servizi-categoria/' . sanitize_title($tipo->name); // URL corretto per i servizi
-        
+    }
 } elseif ($post_type_label == 'Luogo') {
+    // Se il post_type_label è "Luogo", recupera i termini associati al post nel taxonomy 'tipi_luogo'
     $tipo_terms = get_the_terms($post->ID, 'tipi_luogo');
     if ($tipo_terms && !is_wp_error($tipo_terms)) {
-     $tipo = $tipo_terms[0]; 
-     $tipo_name = 'Luogo'; 
-     $url_tipo = '/tipi-luogo/' . sanitize_title($tipo->name); 
-        
+        $tipo = $tipo_terms[0]; // Assegna il primo termine
+        $tipo_name = 'Luogo'; // Imposta il nome del tipo direttamente come 'Luogo'
+        $url_tipo = '/tipi-luogo/' . sanitize_title($tipo->name); // URL corretto per i luoghi
+    }
 } elseif ($post_type_label == 'Evento') {
-    
+    // Se il post_type_label è "Evento", recupera i termini associati al post nel taxonomy 'tipi_evento'
     $tipo_terms = get_the_terms($post->ID, 'tipi_evento');
     if ($tipo_terms && !is_wp_error($tipo_terms)) {
-     $tipo = $tipo_terms[0]; 
-     $tipo_name = 'Evento'; 
-     $url_tipo = '/vivere-il-comune/tipo-evento/' . sanitize_title($tipo->name); 
-                
+        $tipo = $tipo_terms[0]; // Assegna il primo termine
+        $tipo_name = 'Evento'; // Imposta il nome del tipo direttamente come 'Evento'
+        $url_tipo = '/vivere-il-comune/tipo-evento/' . sanitize_title($tipo->name); // URL corretto per gli eventi
+    }
 } elseif ($post_type_label == 'Notizia') {
     // Se il post_type_label è "Notizia", recupera i termini associati al post nel taxonomy 'tipi_notizia'
     $tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
@@ -64,12 +65,10 @@ if ($post_type_label == 'Servizio') {
         $url_tipo = '#';
     }
 } else {
-    // Se il post_type_label non è né "Servizio" né "Notizia", imposta un URL di fallback per "Novità"
+    // Se il post_type_label non è né "Servizio" né "Luogo" né "Evento" né "Notizia", imposta un URL di fallback per "Novità"
     $tipo_name = 'Novità'; // Imposta il nome del tipo direttamente come 'Novità'
     $url_tipo = '#'; // Imposta un URL di fallback
 }
-
-
 
     
 
