@@ -421,9 +421,9 @@ get_header();
                             <section class="it-page-section mb-30">
                                 <h2 class="title-xxlarge mb-3" id="costs">Contatti</h2>
                                 <div class="richtext-wrapper lora">
-                                    <?php foreach ($punti_contatto as $pc_id) {
-                                        get_template_part('template-parts/punto-contatto/card');
-                                    } ?>
+					<?php foreach ($punti_contatto as $pc_id) {
+	                                    get_template_part('template-parts/single/punto-contatto');
+	                                } ?>   
                                 </div>
                             </section>
                         </div>
