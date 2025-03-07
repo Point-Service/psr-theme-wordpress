@@ -7,7 +7,6 @@ $tipi_unita_organizzativa= get_the_terms($post, 'tipi_unita_organizzativa');
 
 
 $post_url = get_permalink();
-
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
 $tipo_evento = get_the_terms($post->ID,'tipi_evento');
 
@@ -178,8 +177,8 @@ if ($hide_arguments) $argomenti = array();
 <?php } ?>
 
 
-<?php   echo strtoupper(esc_html($get_the_terms->name));
-echo's';?>
+<?php   echo strtoupper(esc_html($tipi_unita_organizzativa->name));
+echo's1';?>
 
 <?php if ($tipi_unita_organizzativa && is_array($tipi_unita_organizzativa) && count($tipi_unita_organizzativa) ) { ?>
 <div class="mt-4 mb-4">
