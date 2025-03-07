@@ -178,6 +178,8 @@ if ($hide_arguments) $argomenti = array();
 
 
 <?php 
+
+echo get_post_type();
    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
 	$terms = get_the_terms($post->ID, 'tipi_unita_organizzativa');
 					
