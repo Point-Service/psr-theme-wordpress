@@ -61,7 +61,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
                 ?>
             </span>
           <?php } elseif (!empty($luogo_notizia)) { ?>
-            <span class="data fw-normal"> | 📍 
+            <span class="data fw-normal"> | <i class="fas fa-map-marker-alt"></i> 
                 <?php echo esc_html($luogo_notizia); ?>
             </span>
         <?php } ?>
