@@ -36,7 +36,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
             $tipo_name = 'Servizio'; // Imposta il nome del tipo direttamente come 'Servizio'
             $url_tipo = '/servizi-categoria/' . sanitize_title($tipo->name); // URL corretto
         }
-    } else {
+    } elseif ($post_type_label == 'Notizia') {
         // Se il post_type_label non è "Servizio", recupera i termini associati al post
         $tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
         if ($tipo_terms && !is_wp_error($tipo_terms)) {
@@ -47,6 +47,10 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
             $tipo = null;
             $url_tipo = '#'; // Se non ci sono termini, assegna un URL di fallback
         }
+    }else{
+           
+            $tipo_name = 'Novità'; // Imposta il nome del tipo direttamente come 'Servizio'
+            $url_tipo = '#'
     }
 
 
