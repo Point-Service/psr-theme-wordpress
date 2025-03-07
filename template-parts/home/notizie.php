@@ -12,7 +12,8 @@ if ($post_id) {
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
     $luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
-    $tipo_terms = get_the_terms($prefix, 'tipi_notizia');
+    
+    $tipo_terms = dci_get_meta($prefix, 'tipi_notizia');
         if ($tipo_terms && !is_wp_error($tipo_terms)) {
             $tipo = $tipo_terms[0];
         } else {
