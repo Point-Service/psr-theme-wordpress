@@ -2,22 +2,21 @@
 global $pc_id;
 $prefix = '_dci_punto_contatto_';
 
-$contatto = get_post($pc_id); // Recupera il post con l'ID
+// Recupera il contatto
+$contatto = get_post($pc_id); 
 if (!$contatto) {
     // Se il contatto non esiste, mostra un messaggio
     echo "Contatto non trovato.";
     return; // Ferma l'esecuzione se il contatto non esiste
 }
 
-$full_contatto = dci_get_full_punto_contatto($pc_id); // Recupera i dettagli del contatto
-if (empty($full_contatto)) {
-    // Se i dettagli del contatto non esistono, mostra un messaggio
-    echo "Dettagli del contatto non disponibili.";
-    return; // Ferma l'esecuzione se i dettagli non esistono
-}
+// Recupera i dettagli del contatto
+$full_contatto = dci_get_full_punto_contatto($pc_id);
 
-$voci = dci_get_meta('voci', $prefix, $pc_id); // Recupera altre informazioni legate al contatto
+// Recupera altre informazioni legate al contatto
+$voci = dci_get_meta('voci', $prefix, $pc_id); 
 
+// Array di altri contatti
 $other_contacts = array(
     'linkedin',
     'pec',
@@ -27,7 +26,7 @@ $other_contacts = array(
     'whatsapp'
 );
 
-// Verifica se almeno uno dei contatti esiste
+// Verifica se ci sono dati di contatto disponibili
 $contatti_presenti = false;
 
 function check_if_contact_present($contact_data) {
@@ -42,7 +41,7 @@ if (check_if_contact_present($full_contatto['email']) ||
     $contatti_presenti = true;
 }
 
-// Verifica se ci sono contatti aggiuntivi
+// Verifica se ci sono contatti aggiuntivi (LinkedIn, Skype, ecc.)
 foreach ($other_contacts as $type) {
     if (check_if_contact_present($full_contatto[$type])) {
         $contatti_presenti = true;
@@ -50,11 +49,6 @@ foreach ($other_contacts as $type) {
     }
 }
 
-// Se non ci sono dati da mostrare, non visualizzare la tabella
-if (!$contatti_presenti) {
-    echo "Nessun contatto disponibile.";
-    return; // Ferma l'esecuzione se non ci sono contatti
-}
 ?>
 
 <div class="card card-teaser shadow mt-3 rounded">
@@ -79,21 +73,21 @@ if (!$contatti_presenti) {
             </span>
         </h3>
         <div class="card-text">
-            <!-- Controlla se ci sono indirizzi -->
+            <!-- Se non ci sono indirizzi, non mostrare nulla, altrimenti visualizza i dettagli -->
             <?php if (check_if_contact_present($full_contatto['indirizzo'])): ?>
                 <?php foreach ($full_contatto['indirizzo'] as $value): ?>
                     <a href="https://www.google.com/maps/place/<?php echo $value; ?>" target="_blank"><?php echo $value; ?></a>
                 <?php endforeach; ?>
             <?php endif; ?>
             
-            <!-- Controlla se ci sono numeri di telefono -->
+            <!-- Se non ci sono numeri di telefono, non mostrare nulla, altrimenti visualizza i dettagli -->
             <?php if (check_if_contact_present($full_contatto['telefono'])): ?>
                 <?php foreach ($full_contatto['telefono'] as $value): ?>
                     <a href="tel:<?php echo $value;?>"><?php echo $value; ?></a>
                 <?php endforeach; ?>
             <?php endif; ?>
             
-            <!-- Controlla se ci sono URL -->
+            <!-- Se non ci sono URL, non mostrare nulla, altrimenti visualizza i dettagli -->
             <?php if (check_if_contact_present($full_contatto['url'])): ?>
                 <?php foreach ($full_contatto['url'] as $value): ?>
                     <p>
@@ -108,7 +102,7 @@ if (!$contatti_presenti) {
                 <?php endforeach; ?>
             <?php endif; ?>
 
-            <!-- Controlla se ci sono email -->
+            <!-- Se non ci sono email, non mostrare nulla, altrimenti visualizza i dettagli -->
             <?php if (check_if_contact_present($full_contatto['email'])): ?>
                 <?php foreach ($full_contatto['email'] as $value): ?>
                     <a  
@@ -121,7 +115,7 @@ if (!$contatti_presenti) {
                 <?php endforeach; ?>
             <?php endif; ?>
 
-            <!-- Altri contatti (linkedin, skype, ecc.) -->
+            <!-- Altri contatti (LinkedIn, Skype, ecc.) -->
             <?php foreach ($other_contacts as $type): ?>
                 <?php if (check_if_contact_present($full_contatto[$type])): ?>
                     <?php foreach ($full_contatto[$type] as $value): ?>
@@ -129,6 +123,11 @@ if (!$contatti_presenti) {
                     <?php endforeach; ?>
                 <?php endif; ?>
             <?php endforeach; ?>
+
+            <?php if (!$contatti_presenti): ?>
+                <!-- Se non ci sono dati, mostra un messaggio -->
+                <p>Nessun contatto disponibile per questo ID.</p>
+            <?php endif; ?>
         </div>
     </div>
 </div>
