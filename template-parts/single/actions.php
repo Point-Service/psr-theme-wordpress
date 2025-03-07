@@ -177,8 +177,13 @@ if ($hide_arguments) $argomenti = array();
 <?php } ?>
 
 
-<?php   echo strtoupper(esc_html($tipi_unita_organizzativa->name));
-echo's1';?>
+<?php 
+  if ($tipi_unita_organizzativa && !is_wp_error($tipi_unita_organizzativa)) {
+       foreach ($tipi_unita_organizzativa as $term) {
+           echo strtoupper(esc_html($term->name));
+       }
+  }
+
 
 <?php if ($tipi_unita_organizzativa && is_array($tipi_unita_organizzativa) && count($tipi_unita_organizzativa) ) { ?>
 <div class="mt-4 mb-4">
