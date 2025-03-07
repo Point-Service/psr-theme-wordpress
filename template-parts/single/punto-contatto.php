@@ -88,10 +88,6 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
                 <?php if (isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count($full_contatto[$type])): ?>
                     <?php foreach ($full_contatto[$type] as $value): ?>
                         <?php if ($type === 'pec'): ?>
-                            <!-- Se il tipo è PEC, aggiungi l'icona della busta come per le email -->
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#it-mail"></use>
-                            </svg>
                             <p><a href="mailto:<?php echo $value; ?>"><?php echo $value; ?></a></p>
                         <?php else: ?>
                             <!-- Altrimenti, mostra il tipo e il valore -->
