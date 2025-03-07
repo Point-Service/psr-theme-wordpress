@@ -14,7 +14,7 @@ $other_contacts = array(
     'twitter',
     'whatsapp'
 );
-
+echo $contatto->post_title;
 // Verifica se il titolo del contatto è non vuoto
 if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
 ?>
