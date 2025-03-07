@@ -27,6 +27,8 @@ $post_type_object = get_post_type_object($post_type);
 // Recupera il nome della tipologia in forma leggibile
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
 
+echo $post_type_label;
+
 ?>
 
 
