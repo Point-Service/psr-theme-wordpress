@@ -14,24 +14,8 @@ $other_contacts = array(
     'twitter',
     'whatsapp'
 );
-
-// Controlla se almeno uno dei contatti esiste
-$contatti_presenti = false;
-foreach (array_merge($full_contatto['email'], $full_contatto['telefono'], $full_contatto['indirizzo'], $full_contatto['url']) as $contatto) {
-    if (!empty($contatto)) {
-        $contatti_presenti = true;
-        break;
-    }
-}
-foreach ($other_contacts as $type) {
-    if (isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count($full_contatto[$type])) {
-        $contatti_presenti = true;
-        break;
-    }
-}
-
-if ($contatti_presenti):
 ?>
+
 <div class="card card-teaser shadow mt-3 rounded">
     <?php if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])): ?>
         <svg class="icon" aria-hidden="true">
@@ -103,5 +87,4 @@ if ($contatti_presenti):
         </div>
     </div>
 </div>
-<?php endif; ?>
 
