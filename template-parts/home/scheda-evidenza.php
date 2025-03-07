@@ -50,7 +50,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
     }else{
            
             $tipo_name = 'Novità'; // Imposta il nome del tipo direttamente come 'Servizio'
-            $url_tipo = '#'
+            $url_tipo = '#';
     }
 
 
