@@ -46,7 +46,7 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
     <div class="card-body">
         <h3 class="card-title h5">
             <span>
-               <font color="Grey"> <?php echo $contatto->post_title; ?></font>
+               <font color="black"> <?php echo $contatto->post_title; ?></font>
             </span>
         </h3>
         <div class="card-text">
