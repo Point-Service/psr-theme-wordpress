@@ -12,6 +12,13 @@ if ($post_id) {
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
     $luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
+    $tipo_terms = get_the_terms($prefix, 'tipi_notizia');
+        if ($tipo_terms && !is_wp_error($tipo_terms)) {
+            $tipo = $tipo_terms[0];
+        } else {
+            $tipo = null;    
+        }
+
 }
 
 $schede = [];
@@ -53,7 +60,7 @@ for ($i = 1; $i <= 20; $i++) {
                                     <svg class="icon icon-sm" aria-hidden="true">
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
-                                    <span class="title-xsmall-semi-bold fw-semibold"><?php echo $post->post_type ?></span>
+                                    <span class="title-xsmall-semi-bold fw-semibold">vvvv</span>
                                 </div>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                                     <?php
