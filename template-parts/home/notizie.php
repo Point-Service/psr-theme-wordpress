@@ -61,13 +61,15 @@ for ($i = 1; $i <= 20; $i++) {
                     <div class="col-lg-5 order-2 order-lg-1">
                         <div class="card mb-0"> <!-- Ridotto spazio con mb-0 -->
                             <div class="card-body pb-2"> <!-- Ridotto spazio con pb-2 -->
-                                <div class="category-top">
-                                    <svg class="icon icon-sm" aria-hidden="true">
+                                <div class="category-top d-flex align-items-center">
+                                    <svg class="icon icon-sm me-2" aria-hidden="true">
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
                                     <?php if ($tipo): ?>
-                                        <span class="title-xsmall-semi-bold fw-semibold"><a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></a></span>
-                                    <?php endif; ?>                                    
+                                        <span class="title-xsmall-semi-bold fw-semibold">
+                                            <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></a>
+                                        </span>
+                                    <?php endif; ?>
                                 </div>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                                     <?php
