@@ -13,12 +13,13 @@ if ($post_id) {
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
     $luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
     
-    $tipo_terms = dci_get_meta($prefix, 'tipi_notizia');
-        if ($tipo_terms && !is_wp_error($tipo_terms)) {
-            $tipo = $tipo_terms[0];
-        } else {
-            $tipo = null;    
-        }
+
+    $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');    
+    if ($tipo_terms && !is_wp_error($tipo_terms)) {
+        $tipo = $tipo_terms[0];  // Prendi il primo termine trovato
+    } else {
+        $tipo = null;  // Nessun termine trovato
+    }
 
 }
 
