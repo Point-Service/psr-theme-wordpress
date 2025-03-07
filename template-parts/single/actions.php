@@ -8,7 +8,7 @@ $tipi_unita_organizzativa= get_the_terms($post, 'tipi_unita_organizzativa');
 
 $post_url = get_permalink();
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
-$tipi_incarico = get_the_terms($post,'tipi_incarico');
+$tipi_incarico = get_the_terms($post->ID,'tipi_incarico');
 $tipo_evento = get_the_terms($post->ID,'tipi_evento');
 
 
