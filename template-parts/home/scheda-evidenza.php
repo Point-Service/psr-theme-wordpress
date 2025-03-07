@@ -49,7 +49,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
         }
     }
 
-}
+
     
 
 ?>
