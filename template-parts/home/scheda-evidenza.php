@@ -14,11 +14,17 @@ $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
 
 $post_type = get_post_type($post->ID);
-// Recupera il nome del tipo di post (tipologia) in una forma leggibile
+// Recupera l'oggetto del tipo di post
 $post_type_object = get_post_type_object($post_type);
+// Recupera il nome della tipologia in forma leggibile
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
 
+// Stampa il nome della tipologia
+echo "La tipologia di post è: " . $post_type_label;
+
+// Puoi anche utilizzare questa variabile ($post_type_label) come vuoi nel tuo codice.
 ?>
+
 
 <?php if ($img) { ?>
 <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
