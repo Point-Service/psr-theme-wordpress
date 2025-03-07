@@ -2,9 +2,21 @@
 global $pc_id;
 $prefix = '_dci_punto_contatto_';
 
-$full_contatto = dci_get_full_punto_contatto($pc_id);
-$contatto = get_post($pc_id);
-$voci = dci_get_meta('voci', $prefix, $pc_id);
+$contatto = get_post($pc_id); // Recupera il post con l'ID
+if (!$contatto) {
+    // Se il contatto non esiste, mostra un messaggio
+    echo "Contatto non trovato.";
+    return; // Ferma l'esecuzione se il contatto non esiste
+}
+
+$full_contatto = dci_get_full_punto_contatto($pc_id); // Recupera i dettagli del contatto
+if (empty($full_contatto)) {
+    // Se i dettagli del contatto non esistono, mostra un messaggio
+    echo "Dettagli del contatto non disponibili.";
+    return; // Ferma l'esecuzione se i dettagli non esistono
+}
+
+$voci = dci_get_meta('voci', $prefix, $pc_id); // Recupera altre informazioni legate al contatto
 
 $other_contacts = array(
     'linkedin',
@@ -15,29 +27,42 @@ $other_contacts = array(
     'whatsapp'
 );
 
-// Controlla se almeno uno dei contatti esiste
+// Verifica se almeno uno dei contatti esiste
 $contatti_presenti = false;
-foreach (array_merge($full_contatto['email'], $full_contatto['telefono'], $full_contatto['indirizzo'], $full_contatto['url']) as $contatto) {
-    if (!empty($contatto)) {
-        $contatti_presenti = true;
-        break;
-    }
+
+function check_if_contact_present($contact_data) {
+    return isset($contact_data) && is_array($contact_data) && count($contact_data) > 0;
 }
+
+// Verifica se ci sono email, telefono, indirizzo, URL
+if (check_if_contact_present($full_contatto['email']) || 
+    check_if_contact_present($full_contatto['telefono']) ||
+    check_if_contact_present($full_contatto['indirizzo']) ||
+    check_if_contact_present($full_contatto['url'])) {
+    $contatti_presenti = true;
+}
+
+// Verifica se ci sono contatti aggiuntivi
 foreach ($other_contacts as $type) {
-    if (isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count($full_contatto[$type])) {
+    if (check_if_contact_present($full_contatto[$type])) {
         $contatti_presenti = true;
         break;
     }
 }
 
-if ($contatti_presenti):
+// Se non ci sono dati da mostrare, non visualizzare la tabella
+if (!$contatti_presenti) {
+    echo "Nessun contatto disponibile.";
+    return; // Ferma l'esecuzione se non ci sono contatti
+}
 ?>
+
 <div class="card card-teaser shadow mt-3 rounded">
-    <?php if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])): ?>
+    <?php if (check_if_contact_present($full_contatto['email'])): ?>
         <svg class="icon" aria-hidden="true">
             <use xlink:href="#it-mail"></use>
         </svg>
-    <?php elseif (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])): ?>
+    <?php elseif (check_if_contact_present($full_contatto['telefono'])): ?>
         <svg class="icon" aria-hidden="true">
             <use xlink:href="#it-telephone"></use>
         </svg>
@@ -54,20 +79,22 @@ if ($contatti_presenti):
             </span>
         </h3>
         <div class="card-text">
-            <!-- Controlla se è un indirizzo -->
-            <?php if (isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])): ?>
+            <!-- Controlla se ci sono indirizzi -->
+            <?php if (check_if_contact_present($full_contatto['indirizzo'])): ?>
                 <?php foreach ($full_contatto['indirizzo'] as $value): ?>
                     <a href="https://www.google.com/maps/place/<?php echo $value; ?>" target="_blank"><?php echo $value; ?></a>
                 <?php endforeach; ?>
             <?php endif; ?>
-            <!-- Controlla se è un telefono -->
-            <?php if (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])): ?>
+            
+            <!-- Controlla se ci sono numeri di telefono -->
+            <?php if (check_if_contact_present($full_contatto['telefono'])): ?>
                 <?php foreach ($full_contatto['telefono'] as $value): ?>
                     <a href="tel:<?php echo $value;?>"><?php echo $value; ?></a>
                 <?php endforeach; ?>
             <?php endif; ?>
-            <!-- Controlla se è un url -->
-            <?php if (isset($full_contatto['url']) && is_array($full_contatto['url']) && count($full_contatto['url'])): ?>
+            
+            <!-- Controlla se ci sono URL -->
+            <?php if (check_if_contact_present($full_contatto['url'])): ?>
                 <?php foreach ($full_contatto['url'] as $value): ?>
                     <p>
                         <a 
@@ -80,21 +107,23 @@ if ($contatti_presenti):
                     </p>
                 <?php endforeach; ?>
             <?php endif; ?>
-            <!-- controlla se è una email -->
-            <?php if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])): ?>
+
+            <!-- Controlla se ci sono email -->
+            <?php if (check_if_contact_present($full_contatto['email'])): ?>
                 <?php foreach ($full_contatto['email'] as $value): ?>
-                        <a  
-                            target="_blank" 
-                            aria-label="invia un'email a <?php echo $value; ?>"
-                            title="invia un'email a <?php echo $value; ?>" 
-                            href="mailto:<?php echo $value; ?>">
-                            <?php echo $value; ?>
-                        </a>
+                    <a  
+                        target="_blank" 
+                        aria-label="invia un'email a <?php echo $value; ?>"
+                        title="invia un'email a <?php echo $value; ?>" 
+                        href="mailto:<?php echo $value; ?>">
+                        <?php echo $value; ?>
+                    </a>
                 <?php endforeach; ?>
             <?php endif; ?>
 
+            <!-- Altri contatti (linkedin, skype, ecc.) -->
             <?php foreach ($other_contacts as $type): ?>
-                <?php if (isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count($full_contatto[$type])): ?>
+                <?php if (check_if_contact_present($full_contatto[$type])): ?>
                     <?php foreach ($full_contatto[$type] as $value): ?>
                         <p><?php echo $type; ?>: <?php echo $value; ?></p>
                     <?php endforeach; ?>
@@ -103,6 +132,6 @@ if ($contatti_presenti):
         </div>
     </div>
 </div>
-<?php endif; ?>
+
 
 
