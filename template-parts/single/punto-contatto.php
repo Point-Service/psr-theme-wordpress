@@ -14,6 +14,9 @@ $other_contacts = array(
     'twitter',
     'whatsapp'
 );
+
+// Verifica se il titolo del contatto è non vuoto
+if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
 ?>
 
 <div class="card card-teaser shadow mt-3 rounded">
@@ -87,4 +90,8 @@ $other_contacts = array(
         </div>
     </div>
 </div>
+
+<?php
+endif;
+?>
 
