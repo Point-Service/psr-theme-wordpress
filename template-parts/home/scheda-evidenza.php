@@ -35,7 +35,6 @@ echo $post_type_label;
 // Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
 if ($post_type_label === 'Servizio' && $tipo) {
     $tipo_name = 'servizio';
-    echo 'SI'; 
 }
     
 
