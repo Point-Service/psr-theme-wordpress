@@ -32,7 +32,7 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
     elseif (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])):
         // Icona per telefono
         echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-telephone"></use></svg>';
-    else:
+    elseif (isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])):
         // Icona per indirizzo
         echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-map-marker-circle"></use></svg>';
     endif;
