@@ -29,6 +29,7 @@ if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count
 }
 
 echo $contact_type;
+echo 's';
 
 // Verifica se il titolo del contatto è non vuoto
 if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
