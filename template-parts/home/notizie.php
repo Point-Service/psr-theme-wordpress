@@ -29,6 +29,11 @@ for ($i = 1; $i <= 20; $i++) {
 }
 ?>
 
+<?php if ($tipo): ?>
+    <a href="<?php echo get_term_link($tipo); ?>"><?php echo $tipo->name; ?></a>
+<?php endif; ?>
+
+
 <style>
     /* CSS mirato alla sezione delle schede evidenziate */
     #notizie .card-teaser-wrapper {
