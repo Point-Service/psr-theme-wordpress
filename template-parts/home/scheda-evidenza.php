@@ -132,8 +132,15 @@ if ($post_type_label == 'Servizio') {
                 <?php echo esc_html($luogo_notizia); ?>
             </span>
         <?php } ?>
-            <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
-            <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>   
+           
+            <?php 
+            // Verifica se ci sono argomenti da visualizzare
+            if (has_term('', 'argomenti', $post)) { 
+            ?> <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
+                <div class="card-body">Argomenti: 
+                    <?php get_template_part("template-parts/common/badges-argomenti"); ?>
+                </div>   
+            <?php } ?>            
             <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
 
         <a class="read-more ps-3"
@@ -201,7 +208,14 @@ if ($post_type_label == 'Servizio') {
             </span>
         <?php } ?>
         <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
-        <div class="card-body">Argomenti: <?php get_template_part("template-parts/common/badges-argomenti"); ?></div>            
+            <?php 
+            // Verifica se ci sono argomenti da visualizzare
+            if (has_term('', 'argomenti', $post)) { 
+            ?> <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
+                <div class="card-body">Argomenti: 
+                    <?php get_template_part("template-parts/common/badges-argomenti"); ?>
+                </div>   
+            <?php } ?>            
         <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">    
          <a class="read-more ps-3"
            href="<?php echo esc_url(get_permalink($post->ID)); ?>"
