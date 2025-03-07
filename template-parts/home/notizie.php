@@ -66,13 +66,17 @@ for ($i = 1; $i <= 20; $i++) {
                                     ?>
                                     <h3 class="card-title"><?php echo $titolo; ?></h3>
                                 </a>
-                                <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
-                                <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
-                                           echo '<p class="mb-2 font-serif"><'.ucfirst(strtolower($descrizione_breve)).'</p>';
-                                        }else{
-                                            echo '<p class="mb-2 font-serif"><'. $descrizione_breve.'</p>';
-                                        }
-                                ?>                                  
+                                             
+                                    <?php
+                                    if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                                        // Se c'è una sequenza di 5 o più lettere maiuscole
+                                        echo '<p class="mb-2 font-serif">' . ucfirst(strtolower($descrizione_breve)) . '</p>';
+                                    } else {
+                                        // Se non c'è una sequenza di lettere maiuscole
+                                        echo '<p class="mb-2 font-serif">' . $descrizione_breve . '</p>';
+                                    }
+                                    ?>
+                                                              
 
                                 <!-- Luoghi -->
                                 <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
