@@ -29,9 +29,7 @@ for ($i = 1; $i <= 20; $i++) {
 }
 ?>
 
-<?php if ($tipo): ?>
-    <a href="<?php echo get_term_link($tipo); ?>"><?php echo $tipo->name; ?></a>
-<?php endif; ?>
+
 
 
 <style>
@@ -67,7 +65,9 @@ for ($i = 1; $i <= 20; $i++) {
                                     <svg class="icon icon-sm" aria-hidden="true">
                                         <use xlink:href="#it-calendar"></use>
                                     </svg>
-                                    <span class="title-xsmall-semi-bold fw-semibold"><a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></a></span>
+                                    <?php if ($tipo): ?>
+                                        <span class="title-xsmall-semi-bold fw-semibold"><a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></a></span>
+                                    <?php endif; ?>                                    
                                 </div>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                                     <?php
