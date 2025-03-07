@@ -15,7 +15,20 @@ $other_contacts = array(
     'whatsapp'
 );
 
-echo $contatto->post_title;
+// Recupera il tipo di contatto da un campo personalizzato
+$contact_type = ''; // Inizializza la variabile del tipo di contatto
+
+if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])) {
+    $contact_type = 'email';
+} elseif (isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count($full_contatto['pec'])) {
+    $contact_type = 'pec';
+} elseif (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])) {
+    $contact_type = 'telefono';
+} elseif (isset($full_contatto['url']) && is_array($full_contatto['url']) && count($full_contatto['url'])) {
+    $contact_type = 'url';
+}
+
+echo $contact_type;
 
 // Verifica se il titolo del contatto è non vuoto
 if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
