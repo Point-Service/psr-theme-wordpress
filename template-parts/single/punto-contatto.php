@@ -83,7 +83,13 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
             <?php foreach ($other_contacts as $type): ?>
                 <?php if (isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count($full_contatto[$type])): ?>
                     <?php foreach ($full_contatto[$type] as $value): ?>
-                        <p><?php echo $type; ?>: <?php echo $value; ?></p>
+                        <?php if ($type === 'pec'): ?>
+                            <!-- Se il tipo è PEC, aggiungi il link mailto: -->
+                            <p><?php echo $type; ?>: <a href="mailto:<?php echo $value; ?>"><?php echo $value; ?></a></p>
+                        <?php else: ?>
+                            <!-- Altrimenti, mostra il tipo e il valore -->
+                            <p><?php echo $type; ?>: <?php echo $value; ?></p>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             <?php endforeach; ?>
