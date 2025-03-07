@@ -28,14 +28,14 @@ $post_type_object = get_post_type_object($post_type);
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
 
 ?>
-<?php echo strtoupper($tipo->name); ?>
+
 
 <?php if ($img) { ?>
 <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
     <div class="card-image-wrapper with-read-more">
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
-                <span class="category title-xsmall-semi-bold fw-semibold"><?php echo $post_type_label; ?></span>
+                <span class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></span>
                 <?php if (is_array($arrdata) && count($arrdata)) { ?>
                     <span class="data fw-normal">
                         <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
