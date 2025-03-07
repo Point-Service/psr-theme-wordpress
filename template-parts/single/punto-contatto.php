@@ -15,21 +15,7 @@ $other_contacts = array(
     'whatsapp'
 );
 
-// Recupera il tipo di contatto da un campo personalizzato
-$contact_type = ''; // Inizializza la variabile del tipo di contatto
 
-if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])) {
-    $contact_type = 'email';
-} elseif (isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count($full_contatto['pec'])) {
-    $contact_type = 'pec';
-} elseif (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])) {
-    $contact_type = 'telefono';
-} elseif (isset($full_contatto['url']) && is_array($full_contatto['url']) && count($full_contatto['url'])) {
-    $contact_type = 'url';
-}
-
-echo $contact_type;
-echo 's';
 
 // Verifica se il titolo del contatto è non vuoto
 if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
@@ -49,6 +35,9 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
         // Icona per telefono
         echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-telephone"></use></svg>';
     elseif (isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])):
+        // Icona per indirizzo
+        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-map-marker-circle"></use></svg>';
+    elseif (isset($full_contatto['url']) && is_array($full_contatto['url']) && count($full_contatto['url'])):
         // Icona per indirizzo
         echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-map-marker-circle"></use></svg>';
     endif;
