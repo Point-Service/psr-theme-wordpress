@@ -89,7 +89,7 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
                             <svg class="icon" aria-hidden="true">
                                 <use xlink:href="#it-mail"></use>
                             </svg>
-                            <p><a href="mailto:<?php echo $value; ?>"><?php echo $value; ?></a></p>
+                            <p><a href="mailto:<?php echo $value; ?>"><?php echo $value; ?>hhhhhh</a></p>
                         <?php else: ?>
                             <!-- Altrimenti, mostra il tipo e il valore -->
                             <p><?php echo $type; ?>: <?php echo $value; ?></p>
