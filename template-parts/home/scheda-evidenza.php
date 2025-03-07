@@ -34,7 +34,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
         if ($tipo_terms && !is_wp_error($tipo_terms)) {
             $tipo = $tipo_terms[0];
             $tipo_name = 'Servizio'; // Imposta il nome del tipo direttamente come 'Servizio'
-            $url_tipo = 'tipi_notizia/' . sanitize_title($tipo->name); // URL corretto
+            $url_tipo = '/servizi-categoria/' . sanitize_title($tipo->name); // URL corretto
         }
     } else {
         // Se il post_type_label non è "Servizio", recupera i termini associati al post
@@ -42,7 +42,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
         if ($tipo_terms && !is_wp_error($tipo_terms)) {
             $tipo = $tipo_terms[0];
             $tipo_name = $tipo->name;
-            $url_tipo = 'tipi_notizia/' . sanitize_title($tipo->name); // URL corretto
+            $url_tipo = '/tipi_notizia/' . sanitize_title($tipo->name); // URL corretto
         } else {
             $tipo = null;
             $url_tipo = '#'; // Se non ci sono termini, assegna un URL di fallback
