@@ -27,7 +27,8 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
         echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-mail"></use></svg>';
     elseif (isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count($full_contatto['pec'])):
         // Icona per PEC
-        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-mail-pec"></use></svg>';
+        echo '<svg class="icon pec-icon" aria-hidden="true"><use xlink:href="#it-mail"></use></svg>';
+        echo '<span class="pec-label">PEC</span>'; // Aggiungi un testo "PEC" per differenziare
     elseif (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])):
         // Icona per telefono
         echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-telephone"></use></svg>';
