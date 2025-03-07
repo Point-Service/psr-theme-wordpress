@@ -186,7 +186,7 @@ if ($hide_arguments) $argomenti = array();
            echo strtoupper(esc_html($term->name));
        }
   }
-
+?>
 
 <?php if ($tipi_unita_organizzativa && is_array($tipi_unita_organizzativa) && count($tipi_unita_organizzativa) ) { ?>
 <div class="mt-4 mb-4">
