@@ -8,11 +8,7 @@ $tipi_unita_organizzativa= get_the_terms($post, 'tipi_unita_organizzativa');
 
 $post_url = get_permalink();
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
-$tipi_incarico = get_the_terms($post->ID,'tipi_incarico');
 $tipo_evento = get_the_terms($post->ID,'tipi_evento');
-
-
-echo $tipi_incarico;
 
 
 if ($hide_arguments) $argomenti = array();
@@ -210,21 +206,6 @@ if ($hide_arguments) $argomenti = array();
 </div>
 <?php } ?>
 
-
-<?php if ($tipi_incarico && is_array($tipi_incarico) && count($tipi_incarico) ) { ?>
-<div class="mt-4 mb-4">
-    <span class="subtitle-small">Tipi incarico</span>
-    <ul class="d-flex flex-wrap gap-1">
-        <?php foreach ($tipi_luogo as $tipo_luogo) { ?>
-        <li>
-            <a class="chip chip-simple" href="<?php echo get_term_link($tipi_incarico->term_id); ?>">
-                <span class="chip-label"><?php echo $tipi_incarico->name; ?></span>
-            </a>
-        </li>
-        <?php } ?>
-    </ul>
-</div>
-<?php } ?>
 
 
 <?php if ($tipi_luogo && is_array($tipi_luogo) && count($tipi_luogo) ) { ?>
