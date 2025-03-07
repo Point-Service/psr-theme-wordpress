@@ -18,6 +18,29 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
 ?>
 
 <div class="card card-teaser shadow-sm p-4s rounded border border-light flex-nowrap">
+    <?php
+    // Controlla il tipo di contatto per decidere quale icona mostrare
+    if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])):
+        // Icona per email
+        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-mail"></use></svg>';
+    elseif (isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count($full_contatto['pec'])):
+        // Icona per PEC
+        echo '<svg class="icon pec-icon" aria-hidden="true"><use xlink:href="#it-mail"></use></svg>';
+
+    elseif (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])):
+        // Icona per telefono
+        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-telephone"></use></svg>';
+    elseif (isset($full_contatto['indirizzo']) && is_array($full_contatto['indirizzo']) && count($full_contatto['indirizzo'])):
+        // Icona per indirizzo
+        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-map-marker-circle"></use></svg>';
+    elseif (isset($full_contatto['url']) && is_array($full_contatto['url']) && count($full_contatto['url'])):
+        // Icona per indirizzo
+        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-map-marker-circle"></use></svg>';        
+    endif;
+    ?>
+
+
+    
     <div class="card-body pe-3">
 
 
