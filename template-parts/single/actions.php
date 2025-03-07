@@ -176,7 +176,8 @@ if ($hide_arguments) $argomenti = array();
     </ul>
 </div>
 <?php } ?>
-
+<?php   echo strtoupper(esc_html($term->name));
+echo's';?>
 <?php if ($tipi_unita_organizzativa && is_array($tipi_unita_organizzativa) && count($tipi_unita_organizzativa) ) { ?>
 <div class="mt-4 mb-4">
     <span class="subtitle-small">Tipo</span>
