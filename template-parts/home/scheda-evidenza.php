@@ -19,10 +19,6 @@ $post_type_object = get_post_type_object($post_type);
 // Recupera il nome della tipologia in forma leggibile
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
 
-// Stampa il nome della tipologia
-echo "La tipologia di post è: " . $post_type_label;
-
-// Puoi anche utilizzare questa variabile ($post_type_label) come vuoi nel tuo codice.
 ?>
 
 
