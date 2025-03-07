@@ -1,558 +1,442 @@
 <?php
 /**
- * Persona pubblica template file
+ * Notizia template file
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
  * @package Design_Comuni_Italia
  */
-global $uo_id, $file_url, $hide_arguments;
+
+global $uo_id, $inline, $audio;
 
 get_header();
 ?>
-<main>
-    <?php
-    while (have_posts()):
-        the_post();
-        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
 
-        // Recupero dei metadati con controlli
-        $nome = dci_get_meta("nome") ?? '';
-        $cognome = dci_get_meta("cognome") ?? '';
-        $descrizione_breve = dci_get_meta("descrizione_breve") ?? '';
-        $competenze = dci_get_wysiwyg_field("competenze") ?? '';
+    <main>
+        <?php 
+        while ( have_posts() ) :
+            the_post();
+            $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
 
-        $foto_id = dci_get_meta("foto_id");
-        $img = wp_get_attachment_image_src($foto_id, "item-gallery");
+            $prefix= '_dci_notizia_';
+            $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
+            $data_pubblicazione_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
+            $date = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pubblicazione_arr[0], $data_pubblicazione_arr[2]));
+            $persone = dci_get_meta("persone", $prefix, $post->ID);
+            $descrizione = dci_get_wysiwyg_field("testo_completo", $prefix, $post->ID);
+            $documenti = dci_get_meta("documenti", $prefix, $post->ID);
+            $luoghi = dci_get_meta("luoghi", $prefix, $post->ID);
+            $allegati = dci_get_meta("allegati", $prefix, $post->ID);
+            $datasets = dci_get_meta("dataset", $prefix, $post->ID);
+            $a_cura_di = dci_get_meta("a_cura_di", $prefix, $post->ID);
+            
 
-        $data_insediamento = dci_get_meta("data_inizio_incarico") ?? '';
-
-        $responsabili = dci_get_meta("responsabile") ?? [];
-        $responsabile = !empty($responsabili) ? $responsabili[0] : null;
-
-        // Recupera gli incarichi, se esistono
-        $incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post
-    
-        if (!empty($incarichi)) {
-            // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
-            $incarico = get_the_title($incarichi[0]);
-
-            // Recupero dei termini di tipo incarico
-            $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
-
-            // Controllo se i termini di tipo incarico esistono e non ci sono errori
-            if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
-                $tipo_incarico = $tipo_incarico_terms[0]->name;
-            } else {
-                $tipo_incarico = ''; // Valore di fallback se non ci sono termini
-            }
-        } else {
-            $incarico = ''; // Valore di fallback se non ci sono incarichi
-            $tipo_incarico = ''; // Valore di fallback se non ci sono incarichi
-        }
-
-        $compensi = !empty($incarichi) ? dci_get_meta("compensi", '_dci_incarico_', $incarichi[0]) : [];
-
-        $organizzazioni = dci_get_meta("organizzazioni") ?? [];
-        $biografia = dci_get_meta("biografia") ?? '';
-        $curriculum_vitae = dci_get_meta("curriculum_vitae") ?? '';
-        $situazione_patrimoniale = dci_get_meta("situazione_patrimoniale") ?? '';
-        $situazione_patrimoniale_id = dci_get_meta("situazione_patrimoniale_id") ?? '';
-        $dichiarazione_redditi = dci_get_meta("dichiarazione_redditi") ?? '';
-        $spese_elettorali = dci_get_meta("spese_elettorali") ?? '';
-        $descrizione = dci_get_wysiwyg_field("descrizione_estesa") ?? '';
-        $punti_contatto = dci_get_meta("punti_contatto") ?? [];
-
-        $prefix = '_dci_punto_contatto_';
-        $contatti = [];
-        foreach ($punti_contatto as $pc_id) {
-            $contatto = dci_get_full_punto_contatto($pc_id);
-            if ($contatto) {
-                array_push($contatti, $contatto);
-            }
-        }
-
-        $altre_cariche = dci_get_meta("altre_cariche") ?? [];
-        
-        function convertToPlain($text)
-        {
-            $text = str_replace(array("\r", "\n"), '', $text);
-            $text = str_replace('"', '\"', $text);
-            $text = str_replace('&nbsp;', ' ', $text);
-
-            return trim(strip_tags($text));
-        }
-        ?>
-    </main>
-    <script type="application/ld+json" data-element="metatag">{
-                            "name": "<?= $nome ?>",
-                            "cognome": "<?= $cognome; ?>",
-                            "incarico": "<?= $incarico; ?>";
-                    }</script>
-
-    <div class="container" id="main-container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-10">
-                <?php get_template_part("template-parts/common/breadcrumb"); ?>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-10">
-                <div class="cmp-heading pb-3 pb-lg-4">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <h1 class="title-xxxlarge" data-element="service-title">
-                                <?php
-                                // Recupera il titolo della pagina
-                                $title = get_the_title();
-                                // Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
-                                if (strlen($title) > 100) {
-                                    $title = substr($title, 0, 97) . '...';
-                                }
-                                // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
-                                if (preg_match('/[A-Z]{5,}/', $title)) {
-                                    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-                                    $title = ucfirst(strtolower($title));
-                                }
-
-                                echo $title;
-                                ?>
-                            </h1>
-
-                            <p class="subtitle-small mb-3" data-element="service-description">
-                                <?php
-
-                                $description1 = $descrizione_breve;
-                                if (preg_match('/[A-Z]{5,}/', $description1)) {
-                                    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-                                    $description1 = ucfirst(strtolower($description1));
-                                }
-                                // Aggiunge il titolo alla lista degli elementi
-                                echo $description1; ?>
-                            </p>
-                        </div>
-                        <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
-                            <?php
-                            $hide_arguments = true;
-                            get_template_part('template-parts/single/actions');
-                            ?>
-                        </div>
+            $gallery = dci_get_meta("gallery", $prefix, $post->ID);
+            $video = dci_get_meta("video", $prefix, $post->ID);
+            $trascrizione = dci_get_meta("trascrizione", $prefix, $post->ID);
+            $audio= dci_get_meta("audio", $prefix, $post->ID);
+            ?>
+            <div class="container" id="main-container">
+                <div class="row">
+                    <div class="col px-lg-4">
+                        <?php get_template_part("template-parts/common/breadcrumb"); ?>
                     </div>
                 </div>
-            </div>
-            <hr class="d-none d-lg-block mt-2" />
-        </div>
-    </div>
-    <div class="container">
-        <div class="row row-column-menu-left mt-4 mt-lg-80 pb-lg-80 pb-40">
-            <div class="col-12 col-lg-3 mb-4 border-col">
-                <div class="cmp-navscroll sticky-top" aria-labelledby="accordion-title-one">
-                    <nav class="navbar it-navscroll-wrapper navbar-expand-lg" aria-label="Indice della pagina"
-                        data-bs-navscroll>
-                        <div class="navbar-custom" id="navbarNavProgress">
-                            <div class="menu-wrapper">
-                                <div class="link-list-wrapper">
-                                    <div class="accordion">
-                                        <div class="accordion-item">
-                                            <span class="accordion-header" id="accordion-title-one">
-
-                                                <!-- Sezione immagine con CSS aggiornato per mantenere proporzioni -->
-                                                <style>
-                                                    .hero-img .img-wrapper img {
-                                                        width: 100%;
-                                                        /* Adatta la larghezza dell'immagine al contenitore */
-                                                        height: auto;
-                                                        /* Mantiene le proporzioni */
-                                                        object-fit: contain;
-                                                        /* Assicura che l'immagine non venga ritagliata */
-                                                        display: block;
-                                                        /* Evita spazi indesiderati */
-                                                    }
-                                                </style>
-
-                                                <?php if ($img) { ?>
-                                                    <section class="hero-img mb-20 mb-lg-50">
-                                                        <div class="img-responsive-wrapper">
-                                                            <center>
-                                                                <div class="img-wrapper">
-                                                                    <img src="<?php echo esc_url($img[0]); ?>"
-                                                                        title="titolo immagine" alt="descrizione immagine">
-                                                                </div>
-                                                            </center>
-                                                        </div>
-                                                    </section>
-                                                <?php } ?>
-
-                                                <button class="accordion-button pb-10 px-3 text-uppercase" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#collapse-one"
-                                                    aria-expanded="true" aria-controls="collapse-one">
-                                                    Indice della pagina
-                                                    <svg class="icon icon-xs right">
-                                                        <use href="#it-expand"></use>
-                                                    </svg>
-                                                </button>
-                                            </span>
-
-                                            <div class="progress">
-                                                <div class="progress-bar it-navscroll-progressbar" role="progressbar"
-                                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-
-                                            <div id="collapse-one" class="accordion-collapse collapse show" role="region"
-                                                aria-labelledby="accordion-title-one">
-                                                <div class="accordion-body">
-                                                    <ul class="link-list" data-element="page-index">
-                                                        <?php if ($incarichi) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#incarichi">
-                                                                    <span>Incarichi</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($compensi) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#compensi">
-                                                                    <span>Compensi</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if (isset($data_insediamento) and !empty($data_insediamento and $data_insediamento != NULL)) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#data">
-                                                                    <span>Data di
-                                                                        <?php if ($tipo_incarico == "politico") {
-                                                                            echo 'Insediamento';
-                                                                        } else {
-                                                                            echo 'inizio incarico';
-                                                                        } ?></span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($organizzazioni) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#organizzazioni">
-                                                                    <span>Organizzazione</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($competenze) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#competenze">
-                                                                    <span>Competenze</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($biografia) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#bio">
-                                                                    <span>Biografia</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($contatti) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#contatti">
-                                                                    <span>Contatti</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($curriculum_vitae) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#cv">
-                                                                    <span>Curriculum Vitae</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($situazione_patrimoniale) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#situazione-patrimoniale">
-                                                                    <span>Situazione patrimoniale</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($dichiarazione_redditi) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#dichiarazione-redditi">
-                                                                    <span>Dichiarazione dei redditi</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if ($spese_elettorali) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#spese-elettorali">
-                                                                    <span>Spese elettorali</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <?php if (isset($allegati) && !empty($allegati)) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#altre-cariche">
-                                                                    <span>Allegati</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-
-                                                        <?php if ($uo_id) { ?>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#contacts">
-                                                                    <span>Contatti</span>
-                                                                </a>
-                                                            </li>
-                                                        <?php } ?>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="row">
+                    <div class="col-lg-8 px-lg-4 py-lg-2">
+                    <?php if (preg_match('/[A-Z]{5,}/', get_the_title())) {
+                                   echo '<h1 data-audio>'.ucfirst(strtolower(get_the_title())).'</h1>';
+                                }else{
+                                    echo '<h1 data-audio>'. get_the_title().'</h1>';
+                                }
+                        ?>
+                        <h2 class="visually-hidden" data-audio>Dettagli della notizia</h2>
+                        <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                                   echo '<p data-audio>'.ucfirst(strtolower($descrizione_breve)).'</p>';
+                                }else{
+                                    echo '<p data-audio>'. $descrizione_breve.'</p>';
+                                }
+                        ?>            
+                        <div class="row mt-5 mb-4">
+                            <div class="col-6">
+                                <small>Data:</small>
+                                <p class="fw-semibold font-monospace">
+                                    <?php echo $date; ?>
+                                </p>
+                            </div>
+                            <div class="col-6">
+                                <small>Tempo di lettura:</small>
+                                <p class="fw-semibold" id="readingTime"></p>
                             </div>
                         </div>
-                    </nav>
-                </div>
+                    </div>
+                    <div class="col-lg-3 offset-lg-1">
+                        <?php
+                        $inline = true;
+                        get_template_part('template-parts/single/actions');
+                        ?>
+                    </div>                 
+                </div>                      
             </div>
-            <div class="col-12 col-lg-8 offset-lg-1">
-                <div class="it-page-sections-container">
-                    <?php if (!empty($incarichi)) { ?>
-                        <section class="it-page-section mb-30">
-                            <h2 class="title-xxlarge mb-3" id="who-needs">Incarichi</h2>
-                            <div class="richtext-wrapper lora">
-                                <?php
-                                foreach ($incarichi as $incarico_id) {
-                                    // Ottieni il titolo dell'incarico
-                                    $incarico_title = get_the_title($incarico_id);
 
-                                    // Recupera i termini di tipo incarico
-                                    $tipo_incarico_terms = get_the_terms($incarico_id, 'tipi_incarico');
-                                    $tipo_incarico = (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms)) ? $tipo_incarico_terms[0]->name : 'N/A';
-
-                                    // Mostra ogni incarico                                                    
-                                    echo '<div class="richtext-wrapper lora">' . esc_html($incarico_title) . '</div>';
-                                    // Aggiungi ulteriori informazioni se necessario
-                        
-                                }
-                                ?>
-                            </div>
-                        </section>
-                    <?php } ?>
-                    <?php if ($tipo_incarico) { ?>
-                        <section class="it-page-section mb-30">
-                            <h2 class="title-xxlarge mb-3" id="incarichi">Tipo di Incarico</h2>
-                            <div class="richtext-wrapper lora"><?php echo $tipo_incarico ?></div>
-                        </section>
-                    <?php } ?>
-                    <?php if ($compensi) { ?>
-                        <section class="it-page-section mb-30">
-                            <h2 class="title-xxlarge mb-3" id="compensi">Compensi</h2>
-                            <div class="richtext-wrapper lora">
-                                <?php echo $compensi ?>
-                            </div>
-                        </section>
-                    <?php } ?>
-                    <?php if (isset($data_insediamento) && !empty($data_insediamento)) { ?>
-                        <section class="it-page-section mb-30">
-                            <h2 class="title-xxlarge mb-3" id="data">Data di
-                                <?php if ($tipo_incarico == "politico") {
-                                    echo 'Insediamento';
-                                } else {
-                                    echo 'inizio incarico';
-                                } ?>
-                            </h2>
-                            <div class="richtext-wrapper lora"><?php echo $data_insediamento; ?></div>
-                        </section>
-                    <?php } ?>
-                    <?php if ($organizzazioni) { ?>
-                        <section class="it-page-section mb-30">
-                            <h2 class="title-xxlarge mb-3" id="organizzazioni">Organizzazione</h2>
-                            <div class="richtext-wrapper lora">
-                                <?php foreach ($organizzazioni as $uo_id) {
-                                    get_template_part("template-parts/unita-organizzativa/card-full");
-                                } ?>
-                            </div>
-                        </section>
-                    <?php } ?>
-                    <?php if ($competenze) { ?>
-                        <section class="it-page-section mb-30">
-                            <h2 class="title-xxlarge mb-3" id="competenze">Competenze</h2>
-                            <div class="richtext-wrapper lora">
-                                <?php echo $competenze ?>
-                            </div>
-                        </section>
-                    <?php } ?>
-                    <?php if ($biografia) { ?>
-                        <section class="it-page-section mb-30">
-                            <h2 class="title-xxlarge mb-3" id="bio">Biografia</h2>
-                            <div class="richtext-wrapper lora">
-                                <?php echo $biografia ?>
-                            </div>
-                        </section>
-                    <?php } ?>
-                    <?php if ($punti_contatto) { ?>
-                        <section class="it-page-section mb-30">
-                            <h2 class="title-xxlarge mb-3" id="contatti">Contatti</h2>
-                            <div class="richtext-wrapper lora">
-                                <?php foreach ($punti_contatto as $pc_id) {
-                                    get_template_part('template-parts/single/punto-contatto');
-                                } ?>
-                            </div>
-                        </section>
-                        <?php if ($curriculum_vitae) { ?>
-                            <article id="documenti" class="it-page-section anchor-offset mt-5">
-                                <h3>Curriculum Vitae</h3>
-                                <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal" id="cv">
-                                    <?php
-                                    if ($curriculum_vitae) {
-                                        $documento_id = attachment_url_to_postid($curriculum_vitae);
-                                        $documento = get_post($documento_id);
-                                        ?>
-                                        <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                            <svg class="icon" aria-hidden="true">
-                                                <use xlink:href="#it-clip"></use>
-                                            </svg>
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <a class="text-decoration-none" href="<?php echo $curriculum_vitae; ?>"
-                                                        aria-label="Visualizza il documento <?php echo $documento->post_title; ?>"
-                                                        title="Scarica il documento <?php echo $documento->post_title; ?>">
-                                                        <?php echo $documento->post_title; ?>
-                                                    </a>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
-                                </div>
-                            </article>
-                            <?php if ($situazione_patrimoniale) { ?>
-                                <article id="situazione-patrimoniale" class="it-page-section anchor-offset mt-5">
-                                    <h3>Situazione patrimoniale</h3>
-                                    <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                                        <?php
-                                        if ($situazione_patrimoniale) {
-                                            $documento_id = attachment_url_to_postid($situazione_patrimoniale);
-                                            $documento = get_post($documento_id);
-                                            ?>
-                                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                                <svg class="icon" aria-hidden="true">
-                                                    <use xlink:href="#it-clip"></use>
-                                                </svg>
-                                                <div class="card-body">
-                                                    <h5 class="card-title">
-                                                        <a class="text-decoration-none" href="<?php echo $situazione_patrimoniale; ?>"
-                                                            aria-label="Visualizza il documento <?php echo $documento->post_title; ?>"
-                                                            title="Scarica il documento <?php echo $documento->post_title; ?>">
-                                                            <?php echo $documento->post_title; ?>
-                                                        </a>
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                        <?php } ?>
-                                    </div>
-                                </article>
-                            <?php } ?>
-                            <?php if ($dichiarazione_redditi) { ?>
-                                <article id="dichiarazione-redditi" class="it-page-section anchor-offset mt-5">
-                                    <h3>Dichiarazione dei redditi</h3>
-                                    <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                                        <?php
-                                        if ($dichiarazione_redditi) {
-                                            foreach ($dichiarazione_redditi as $dichiarazione) {
-                                                $documento_id = attachment_url_to_postid($dichiarazione);
-                                                $documento = get_post($documento_id);
-                                                ?>
-                                                <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                                    <svg class="icon" aria-hidden="true">
-                                                        <use xlink:href="#it-clip"></use>
-                                                    </svg>
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">
-                                                            <a class="text-decoration-none" href="<?php echo $dichiarazione; ?>"
-                                                                aria-label="Visualizza il documento <?php echo $documento->post_title; ?>"
-                                                                title="Scarica il documento <?php echo $documento->post_title; ?>">
-                                                                <?php echo $documento->post_title; ?>
-                                                            </a>
-                                                        </h5>
+            <div class="container">
+                <div class="row border-top border-light row-column-border row-column-menu-left">
+                    <aside class="col-lg-4">
+                        <div class="cmp-navscroll sticky-top" aria-labelledby="accordion-title-one">
+                            <nav class="navbar it-navscroll-wrapper navbar-expand-lg" aria-label="Indice della pagina" data-bs-navscroll>
+                                <div class="navbar-custom" id="navbarNavProgress">
+                                    <div class="menu-wrapper">
+                                        <div class="link-list-wrapper">
+                                            <div class="accordion">
+                                                <div class="accordion-item">
+                                                    <span class="accordion-header" id="accordion-title-one">
+                                                        <button
+                                                            class="accordion-button pb-10 px-3 text-uppercase"
+                                                            type="button"
+                                                            aria-controls="collapse-one"
+                                                            aria-expanded="true"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#collapse-one"
+                                                        >INDICE DELLA PAGINA
+                                                            <svg class="icon icon-sm icon-primary align-top">
+                                                                <use xlink:href="#it-expand"></use>
+                                                            </svg>
+                                                        </button>
+                                                    </span>
+                                                    <div class="progress">
+                                                        <div class="progress-bar it-navscroll-progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
+                                                        <div class="accordion-body">
+                                                            <ul class="link-list" data-element="page-index">
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#descrizione">
+                                                                    <span class="title-medium">Descrizione</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php if(!empty($gallery) OR !empty($video) OR !empty($audio)){?> 
+                                                                    <li class="nav-item">
+                                                                    <a class="nav-link" href="#media">
+                                                                    <span class="title-medium">Media</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php }?>
+                                                                <?php if( is_array($documenti) && count($documenti) ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#documenti">
+                                                                    <span class="title-medium">Documenti</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if( is_array($allegati) && count($allegati) ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#allegati">
+                                                                    <span class="title-medium">Allegati</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if( is_array($datasets) && count($datasets) ) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#dataset">
+                                                                    <span class="title-medium">Dataset</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>                                                              
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#a-cura-di">
+                                                                    <span class="title-medium">A cura di</span>
+                                                                    </a>
+                                                                </li>                                                                                                                              
+                                                                <?php if(is_array($luoghi) && count($luoghi)) { ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#luoghi">
+                                                                    <span class="title-medium">Luoghi</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            <?php } ?>
-                                        <?php }
-                            } ?>
-
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </article>
-                            <?php
-                            if ($spese_elettorali) {
-                                foreach ($spese_elettorali as $spesa) {
-                                    $documento_id = attachment_url_to_postid($spesa);
-                                    $documento = get_post($documento_id);
-                                    ?>
-                                    <article id="spese-elettorali" class="it-page-section anchor-offset mt-5">
-                                        <h3>Spese elettorali</h3>
-                                        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                            </nav>
+                        </div>
+                    </aside>
+                    <section class="col-lg-8 it-page-sections-container border-light">
+                    <?php get_template_part('template-parts/single/image-large'); ?>
+                    <article class="it-page-section anchor-offset" data-audio>                        
+                        <h4 id="descrizione">Descrizione</h4>
+                        <div class="richtext-wrapper lora">
+                            <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                                   echo ucfirst(strtolower($descrizione_breve));
+                                }else{
+                                    echo $descrizione_breve;
+                                }
+                            ?>
+                        </div>
+                    </article>
 
-                                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                                <svg class="icon" aria-hidden="true">
-                                                    <use xlink:href="#it-clip"></use>
-                                                </svg>
-                                                <div class="card-body">
-                                                    <h5 class="card-title">
-                                                        <a class="text-decoration-none" href="<?php echo $spesa; ?>"
-                                                            aria-label="Visualizza il documento <?php echo $documento->post_title; ?>"
-                                                            title="Scarica il documento <?php echo $documento->post_title; ?>">
-                                                            <?php echo $documento->post_title; ?>
-                                                        </a>
-                                                    </h5>
+                       
+                    <?php if(!empty($gallery) OR !empty($video) OR !empty($audio)){?>                        
+                            <article class="it-page-section it-grid-list-wrapper anchor-offset mt-5" id="madia">
+                                <?php if (is_array($gallery) && count($gallery)) {?>
+                                    <h3 class="h3">Multimedia</h3>
+                                    <?php get_template_part("template-parts/single/gallery");
+                                } ?>
+                                <?php if ($video) {?>
+                                    <?php get_template_part("template-parts/single/video");
+                                }?>
+                                <?php if (!empty($audio)) { ?>
+                                    <div class="mb-4">
+                                        <h3 class="h3">File Audio</h3>
+                                        <div class="grid-row">
+                                            <?php foreach($audio as $audio_id){
+                                                $extension = pathinfo($audio_id, PATHINFO_EXTENSION);
+                                                ?>
+                                                <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                                                <div class="audio-wrapper">
+                                                    <div class="custom-audio-player">
+                                                        <audio id="<?= $audio_id;?>" controls>
+                                                            <source src="<?= $audio_id;?>" type="audio/<?= $extension;?>">
+                                                                Il tuo browser non supporta l'elemento audio.
+                                                            </audio>
+                                                        <div class="audio-controls">
+                                                            <button onclick="playAudio('<?php echo $audio_id; ?>')">Play</button>
+                                                            <button onclick="pauseAudio('<?php echo $audio_id; ?>')">Pause</button>
+                                                            <button onclick="stopAudio('<?php echo $audio_id; ?>')">Stop</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        <?php } ?>
+                                            <?php }?>                                            
+                                        </div>
                                     </div>
                                 <?php } ?>
                             </article>
-                            <?php if ($altre_cariche) { ?>
-                                <article id="altre-cariche" class="it-page-section anchor-offset mt-5">
-                                    <h3>Altre cariche</h3>
-                                    <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                                        <div class="richtext-wrapper lora">
-                                            <?php foreach ($altre_cariche as $documento) {
-                                                $documento_id = attachment_url_to_postid($documento);
-                                                $documento = get_post($documento_id);
-                                                ?>
-                                                <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                                    <svg class="icon" aria-hidden="true">
-                                                        <use xlink:href="#it-clip"></use>
-                                                    </svg>
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">
-                                                            <a class="text-decoration-none" href="<?php echo $curriculum_vitae; ?>"
-                                                                aria-label="Visualizza il documento <?php echo $documento->post_title; ?>"
-                                                                title="Scarica il documento <?php echo $documento->post_title; ?>">
-                                                                <?php echo $documento->post_title; ?>
-                                                            </a>
-                                                        </h5>
-                                                    </div>
-                                                </div>
-
-                                            <?php } ?>
-                                        </div>
-                                </article>
-                            <?php } ?>
-
-                        <?php } ?>
                     <?php } ?>
+                            
 
+                    <?php if( is_array($documenti) && count($documenti) ) { ?>
+                    <article class="it-page-section anchor-offset mt-5">
+                        <h4 id="documenti">Documenti</h4>
+                        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                            <?php foreach ($documenti as $doc_id) {
+                                $documento = get_post($doc_id);
+                            ?>
+                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                <svg class="icon" aria-hidden="true">
+                                <use
+                                    xlink:href="#it-clip"
+                                ></use>
+                                </svg>
+                                <div class="card-body">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" href="<?php echo get_permalink($doc_id); ?>" aria-label="Visualizza il documento <?php echo $documento->post_title; ?>" title="Visualizza il documento <?php echo $documento->post_title; ?>">
+                                        <?php echo $documento->post_title; ?>
+                                    </a>
+                                </h5>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+                    </article>
+                    <?php } ?>
+                    <?php if( is_array($allegati) && count($allegati) ) { ?>
+                    <article class="it-page-section anchor-offset mt-5">
+                        <h4 id="allegati">Allegati</h4>
+                        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                            <?php foreach ($allegati as $all_url) {
+                                $all_id = attachment_url_to_postid($all_url);
+                                $allegato = get_post($all_id);
+                            ?>
+                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                <svg class="icon" aria-hidden="true">
+                                <use
+                                    xlink:href="#it-clip"
+                                ></use>
+                                </svg>
+                                <div class="card-body">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" href="<?php echo get_the_guid($allegato); ?>" aria-label="Scarica l'allegato <?php echo $allegato->post_title; ?>" title="Scarica l'allegato <?php echo $allegato->post_title; ?>">
+
+                                      <?php  // Recupera il titolo della pagina
+                    					$title_allegato = $allegato->post_title;					
+                    				
+                    					if (strlen($title_allegato) > 50) {
+                    					    $title_allegato = substr($title_allegato, 0, 50) . '...';
+                    					}					
+                    					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+                    					if (preg_match('/[A-Z]{5,}/', $title_allegato)) {
+                    					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                    					    $title_allegato = ucfirst(strtolower($title_allegato));
+                    					}					
+                    				                                
+                                      echo $title_allegato; ?>
+
+
+                                    </a>
+                                </h5>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+                    </article>
+                    <?php } ?>
+                        <?php if( is_array($datasets) && count($datasets) ) { ?>
+                        <article class="it-page-section anchor-offset mt-5">
+                            <h4 id="dataset">Dataset</h4>
+                            <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                                <?php foreach ($datasets as $dataset_id) {
+                                    $dataset = get_post($dataset_id);
+                                    ?>
+                                    <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                        <svg class="icon" aria-hidden="true">
+                                            <use
+                                                    xlink:href="#it-clip"
+                                            ></use>
+                                        </svg>
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <a class="text-decoration-none" href="<?php echo get_permalink($dataset_id); ?>" aria-label="Visualizza il dataset <?php echo $dataset->post_title; ?>" title="Visualizza il dataset <?php echo $dataset->post_title; ?>">
+                                                    <?php echo $dataset->post_title; ?>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </article>
+                        <?php } ?>
+                       <article class="it-page-section anchor-offset mt-5">
+                        <h4 id="a-cura-di">A cura di</h4>
+                        <div class="row">
+                            <!-- Colonna centrale per il contenuto -->
+                            <div class="col-12 col-sm-8">
+                                <!-- Piccolo testo introduttivo -->
+                                <h6><small>Questa pagina è gestita da</small></h6>
+                                
+                                <!-- Loop per visualizzare le unità organizzative -->
+                                <?php foreach ($a_cura_di as $uo_id) {
+                                    $with_border = true;
+                                    get_template_part("template-parts/unita-organizzativa/card");
+                                } ?>
+                    
+                                <!-- Sezione per visualizzare le persone, se ci sono -->
+                                <?php if(is_array($persone) && count($persone)) { ?>
+                                    <h3 class="h6">Persone</h3>
+                                    <?php get_template_part("template-parts/single/persone"); ?>
+                                <?php } ?>
+                    
+                                <!-- Sezione per visualizzare i luoghi correlati -->
+                                <?php if ($luoghi && is_array($luoghi) && count($luoghi) > 0) { ?>
+                                      </br></br></br></br>
+                                    <section id="luoghi" class="it-page-section mb-4">
+                                        <h2 class="h4">Luoghi correlati</h2> 
+                                        <h6><small>Luogo collegato alla notizia</small></h6>
+                                        <div class="row">
+                                            <?php foreach ($luoghi as $luogo_id) {
+                                                ?><div class="col-xl-6 col-lg-8 col-md-12"><?php
+                                                $with_border = true;
+                                                $luogo = get_post($luogo_id);
+                                                get_template_part("template-parts/luogo/card-title");
+                                                ?></div><?php
+                                            } ?>
+                                        </div>
+                                    </section>
+                                <?php } ?>
+                            </div>
+                    
+                        </div>
+                    </article>
+                    <article
+                        id="ulteriori-informazioni"
+                        class="it-page-section anchor-offset mt-5"
+                    >
+                        <h4 class="mb-3">Ulteriori informazioni</h4>
+                    </article>
+                    <?php get_template_part('template-parts/single/page_bottom'); ?>
+                    </section>
                 </div>
             </div>
-        </div>
-    </div>
-    </div>
-    <?php get_template_part("template-parts/common/valuta-servizio"); ?>
-    <?php get_template_part('template-parts/single/more-posts', 'carousel'); ?>
-    <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
 
-    <?php
-    endwhile; // End of the loop.
-    ?>
-</main>
+            <?php get_template_part("template-parts/common/valuta-servizio"); ?>
+
+
+        <?php
+        endwhile; // End of the loop.
+        ?>
+    </main>
+    <script>
+        const descText = document.querySelector('#descrizione')?.closest('article').innerText;
+        const wordsNumber = descText.split(' ').length
+        document.querySelector('#readingTime').innerHTML = `${Math.ceil(wordsNumber / 200)} min`;
+    </script>
+
+
+<?php
+get_footer();?>
+
+<style>
+.it-grid-item-wrapper {
+    /* Imposta una larghezza fissa per il contenitore dell'immagine/audio se necessario */
+    width: 100%;
+}
+
+.img-responsive-wrapper {
+    display: flex;
+    justify-content: center; /* Centratura orizzontale */
+}
+
+.audio-wrapper {
+    width: 100%; /* Usa tutta la larghezza disponibile */
+    padding: 10px; /* Padding per evitare che il player tocchi i bordi */
+    box-sizing: border-box; /* Include padding e bordi nella larghezza totale */
+}
+
+.custom-audio-player {
+    width: 100%; /* Usa tutta la larghezza disponibile del contenitore */
+}
+
+.audio-controls {
+    margin-top: 10px; /* Spazio sopra i controlli audio */
+    text-align: center; /* Centratura dei bottoni dei controlli */
+}
+
+.audio-controls button {
+    margin: 0 5px; /* Spazio tra i bottoni */
+}
+</style>
+
+<script>
+// Funzione per riprodurre l'audio
+function playAudio(id) {
+    var audio = document.getElementById(id);
+    if (audio) {
+        audio.play();
+    }
+}
+
+// Funzione per mettere in pausa l'audio
+function pauseAudio(id) {
+    var audio = document.getElementById(id);
+    if (audio) {
+        audio.pause();
+    }
+}
+
+// Funzione per fermare l'audio
+function stopAudio(id) {
+    var audio = document.getElementById(id);
+    if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+}
+</script>
+
 <?php
 get_footer();
 
