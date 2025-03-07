@@ -178,16 +178,29 @@ if ($hide_arguments) $argomenti = array();
 
 
 <?php 
-
+if (get_post_type() == 'persona_pubblica') {
 echo get_post_type();
-   // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
-	$terms = get_the_terms($post->ID, 'tipi_unita_organizzativa');
+
+                   // Recupera gli incarichi, se esistono
+					$incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post				
 					
-	 if ($terms && !is_wp_error($terms)) {
-          foreach ($terms as $term) {
-           echo strtoupper(esc_html($term->name));
-       }
-  }
+				        // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
+				        $incarico = get_the_title($incarichi[0]);
+				
+				        // Recupero dei termini di tipo incarico
+				        $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
+				
+				        // Controllo se i termini di tipo incarico esistono e non ci sono errori
+				        if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
+				            $tipo_incarico = $tipo_incarico_terms[0]->name;
+				        } else {
+				            $tipo_incarico = ''; // Valore di fallback se non ci sono termini
+				        }
+				
+echo $tipo_incarico;
+	
+  
+}
 ?>
 
 <?php if ($tipi_unita_organizzativa && is_array($tipi_unita_organizzativa) && count($tipi_unita_organizzativa) ) { ?>
