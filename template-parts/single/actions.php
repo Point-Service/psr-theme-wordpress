@@ -12,7 +12,7 @@ $tipi_incarico = get_the_terms($post->ID,'tipi_incarico');
 $tipo_evento = get_the_terms($post->ID,'tipi_evento');
 
 
-
+echo $tipi_incarico;
 
 if ($hide_arguments) $argomenti = array();
 ?>
