@@ -178,8 +178,11 @@ if ($hide_arguments) $argomenti = array();
 
 
 <?php 
-  if ($tipi_unita_organizzativa && !is_wp_error($tipi_unita_organizzativa)) {
-       foreach ($tipi_unita_organizzativa as $term) {
+   // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
+	$terms = get_the_terms($post, 'tipi_unita_organizzativa');
+					
+	 if ($terms && !is_wp_error($terms)) {
+          foreach ($terms as $term) {
            echo strtoupper(esc_html($term->name));
        }
   }
