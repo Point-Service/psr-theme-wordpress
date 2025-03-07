@@ -35,7 +35,9 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
     <div class="card-image-wrapper with-read-more">
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
-                <span class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></span>
+                <span class="category title-xsmall-semi-bold fw-semibold"><a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold">
+                    <?php echo strtoupper($tipo->name); ?>
+                </a></span>
                 <?php if (is_array($arrdata) && count($arrdata)) { ?>
                     <span class="data fw-normal">
                         <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
@@ -100,7 +102,9 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
 <div class="card card-teaser no-after rounded shadow-sm mb-0 border border-light">
     <div class="card-body pb-5">
         <div class="category-top">
-            <span class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></span>
+                <span class="category title-xsmall-semi-bold fw-semibold"><a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold">
+                    <?php echo strtoupper($tipo->name); ?>
+                </a></span>
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
