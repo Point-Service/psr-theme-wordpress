@@ -73,28 +73,7 @@ get_header();
         }
 
         $altre_cariche = dci_get_meta("altre_cariche") ?? [];
-        $more_info = dci_get_wysiwyg_field("ulteriori_informazioni") ?? '';
-        $condizioni_servizio = dci_get_meta("condizioni_servizio") ?? '';
-        $uo_id = intval(dci_get_meta("unita_responsabile") ?? 0);
-        $argomenti = get_the_terms($post, 'argomenti') ?? [];
-
-        // valori per metatag
-        $categorie = get_the_terms($post, 'categorie_servizio');
-        $categoria_servizio = (!empty($categorie) && !is_wp_error($categorie)) ? $categorie[0]->name : '';
-        $ipa = dci_get_meta('codice_ente_erogatore') ?? '';
-        $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica") ?? '';
-
-        if (isset($canale_fisico_uffici[0])) {
-            $ufficio = get_post($canale_fisico_uffici[0]);
-            if ($ufficio) {
-                $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID) ?? 0;
-                $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id) ?? '';
-                $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id) ?? '';
-                $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id) ?? '';
-            }
-        }
-
-
+        
         function convertToPlain($text)
         {
             $text = str_replace(array("\r", "\n"), '', $text);
@@ -106,29 +85,10 @@ get_header();
         ?>
     </main>
     <script type="application/ld+json" data-element="metatag">{
-                        "name": "<?= $post->post_title; ?>",
-                        "serviceType": "<?= $categoria_servizio; ?>",
-                        "serviceOperator": {
-                            "name": "<?= $ipa; ?>"
-                        },
-                        "areaServed": {
-                            "name": "<?= convertToPlain($copertura_geografica); ?>"
-                        },
-                        "audience": {
-                            "name": "<?= convertToPlain($destinatari); ?>"
-                        },
-                        "availableChannel": {
-                           "serviceUrl": "<?= $canale_digitale_link; ?>",
-                            "serviceLocation": {
-                                "name": "<?= $ufficio->post_title; ?>",
-                                "address": {
-                                "streetAddress": "<?= $indirizzo; ?>",
-                                "postalCode": "<?= $cap; ?>",
-                                "addressLocality": "<?= $quartiere; ?>"
-                                }
-                            }
-                        }
-                }</script>
+                            "name": "<?= $nome ?>",
+                            "cognome": "<?= $cognome; ?>",
+                            "incarico": "<?= $incarico; ?>";
+                    }</script>
 
     <div class="container" id="main-container">
         <div class="row justify-content-center">
@@ -144,33 +104,33 @@ get_header();
                     <div class="row">
                         <div class="col-lg-8">
                             <h1 class="title-xxxlarge" data-element="service-title">
-                            <?php
-                                        // Recupera il titolo della pagina
-                    					$title = get_the_title();					
-                    					// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
-                    					if (strlen($title) > 100) {
-                    					    $title = substr($title, 0, 97) . '...';
-                    					}					
-                    					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
-                    					if (preg_match('/[A-Z]{5,}/', $title)) {
-                    					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-                    					    $title = ucfirst(strtolower($title));
-                    					}				
+                                <?php
+                                // Recupera il titolo della pagina
+                                $title = get_the_title();
+                                // Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+                                if (strlen($title) > 100) {
+                                    $title = substr($title, 0, 97) . '...';
+                                }
+                                // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+                                if (preg_match('/[A-Z]{5,}/', $title)) {
+                                    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                                    $title = ucfirst(strtolower($title));
+                                }
 
-                                        echo $title;
-                                       ?>
+                                echo $title;
+                                ?>
                             </h1>
 
                             <p class="subtitle-small mb-3" data-element="service-description">
-                            <?php 
-                           
-                           $description1 = $descrizione_breve;			
-                           if (preg_match('/[A-Z]{5,}/', $description1)) {
-                               // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-                               $description1 = ucfirst(strtolower($description1));
-                           }					
-                           // Aggiunge il titolo alla lista degli elementi
-                        echo $description1; ?>
+                                <?php
+
+                                $description1 = $descrizione_breve;
+                                if (preg_match('/[A-Z]{5,}/', $description1)) {
+                                    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                                    $description1 = ucfirst(strtolower($description1));
+                                }
+                                // Aggiunge il titolo alla lista degli elementi
+                                echo $description1; ?>
                             </p>
                         </div>
                         <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
@@ -258,18 +218,18 @@ get_header();
                                                                 </a>
                                                             </li>
                                                         <?php } ?>
-                                                        <?php if(isset($data_insediamento)){?>
+                                                        <?php if (isset($data_insediamento) and !empty($data_insediamento and $data_insediamento != NULL)) { ?>
                                                             <li class="nav-item">
-                                                            <a class="nav-link" href="#data">
-                                                                <span>Data di
-                                                                    <?php if ($tipo_incarico == "politico") {
-                                                                        echo 'Insediamento';
-                                                                    } else {
-                                                                        echo 'inizio incarico';
-                                                                    } ?></span>
-                                                            </a>
-                                                        </li>
-                                                        <?php }?>
+                                                                <a class="nav-link" href="#data">
+                                                                    <span>Data di
+                                                                        <?php if ($tipo_incarico == "politico") {
+                                                                            echo 'Insediamento';
+                                                                        } else {
+                                                                            echo 'inizio incarico';
+                                                                        } ?></span>
+                                                                </a>
+                                                            </li>
+                                                        <?php } ?>
                                                         <?php if ($organizzazioni) { ?>
                                                             <li class="nav-item">
                                                                 <a class="nav-link" href="#organizzazioni">
@@ -390,16 +350,18 @@ get_header();
                             </div>
                         </section>
                     <?php } ?>
-                    <section class="it-page-section mb-30">
-                        <h2 class="title-xxlarge mb-3" id="data">Data di
-                            <?php if ($tipo_incarico == "politico") {
-                                echo 'Insediamento';
-                            } else {
-                                echo 'inizio incarico';
-                            } ?>
-                        </h2>
-                        <div class="richtext-wrapper lora"><?php echo $data_insediamento; ?></div>
-                    </section>
+                    <?php if (isset($data_insediamento) && !empty($data_insediamento)) { ?>
+                        <section class="it-page-section mb-30">
+                            <h2 class="title-xxlarge mb-3" id="data">Data di
+                                <?php if ($tipo_incarico == "politico") {
+                                    echo 'Insediamento';
+                                } else {
+                                    echo 'inizio incarico';
+                                } ?>
+                            </h2>
+                            <div class="richtext-wrapper lora"><?php echo $data_insediamento; ?></div>
+                        </section>
+                    <?php } ?>
                     <?php if ($organizzazioni) { ?>
                         <section class="it-page-section mb-30">
                             <h2 class="title-xxlarge mb-3" id="organizzazioni">Organizzazione</h2>
