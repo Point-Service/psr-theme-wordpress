@@ -31,7 +31,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
 echo $post_type_label;
 
 // Se il post_type_label è uguale a "Servizi", sostituisci il nome del tipo con "Servizi"
-if ($post_type_label === 'Servizio') {
+if ($post_type_label === 'Servizio' && $tipo) {
     $tipo->name = 'servizio';
 }
 
