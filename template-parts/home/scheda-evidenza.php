@@ -26,6 +26,8 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
 // Inizializza variabili per tipo e URL
 $tipo_name = '';
 $url_tipo = '#';
+echo $post_type_label;
+
 
 // Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
 if ($post_type_label == 'Servizio') {
