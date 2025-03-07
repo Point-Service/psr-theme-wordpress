@@ -13,12 +13,7 @@ $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
 
-$tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
-if ($tipo_terms && !is_wp_error($tipo_terms)) {
-    $tipo = $tipo_terms[0];
-} else {
-    $tipo = null;    
-}
+
 
 
 $post_type = get_post_type($post->ID);
@@ -32,9 +27,27 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
 $tipo_name = $tipo ? $tipo->name : '';
 
 
-// Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
-if ($post_type_label == 'Servizio') {
-    $tipo_name = 'servizio';
+    // Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
+    if ($post_type_label == 'Servizio') {
+        $tipo_terms = get_the_terms($post->ID, 'categorie_servizio');
+        $tipo_name = 'servizio';
+        
+        $tipo = $tipo_terms[0];
+        $url_tipo = 'tipi_notizia/' . sanitize_title($tipo->name); // URL corretto
+        
+    } else {
+        // Se il post_type_label non è "Servizio", recupera i termini associati al post
+        $tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
+    
+        if ($tipo_terms && !is_wp_error($tipo_terms)) {
+            $tipo = $tipo_terms[0];
+            $url_tipo = 'tipi_notizia/' . sanitize_title($tipo->name); // URL corretto
+        } else {
+            $tipo = null;
+            $url_tipo = '#'; // Se non ci sono termini, assegna un URL di fallback
+        }
+    }
+
 }
     
 
@@ -47,7 +60,7 @@ if ($post_type_label == 'Servizio') {
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
                 <span class="category title-xsmall-semi-bold fw-semibold">
-                    <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo_name); ?></a>
+                    <a href="<?php echo $url_tipo; ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo_name); ?></a>
                  </span>
                 <?php if (is_array($arrdata) && count($arrdata)) { ?>
                     <span class="data fw-normal">
@@ -114,7 +127,7 @@ if ($post_type_label == 'Servizio') {
     <div class="card-body pb-5">
         <div class="category-top">
                 <span class="category title-xsmall-semi-bold fw-semibold">
-                    <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo_name); ?></a>
+                    <a href="<?php echo $url_tipo; ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo_name); ?></a>
                  </span>
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
