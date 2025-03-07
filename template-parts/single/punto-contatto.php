@@ -20,19 +20,22 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
 ?>
 
 <div class="card card-teaser shadow mt-3 rounded">
-    <?php if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])): ?>
-        <svg class="icon" aria-hidden="true">
-            <use xlink:href="#it-mail"></use>
-        </svg>
-    <?php elseif (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])): ?>
-        <svg class="icon" aria-hidden="true">
-            <use xlink:href="#it-telephone"></use>
-        </svg>
-    <?php else: ?>
-        <svg class="icon" aria-hidden="true">
-            <use xlink:href="#it-map-marker-circle"></use>
-        </svg>
-    <?php endif; ?>
+      <?php
+    // Controlla il tipo di contatto per decidere quale icona mostrare
+    if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])):
+        // Icona per email
+        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-mail"></use></svg>';
+    elseif (isset($full_contatto['pec']) && is_array($full_contatto['pec']) && count($full_contatto['pec'])):
+        // Icona per PEC
+        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-mail"></use></svg>';
+    elseif (isset($full_contatto['telefono']) && is_array($full_contatto['telefono']) && count($full_contatto['telefono'])):
+        // Icona per telefono
+        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-telephone"></use></svg>';
+    else:
+        // Icona per indirizzo
+        echo '<svg class="icon" aria-hidden="true"><use xlink:href="#it-map-marker-circle"></use></svg>';
+    endif;
+    ?>
 
     <div class="card-body">
         <h3 class="card-title h5">
