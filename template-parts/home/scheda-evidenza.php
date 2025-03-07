@@ -30,6 +30,8 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
 
 // Definisci il nome del tipo da visualizzare
 $tipo_name = $tipo ? $tipo->name : '';
+echo $tipo_name;
+
 // Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
 if ($post_type_label === 'Servizio' && $tipo) {
     $tipo_name = 'servizio';
@@ -46,7 +48,7 @@ if ($post_type_label === 'Servizio' && $tipo) {
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
                 <span class="category title-xsmall-semi-bold fw-semibold">
-                    <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></a>
+                    <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo_name); ?></a>
                  </span>
                 <?php if (is_array($arrdata) && count($arrdata)) { ?>
                     <span class="data fw-normal">
@@ -113,7 +115,7 @@ if ($post_type_label === 'Servizio' && $tipo) {
     <div class="card-body pb-5">
         <div class="category-top">
                 <span class="category title-xsmall-semi-bold fw-semibold">
-                    <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></a>
+                    <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo_name); ?>></a>
                  </span>
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
