@@ -70,21 +70,25 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
             <!-- controlla se è una email -->
             <?php if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])): ?>
                 <?php foreach ($full_contatto['email'] as $value): ?>
-                        <a  
-                            target="_blank" 
-                            aria-label="invia un'email a <?php echo $value; ?>"
-                            title="invia un'email a <?php echo $value; ?>" 
-                            href="mailto:<?php echo $value; ?>">
-                            <?php echo $value; ?>
-                        </a>
+                    <a  
+                        target="_blank" 
+                        aria-label="invia un'email a <?php echo $value; ?>"
+                        title="invia un'email a <?php echo $value; ?>" 
+                        href="mailto:<?php echo $value; ?>">
+                        <?php echo $value; ?>
+                    </a>
                 <?php endforeach; ?>
             <?php endif; ?>
 
+            <!-- Gestione degli altri contatti -->
             <?php foreach ($other_contacts as $type): ?>
                 <?php if (isset($full_contatto[$type]) && is_array($full_contatto[$type]) && count($full_contatto[$type])): ?>
                     <?php foreach ($full_contatto[$type] as $value): ?>
                         <?php if ($type === 'pec'): ?>
-                            <!-- Se il tipo è PEC, aggiungi il link mailto: -->
+                            <!-- Se il tipo è PEC, aggiungi l'icona della busta come per le email -->
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#it-mail"></use>
+                            </svg>
                             <p><a href="mailto:<?php echo $value; ?>"><?php echo $value; ?></a></p>
                         <?php else: ?>
                             <!-- Altrimenti, mostra il tipo e il valore -->
