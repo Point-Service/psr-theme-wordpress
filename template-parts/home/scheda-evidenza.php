@@ -23,24 +23,25 @@ $post_type_object = get_post_type_object($post_type);
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
 
 
-// Definisci il nome del tipo da visualizzare
-$tipo_name = $tipo ? $tipo->name : '';
 
-
+// Inizializza variabili per tipo e URL
+    $tipo_name = '';
+    $url_tipo = '#';
+    
     // Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
     if ($post_type_label == 'Servizio') {
         $tipo_terms = get_the_terms($post->ID, 'categorie_servizio');
-        $tipo_name = 'servizio';
-        
-        $tipo = $tipo_terms[0];
-        $url_tipo = 'tipi_notizia/' . sanitize_title($tipo->name); // URL corretto
-        
+        if ($tipo_terms && !is_wp_error($tipo_terms)) {
+            $tipo = $tipo_terms[0];
+            $tipo_name = 'Servizio'; // Imposta il nome del tipo direttamente come 'Servizio'
+            $url_tipo = 'tipi_notizia/' . sanitize_title($tipo->name); // URL corretto
+        }
     } else {
         // Se il post_type_label non è "Servizio", recupera i termini associati al post
         $tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
-    
         if ($tipo_terms && !is_wp_error($tipo_terms)) {
             $tipo = $tipo_terms[0];
+            $tipo_name = $tipo->name;
             $url_tipo = 'tipi_notizia/' . sanitize_title($tipo->name); // URL corretto
         } else {
             $tipo = null;
@@ -60,8 +61,8 @@ $tipo_name = $tipo ? $tipo->name : '';
         <div class="card-body p-3 u-grey-light">
             <div class="category-top">
                 <span class="category title-xsmall-semi-bold fw-semibold">
-                    <a href="<?php echo $url_tipo; ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo_name); ?></a>
-                 </span>
+                    <a href="<?php echo esc_url($url_tipo); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper(esc_html($tipo_name)); ?></a>
+                </span>
                 <?php if (is_array($arrdata) && count($arrdata)) { ?>
                     <span class="data fw-normal">
                         <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
@@ -127,8 +128,8 @@ $tipo_name = $tipo ? $tipo->name : '';
     <div class="card-body pb-5">
         <div class="category-top">
                 <span class="category title-xsmall-semi-bold fw-semibold">
-                    <a href="<?php echo $url_tipo; ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo_name); ?></a>
-                 </span>
+                    <a href="<?php echo esc_url($url_tipo); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper(esc_html($tipo_name)); ?></a>
+                </span>
             <?php if (is_array($arrdata) && count($arrdata)) { ?>
                 <span class="data fw-normal">
                     <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
