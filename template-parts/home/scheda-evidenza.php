@@ -27,8 +27,11 @@ $post_type_object = get_post_type_object($post_type);
 // Recupera il nome della tipologia in forma leggibile
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
 
+
+echo $post_type_label;
+
 // Se il post_type_label è uguale a "Servizi", sostituisci il nome del tipo con "Servizi"
-if ($post_type_label === 'Servizi' && $tipo) {
+if ($post_type_label === 'Servizi') {
     $tipo->name = 'servizi';
 }
 
