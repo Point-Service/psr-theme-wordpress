@@ -207,7 +207,7 @@ if ($post_type_label == 'Servizio') {
                 <?php echo esc_html($luogo_notizia); ?>
             </span>
         <?php } ?>
-        <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">
+
             <?php 
             // Verifica se ci sono argomenti da visualizzare
             if (has_term('', 'argomenti', $post)) { 
