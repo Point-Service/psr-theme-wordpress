@@ -13,6 +13,14 @@ $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $page_macro_slug = dci_get_group($post->post_type);
 $page_macro = get_page_by_path($page_macro_slug);
 
+$tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
+if ($tipo_terms && !is_wp_error($tipo_terms)) {
+    $tipo = $tipo_terms[0];
+} else {
+    $tipo = null;    
+}
+
+
 $post_type = get_post_type($post->ID);
 // Recupera l'oggetto del tipo di post
 $post_type_object = get_post_type_object($post_type);
@@ -20,7 +28,7 @@ $post_type_object = get_post_type_object($post_type);
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
 
 ?>
-
+<?php echo strtoupper($tipo->name); ?>
 
 <?php if ($img) { ?>
 <div class="card card-teaser card-teaser-image card-flex no-after rounded shadow-sm border border-light mb-0">
