@@ -113,7 +113,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
                 }
                 ?>
         <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?><br><br>
-            <span class="data fw-normal">📍 
+            <span class="data fw-normal"> <i class="fas fa-map-marker-alt"></i> 
                 <?php 
                 foreach ($luogo_notizia as $luogo_id) {
                     // Ottieni i dettagli del luogo
@@ -127,7 +127,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
                 ?>
             </span>
         <?php } elseif (!empty($luogo_notizia)) { ?>
-            <span class="data fw-normal"> | 📍 
+            <span class="data fw-normal"> | <i class="fas fa-map-marker-alt"></i>
                 <?php echo esc_html($luogo_notizia); ?>
             </span>
         <?php } ?>
