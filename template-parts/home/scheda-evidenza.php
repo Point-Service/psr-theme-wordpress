@@ -28,13 +28,14 @@ $post_type_object = get_post_type_object($post_type);
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
 
 
-
-
-// Se il post_type_label è uguale a "Servizi", sostituisci il nome del tipo con "Servizi"
+// Definisci il nome del tipo da visualizzare
+$tipo_name = $tipo ? $tipo->name : '';
+// Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
 if ($post_type_label === 'Servizio' && $tipo) {
-    $tipo->name = 'servizio';
-    echo 'SI';
+    $tipo_name = 'servizio';
+    echo 'SI'; 
 }
+    
 
 ?>
 
