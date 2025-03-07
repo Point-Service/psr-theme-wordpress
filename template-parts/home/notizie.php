@@ -66,7 +66,7 @@ for ($i = 1; $i <= 20; $i++) {
                                     ?>
                                     <h3 class="card-title"><?php echo $titolo; ?></h3>
                                 </a>
-                                
+                                <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
                                 <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
                                            echo '<p class="mb-2 font-serif"><'.ucfirst(strtolower($descrizione_breve)).'</p>';
                                         }else{
