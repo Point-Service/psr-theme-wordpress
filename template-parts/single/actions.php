@@ -198,7 +198,8 @@ echo get_post_type();
 				        }
 				
 echo $tipo_incarico;
-	
+echo $incarico;
+echo $tipo_incarico_terms;
   
 }
 ?>
