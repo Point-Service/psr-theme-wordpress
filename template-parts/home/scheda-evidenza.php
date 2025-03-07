@@ -141,7 +141,7 @@ if ($post_type_label == 'Servizio') {
                     <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                 </div>   
             <?php } ?>            
-            <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
+            <hr style="margin-bottom: 40px; width: 200px; height: 0px; background-color: grey; border: none;">
 
         <a class="read-more ps-3"
            href="<?php echo esc_url(get_permalink($post->ID)); ?>"
@@ -216,7 +216,7 @@ if ($post_type_label == 'Servizio') {
                     <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                 </div>   
             <?php } ?>            
-        <hr style="margin-bottom: 20px; width: 200px; height: 1px; background-color: grey; border: none;">    
+        <hr style="margin-bottom: 20px; width: 200px; height: 0px; background-color: grey; border: none;">    
          <a class="read-more ps-3"
            href="<?php echo esc_url(get_permalink($post->ID)); ?>"
            aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
