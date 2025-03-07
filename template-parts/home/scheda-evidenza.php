@@ -26,7 +26,7 @@ $post_type_label = $post_type_object->labels->singular_name; // Nome singolare d
 // Inizializza variabili per tipo e URL
 $tipo_name = '';
 $url_tipo = '#';
-echo $post_type_label;
+
 
 
 // Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
@@ -54,12 +54,12 @@ if ($post_type_label == 'Servizio') {
         $tipo_name = 'Evento'; // Imposta il nome del tipo direttamente come 'Evento'
         $url_tipo = '/vivere-il-comune/tipo-evento/' . sanitize_title($tipo->name); // URL corretto per gli eventi
     }
-} elseif ($post_type_label == 'Documento') {
+} elseif ($post_type_label == 'Documento Pubblico') {
     // Se il post_type_label è "Evento", recupera i termini associati al post nel taxonomy 'tipi_evento'
     $tipo_terms = get_the_terms($post->ID, 'tipi_documento');
     if ($tipo_terms && !is_wp_error($tipo_terms)) {
         $tipo = $tipo_terms[0]; // Assegna il primo termine
-        $tipo_name = 'Documento'; // Imposta il nome del tipo direttamente come 'Documento'
+        $tipo_name = 'Documento Pubblico'; // Imposta il nome del tipo direttamente come 'Documento'
         $url_tipo = '/tipi_documento/' . sanitize_title($tipo->name); // URL corretto per gli eventi
     }    
 } elseif ($post_type_label == 'Notizia') {
