@@ -23,35 +23,37 @@ $post_type_object = get_post_type_object($post_type);
 $post_type_label = $post_type_object->labels->singular_name; // Nome singolare della tipologia
 
 
-
 // Inizializza variabili per tipo e URL
-    $tipo_name = '';
-    $url_tipo = '#';
-    
-    // Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
-    if ($post_type_label == 'Servizio') {
-        $tipo_terms = get_the_terms($post->ID, 'categorie_servizio');
-        if ($tipo_terms && !is_wp_error($tipo_terms)) {
-            $tipo = $tipo_terms[0];
-            $tipo_name = 'Servizio'; // Imposta il nome del tipo direttamente come 'Servizio'
-            $url_tipo = '/servizi-categoria/' . sanitize_title($tipo->name); // URL corretto
-        }
-    } elseif ($post_type_label == 'Notizia') {
-        // Se il post_type_label non è "Servizio", recupera i termini associati al post
-        $tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
-        if ($tipo_terms && !is_wp_error($tipo_terms)) {
-            $tipo = $tipo_terms[0];
-            $tipo_name = $tipo->name;
-            $url_tipo = '/tipi_notizia/' . sanitize_title($tipo->name); // URL corretto
-        } else {
-            $tipo = null;
-            $url_tipo = '#'; // Se non ci sono termini, assegna un URL di fallback
-        }
-    }else{
-           
-            $tipo_name = 'Novità'; // Imposta il nome del tipo direttamente come 'Servizio'
-            $url_tipo = '#';
+$tipo_name = '';
+$url_tipo = '#';
+
+// Se il post_type_label è uguale a "Servizio", sostituisci il nome del tipo con "Servizio"
+if ($post_type_label == 'Servizio') {
+    // Recupera i termini associati al post nel taxonomy 'categorie_servizio'
+    $tipo_terms = get_the_terms($post->ID, 'categorie_servizio');
+    if ($tipo_terms && !is_wp_error($tipo_terms)) {
+        $tipo = $tipo_terms[0]; // Assegna il primo termine
+        $tipo_name = 'Servizio'; // Imposta il nome del tipo direttamente come 'Servizio'
+        $url_tipo = '/servizi-categoria/' . sanitize_title($tipo->name); // URL corretto per i servizi
     }
+} elseif ($post_type_label == 'Notizia') {
+    // Se il post_type_label è "Notizia", recupera i termini associati al post nel taxonomy 'tipi_notizia'
+    $tipo_terms = get_the_terms($post->ID, 'tipi_notizia');
+    if ($tipo_terms && !is_wp_error($tipo_terms)) {
+        $tipo = $tipo_terms[0]; // Assegna il primo termine
+        $tipo_name = $tipo->name; // Usa il nome del tipo
+        $url_tipo = '/tipi_notizia/' . sanitize_title($tipo->name); // URL corretto per le notizie
+    } else {
+        // Se non ci sono termini associati, assegna un URL di fallback
+        $tipo = null;
+        $url_tipo = '#';
+    }
+} else {
+    // Se il post_type_label non è né "Servizio" né "Notizia", imposta un URL di fallback per "Novità"
+    $tipo_name = 'Novità'; // Imposta il nome del tipo direttamente come 'Novità'
+    $url_tipo = '#'; // Imposta un URL di fallback
+}
+
 
 
     
