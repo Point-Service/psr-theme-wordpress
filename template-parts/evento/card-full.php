@@ -41,7 +41,8 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         <?php echo $tipo_evento->name; ?>
                     </a>
                     <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
-                    <span class="data u-grey-light">dal <?php echo $start_date; ?> al <?php echo $end_date; ?></span>
+                    <blockquote _ngcontent-ng-c3919216123="" class="card-text mb-5 shadow-sm"><p _ngcontent-ng-c3919216123="" class="mb-0">dal <?php echo $start_date; ?> al <?php echo $end_date; ?></p></blockquote>
+                    <span class="data u-grey-light"></span>
                     <?php } ?>
                 </div>
                 <h3 class="h5 card-title u-grey-light mb-0">
@@ -73,8 +74,8 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         </span>
                     <?php } ?>
                      <hr style="margin-bottom: 25px; width: 200px; height: 1px; background-color: grey; border: none;">
-<blockquote _ngcontent-ng-c3919216123="" class="card-text mb-5 shadow-sm"><p _ngcontent-ng-c3919216123="" class="mb-0">TEST</p></blockquote>
-                c
+
+
                 <a class="read-more t-primary text-uppercase"
                     href="<?php echo get_permalink($post->ID); ?>"
                     aria-label="Leggi di più sulla pagina di <?php echo $post->post_title ?>">
