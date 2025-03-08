@@ -110,14 +110,6 @@ get_header();
     </div>
 </div>
 
-<div class="container" id="main-container">
-    <div class="row">
-        <div class="col-12 col-lg-10">
-            <?php get_template_part("template-parts/common/breadcrumb"); ?>
-        </div>
-    </div>
-</div>
-
 <div class="container">
     <div class="row">
         <div class="col-lg-8 px-lg-4 py-lg-2">
