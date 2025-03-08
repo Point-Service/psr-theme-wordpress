@@ -66,7 +66,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         </span>
                     <?php } elseif (!empty($luogo_notizia)) { ?>
                         <span class="data fw-normal"> | 
-                            <?php echo esc_html($luogo_notizia); ?>
+                           <i class="fas fa-map-marker-alt"></i> <?php echo esc_html($luogo_notizia); ?>
                         </span>
                     <?php } ?>
                         <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
