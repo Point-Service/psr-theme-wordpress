@@ -50,14 +50,14 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                 </h3>                
                 <p class="text-paragraph-card mb-5">
                     <?php echo $descrizione; ?>
-                </p>
-                 <?php if ($start_timestamp && $end_timestamp ) { ?>
+                    <?php if ($start_timestamp && $end_timestamp ) { ?>
                            <blockquote class="text-paragraph-card mb-5 shadow-sm" style="border-left: 5px solid grey; background-color: #ffffff;">
                                 <p class="mb-0">
                                     <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
                                 </p>
                             </blockquote>
                       <?php } ?>
+                </p>                 
                     <?php if (!empty($luogo_evento)) { ?>
                         <span class="data fw-normal"><!-- SVG per l'icona fa-map-marker-alt -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
