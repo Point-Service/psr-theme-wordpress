@@ -110,8 +110,8 @@ get_header();
                 </div>
             </div>
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-10">
+                <div class="row">
+                    <div class="col-lg-8 px-lg-4 py-lg-2">
                         <div class="cmp-heading pb-3 pb-lg-4">
                             <div class="row">
                                 <div class="col-lg-8">
@@ -138,7 +138,7 @@ get_header();
                                 <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
                                     <?php
                                         $hide_arguments = true;
-                                  //      get_template_part('template-parts/single/actions');
+                                       get_template_part('template-parts/single/actions');
                                     ?>
                                 </div>
                             </div>
