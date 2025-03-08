@@ -97,54 +97,57 @@ get_header();
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-10">
-                <div class="cmp-heading pb-3 pb-lg-4">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <h1 class="title-xxxlarge" data-element="service-title">
-                                <?php
-                                // Recupera il titolo della pagina
-                                $title = get_the_title();
-                                // Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
-                                if (strlen($title) > 100) {
-                                    $title = substr($title, 0, 97) . '...';
-                                }
-                                // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
-                                if (preg_match('/[A-Z]{5,}/', $title)) {
-                                    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-                                    $title = ucfirst(strtolower($title));
-                                }
-
-                                echo $title;
-                                ?>
-                            </h1>
-
-                            <p class="subtitle-small mb-3" data-element="service-description">
-                                <?php
-
-                                $description1 = $descrizione_breve;
-                                if (preg_match('/[A-Z]{5,}/', $description1)) {
-                                    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-                                    $description1 = ucfirst(strtolower($description1));
-                                }
-                                // Aggiunge il titolo alla lista degli elementi
-                                echo $description1; ?>
-                            </p>
-                        </div>
-                        <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-10">
+            <div class="cmp-heading pb-3 pb-lg-4">
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <h1 class="title-xxxlarge text-start" data-element="service-title">
                             <?php
-                            $hide_arguments = true;
-                            get_template_part('template-parts/single/actions');
+                            // Recupera il titolo della pagina
+                            $title = get_the_title();
+                            // Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+                            if (strlen($title) > 100) {
+                                $title = substr($title, 0, 97) . '...';
+                            }
+                            // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+                            if (preg_match('/[A-Z]{5,}/', $title)) {
+                                // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                                $title = ucfirst(strtolower($title));
+                            }
+
+                            echo $title;
                             ?>
-                        </div>
+                        </h1>
+
+                        <p class="subtitle-small mb-3 text-start" data-element="service-description">
+                            <?php
+
+                            $description1 = $descrizione_breve;
+                            if (preg_match('/[A-Z]{5,}/', $description1)) {
+                                // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                                $description1 = ucfirst(strtolower($description1));
+                            }
+                            // Aggiunge il titolo alla lista degli elementi
+                            echo $description1; ?>
+                        </p>
+                    </div>
+
+                    <!-- Colonna per le azioni, che rimane a destra -->
+                    <div class="col-12 col-lg-3 offset-lg-1 mt-5 mt-lg-0">
+                        <?php
+                        $hide_arguments = true;
+                        get_template_part('template-parts/single/actions');
+                        ?>
                     </div>
                 </div>
             </div>
-            <hr class="d-none d-lg-block mt-2" />
         </div>
     </div>
+    <hr class="d-none d-lg-block mt-2" />
+</div>
+
     <div class="container">
         <div class="row row-column-menu-left mt-4 mt-lg-80 pb-lg-80 pb-40">
             <div class="col-12 col-lg-3 mb-4 border-col">
