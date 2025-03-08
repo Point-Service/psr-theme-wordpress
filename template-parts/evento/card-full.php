@@ -53,9 +53,10 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                 </p>
                 
                     <?php if (!empty($luogo_evento)) { ?>
-                        <span class="data fw-normal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-                                                        <path d="M8 0c-4.418 0-8 3.582-8 8s8 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 14c-3.315 0-6-2.685-6-6s6-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-9a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"/>
-                                                    </svg> 
+                        <span class="data fw-normal"><!-- SVG per l'icona fa-map-marker-alt -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
+            <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
+        </svg>
                             <?php 
                             // Ottieni i dettagli del luogo
                             $luogo_post = get_post($luogo_evento);
@@ -68,9 +69,10 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         </span>
                     <?php } elseif (!empty($luogo_notizia)) { ?>
                         <span class="data fw-normal"> | 
-                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-                                <path d="M8 0c-4.418 0-8 3.582-8 8s8 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 14c-3.315 0-6-2.685-6-6s6-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-9a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"/>
-                            </svg> <?php echo esc_html($luogo_notizia); ?>
+                           <!-- SVG per l'icona fa-map-marker-alt -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
+            <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
+        </svg> <?php echo esc_html($luogo_notizia); ?>
                         </span>
                     <?php } ?>
                         <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
