@@ -138,7 +138,7 @@ get_header();
                                 <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
                                     <?php
                                         $hide_arguments = true;
-                                        get_template_part('template-parts/single/actions');
+                                  //      get_template_part('template-parts/single/actions');
                                     ?>
                                 </div>
                             </div>
