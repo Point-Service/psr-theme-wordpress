@@ -91,7 +91,7 @@ get_header();
                     }</script>
 
     <div class="container" id="main-container">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-12 col-lg-10">
                 <?php get_template_part("template-parts/common/breadcrumb"); ?>
             </div>
