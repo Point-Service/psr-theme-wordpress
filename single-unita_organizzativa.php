@@ -102,51 +102,55 @@ get_header();
                         }
                     }
             }</script>
-            <div class="container" id="main-container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-10">
-                        <?php get_template_part("template-parts/common/breadcrumb"); ?>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
+<div class="container" id="main-container">
+    <div class="row">
+        <div class="col-12 col-lg-10">
+            <?php get_template_part("template-parts/common/breadcrumb"); ?>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 px-lg-4 py-lg-2">
+            <div class="cmp-heading pb-3 pb-lg-4">
                 <div class="row">
-                    <div class="col-lg-8 px-lg-4 py-lg-2">
-                        <div class="cmp-heading pb-3 pb-lg-4">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <h1 class="title-xxxlarge" data-element="service-title">
-                                        <?php the_title(); ?>
-                                    </h1>
-                                    
-					<p class="subtitle-small mb-3" data-element="service-description">
-					    <?php echo $descrizione_breve; ?>
-					</p>
-					
-					<?php 
-					// Assicurati che le variabili siano definite prima di usarle
-					$canale_digitale_link = $canale_digitale_link ?? ''; // Imposta a stringa vuota se non è definita
-					$canale_digitale_label = $canale_digitale_label ?? 'Link'; // Fornisci un'etichetta di default
-					
-					if (!empty($canale_digitale_link)) { // Controlla se il link non è vuoto
-					?>
-					    <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo esc_url($canale_digitale_link); ?>';">
-					        <span class=""><?php echo esc_html($canale_digitale_label); ?></span>
-					    </button>
-					<?php } ?>
-                                </div>
-                                <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
-                                    <?php
-                                        $hide_arguments = true;
-                                       get_template_part('template-parts/single/actions');
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Modifica la colonna per rimuovere il centramento e far partire il contenuto a sinistra -->
+                    <div class="col-12">
+                        <h1 class="title-xxxlarge text-start" data-element="service-title">
+                            <?php the_title(); ?>
+                        </h1>
+                        
+                        <p class="subtitle-small mb-3 text-start" data-element="service-description">
+                            <?php echo $descrizione_breve; ?>
+                        </p>
+                        
+                        <?php 
+                        // Assicurati che le variabili siano definite prima di usarle
+                        $canale_digitale_link = $canale_digitale_link ?? ''; // Imposta a stringa vuota se non è definita
+                        $canale_digitale_label = $canale_digitale_label ?? 'Link'; // Fornisci un'etichetta di default
+                        
+                        if (!empty($canale_digitale_link)) { // Controlla se il link non è vuoto
+                        ?>
+                            <button type="button" class="btn btn-primary fw-bold" onclick="location.href='<?php echo esc_url($canale_digitale_link); ?>';">
+                                <span class=""><?php echo esc_html($canale_digitale_label); ?></span>
+                            </button>
+                        <?php } ?>
                     </div>
-                    <hr class="d-none d-lg-block mt-2"/>
+                    <!-- Colonna delle azioni a destra (rimane separata dalla parte del testo principale) -->
+                    <div class="col-lg-3 offset-lg-1 mt-5 mt-lg-0">
+                        <?php
+                            $hide_arguments = true;
+                            get_template_part('template-parts/single/actions');
+                        ?>
+                    </div>
                 </div>
             </div>
+        </div>
+        <hr class="d-none d-lg-block mt-2"/>
+    </div>
+</div>
+
             <div class="container">
                 <div class="row row-column-menu-left mt-4 mt-lg-80 pb-lg-80 pb-40">
                     <div class="col-12 col-lg-3 mb-4 border-col">
