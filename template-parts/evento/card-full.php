@@ -41,8 +41,12 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         <?php echo $tipo_evento->name; ?>
                     </a>
                     <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
-                    <blockquote _ngcontent-ng-c3919216123="" class="text-paragraph-card mb-5"><p _ngcontent-ng-c3919216123="" class="mb-0"><span class="data u-grey-light">dal <?php echo $start_date; ?> al <?php echo $end_date; ?></p></span></blockquote>
-                    
+                   <blockquote class="card-text mb-5 shadow-sm" style="border-left: 5px solid #3498db; background-color: #f0f0f0;">
+                        <p class="mb-0">
+                            <span class="data u-grey-light">dal <?php echo $start_date; ?> al <?php echo $end_date; ?></span>
+                        </p>
+                    </blockquote>
+
                     <?php } ?>
                 </div>
                 <h3 class="h5 card-title u-grey-light mb-0">
