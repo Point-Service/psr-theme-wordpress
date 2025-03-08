@@ -53,14 +53,14 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                 </p>
                 
                     <?php if (!empty($luogo_evento)) { ?>
-                        <span class="data fw-normal">
+                        <span class="data fw-normal"><i class="fas fa-map-marker-alt"></i>
                             <?php 
                             // Ottieni i dettagli del luogo
                             $luogo_post = get_post($luogo_evento);
                             
                             if ($luogo_post && !is_wp_error($luogo_post)) {
                                 // Stampa il nome del luogo come link
-                                echo '<i class="fas fa-map-marker-alt"></i>h <a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3"><font color="grey" size ="2">' . esc_html($luogo_post->post_title) . '</font></a>';
+                                echo ' <a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3"><font color="grey" size ="2">' . esc_html($luogo_post->post_title) . '</font></a>';
                             }
                             ?>
                         </span>
