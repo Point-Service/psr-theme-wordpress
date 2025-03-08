@@ -75,7 +75,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                             </svg> <?php echo esc_html($luogo_notizia); ?>
                         </span>
                     <?php } ?>
-                        <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
+                        <?php if ($start_timestamp && $end_timestamp ) { ?>
                            <blockquote class="text-paragraph-card mb-5 shadow-sm" style="border-left: 5px solid #3498db; background-color: #ffffff;">
                                 <p class="mb-0">
                                     <span class="data u-grey-light">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></span>
