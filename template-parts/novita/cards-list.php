@@ -81,7 +81,9 @@ if ($img) {
                                      echo $description1; ?>
                                     </p>
                                                <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-                                <span class="data fw-normal">📍 
+                                <span class="data fw-normal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
+                                                <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
+                                            </svg> 
                                     <?php foreach ($luogo_notizia as $luogo_id) {
                                         $luogo_post = get_post($luogo_id);
                                         if ($luogo_post && !is_wp_error($luogo_post)) {
@@ -90,7 +92,9 @@ if ($img) {
                                     } ?>
                                 </span>
                             <?php } elseif (!empty($luogo_notizia)) { ?>
-                                <span class="data fw-normal">📍 
+                                <span class="data fw-normal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
+                                    <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
+                                </svg> 
                                     <?php echo esc_html($luogo_notizia); ?>
                                 </span>
                             <?php } ?>
@@ -194,7 +198,9 @@ if ($img) {
                             </p>
                             
                             <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
-                                <span class="data fw-normal">📍 
+                                <span class="data fw-normal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
+                                                            <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
+                                                        </svg> 
                                     <?php foreach ($luogo_notizia as $luogo_id) {
                                         $luogo_post = get_post($luogo_id);
                                         if ($luogo_post && !is_wp_error($luogo_post)) {
@@ -203,7 +209,9 @@ if ($img) {
                                     } ?>
                                 </span>
                             <?php } elseif (!empty($luogo_notizia)) { ?>
-                                <span class="data fw-normal">📍 
+                                <span class="data fw-normal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
+                                                <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
+                                            </svg> 
                                     <?php echo esc_html($luogo_notizia); ?>
                                 </span>
                             <?php } ?>
