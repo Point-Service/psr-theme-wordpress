@@ -5,7 +5,7 @@ global $the_query, $load_posts, $load_card_type;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
         's'         => $query,
-        'post_type' => 'notizia',
+        'post_type' => array('notizia'),
         'meta_type' => 'text_date_timestamp',
         'orderby'   => 'meta_value_num',
         'order'     => 'desc',
