@@ -53,7 +53,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                 </p>
                 
                     <?php if (!empty($luogo_evento)) { ?>
-                        <span class="data fw-normal"><i class="fas fa-map-marker-alt"></i>
+                        <span class="data fw-normal">A
                             <?php 
                             // Ottieni i dettagli del luogo
                             $luogo_post = get_post($luogo_evento);
@@ -66,7 +66,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         </span>
                     <?php } elseif (!empty($luogo_notizia)) { ?>
                         <span class="data fw-normal"> | 
-                           <i class="fas fa-map-marker-alt"></i> <?php echo esc_html($luogo_notizia); ?>
+                           A <?php echo esc_html($luogo_notizia); ?>
                         </span>
                     <?php } ?>
                         <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
