@@ -70,12 +70,13 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         </span>
                     <?php } ?>
                         <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
-                           <blockquote class="card-text mb-5 shadow-sm" style="border-left: 5px solid #3498db; background-color: #ffffff;">
+                           <blockquote class="text-paragraph-card mb-5 shadow-sm" style="border-left: 5px solid #3498db; background-color: #ffffff;">
                                 <p class="mb-0">
-                                    <span class="data u-grey-light">dal <?php echo $start_date; ?> al <?php echo $end_date; ?></span>
+                                    <span class="data u-grey-light">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></span>
                                 </p>
                             </blockquote>
-                    <?php } ?>
+                      <?php } ?>
+    
                      <hr style="margin-bottom: 25px; width: 200px; height: 1px; background-color: grey; border: none;">
 
 
