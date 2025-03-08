@@ -40,14 +40,6 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         href="<?= get_term_link($tipo_evento->term_id); ?>">
                         <?php echo $tipo_evento->name; ?>
                     </a>
-                    <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
-                   <blockquote class="card-text mb-5 shadow-sm" style="border-left: 5px solid #3498db; background-color: #f0f0f0;">
-                        <p class="mb-0">
-                            <span class="data u-grey-light">dal <?php echo $start_date; ?> al <?php echo $end_date; ?></span>
-                        </p>
-                    </blockquote>
-
-                    <?php } ?>
                 </div>
                 <h3 class="h5 card-title u-grey-light mb-0">
                     <a class="text-decoration-none"
@@ -76,6 +68,13 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                         <span class="data fw-normal"> | 
                             <?php echo esc_html($luogo_notizia); ?>
                         </span>
+                    <?php } ?>
+                        <?php if ($start_timestamp && $end_timestamp && $start_date != $end_date) { ?>
+                           <blockquote class="card-text mb-5 shadow-sm" style="border-left: 5px solid #3498db; background-color: #ffffff;">
+                                <p class="mb-0">
+                                    <span class="data u-grey-light">dal <?php echo $start_date; ?> al <?php echo $end_date; ?></span>
+                                </p>
+                            </blockquote>
                     <?php } ?>
                      <hr style="margin-bottom: 25px; width: 200px; height: 1px; background-color: grey; border: none;">
 
