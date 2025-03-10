@@ -17,7 +17,7 @@ $luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
 // Ottenere il timestamp della data attuale
 $current_timestamp = current_time('timestamp'); // Timestamp della data e ora attuali
 
-// Verifica se la data di inizio e fine evento sono comprese nella data attuale
+// Verifica se la data di inizio e fine evento sono comprese nella data attuale e cambio il colore del paragrafo.
 $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestamp <= $end_timestamp) ? 'solid green' : 'solid grey';
 
 if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
