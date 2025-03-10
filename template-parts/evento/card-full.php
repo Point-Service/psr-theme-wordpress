@@ -6,12 +6,33 @@ $img = dci_get_meta('immagine', $prefix, $post->ID);
 $descrizione = dci_get_meta('descrizione_breve', $prefix, $post->ID);
 $start_timestamp = dci_get_meta('data_orario_inizio', $prefix, $post->ID);
 $start_date = date_i18n('d/m/y', date($start_timestamp));
+$start_date_arr = explode('-', date_i18n('d-F-Y-H-i', date($start_timestamp)));
 $end_timestamp = dci_get_meta("data_orario_fine", $prefix, $post->ID);
 $end_date = date_i18n('d/m/y', date($end_timestamp));
-$current_timestamp = current_time('timestamp'); // Timestamp della data attuale
-$is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestamp <= $end_timestamp) ? 'evento-attivo' : 'evento-non-attivo';
-?>
+$end_date_arr = explode('-', date_i18n('d-F-Y-H-i', date($end_timestamp)));
+$tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
+$arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
+$luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
 
+// Ottenere il timestamp della data attuale
+$current_timestamp = current_time('timestamp'); // Timestamp della data e ora attuali
+
+// Verifica se la data di inizio e fine evento sono comprese nella data attuale
+$is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestamp <= $end_timestamp) ? 'evento-attivo' : 'evento-non-attivo';
+
+if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
+?>
+<style>
+.evento-attivo {
+    background-color: green !important;
+    color: white;
+}
+
+.evento-non-attivo {
+    background-color: gray !important;
+    color: white;
+}    
+</style>
 <div class="col-lg-6 col-xl-4">
     <div class="card-wrapper shadow-sm rounded border border-light pb-0">
         <div class="card no-after rounded">
@@ -44,37 +65,38 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
                 <p class="text-paragraph-card mb-5">
                     <?php echo $descrizione; ?>
                     <?php if ($start_timestamp && $end_timestamp ) { ?>
-                           <blockquote class="text-paragraph-card mb-5 shadow-sm <?php echo $is_evento_attivo; ?>" style="border-left: 4px solid grey; background-color: #ffffff;">
-                                <p class="mb-0">
-                                    <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
-                                </p>
-                            </blockquote>
-                      <?php } ?>
-                </p>                 
-                    <?php if (!empty($luogo_evento)) { ?>
-                        <span class="data fw-normal"><!-- SVG per l'icona fa-map-marker-alt -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
-                                <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
-                            </svg>
-                            <?php 
-                            // Ottieni i dettagli del luogo
-                            $luogo_post = get_post($luogo_evento);
-                            
-                            if ($luogo_post && !is_wp_error($luogo_post)) {
-                                // Stampa il nome del luogo come link
-                                echo ' <a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3"><font color="grey" size ="2">' . esc_html($luogo_post->post_title) . '</font></a>';
-                            }
-                            ?>
-                        </span>
-                    <?php } elseif (!empty($luogo_notizia)) { ?>
-                        <span class="data fw-normal"> | 
-                           <!-- SVG per l'icona fa-map-marker-alt -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
-                                <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
-                            </svg> <?php echo esc_html($luogo_notizia); ?>
-                        </span>
+                        <blockquote class="text-paragraph-card mb-5 shadow-sm <?php echo $is_evento_attivo; ?>" style="border-left: 4px solid grey; background-color: #ffffff;">
+                            <p class="mb-0">
+                                <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
+                            </p>
+                        </blockquote>
                     <?php } ?>
-                    <hr style="margin-bottom: 35px; width: 200px; height: 1px; background-color: grey; border: none;">
+                </p>                 
+                <?php if (!empty($luogo_evento)) { ?>
+                    <span class="data fw-normal"><!-- SVG per l'icona fa-map-marker-alt -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
+                            <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
+                        </svg>
+                        <?php 
+                        // Ottieni i dettagli del luogo
+                        $luogo_post = get_post($luogo_evento);
+                        
+                        if ($luogo_post && !is_wp_error($luogo_post)) {
+                            // Stampa il nome del luogo come link
+                            echo ' <a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-3"><font color="grey" size ="2">' . esc_html($luogo_post->post_title) . '</font></a>';
+                        }
+                        ?>
+                    </span>
+                <?php } elseif (!empty($luogo_notizia)) { ?>
+                    <span class="data fw-normal"> | 
+                        <!-- SVG per l'icona fa-map-marker-alt -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
+                            <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
+                        </svg> <?php echo esc_html($luogo_notizia); ?>
+                    </span>
+                <?php } ?>
+                <hr style="margin-bottom: 35px; width: 200px; height: 1px; background-color: grey; border: none;">
+
                 <a class="read-more t-primary text-uppercase"
                     href="<?php echo get_permalink($post->ID); ?>"
                     aria-label="Leggi di più sulla pagina di <?php echo $post->post_title ?>">
@@ -88,3 +110,4 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
         </div>
     </div>
 </div>
+
