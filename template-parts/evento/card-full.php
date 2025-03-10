@@ -6,18 +6,11 @@ $img = dci_get_meta('immagine', $prefix, $post->ID);
 $descrizione = dci_get_meta('descrizione_breve', $prefix, $post->ID);
 $start_timestamp = dci_get_meta('data_orario_inizio', $prefix, $post->ID);
 $start_date = date_i18n('d/m/y', date($start_timestamp));
-$start_date_arr = explode('-', date_i18n('d-F-Y-H-i', date($start_timestamp)));
 $end_timestamp = dci_get_meta("data_orario_fine", $prefix, $post->ID);
 $end_date = date_i18n('d/m/y', date($end_timestamp));
-$end_date_arr = explode('-', date_i18n('d-F-Y-H-i', date($end_timestamp)));
-$tipo_evento = get_the_terms($post->ID,'tipi_evento')[0];
-$arrdata = explode('-', date_i18n("j-F-Y", $start_timestamp));
-$luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
-
-
-if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
+$current_timestamp = current_time('timestamp'); // Timestamp della data attuale
+$is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestamp <= $end_timestamp) ? 'evento-attivo' : 'evento-non-attivo';
 ?>
-
 
 <div class="col-lg-6 col-xl-4">
     <div class="card-wrapper shadow-sm rounded border border-light pb-0">
@@ -51,7 +44,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                 <p class="text-paragraph-card mb-5">
                     <?php echo $descrizione; ?>
                     <?php if ($start_timestamp && $end_timestamp ) { ?>
-                           <blockquote class="text-paragraph-card mb-5 shadow-sm" style="border-left: 4px solid grey; background-color: #ffffff;">
+                           <blockquote class="text-paragraph-card mb-5 shadow-sm <?php echo $is_evento_attivo; ?>" style="border-left: 4px solid grey; background-color: #ffffff;">
                                 <p class="mb-0">
                                     <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
                                 </p>
@@ -81,11 +74,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                             </svg> <?php echo esc_html($luogo_notizia); ?>
                         </span>
                     <?php } ?>
-                       
-    
-                     <hr style="margin-bottom: 35px; width: 200px; height: 1px; background-color: grey; border: none;">
-
-
+                    <hr style="margin-bottom: 35px; width: 200px; height: 1px; background-color: grey; border: none;">
                 <a class="read-more t-primary text-uppercase"
                     href="<?php echo get_permalink($post->ID); ?>"
                     aria-label="Leggi di più sulla pagina di <?php echo $post->post_title ?>">
@@ -99,4 +88,3 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
         </div>
     </div>
 </div>
-
