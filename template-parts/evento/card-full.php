@@ -65,7 +65,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                 <p class="text-paragraph-card mb-5">
                     <?php echo $descrizione; ?>
                     <?php if ($start_timestamp && $end_timestamp ) { ?>
-                        <blockquote class="text-paragraph-card mb-5 shadow-sm <?php echo $is_evento_attivo; ?>" style="border-left: 4px solid grey; background-color: #ffffff;">
+                          <blockquote class="text-paragraph-card mb-5 shadow-sm" style="border-left: 4px solid grey; background-color: #ffffff;">
                             <p class="mb-0">
                                 <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
                             </p>
