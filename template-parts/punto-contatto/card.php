@@ -124,7 +124,7 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
               <?php foreach ($other_contacts as $type) {
                 if (array_key_exists($type, $full_contatto) &&  is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
                     foreach ($full_contatto[$type] as $value) {
-                        echo ''.$type.': '.$value.'</p>';
+                        echo '<p>Altro: '.$type.': '.$value.'</p>';
                     }
                 } 
 
