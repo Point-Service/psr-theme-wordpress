@@ -18,20 +18,12 @@ $luogo_evento = dci_get_meta("luogo_evento", $prefix, $post->ID);
 $current_timestamp = current_time('timestamp'); // Timestamp della data e ora attuali
 
 // Verifica se la data di inizio e fine evento sono comprese nella data attuale
-$is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestamp <= $end_timestamp) ? 'evento-attivo' : 'evento-non-attivo';
+$is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestamp <= $end_timestamp) ? 'solid green' : 'solid grey';
 
 if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
 ?>
 <style>
-.evento-attivo {
-    background-color: green !important;
-    color: white;
-}
-
-.evento-non-attivo {
-    background-color: gray !important;
-    color: white;
-}    
+  
 </style>
 <div class="col-lg-6 col-xl-4">
     <div class="card-wrapper shadow-sm rounded border border-light pb-0">
@@ -65,7 +57,7 @@ if ($luogo_evento_id) $luogo_evento = get_post($luogo_evento_id);
                 <p class="text-paragraph-card mb-5">
                     <?php echo $descrizione; ?>
                     <?php if ($start_timestamp && $end_timestamp ) { ?>
-                          <blockquote class="text-paragraph-card mb-5 shadow-sm" style="border-left: 4px solid grey; background-color: #ffffff;">
+                          <blockquote class="text-paragraph-card mb-5 shadow-sm" style="border-left: 4px <?php echo $is_evento_attivo; ?>; background-color: #ffffff;">
                             <p class="mb-0">
                                 <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
                             </p>
