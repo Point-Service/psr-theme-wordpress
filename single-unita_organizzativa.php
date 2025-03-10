@@ -1,6 +1,6 @@
 <?php
 /**
- * Servizio template file
+ *  Unità Organizzativa template file
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
@@ -55,9 +55,8 @@ get_header();
 	        
 	        // valori per metatag
 	        $categorie = get_the_terms($post, 'categorie_servizio') ?? [];
-	        $categoria_servizio = !empty($categorie) ? $categorie[0]->name : '';
-	        $ipa = dci_get_meta('codice_ente_erogatore') ?? '';
-	        $copertura_geografica = dci_get_wysiwyg_field("copertura_geografica") ?? '';
+	        $categoria_servizio = !empty($categorie) ? $categorie[0]->name : '';		    
+
 	
 	        if (isset($canale_fisico_uffici[0])) {
 	            $ufficio = get_post($canale_fisico_uffici[0]);
