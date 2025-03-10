@@ -107,10 +107,7 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
                <?php }
             } ?>
             <?php if (array_key_exists('pec', $full_contatto) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
-                foreach ($full_contatto['pec'] as $value) { ?>
-                    <p><svg class="icon">
-                            <use xlink:href="#it-mail"></use>
-                        </svg>
+                foreach ($full_contatto['pec'] as $value) { ?>                    
                         <a  
                         target="_blank" 
                         aria-label="invia un'email a <?php echo $value; ?>"
@@ -125,9 +122,7 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
               <?php foreach ($other_contacts as $type) {
                 if (array_key_exists($type, $full_contatto) &&  is_array($full_contatto[$type]) && count ($full_contatto[$type]) ) {
                     foreach ($full_contatto[$type] as $value) {
-                        echo '<p><svg class="icon">
-                            <use xlink:href="#it-list"></use>
-                            </svg>'.$type.': '.$value.'</p>';
+                        echo ''.$type.': '.$value.'</p>';
                     }
                 } 
 
