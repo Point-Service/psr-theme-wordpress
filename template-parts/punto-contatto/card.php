@@ -95,7 +95,7 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
           <?php if (array_key_exists('email', $full_contatto) && is_array($full_contatto['email']) && count ($full_contatto['email']) ) {
                 foreach ($full_contatto['email'] as $value) { ?>
                     <p>
-                        Email:
+                        Indirizzo Email:
                         <a  
                         target="_blank" 
                         aria-label="invia un'email a <?php echo $value; ?>"
@@ -107,7 +107,9 @@ if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
                <?php }
             } ?>
             <?php if (array_key_exists('pec', $full_contatto) && is_array($full_contatto['pec']) && count ($full_contatto['pec']) ) {
-                foreach ($full_contatto['pec'] as $value) { ?>                    
+                foreach ($full_contatto['pec'] as $value) { ?>  
+                        <p>
+                        Indirizzo Pec:
                         <a  
                         target="_blank" 
                         aria-label="invia un'email a <?php echo $value; ?>"
