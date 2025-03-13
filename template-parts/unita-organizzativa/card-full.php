@@ -159,7 +159,7 @@
 	                                                   <div class="card-body p-0 my-2">
 	                                                      <div class="card-content">
 	                                                        
-	                                                         <h4 class="h5"><a href="<?php echo get_permalink($responsabile); ?>"><?php echo dci_get_meta('nome', '_dci_persona_pubblica_', $responsabile); ?> <?php echo dci_get_meta('cognome', '_dci_persona_pubblica_', $responsabile); ?></a></h4>
+	                                                         <h4 class="h5"><a href="<?php echo dci_get_meta($responsabile); ?>"><?php echo dci_get_meta('nome', '_dci_persona_pubblica_', $responsabile); ?> <?php echo dci_get_meta('cognome', '_dci_persona_pubblica_', $responsabile); ?></a></h4>
 	                                                         <p class="text-paragraph"><?php echo dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $responsabile); ?></p>
 	                                                      </div>
 	                                                   </div>
@@ -300,7 +300,7 @@
                                                       <?php 
 						  
 						            // Gestione Incarichi
-							    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
+							    $incarichi = dci_get_meta("incarico", '_dci_persona_pubblica_', $responsabile);
 							    $incarico = get_the_title($incarichi[1]);
 							    $nome_incarico = $incarico;
 						  
