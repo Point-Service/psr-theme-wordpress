@@ -12,7 +12,7 @@
     // Gestione Incarichi
     $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', dci_get_meta('id', '_dci_persona_pubblica_', $responsabile));
     $incarico = get_the_title($incarichi[0]);
-    $nome_incarico = '$incarico';
+    $nome_incarico = $incarico;
 
 // ID del responsabile che desideri cercare
 $responsabile_id = $responsabile;  // Cambia questa variabile con l'ID che stai cercando
