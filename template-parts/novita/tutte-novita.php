@@ -2,6 +2,7 @@
 global $the_query, $load_posts, $load_card_type;
 
     $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 9; 
+    $load_posts = 9;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
         's'         => $query,
@@ -9,6 +10,7 @@ global $the_query, $load_posts, $load_card_type;
         'meta_type' => 'text_date_timestamp',
         'orderby'   => 'meta_value_num',
         'order'     => 'desc',
+        
     );
 
     $the_query = new WP_Query( $args );
