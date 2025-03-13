@@ -9,14 +9,12 @@
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $uo_id);
     $responsabili = dci_get_meta("responsabile", $prefix, $uo_id);
     $responsabile = $responsabili[0];
-
-
+    
     // Gestione Incarichi
-    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', dci_get_meta('id', '_dci_persona_pubblica_', $responsabile));
+    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
     $incarico = get_the_title($incarichi[0]);
-    $nome_incarico  =$incarico;
+    $nome_incarico = $incarico;
 
-   
     $prefix = '_dci_punto_contatto_';
     $contatti = array();
     foreach ($punti_contatto as $pc_id) {
@@ -152,9 +150,8 @@
 	                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
 	                                        <div class="cmp-card-latest-messages mb-3 mb-30">
 	                                        	<div class="card card-bg px-4 pt-4 pb-4 rounded">
-	                                                    <div class="card-header border-0 p-0"><?php				                             
-				                                    echo $nome_incarico;				                                
-				                            ?>
+	                                                    <div class="card-header border-0 p-0"><?php echo 
+	                                                             $nome_incarico; ?>
 	                                                        </div>
 	                                                   <div class="card-body p-0 my-2">
 	                                                      <div class="card-content">
@@ -297,9 +294,8 @@
                                         <div class="cmp-card-latest-messages mb-3 mb-30">
                                         	<div class="card card-bg px-4 pt-4 pb-4 rounded">
                                                     <div class="card-header border-0 p-0">
-				                            <?php				                             
-				                                    echo $nome_incarico;				                                
-				                            ?>
+                                                             <?php echo 
+                                                             $nome_incarico; ?>
                                                         </div>
                                                    <div class="card-body p-0 my-2">
                                                       <div class="card-content">
@@ -321,4 +317,3 @@
 <?php } 
 $with_border = false;
 ?>
-
