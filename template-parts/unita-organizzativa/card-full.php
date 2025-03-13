@@ -11,7 +11,7 @@
     $responsabile = $responsabili[0];
     
     // Gestione Incarichi
-    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
+    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $uo_id);
     $incarico = get_the_title($incarichi[0]);
     $nome_incarico = $incarico;
 
