@@ -49,9 +49,6 @@ function load_more(){
         'meta_type' => 'text_date_timestamp',
         'orderby'   => 'meta_value_num',
     );
-
-	echo $post_types;
-
 	
 	if ( $post_types != "notizia" ) {
 		$args = array(
@@ -103,7 +100,6 @@ function load_more(){
 		if ($load_card_type == "notizia"){
 			$out .= load_template_part("template-parts/novita/cards-list");  
 		}
-		
 		if ($load_card_type == "documento"){
 			$out .= load_template_part("template-parts/documento/cards-list");  
 		}
