@@ -51,7 +51,7 @@ get_header();
                                 }
                         ?>
                         <h2 class="visually-hidden" data-audio>Dettagli della notizia</h2>
-                        <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                        <?php if (preg_match('/[A-Z]{5,}/', $_breve)) {
                                    echo '<p data-audio>'.ucfirst(strtolower($descrizione_breve)).'</p>';
                                 }else{
                                     echo '<p data-audio>'. $descrizione_breve.'</p>';
@@ -170,10 +170,10 @@ get_header();
                     <article class="it-page-section anchor-offset" data-audio>                        
                         <h4 id="descrizione">Descrizione</h4>
                         <div class="richtext-wrapper lora">
-                            <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
-                                   echo ucfirst(strtolower($descrizione_breve));
+                            <?php if (preg_match('/[A-Z]{5,}/', $descrizione)) {
+                                   echo ucfirst(strtolower($descrizione));
                                 }else{
-                                    echo $descrizione_breve;
+                                    echo $descrizione;
                                 }
                             ?>
                         </div>
