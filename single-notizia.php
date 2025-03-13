@@ -44,19 +44,12 @@ get_header();
                 </div>
                 <div class="row">
                     <div class="col-lg-8 px-lg-4 py-lg-2">
-                    <?php if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-                                   echo '<h1 data-audio>'.ucfirst(strtolower(get_the_title())).'</h1>';
-                                }else{
-                                    echo '<h1 data-audio>'. get_the_title().'</h1>';
-                                }
-                        ?>
+                        <h1 data-audio><?php the_title(); ?></h1>
                         <h2 class="visually-hidden" data-audio>Dettagli della notizia</h2>
-                        <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
-                                   echo '<p data-audio>'.ucfirst(strtolower($descrizione_breve)).'</p>';
-                                }else{
-                                    echo '<p data-audio>'. $descrizione_breve.'</p>';
-                                }
-                        ?>            
+                        <p data-audio>
+                            <?php echo $descrizione_breve; ?>
+                        </p>
+            
                         <div class="row mt-5 mb-4">
                             <div class="col-6">
                                 <small>Data:</small>
@@ -170,12 +163,7 @@ get_header();
                     <article class="it-page-section anchor-offset" data-audio>                        
                         <h4 id="descrizione">Descrizione</h4>
                         <div class="richtext-wrapper lora">
-                            <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
-                                   echo ucfirst(strtolower($descrizione_breve));
-                                }else{
-                                    echo $descrizione_breve;
-                                }
-                            ?>
+                            <?php echo $descrizione; ?>
                         </div>
                     </article>
 
@@ -261,22 +249,7 @@ get_header();
                                 <div class="card-body">
                                 <h5 class="card-title">
                                     <a class="text-decoration-none" href="<?php echo get_the_guid($allegato); ?>" aria-label="Scarica l'allegato <?php echo $allegato->post_title; ?>" title="Scarica l'allegato <?php echo $allegato->post_title; ?>">
-
-                                      <?php  // Recupera il titolo della pagina
-                    					$title_allegato = $allegato->post_title;					
-                    				
-                    					if (strlen($title_allegato) > 50) {
-                    					    $title_allegato = substr($title_allegato, 0, 50) . '...';
-                    					}					
-                    					// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
-                    					if (preg_match('/[A-Z]{5,}/', $title_allegato)) {
-                    					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-                    					    $title_allegato = ucfirst(strtolower($title_allegato));
-                    					}					
-                    				                                
-                                      echo $title_allegato; ?>
-
-
+                                        <?php echo $allegato->post_title; ?>
                                     </a>
                                 </h5>
                                 </div>
