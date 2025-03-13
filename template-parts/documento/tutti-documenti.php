@@ -1,20 +1,20 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
-    $load_posts = 3;
-    $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-    $args = array(
-        's' => $query,
-        'posts_per_page' => $max_posts,
-        'post_type'      => array('documento_pubblico', 'dataset'),
-        'orderby'        => 'post_title',
-        'order'          => 'Desc'
-     );
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 9;
+$load_posts = 9;
+$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+$args = array(
+    's'               => $query,
+    'posts_per_page'  => $max_posts,
+    'post_type'       => array('documento_pubblico', 'dataset'),
+    'orderby'         => 'date',          // Ordinamento per data di pubblicazione
+    'order'           => 'DESC'           // Puoi usare 'ASC' per ordine crescente (più recente prima)
+);
 
-     $the_query = new WP_Query( $args );
+$the_query = new WP_Query($args);
 
-     $posts = $the_query->posts;
+$posts = $the_query->posts;
 ?>
 
 <div class="bg-grey-card py-5">
