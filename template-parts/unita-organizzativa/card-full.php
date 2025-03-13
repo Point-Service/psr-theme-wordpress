@@ -297,8 +297,14 @@
                                         <div class="cmp-card-latest-messages mb-3 mb-30">
                                         	<div class="card card-bg px-4 pt-4 pb-4 rounded">
                                                     <div class="card-header border-0 p-0">
-                                                             <?php echo 
-                                                             $nome_incarico; ?>
+                                                      <?php 
+						  
+						            // Gestione Incarichi
+							    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
+							    $incarico = get_the_title($incarichi[0]);
+							    $nome_incarico = $incarico;
+						  
+						  		echo $nome_incarico; ?>
                                                         </div>
                                                    <div class="card-body p-0 my-2">
                                                       <div class="card-content">
