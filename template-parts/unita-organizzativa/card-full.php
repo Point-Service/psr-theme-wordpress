@@ -11,7 +11,6 @@
     $responsabile = $responsabili[0];
 
 
-// Se esiste almeno un responsabile, estrai il primo
 if (!empty($responsabili)) {
     $responsabile = $responsabili[0];
     // Stampa tutto il contenuto del responsabile
@@ -26,12 +25,35 @@ if (!empty($responsabili)) {
     $nome = dci_get_meta('nome', '_dci_persona_pubblica_', $responsabile);
     $cognome = dci_get_meta('cognome', '_dci_persona_pubblica_', $responsabile);
     $descrizione = dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $responsabile);
-    $incarichi = dci_get_meta('incarichi', '_dci_persona_pubblica_', $responsabile);
+    
+    // Recupera gli incarichi (probabilmente è un array di ID incarichi)
+    $incarichi_ids = dci_get_meta('incarichi', '_dci_persona_pubblica_', $responsabile);
 
     echo "<h4>Nome: </h4>" . $nome;
     echo "<h4>Cognome: </h4>" . $cognome;
     echo "<h4>Descrizione: </h4>" . $descrizione;
-    echo "<h4>Incarichi: </h4>" . implode(", ", (array)$incarichi);  // Se incarichi è un array, li separiamo con una virgola
+
+    // Ora stampiamo i nomi degli incarichi (se sono memorizzati come ID)
+    if (!empty($incarichi_ids)) {
+        echo "<h4>Incarichi: </h4>";
+        $incarichi_names = array();
+
+        // Recupera il nome per ogni incarico (se gli incarichi sono ID)
+        foreach ($incarichi_ids as $incarico_id) {
+            // Recupera il nome dell'incarico usando l'ID (se disponibile)
+            // Qui supponiamo che gli incarichi siano salvati come metadati o come post personalizzati
+            $incarico_nome = dci_get_meta('nome_incarico', '_dci_incarico_', $incarico_id);
+
+            if ($incarico_nome) {
+                $incarichi_names[] = $incarico_nome;  // Aggiungi il nome dell'incarico all'array
+            }
+        }
+
+        // Stampa gli incarichi separati da virgola
+        echo implode(", ", $incarichi_names);
+    } else {
+        echo "<p>Nessun incarico trovato.</p>";
+    }
 } else {
     echo "Nessun responsabile trovato per questa unità organizzativa.";
 }
