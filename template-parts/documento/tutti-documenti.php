@@ -8,8 +8,8 @@ $args = array(
     's'               => $query,
     'posts_per_page'  => $max_posts,
     'post_type'       => array('documento_pubblico', 'dataset'),
-    'orderby'         => 'date',          // Ordinamento per data di pubblicazione
-    'order'           => 'DESC'           // Puoi usare 'ASC' per ordine crescente (più recente prima)
+    'orderby'         => 'post_date',         
+    'order'           => 'DESC'         
 );
 
 $the_query = new WP_Query($args);
