@@ -12,10 +12,7 @@
 
 
 
-    // Gestione Incarichi
-    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', dci_get_meta('id', '_dci_persona_pubblica_', $responsabile));
-    $incarico = get_the_title($incarichi[0]);
-    $nome_incarico = '';
+
 
     $prefix = '_dci_punto_contatto_';
     $contatti = array();
@@ -295,7 +292,22 @@
                                         <div class="cmp-card-latest-messages mb-3 mb-30">
                                         	<div class="card card-bg px-4 pt-4 pb-4 rounded">
                                                     <div class="card-header border-0 p-0">
-                                                             <?php if ( !empty($nome_incarico) ) { echo $nome_incarico; } ?>
+				                            <?php
+				                                // Recupera l'ID della persona responsabile
+				                                $responsabile_id = dci_get_meta('id', '_dci_persona_pubblica_', $responsabile);
+				                                
+				                                // Recupera gli incarichi associati all'ID del responsabile
+				                                $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile_id);
+				                                
+				                                // Se gli incarichi sono presenti e sono un array
+				                                if (!empty($incarichi) && is_array($incarichi)) {
+				                                    // Unisci gli incarichi con una virgola
+				                                    echo implode(', ', $incarichi);
+				                                } elseif (!empty($incarichi)) {
+				                                    // Se c'è un solo incarico (stringa), visualizzalo
+				                                    echo $incarichi;
+				                                }
+				                            ?>
                                                         </div>
                                                    <div class="card-body p-0 my-2">
                                                       <div class="card-content">
