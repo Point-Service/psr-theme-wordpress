@@ -150,7 +150,7 @@
 	                                                    <div class="card-header border-0 p-0"><?php 
 						  
 						            // Gestione Incarichi
-							    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
+							    $incarichi = get_permalink("incarichi", '_dci_persona_pubblica_', $responsabile);
 							    $incarico = get_the_title($incarichi[0]);
 							    $nome_incarico = $incarico;
 						  
