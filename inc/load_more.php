@@ -1,6 +1,6 @@
 <?php
 
-
+echo 's';
 add_action( 'wp_enqueue_scripts', 'load_more_script' );
 function load_more_script() {
 	global $wp_query, $the_query, $wp_the_query;
@@ -49,7 +49,7 @@ function load_more(){
         'meta_type' => 'text_date_timestamp',
         'orderby'   => 'meta_value_num',
     );
-	echo $post_types;
+	
 	if ( $post_types != "notizia" ) {
 		$args = array(
 			's' => $_POST['search'],
