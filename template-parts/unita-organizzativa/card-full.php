@@ -1,5 +1,5 @@
 <?php
-    global $uo_id, $wpdb, $with_border;
+    global $uo_id, $with_border;
     $ufficio = get_post( $uo_id );
 
     $prefix = '_dci_unita_organizzativa_';
@@ -9,38 +9,34 @@
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $uo_id);
     $responsabili = dci_get_meta("responsabile", $prefix, $uo_id);
     $responsabile = $responsabili[0];
-    // Gestione Incarichi
-    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', dci_get_meta('id', '_dci_persona_pubblica_', $responsabile));
-    $incarico = get_the_title($incarichi[0]);
-    $nome_incarico = $incarico;
 
-// ID del responsabile che desideri cercare
-$responsabile_id = $responsabile;  // Cambia questa variabile con l'ID che stai cercando
 
-// Query per trovare tutte le voci con il meta '_dci_persona_pubblica_'
-$query = "
-    SELECT * 
-    FROM {$wpdb->prefix}postmeta 
-    WHERE meta_key = 'incarichi' 
-    AND meta_value = %d
-";
+// Se esiste almeno un responsabile, estrai il primo
+if (!empty($responsabili)) {
+    $responsabile = $responsabili[0];
+    // Stampa tutto il contenuto del responsabile
+    echo "<h3>Responsabile Dettagli</h3>";
 
-// Esegui la query, sostituendo %d con l'ID del responsabile
-$results = $wpdb->get_results($wpdb->prepare($query, $responsabile_id));
+    // Stampa tutti i metadati del responsabile
+    echo "<pre>";
+    print_r($responsabile);  // Mostra l'intero contenuto di $responsabile (come array o oggetto)
+    echo "</pre>";
 
-// Controlla se ci sono risultati
-if ($results) {
-    echo "<h3>Metadati per 'responsabile' trovato:</h3><ul>";
-    foreach ($results as $result) {
-        echo "<li>Meta Key: " . $result->meta_key . " | Meta Value: " . $result->meta_value . "</li>";
-    }
-    echo "</ul>";
+    // Esempio di stampa di metadati specifici se ci sono:
+    $nome = dci_get_meta('nome', '_dci_persona_pubblica_', $responsabile);
+    $cognome = dci_get_meta('cognome', '_dci_persona_pubblica_', $responsabile);
+    $descrizione = dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $responsabile);
+    $incarichi = dci_get_meta('incarichi', '_dci_persona_pubblica_', $responsabile);
+
+    echo "<h4>Nome: </h4>" . $nome;
+    echo "<h4>Cognome: </h4>" . $cognome;
+    echo "<h4>Descrizione: </h4>" . $descrizione;
+    echo "<h4>Incarichi: </h4>" . implode(", ", (array)$incarichi);  // Se incarichi è un array, li separiamo con una virgola
 } else {
-    echo "Nessun metadato trovato per l'ID responsabile: " . $responsabile_id;
+    echo "Nessun responsabile trovato per questa unità organizzativa.";
 }
 
-
-
+   
     $prefix = '_dci_punto_contatto_';
     $contatti = array();
     foreach ($punti_contatto as $pc_id) {
