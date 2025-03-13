@@ -13,7 +13,7 @@
     // Gestione Incarichi
     $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
     $incarico = get_the_title($incarichi[0]);
-    $nome_incarico = $incarico;
+    $nome_incarico = '';
 
     $prefix = '_dci_punto_contatto_';
     $contatti = array();
