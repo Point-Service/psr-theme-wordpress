@@ -1,5 +1,5 @@
 <?php
-    global $uo_id, $with_border;
+    global $uo_id, $wpdb, $with_border;
     $ufficio = get_post( $uo_id );
 
     $prefix = '_dci_unita_organizzativa_';
@@ -11,6 +11,30 @@
     $responsabile = $responsabili[0];
 
 
+// ID del responsabile che desideri cercare
+$responsabile_id = $responsabile;  // Cambia questa variabile con l'ID che stai cercando
+
+// Query per trovare tutte le voci con il meta '_dci_persona_pubblica_'
+$query = "
+    SELECT * 
+    FROM {$wpdb->prefix}postmeta 
+    WHERE meta_key = '_dci_persona_pubblica_' 
+    AND meta_value = %d
+";
+
+// Esegui la query, sostituendo %d con l'ID del responsabile
+$results = $wpdb->get_results($wpdb->prepare($query, $responsabile_id));
+
+// Controlla se ci sono risultati
+if ($results) {
+    echo "<h3>Metadati per 'responsabile' trovato:</h3><ul>";
+    foreach ($results as $result) {
+        echo "<li>Meta Key: " . $result->meta_key . " | Meta Value: " . $result->meta_value . "</li>";
+    }
+    echo "</ul>";
+} else {
+    echo "Nessun metadato trovato per l'ID responsabile: " . $responsabile_id;
+}
 
 
 
