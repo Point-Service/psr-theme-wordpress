@@ -100,6 +100,7 @@ function load_more(){
 		if ($load_card_type == "notizia"){
 			$out .= load_template_part("template-parts/novita/cards-list");  
 		}
+			echo $load_card_type;
 		if ($load_card_type == "documento"){
 			$out .= load_template_part("template-parts/documento/cards-list");  
 		}
