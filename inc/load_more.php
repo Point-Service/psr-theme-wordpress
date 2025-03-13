@@ -1,6 +1,6 @@
 <?php
 
-echo 's';
+
 add_action( 'wp_enqueue_scripts', 'load_more_script' );
 function load_more_script() {
 	global $wp_query, $the_query, $wp_the_query;
