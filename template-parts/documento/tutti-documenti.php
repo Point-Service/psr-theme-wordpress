@@ -1,26 +1,22 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
-$load_posts = 3;
-$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-$args = array(
-    's'               => $query,
-    'posts_per_page'  => $max_posts,
-    'post_type'       => array('documento_pubblico', 'dataset'),
-    'orderby'         => 'date',          // Ordinamento per data di pubblicazione
-    'order'           => 'DESC',          // Ordinamento decrescente (dal più recente)
-    'date_query'      => array(           // Filtraggio per data (opzionale, se necessario)
-        'year'   => date('Y'),           // Aggiungi l'anno per un filtro specifico (opzionale)
-        'month'  => date('m'),           // Aggiungi il mese, se necessario
-        'day'    => date('d')            // Aggiungi il giorno, se necessario
-    )
-);
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
+    $load_posts = 3;
+    $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+    $args = array(
+        's' => $query,
+        'posts_per_page' => $max_posts,
+        'post_type'      => array('documento_pubblico', 'dataset'),
+        'orderby'        => 'post_title',
+        'order'          => 'Desc'
+     );
 
-$the_query = new WP_Query($args);
+     $the_query = new WP_Query( $args );
 
-$posts = $the_query->posts;
+     $posts = $the_query->posts;
 ?>
+
 
 <div class="bg-grey-card py-5">
   <form role="search" id="search-form" method="get" class="search-form">
