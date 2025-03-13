@@ -11,52 +11,10 @@
     $responsabile = $responsabili[0];
 
 
-if (!empty($responsabili)) {
-    $responsabile = $responsabili[0];
-    // Stampa tutto il contenuto del responsabile
-    echo "<h3>Responsabile Dettagli</h3>";
-
-    // Stampa tutti i metadati del responsabile
-    echo "<pre>";
-    print_r($responsabile);  // Mostra l'intero contenuto di $responsabile (come array o oggetto)
-    echo "</pre>";
-
-    // Esempio di stampa di metadati specifici se ci sono:
-    $nome = dci_get_meta('nome', '_dci_persona_pubblica_', $responsabile);
-    $cognome = dci_get_meta('cognome', '_dci_persona_pubblica_', $responsabile);
-    $descrizione = dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $responsabile);
-    
-    // Recupera gli incarichi (probabilmente è un array di ID incarichi)
-    $incarichi_ids = dci_get_meta('incarichi', '_dci_persona_pubblica_', $responsabile);
-
-    echo "<h4>Nome: </h4>" . $nome;
-    echo "<h4>Cognome: </h4>" . $cognome;
-    echo "<h4>Descrizione: </h4>" . $descrizione;
-
-    // Ora stampiamo i nomi degli incarichi (se sono memorizzati come ID)
-    if (!empty($incarichi_ids)) {
-        echo "<h4>Incarichi: </h4>";
-        $incarichi_names = array();
-
-        // Recupera il nome per ogni incarico (se gli incarichi sono ID)
-        foreach ($incarichi_ids as $incarico_id) {
-            // Recupera il nome dell'incarico usando l'ID (se disponibile)
-            // Qui supponiamo che gli incarichi siano salvati come metadati o come post personalizzati
-            $incarico_nome = dci_get_meta('nome_incarico', '_dci_incarico_', $incarico_id);
-
-            if ($incarico_nome) {
-                $incarichi_names[] = $incarico_nome;  // Aggiungi il nome dell'incarico all'array
-            }
-        }
-
-        // Stampa gli incarichi separati da virgola
-        echo implode(", ", $incarichi_names);
-    } else {
-        echo "<p>Nessun incarico trovato.</p>";
-    }
-} else {
-    echo "Nessun responsabile trovato per questa unità organizzativa.";
-}
+    // Gestione Incarichi
+    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', dci_get_meta('id', '_dci_persona_pubblica_', $responsabile));
+    $incarico = get_the_title($incarichi[0]);
+    $nome_incarico  =$incarico;
 
    
     $prefix = '_dci_punto_contatto_';
@@ -194,7 +152,9 @@ if (!empty($responsabili)) {
 	                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
 	                                        <div class="cmp-card-latest-messages mb-3 mb-30">
 	                                        	<div class="card card-bg px-4 pt-4 pb-4 rounded">
-	                                                    <div class="card-header border-0 p-0"><?php if ( !empty($nome_incarico) ) { echo $nome_incarico; } ?>
+	                                                    <div class="card-header border-0 p-0"><?php				                             
+				                                    echo $nome_incarico;				                                
+				                            ?>
 	                                                        </div>
 	                                                   <div class="card-body p-0 my-2">
 	                                                      <div class="card-content">
@@ -337,21 +297,8 @@ if (!empty($responsabili)) {
                                         <div class="cmp-card-latest-messages mb-3 mb-30">
                                         	<div class="card card-bg px-4 pt-4 pb-4 rounded">
                                                     <div class="card-header border-0 p-0">
-				                            <?php
-				                                // Recupera l'ID della persona responsabile
-				                                $responsabile_id = dci_get_meta('id', '_dci_persona_pubblica_', $responsabile);
-				                                
-				                                // Recupera gli incarichi associati all'ID del responsabile
-				                                $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile_id);
-				                                
-				                                // Se gli incarichi sono presenti e sono un array
-				                                if (!empty($incarichi) && is_array($incarichi)) {
-				                                    // Unisci gli incarichi con una virgola
-				                                    echo implode(', ', $incarichi);
-				                                } elseif (!empty($incarichi)) {
-				                                    // Se c'è un solo incarico (stringa), visualizzalo
-				                                    echo $incarichi;
-				                                }
+				                            <?php				                             
+				                                    echo $nome_incarico;				                                
 				                            ?>
                                                         </div>
                                                    <div class="card-body p-0 my-2">
