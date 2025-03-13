@@ -8,7 +8,7 @@ global $the_query, $load_posts, $load_card_type;
         's' => $query,
         'posts_per_page' => $max_posts,
         'post_type'      => array('documento_pubblico', 'dataset'),
-        'orderby'        => 'post_title',
+        'orderby'        => 'publish',
         'order'          => 'Desc'
      );
 
