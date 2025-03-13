@@ -56,7 +56,7 @@ function load_more(){
 	    	'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
 	    	'post_type'      => $post_types,
 			'post_status'    => 'publish',
-			'orderby' => 'post_title',
+			'orderby' => 'text_date_timestamp',
 			'order'   => 'desc'
 		);
 	}
