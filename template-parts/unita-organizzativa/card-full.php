@@ -18,7 +18,7 @@ $responsabile_id = $responsabile;  // Cambia questa variabile con l'ID che stai 
 $query = "
     SELECT * 
     FROM {$wpdb->prefix}postmeta 
-    WHERE meta_key = '_dci_persona_pubblica_' 
+    WHERE meta_key = 'incarichi' 
     AND meta_value = %d
 ";
 
