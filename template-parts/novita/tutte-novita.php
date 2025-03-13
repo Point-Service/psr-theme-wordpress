@@ -5,11 +5,10 @@ global $the_query, $load_posts, $load_card_type;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
         's'         => $query,
-        'post_type' => array('notizia'),
+        'post_type' => 'notizia',
         'meta_type' => 'text_date_timestamp',
         'orderby'   => 'meta_value_num',
         'order'     => 'desc',
-        
     );
 
     $the_query = new WP_Query( $args );
@@ -23,7 +22,7 @@ global $the_query, $load_posts, $load_card_type;
     $args = array(
         's'                 => $query,
         'posts_per_page'    => $max_posts,
-        'post_type' => 'notizia'
+        'post_type'         => 'notizia'
     );
 
     $the_query = new WP_Query( $args );
