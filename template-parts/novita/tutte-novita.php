@@ -24,7 +24,6 @@ global $the_query, $load_posts, $load_card_type;
     $args = array(
         's'                 => $query,
         'posts_per_page'    => $max_posts,
-        'paged' => 1,
         'post_type' => 'notizia'
     );
 
