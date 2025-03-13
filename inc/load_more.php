@@ -57,7 +57,7 @@ function load_more(){
 	    	'post_type'      => $post_types,
 			'post_status'    => 'publish',
 			'orderby' => 'post_title',
-			'order'   => 'ASC'
+			'order'   => 'desc'
 		);
 	}
 
