@@ -150,14 +150,20 @@
 	                                    <div class="col-12 col-md-8 col-lg-6 mb-30">
 	                                        <div class="cmp-card-latest-messages mb-3 mb-30">
 	                                        	<div class="card card-bg px-4 pt-4 pb-4 rounded">
-	                                                    <div class="card-header border-0 p-0"><?php 
-						  
-						            // Gestione Incarichi
-							    $incarichi = get_permalink("incarichi", '_dci_persona_pubblica_', $responsabile);
-							    $incarico = get_the_title($incarichi[0]);
-							    $nome_incarico = $incarico;
-						  
-						  		echo $nome_incarico; ?>
+	                                                    <div class="card-header border-0 p-0">                                                      <?php 
+								 // Recupera il nome dell'incarico
+								$nome_incarico = dci_get_meta('nome_incarico', '_dci_incarico_', $incarico_id); 
+								
+								// Recupera il nome e cognome del responsabile
+								$nome_responsabile = dci_get_meta('nome', '_dci_persona_pubblica_', $responsabile);
+								$cognome_responsabile = dci_get_meta('cognome', '_dci_persona_pubblica_', $responsabile);
+								
+								// Verifica se il nome dell'incarico non è vuoto e non è uguale al nome e cognome del responsabile
+								if (!empty($nome_incarico) && ($nome_incarico !== $nome_responsabile || $nome_incarico !== $cognome_responsabile)) {
+								    // Se la condizione è vera, stampa il nome dell'incarico
+								    echo $nome_incarico;
+								}	    
+	                                                     ?>
 	                                                        </div>
 	                                                   <div class="card-body p-0 my-2">
 	                                                      <div class="card-content">
