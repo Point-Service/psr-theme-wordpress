@@ -138,7 +138,14 @@
                                        ?></h3>
                             </a>
                             <p class="card-text d-none d-md-block">
-                                <?php echo $description; ?>
+                           <?php                            
+                           $description1 = $description;			
+                           if (preg_match('/[A-Z]{5,}/', $description1)) {
+                               // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+                               $description1 = ucfirst(strtolower($description1));
+                           }					
+                           // Aggiunge il titolo alla lista degli elementi
+                            echo $description1; ?>
                             </p>
                             <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
                             <a class="read-more ps-3"
