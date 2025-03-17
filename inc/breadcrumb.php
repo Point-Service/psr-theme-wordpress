@@ -735,7 +735,7 @@ class Breadcrumb_Trail {
                     }
                     else if (is_tax(array("tipi_documento"))){
 			$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
-                        $this->items[] = "<a href='" . home_url("amministrazione") . "/" . home_url("documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
+                        $this->items[] =  "<a href='" . home_url("amministrazione/documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }		    
