@@ -121,9 +121,8 @@
                                         <svg class="icon icon-sm" aria-hidden="true">
                                             <use href="#it-file"></use>
                                         </svg><?php if (isset($tipo) && isset($tipo->term_id)) : ?>
-                                                <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
-                                                    <font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font>
-                                                </a>
+                                            <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font>
+                                            </a>
                                             <?php else : ?>
                                                 <span class="text-decoration-none" style="color: black;">
                                                     <?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?>
