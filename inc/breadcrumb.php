@@ -536,7 +536,7 @@ class Breadcrumb_Trail {
 				            $tipo_incarico = ''; // Valore di fallback se non ci sono termini
 				        }
 				
-
+echo $strtolower($tipo_incarico);
 			
 				        // Determina la destinazione in base al tipo di incarico
 				        if (strtolower($tipo_incarico) === 'politico') {
@@ -548,7 +548,12 @@ class Breadcrumb_Trail {
 				            // Se l'incarico è "Politico", crea un link alla pagina "amministrazione/politici"
 					    $personale_link = home_url("amministrazione/personale-amministrativo");
 				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
-						
+
+					} elseif (strtolower($tipo_incarico) === 'amministrativo2') {
+				            // Se l'incarico è "Politico", crea un link alla pagina "amministrazione/politici"
+					    $personale_link = home_url("amministrazione/personale-amministrativo");
+				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; 
+												
 				        } elseif (empty($tipo_incarico)) {
 				            // Se il tipo di incarico è vuoto, crea un link alla pagina "amministrazione/personale-amministrativo"
 				            $personale_link = home_url("amministrazione/personale-amministrativo");
