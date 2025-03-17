@@ -120,7 +120,19 @@
                                     <span class="text fw-semibold">
                                         <svg class="icon icon-sm" aria-hidden="true">
                                             <use href="#it-file"></use>
-                                        </svg><a class="text-decoration-none" href="<?php // echo get_term_link($tipo->term_id); ?>"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font></a>
+                                      <svg><!-- Inserisci il tuo SVG qui --></svg>
+                                            <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
+                                                <font color="black">
+                                                    <?php
+                                                        // Verifica che $tipo sia un oggetto e contenga le proprietà term_id e name
+                                                        if (isset($tipo) && isset($tipo->name)) {
+                                                            echo strtoupper($tipo->name);
+                                                        } else {
+                                                            echo 'DATASET'; // Default in caso di errore
+                                                        }
+                                                    ?>
+                                                </font>
+                                            </a>
                                         <font color="grey" size="1"><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></font>
                                     </span>      
                                 </span>
