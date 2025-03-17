@@ -536,8 +536,7 @@ class Breadcrumb_Trail {
 				            $tipo_incarico = ''; // Valore di fallback se non ci sono termini
 				        }
 				
-echo $strtolower($tipo_incarico);
-			
+
 				        // Determina la destinazione in base al tipo di incarico
 				        if (strtolower($tipo_incarico) === 'politico') {
 				            // Se l'incarico è "Politico", crea un link alla pagina "amministrazione/politici"
@@ -547,13 +546,7 @@ echo $strtolower($tipo_incarico);
 					} elseif (strtolower($tipo_incarico) === 'amministrativo') {
 				            // Se l'incarico è "Politico", crea un link alla pagina "amministrazione/politici"
 					    $personale_link = home_url("amministrazione/personale-amministrativo");
-				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo
-
-					} elseif (strtolower($tipo_incarico) === 'amministrativo2') {
-				            // Se l'incarico è "Politico", crea un link alla pagina "amministrazione/politici"
-					    $personale_link = home_url("amministrazione/personale-amministrativo");
-				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; 
-												
+				            $this->items[] = "<a href='" . esc_url($personale_link) . "'>Personale Amministrativo</a>"; // Link Personale Amministrativo						
 				        } elseif (empty($tipo_incarico)) {
 				            // Se il tipo di incarico è vuoto, crea un link alla pagina "amministrazione/personale-amministrativo"
 				            $personale_link = home_url("amministrazione/personale-amministrativo");
@@ -742,7 +735,7 @@ echo $strtolower($tipo_incarico);
                     }
                     else if (is_tax(array("tipi_documento"))){
 			$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
-                        $this->items[] = "<a href='".home_url("documenti-e-dati")."'>".__("Documenti e dati", "design_comuni_italia")."</a>";
+                        $this->items[] = "<a href='" . home_url("amministrazione") . "/" . home_url("documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                     }		    
