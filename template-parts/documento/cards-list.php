@@ -123,14 +123,20 @@
                                       <svg><!-- Inserisci il tuo SVG qui --></svg>
                                             <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                                 <font color="black">
-                                                    <?php
-                                                        // Verifica che $tipo sia un oggetto e contenga le proprietà term_id e name
-                                                        if (isset($tipo) && isset($tipo->name)) {
-                                                            echo strtoupper($tipo->name);
-                                                        } else {
-                                                            echo 'DATASET'; // Default in caso di errore
-                                                        }
-                                                    ?>
+                                                        <svg><!-- Inserisci il tuo SVG qui --></svg>
+                                                        <a class="text-decoration-none" href="<?php echo isset($tipo) && isset($tipo->term_id) ? get_term_link($tipo->term_id) : '#'; ?>">
+                                                            <font color="black">
+                                                                <?php
+                                                                    // Verifica che $tipo sia un oggetto e che contenga le proprietà term_id e name
+                                                                    if (isset($tipo) && isset($tipo->name) && !empty($tipo->name)) {
+                                                                        echo strtoupper($tipo->name);
+                                                                    } else {
+                                                                        echo 'DATASET'; // Fallback nel caso in cui $tipo->name non sia disponibile
+                                                                    }
+                                                                ?>
+                                                            </font>
+                                                        </a>
+
                                                 </font>
                                             </a>
                                         <font color="grey" size="1"><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></font>
