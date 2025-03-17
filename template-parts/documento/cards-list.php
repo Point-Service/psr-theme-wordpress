@@ -80,14 +80,15 @@
                                        ?></h3>
                             </a>
                             <p class="card-text d-none d-md-block">
-                           <?php                            
+                            <?php 
+                           
                            $description1 = $description;			
                            if (preg_match('/[A-Z]{5,}/', $description1)) {
                                // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
                                $description1 = ucfirst(strtolower($description1));
                            }					
                            // Aggiunge il titolo alla lista degli elementi
-                            echo $description1; ?>
+                        echo $description1; ?>
                             </p>
                             <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
                             <a class="read-more ps-3"
@@ -115,11 +116,15 @@
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
                             <div class="category-top cmp-list-card-img__body">
-                                <span class="category cmp-list-card-img__body-heading-title underline">
-                                    <?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?>
+                                <span class="category cmp-list-card-img__body-heading-title underline">                                    
+                                    <span class="text fw-semibold">
+                                        <svg class="icon icon-sm" aria-hidden="true">
+                                            <use href="#it-file"></use>
+                                        </svg><a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font></a>
+                                        <font color="grey" size="1"><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></font>
+                                    </span>      
                                 </span>
-                                <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
-                            </div>
+                              </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
                                 <h3 class="h5 card-title"><?php
                                         // Recupera il titolo della pagina
@@ -137,15 +142,17 @@
                                         echo $title;
                                        ?></h3>
                             </a>
-                            <p class="card-text d-none d-md-block">
-                           <?php                            
+                            
+                            <p class="card-text d-none d-md-block">                              
+                            <?php 
+                           
                            $description1 = $description;			
                            if (preg_match('/[A-Z]{5,}/', $description1)) {
                                // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
                                $description1 = ucfirst(strtolower($description1));
                            }					
                            // Aggiunge il titolo alla lista degli elementi
-                            echo $description1; ?>
+                        echo $description1; ?>
                             </p>
                             <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
                             <a class="read-more ps-3"
