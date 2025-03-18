@@ -51,6 +51,7 @@ function load_more(){
     );
 
 	if ( $post_types != "notizia" ) {
+		echo 'ss';
 		$args = array(
 			's' => $_POST['search'],
 	    	'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
