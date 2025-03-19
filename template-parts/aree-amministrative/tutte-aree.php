@@ -21,7 +21,7 @@ global $the_query, $load_posts, $load_card_type;
         return $tipo->slug === "area";
     }, ARRAY_FILTER_USE_BOTH);
 ?>
-
+ggggggggggggg
 
 <div class="bg-grey-card py-5">
     <form role="search" id="search-form" method="get" class="search-form">
