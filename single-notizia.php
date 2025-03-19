@@ -51,7 +51,7 @@ get_header();
                                 }
                         ?>
                         <h2 class="visually-hidden" data-audio>Dettagli della notizia</h2>
-                        <?php if (preg_match('/[A-Z]{5,}/', $_breve)) {
+                        <?php if (preg_match('/[A-Z]{3,}/', $_breve)) {
                                    echo '<p data-audio>'.ucfirst(strtolower($descrizione_breve)).'</p>';
                                 }else{
                                     echo '<p data-audio>'. $descrizione_breve.'</p>';
