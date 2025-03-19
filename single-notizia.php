@@ -51,12 +51,12 @@ get_header();
                                 }
                         ?>
                         <h2 class="visually-hidden" data-audio>Dettagli della notizia</h2>
-                        <?php if (preg_match('/[A-Z]{3,}/', $_breve)) {
+                        <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
                                    echo '<p data-audio>'.ucfirst(strtolower($descrizione_breve)).'</p>';
                                 }else{
-                                    echo '<p data-audio>'.ucfirst(strtolower($descrizione_breve)).'</p>';
+                                    echo '<p data-audio>'. $descrizione_breve.'</p>';
                                 }
-                        ?>            
+                        ?>       
                         <div class="row mt-5 mb-4">
                             <div class="col-6">
                                 <small>Data:</small>
