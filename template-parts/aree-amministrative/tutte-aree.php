@@ -7,7 +7,6 @@ global $the_query, $load_posts, $load_card_type;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
         's' => $query,
-        'posts_per_page' => $max_posts,
         'post_type'      => 'unita_organizzativa',
         'orderby'        => 'post_title',
         'order'          => 'ASC'
@@ -17,7 +16,7 @@ global $the_query, $load_posts, $load_card_type;
      $posts = $the_query->posts;
 
      $posts = array_filter($posts, function($post, $key) {
-        $tipo = get_the_terms($post, 'tipi_unita_organizzativa')[0];
+     $tipo = get_the_terms($post, 'tipi_unita_organizzativa')[0];
 
         return $tipo->slug === "area";
     }, ARRAY_FILTER_USE_BOTH);
