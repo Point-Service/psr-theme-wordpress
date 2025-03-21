@@ -341,7 +341,7 @@ get_header();
                     
                                 <!-- Sezione per visualizzare i luoghi correlati -->
                                 <?php if ($luoghi && is_array($luoghi) && count($luoghi) > 0) { ?>
-                                      </br></br></br></br>
+                                  <article class="it-page-section anchor-offset mt-5">
                                     <section id="luoghi" class="it-page-section mb-4">
                                         <h2 class="h4">Luoghi correlati</h2> 
                                         <h6><small>Luogo collegato alla notizia</small></h6>
@@ -355,15 +355,13 @@ get_header();
                                             } ?>
                                         </div>
                                     </section>
+                                  </article>
                                 <?php } ?>
                             </div>
                     
                         </div>
                  
-                    <article
-                        id="ulteriori-informazioni"
-                        class="it-page-section anchor-offset mt-5"
-                    >
+                    <article id="ulteriori-informazioni" class="it-page-section anchor-offset mt-5">
                         <h4 class="mb-3">Ulteriori informazioni</h4>
                     </article>
                     <?php get_template_part('template-parts/single/page_bottom'); ?>
