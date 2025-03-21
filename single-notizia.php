@@ -146,7 +146,14 @@ get_header();
                                                                     <a class="nav-link" href="#a-cura-di">
                                                                     <span class="title-medium">A cura di</span>
                                                                     </a>
-                                                                </li>                                                                                                                              
+                                                                </li>  
+                                                                <?php if(is_array($persone) && count($persone)) { ?>
+                                                                     <li class="nav-item">
+                                                                    <a class="nav-link" href="#idpersone">
+                                                                    <span class="title-medium">Persone</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>                                                  
                                                                 <?php if(is_array($luoghi) && count($luoghi)) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#luoghi">
@@ -326,7 +333,8 @@ get_header();
                     
                                 <!-- Sezione per visualizzare le persone, se ci sono -->
                                 <?php if(is_array($persone) && count($persone)) { ?>
-                                    <h3 class="h6">Persone</h3>
+                                    <br>
+                                    <h4 id="idpersone">Persone</h4>
                                     <?php get_template_part("template-parts/single/persone"); ?>
                                 <?php } ?>
                     
