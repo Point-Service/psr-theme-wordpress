@@ -223,9 +223,7 @@ get_header();
                                     </div>
                                 <?php } ?>
                             </article>
-                    <?php } ?>
-                            
-
+                    <?php } ?>                           
                     <?php if( is_array($documenti) && count($documenti) ) { ?>
                     <article class="it-page-section anchor-offset mt-5">
                         <h4 id="documenti">Documenti</h4>
@@ -279,10 +277,9 @@ get_header();
                     					if (preg_match('/[A-Z]{5,}/', $title_allegato)) {
                     					    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
                     					    $title_allegato = ucfirst(strtolower($title_allegato));
-                    					}					
+                    					}				
                     				                                
                                       echo $title_allegato; ?>
-
 
                                     </a>
                                 </h5>
@@ -330,12 +327,16 @@ get_header();
                                     $with_border = true;
                                     get_template_part("template-parts/unita-organizzativa/card");
                                 } ?>
-                    
+                            </div>
+                        </div>
+                       </article>
+                        
                                 <!-- Sezione per visualizzare le persone, se ci sono -->
-                                <?php if(is_array($persone) && count($persone)) { ?>
-                                    <br>
+                                <?php if(is_array($persone) && count($persone)) { ?>     
+                                    <article class="it-page-section anchor-offset mt-5">
                                     <h4 id="idpersone">Persone</h4>
                                     <?php get_template_part("template-parts/single/persone"); ?>
+                                   </article>
                                 <?php } ?>
                     
                                 <!-- Sezione per visualizzare i luoghi correlati -->
@@ -358,7 +359,7 @@ get_header();
                             </div>
                     
                         </div>
-                    </article>
+                 
                     <article
                         id="ulteriori-informazioni"
                         class="it-page-section anchor-offset mt-5"
