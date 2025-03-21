@@ -357,15 +357,16 @@ get_header();
                                     </section>
                                   </article>
                                 <?php } ?>
-                            </div>
+                            
                     
                       
                      
-                        <article id="ulteriori-informazioni" class="it-page-section anchor-offset mt-5">
-                            <h4 class="mb-3">Ulteriori informazioni</h4>
-                        </article>
-                        <?php get_template_part('template-parts/single/page_bottom'); ?>
-                        </section>
+                            <article id="ulteriori-informazioni" class="it-page-section anchor-offset mt-5">
+                                <h4 class="mb-3">Ulteriori informazioni</h4>
+                            </article>
+                            <?php get_template_part('template-parts/single/page_bottom'); ?>
+                            </section>
+                        </div>
                       </div>
                 </div>
             </div>
