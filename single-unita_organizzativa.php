@@ -369,7 +369,11 @@ get_header();
 					</article>
                             <?php } }?>
 				
-                            <?php if ($sede_principale) { ?>
+                            <?php if ($sede_principale)
+					echo dci_get_meta('singular_name', '_dci_luogo_', $sede_principale);
+		                        echo dci_get_meta('name', '_dci_luogo_', $sede_principale);
+
+				    { ?>
 			    <p></p>
                             <section class="it-page-section">
                                   <h3 class="mt-4" id="contacts">Sede principale</h3>
