@@ -383,7 +383,9 @@ get_header();
                                             <div class="card card-teaser shadow-sm p-4s rounded border border-light flex-nowrap">
                                             <div class="card-body pe-3">
                                                 <p class="card-title text-paragraph-regular-medium-semi mb-3">
-                                                    <a href="<?php echo get_permalink($sede_principale); ?>"><?php echo dci_get_meta('nome_alternativo', '_dci_luogo_', $sede_principale); ?></a>
+                                                <a href="<?php echo get_permalink($sede_principale); ?>">
+						    <?php echo get_the_title($sede_principale); ?>
+						</a>
                                                 </p>
                                                 <div class="card-text">
                                                      <p><?php echo dci_get_meta("indirizzo", '_dci_luogo_', $sede_principale); ?></p>
