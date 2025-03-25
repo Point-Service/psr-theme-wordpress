@@ -370,8 +370,8 @@ get_header();
                             <?php } }?>
 				
                             <?php if ($sede_principale)
-					echo dci_get_meta('singular_name', '_dci_luogo_', $sede_principale);
-		                        echo dci_get_meta('name', '_dci_luogo_', $sede_principale);
+					echo $sede_principale->post_title;
+		                   
 
 				    { ?>
 			    <p></p>
