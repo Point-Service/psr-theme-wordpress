@@ -24,7 +24,7 @@ get_header();
                             echo '<nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="' . home_url() . '">Home</a></li>
-                                        <li class="breadcrumb-item"><a href="' . esc_url($amministrazione_url) . '">Amministrazione</a></li>
+                                        <li class="breadcrumb-item"><a href="' . esc_url($amministrazione_url) . '"><strong>Amministrazione</strong></a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Dataset</li>
                                     </ol>
                                   </nav>';
