@@ -29,14 +29,8 @@ get_header();
                                     <li class="breadcrumb-item"><a href="' . esc_url($amministrazione_url) . '"><strong>Amministrazione</strong></a></li>
                                     <li class="breadcrumb-item active" aria-current="page">' . esc_html($archive_title) . '</li>
                                 </ol>
-                              </nav>';
-                    
-                        // Visualizza la descrizione appropriata in base al titolo dell'archivio
-                        if ($archive_title == 'Dataset') {
-                            echo '<p>In questa sezione sono disponibili i dataset pubblicati dall\'Autorità Nazionale Anticorruzione (ANAC), contenenti informazioni dettagliate sui contratti pubblici in Italia, inclusi appalti, stazioni appaltanti e altri dati rilevanti.</p>';
-                        } elseif ($archive_title == 'Incarichi') {
-                            echo '<p>Questa sezione fornisce informazioni sugli obblighi di pubblicazione riguardanti i titolari di incarichi di collaborazione o consulenza, come disciplinato dall\'articolo 15 del Decreto Legislativo 33/2013.</p>';
-                        }
+                              </nav>';                    
+                       
                     } else {
                         // Include il breadcrumb predefinito per altri casi
                         get_template_part('template-parts/common/breadcrumb');
@@ -47,7 +41,13 @@ get_header();
             </div>
             <div class="row">
                 <div class="col-lg-8 px-lg-4 py-lg-2">
-                <h1 data-audio> <?php the_archive_title(); ?></h1>
+                <h1 data-audio> <?php the_archive_title(); ?></h1><?php
+                     // Visualizza la descrizione appropriata in base al titolo dell'archivio
+                        if ($archive_title == 'Dataset') {
+                            echo '<p>In questa sezione sono disponibili i dataset pubblicati dall\'Autorità Nazionale Anticorruzione (ANAC), contenenti informazioni dettagliate sui contratti pubblici in Italia, inclusi appalti, stazioni appaltanti e altri dati rilevanti.</p>';
+                        } elseif ($archive_title == 'Incarichi') {
+                            echo '<p>Questa sezione fornisce informazioni sugli obblighi di pubblicazione riguardanti i titolari di incarichi di collaborazione o consulenza, come disciplinato dall\'articolo 15 del Decreto Legislativo 33/2013.</p>';
+                        }?>
                     <h2 class="visually-hidden">Dettagli del documento</h2>
                 </div>
                 <div class="col-lg-3 offset-lg-1">
