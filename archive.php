@@ -23,7 +23,7 @@ get_header();
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="' . home_url() . '"><strong>Home</strong></a></li>
                                         <li class="breadcrumb-item"><a href="' . esc_url($amministrazione_url) . '"><strong>Amministrazione</strong></a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Dataset</li>
+                                        <li class="breadcrumb-item active" aria-current="page"><?php the_archive_title(); ?></li>
                                     </ol>
                                   </nav>';
                         } elseif ($archive_title === 'Incarichi') {
@@ -34,7 +34,7 @@ get_header();
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="' . home_url() . '"><strong>Home</strong></a></li>
                                         <li class="breadcrumb-item"><a href="' . esc_url($amministrazione_url) . '"><strong>Amministrazione</strong></a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Incarichi</li>
+                                        <li class="breadcrumb-item active" aria-current="page"><?php the_archive_title(); ?></li>
                                     </ol>
                                   </nav>';
                         } else {
