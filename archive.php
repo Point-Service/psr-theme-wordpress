@@ -43,7 +43,7 @@ get_header();
                                     <span class="badge bg-light text-dark mb-2 px-3 py-1" style="font-weight: 600;">
                                     <div class="col px-lg-4">
                                     <?php
-                                    $archive_title = get_the_archive_title();
+                                    $archive_title = the_archive_title();
                                     if ($archive_title !== 'Dataset') {
                                         get_template_part('template-parts/common/breadcrumb');
                                     } else {
