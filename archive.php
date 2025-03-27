@@ -1,16 +1,24 @@
 <?php
 /**
- * Template per visualizzazione moderna dell'archivio
+ * The template for displaying archive with modern design
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#archive
+ *
+ * @package Design_Comuni_Italia
  */
+
 $class = "petrol";
 get_header();
+
 ?>
 
 <main id="main-container" class="main-container <?php echo $class; ?>">
+
+    <!-- Title and description section -->
     <section class="section bg-white py-2 py-lg-3 py-xl-5">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-8 col-md-8">
                     <div class="section-title">
                         <?php the_archive_title('<h2 class="mb-0">', '</h2>'); ?>
                         <?php the_archive_description('<p>', '</p>'); ?>
@@ -20,52 +28,41 @@ get_header();
         </div>
     </section>
 
-    <section class="section bg-grey-card">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <form role="search" method="get" action="<?php echo home_url('/'); ?>" class="search-form">
-                        <div class="input-group mb-4">
-                            <input type="search" class="form-control" placeholder="Cerca..." name="s" value="<?php echo get_search_query(); ?>">
-                            <button class="btn btn-primary" type="submit">Cerca</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
 
+    <!-- Content Section with Grid Layout -->
     <section class="section bg-gray-light">
         <div class="container">
             <div class="row">
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card border-0 shadow-sm rounded-lg p-4">
-                            <div class="card-body">
-                                <p class="text-muted small">📰 NEWS — <?php echo get_the_date('d M y'); ?></p>
-                                <h5 class="card-title font-weight-bold">
-                                    <a href="<?php the_permalink(); ?>" class="text-dark text-decoration-none">
-                                        <?php the_title(); ?>
-                                    </a>
-                                </h5>
-                                <p class="card-text text-muted">
-                                    <?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
-                                </p>
-                                <p class="mb-2"><strong>Argomenti:</strong> 
-                                    <?php the_category(' '); ?>
-                                </p>
-                                <a href="<?php the_permalink(); ?>" class="btn btn-link text-primary p-0">Vai alla pagina →</a>
+                <?php if ( have_posts() ) : ?>
+                    <?php while ( have_posts() ) : the_post(); ?>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card border-0 shadow-sm p-4 h-100">
+                                <div class="card-body">
+                                    <span class="badge bg-secondary mb-2">
+                                        <?php 
+                                            $terms = get_the_terms(get_the_ID(), 'category');
+                                            if ($terms && !is_wp_error($terms)) {
+                                                echo esc_html($terms[0]->name);
+                                            }
+                                        ?>
+                                    </span>
+                                    <h5 class="card-title"><a href="<?php the_permalink(); ?>" class="text-dark text-decoration-none"><?php the_title(); ?></a></h5>
+                                    <p class="text-muted small mb-2">Pubblicato il <?php echo get_the_date('d M Y'); ?></p>
+                                    <p class="card-text">
+                                        <?php echo get_the_excerpt() ?: 'Nessuna descrizione disponibile.'; ?>
+                                    </p>
+                                    <a href="<?php the_permalink(); ?>" class="text-primary">Vai alla pagina →</a>
+                                </div>
                             </div>
                         </div>
+                    <?php endwhile; ?>
+                    <div class="col-12 d-flex justify-content-center">
+                        <?php echo dci_bootstrap_pagination(); ?>
                     </div>
-                <?php endwhile; ?>
+                <?php else : ?>
+                    <p class="text-center">Nessun contenuto trovato.</p>
+                <?php endif; ?>
             </div>
-            <nav class="pagination-wrapper justify-content-center mt-4">
-                <?php echo paginate_links(); ?>
-            </nav>
-            <?php else :
-                echo '<p class="text-center">Nessun contenuto trovato.</p>';
-            endif; ?>
         </div>
     </section>
 </main>
