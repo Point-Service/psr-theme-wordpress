@@ -67,7 +67,7 @@ function dci_register_pagina_amministrazione_options(){
             'false' => __('No', 'design_comuni_italia'),
         ),
         'attributes' => array(
-            'data-conditional-value' => "false",
+            'data-conditional-value' => "true",
         ),
     ));
     
