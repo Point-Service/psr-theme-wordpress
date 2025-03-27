@@ -13,12 +13,11 @@ get_header();
 
 <main id="main-container" class="main-container <?php echo $class; ?>">
 
-
-  <section class="section">
-        <div class="col-12">
-          <?php get_template_part("template-parts/common/breadcrumb"); ?>
-      </div>
-  </section><!-- /section -->
+          <div class="row">
+                <div class="col px-lg-4">
+                    <?php get_template_part("template-parts/common/breadcrumb"); ?>
+                </div>
+            </div>
     <!-- Title and description section -->
     <section class="section bg-white py-2 py-lg-3 py-xl-5">
         <div class="container">
