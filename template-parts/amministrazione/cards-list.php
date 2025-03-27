@@ -1,4 +1,4 @@
-<?php
+ <?php
     $pages = dci_get_children_pages('amministrazione');
     $arr_pages = array_keys((array)$pages);
 ?>
@@ -29,7 +29,7 @@
 		// Recupera il valore dell'opzione 'ck_dataset'
 		$ck_dataset = dci_options_amministrazione( 'ck_dataset', 'true' ); // 'true' è il valore predefinito se l'opzione non è impostata
 
-
+echo $ck_dataset;
 		// Verifica se l'opzione è impostata su 'true'
 		if ( 'true' === $ck_dataset ) :
                  ?>
