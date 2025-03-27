@@ -80,49 +80,36 @@ get_header();
     </section><!-- /section -->
 
     <!-- Content Section with Grid Layout -->
-    <section class="section bg-gray-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <?php get_template_part("template-parts/search/filters", "argomento"); ?>
-                </div><!-- /col-lg-3 -->
+     <section class="section bg-gray-light">
+            <div class="container">
+                <div class="row variable-gutters sticky-sidebar-container">
+                    <div class="col-lg-3 bg-white bg-white-left">
+						<?php get_template_part("template-parts/search/filters", "argomento"); ?>
+                    </div>
+                    <div class="col-lg-7 offset-lg-1 pt84">
+						<?php if ( have_posts() ) : ?>
+							<?php
+							/* Start the Loop */
+							while ( have_posts() ) :
+								the_post();
+								get_template_part( 'template-parts/list/article', get_post_type() );
 
-                <div class="col-lg-9">
-                    <div class="row g-4" id="load-more">
-                        <?php
-                        // WP_Query for retrieving posts (logic from the first code)
-                        $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
-                        $query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-                        $args = array(
-                            's' => $query,
-                            'posts_per_page' => $max_posts,
-                            'post_type'      => 'post', // Post generici, modifica se necessario
-                            'orderby'        => 'post_title',
-                            'order'          => 'DESC',
-                        );
-                        $the_query = new WP_Query($args);
+							endwhile;
+							?>
+                            <nav class="pagination-wrapper justify-content-center col-12">
+								<?php echo dci_bootstrap_pagination(); ?>
+                            </nav>
+						<?php
+						else :
 
-                        if ( $the_query->have_posts() ) :
-                            while ( $the_query->have_posts() ) :
-                                $the_query->the_post();
-                                get_template_part( 'template-parts/list/article', get_post_type() );
-                            endwhile;
-                        else :
-                            get_template_part( 'template-parts/content', 'none' );
-                        endif;
+							get_template_part( 'template-parts/content', 'none' );
 
-                        wp_reset_postdata();
-                        ?>
-                    </div><!-- /row -->
-
-                    <!-- Pagination -->
-                    <nav class="pagination-wrapper justify-content-center col-12">
-                        <?php echo dci_bootstrap_pagination(); ?>
-                    </nav>
-                </div><!-- /col-lg-9 -->
-            </div><!-- /row -->
-        </div><!-- /container -->
-    </section><!-- /section -->
+						endif;
+						?>
+                    </div><!-- /col-lg-8 -->
+                </div><!-- /row -->
+            </div><!-- /container -->
+        </section>
 
 </main><!-- /main -->
 
