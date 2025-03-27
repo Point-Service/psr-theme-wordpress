@@ -732,6 +732,8 @@ class Breadcrumb_Trail {
                         $this->items[] =  "<a href='" . home_url("amministrazione/documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+
+			    echo 'ddddddddddddddddddddd';
                     }		    
 		   else if (is_tax(array("tipi_luogo"))) {		
 			    // Link a "Vivere il Comune"
@@ -766,8 +768,7 @@ class Breadcrumb_Trail {
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 			    
                     }
-                    else {
-			    echo 'd';
+                    else {			 
                         $this->add_term_archive_items();
                     }
                 }
