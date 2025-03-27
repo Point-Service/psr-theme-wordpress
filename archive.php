@@ -25,16 +25,8 @@ get_header();
                     }
                     ?>
                     <h2 class="visually-hidden">Dettagli del documento</h2>
-                    <?php if ($numero_protocollo and !empty($numero_protocollo)) { ?>
-                        <h4>Protocollo <?= $numero_protocollo ?> del <?= $data_protocollo ?></h4>
-                    <?php } ?>
                     <p data-audio>
-                        <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
-                            echo ucfirst(strtolower($descrizione_breve));
-                        } else {
-                            echo $descrizione_breve;
-                        }
-                        ?>
+                      <?php the_archive_title(); ?>
                     </p>
                 </div>
                 <div class="col-lg-3 offset-lg-1">
