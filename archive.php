@@ -17,7 +17,7 @@ get_header();
                                         $archive_title = the_archive_title();
 
                                     if ($archive_title !== 'Dataset') {
-                                        get_template_part('template-parts/common/breadcrumb');
+                                  //      get_template_part('template-parts/common/breadcrumb');
                                     } else {
                                         echo 'sss';
                                     }
