@@ -260,7 +260,7 @@ get_header();
                                     <?php }
 
                                          // Se ci sono URL documenti (non necessariamente allegati, quindi anche singoli URL)
-                                         if ($url_documento && is_array($url_documento))  { ?>
+                                         if ($url_documento)  { ?>
                                         <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
                                             <svg class="icon" aria-hidden="true">
                                                 <use xlink:href="#it-clip"></use>
