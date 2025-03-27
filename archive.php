@@ -14,11 +14,9 @@ get_header();
 <main id="main-container" class="main-container <?php echo $class; ?>">
 
 
-  <section class="section bg-grey-card">
-      <div class="row">
+  <section class="section">
         <div class="col-12">
           <?php get_template_part("template-parts/common/breadcrumb"); ?>
-        </div><!-- /col-12 -->
       </div>
   </section><!-- /section -->
     <!-- Title and description section -->
