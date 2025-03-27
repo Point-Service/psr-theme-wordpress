@@ -825,6 +825,8 @@ class Breadcrumb_Trail {
 
 		// Allow developers to overwrite the items for the breadcrumb trail.
 		$this->items = array_unique( apply_filters( 'breadcrumb_trail_items', $this->items, $this->args ) );
+			 echo 'd1';
+
 	}
 
 	/**
