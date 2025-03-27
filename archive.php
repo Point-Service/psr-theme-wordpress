@@ -13,7 +13,14 @@ get_header();
     <div class="container" id="main-container">
             <div class="row">
                 <div class="col px-lg-4">
-                    <?php get_template_part("template-parts/common/breadcrumb"); ?>
+                                  <?php
+                                    $archive_title = the_archive_title();
+                                    if ($archive_title !== 'Dataset') {
+                                        get_template_part('template-parts/common/breadcrumb');
+                                    } else {
+                                        echo '<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="' . home_url() . '">Home</a></li><li class="breadcrumb-item active" aria-current="page">Amministrazione Dataset</li></ol></nav>';
+                                    }
+                                ?>           
                 </div>
             </div>
             <div class="row">
@@ -41,16 +48,9 @@ get_header();
                                 <div class="card-body">
                                     <!-- Badge con il titolo dell'archivio -->
                                     <span class="badge bg-light text-dark mb-2 px-3 py-1" style="font-weight: 600;">
-                                    <div class="col px-lg-4">
-                                    <?php
-                                    $archive_title = the_archive_title();
-                                    if ($archive_title !== 'Dataset') {
-                                        get_template_part('template-parts/common/breadcrumb');
-                                    } else {
-                                        echo '<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="' . home_url() . '">Home</a></li><li class="breadcrumb-item active" aria-current="page">Amministrazione Dataset</li></ol></nav>';
-                                    }
-                                    ?>
-                                </div>
+                                     <div class="col px-lg-4">
+                                        <?php the_archive_title(); ?>
+                                     </div>
                                     </span>
 
                                     <!-- Badge con la categoria/tipologia -->
