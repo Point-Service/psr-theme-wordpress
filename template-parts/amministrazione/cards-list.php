@@ -29,7 +29,7 @@
 		// Recupera il valore dell'opzione 'ck_dataset'
 		$ck_dataset = dci_options_amministrazione( 'ck_dataset', 'true' ); 
 
-		echo $ck_dataset_value;
+		echo $ck_dataset;
             
             // Verifica se il valore del campo è 'true'
             if ( 'true' === $ck_dataset_value ) :
