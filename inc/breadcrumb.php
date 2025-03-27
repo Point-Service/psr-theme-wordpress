@@ -344,6 +344,10 @@ class Breadcrumb_Trail {
 			}
 
             if (is_page()) {
+
+echo get_queried_object()->post_name;
+
+		    
                 $slug = get_queried_object()->post_name;
                 if ($slug == 'domande-frequenti') {
                     $this->items[] = 'Domande più frequenti';
@@ -585,8 +589,6 @@ class Breadcrumb_Trail {
 
 		    
 			    $group_name = dci_get_group_name(get_post_type());
-echo $group_name;
-
 		    
 			    //console_log($group_name);
 			    switch ($group_name) {
