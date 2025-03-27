@@ -27,13 +27,11 @@
             <?php
 
 		// Recupera il valore dell'opzione 'ck_dataset'
-		$ck_dataset = dci_options_amministrazione( 'ck_dataset', 'true' ); 
-
-		echo $ck_dataset;
-            
-            // Verifica se il valore del campo è 'true'
-            if ( 'true' === $ck_dataset_value ) :
-            ?>
+		$ck_dataset = get_option( 'amministrazione_ck_dataset', 'true' ); // 'true' è il valore predefinito se l'opzione non è impostata
+		
+		// Verifica se l'opzione è impostata su 'true'
+		if ( 'true' === $ck_dataset ) :
+                 ?>
                 <!-- Blocco HTML da visualizzare -->
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
