@@ -43,8 +43,8 @@ get_header();
                 <div class="col-lg-8 px-lg-4 py-lg-2">
                 <h1 data-audio> <?php the_archive_title(); ?></h1>
                         <?php
-                    // Ottieni il titolo dell'archivio senza prefissi
-                    $archive_title = single_term_title();
+                      // Ottieni il titolo dell'archivio senza prefissi
+                     $archive_title = get_the_archive_title();
                         // Visualizza la descrizione appropriata in base al titolo dell'archivio
                         if ($archive_title === 'Dataset') {
                             echo 'dssa';
