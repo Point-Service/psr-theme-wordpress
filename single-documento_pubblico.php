@@ -234,7 +234,11 @@ get_header();
                                 <h4>Documento</h4>
                                 <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                                     <?php
-                                    if ($file_documento) {
+                                      // Procedi solo se l'URL è valido
+                                        if ($documento_url) {
+                                        $documento_id = attachment_url_to_postid($documento_url);
+                                        $documento_post = get_post($documento_id);
+                                    
                                         $documento_id = attachment_url_to_postid($file_documento);
                                         $documento = get_post($documento_id);
                                         ?>
@@ -248,14 +252,15 @@ get_header();
                                                         aria-label="Scarica il documento <?php echo $documento->post_title; ?>"
                                                         title="Scarica il documento <?php echo $documento->post_title; ?>">
                                                         <?php echo $documento->post_title; ?>
-                                                        (<?php // echo getFileSizeAndFormat($file_documento); ?>)
+                                                        (<?php  echo getFileSizeAndFormat($file_documento); ?>)
                                                     </a>
                                                 </h5>
                                             </div>
                                         </div>
                                     <?php }
 
-                                    if ($url_documento) { ?>
+                                         // Se ci sono URL documenti (non necessariamente allegati, quindi anche singoli URL)
+                                         if ($url_documento && is_array($url_documento))  { ?>
                                         <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
                                             <svg class="icon" aria-hidden="true">
                                                 <use xlink:href="#it-clip"></use>
