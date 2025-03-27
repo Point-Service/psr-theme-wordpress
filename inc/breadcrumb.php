@@ -356,7 +356,7 @@ class Breadcrumb_Trail {
                 $this->items = $custom_breadcrumbs;
                 return;
             }
-echo 'd';
+
             if ( is_singular() ) {
 
 				if (get_post_type() == 'servizio') {
@@ -818,6 +818,8 @@ echo 'd';
 			}
 		}
 
+		
+echo 'd';
 		// Add paged items if they exist.
 		$this->add_paged_items();
 
