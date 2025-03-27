@@ -402,7 +402,7 @@ class Breadcrumb_Trail {
 				    return;
 				}
 
-
+echo 'ss';
 		    echo $get_post_type();
 		    
 				if (get_post_type() == 'unita_organizzativa') {
