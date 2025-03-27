@@ -28,7 +28,7 @@
             <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
             <div class="card shadow-sm rounded">
                 <div class="card-body">
-                <a class="text-decoration-none" href="dataset"><h3 class="card-title t-primary title-xlarge">Dataset</h3></a>
+                <a class="text-decoration-none" href="/dataset"><h3 class="card-title t-primary title-xlarge">Dataset</h3></a>
                 <p class="text-paragraph mb-0">
                     Dataset
                 </p>
