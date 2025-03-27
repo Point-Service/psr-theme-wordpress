@@ -9,10 +9,10 @@
 
 $class = "petrol";
 get_header();
-
 ?>
 
 <main id="main-container" class="main-container <?php echo $class; ?>">
+
     <!-- Title and description section -->
     <section class="section bg-white py-2 py-lg-3 py-xl-5">
         <div class="container">
@@ -34,24 +34,50 @@ get_header();
                 <?php if ( have_posts() ) : ?>
                     <?php while ( have_posts() ) : the_post(); ?>
                         <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card border-0 shadow-sm p-4 h-100">
+                            <div class="card border rounded shadow-lg p-4 h-100" style="border: 2px solid #ccc; background: #fff;">
                                 <div class="card-body">
-                                    <span class="badge bg-secondary mb-2">
-                                       <?php the_archive_title(); ?>
-                                    </span>
-                                    <h5 class="card-title"><a href="<?php the_permalink(); ?>" class="text-dark text-decoration-none"><?php the_title(); ?></a></h5>
+                                    <!-- Badge con la categoria -->
+                                    <?php 
+                                        $terms = get_the_terms(get_the_ID(), 'category');
+                                        if ($terms && !is_wp_error($terms)) : ?>
+                                            <span class="badge bg-primary text-white mb-2 px-3 py-1">
+                                                <?php echo esc_html($terms[0]->name); ?>
+                                            </span>
+                                    <?php endif; ?>
+
+                                    <!-- Titolo -->
+                                    <h5 class="card-title">
+                                        <a href="<?php the_permalink(); ?>" class="text-dark text-decoration-none"><?php the_title(); ?></a>
+                                    </h5>
+
+                                    <!-- Data di pubblicazione -->
                                     <p class="text-muted small mb-2">Pubblicato il <?php echo get_the_date('d M Y'); ?></p>
+
+                                    <!-- Descrizione migliorata -->
                                     <p class="card-text">
-                                        <?php echo get_the_excerpt() ?: 'Nessuna descrizione disponibile.'; ?>
+                                        <?php 
+                                            $excerpt = get_the_excerpt();
+                                            if (!empty($excerpt)) {
+                                                echo esc_html($excerpt);
+                                            } else {
+                                                $content = wp_strip_all_tags(get_the_content());
+                                                echo !empty($content) ? wp_trim_words($content, 20, '...') : 'Nessuna descrizione disponibile.';
+                                            }
+                                        ?>
                                     </p>
-                                    <a href="<?php the_permalink(); ?>" class="text-primary">Vai alla pagina →</a>
+
+                                    <!-- Link alla pagina -->
+                                    <a href="<?php the_permalink(); ?>" class="btn btn-outline-primary">Vai alla pagina →</a>
                                 </div>
                             </div>
                         </div>
                     <?php endwhile; ?>
+
+                    <!-- Paginazione -->
                     <div class="col-12 d-flex justify-content-center">
                         <?php echo dci_bootstrap_pagination(); ?>
                     </div>
+
                 <?php else : ?>
                     <p class="text-center">Nessun contenuto trovato.</p>
                 <?php endif; ?>
