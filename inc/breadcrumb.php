@@ -589,8 +589,7 @@ class Breadcrumb_Trail {
 
 		    
 			    $group_name = dci_get_group_name(get_post_type());
-		    echo $group_name;
-		    echo 's';
+		
 			    //console_log($group_name);
 			    switch ($group_name) {
 
@@ -728,12 +727,12 @@ class Breadcrumb_Trail {
 		if (is_post_type_archive()) {
 		    $this->add_post_type_archive_items();
 		
-		
-			
 		}
 
                 elseif ( is_category() || is_tag() || is_tax() ){
+echo $is_category;
 
+echo'dddddddddddddd'			
                     if (is_tax(array("categorie_servizio"))){
                         $this->items[] = "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
                         $this->items[] = single_term_title( '', false );
