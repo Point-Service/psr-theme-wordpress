@@ -26,7 +26,7 @@
 
             <?php
 
-            $ck_dataset_value = dci_get_option("firma_nostra");
+            $ck_dataset_value = dci_get_option("ck_dataset");
 		echo $ck_dataset_value;
             
             // Verifica se il valore del campo è 'true'
