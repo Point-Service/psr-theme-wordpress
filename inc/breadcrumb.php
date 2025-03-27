@@ -353,13 +353,13 @@ class Breadcrumb_Trail {
 
             $custom_breadcrumbs = apply_filters( 'dci_get_breadcrumb_items', false, $this->items );
             if ( !empty( $custom_breadcrumbs ) ) {
-		    echo 'ddsdsdsds';
+		
                 $this->items = $custom_breadcrumbs;
                 return;
             }
 
             if ( is_singular() ) {
-    echo 'ddsdsds3333ds';
+ 
 				if (get_post_type() == 'servizio') {
 					$this->items[] =  "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
 					$terms = get_the_terms(get_the_ID(),'categorie_servizio');
@@ -585,6 +585,9 @@ class Breadcrumb_Trail {
 
 		    
 			    $group_name = dci_get_group_name(get_post_type());
+echo $group_name;
+
+		    
 			    //console_log($group_name);
 			    switch ($group_name) {
 
