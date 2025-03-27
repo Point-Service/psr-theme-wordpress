@@ -721,7 +721,7 @@ class Breadcrumb_Trail {
 		if (is_post_type_archive()) {
 		    $this->add_post_type_archive_items();
 		
-		 
+		 echo 'd';
 			
 		}
 
@@ -1048,7 +1048,7 @@ class Breadcrumb_Trail {
 							$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), $label );
 
 							$done_post_type = true;
-echo 'd2';
+
 							
 							// Break out of the loop.
 							break;
