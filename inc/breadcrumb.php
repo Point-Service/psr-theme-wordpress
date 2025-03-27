@@ -819,7 +819,7 @@ class Breadcrumb_Trail {
 		}
 
 		
-echo 'd';
+
 		// Add paged items if they exist.
 		$this->add_paged_items();
 
@@ -1048,7 +1048,8 @@ echo 'd';
 							$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), $label );
 
 							$done_post_type = true;
-
+echo 'd2';
+							
 							// Break out of the loop.
 							break;
 						}
