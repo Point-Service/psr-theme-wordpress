@@ -13,7 +13,9 @@ get_header();
 ?>
 
     <main id="main-container" class="main-container <?php echo $class; ?>">
-		<?php get_template_part("template-parts/common/breadcrumb"); ?>
+            <div class="container">
+                <?php get_template_part("template-parts/common/breadcrumb"); ?>
+            </div>
 
         <section class="section bg-white py-2 py-lg-3 py-xl-5">
             <div class="container">
@@ -74,5 +76,7 @@ get_header();
         </section>
     </main>
 
+<?php
+get_footer();
 <?php
 get_footer();
