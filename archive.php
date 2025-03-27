@@ -10,31 +10,41 @@
 $class = "petrol";
 get_header();
 ?>
-
-<main id="main-container" class="main-container <?php echo $class; ?>">
-
-          <div class="row">
+    <div class="container" id="main-container">
+            <div class="row">
                 <div class="col px-lg-4">
                     <?php get_template_part("template-parts/common/breadcrumb"); ?>
                 </div>
             </div>
-    <!-- Title and description section -->
-    <section class="section bg-white py-2 py-lg-3 py-xl-5">
-        <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-md-8">
-                    <div class="section-title">
-                        <?php the_archive_title('<h2 class="mb-0">', '</h2>'); ?>
-                        <?php the_archive_description('<p>', '</p>'); ?>
-                    </div>
+                <div class="col-lg-8 px-lg-4 py-lg-2">
+                    <?php if (preg_match('/[A-Z]{5,}/', get_the_title())) {
+                        echo '<h1 data-audio>' . ucfirst(strtolower(get_the_title())) . '</h1>';
+                    } else {
+                        echo '<h1 data-audio>' . get_the_title() . '</h1>';
+                    }
+                    ?>
+                    <h2 class="visually-hidden">Dettagli del documento</h2>
+                    <?php if ($numero_protocollo and !empty($numero_protocollo)) { ?>
+                        <h4>Protocollo <?= $numero_protocollo ?> del <?= $data_protocollo ?></h4>
+                    <?php } ?>
+                    <p data-audio>
+                        <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                            echo ucfirst(strtolower($descrizione_breve));
+                        } else {
+                            echo $descrizione_breve;
+                        }
+                        ?>
+                    </p>
                 </div>
-                    <div class="col-lg-3 col-md-4 offset-lg-1">
-		      <?php get_template_part("template-parts/single/actions"); ?>
-                    </div><!-- /col-lg-3 col-md-4 offset-lg-1 -->
+                <div class="col-lg-3 offset-lg-1">
+                    <?php
+                    $inline = true;
+                    get_template_part('template-parts/single/actions');
+                    ?>
+                </div>
             </div>
-        </div>
-    </section>
-
+        </div><!-- ./main-container -->
 
     <!-- Content Section with Grid Layout -->
     <section class="section bg-gray-light">
