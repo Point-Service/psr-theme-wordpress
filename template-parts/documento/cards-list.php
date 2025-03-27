@@ -62,10 +62,9 @@
                                         </svg><?php if (isset($tipo) && isset($tipo->term_id)) : ?>
                                             <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font>
                                             </a>
-                                            <?php else : ?>
-                                                <span class="text-decoration-none" style="color: black;">
-                                                    <?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?>
-                                                </span>
+                                            <?php else : ?>                                            
+                                                 <a class="text-decoration-none" href="/dataset"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font>
+                                                </a>
                                             <?php endif; ?>
                                 <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
                             </div>
