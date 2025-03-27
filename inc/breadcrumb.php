@@ -403,6 +403,7 @@ class Breadcrumb_Trail {
 				}
 
 
+		    echo $get_post_type();
 		    
 				if (get_post_type() == 'unita_organizzativa') {
 					    // Aggiungi il link alla pagina di amministrazione
