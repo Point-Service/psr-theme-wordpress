@@ -32,9 +32,9 @@ get_header();
                               </nav>';
                     
                         // Visualizza la descrizione appropriata in base al titolo dell'archivio
-                        if ($archive_title === 'Dataset') {
+                        if ($archive_title == 'Dataset') {
                             echo '<p>In questa sezione sono disponibili i dataset pubblicati dall\'Autorità Nazionale Anticorruzione (ANAC), contenenti informazioni dettagliate sui contratti pubblici in Italia, inclusi appalti, stazioni appaltanti e altri dati rilevanti.</p>';
-                        } elseif ($archive_title === 'Incarichi') {
+                        } elseif ($archive_title == 'Incarichi') {
                             echo '<p>Questa sezione fornisce informazioni sugli obblighi di pubblicazione riguardanti i titolari di incarichi di collaborazione o consulenza, come disciplinato dall\'articolo 15 del Decreto Legislativo 33/2013.</p>';
                         }
                     } else {
