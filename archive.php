@@ -18,7 +18,7 @@ get_header();
             </div>
             <div class="row">
                 <div class="col-lg-8 px-lg-4 py-lg-2">
-                 <?php the_archive_title(); ?>
+                <h1 data-audio> <?php the_archive_title(); ?></h1>
                     <h2 class="visually-hidden">Dettagli del documento</h2>
                 </div>
                 <div class="col-lg-3 offset-lg-1">
