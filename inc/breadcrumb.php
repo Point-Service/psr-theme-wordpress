@@ -312,7 +312,7 @@ class Breadcrumb_Trail {
 		if ( '%postname%' === trim( get_option( 'permalink_structure' ), '/' ) )
 			$defaults['post'] = 'category';
 
-		// $this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
+		 $this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
 
 
 		
@@ -363,7 +363,7 @@ class Breadcrumb_Trail {
             }
 
             if ( is_singular() ) {
- 
+ echo $get_post_type();
 				if (get_post_type() == 'servizio') {
 					$this->items[] =  "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
 					$terms = get_the_terms(get_the_ID(),'categorie_servizio');
