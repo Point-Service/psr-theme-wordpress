@@ -12,8 +12,18 @@ get_header();
 ?>
 
 <main id="main-container" class="main-container <?php echo $class; ?>">
-  <?php get_template_part("template-parts/common/breadcrumb"); ?>
-
+  
+  <!-- Breadcrumbs positioned similar to the second code -->
+  <section class="section bg-grey-card">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <?php get_template_part("template-parts/common/breadcrumb"); ?>
+        </div><!-- /col-12 -->
+      </div><!-- /row -->
+    </div><!-- /container -->
+  </section><!-- /section -->
+  
   <section class="section bg-white py-2 py-lg-3 py-xl-5">
     <div class="container">
       <div class="row variable-gutters">
