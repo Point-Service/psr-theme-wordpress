@@ -10,7 +10,7 @@
 $class = "petrol";
 get_header();
 
-?>kkk
+?>
 
 <main id="main-container" class="main-container <?php echo $class; ?>">
 
@@ -80,36 +80,67 @@ get_header();
     </section><!-- /section -->
 
     <!-- Content Section with Grid Layout -->
-     <section class="section bg-gray-light">
-            <div class="container">
-                <div class="row variable-gutters sticky-sidebar-container">
-                    <div class="col-lg-3 bg-white bg-white-left">
-						<?php get_template_part("template-parts/search/filters", "argomento"); ?>
-                    </div>
-                    <div class="col-lg-7 offset-lg-1 pt84">
-						<?php if ( have_posts() ) : ?>
-							<?php
-							/* Start the Loop */
-							while ( have_posts() ) :
-								the_post();
-								get_template_part( 'template-parts/list/article', get_post_type() );
+    <section class="section bg-gray-light">
+        <div class="container">
+            <div class="row variable-gutters sticky-sidebar-container">
+                <div class="col-lg-3 bg-white bg-white-left">
+                    <div class="argomenti-wrapper">
+                        <h3 class="mb-4">Argomenti</h3>
 
-							endwhile;
-							?>
-                            <nav class="pagination-wrapper justify-content-center col-12">
-								<?php echo dci_bootstrap_pagination(); ?>
-                            </nav>
-						<?php
-						else :
+                        <!-- Griglia di Argomenti -->
+                        <div class="row">
+                            <?php
+                            // Esempio di loop per argomenti, adatta questa parte al tuo caso specifico
+                            $args = array(
+                                'taxonomy' => 'category', // O altra tassonomia
+                                'orderby' => 'name',
+                                'order' => 'ASC'
+                            );
+                            $terms = get_terms($args);
 
-							get_template_part( 'template-parts/content', 'none' );
+                            if ($terms && !is_wp_error($terms)) :
+                                foreach ($terms as $term) :
+                            ?>
+                                    <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                                        <div class="argomento-item">
+                                            <a href="<?php echo esc_url(get_term_link($term)); ?>" class="argomento-link">
+                                                <h4><?php echo esc_html($term->name); ?></h4>
+                                            </a>
+                                        </div>
+                                    </div>
+                            <?php
+                                endforeach;
+                            else :
+                                echo '<p>No categories found.</p>';
+                            endif;
+                            ?>
+                        </div> <!-- End .row -->
+                    </div><!-- End .argomenti-wrapper -->
+                </div><!-- End .col-lg-3 -->
 
-						endif;
-						?>
-                    </div><!-- /col-lg-8 -->
-                </div><!-- /row -->
-            </div><!-- /container -->
-        </section>
+                <div class="col-lg-7 offset-lg-1 pt84">
+                    <?php if ( have_posts() ) : ?>
+                        <?php
+                        /* Start the Loop */
+                        while ( have_posts() ) :
+                            the_post();
+                            get_template_part( 'template-parts/list/article', get_post_type() );
+                        endwhile;
+                        ?>
+                        <nav class="pagination-wrapper justify-content-center col-12">
+                            <?php echo dci_bootstrap_pagination(); ?>
+                        </nav>
+                    <?php
+                    else :
+
+                        get_template_part( 'template-parts/content', 'none' );
+
+                    endif;
+                    ?>
+                </div><!-- /col-lg-8 -->
+            </div><!-- /row -->
+        </div><!-- /container -->
+    </section><!-- /section -->
 
 </main><!-- /main -->
 
