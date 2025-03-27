@@ -363,7 +363,7 @@ class Breadcrumb_Trail {
             }
 
             if ( is_singular() ) {
- echo $get_post_type();
+
 				if (get_post_type() == 'servizio') {
 					$this->items[] =  "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
 					$terms = get_the_terms(get_the_ID(),'categorie_servizio');
@@ -589,7 +589,8 @@ class Breadcrumb_Trail {
 
 		    
 			    $group_name = dci_get_group_name(get_post_type());
-		    
+		    echo $group_name;
+		    echo 's';
 			    //console_log($group_name);
 			    switch ($group_name) {
 
