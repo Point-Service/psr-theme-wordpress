@@ -355,7 +355,6 @@ class Breadcrumb_Trail {
                 }
 
 		    echo $slug;
-
 		    echo'ddddd';
             }
 
