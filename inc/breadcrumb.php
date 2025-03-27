@@ -312,10 +312,7 @@ class Breadcrumb_Trail {
 		if ( '%postname%' === trim( get_option( 'permalink_structure' ), '/' ) )
 			$defaults['post'] = 'category';
 
-		 $this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
-
-
-		
+		$this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
 	}
 
 	/**
@@ -347,20 +344,15 @@ class Breadcrumb_Trail {
 			}
 
             if (is_page()) {
-		    
                 $slug = get_queried_object()->post_name;
                 if ($slug == 'domande-frequenti') {
                     $this->items[] = 'Domande più frequenti';
                     return;
                 }
-
-		    echo $slug;
-		    echo'ddddd';
             }
 
             $custom_breadcrumbs = apply_filters( 'dci_get_breadcrumb_items', false, $this->items );
             if ( !empty( $custom_breadcrumbs ) ) {
-		
                 $this->items = $custom_breadcrumbs;
                 return;
             }
@@ -592,11 +584,8 @@ class Breadcrumb_Trail {
 
 		    
 			    $group_name = dci_get_group_name(get_post_type());
-		
 			    //console_log($group_name);
 			    switch ($group_name) {
-
-				    
 			case 'Vivere il comune' :
 				// Aggiungi il link alla pagina principale "Vivere il Comune"
 			
@@ -730,11 +719,12 @@ class Breadcrumb_Trail {
 		if (is_post_type_archive()) {
 		    $this->add_post_type_archive_items();
 		
+		 
+			
 		}
 
                 elseif ( is_category() || is_tag() || is_tax() ){
 
-			
                     if (is_tax(array("categorie_servizio"))){
                         $this->items[] = "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
                         $this->items[] = single_term_title( '', false );
@@ -783,7 +773,6 @@ class Breadcrumb_Trail {
 			    
                     }
                     else {
-			    
                         $this->add_term_archive_items();
                     }
                 }
@@ -826,14 +815,11 @@ class Breadcrumb_Trail {
 			}
 		}
 
-	
 		// Add paged items if they exist.
 		$this->add_paged_items();
 
 		// Allow developers to overwrite the items for the breadcrumb trail.
 		$this->items = array_unique( apply_filters( 'breadcrumb_trail_items', $this->items, $this->args ) );
-		
-
 	}
 
 	/**
@@ -1058,7 +1044,6 @@ class Breadcrumb_Trail {
 
 							$done_post_type = true;
 
-							
 							// Break out of the loop.
 							break;
 						}
@@ -1080,7 +1065,7 @@ class Breadcrumb_Trail {
 				// If the post type is not 'post'.
 			} else {
 				$post_type_object = get_post_type_object( $taxonomy->object_type[0] );
-	
+
 				$label = ! empty( $post_type_object->labels->archive_title ) ? $post_type_object->labels->archive_title : $post_type_object->labels->name;
 
 				// Core filter hook.
