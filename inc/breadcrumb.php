@@ -1062,7 +1062,7 @@ class Breadcrumb_Trail {
 
 		// If there's a single post type for the taxonomy, use it.
 		if ( false === $done_post_type && 1 === count( $taxonomy->object_type ) && isset($taxonomy->object_type[0]) &&  post_type_exists( $taxonomy->object_type[0] ) ) {
-
+echo $taxonomy;
 			// If the post type is 'post'.
 			if ( 'post' === $taxonomy->object_type[0] ) {
 				$post_id = get_option( 'page_for_posts' );
@@ -1086,7 +1086,7 @@ class Breadcrumb_Trail {
 		// If the taxonomy is hierarchical, list its parent terms.
 		if ( is_taxonomy_hierarchical( $term->taxonomy ) && $term->parent )
 			$this->add_term_parents( $term->parent, $term->taxonomy );
-echo '11';
+
 		// Add the term name to the trail end.
 		if ( is_paged() )
 			$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, $term->taxonomy ) ), single_term_title( '', false ) );
