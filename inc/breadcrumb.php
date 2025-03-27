@@ -313,6 +313,11 @@ class Breadcrumb_Trail {
 			$defaults['post'] = 'category';
 
 		$this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
+
+
+echo 'ssss';
+
+		
 	}
 
 	/**
@@ -344,9 +349,6 @@ class Breadcrumb_Trail {
 			}
 
             if (is_page()) {
-
-echo get_queried_object()->post_name;
-
 		    
                 $slug = get_queried_object()->post_name;
                 if ($slug == 'domande-frequenti') {
