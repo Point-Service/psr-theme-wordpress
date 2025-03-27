@@ -25,8 +25,9 @@
 
 
             <?php
-            // Recupera il valore del campo 'ck_dataset'
-            $ck_dataset_value = cmb2_get_option( 'design_comuni_italia', $prefix . 'ck_dataset', 'false' );
+
+            $ck_dataset_value = dci_get_option("firma_nostra");
+		echo $ck_dataset_value;
             
             // Verifica se il valore del campo è 'true'
             if ( 'true' === $ck_dataset_value ) :
