@@ -30,7 +30,7 @@
                 <div class="card-body">
                 <a class="text-decoration-none" href="/dataset"><h3 class="card-title t-primary title-xlarge">Dataset</h3></a>
                 <p class="text-paragraph mb-0">
-                    Adempimento ANAC
+                    Adempimento ANAC -  Legge 190/2012 art. 1, comma 32
                 </p>
                 </div>
             </div>
