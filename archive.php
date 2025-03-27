@@ -13,7 +13,6 @@ get_header();
 ?>
 
 <main id="main-container" class="main-container <?php echo $class; ?>">
-
     <!-- Title and description section -->
     <section class="section bg-white py-2 py-lg-3 py-xl-5">
         <div class="container">
@@ -28,7 +27,6 @@ get_header();
         </div>
     </section>
 
-
     <!-- Content Section with Grid Layout -->
     <section class="section bg-gray-light">
         <div class="container">
@@ -39,12 +37,7 @@ get_header();
                             <div class="card border-0 shadow-sm p-4 h-100">
                                 <div class="card-body">
                                     <span class="badge bg-secondary mb-2">
-                                        <?php 
-                                            $terms = get_the_terms(get_the_ID(), 'category');
-                                            if ($terms && !is_wp_error($terms)) {
-                                                echo esc_html($terms[0]->name);
-                                            }
-                                        ?>
+                                       <?php the_archive_title(); ?>
                                     </span>
                                     <h5 class="card-title"><a href="<?php the_permalink(); ?>" class="text-dark text-decoration-none"><?php the_title(); ?></a></h5>
                                     <p class="text-muted small mb-2">Pubblicato il <?php echo get_the_date('d M Y'); ?></p>
