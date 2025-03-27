@@ -728,7 +728,7 @@ class Breadcrumb_Trail {
 		    $this->add_post_type_archive_items();
 		
 		}
-echo '1';
+
                 elseif ( is_category() || is_tag() || is_tax() ){
 
 			
@@ -824,7 +824,7 @@ echo '1';
 		}
 
 	
-
+echo 'sa';
 		// Add paged items if they exist.
 		$this->add_paged_items();
 
