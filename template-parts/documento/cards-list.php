@@ -57,9 +57,7 @@
                     <div class="col-8 order-1 order-md-2">
                         <div class="card-body">
                             <div class="category-top cmp-list-card-img__body">
-                                        <svg class="icon icon-sm" aria-hidden="true">
-                                            <use href="#it-file"></use>
-                                        </svg><?php if (isset($tipo) && isset($tipo->term_id)) : ?>
+                                        <svg class="icon icon-sm" aria-hidden="true"><use href="#it-file"></use></svg><?php if (isset($tipo) && isset($tipo->term_id)) : ?>
                                             <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font>
                                             </a>
                                             <?php else : ?>                                            
@@ -124,9 +122,7 @@
                             <div class="category-top cmp-list-card-img__body">
                                 <span class="category cmp-list-card-img__body-heading-title underline">                                    
                                     <span class="text fw-semibold">
-                                        <svg class="icon icon-sm" aria-hidden="true">
-                                            <use href="#it-file"></use>
-                                        </svg><?php if (isset($tipo) && isset($tipo->term_id)) : ?>
+                                        <svg class="icon icon-sm" aria-hidden="true"><use href="#it-file"></use></svg><?php if (isset($tipo) && isset($tipo->term_id)) : ?>
                                             <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font>
                                             </a>
                                             <?php else : ?>
