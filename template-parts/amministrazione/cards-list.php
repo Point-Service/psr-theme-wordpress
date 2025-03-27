@@ -26,7 +26,7 @@
 
             <?php
 
-            $ck_dataset_value = dci_options_amministrazione("ck_dataset");
+            $ck_dataset_value = options_amministrazione("ck_dataset");
 		echo $ck_dataset_value;
             
             // Verifica se il valore del campo è 'true'
