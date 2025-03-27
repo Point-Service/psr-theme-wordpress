@@ -34,13 +34,18 @@ get_header();
                 <?php if ( have_posts() ) : ?>
                     <?php while ( have_posts() ) : the_post(); ?>
                         <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card border rounded shadow-lg p-4 h-100" style="border: 2px solid #ccc; background: #fff;">
+                            <div class="card border rounded shadow-sm p-4 h-100" style="border: 1px solid #ddd; background: #fff;">
                                 <div class="card-body">
-                                    <!-- Badge con la categoria -->
+                                    <!-- Badge con il titolo dell'archivio -->
+                                    <span class="badge bg-light text-dark mb-2 px-3 py-1" style="font-weight: 600;">
+                                        <?php the_archive_title(); ?>
+                                    </span>
+
+                                    <!-- Badge con la categoria/tipologia -->
                                     <?php 
                                         $terms = get_the_terms(get_the_ID(), 'category');
                                         if ($terms && !is_wp_error($terms)) : ?>
-                                            <span class="badge bg-primary text-white mb-2 px-3 py-1">
+                                            <span class="badge bg-secondary text-white mb-2 px-3 py-1">
                                                 <?php echo esc_html($terms[0]->name); ?>
                                             </span>
                                     <?php endif; ?>
@@ -67,7 +72,7 @@ get_header();
                                     </p>
 
                                     <!-- Link alla pagina -->
-                                    <a href="<?php the_permalink(); ?>" class="btn btn-outline-primary">Vai alla pagina →</a>
+                                    <a href="<?php the_permalink(); ?>" class="text-primary text-decoration-none">Vai alla pagina →</a>
                                 </div>
                             </div>
                         </div>
