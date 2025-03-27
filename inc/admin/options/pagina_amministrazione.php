@@ -62,7 +62,7 @@ function dci_register_pagina_amministrazione_options(){
             'name'    => __('Visualizza nella sezione Amministrazione il pulsante Dataset.', 'design_comuni_italia'),
             'desc'    => __('Dataset fornisce l\'accesso ai dati aperti pubblicati dall\'Autorità Nazionale Anticorruzione (ANAC) riguardanti i contratti pubblici in Italia. Questi dataset, disponibili in formato aperto, comprendono informazioni dettagliate sulle procedure di appalto, le stazioni appaltanti e altri elementi chiave relativi ai contratti pubblici, permettendo un\'analisi approfondita e promuovendo la trasparenza nel settore degli appalti pubblici.', 'design_comuni_italia'),
             'type'    => 'radio_inline',
-            'default' => 'true', // Imposta il valore predefinito su 'Sì'
+            'default' => 'true', // Imposta il valore predefinito su 'true'
             'options' => array(
                 'true'  => __('Sì', 'design_comuni_italia'),
                 'false' => __('No', 'design_comuni_italia'),
