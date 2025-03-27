@@ -358,10 +358,7 @@ class Breadcrumb_Trail {
             }
 
             if ( is_singular() ) {
-
-
-echo 'ddddddddddddddddddddddddddd';
-
+echo get_post_type();
 
 		    
 				if (get_post_type() == 'servizio') {
