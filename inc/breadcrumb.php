@@ -826,12 +826,12 @@ class Breadcrumb_Trail {
 	
 echo 'sa';
 		// Add paged items if they exist.
-		$this->add_paged_items();
+		//$this->add_paged_items();
 
 		// Allow developers to overwrite the items for the breadcrumb trail.
-		$this->items = array_unique( apply_filters( 'breadcrumb_trail_items', $this->items, $this->args ) );
+		//$this->items = array_unique( apply_filters( 'breadcrumb_trail_items', $this->items, $this->args ) );
 		
-echo 'rt';
+
 	}
 
 	/**
