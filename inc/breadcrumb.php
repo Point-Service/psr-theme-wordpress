@@ -356,7 +356,7 @@ class Breadcrumb_Trail {
                 $this->items = $custom_breadcrumbs;
                 return;
             }
-
+echo 'd';
             if ( is_singular() ) {
 
 				if (get_post_type() == 'servizio') {
@@ -775,7 +775,6 @@ class Breadcrumb_Trail {
 			    
                     }
                     else {
-echo 'd';
 			    
                         $this->add_term_archive_items();
                     }
