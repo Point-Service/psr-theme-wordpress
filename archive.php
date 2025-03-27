@@ -12,7 +12,7 @@ get_header();
 ?>
 
 <main id="main-container" class="main-container <?php echo $class; ?>">
-
+<?php get_template_part("template-parts/common/breadcrumb"); ?>
     <!-- Title and description section -->
     <section class="section bg-white py-2 py-lg-3 py-xl-5">
         <div class="container">
@@ -23,9 +23,13 @@ get_header();
                         <?php the_archive_description('<p>', '</p>'); ?>
                     </div>
                 </div>
+                    <div class="col-lg-3 col-md-4 offset-lg-1">
+						<?php get_template_part("template-parts/single/actions"); ?>
+                    </div><!-- /col-lg-3 col-md-4 offset-lg-1 -->
             </div>
         </div>
     </section>
+
 
     <!-- Content Section with Grid Layout -->
     <section class="section bg-gray-light">
