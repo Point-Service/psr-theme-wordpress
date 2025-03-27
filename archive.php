@@ -18,16 +18,8 @@ get_header();
             </div>
             <div class="row">
                 <div class="col-lg-8 px-lg-4 py-lg-2">
-                    <?php if (preg_match('/[A-Z]{5,}/', get_the_title())) {
-                        echo '<h1 data-audio>' . ucfirst(strtolower(get_the_title())) . '</h1>';
-                    } else {
-                        echo '<h1 data-audio>' . get_the_title() . '</h1>';
-                    }
-                    ?>
+                 <?php the_archive_title(); ?>
                     <h2 class="visually-hidden">Dettagli del documento</h2>
-                    <p data-audio>
-                      <?php the_archive_title(); ?>
-                    </p>
                 </div>
                 <div class="col-lg-3 offset-lg-1">
                     <?php
