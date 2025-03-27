@@ -26,7 +26,9 @@
 
             <?php
 
-            $ck_dataset_value = options_amministrazione("ck_dataset");
+		// Recupera il valore dell'opzione 'ck_dataset'
+		$ck_dataset = get_option( 'amministrazione_ck_dataset', 'true' ); 
+
 		echo $ck_dataset_value;
             
             // Verifica se il valore del campo è 'true'
