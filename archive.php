@@ -89,7 +89,7 @@ get_header();
                                                 echo esc_html($excerpt);
                                             } else {
                                                 $content = wp_strip_all_tags(get_the_content());
-                                                echo !empty($content) ? wp_trim_words($content, 20, '...') : 'Nessuna descrizione disponibile.';
+                                                echo !empty($content) ? wp_trim_words($content, 20, '...') : '';
                                             }
                                         ?>
                                     </p>
