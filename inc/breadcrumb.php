@@ -732,7 +732,9 @@ class Breadcrumb_Trail {
                 elseif ( is_category() || is_tag() || is_tax() ){
 echo $is_category;
 
-echo'dddddddddddddd'			
+echo'dddddddddddddd';
+
+			
                     if (is_tax(array("categorie_servizio"))){
                         $this->items[] = "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
                         $this->items[] = single_term_title( '', false );
