@@ -721,7 +721,7 @@ class Breadcrumb_Trail {
 		if (is_post_type_archive()) {
 		    $this->add_post_type_archive_items();
 		
-		 echo 'd';
+		
 			
 		}
 
@@ -818,7 +818,7 @@ class Breadcrumb_Trail {
 			}
 		}
 
-		
+		 echo 'd';
 
 		// Add paged items if they exist.
 		$this->add_paged_items();
