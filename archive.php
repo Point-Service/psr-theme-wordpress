@@ -14,14 +14,9 @@ get_header();
             <div class="row">
                 <div class="col px-lg-4">
                                 <?php
-                                        $archive_title = the_archive_title();
 
-                                    if ($archive_title !== 'Dataset') {
                                        get_template_part('template-parts/common/breadcrumb');
-                                    } else {
-                                        echo 'sss';
-                                    }
-                        
+           
                                 ?>    
                 </div>
             </div>
