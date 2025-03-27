@@ -16,7 +16,7 @@ get_header();
                                 <?php
                                         $archive_title = the_archive_title();
 echo $archive_title;
- 
+                        
                                 ?>    
                 </div>
             </div>
