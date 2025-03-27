@@ -24,18 +24,31 @@
         <?php } ?>
 
 
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
-            <div class="card shadow-sm rounded">
-                <div class="card-body">
-                <a class="text-decoration-none" href="/dataset"><h3 class="card-title t-primary title-xlarge">Dataset</h3></a>
-                <p class="text-paragraph mb-0">
-                   "Dataset" fornisce l'accesso ai dati aperti pubblicati dall'Autorità Nazionale Anticorruzione (ANAC) riguardanti i contratti pubblici in Italia. Questi dataset, disponibili in formato aperto, comprendono informazioni dettagliate sulle procedure di appalto, le stazioni appaltanti e altri elementi chiave relativi ai contratti pubblici, permettendo un'analisi approfondita e promuovendo la trasparenza nel settore degli appalti pubblici.
-                </p>
+            <?php
+            // Recupera il valore del campo 'ck_dataset'
+            $ck_dataset_value = cmb2_get_option( 'design_comuni_italia', $prefix . 'ck_dataset', 'false' );
+            
+            // Verifica se il valore del campo è 'true'
+            if ( 'true' === $ck_dataset_value ) :
+            ?>
+                <!-- Blocco HTML da visualizzare -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
+                        <div class="card shadow-sm rounded">
+                            <div class="card-body">
+                                <a class="text-decoration-none" href="/dataset">
+                                    <h3 class="card-title t-primary title-xlarge">Dataset</h3>
+                                </a>
+                                <p class="text-paragraph mb-0">
+                                    "Dataset" fornisce l'accesso ai dati aperti pubblicati dall'Autorità Nazionale Anticorruzione (ANAC) riguardanti i contratti pubblici in Italia. Questi dataset, disponibili in formato aperto, comprendono informazioni dettagliate sulle procedure di appalto, le stazioni appaltanti e altri elementi chiave relativi ai contratti pubblici, permettendo un'analisi approfondita e promuovendo la trasparenza nel settore degli appalti pubblici.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            </div>
-        </div>
+            <?php
+            endif;
+            ?>
       
         
     </div>
