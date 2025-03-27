@@ -21,9 +21,9 @@ get_header();
                             // Recupera l'URL della pagina "Amministrazione" (sostituisci 'amministrazione' con lo slug effettivo della tua pagina)
                             $amministrazione_url = get_permalink(get_page_by_path('amministrazione'));
                     
-                            echo '<nav aria-label="breadcrumb">
+                            echo '</br></br><nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="' . home_url() . '">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="' . home_url() . '"><strong>Home</strong></a></li>
                                         <li class="breadcrumb-item"><a href="' . esc_url($amministrazione_url) . '"><strong>Amministrazione</strong></a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Dataset</li>
                                     </ol>
