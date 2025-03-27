@@ -728,11 +728,8 @@ class Breadcrumb_Trail {
 		    $this->add_post_type_archive_items();
 		
 		}
-
+echo '1';
                 elseif ( is_category() || is_tag() || is_tax() ){
-echo $is_category;
-
-echo'dddddddddddddd';
 
 			
                     if (is_tax(array("categorie_servizio"))){
