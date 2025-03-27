@@ -17,6 +17,17 @@ get_header();
                         $archive_title = get_the_archive_title();
                         if ($archive_title !== 'Dataset') {
                             get_template_part('template-parts/common/breadcrumb');
+                        } elseif ($archive_title !== 'Incarichi')  {   
+                                // Recupera l'URL della pagina "Amministrazione" (sostituisci 'amministrazione' con lo slug effettivo della tua pagina)
+                            $amministrazione_url = get_permalink(get_page_by_path('amministrazione'));
+                    
+                            echo '</br><nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="' . home_url() . '"><strong>Home</strong></a></li>
+                                        <li class="breadcrumb-item"><a href="' . esc_url($amministrazione_url) . '"><strong>Amministrazione</strong></a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Incarichi</li>
+                                    </ol>
+                                  </nav>';
                         } else {
                             // Recupera l'URL della pagina "Amministrazione" (sostituisci 'amministrazione' con lo slug effettivo della tua pagina)
                             $amministrazione_url = get_permalink(get_page_by_path('amministrazione'));
