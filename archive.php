@@ -14,11 +14,10 @@ get_header();
             <div class="row">
                 <div class="col px-lg-4">
                                 <?php
-                                    $archive_title = the_archive_title();
-                                    if ($archive_title !== 'Dataset') {
+                                     if ($the_archive_title !== 'Dataset') {
                                         get_template_part('template-parts/common/breadcrumb');
                                     } else {
-                                        echo 's';
+                                        echo '<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="' . home_url() . '">Home</a></li><li class="breadcrumb-item active" aria-current="page">Amministrazione/Dataset</li></ol></nav>';
                                     }
                                 ?>    
                 </div>
