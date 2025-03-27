@@ -43,12 +43,10 @@ get_header();
                 <div class="col-lg-8 px-lg-4 py-lg-2">
                 <h1 data-audio> <?php the_archive_title(); ?></h1>
                         <?php
-                      // Ottieni il titolo dell'archivio senza prefissi
-                     $archive_title = get_the_archive_title();
+                         // Ottieni il titolo dell'archivio senza prefissi
+                        $archive_title = get_the_archive_title();
                         // Visualizza la descrizione appropriata in base al titolo dell'archivio
                         if ($archive_title === 'Dataset') {
-                            echo 'dssa';
-                            
                             echo '<p>In questa sezione sono disponibili i dataset pubblicati dall\'Autorità Nazionale Anticorruzione (ANAC), contenenti informazioni dettagliate sui contratti pubblici in Italia, inclusi appalti, stazioni appaltanti e altri dati rilevanti.</p>';
                         } elseif ($archive_title === 'Incarichi') {
                             echo '<p>Questa sezione fornisce informazioni sugli obblighi di pubblicazione riguardanti i titolari di incarichi di collaborazione o consulenza, come disciplinato dall\'articolo 15 del Decreto Legislativo 33/2013.</p>';
