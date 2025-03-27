@@ -586,7 +586,6 @@ class Breadcrumb_Trail {
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
-echo $group_name;
 
 				    
 			case 'Vivere il comune' :
@@ -776,6 +775,8 @@ echo $group_name;
 			    
                     }
                     else {
+echo 'd';
+			    
                         $this->add_term_archive_items();
                     }
                 }
