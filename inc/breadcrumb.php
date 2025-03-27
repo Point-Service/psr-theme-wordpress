@@ -402,8 +402,7 @@ class Breadcrumb_Trail {
 				    return;
 				}
 
-echo 'ss';
-		    echo $get_post_type();
+
 		    
 				if (get_post_type() == 'unita_organizzativa') {
 					    // Aggiungi il link alla pagina di amministrazione
@@ -587,6 +586,9 @@ echo 'ss';
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
+echo $group_name;
+
+				    
 			case 'Vivere il comune' :
 				// Aggiungi il link alla pagina principale "Vivere il Comune"
 			
