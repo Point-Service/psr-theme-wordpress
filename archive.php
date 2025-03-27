@@ -44,7 +44,7 @@ get_header();
                 <h1 data-audio> <?php the_archive_title(); ?></h1>
                         <?php
 echo 's';
-echo $the_archive_title;
+echo the_archive_title;
 
                         // Visualizza la descrizione appropriata in base al titolo dell'archivio
                         if ($archive_title === 'Dataset') {
