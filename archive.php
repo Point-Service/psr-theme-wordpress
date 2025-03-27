@@ -17,16 +17,22 @@ get_header();
                         $archive_title = get_the_archive_title();
                         $amministrazione_url = get_permalink(get_page_by_path('amministrazione'));
                         
-                        if ($archive_title === 'Dataset' || $archive_title === 'Incarichi') {
-                            // Codice per 'Dataset' e 'Incarichi'
-                            echo '</br><nav aria-label="breadcrumb">
+                     if ($archive_title === 'Dataset' || $archive_title === 'Incarichi') {
+                            // Costruisce il breadcrumb
+                            echo '<br><nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="' . home_url() . '"><strong>Home</strong></a></li>
+                                        <li class="breadcrumb-item"><a href="' . esc_url(home_url()) . '"><strong>Home</strong></a></li>
                                         <li class="breadcrumb-item"><a href="' . esc_url($amministrazione_url) . '"><strong>Amministrazione</strong></a></li>
                                         <li class="breadcrumb-item active" aria-current="page">' . esc_html($archive_title) . '</li>
                                     </ol>
                                   </nav>';
-                        } else {
+                        
+                            // Visualizza la descrizione appropriata in base al titolo dell'archivio
+                            if ($archive_title === 'Dataset') {
+                                echo '<p>In questa sezione sono disponibili i dataset pubblicati dall\'Autorità Nazionale Anticorruzione (ANAC), contenenti informazioni dettagliate sui contratti pubblici in Italia, inclusi appalti, stazioni appaltanti e altri dati rilevanti.</p>';
+                            } elseif ($archive_title === 'Incarichi') {
+                                echo '<p>Questa sezione fornisce informazioni sugli obblighi di pubblicazione riguardanti i titolari di incarichi di collaborazione o consulenza, come disciplinato dall\'articolo 15 del Decreto Legislativo 33/2013.</p>';
+                            }else {
                             // Codice per altri casi
                             get_template_part('template-parts/common/breadcrumb');
                         }
