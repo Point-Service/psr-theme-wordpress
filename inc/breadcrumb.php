@@ -315,8 +315,6 @@ class Breadcrumb_Trail {
 		// $this->post_taxonomy = apply_filters( 'breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
 
 
-
-
 		
 	}
 
