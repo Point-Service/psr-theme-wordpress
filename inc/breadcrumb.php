@@ -371,7 +371,6 @@ class Breadcrumb_Trail {
 					return;
 				}
 
-echo $get_post_type;
 		               if (get_post_type() == 'documento_pubblico' || get_post_type() == 'documenti_e_dati') {	
 				    $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
 				    // Cambia il link per indirizzare alla nuova struttura
@@ -768,6 +767,7 @@ echo $get_post_type;
 			    
                     }
                     else {
+			    echo 'd';
                         $this->add_term_archive_items();
                     }
                 }
