@@ -353,12 +353,13 @@ class Breadcrumb_Trail {
 
             $custom_breadcrumbs = apply_filters( 'dci_get_breadcrumb_items', false, $this->items );
             if ( !empty( $custom_breadcrumbs ) ) {
+		    echo 'ddsdsdsds';
                 $this->items = $custom_breadcrumbs;
                 return;
             }
 
             if ( is_singular() ) {
-
+    echo 'ddsdsds3333ds';
 				if (get_post_type() == 'servizio') {
 					$this->items[] =  "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
 					$terms = get_the_terms(get_the_ID(),'categorie_servizio');
@@ -1062,7 +1063,7 @@ class Breadcrumb_Trail {
 
 		// If there's a single post type for the taxonomy, use it.
 		if ( false === $done_post_type && 1 === count( $taxonomy->object_type ) && isset($taxonomy->object_type[0]) &&  post_type_exists( $taxonomy->object_type[0] ) ) {
-echo $taxonomy;
+
 			// If the post type is 'post'.
 			if ( 'post' === $taxonomy->object_type[0] ) {
 				$post_id = get_option( 'page_for_posts' );
