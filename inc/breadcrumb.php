@@ -818,14 +818,14 @@ class Breadcrumb_Trail {
 			}
 		}
 
-		 echo 'd';
+	
 
 		// Add paged items if they exist.
 		$this->add_paged_items();
 
 		// Allow developers to overwrite the items for the breadcrumb trail.
 		$this->items = array_unique( apply_filters( 'breadcrumb_trail_items', $this->items, $this->args ) );
-			 echo 'd1';
+		
 
 	}
 
@@ -1069,11 +1069,11 @@ class Breadcrumb_Trail {
 
 				if ( 'posts' !== get_option( 'show_on_front' ) && 0 < $post_id )
 					$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_permalink( $post_id ) ), get_the_title( $post_id ) );
-
+	 echo 'd1a';
 				// If the post type is not 'post'.
 			} else {
 				$post_type_object = get_post_type_object( $taxonomy->object_type[0] );
-
+	 echo 'd1';
 				$label = ! empty( $post_type_object->labels->archive_title ) ? $post_type_object->labels->archive_title : $post_type_object->labels->name;
 
 				// Core filter hook.
@@ -1090,7 +1090,7 @@ class Breadcrumb_Trail {
 		// Add the term name to the trail end.
 		if ( is_paged() )
 			$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, $term->taxonomy ) ), single_term_title( '', false ) );
-
+ echo 'd14343';
 		elseif ( true === $this->args['show_title'] )
 			$this->items[] = single_term_title( '', false );
 	}
