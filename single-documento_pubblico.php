@@ -229,50 +229,71 @@ get_header();
                             </section>
                         <?php } ?>
 
-                        <?php if ($url_documento || $file_documento) { ?>
-                            <section id="documento" class="it-page-section mb-5">
-                                <h4>Documento</h4>
-                                <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                                    <?php
-                                    if ($file_documento) {
-                                        $documento_id = attachment_url_to_postid($file_documento);
-                                        $documento = get_post($documento_id);
-                                        ?>
-                                        <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                            <svg class="icon" aria-hidden="true">
-                                                <use xlink:href="#it-clip"></use>
-                                            </svg>
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <a class="text-decoration-none" href="<?php echo $file_documento; ?>"
-                                                        aria-label="Scarica il documento <?php echo $documento->post_title; ?>"
-                                                        title="Scarica il documento <?php echo $documento->post_title; ?>">
-                                                        <?php echo $documento->post_title; ?>
-                                                        (<?php echo getFileSizeAndFormat($file_documento); ?>)
-                                                    </a>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    <?php }
+                    <?php if ($url_documento || $file_documento) { ?>
+    <section id="documento" class="it-page-section mb-5">
+        <h4>Documenti</h4>
+        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+            <?php
+            // Verifica se $file_documento è un array e itera su ogni documento
+            if ($file_documento && is_array($file_documento)) {
+                foreach ($file_documento as $documento) {
+                    // Se $documento è un array, accedi alla chiave dell'URL
+                    if (is_array($documento)) {
+                        $documento_url = isset($documento['url']) ? $documento['url'] : '';
+                    } else {
+                        $documento_url = $documento;
+                    }
 
-                                    if ($url_documento) { ?>
-                                        <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                            <svg class="icon" aria-hidden="true">
-                                                <use xlink:href="#it-clip"></use>
-                                            </svg>
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <a class="text-decoration-none" href="<?php echo $url_documento; ?>"
-                                                        aria-label="Scarica il documento" title="Scarica il documento">
-                                                        Scarica il documento
-                                                    </a>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
-                                </div><!-- ./card-wrapper -->
-                            </section>
-                        <?php } ?>
+                    // Procedi solo se l'URL è valido
+                    if ($documento_url) {
+                        $documento_id = attachment_url_to_postid($documento_url);
+                        $documento_post = get_post($documento_id);
+                        ?>
+                        <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#it-clip"></use>
+                            </svg>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" href="<?php echo $documento_url; ?>"
+                                       aria-label="Scarica il documento <?php echo $documento_post->post_title; ?>"
+                                       title="Scarica il documento <?php echo $documento_post->post_title; ?>">
+                                        <?php echo $documento_post->post_title; ?>
+                                        (<?php echo getFileSizeAndFormat($documento_url); ?>)
+                                    </a>
+                                </h5>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }
+            }
+
+            // Se ci sono URL documenti (non necessariamente allegati, quindi anche singoli URL)
+            if ($url_documento && is_array($url_documento)) {
+                foreach ($url_documento as $documento_url) {
+                    ?>
+                    <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#it-clip"></use>
+                        </svg>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a class="text-decoration-none" href="<?php echo $documento_url; ?>"
+                                   aria-label="Scarica il documento" title="Scarica il documento">
+                                    Scarica il documento
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
+        </div><!-- ./card-wrapper -->
+    </section>
+<?php } ?>
+
 
                         <section id="ufficio_responsabile" class="it-page-section mb-5">
                             <h4>Ufficio responsabile</h4>
