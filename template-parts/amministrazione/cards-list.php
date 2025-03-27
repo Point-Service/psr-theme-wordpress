@@ -29,7 +29,6 @@
 		// Recupera il valore dell'opzione 'ck_dataset'
 		$ck_dataset = get_option( 'amministrazione_ck_dataset', 'true' ); // 'true' è il valore predefinito se l'opzione non è impostata
 
-echo $ck_dataset;
 
 		// Verifica se l'opzione è impostata su 'true'
 		if ( 'true' === $ck_dataset ) :
