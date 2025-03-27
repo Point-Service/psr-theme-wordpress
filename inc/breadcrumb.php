@@ -356,8 +356,9 @@ class Breadcrumb_Trail {
                 $this->items = $custom_breadcrumbs;
                 return;
             }
-
+			
             if ( is_singular() ) {
+		    
 echo get_post_type();
 
 		    
