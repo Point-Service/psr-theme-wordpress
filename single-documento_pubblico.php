@@ -229,10 +229,13 @@ get_header();
                             </section>
                         <?php } ?>
 
-                        <?php if ($url_documento || $file_documento || $documento_url) { ?>
+                        <?php if ($url_documento || $file_documento) { ?>
                                                                       
-                            <section id="documento" class="it-page-section mb-5">                              
-                               <h4>Documento</h4>                             
+                            <section id="documento" class="it-page-section mb-5">   
+                                <?php                                
+                                if ($documento_url) { ?>
+                                    <h4>Documento</h4>
+                                <?php } ?>
                                 <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                                     <?php
                                       // Procedi solo se l'URL è valido
