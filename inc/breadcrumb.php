@@ -378,13 +378,8 @@ class Breadcrumb_Trail {
 				if (get_post_type() == 'dataset') {
                                     $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
 				    // Cambia il link per indirizzare alla nuova struttura
-				    $this->items[] =  "<a href='" . home_url("dataset") . "'>" . __("Dataset", "design_comuni_italia") . "</a>";
-					
-					if($terms){
-					  foreach ($terms as $term) {
-						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'categorie_servizio' ) ), $term->name );
-					  }
-					}
+				    $this->items[] =  "<a href='" . home_url("dataset") . "'>" . __("Dataset", "design_comuni_italia") . "</a>";					
+
 					$this->items[] = get_the_title();
 					return;
 				}
