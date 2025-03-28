@@ -28,7 +28,7 @@
 
 		// Recupera il valore dell'opzione 'ck_dataset'
               
-                $ck_dataset = dci_get_option('ck_dataset', 'amministrazione');
+                $ck_dataset = dci_get_option('ck_dataset', 'Amministrazione');
 
 echo $ck_dataset;
 
