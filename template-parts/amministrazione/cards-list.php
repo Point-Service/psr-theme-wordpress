@@ -22,7 +22,7 @@
             </div>
         </div>
         <?php } ?>
-<?php echo get_option('amministrazione')['ck_dataset']; ?>   
+
 
 
 
@@ -33,10 +33,8 @@
               
                 $ck_dataset = dci_get_option('ck_dataset', 'Amministrazione');
 
-echo $ck_dataset;
-
 		// Verifica se l'opzione è impostata su 'true'
-		if ( 'true' === $ck_dataset ) :
+		if ( 'false' !== $ck_dataset ) :
                  ?>
                 <!-- Blocco HTML da visualizzare -->
                 <div class="col-12 col-md-6 col-lg-4">
