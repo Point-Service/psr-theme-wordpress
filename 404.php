@@ -44,7 +44,7 @@ get_header();
                                     <a href="/amministrazione/documenti-e-dati" class="text-decoration-none text-primary"><?php esc_html_e( 'Documenti e Dati', 'design_comuni_italia' ); ?></a>, 
                                     <a href="/amministrazione/uffici" class="text-decoration-none text-primary"><?php esc_html_e( 'Uffici', 'design_comuni_italia' ); ?></a>, 
                                     <a href="/tipi_documento/modulistica" class="text-decoration-none text-primary"><?php esc_html_e( 'Modulistica', 'design_comuni_italia' ); ?></a>, 
-                                    
+                                    <a href="/amministrazione/personale-amministrativo" class="text-decoration-none text-primary"><?php esc_html_e( 'Personale Amministrativo', 'design_comuni_italia' ); ?></a>
                                 </ul>
                             </div>
                             <!-- Fine link suggeriti -->
