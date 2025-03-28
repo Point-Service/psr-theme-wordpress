@@ -78,8 +78,7 @@ get_header();
                                                                 $terms = get_the_terms(get_the_ID(), 'category');
                                                                 if ($terms && !is_wp_error($terms)) :
                                                                     $term = $terms[0]; ?>
-                                                                    <span class="category-name">
-                                                                    o
+                                                                    <span class="category-name">                                                                    
                                                                         <font color="black"><?php echo strtoupper($term->name); ?></font>
                                                                     </span>
                                                                 <?php else : ?>
