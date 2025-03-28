@@ -1,4 +1,8 @@
 <?php
+global $i;
+
+$description = dci_get_meta('risposta', '_dci_domanda_frequente_', $post->ID);
+
 /**
  * The template for displaying 404 pages (not found)
  *
@@ -56,11 +60,7 @@ get_header();
         </div>
     </div>
 </main>
-<?php
-global $i;
 
-$description = dci_get_meta('risposta', '_dci_domanda_frequente_', $post->ID);
-?>
 
 
 <div class="accordion-item">
