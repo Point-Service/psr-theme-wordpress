@@ -17,31 +17,19 @@ get_header();
                 <div class="cmp-hero">
                     <section class="it-hero-wrapper bg-light align-items-start">
                         <div class="it-hero-text-wrapper pt-0 ps-0 pb-4 pb-lg-60">
-                            <table class="table table-bordered shadow-sm custom-table">
-                                <thead>
-                                    <tr>
-                                        <th colspan="2" class="text-center bg-primary text-white"><?php esc_html_e( 'Pagina non trovata', 'design_comuni_italia' ); ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="2" class="text-center text-dark">
-                                            <?php _e( 
-                                                'Siamo spiacenti, ma non siamo riusciti a trovare la pagina o la categoria che stavi cercando. <br><br> 
-                                                Ti consigliamo di tornare indietro o esplorare il nostro sito tramite il menu. Puoi anche cliccare il link qui sotto per tornare facilmente alla pagina precedente.',
-                                                'design_comuni_italia'
-                                            ); ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" class="text-center">
-                                            <a href="javascript:history.back();" title="Torna alla pagina precedente" class="btn btn-primary btn-lg">
-                                                <?php esc_html_e( 'Torna indietro', 'design_comuni_italia' ); ?>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <h2 class="text-center text-primary mb-4"><?php esc_html_e( 'Pagina non trovata', 'design_comuni_italia' ); ?></h2>
+                            <p class="text-center text-muted mb-5 fs-5">
+                                <?php _e( 
+                                    'Siamo spiacenti, ma non siamo riusciti a trovare la pagina o la categoria che stavi cercando. <br><br> 
+                                    Ti consigliamo di tornare indietro o esplorare il nostro sito tramite il menu. Puoi anche cliccare il link qui sotto per tornare facilmente alla pagina precedente.',
+                                    'design_comuni_italia'
+                                ); ?>
+                            </p>
+                            <div class="text-center">
+                                <a href="javascript:history.back();" title="Torna alla pagina precedente" class="btn btn-primary btn-lg">
+                                    <?php esc_html_e( 'Torna indietro', 'design_comuni_italia' ); ?>
+                                </a>
+                            </div>
                         </div>
                     </section>
                 </div>
