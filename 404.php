@@ -17,9 +17,9 @@ get_header();
                     <div class="cmp-hero">
                         <section class="it-hero-wrapper bg-white align-items-start">
                             <div class="it-hero-text-wrapper pt-0 ps-0 pb-4 pb-lg-60">
-                                <h1 class="text-black title-xxxlarge mb-2"><?php esc_html_e( '404', 'design_comuni_italia' ); ?></h1>
+                        <?php //     <h1 class="text-black title-xxxlarge mb-2"><?php esc_html_e( '404', 'design_comuni_italia' ); ?></h1> ?>
                                 <h2><?php esc_html_e( 'Pagina non trovata', 'design_comuni_italia' ); ?></h2>                              
-                                <p class="text-black titillium text-paragraph"><?php _e( '<b><H1>La pagina o categoria che stavi cercando non è stata trovata,</h1></b><br>si consiglia di ritornare indietro e riprovare più tardi.<br> <a href="javascript:history.back();" title="Torna alla pagina precedente">Torna indietro</a> o utilizza il menu per continuare la navigazione.', 'design_comuni_italia' ); ?></p>
+                                <p class="text-black titillium text-paragraph"><?php _e( '<b><h1 class="text-black title-xxxlarge mb-2">La pagina o categoria che stavi cercando non è stata trovata,</h1></b><br>si consiglia di ritornare indietro e riprovare più tardi.<br> <a href="javascript:history.back();" title="Torna alla pagina precedente">Torna indietro</a> o utilizza il menu per continuare la navigazione.', 'design_comuni_italia' ); ?></p>
                             </div>
                         </section>
                     </div>
