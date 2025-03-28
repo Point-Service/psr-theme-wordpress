@@ -64,7 +64,7 @@ get_header();
             <div class="row">
                 <?php if ( have_posts() ) : ?>
                     <?php while ( have_posts() ) : the_post(); ?>
-                        <div class="col-md-6 col-xl-4">
+                        <div class="col-md-6 col-xl-4 mb-4"> <!-- Aggiungi mb-4 per spazio tra le righe -->
                             <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
                                 <div class="card no-after rounded">
                                     <div class="row g-2 g-md-0 flex-md-column">
@@ -73,19 +73,18 @@ get_header();
                                                 <div class="category-top cmp-list-card-img__body">
                                                     <span class="category cmp-list-card-img__body-heading-title underline">
                                                         <span class="text fw-semibold">
-                                                            <svg class="icon icon-sm" aria-hidden="true"><use href="#it-file"></use></svg>
                                                             <?php
-                                                                // Aggiungi il tipo di contenuto o categoria, se esistente
+                                                                // Aggiungi solo la categoria, senza link o icona sopra il titolo
                                                                 $terms = get_the_terms(get_the_ID(), 'category');
                                                                 if ($terms && !is_wp_error($terms)) :
                                                                     $term = $terms[0]; ?>
-                                                                    <a class="text-decoration-none" href="<?php echo get_term_link($term->term_id); ?>">
+                                                                    <span class="category-name">
                                                                         <font color="black"><?php echo strtoupper($term->name); ?></font>
-                                                                    </a>
+                                                                    </span>
                                                                 <?php else : ?>
-                                                                    <a class="text-decoration-none" href="/dataset">
+                                                                    <span class="category-name">
                                                                         <font color="black">DATASET</font>
-                                                                    </a>
+                                                                    </span>
                                                                 <?php endif; ?>
                                                             <font color="grey" size="1"><span class="data"><?php echo get_the_date('d M Y'); ?></span></font>
                                                         </span>
@@ -140,3 +139,4 @@ get_header();
 </main>
 
 <?php get_footer(); ?>
+
