@@ -17,7 +17,7 @@ get_header();
                 <div class="cmp-hero">
                     <section class="it-hero-wrapper bg-light align-items-start">
                         <div class="it-hero-text-wrapper pt-0 ps-0 pb-4 pb-lg-60">
-                            <h2 class="text-center text-primary mb-4"><?php esc_html_e( 'Pagina non trovata', 'design_comuni_italia' ); ?></h2>
+                            <h2 class="text-center text-warning mb-4"><?php esc_html_e( 'Pagina non trovata', 'design_comuni_italia' ); ?></h2>
                             <p class="text-center text-muted mb-5 fs-5">
                                 <?php _e( 
                                     'Siamo spiacenti, ma non siamo riusciti a trovare la pagina o la categoria che stavi cercando. <br><br> 
