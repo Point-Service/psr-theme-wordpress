@@ -83,7 +83,7 @@ get_header();
                                                                     </span>
                                                                 <?php else : ?>
                                                                     <span class="category-name">
-                                                                        <font color="black">DATASET</font>
+                                                                        <font color="black"><?php echo $archive_title; ?></font>
                                                                     </span>
                                                                 <?php endif; ?>
                                                             <font color="grey" size="1"><span class="data"><?php echo get_the_date('d M Y'); ?></span></font>
