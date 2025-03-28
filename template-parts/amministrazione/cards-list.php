@@ -22,7 +22,11 @@
             </div>
         </div>
         <?php } ?>
-<?php echo dci_get_option("ck_dataset" , 'Amministrazione'); ?>   
+<?php echo get_option('amministrazione')['ck_dataset']; ?>   
+
+
+
+	    
             <?php
 
 		// Recupera il valore dell'opzione 'ck_dataset'
