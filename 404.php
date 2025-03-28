@@ -50,12 +50,11 @@ get_header();
                             <!-- Fine link suggeriti -->
                         </div>
                     </section>
-                    <br>
-k
-                <?php get_template_part("template-parts/common/valuta-servizio"); ?>
+                    <br>            
                 </div>
             </div>
         </div>
+    <?php get_template_part("template-parts/common/valuta-servizio"); ?>
     </div>
 </main>
 
