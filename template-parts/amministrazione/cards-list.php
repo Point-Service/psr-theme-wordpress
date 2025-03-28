@@ -22,8 +22,7 @@
             </div>
         </div>
         <?php } ?>
-
-y
+<?php echo dci_get_option("ck_dataset"); ?>   
             <?php
 
 		// Recupera il valore dell'opzione 'ck_dataset'
