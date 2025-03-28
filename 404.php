@@ -56,6 +56,7 @@ get_header();
         </div>
     </div>
 </main>
+<?php get_template_part("template-parts/home/ricerca"); ?>
 <?php get_template_part("template-parts/common/valuta-servizio"); ?>
 <?php
 get_footer();  
