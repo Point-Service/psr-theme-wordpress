@@ -11,9 +11,9 @@ $class = "petrol";
 get_header();
 ?>
     <div class="container" id="main-container">
-            <div class="row">
-                <div class="col px-lg-4">
-              <?php
+        <div class="row">
+            <div class="col px-lg-4">
+                <?php
                     // Ottieni il titolo dell'archivio senza prefissi
                     $archive_title = get_the_archive_title();
                     
@@ -30,37 +30,33 @@ get_header();
                                     <li class="breadcrumb-item active" aria-current="page">' . esc_html($archive_title) . '</li>
                                 </ol>
                               </nav>';                    
-                       
                     } else {
                         // Include il breadcrumb predefinito per altri casi
                         get_template_part('template-parts/common/breadcrumb');
                     }
-                    ?>
-
-                </div>
+                ?>
             </div>
-            <div class="row">
-                <div class="col-lg-8 px-lg-4 py-lg-2">
+        </div>
+        <div class="row">
+            <div class="col-lg-8 px-lg-4 py-lg-2">
                 <h1 data-audio> <?php the_archive_title(); ?></h1>
-                        <?php
-
-                        // Visualizza la descrizione appropriata in base al titolo dell'archivio
-                        if ($archive_title === 'Dataset') {
-                            echo '<p>In questa sezione sono disponibili i dataset pubblicati dall\'Autorità Nazionale Anticorruzione (ANAC), contenenti informazioni dettagliate sui contratti pubblici in Italia, inclusi appalti, stazioni appaltanti e altri dati rilevanti.</p>';
-                        } elseif ($archive_title === 'Incarichi') {
-                            echo '<p>Questa sezione fornisce informazioni sugli obblighi di pubblicazione riguardanti i titolari di incarichi di collaborazione o consulenza, come disciplinato dall\'articolo 15 del Decreto Legislativo 33/2013.</p>';
-                        }
-                        ?>
-                    <h2 class="visually-hidden">Dettagli del documento</h2>
-                </div>
-                <div class="col-lg-3 offset-lg-1">
-                    <?php
-                    $inline = true;
-                    get_template_part('template-parts/single/actions');
-                    ?>
-                </div>
+                <?php
+                    // Visualizza la descrizione appropriata in base al titolo dell'archivio
+                    if ($archive_title === 'Dataset') {
+                        echo '<p>In questa sezione sono disponibili i dataset pubblicati dall\'Autorità Nazionale Anticorruzione (ANAC), contenenti informazioni dettagliate sui contratti pubblici in Italia, inclusi appalti, stazioni appaltanti e altri dati rilevanti.</p>';
+                    } elseif ($archive_title === 'Incarichi') {
+                        echo '<p>Questa sezione fornisce informazioni sugli obblighi di pubblicazione riguardanti i titolari di incarichi di collaborazione o consulenza, come disciplinato dall\'articolo 15 del Decreto Legislativo 33/2013.</p>';
+                    }
+                ?>
             </div>
-        </div><!-- ./main-container -->
+            <div class="col-lg-3 offset-lg-1">
+                <?php
+                $inline = true;
+                get_template_part('template-parts/single/actions');
+                ?>
+            </div>
+        </div>
+    </div><!-- ./main-container -->
 
     <!-- Content Section with Grid Layout -->
     <section class="section bg-gray-light">
@@ -68,48 +64,63 @@ get_header();
             <div class="row">
                 <?php if ( have_posts() ) : ?>
                     <?php while ( have_posts() ) : the_post(); ?>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card border rounded shadow-sm p-4 h-100" style="border: 1px solid #ddd; background: #fff;">
-                                <div class="card-body">
-                                    <!-- Badge con il titolo dell'archivio -->
-                                    <span class="badge bg-light text-dark mb-2 px-3 py-1" style="font-weight: 600;">
-                                     <div class="col px-lg-4">
-                                        <?php the_archive_title(); ?>
-                                     </div>
-                                    </span>
-
-                                    <!-- Badge con la categoria/tipologia -->
-                                    <?php 
-                                        $terms = get_the_terms(get_the_ID(), 'category');
-                                        if ($terms && !is_wp_error($terms)) : ?>
-                                            <span class="badge bg-secondary text-white mb-2 px-3 py-1">
-                                                <?php echo esc_html($terms[0]->name); ?>
-                                            </span>
-                                    <?php endif; ?>
-
-                                    <!-- Titolo -->
-                                    <h5 class="card-title">
-                                        <a href="<?php the_permalink(); ?>" class="text-dark text-decoration-none"><?php the_title(); ?></a>
-                                    </h5>
-
-                                    <!-- Data di pubblicazione -->
-                                    <p class="text-muted small mb-2">Pubblicato il <?php echo get_the_date('d M Y'); ?></p>
-
-                                    <!-- Descrizione migliorata -->
-                                    <p class="card-text">
-                                        <?php 
-                                            $excerpt = get_the_excerpt();
-                                            if (!empty($excerpt)) {
-                                                echo esc_html($excerpt);
-                                            } else {
-                                                $content = wp_strip_all_tags(get_the_content());
-                                                echo !empty($content) ? wp_trim_words($content, 20, '...') : '';
-                                            }
-                                        ?>
-                                    </p>
-
-                                    <!-- Link alla pagina -->
-                                    <a href="<?php the_permalink(); ?>" class="text-primary text-decoration-none">Vai alla pagina →</a>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
+                                <div class="card no-after rounded">
+                                    <div class="row g-2 g-md-0 flex-md-column">
+                                        <div class="col-12 order-1 order-md-2">
+                                            <div class="card-body card-img-none rounded-top">
+                                                <div class="category-top cmp-list-card-img__body">
+                                                    <span class="category cmp-list-card-img__body-heading-title underline">
+                                                        <span class="text fw-semibold">
+                                                            <svg class="icon icon-sm" aria-hidden="true"><use href="#it-file"></use></svg>
+                                                            <?php
+                                                                // Aggiungi il tipo di contenuto o categoria, se esistente
+                                                                $terms = get_the_terms(get_the_ID(), 'category');
+                                                                if ($terms && !is_wp_error($terms)) :
+                                                                    $term = $terms[0]; ?>
+                                                                    <a class="text-decoration-none" href="<?php echo get_term_link($term->term_id); ?>">
+                                                                        <font color="black"><?php echo strtoupper($term->name); ?></font>
+                                                                    </a>
+                                                                <?php else : ?>
+                                                                    <a class="text-decoration-none" href="/dataset">
+                                                                        <font color="black">DATASET</font>
+                                                                    </a>
+                                                                <?php endif; ?>
+                                                            <font color="grey" size="1"><span class="data"><?php echo get_the_date('d M Y'); ?></span></font>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <a class="text-decoration-none" href="<?php the_permalink(); ?>">
+                                                    <h3 class="h5 card-title"><?php the_title(); ?></h3>
+                                                </a>
+                                                
+                                                <p class="card-text d-none d-md-block">
+                                                    <?php
+                                                        // Usa l'estratto del contenuto o un breve riassunto
+                                                        $description = get_the_excerpt();
+                                                        if (!empty($description)) {
+                                                            echo esc_html($description);
+                                                        } else {
+                                                            $content = wp_strip_all_tags(get_the_content());
+                                                            echo !empty($content) ? wp_trim_words($content, 20, '...') : '';
+                                                        }
+                                                    ?>
+                                                </p>
+                                                <hr style="margin-bottom: 40px; width: 200px; height: 1px; background-color: grey; border: none;">
+                                                <a class="read-more ps-3"
+                                                   href="<?php echo esc_url(get_permalink($post->ID)); ?>"
+                                                   aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
+                                                   title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
+                                                   style="display: inline-flex; align-items: center; margin-top: 30px;">
+                                                    <span class="text">Vai alla pagina</span>
+                                                    <svg class="icon">
+                                                        <use xlink:href="#it-arrow-right"></use>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
