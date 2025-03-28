@@ -79,6 +79,7 @@ get_header();
                                                                 if ($terms && !is_wp_error($terms)) :
                                                                     $term = $terms[0]; ?>
                                                                     <span class="category-name">
+                                                                    o
                                                                         <font color="black"><?php echo strtoupper($term->name); ?></font>
                                                                     </span>
                                                                 <?php else : ?>
