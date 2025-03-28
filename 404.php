@@ -30,6 +30,21 @@ get_header();
                                     <?php esc_html_e( 'Torna indietro', 'design_comuni_italia' ); ?>
                                 </a>
                             </div>
+
+                            <!-- Inizio link suggeriti -->
+                            <div class="text-center mt-5">
+                                <p class="text-muted"><?php esc_html_e( 'Forse stavi cercando:', 'design_comuni_italia' ); ?></p>
+                                <ul class="list-unstyled">
+                                    <li><a href="/luoghi" class="text-decoration-none text-primary"><?php esc_html_e( 'Luoghi', 'design_comuni_italia' ); ?></a></li>
+                                    <li><a href="/eventi" class="text-decoration-none text-primary"><?php esc_html_e( 'Eventi', 'design_comuni_italia' ); ?></a></li>
+                                    <li><a href="/notizie" class="text-decoration-none text-primary"><?php esc_html_e( 'Notizie', 'design_comuni_italia' ); ?></a></li>
+                                    <li><a href="/comunicati" class="text-decoration-none text-primary"><?php esc_html_e( 'Comunicati', 'design_comuni_italia' ); ?></a></li>
+                                    <li><a href="/avvisi" class="text-decoration-none text-primary"><?php esc_html_e( 'Avvisi', 'design_comuni_italia' ); ?></a></li>
+                                    <li><a href="/servizi" class="text-decoration-none text-primary"><?php esc_html_e( 'Servizi', 'design_comuni_italia' ); ?></a></li>
+                                </ul>
+                            </div>
+                            <!-- Fine link suggeriti -->
+
                         </div>
                     </section>
                     <br><br><br>
@@ -40,5 +55,5 @@ get_header();
 </main>
 
 <?php
-get_footer();
+get_footer();  
 
