@@ -35,12 +35,12 @@ get_header();
                             <div class="text-center mt-5">
                                 <p class="text-muted"><?php esc_html_e( 'Forse stavi cercando:', 'design_comuni_italia' ); ?></p>
                                 <ul class="list-unstyled">
-                                    <li><a href="/luoghi" class="text-decoration-none text-primary"><?php esc_html_e( 'Luoghi', 'design_comuni_italia' ); ?></a></li>
-                                    <li><a href="/eventi" class="text-decoration-none text-primary"><?php esc_html_e( 'Eventi', 'design_comuni_italia' ); ?></a></li>
-                                    <li><a href="/tipi_notizia/notizie" class="text-decoration-none text-primary"><?php esc_html_e( 'Notizie', 'design_comuni_italia' ); ?></a></li>
-                                    <li><a href="/tipi_notizia/comunicati" class="text-decoration-none text-primary"><?php esc_html_e( 'Comunicati', 'design_comuni_italia' ); ?></a></li>
-                                    <li><a href="/tipi_notizia/avvisi" class="text-decoration-none text-primary"><?php esc_html_e( 'Avvisi', 'design_comuni_italia' ); ?></a></li>
-                                    <li><a href="/servizi" class="text-decoration-none text-primary"><?php esc_html_e( 'Servizi', 'design_comuni_italia' ); ?></a></li>
+                                    <li><a href="/luoghi" class="text-decoration-none text-primary"><?php esc_html_e( 'Luoghi', 'design_comuni_italia' ); ?></a>
+                                    <a href="/eventi" class="text-decoration-none text-primary"><?php esc_html_e( 'Eventi', 'design_comuni_italia' ); ?></a>
+                                    <a href="/tipi_notizia/notizie" class="text-decoration-none text-primary"><?php esc_html_e( 'Notizie', 'design_comuni_italia' ); ?></a>
+                                    <a href="/tipi_notizia/comunicati" class="text-decoration-none text-primary"><?php esc_html_e( 'Comunicati', 'design_comuni_italia' ); ?></a>
+                                    <a href="/tipi_notizia/avvisi" class="text-decoration-none text-primary"><?php esc_html_e( 'Avvisi', 'design_comuni_italia' ); ?></a>
+                                    <a href="/servizi" class="text-decoration-none text-primary"><?php esc_html_e( 'Servizi', 'design_comuni_italia' ); ?></a>
                                 </ul>
                             </div>
                             <!-- Fine link suggeriti -->
