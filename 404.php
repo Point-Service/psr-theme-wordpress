@@ -40,7 +40,10 @@ get_header();
                                     <a href="/tipi_notizia/notizie" class="text-decoration-none text-primary"><?php esc_html_e( 'Notizie', 'design_comuni_italia' ); ?></a>, 
                                     <a href="/tipi_notizia/comunicati" class="text-decoration-none text-primary"><?php esc_html_e( 'Comunicati', 'design_comuni_italia' ); ?></a>, 
                                     <a href="/tipi_notizia/avvisi" class="text-decoration-none text-primary"><?php esc_html_e( 'Avvisi', 'design_comuni_italia' ); ?></a>, 
-                                    <a href="/servizi" class="text-decoration-none text-primary"><?php esc_html_e( 'Servizi', 'design_comuni_italia' ); ?></a> 
+                                    <a href="/servizi" class="text-decoration-none text-primary"><?php esc_html_e( 'Servizi', 'design_comuni_italia' ); ?></a><br>
+                                    <a href="/amministrazione/documenti-e-dati" class="text-decoration-none text-primary"><?php esc_html_e( 'Documenti e Dati', 'design_comuni_italia' ); ?></a>, 
+                                    <a href="/amministrazione/uffici" class="text-decoration-none text-primary"><?php esc_html_e( 'Uffici', 'design_comuni_italia' ); ?></a>, 
+                                    
                                 </ul>
                             </div>
                             <!-- Fine link suggeriti -->
