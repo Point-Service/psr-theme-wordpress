@@ -23,17 +23,12 @@
         </div>
         <?php } ?>
 
-
-
-
-	    
             <?php
 
-		// Recupera il valore dell'opzione 'ck_dataset'
               
                 $ck_dataset = dci_get_option('ck_dataset', 'Amministrazione');
 
-		// Verifica se l'opzione è impostata su 'true'
+		// Verifica se l'opzione non è impostata su 'false' entra.
 		if ( 'false' !== $ck_dataset ) :
                  ?>
                 <!-- Blocco HTML da visualizzare -->
