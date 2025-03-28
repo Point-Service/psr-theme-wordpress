@@ -27,7 +27,9 @@
             <?php
 
 		// Recupera il valore dell'opzione 'ck_dataset'
-                $ck_dataset = get_option( 'amministrazione_ck_dataset'); // 'true' è il valore predefinito se l'opzione non è impostata
+              
+                $ck_dataset = dci_get_option('ck_dataset', 'amministrazione');
+
 echo $ck_dataset;
 
 		// Verifica se l'opzione è impostata su 'true'
