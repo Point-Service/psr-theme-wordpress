@@ -16,7 +16,7 @@ get_header();
                 <?php get_template_part("template-parts/common/breadcrumb"); ?>
                 <div class="cmp-hero">
                     <section class="it-hero-wrapper bg-light align-items-start">
-                        <div class="it-hero-text-wrapper pt-0 ps-0 pb-4 pb-lg-60"><br>
+                        <div class="it-hero-text-wrapper pt-0 ps-0 pb-4 pb-lg-60"><br><br>
                             <h2 class="text-center text-danger mb-4"><?php esc_html_e( 'Pagina non trovata', 'design_comuni_italia' ); ?></h2>
                             <p class="text-center text-muted mb-5 fs-5">
                                 <?php _e( 
