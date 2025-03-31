@@ -303,7 +303,7 @@ get_header();
                             </section>
                         <?php } ?>
 
-                        <?php if ($formati && $url_documento) { ?>
+                        <?php if ($formati) { ?>
                             <section id="formati_disponibili" class="it-page-section mb-5">
                                 <h4>Formati disponibili</h4>
                                 <div class="richtext-wrapper lora">
