@@ -230,16 +230,11 @@ get_header();
                         <?php } ?>
 
                         <?php if ($url_documento || $file_documento) { ?>
-                                                                      
-                            <section id="documento" class="it-page-section mb-5">   
+                            <section id="documento" class="it-page-section mb-5">
                                 <h4>Documento</h4>
                                 <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                                     <?php
-                                      // Procedi solo se l'URL è valido
-                                        if ($documento_url) {
-                                        $documento_id = attachment_url_to_postid($documento_url);
-                                        $documento_post = get_post($documento_id);
-                                    
+                                    if ($file_documento) {
                                         $documento_id = attachment_url_to_postid($file_documento);
                                         $documento = get_post($documento_id);
                                         ?>
@@ -253,15 +248,14 @@ get_header();
                                                         aria-label="Scarica il documento <?php echo $documento->post_title; ?>"
                                                         title="Scarica il documento <?php echo $documento->post_title; ?>">
                                                         <?php echo $documento->post_title; ?>
-                                                        (<?php  echo getFileSizeAndFormat($file_documento); ?>)
+                                                        (<?php echo getFileSizeAndFormat($file_documento); ?>)
                                                     </a>
                                                 </h5>
                                             </div>
                                         </div>
                                     <?php }
 
-                                         // Se ci sono URL documenti (non necessariamente allegati, quindi anche singoli URL)
-                                         if ($url_documento)  { ?>
+                                    if ($url_documento) { ?>
                                         <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
                                             <svg class="icon" aria-hidden="true">
                                                 <use xlink:href="#it-clip"></use>
@@ -302,7 +296,7 @@ get_header();
                                 </div>
                             </section>
                         <?php } ?>
-vvvvvvvvvvvvvvvvvv
+
                         <?php if ($formati) { ?>
                             <section id="formati_disponibili" class="it-page-section mb-5">
                                 <h4>Formati disponibili</h4>
