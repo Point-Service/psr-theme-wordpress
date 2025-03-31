@@ -1,43 +1,36 @@
 <?php
+    // Per selezionare i contenuti in evidenza tramite flag
+    // $luoghi = dci_get_highlighted_posts(['luogo'], 6);
+
+    //Per selezionare i contenuti in evidenza tramite configurazione
     $luoghi = dci_get_option('luoghi_evidenziati','vivi');
-    $url_luoghi = get_permalink(get_page_by_title('Luoghi'));
-    
+
+    $url_luoghi = get_permalink( get_page_by_title('Luoghi') );
     if (is_array($luoghi) && count($luoghi)) {
 ?>
-<div class="bg-light py-5">
+<div class="bg-grey-dsk py-5">
     <div class="container">
-        <h2 class="title-xxlarge mb-4 text-center fw-bold">Luoghi in evidenza</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <h2 class="title-xxlarge mb-4">Luoghi in evidenza</h2>
+        <div class="row g-4">
             <?php
                 foreach ($luoghi as $luogo_id) {
+                    $load_card_type = 'luogo';
                     $post = get_post($luogo_id);
-                    $title = get_the_title($post);
-                    $excerpt = get_the_excerpt($post);
-                    $permalink = get_permalink($post);
-                    $image = get_the_post_thumbnail_url($post, 'medium');
-                    $category = get_the_category($post);
-                    $category_name = $category ? $category[0]->name : '';
-
-                    ?>
-                    <div class="col">
-                        <div class="card h-100 shadow-sm border-0">
-                            <img src="<?php echo esc_url($image); ?>" class="card-img-top" alt="<?php echo esc_attr($title); ?>">
-                            <div class="card-body">
-                                <small class="text-primary text-uppercase fw-bold"><?php echo esc_html($category_name); ?></small>
-                                <h5 class="card-title fw-bold"><?php echo esc_html($title); ?></h5>
-                                <p class="card-text text-muted"><?php echo esc_html($excerpt); ?></p>
-                                <a href="<?php echo esc_url($permalink); ?>" class="text-primary fw-bold">Leggi di più →</a>
-                            </div>
-                        </div>
-                    </div>
-                    <?php
+                    get_template_part("template-parts/luogo/card-full");
                 }
             ?>
-        </div>
-        <div class="d-flex justify-content-center mt-4">
-            <a href="<?php echo esc_url($url_luoghi); ?>" class="btn btn-primary px-5 py-3 rounded-pill fw-bold">
-                Tutti i luoghi
-            </a>
+            <div class="d-flex justify-content-end">
+                <button
+                    type="button"
+                    class="btn btn-primary px-5 py-3 full-mb"
+                    label="Tutti i luoghi" 
+                    buttonNext=true
+                    data-element="live-button-locations"
+                    onclick="location.href='./luoghi'"
+                >
+                    <span class="">Tutti i luoghi</span>
+                </button>
+            </div>
         </div>
     </div>
 </div>
