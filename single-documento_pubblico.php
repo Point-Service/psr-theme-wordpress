@@ -302,7 +302,7 @@ get_header();
                                 </div>
                             </section>
                         <?php } ?>
-
+vvvvvvvvvvvvvvvvvv
                         <?php if ($formati) { ?>
                             <section id="formati_disponibili" class="it-page-section mb-5">
                                 <h4>Formati disponibili</h4>
