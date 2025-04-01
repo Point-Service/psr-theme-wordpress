@@ -228,7 +228,7 @@ get_header();
                                 </div>
                             </section>
                         <?php } ?>
-jjjjjjjjjj
+
                          <?php 
                             try {
                                 if ($url_documento || $file_documento) { ?>
