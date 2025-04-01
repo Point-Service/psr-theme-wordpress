@@ -12,21 +12,34 @@
         //var_dump($link_documento);
     }
 
-try {
     if ($post->post_type == 'dataset') {
         $tipo = '';
-        // Assicurati che dci_get_meta("data_modifica") restituisca un valore valido
-    //    $arrdata = explode('-', date('d-m-Y', dci_get_meta("data_modifica")));
+        // Recupera il valore di "data_modifica"
+        $data_modifica = dci_get_meta("data_modifica");
+        
+        // Verifica se il valore di "data_modifica" è valido e non vuoto
+        if (!empty($data_modifica) && strtotime($data_modifica) !== false) {
+            // Se è valido, esplodi la data
+            $arrdata = explode('-', date('d-m-Y', strtotime($data_modifica)));
+        } else {
+            // Se non è valido, lascia arrdata vuoto
+            $arrdata = [];
+        }
     } else {
-        // Assicurati che dci_get_meta("data_protocollo") restituisca un valore valido
-        $arrdata = explode('-', dci_get_meta("data_protocollo"));
-        $tipo = get_the_terms($post->term_id, 'tipi_documento')[0];
+        // Recupera il valore di "data_protocollo"
+        $data_protocollo = dci_get_meta("data_protocollo");
+        
+        // Assicurati che "data_protocollo" sia valido
+        if (!empty($data_protocollo) && strtotime($data_protocollo) !== false) {
+            $arrdata = explode('-', date('d-m-Y', strtotime($data_protocollo)));
+        } else {
+            $arrdata = [];
+        }
+        
+        // Imposta tipo in base al termine associato
+        $tipo = get_the_terms($post->term_id, 'tipi_documento')[0] ?? ''; // Usa null coalescing per evitare errori
     }
-} catch (Exception $e) {
-    // In caso di errore, setta arrdata come array vuoto
-    $arrdata = [];
-    $tipo = '';  // Imposta anche tipo come stringa vuota nel caso di errore
-}
+
 
 
     // Verifica se la data modificata è disponibile e valida
