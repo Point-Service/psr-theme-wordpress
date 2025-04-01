@@ -241,7 +241,7 @@ get_header();
                                                 
                                                 $documento = get_post($documento_id);
                                                 
-                                                if ($documento_id && $documento_id != 0) { // Controlla che l'ID del documento sia valido
+                                             if ($documento_id && $documento_id != 0) { // Controlla che l'ID del documento sia valido
                                                 $documento = get_post($documento_id);
                                                 if ($documento) { // Verifica che il post del documento esista
                                                     ?>
@@ -281,7 +281,8 @@ get_header();
                                             <?php } ?>
                                         </div><!-- ./card-wrapper -->
                                     </section>
-                                <?php } 
+                                <?php }
+                                            }
                          ?>           
 
                         <section id="ufficio_responsabile" class="it-page-section mb-5">
