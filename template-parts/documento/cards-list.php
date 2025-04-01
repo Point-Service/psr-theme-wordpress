@@ -12,13 +12,22 @@
         //var_dump($link_documento);
     }
 
+try {
     if ($post->post_type == 'dataset') {
         $tipo = '';
+        // Assicurati che dci_get_meta("data_modifica") restituisca un valore valido
         $arrdata = explode('-', date('d-m-Y', dci_get_meta("data_modifica")));
     } else {
+        // Assicurati che dci_get_meta("data_protocollo") restituisca un valore valido
         $arrdata = explode('-', dci_get_meta("data_protocollo"));
         $tipo = get_the_terms($post->term_id, 'tipi_documento')[0];
     }
+} catch (Exception $e) {
+    // In caso di errore, setta arrdata come array vuoto
+    $arrdata = [];
+    $tipo = '';  // Imposta anche tipo come stringa vuota nel caso di errore
+}
+
 
     // Verifica se la data modificata è disponibile e valida
    // $data_modifica = dci_get_meta("data_modifica");
