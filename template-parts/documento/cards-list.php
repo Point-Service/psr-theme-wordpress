@@ -16,7 +16,7 @@ try {
     if ($post->post_type == 'dataset') {
         $tipo = '';
         // Assicurati che dci_get_meta("data_modifica") restituisca un valore valido
-        $arrdata = explode('-', date('d-m-Y', dci_get_meta("data_modifica")));
+    //    $arrdata = explode('-', date('d-m-Y', dci_get_meta("data_modifica")));
     } else {
         // Assicurati che dci_get_meta("data_protocollo") restituisca un valore valido
         $arrdata = explode('-', dci_get_meta("data_protocollo"));
