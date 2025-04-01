@@ -249,8 +249,8 @@ get_header();
                                                                 <a class="text-decoration-none" href="<?php echo $file_documento; ?>"
                                                                     aria-label="Scarica il documento <?php echo $documento->post_title; ?>"
                                                                     title="Scarica il documento <?php echo $documento->post_title; ?>">
-                                                                    <?php echo $documento->post_title; ?>
-                                                                    (<?php echo getFileSizeAndFormat($file_documento); ?>)                                                                    
+                                                                    <?php echo // $documento->post_title; ?>
+                                                                    (<?php echo // getFileSizeAndFormat($file_documento); ?>)                                                                    
                                                                 </a>
                                                             </h5>
                                                         </div>
