@@ -237,8 +237,8 @@ get_header();
                                             <?php
                                             if ($file_documento) {
                                                 
-                                                $documento_id = attachment_url_to_postid($file_documento);
-                                              //  $documento = get_post($documento_id);
+                                                $documento_id = '';
+                                                $documento = get_post($documento_id);
                                                 
                                                 if ($documento) { // Verifica che il documento sia valido
                                                     ?>
