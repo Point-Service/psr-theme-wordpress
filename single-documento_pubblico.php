@@ -238,9 +238,9 @@ get_header();
                                             if ($file_documento) {
                                                 
                                                 $documento_id = attachment_url_to_postid($file_documento);
-                                                $documento = get_post($documento_id);
+                                              //  $documento = get_post($documento_id);
                                                 
-                                                if ($documento1) { // Verifica che il documento sia valido
+                                                if ($documento) { // Verifica che il documento sia valido
                                                     ?>
                                                     <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
                                                         <svg class="icon" aria-hidden="true">
