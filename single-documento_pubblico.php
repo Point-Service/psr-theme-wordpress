@@ -230,7 +230,6 @@ get_header();
                         <?php } ?>
 
                          <?php 
-                            try {
                                 if ($url_documento || $file_documento) { ?>
                                     <section id="documento" class="it-page-section mb-5">
                                         <h4>Documento</h4>
@@ -251,7 +250,10 @@ get_header();
                                                                     aria-label="Scarica il documento <?php echo $documento->post_title; ?>"
                                                                     title="Scarica il documento <?php echo $documento->post_title; ?>">
                                                                     <?php echo $documento->post_title; ?>
-                                                                    (<?php echo getFileSizeAndFormat($file_documento); ?>)
+
+
+
+                                                                    
                                                                 </a>
                                                             </h5>
                                                         </div>
@@ -278,11 +280,6 @@ get_header();
                                         </div><!-- ./card-wrapper -->
                                     </section>
                                 <?php } 
-                            } catch (Exception $e) {
-                                // In caso di errore, non stampiamo nulla
-                                // Puoi anche loggare l'errore se necessario:
-                                // error_log($e->getMessage());
-                            }
                          ?>           
 
                         <section id="ufficio_responsabile" class="it-page-section mb-5">
