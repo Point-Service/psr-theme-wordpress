@@ -236,8 +236,8 @@ get_header();
                                         <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                                             <?php
                                             if ($file_documento) {
-                                                $documento_id = attachment_url_to_postid($file_documento);
-                                                $documento = get_post($documento_id);
+                                           //     $documento_id = attachment_url_to_postid($file_documento);
+                                              //  $documento = get_post($documento_id);
                                                 if ($documento) { // Verifica che il documento sia valido
                                                     ?>
                                                     <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
@@ -249,8 +249,8 @@ get_header();
                                                                 <a class="text-decoration-none" href="<?php echo $file_documento; ?>"
                                                                     aria-label="Scarica il documento <?php echo $documento->post_title; ?>"
                                                                     title="Scarica il documento <?php echo $documento->post_title; ?>">
-                                                                    <?php echo // $documento->post_title; ?>
-                                                                    (<?php echo // getFileSizeAndFormat($file_documento); ?>)                                                                    
+                                                                    <?php echo  $documento->post_title; ?>
+                                                                    (<?php echo  getFileSizeAndFormat($file_documento); ?>)                                                                    
                                                                 </a>
                                                             </h5>
                                                         </div>
@@ -266,10 +266,10 @@ get_header();
                                                     </svg>
                                                     <div class="card-body">
                                                         <h5 class="card-title">
-                                                            <a class="text-decoration-none" href="<?php // echo $url_documento; ?>"
+                                                            <a class="text-decoration-none" href="<?php echo $url_documento; ?>"
                                                                 aria-label="Scarica il documento" title="Scarica il documento">
                                                                 Scarica il documento
-                                                          //  </a>
+                                                            </a>
                                                         </h5>
                                                     </div>
                                                 </div>
