@@ -250,10 +250,7 @@ get_header();
                                                                     aria-label="Scarica il documento <?php echo $documento->post_title; ?>"
                                                                     title="Scarica il documento <?php echo $documento->post_title; ?>">
                                                                     <?php echo $documento->post_title; ?>
-
-
-
-                                                                    
+                                                                    (<?php echo getFileSizeAndFormat($file_documento); ?>)                                                                    
                                                                 </a>
                                                             </h5>
                                                         </div>
@@ -269,10 +266,10 @@ get_header();
                                                     </svg>
                                                     <div class="card-body">
                                                         <h5 class="card-title">
-                                                            <a class="text-decoration-none" href="<?php echo $url_documento; ?>"
+                                                            <a class="text-decoration-none" href="<?php // echo $url_documento; ?>"
                                                                 aria-label="Scarica il documento" title="Scarica il documento">
                                                                 Scarica il documento
-                                                            </a>
+                                                          //  </a>
                                                         </h5>
                                                     </div>
                                                 </div>
