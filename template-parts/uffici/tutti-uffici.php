@@ -70,23 +70,7 @@ global $the_query, $load_posts, $load_card_type;
                     $load_card_type = 'unita_organizzativa';
                     foreach ($posts as $post) {get_template_part('template-parts/uffici/cards-list');
                 }?>
-            </div>
-
-    <?php
-
-              
-               $ck_commissario_osl = dci_get_option('ck_commissario_osl', 'Amministrazione');
-
-	
-		if ( 'true' == $ck_commissario_osl ) :
-                 ?>
-dfsssssssssssssssssssssssssssss
-            <?php
-            endif;
-            ?>
-
-
-            
+            </div>            
             <?php get_template_part("template-parts/search/more-results"); ?>
         </div>
     </form>
