@@ -76,8 +76,8 @@ function dci_register_pagina_amministrazione_options(){
 
     $amministrazione_options->add_field( array(
         'id' => $prefix . 'amministrazione_options1',
-        'name'        => __( 'Amministrazione', 'design_comuni_italia' ),
-        'desc'    => __('Con questa funzione puoi attivare la parte aggiuntiva <strong><span style="color: red;">Commissario OSL</span></strong>. Si ricorda che bisogna creare un Ufficio con il nome "<strong><span style="color: red;">Commissario OSL</span></strong>" e in Novità la tipologia "<strong><span style="color: red;">Avvisi OSL</span></strong>" e in Documenti e dati creare la Tipologia "<strong><span style="color: red;">Documenti OSL</span></strong>" ', 'design_comuni_italia'),
+        'name'        => __( 'COMMISSARIO OSL', 'design_comuni_italia' ),
+        'desc'    => __('Per la gestione del commissario osl bisogna creare una pagina con Relativo template. Si ricorda che bisogna creare un Ufficio con il nome "<strong><span style="color: red;">Commissario OSL</span></strong>" e in Novità la tipologia "<strong><span style="color: red;">Avvisi OSL</span></strong>" e in Documenti e dati creare la Tipologia "<strong><span style="color: red;">Documenti OSL</span></strong>" ', 'design_comuni_italia'),
         'type' => 'title',
     ) );
 
