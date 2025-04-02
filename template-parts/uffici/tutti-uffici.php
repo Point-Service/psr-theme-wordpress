@@ -78,7 +78,7 @@ global $the_query, $load_posts, $load_card_type;
                $ck_commissario_osl = dci_get_option('ck_commissario_osl', 'Amministrazione');
 
 	
-		if ( 'true' !== $ck_commissario_osl ) :
+		if ( 'true' == $ck_commissario_osl ) :
                  ?>
 dfsssssssssssssssssssssssssssss
             <?php
