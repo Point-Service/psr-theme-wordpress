@@ -72,6 +72,21 @@ function dci_register_pagina_amministrazione_options(){
             ),
         ));
 
+        $amministrazione_options->add_field(array(
+            'id'      => $prefix . 'ck_commissario_osl',
+            'name'    => __('Visualizza e attiva la sezione Commissario OSL.', 'design_comuni_italia'),
+            'desc'    => __('Con questa funziona puoi attivare la parte aggiuntiva Commissario OSL. Si ricorda che bisogna creare un Ufficio con il nome "Commissario OSL" ', 'design_comuni_italia'),
+            'type'    => 'radio_inline',
+            'default' => 'true', // Imposta il valore predefinito su 'true'
+            'options' => array(
+                'true'  => __('Sì', 'design_comuni_italia'),
+                'false' => __('No', 'design_comuni_italia'),
+            ),
+            'attributes' => array(
+                'data-conditional-value' => 'true',
+            ),
+        ));
+
 
     
 
