@@ -75,7 +75,7 @@ function dci_register_pagina_amministrazione_options(){
         $amministrazione_options->add_field(array(
             'id'      => $prefix . 'ck_commissario_osl',
             'name'    => __('Visualizza e attiva la sezione Commissario OSL.', 'design_comuni_italia'),
-            'desc'    => __('Con questa funziona puoi attivare la parte aggiuntiva Commissario OSL. Si ricorda che bisogna creare un Ufficio con il nome "Commissario OSL" e in Novità la tipologia "Avvisi OSL" e in Documenti e dati creare la Tipologia "Documenti OSL" ', 'design_comuni_italia'),
+            'desc'    => __('Con questa funziona puoi attivare la parte aggiuntiva Commissario OSL. Si ricorda che bisogna creare un Ufficio con il nome <strong>"Commissario OSL"</strong> e in Novità la tipologia "Avvisi OSL" e in Documenti e dati creare la Tipologia "Documenti OSL" ', 'design_comuni_italia'),
             'type'    => 'radio_inline',
             'default' => 'true', // Imposta il valore predefinito su 'true'
             'options' => array(
