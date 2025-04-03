@@ -10,7 +10,7 @@
         <div class="img-responsive">
           <div class="img-wrapper">
             <!-- <?php dci_get_img($img); ?> -->
-            <img src="https://cdn.creazilla.com/digital-illustrations/1719878/background-blue-background-blue-design-illustration-xl.png">
+            <img src="/assets/img/pnnr_sfo.png">
           </div>
         </div>
       </div>
