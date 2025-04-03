@@ -4,7 +4,7 @@
  * Definisce la tassonomia Tipi Commissario
  */
 add_action( 'init', 'dci_register_taxonomy_tipi_commissario', -10 );
-function dci_register_taxonomy_tipi_progetto() {
+function dci_register_taxonomy_tipi_commissario() {
 
     $labels = array(
         'name'              => _x( 'Tipi di Progetto', 'taxonomy general name', 'design_comuni_italia' ),
