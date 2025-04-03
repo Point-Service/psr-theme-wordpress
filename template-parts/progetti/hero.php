@@ -10,7 +10,7 @@
         <div class="img-responsive">
           <div class="img-wrapper">
             <!-- <?php dci_get_img($img); ?> -->
-            <img src="/assets/img/pnnr_sfo.png">
+            <img src="assets/img/pnnr_sfo.png">
           </div>
         </div>
       </div>
