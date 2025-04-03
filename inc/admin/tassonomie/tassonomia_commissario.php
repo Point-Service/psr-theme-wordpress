@@ -7,15 +7,15 @@ add_action( 'init', 'dci_register_taxonomy_tipi_commissario', -10 );
 function dci_register_taxonomy_tipi_commissario() {
 
     $labels = array(
-        'name'              => _x( 'Tipi di Progetto', 'taxonomy general name', 'design_comuni_italia' ),
-        'singular_name'     => _x( 'Tipo di Progetto', 'taxonomy singular name', 'design_comuni_italia' ),
-        'search_items'      => __( 'Cerca Tipo di Progetto', 'design_comuni_italia' ),
-        'all_items'         => __( 'Tutti i Tipi di Progetti ', 'design_comuni_italia' ),
-        'edit_item'         => __( 'Modifica il Tipo di Progetto', 'design_comuni_italia' ),
-        'update_item'       => __( 'Aggiorna il Tipo di Progetto', 'design_comuni_italia' ),
-        'add_new_item'      => __( 'Aggiungi un Tipo di Progetto', 'design_comuni_italia' ),
-        'new_item_name'     => __( 'Nuovo Tipo di Progetto', 'design_comuni_italia' ),
-        'menu_name'         => __( 'Tipi di Progetto', 'design_comuni_italia' ),
+        'name'              => _x( 'Tipi di Documenti', 'taxonomy general name', 'design_comuni_italia' ),
+        'singular_name'     => _x( 'Tipo di Documento', 'taxonomy singular name', 'design_comuni_italia' ),
+        'search_items'      => __( 'Cerca Tipo di Documento', 'design_comuni_italia' ),
+        'all_items'         => __( 'Tutti i Tipi di Documento ', 'design_comuni_italia' ),
+        'edit_item'         => __( 'Modifica il Tipo di Documento', 'design_comuni_italia' ),
+        'update_item'       => __( 'Aggiorna il Tipo di Documento', 'design_comuni_italia' ),
+        'add_new_item'      => __( 'Aggiungi un Tipo di Documento', 'design_comuni_italia' ),
+        'new_item_name'     => __( 'Nuovo Tipo di Documento', 'design_comuni_italia' ),
+        'menu_name'         => __( 'Tipi di Documento', 'design_comuni_italia' ),
     );
 
     $args = array(
