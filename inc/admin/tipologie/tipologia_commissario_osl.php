@@ -38,7 +38,7 @@ function dci_register_post_type_commissario() {
 add_action( 'edit_form_after_title', 'dci_commissario_add_content_after_title' );
 function dci_commissario_add_content_after_title($post) {
     if($post->post_type == "commissario")
-        _e('<span><i>il <b>Titolo</b> è il <b>Titolo delle commissario PNRR</b>.</i></span><br><br>', 'design_comuni_italia' );
+        _e('<span><i>il <b>Titolo</b> è il <b>Titolo del Documento del Commissario OSL</b>.</i></span><br><br>', 'design_comuni_italia' );
 }
 
 add_action( 'cmb2_init', 'dci_add_commissario_metaboxes' );
