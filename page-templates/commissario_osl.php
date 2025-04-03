@@ -1,7 +1,7 @@
 <?php
-/* Template Name: Commissario OSL
+/* Template Name: Commissario-OSL
  *
- * commissario_osl template file
+ * Commissario template file
  *
  * @package Design_Comuni_Italia
  */
