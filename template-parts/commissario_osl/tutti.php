@@ -24,8 +24,8 @@ global $the_query, $load_posts, $load_card_type;
     );
 
     $the_query = new WP_Query( $args );
-  echo 'ds';
-     echo $load_card_type;
+
+
 
 ?>
 
