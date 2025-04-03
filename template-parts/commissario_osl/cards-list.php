@@ -1,7 +1,5 @@
 <?php 
 
-echo 'dsadsadsadsadsadsadsadsadsa';
-
 global $post;
 
 
