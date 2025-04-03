@@ -6,21 +6,21 @@ global $the_query, $load_posts, $load_card_type;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
         's'         => $query,
-        'post_type' => 'commissario_osl'
+        'post_type' => 'commissario'
     );
 
     $the_query = new WP_Query( $args );
     $posts = $the_query->posts;
 
     usort($posts, function($a, $b) {
-        return dci_get_data_pubblicazione_ts("data_pubblicazione", '_dci_commissarioOSL_', $b->ID) - dci_get_data_pubblicazione_ts("data_pubblicazione", '_dci_commissarioOSL_', $a->ID);
+        return dci_get_data_pubblicazione_ts("data_pubblicazione", '_dci_commissario_', $b->ID) - dci_get_data_pubblicazione_ts("data_pubblicazione", '_dci_commissario_', $a->ID);
     });
     $posts = array_slice($posts, 0, $max_posts);
 
     $args = array(
         's'                 => $query,
         'posts_per_page'    => $max_posts,
-        'post_type'         => 'commissarioOSL'
+        'post_type'         => 'commissario'
     );
 
     $the_query = new WP_Query( $args );
@@ -62,7 +62,7 @@ global $the_query, $load_posts, $load_card_type;
             <div class="row g-4" id="load-more">
                 <?php
                 foreach ( $posts as $post ) {
-                    $load_card_type = 'commissarioOSL';
+                    $load_card_type = 'commissario';
                   //  get_template_part('template-parts/progetti/cards-list');
                 }
                 wp_reset_postdata();
