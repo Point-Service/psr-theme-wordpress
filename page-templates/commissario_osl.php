@@ -12,14 +12,18 @@ function info(){?>
 <section class="hero-img mb-20 mb-lg-50">
     <div class="container">
         <div class="row">
-            <h2>Commissario OSL</h2>
-            <p class="text-justify">
-                Il Piano Nazionale di Ripresa e Resilienza (PNRR) è lo strumento che traccia 
-                gli obiettivi, le riforme e gli investimenti che l’Italia intende realizzare 
-                grazie all’utilizzo dei fondi europei di Next Generation EU, per attenuare 
-                l’impatto economico e sociale della pandemia e rendere l’Italia un Paese più 
-                equo, verde e inclusivo, con un’economia più competitiva, dinamica e 
-                innovativa.
+		<article class="commissario-osl">
+		    <h1>Commissario OSL</h1>
+		    
+		    <p>Il <strong>Commissario OSL (Organo Straordinario di Liquidazione)</strong> è una figura istituzionale nominata per gestire il risanamento finanziario degli enti locali in dissesto. Il suo compito principale è quello di amministrare la massa passiva dell’ente, provvedendo alla ricognizione dei debiti e alla loro estinzione secondo le normative vigenti.</p>
+		
+		    <h2>Compiti e Funzioni</h2>
+		    <ul>
+		        <li>Verifica e certificazione della situazione economico-finanziaria dell’ente</li>
+		        <li>Gestione della liquidazione dei debiti pregressi</li>
+		        <li>Adozione di misure per il riequilibrio del bilancio</li>
+		        <li>Interazione con creditori e soggetti coinvolti nel processo di risanamento</li>
+		    </ul>
             </p>
             <p class="text-justify">
                 Il PNRR annovera tre priorità trasversali condivise a livello europeo 
