@@ -1,4 +1,86 @@
+<?php
 
+/**
+ * Definisce post type commissario
+ */
+add_action( 'init', 'dci_register_post_type_commissario');
+function dci_register_post_type_commissario() {
+
+    $labels = array(
+        'name'          => _x( 'Commissario', 'Post Type General Name', 'design_comuni_italia' ),
+        'singular_name' => _x( 'commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'add_new'       => _x( 'Aggiungi un commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'add_new_item'  => _x( 'Aggiungi un nuovo commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'edit_item'       => _x( 'Modifica il commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'featured_image' => __( 'Immagine di riferimento', 'design_comuni_italia' ),
+    );
+    $args   = array(
+        'label'         => __( 'commissario', 'design_comuni_italia'),
+        'labels'        => $labels,
+        'supports'      => array( 'title', 'editor', 'author', 'thumbnail'),
+        'hierarchical'  => false,
+        'public'        => true,
+        'menu_position' => 5,
+        'menu_icon'     => 'dashicons-media-interactive',
+        'has_archive'   => false,
+        'rewrite' => array('slug' => 'Commissario','with_front' => false),
+        'map_meta_cap'    => true,
+        'description'    => __( "Tipologia che consente l'inserimento dei Commissario PNRR del comune", 'design_comuni_italia' ),
+    );
+    register_post_type('commissario', $args );
+
+    remove_post_type_support( 'commissario', 'editor');
+}
+
+/**
+ * Aggiungo label sotto il titolo
+ */
+add_action( 'edit_form_after_title', 'dci_commissario_add_content_after_title' );
+function dci_commissario_add_content_after_title($post) {
+    if($post->post_type == "commissario")
+        _e('<span><i>il <b>Titolo</b> è il <b>Titolo delle commissario PNRR</b>.</i></span><br><br>', 'design_comuni_italia' );
+}
+
+add_action( 'cmb2_init', 'dci_add_commissario_metaboxes' );
+function dci_add_commissario_metaboxes() {
+    $prefix = '_dci_commissario_';
+
+    //APERTURA
+    $cmb_apertura = new_cmb2_box( array(
+        'id'           => $prefix . 'box_apertura',
+        'title'        => __( 'Apertura', 'design_comuni_italia' ),
+        'object_types' => array( 'commissario' ),
+        'context'      => 'normal',
+        'priority'     => 'high',
+    ) );
+
+    $cmb_apertura->add_field( array(
+        'name'       => __('Immagine', 'design_comuni_italia' ),
+        'desc' => __( 'Immagine principale del commissario' , 'design_comuni_italia' ),
+        'id'             => $prefix . 'immagine',
+        'type' => 'file',
+        'query_args' => array( 'type' => 'image' ),
+    ) );
+
+    $cmb_apertura->add_field( array(
+        'id' => $prefix . 'data_pubblicazione',
+        'name'    => __( 'Data della commissario', 'design_comuni_italia' ),
+        'desc' => __( 'Data di pubblicazione del commissario.' , 'design_comuni_italia' ),
+        'type'    => 'text_date_timestamp',
+        'date_format' => 'd-m-Y',
+    ) );
+
+    $cmb_apertura->add_field( array(
+        'id' => $prefix . 'tipo_commissario',
+        'name'        => __( 'Tipo di commissario *', 'design_comuni_italia' ),
+        'type'             => 'taxonomy_radio_hierarchical',
+        'taxonomy'       => 'tipi_commissario',
+        'show_option_none' => false,
+        'remove_default' => 'true',
+        'attributes'    => array(
+            'required'    => 'required'
+        ),
+    ) );
 
     $cmb_apertura->add_field( array(
         'id' => $prefix . 'a_cura_di',
@@ -199,7 +281,11 @@
 add_action( 'admin_print_scripts-post-new.php', 'dci_commissario_admin_script', 11 );
 add_action( 'admin_print_scripts-post.php', 'dci_commissario_admin_script', 11 );
 
-
+function dci_commissario_admin_script() {
+    global $post_type;
+    if( 'commissario' == $post_type )
+        wp_enqueue_script( 'commissario-admin-script', get_template_directory_uri() . '/inc/admin-js/commissario.js' );
+}
 
 /**
  * Valorizzo il post content in base al contenuto dei campi custom
