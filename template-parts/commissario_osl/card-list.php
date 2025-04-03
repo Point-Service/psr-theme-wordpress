@@ -2,11 +2,6 @@
 global $post;
 
 
-echo 'ddd';
-
-
-
-
 
 $description = dci_get_meta('descrizione_breve','_dci_commissario', $post->ID);
 $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_commissario_', $post->ID);
