@@ -62,6 +62,7 @@ global $the_query, $load_posts, $load_card_type;
             <div class="row g-4" id="load-more">
 
                 <?php
+echo 'd';
                 foreach ( $posts as $post ) {
                     echo $load_card_type;
                     $load_card_type = 'commissario';
