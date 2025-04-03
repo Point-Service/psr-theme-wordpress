@@ -62,8 +62,8 @@ global $the_query, $load_posts, $load_card_type;
             <div class="row g-4" id="load-more">
 
                 <?php
-echo $load_card_type;
                 foreach ( $posts as $post ) {
+                    echo $load_card_type;
                     $load_card_type = 'commissario';
                     get_template_part('template-parts/commissario_osl/cards-list');
                 }
