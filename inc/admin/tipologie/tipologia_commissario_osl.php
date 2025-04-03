@@ -9,9 +9,9 @@ function dci_register_post_type_commissario() {
     $labels = array(
         'name'          => _x( 'Commissario', 'Post Type General Name', 'design_comuni_italia' ),
         'singular_name' => _x( 'commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
-        'add_new'       => _x( 'Aggiungi un commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
-        'add_new_item'  => _x( 'Aggiungi un nuovo commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
-        'edit_item'       => _x( 'Modifica il commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'add_new'       => _x( 'Aggiungi un Documento', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'add_new_item'  => _x( 'Aggiungi un nuovo Documento', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'edit_item'       => _x( 'Modifica il Documento', 'Post Type Singular Name', 'design_comuni_italia' ),
         'featured_image' => __( 'Immagine di riferimento', 'design_comuni_italia' ),
     );
     $args   = array(
@@ -25,7 +25,7 @@ function dci_register_post_type_commissario() {
         'has_archive'   => false,
         'rewrite' => array('slug' => 'Commissario','with_front' => false),
         'map_meta_cap'    => true,
-        'description'    => __( "Tipologia che consente l'inserimento dei Commissario PNRR del comune", 'design_comuni_italia' ),
+        'description'    => __( "Tipologia che consente l'inserimento dei Documenti per il Commissario OSL del comune", 'design_comuni_italia' ),
     );
     register_post_type('commissario', $args );
 
