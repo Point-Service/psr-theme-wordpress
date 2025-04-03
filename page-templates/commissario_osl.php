@@ -41,7 +41,7 @@ get_header();
 			
 			$with_shadow = true;
 			?>
-			<?php // get_template_part("template-parts/progetti/hero"); ?>
+			<?php  get_template_part("template-parts/progetti/hero"); ?>
                         <?php info();?>
 			<?php // get_template_part("template-parts/progetti/tutti"); ?>
 			<?php // get_template_part("template-parts/progetti/categorie"); ?>
