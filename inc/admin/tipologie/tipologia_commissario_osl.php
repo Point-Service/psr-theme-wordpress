@@ -199,11 +199,7 @@
 add_action( 'admin_print_scripts-post-new.php', 'dci_commissario_admin_script', 11 );
 add_action( 'admin_print_scripts-post.php', 'dci_commissario_admin_script', 11 );
 
-function dci_commissario_admin_script() {
-    global $post_type;
-    if( 'commissario' == $post_type )
-        wp_enqueue_script( 'commissario-admin-script', get_template_directory_uri() . '/inc/admin-js/commissario.js' );
-}
+
 
 /**
  * Valorizzo il post content in base al contenuto dei campi custom
