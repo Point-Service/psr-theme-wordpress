@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Definisce la tassonomia Tipi di Progetti
+ * Definisce la tassonomia Tipi Commissario
  */
 add_action( 'init', 'dci_register_taxonomy_tipi_commissario', -10 );
 function dci_register_taxonomy_tipi_progetto() {
