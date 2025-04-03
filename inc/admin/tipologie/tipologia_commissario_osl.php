@@ -24,9 +24,9 @@ function dci_register_post_type_commissario() {
         'menu_position' => 5,
         'menu_icon'     => 'dashicons-media-interactive',
         'has_archive'   => false,
-        'rewrite' => array('slug' => 'progetti','with_front' => false),
+        'rewrite' => array('slug' => 'commissario','with_front' => false),
         'map_meta_cap'    => true,
-        'description'    => __( "Tipologia che consente l'inserimento dei progetti PNRR del comune", 'design_comuni_italia' ),
+        'description'    => __( "Tipologia che consente l'inserimento dei documenti del Commissario OSL", 'design_comuni_italia' ),
     );
     register_post_type('commissario', $args );
 
