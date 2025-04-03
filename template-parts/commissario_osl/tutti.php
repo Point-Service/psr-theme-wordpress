@@ -63,7 +63,7 @@ global $the_query, $load_posts, $load_card_type;
                 <?php
                 foreach ( $posts as $post ) {
                     $load_card_type = 'commissario';
-                  //  get_template_part('template-parts/progetti/cards-list');
+                    get_template_part('template-parts/commissario_osl/cards-list');
                 }
                 wp_reset_postdata();
                 ?>
