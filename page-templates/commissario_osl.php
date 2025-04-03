@@ -17,7 +17,7 @@ function info(){?>
 		    <p>Il <strong>Commissario OSL (Organo Straordinario di Liquidazione)</strong> è una figura istituzionale nominata per gestire il risanamento finanziario degli enti locali in dissesto. Il suo compito principale è quello di amministrare la massa passiva dell’ente, provvedendo alla ricognizione dei debiti e alla loro estinzione secondo le normative vigenti.</p>
 
             </p>
-                 <h2>Compiti e Funzioni</h2>
+                 <h3>Compiti e Funzioni</h3>
 		    <ul>
 		        <li>Verifica e certificazione della situazione economico-finanziaria dell’ente</li>
 		        <li>Gestione della liquidazione dei debiti pregressi</li>
