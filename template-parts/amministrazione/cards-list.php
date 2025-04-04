@@ -11,7 +11,7 @@
             $page = $pages[$page_name]; 
 	
 	
-	echo $page;
+	echo $page_type;
 	
 	?>
         <div class="col-12 col-md-6 col-lg-4">
