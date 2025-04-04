@@ -12,26 +12,12 @@
           "description": "La struttura organizzativa è suddivisa in aree di competenze che gestiscono i servizi erogati alla comunità.",
           "template_name": "aree_amministrative",
           "children": {}
-        },
-        "Organi governo": {
-          "title": "Organi di governo e controllo",
-          "slug": "organi-di-governo-e-controllo",
-          "description": "Le informazioni sul Consiglio di amministrazione, il Collegio dei revisori e il Nucleo di valutazione.",
-          "template_name": "unita-organizzative",
-          "children": {}
-        },        
+        },       
         "Enti e fondazioni": {
           "title": "Enti e fondazioni",
           "slug": "enti-e-fondazioni",
           "description": "I consorzi, gli enti e le società partecipate di cui il Comune fa parte per rappresentare al meglio gli interessi della comunità.",
           "template_name": "enti-e-fondazioni",
-          "children": {}
-        },
-        "Aree gestionali": {
-          "title": "Aree gestionali",
-          "slug": "aree-gestionali",
-          "description": "La struttura organizzativa è suddivisa in aree di competenze che gestiscono i servizi erogati agli ospiti.",
-          "template_name": "unita-organizzative",
           "children": {}
         },
         "Organi di Governo": {
@@ -67,6 +53,13 @@
           "slug": "documenti-e-dati",
           "description": "Bandi di concorso, avvisi, graduatorie, statistiche e documenti pubblici.",
           "template_name": "documenti-e-dati",
+          "children": {}
+        },
+        "Commissario OSL": {
+          "title": "Commissario OSL",
+          "slug": "commissario-osl",
+          "description": "Il Commissario OSL (Organo Straordinario di Liquidazione) è una figura istituzionale nominata per gestire il risanamento finanziario degli enti locali in dissesto. Il suo compito principale è quello di amministrare la massa passiva dell’ente, provvedendo.",
+          "template_name": "commissario_osl",
           "children": {}
         }
       }
