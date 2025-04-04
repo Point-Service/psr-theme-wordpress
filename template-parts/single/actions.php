@@ -226,7 +226,7 @@ if ($hide_arguments) $argomenti = array();
 </div>
 <?php } ?>
     
-
+fdffdffd
 <?php if ($tipi_commissario && is_array($commissario) && count($commissario) ) { ?>
 <div class="mt-4 mb-4">
     <span class="subtitle-small">Tipi luogo</span>
