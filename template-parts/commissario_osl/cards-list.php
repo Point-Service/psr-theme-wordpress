@@ -70,11 +70,10 @@ if ($img) {
                         <svg class="icon">
                             <use xlink:href="#it-arrow-right"></use>
                         </svg>
-                    </a>
-                    
-            </div>
-            </div>
-        </div>
+                    </a>                    
+            </div>o
+            </div>p
+        </div>l
     </div>
 <?php } else { ?>
     <div class="col-md-6 col-xl-4">
@@ -116,7 +115,10 @@ if ($img) {
                         </svg>
                     </a>
                 </div>
+                h
             </div>
+            r
         </div>
+        o
     </div>
 <?php } ?>
