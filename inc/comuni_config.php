@@ -92,6 +92,7 @@ function dci_get_tassonomie_names(){
         'tipi_evento',
         'tipi_notizia',
         'tipi_progetto',
+        'tipi_commissario',
         'tipi_luogo',
         'argomenti',
         'tipi_unita_organizzativa',
@@ -148,7 +149,8 @@ function dci_get_sercheable_tipologie() {
         'post',
         'organi_governo',
         'aree_amministrative',
-        'uffici'
+        'uffici',
+        'commissario'
     );
 }
 
@@ -246,6 +248,7 @@ function dci_get_admin_menu_order() {
         'edit.php?post_type=progetto',
         'edit.php?post_type=documento_pubblico',
         'edit.php?post_type=dataset',
+        'edit.php?post_type=commissario',
         'edit.php?post_type=unita_organizzativa',
         'edit.php?post_type=persona_pubblica',
         'edit.php?post_type=punto_contatto',
