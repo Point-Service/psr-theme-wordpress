@@ -8,7 +8,7 @@ function dci_register_post_type_commissario() {
 
     $labels = array(
         'name'          => _x( 'Commissario', 'Post Type General Name', 'design_comuni_italia' ),
-        'singular_name' => _x( 'Commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'singular_name' => _x( 'commissario', 'Post Type Singular Name', 'design_comuni_italia' ),
         'add_new'       => _x( 'Aggiungi un Documento', 'Post Type Singular Name', 'design_comuni_italia' ),
         'add_new_item'  => _x( 'Aggiungi un nuovo Documento', 'Post Type Singular Name', 'design_comuni_italia' ),
         'edit_item'       => _x( 'Modifica il Documento', 'Post Type Singular Name', 'design_comuni_italia' ),
@@ -64,7 +64,7 @@ function dci_add_commissario_metaboxes() {
 
     $cmb_apertura->add_field( array(
         'id' => $prefix . 'data_pubblicazione',
-        'name'    => __( 'Data della commissario', 'design_comuni_italia' ),
+        'name'    => __( 'Data di pubblicazione', 'design_comuni_italia' ),
         'desc' => __( 'Data di pubblicazione del commissario.' , 'design_comuni_italia' ),
         'type'    => 'text_date_timestamp',
         'date_format' => 'd-m-Y',
@@ -107,7 +107,7 @@ function dci_add_commissario_metaboxes() {
 
     
     $cmb_apertura->add_field( array(
-        'id' => $prefix . 'descrizione_scopo',
+        'id' => $prefix . 'descrizione',
         'name'        => __( 'Descrizione scopo *', 'design_comuni_italia' ),
         'desc' => __( 'Descrizione e scopo del commissario' , 'design_comuni_italia' ),
         'type' => 'wysiwyg',
@@ -120,147 +120,13 @@ function dci_add_commissario_metaboxes() {
         ),
     ) );
 
-
-
-    // DETTAGLI
-    $cmb_dettagli = new_cmb2_box( array(
-        'id'           => $prefix . 'box_dettagli',
-        'title'        => __( 'Dettagli', 'design_comuni_italia' ),
-        'object_types' => array( 'commissario' ),
-        'context'      => 'normal',
-        'priority'     => 'high',
-    ) );
-
-    
-    $cmb_dettagli->add_field( array(
-        'id' => $prefix . 'componente',
-        'name'        => __( 'Componente del commissario *', 'design_comuni_italia' ),
-        'desc' => __( 'Testo della componente del commissario' , 'design_comuni_italia' ),
-        'type' => 'text',
-        'attributes'    => array(
-            'required'    => 'required'
-        ),
-    ) );
-
-    $cmb_dettagli->add_field( array(
-        'id' => $prefix . 'investimento',
-        'name'        => __( 'investimento del commissario *', 'design_comuni_italia' ),
-        'desc' => __( 'Testo del investimento del commissario' , 'design_comuni_italia' ),
-        'type' => 'text',
-        'attributes'    => array(
-            'required'    => 'required'
-        ),
-    ) );
-
-    $cmb_dettagli->add_field( array(
-        'id' => $prefix . 'intervento',
-        'name'        => __( 'intervento del commissario *', 'design_comuni_italia' ),
-        'desc' => __( 'Testo del intervento del commissario' , 'design_comuni_italia' ),
-        'type' => 'text',
-        'attributes'    => array(
-            'required'    => 'required'
-        ),
-    ) );
-    
-    $cmb_dettagli->add_field( array(
-        'id' => $prefix . 'titolare',
-        'name'        => __( 'Titolare del commissario *', 'design_comuni_italia' ),
-        'desc' => __( 'inserire il titolare del commissario' , 'design_comuni_italia' ),
-        'type' => 'text',
-        'default' => 'PCM PRESIDENZA CONSIGLIO MINISTRI'
-    ) );
-
-    $cmb_dettagli->add_field( array(
-        'id' => $prefix . 'cup',
-        'name'        => __( 'CUP *', 'design_comuni_italia' ),
-        'type' => 'text',
-        'attributes'    => array(
-            'required'    => 'required'
-        ),
-    ) );
-    
-    $cmb_dettagli->add_field( array(
-        'id' => $prefix . 'importo',
-        'name'        => __( 'Importo Finanziato *', 'design_comuni_italia' ),
-        'type' => 'text',
-        'attributes'    => array(
-            'required'    => 'required'
-        ),
-    ) );
-
-    $cmb_modalita= new_cmb2_box( array(
-        'id'           => $prefix . 'box_modalita',
-        'title'        => __( 'Modalità/ Attività', 'design_comuni_italia' ),
-        'object_types' => array( 'commissario' ),
-        'context'      => 'normal',
-        'priority'     => 'low',
-        
-    ) );
-
-    $cmb_modalita->add_field(array(
-        'id' => $prefix . 'modalita',
-        'name'        => __( 'Modalità di Accesso al Finanziamento *', 'design_comuni_italia' ),
-        'type' => 'wysiwyg',
-        'attributes'    => array(
-            'required'    => 'required'
-        ),
-        'options' => array(
-            'textarea_rows' => 10,
-            'teeny' => false, 
-        ),
-    ));
-
-    $cmb_modalita->add_field(array(
-        'id' => $prefix . 'attivita',
-        'name'        => __( 'Attività Finanziata *', 'design_comuni_italia' ),
-        'type' => 'wysiwyg',
-        'attributes'    => array(
-            'required'    => 'required'
-        ),
-        'options' => array(
-            'textarea_rows' => 10,
-            'teeny' => false, 
-        ),
-    ));
-
-   
-    // Avanzamento del commissario
-
-    $cmb_avanzamento= new_cmb2_box( array(
-        'id'           => $prefix . 'box_avanzamento',
-        'title'        => __( 'Avanzamento del commissario', 'design_comuni_italia' ),
-        'object_types' => array( 'commissario' ),
-        'context'      => 'normal',
-        'priority'     => 'low',
-    ) );
-
-    $cmb_avanzamento->add_field(array(
-        'id' => $prefix . 'avanzamento',
-        'name'        => __( 'Avanzaqmento del commissario *', 'design_comuni_italia' ),
-        'type' => 'text',
-    ));
-
-    $cmb_avanzamento->add_field( array(
-        'id' => $prefix . 'avanzamento_allegati',
-        'name'        => __( 'Allegati Avanzamento del ptogegtto', 'design_comuni_italia' ),
-        'type' => 'file_list',
-    ) );
-
-    //Atti Legislsativi e Amministativi
+    //Allegati
     $cmb_allegati = new_cmb2_box( array(
         'id'           => $prefix . 'box_allegtati',
-        'title'        => __( 'Atti Leggislativi e Amministrativi', 'design_comuni_italia' ),
+        'title'        => __( 'Allegati', 'design_comuni_italia' ),
         'object_types' => array( 'commissario' ),
         'context'      => 'normal',
         'priority'     => 'low',
-    ) );
-
-
-    $cmb_allegati->add_field( array(
-        'id' => $prefix . 'atti',
-        'name'        => __( 'Allegati Atti', 'design_comuni_italia' ),
-        'desc' => __( 'Elenco di Atti allegati Legislativi e Amministrativi' , 'design_comuni_italia' ),
-        'type' => 'file_list',
     ) );
 
     $cmb_allegati->add_field( array(
