@@ -9,9 +9,10 @@
     <div class="row g-4">
         <?php foreach ($arr_pages as $key => $page_name) { 
             $page = $pages[$page_name]; 
+	    $post_id = $page['ID']; // ID della pagina
+            $post_type = get_post_type($post_id); // Ottieni il post type della pagina
 	
-	
-
+echo $post_type;
 	
 	?>
         <div class="col-12 col-md-6 col-lg-4">
