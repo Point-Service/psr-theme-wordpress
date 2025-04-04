@@ -7,7 +7,7 @@ add_action( 'init', 'dci_register_post_type_commissario');
 function dci_register_post_type_commissario() {
 
     $labels = array(
-        'name'          => _x( 'Commissario', 'Post Type General Name', 'design_comuni_italia' ),
+        'name'          => _x( 'Commissario OSL', 'Post Type General Name', 'design_comuni_italia' ),
         'singular_name' => _x( 'Documenti', 'Post Type Singular Name', 'design_comuni_italia' ),
         'add_new'       => _x( 'Aggiungi un Documento', 'Post Type Singular Name', 'design_comuni_italia' ),
         'add_new_item'  => _x( 'Aggiungi un nuovo Documento', 'Post Type Singular Name', 'design_comuni_italia' ),
