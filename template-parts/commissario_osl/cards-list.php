@@ -22,10 +22,8 @@ $default_icon = "#it-file";
 $custom_icon = null;
 if ($tipo) {
     // Esempio di controllo sul tipo
-    if ($tipo->slug == 'nomina-e-insediamento') {
-        $custom_icon = "#it-file"; 
-    } elseif ($tipo->slug == 'avviso-ai-creditorih') {
-        $custom_icon = "#it-horn"; 
+    if ($tipo->slug == 'modulistica-osl') {
+        $custom_icon = "#it-clip";         
     } elseif ($tipo->slug == 'avviso-ai-creditori') {
         $custom_icon = "#it-info-circle"; 
     } elseif ($tipo->slug == 'atti-della-commissione') {
