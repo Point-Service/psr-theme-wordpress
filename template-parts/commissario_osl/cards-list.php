@@ -42,7 +42,8 @@ if ($img) {
                 <div class="col-12 order-1 order-md-2">
                 <div class="card-body">
                     <div class="category-top cmp-list-card-img__body">
-                    <?php if ($tipo){?>
+                    <?php echo $tipo;
+                             if ($tipo){?>
                                     <svg class="icon">
                                         <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" />
                                     </svg>
