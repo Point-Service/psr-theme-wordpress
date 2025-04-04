@@ -34,10 +34,8 @@ function dci_add_page_metaboxes() {
         ),
     );
 
-    /**
-     * Disabilito editor body e title per le pagine del Sito dei Comuni
-     * Rendo il campo descrizione_breve readonly
-     */
+    // Rimuoviamo la parte che disabilita l'editor, il titolo e la descrizione.
+    // Non c'è più nessun controllo per disabilitare questi campi, così rimarranno sempre modificabili.
     global $pagenow;
     if (( $pagenow == 'post.php' ) || ($pagenow == 'post-new.php')) {
 
@@ -49,30 +47,12 @@ function dci_add_page_metaboxes() {
             return;
         }
 
-        $slug = get_post_field( 'post_name', $curr_page_id );
-
-        // Get the name of the Page Template file.
-        $template_file = get_post_meta( $curr_page_id, '_wp_page_template', true );
-        $template_name = basename($template_file, ".php");
-
-        // Se la pagina utilizza un template del Sito dei Comuni
-        if ( in_array($template_name, dci_get_pagine_template_names()) ) {
-
-            // Aggiungi il controllo per non disabilitare il titolo se la pagina è già pubblicata
-            $post_status = get_post_status( $curr_page_id );
-            if ( 'publish' !== $post_status ) {
-                remove_post_type_support( 'page', 'title' );
-            }
-
-            remove_post_type_support( 'page', 'editor' );
-
-            // Rendo readonly il campo descrizione_breve
-            $args['attributes'] = array(
-                'required' => 'required',
-                'maxlength' => 255,
-                'readonly' => true
-            );
-        }
+        // A questo punto, non abbiamo più bisogno di controllare il template del "Sito dei Comuni"
+        // e non rimuoviamo più il supporto per il titolo e l'editor.
+        
+        // Ripristiniamo il supporto per il titolo e l'editor se era stato rimosso
+        add_post_type_support( 'page', 'editor' );
+        add_post_type_support( 'page', 'title' );
     }
 
     // Aggiungi il campo "Descrizione" al metabox
@@ -99,3 +79,4 @@ function dci_page_row_actions( $actions, $post ) {
 add_filter( 'page_row_actions', 'dci_page_row_actions', 10, 2 );
 
 ?>
+
