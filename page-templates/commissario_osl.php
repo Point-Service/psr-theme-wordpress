@@ -25,7 +25,7 @@ get_header();
 			<?php  get_template_part("template-parts/commissario_osl/hero"); ?>
                         <?php info();?>
 			<?php  get_template_part("template-parts/commissario_osl/tutti"); ?>
-			<?php // get_template_part("template-parts/progetti/categorie"); ?>
+			<?php  get_template_part("template-parts/commissario_osl/categorie"); ?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
 		<?php 
