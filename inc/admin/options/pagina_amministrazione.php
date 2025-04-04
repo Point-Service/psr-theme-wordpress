@@ -72,29 +72,4 @@ function dci_register_pagina_amministrazione_options(){
             ),
         ));
 
-
-
-    $amministrazione_options->add_field( array(
-        'id' => $prefix . 'ck_commissario_osl',
-        'name'        => __( 'Visualizza Commissario OSL', 'design_comuni_italia' ),
-        'desc'    => __('Visualizza la Sezione Commissario OSL sulla parte amministrativa.', 'design_comuni_italia'),
-            'type'    => 'radio_inline',
-            'default' => 'false', 
-            'options' => array(
-                'true'  => __('Sì', 'design_comuni_italia'),
-                'false' => __('No', 'design_comuni_italia'),
-            ),
-            'attributes' => array(
-                'data-conditional-value' => 'true',
-            ),
-    ) );
-
-
-
-
-
-
-
-    
-
 }
