@@ -15,6 +15,20 @@ if ($tipo_terms && !is_wp_error($tipo_terms)) {
     $tipo = null;
 }
 
+// Definisci l'icona predefinita
+$default_icon = "#it-file"; 
+
+// Se il tipo è specifico, cambia l'icona
+$custom_icon = null;
+if ($tipo) {
+    // Esempio di controllo sul tipo
+    if ($tipo->name == 'Tipo1') {
+        $custom_icon = "#it-icon1"; // Sostituisci con l'icona desiderata per Tipo1
+    } elseif ($tipo->name == 'Tipo2') {
+        $custom_icon = "#it-icon2"; // Sostituisci con l'icona desiderata per Tipo2
+    }
+    // Puoi aggiungere altre condizioni per altri tipi, se necessario
+} 
 if ($img) {
 ?>
     <div class="col-12 col-md-6 col-xl-4">
@@ -28,9 +42,9 @@ if ($img) {
                 <div class="card-body">
                     <div class="category-top cmp-list-card-img__body">
                     <?php if ($tipo){?>
-                            <svg class="icon">
-                                <use xlink:href="#it-file"/>
-                            </svg>
+                                    <svg class="icon">
+                                        <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" />
+                                    </svg>
                             <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                 <?php echo strtoupper($tipo->name); ?>
                             </a>
@@ -59,9 +73,9 @@ if ($img) {
                             <div class="category-top cmp-list-card-img__body">
                             <?php if ($tipo){?>
                                
-                                <svg class="icon">
-                                    <use xlink:href="#it-file"/>
-                                </svg>
+                                    <svg class="icon">
+                                        <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" />
+                                    </svg>
   
                                 <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                  <?php echo strtoupper($tipo->name); ?>
