@@ -78,7 +78,15 @@ function dci_register_pagina_amministrazione_options(){
         'id' => $prefix . 'amministrazione_options1',
         'name'        => __( 'Visualizza Commissione Straordinaria di Liquidazione', 'design_comuni_italia' ),
         'desc'    => __('Visualizza la Sezione Commissario OSL sulla parte amministrativa.', 'design_comuni_italia'),
-        'type' => 'title',
+            'type'    => 'radio_inline',
+            'default' => 'false', 
+            'options' => array(
+                'true'  => __('Sì', 'design_comuni_italia'),
+                'false' => __('No', 'design_comuni_italia'),
+            ),
+            'attributes' => array(
+                'data-conditional-value' => 'true',
+            ),
     ) );
 
 
