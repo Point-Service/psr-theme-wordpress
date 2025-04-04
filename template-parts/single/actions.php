@@ -10,7 +10,7 @@ $post_url = get_permalink();
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
 $tipo_evento = get_the_terms($post->ID,'tipi_evento');
 
-$tipi_commissario = get_the_terms($post->ID,'tipi_commissario');
+// $tipi_commissario = get_the_terms($post->ID,'tipi_commissario');
 
 
     
@@ -227,3 +227,17 @@ if ($hide_arguments) $argomenti = array();
 <?php } ?>
     
 
+<?php if ($tipi_commissario && is_array($tipi_commissario) && count($tipi_commissario) ) { ?>
+<div class="mt-4 mb-4">
+    <span class="subtitle-small">Tipi Categoria</span>
+    <ul class="d-flex flex-wrap gap-1">
+        <?php foreach ($tipi_commissario as $tipo_commissario) { ?>
+        <li>
+            <a class="chip chip-simple" href="<?php echo get_term_link($tipo_commissario->term_id); ?>">
+                <span class="chip-label"><?php echo $tipo_commissario->name; ?></span>
+            </a>
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>
