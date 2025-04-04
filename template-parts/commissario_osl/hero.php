@@ -31,7 +31,7 @@
                                 <?php echo $description; ?>
                             </p>
                                 <?php
-                             //   the_content();
+                                the_content();
                                 ?>    
                         </div>
                         <div class="col-12 col-lg-5 me-lg-5">
