@@ -23,7 +23,7 @@ $custom_icon = null;
 if ($tipo) {
     // Esempio di controllo sul tipo
     if ($tipo->name == 'nomina-e-insediamento') {
-        $custom_icon = "#it-file-text; 
+        $custom_icon = "#it-file-text"; 
     } elseif ($tipo->name == 'Tipo2') {
         $custom_icon = "#it-icon2"; 
     }
