@@ -8,7 +8,12 @@
     </h2>
     <div class="row g-4">
         <?php foreach ($arr_pages as $key => $page_name) { 
-            $page = $pages[$page_name]; ?>
+            $page = $pages[$page_name]; 
+	
+	
+	echo $page;
+	
+	?>
         <div class="col-12 col-md-6 col-lg-4">
             <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
             <div class="card shadow-sm rounded">
@@ -23,11 +28,8 @@
         </div>
         <?php } ?>
 
-            <?php
-
-              
+            <?php              
                 $ck_dataset = dci_get_option('ck_dataset', 'Amministrazione');
-
 		// Verifica se l'opzione non è impostata su 'false' entra.
 		if ( 'false' !== $ck_dataset ) :
                  ?>
@@ -50,7 +52,6 @@
             endif;
             ?>
       
-        
     </div>
 </div>
 
