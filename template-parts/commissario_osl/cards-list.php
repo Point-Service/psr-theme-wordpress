@@ -22,13 +22,14 @@ $default_icon = "#it-file";
 $custom_icon = null;
 if ($tipo) {
     // Esempio di controllo sul tipo
-    if ($tipo->name == 'Tipo1') {
-        $custom_icon = "#it-icon1"; // Sostituisci con l'icona desiderata per Tipo1
+    if ($tipo->name == 'nomina-e-insediamento') {
+        $custom_icon = "#it-file-text; 
     } elseif ($tipo->name == 'Tipo2') {
-        $custom_icon = "#it-icon2"; // Sostituisci con l'icona desiderata per Tipo2
+        $custom_icon = "#it-icon2"; 
     }
-    // Puoi aggiungere altre condizioni per altri tipi, se necessario
+
 } 
+
 if ($img) {
 ?>
     <div class="col-12 col-md-6 col-xl-4">
