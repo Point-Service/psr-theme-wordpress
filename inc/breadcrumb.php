@@ -789,8 +789,8 @@ class Breadcrumb_Trail {
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 			    
-                    }else if (is_tax(array("tipi_commissario"))){
-                       // $this->items[] = "<a href='".home_url("commissario")."'>".__("Commissario", "design_comuni_italia")."</a>";
+                    }else if (is_tax(array("tipi_commissario"))){     
+			$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
 			$this->items[] = "<a href='index.php/".home_url("commissario")."'>".__("Commissario", "design_comuni_italia")."</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
