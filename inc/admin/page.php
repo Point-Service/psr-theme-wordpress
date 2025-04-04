@@ -6,7 +6,7 @@
 add_action( 'edit_form_after_title', 'dci_page_add_content_after_title' );
 function dci_page_add_content_after_title($post) {
     if($post->post_type == "page")
-        _e( esc_html__( 'il <b>Titolo</b> è il <b>Titolo della Pagina</b>.', 'design_comuni_italia' ), 'design_comuni_italia' );
+        _e('<span><i>il <b>Titolo</b> è il <b>Titolo della Pagina</b>.</i></span><br><br><br> ', 'design_comuni_italia' );
 }
 
 /**
@@ -50,7 +50,6 @@ function dci_add_page_metaboxes() {
             return;
         }
 
-        $curr_page_id = $_GET['post'];
         $slug = get_post_field( 'post_name', $curr_page_id );
 
         // Get the name of the Page Template file.
