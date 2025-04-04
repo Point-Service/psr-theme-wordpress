@@ -28,6 +28,8 @@ if ($tipo) {
         $custom_icon = "#it-horn"; 
     } elseif ($tipo->slug == 'avviso-ai-creditori') {
         $custom_icon = "#it-info-circle"; 
+    } elseif ($tipo->slug == 'atti-della-commissione') {
+        $custom_icon = "#it-copy";         
     }
 
 } 
