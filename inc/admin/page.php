@@ -59,15 +59,15 @@ function dci_add_page_metaboxes() {
 
         //se la pagina utilizza un template del Sito dei Comuni
         if (in_array($template_name, dci_get_pagine_template_names())) {
+            
 
             remove_post_type_support( 'page', 'editor' );
-
             remove_post_type_support( 'page', 'title' );
 
             $args['attributes'] = array(
                 'required' => 'required',
                 'maxlength' => 255,
-                'readonly' => true
+                'readonly' => false
             );
         }
 
