@@ -6,7 +6,7 @@
 add_action( 'edit_form_after_title', 'dci_page_add_content_after_title' );
 function dci_page_add_content_after_title($post) {
     if($post->post_type == "page")
-        _e('<span><i>il <b>Titolo</b> è il <b>Titolo della Pagina</b>.</i></span><br><br><br> ', 'design_comuni_italia' );
+        _e( esc_html__( 'il <b>Titolo</b> è il <b>Titolo della Pagina</b>.', 'design_comuni_italia' ), 'design_comuni_italia' );
 }
 
 /**
