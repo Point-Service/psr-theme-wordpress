@@ -18,16 +18,13 @@ if ($tipo_terms && !is_wp_error($tipo_terms)) {
 
 // Definisci l'icona predefinita
 $default_icon = "#it-file"; 
-
-    echo $tipo->slug;
-
 // Se il tipo è specifico, cambia l'icona
 $custom_icon = null;
 if ($tipo) {
     // Esempio di controllo sul tipo
-    if ($tipo->name == 'nomina-e-insediamento') {
+    if ($tipo->slug == 'nomina-e-insediamento') {
         $custom_icon = "#it-file-text"; 
-    } elseif ($tipo->name == 'Tipo2') {
+    } elseif ($tipo->slug == 'Tipo2') {
         $custom_icon = "#it-icon2"; 
     }
 
