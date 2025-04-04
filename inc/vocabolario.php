@@ -425,6 +425,23 @@ if(!function_exists("dci_tipi_progetto_array")){
     }
 }
 
+if(!function_exists("dci_tipi_commissario")){
+    function dci_tipi_commissario_array() {
+        $tipi_commissario_arr = [
+            'Avviso ai Creditori',
+            'Atti del Comune',
+            'Atti della Commissione',
+            'Nomina e Insediamento',
+            'Normativa',
+            'Comunicati Stampa',
+            'Rassegna Stampa',
+            'Modulistica OSL'
+        ];
+        return $tipi_commissario_arr;
+    }
+}
+
+
 /**
  * Classificazione multi livello dei Luoghi di interesse pubblico, definita nella Tassonomia dei luoghi pubblici di interesse culturale
  */
