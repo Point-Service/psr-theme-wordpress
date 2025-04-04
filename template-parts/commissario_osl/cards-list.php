@@ -60,8 +60,9 @@ if ($img) {
                         <?php echo $descrizione_breve; ?>
                     </p>
                 </div>
-                </div>
-                    <a class="read-more ps-3"
+                </div>                
+            </div>
+                  <a class="read-more ps-3"
                        href="<?php echo esc_url(get_permalink($post->ID)); ?>"
                        aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
                        title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
@@ -70,8 +71,7 @@ if ($img) {
                         <svg class="icon">
                             <use xlink:href="#it-arrow-right"></use>
                         </svg>
-                    </a>                    
-            </div>
+                    </a>    
             </div>
         </div>
     </div>
@@ -104,7 +104,8 @@ if ($img) {
                             
                         </div>
                     </div>
-                     <a class="read-more ps-3"
+                </div>
+                                    <a class="read-more ps-3"
                        href="<?php echo esc_url(get_permalink($post->ID)); ?>"
                        aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
                        title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
@@ -113,8 +114,7 @@ if ($img) {
                         <svg class="icon">
                             <use xlink:href="#it-arrow-right"></use>
                         </svg>
-                    </a>
-                </div>
+                    </a>    
             </div>
         </div>
     </div>
