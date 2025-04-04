@@ -2,8 +2,6 @@
 
 global $post;
 
-
-
 $descrizione_breve = dci_get_meta("descrizione_breve", '_dci_commissario_', $post->ID);
 $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_commissario_', $post->ID);
 $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
@@ -30,7 +28,6 @@ if ($tipo) {
     } elseif ($tipo->slug == 'atti-della-commissione') {
         $custom_icon = "#it-copy";         
     }
-
 
 } 
 
