@@ -75,7 +75,7 @@ function dci_register_pagina_amministrazione_options(){
 
 
     $amministrazione_options->add_field( array(
-        'id' => $prefix . 'amministrazione_options1',
+        'id' => $prefix . 'ck_commissario_osl',
         'name'        => __( 'Visualizza Commissione Straordinaria di Liquidazione', 'design_comuni_italia' ),
         'desc'    => __('Visualizza la Sezione Commissario OSL sulla parte amministrativa.', 'design_comuni_italia'),
             'type'    => 'radio_inline',
