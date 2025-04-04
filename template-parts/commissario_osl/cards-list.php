@@ -18,14 +18,15 @@ if ($tipo_terms && !is_wp_error($tipo_terms)) {
 
 // Definisci l'icona predefinita
 $default_icon = "#it-file"; 
+
 // Se il tipo è specifico, cambia l'icona
 $custom_icon = null;
 if ($tipo) {
     // Esempio di controllo sul tipo
     if ($tipo->slug == 'nomina-e-insediamento') {
         $custom_icon = "#it-file-text"; 
-    } elseif ($tipo->slug == 'Tipo2') {
-        $custom_icon = "#it-icon2"; 
+    } elseif ($tipo->slug == 'avviso-ai-creditori') {
+        $custom_icon = "#it-paperclip; 
     }
 
 } 
