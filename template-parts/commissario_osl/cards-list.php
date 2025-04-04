@@ -61,7 +61,7 @@ if ($img) {
                     </p>
                 </div>
                 </div>                
-            </div><br><br>
+            </div><br><br>&nbsp;
                     <a class="read-more ps-3"
                        href="<?php echo esc_url(get_permalink($post->ID)); ?>"
                        aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
@@ -104,7 +104,7 @@ if ($img) {
                             
                         </div>
                     </div>
-                </div><br><br>
+                </div><br><br>&nbsp;
                         <a class="read-more ps-3"
                        href="<?php echo esc_url(get_permalink($post->ID)); ?>"
                        aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" 
