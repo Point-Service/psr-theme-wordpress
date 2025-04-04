@@ -19,7 +19,7 @@ if ($tipo_terms && !is_wp_error($tipo_terms)) {
 // Definisci l'icona predefinita
 $default_icon = "#it-file"; 
 
-    echo $tipo->taxonomy;
+    echo $tipo->name;
 
 // Se il tipo è specifico, cambia l'icona
 $custom_icon = null;
