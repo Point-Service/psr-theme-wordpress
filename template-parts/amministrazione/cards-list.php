@@ -9,11 +9,7 @@
     <div class="row g-4">
         <?php foreach ($arr_pages as $key => $page_name) { 
             $page = $pages[$page_name]; 
-	     $post_id = $page['ID']; // ID della pagina
-             $template_name = get_post_meta($post_id, '_wp_page_template', true); // Recupera il template_name
 
-echo $page['template_name'];
-	
 	?>
         <div class="col-12 col-md-6 col-lg-4">
             <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
