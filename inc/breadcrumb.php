@@ -360,7 +360,17 @@ class Breadcrumb_Trail {
             if ( is_singular() ) {
 		    
 
-
+				if (get_post_type() == 'commissario') {
+					$this->items[] =  "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
+					$terms = get_the_terms(get_the_ID(),'categorie_servizio');
+					if($terms){
+					  foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'categorie_servizio' ) ), $term->name );
+					  }
+					}
+					$this->items[] = get_the_title();
+					return;
+				}
 		    
 				if (get_post_type() == 'servizio') {
 					$this->items[] =  "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
