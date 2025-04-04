@@ -63,7 +63,7 @@ if ($img) {
                         <h3 class="h5 card-title u-grey-light"><?php echo the_title(); ?></h3>
                     </a>
                     <p class="card-text d-none d-md-block">
-                        <?php echo $description; ?>
+                        <?php echo $descrizione_breve; ?>
                     </p>
                 </div>
                 </div>
@@ -95,7 +95,7 @@ if ($img) {
                                 <h3 class="h5 card-title u-grey-light"><?php echo the_title(); ?></h3>
                             </a>
                             <p class="card-text d-none d-md-block">
-                                <?php echo $description; ?>
+                                <?php echo $descrizione_breve; ?>
                             </p>
                         </div>
                     </div>
