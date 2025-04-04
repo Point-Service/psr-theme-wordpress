@@ -10,7 +10,10 @@ $post_url = get_permalink();
 $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
 $tipo_evento = get_the_terms($post->ID,'tipi_evento');
 
+$tipi_commissario = get_the_terms($post->ID,'tipi_commissario');
 
+
+    
 if ($hide_arguments) $argomenti = array();
 ?>
 
