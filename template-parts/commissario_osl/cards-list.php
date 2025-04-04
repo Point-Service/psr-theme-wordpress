@@ -11,7 +11,6 @@ $tipo_terms = get_the_terms($post->ID, 'tipi_commissario');
 
 if ($tipo_terms && !is_wp_error($tipo_terms)) {
     $tipo = $tipo_terms[0];
-    echo $tipo;
 } else {
     $tipo = null;
 }
@@ -73,10 +72,12 @@ if ($img) {
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
                             <div class="category-top cmp-list-card-img__body">
-                            <?php if ($tipo) {?>                               
+                            <?php if ($tipo){?>
+                               
                                     <svg class="icon">
                                         <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" />
-                                    </svg>  
+                                    </svg>
+  
                                 <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                  <?php echo strtoupper($tipo->name); ?>
                              </a>
