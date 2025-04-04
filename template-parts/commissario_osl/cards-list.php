@@ -11,13 +11,15 @@ $tipo_terms = get_the_terms($post->ID, 'tipi_commissario');
 
 if ($tipo_terms && !is_wp_error($tipo_terms)) {
     $tipo = $tipo_terms[0];
-    echo $tipo;
+
 } else {
     $tipo = null;
 }
 
 // Definisci l'icona predefinita
 $default_icon = "#it-file"; 
+
+    echo $tipo->taxonomy;
 
 // Se il tipo è specifico, cambia l'icona
 $custom_icon = null;
