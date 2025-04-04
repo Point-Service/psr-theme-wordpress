@@ -25,7 +25,7 @@ if ($tipo) {
     if ($tipo->slug == 'nomina-e-insediamento') {
         $custom_icon = "#it-file-text"; 
     } elseif ($tipo->slug == 'avviso-ai-creditori') {
-        $custom_icon = "#it-paperclip"; 
+        $custom_icon = "#it-horn"; 
     }
 
 } 
