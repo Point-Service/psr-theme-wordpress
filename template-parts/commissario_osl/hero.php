@@ -3,7 +3,7 @@
 
     if (!$title) $title = get_the_title();
     if (!$description && $post) $description = dci_get_meta('descrizione','_dci_page_',$post->ID);
-    if (!$tinymce && $post) $tinymce= dci_get_meta('tinymce','_dci_page_',$post->ID);
+
         
 ?>
 
@@ -30,7 +30,9 @@
                             <p class="u-main-black text-paragraph-regular-medium mb-60">
                                 <?php echo $description; ?>
                             </p>
-                            <?php echo $tinymce; ?>
+                                <?php
+                                the_content();
+                                ?>    
                         </div>
                         <div class="col-12 col-lg-5 me-lg-5">
                             <div class="card-wrapper card-column">                 
