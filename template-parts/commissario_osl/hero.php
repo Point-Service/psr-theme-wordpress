@@ -29,7 +29,7 @@
                             <h2 class="visually-hidden" id="news-details">Dettagli dell'argomento</h2>
                             <p class="u-main-black text-paragraph-regular-medium mb-60">
                                 <?php echo $description; ?>
-                            </p>
+                            </p>kkkkkkkkkk
                                 <?php
                                 the_content();
                                 ?>    
