@@ -56,7 +56,7 @@
           "children": {}
         },
         "Commissario OSL": {
-          "title": "Commissione Straordinaria di Liquidazione",
+          "title": "Organo Straordinario di Liquidazione",
           "slug": "commissario-osl",
           "description": "Il Commissario OSL (Organo Straordinario di Liquidazione) è una figura istituzionale nominata per gestire il risanamento finanziario degli enti locali in dissesto. Il suo compito principale è quello di amministrare la massa passiva dell’ente, provvedendo.",
           "template_name": "commissario_osl",
