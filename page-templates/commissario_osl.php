@@ -23,7 +23,7 @@ get_header();
 			$with_shadow = true;
 			?>
 			<?php  get_template_part("template-parts/commissario_osl/hero"); ?>
-                        <?php //info();?>
+                        <?php info();?>
 			<?php  get_template_part("template-parts/commissario_osl/tutti"); ?>
 			<?php // get_template_part("template-parts/progetti/categorie"); ?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
