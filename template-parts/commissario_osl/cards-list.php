@@ -23,9 +23,11 @@ $custom_icon = null;
 if ($tipo) {
     // Esempio di controllo sul tipo
     if ($tipo->slug == 'nomina-e-insediamento') {
-        $custom_icon = "#it-file-text"; 
+        $custom_icon = "#it-note"; 
     } elseif ($tipo->slug == 'avviso-ai-creditori') {
         $custom_icon = "#it-horn"; 
+    } elseif ($tipo->slug == 'avviso-ai-creditori') {
+        $custom_icon = "#it-info-circle"; 
     }
 
 } 
