@@ -106,7 +106,10 @@ function load_more(){
 		}
 		if ($load_card_type == "global-search"){
 			$out .= load_template_part("template-parts/search/item");  
-		}	
+		}
+		if ($load_card_type == "commissario"){
+			$out .= load_template_part("template-parts/commissario_osl/cards-list");  
+		}
 		if ($load_card_type == "personale-amministrativo"){
 			$out .= load_template_part("template-parts/personale-amministrativo/cards-list");  
 		}
