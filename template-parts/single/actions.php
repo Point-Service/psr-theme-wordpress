@@ -225,11 +225,10 @@ if ($hide_arguments) $argomenti = array();
     </ul>
 </div>
 <?php } ?>
-    sssssssssssss
-
+    
 <?php if ($tipi_commissario && is_array($tipi_commissario) && count($tipi_commissario) ) { ?>
 <div class="mt-4 mb-4">
-    <span class="subtitle-small">Tipi luogo</span>
+    <span class="subtitle-small">Tipi Categoria</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_commissario as $tipo_commissario) { ?>
         <li>
