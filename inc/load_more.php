@@ -89,6 +89,15 @@ function load_more(){
 		$post = get_post();
 		++$i;
 
+echo $load_card_type ;
+
+
+
+
+
+
+
+			
 		if ($load_card_type == "servizio"){
 			$servizio = $post;
 			$out .= load_template_part("template-parts/servizio/card");  
