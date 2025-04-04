@@ -12,7 +12,7 @@
 	     $post_id = $page['ID']; // ID della pagina
              $template_name = get_post_meta($post_id, '_wp_page_template', true); // Recupera il template_name
 
-echo $pages[$template_name];
+echo $page['template_name'];
 	
 	?>
         <div class="col-12 col-md-6 col-lg-4">
