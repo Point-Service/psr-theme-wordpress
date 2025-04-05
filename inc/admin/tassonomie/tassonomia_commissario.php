@@ -9,7 +9,7 @@ function dci_register_taxonomy_tipi_commissario() {
     $labels = array(
         'name'              => _x( 'Tipi di documento OSL', 'taxonomy general name', 'design_comuni_italia' ),
         'singular_name'     => _x( 'Tipo di documento OSL', 'taxonomy singular name', 'design_comuni_italia' ),
-        'search_items'      => __( 'Cerca Tipo di Documento Commissario', 'design_comuni_italia' ),
+        'search_items'      => __( 'Cerca Tipo di Documento OSL', 'design_comuni_italia' ),
         'all_items'         => __( 'Tutti i Tipi di Documento OSL', 'design_comuni_italia' ),
         'edit_item'         => __( 'Modifica il Tipo di OSL', 'design_comuni_italia' ),
         'update_item'       => __( 'Aggiorna il Tipo di OSL', 'design_comuni_italia' ),
