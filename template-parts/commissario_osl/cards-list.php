@@ -32,7 +32,7 @@ if ($tipo) {
 
 
 
-echo 'ddddsdsddd';
+
          // Se è un URL completo, prendi solo la parte finale del path
             $url_parts = wp_parse_url($page['link']);
             $slug = basename($url_parts['path']);
