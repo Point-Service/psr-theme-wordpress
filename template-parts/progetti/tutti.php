@@ -28,6 +28,16 @@ global $the_query, $load_posts, $load_card_type;
 
 
 <div class="bg-grey-card py-5">
+                <div class="row g-4" id="load-more">
+                <?php
+                foreach ( $posts as $post ) {
+                    $load_card_type = 'progetto';
+                    get_template_part('template-parts/progetti/cards-list');
+                }
+                wp_reset_postdata();
+                ?>
+            </div>
+    
     <form role="search" id="search-form" method="get" class="search-form">
         <button type="submit" class="d-none"></button>
         <div class="container">
@@ -59,15 +69,7 @@ global $the_query, $load_posts, $load_card_type;
                     </div>
                 </div>
             </div>
-            <div class="row g-4" id="load-more">
-                <?php
-                foreach ( $posts as $post ) {
-                    $load_card_type = 'progetto';
-                    get_template_part('template-parts/progetti/cards-list');
-                }
-                wp_reset_postdata();
-                ?>
-            </div>
+
             <?php get_template_part("template-parts/search/more-results"); ?>
         </div>
     </form>
