@@ -6,6 +6,7 @@ global $post;
 //Se la sezione viene disattivata con caricare niente
 $ck_osl = dci_get_option('ck_osl', 'Amministrazione');
 if ($ck_osl !== 'true') {
+    echo 'SEZIONE DISABILITATA';
     exit; 
 }
 
