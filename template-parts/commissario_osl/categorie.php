@@ -5,7 +5,7 @@
 ?>
 
 <div class="container py-5" id="argomento">
-    <h2 class="title-xxlarge mb-4">Documentazione per Categoria</h2>
+    <h2 class="title-xxlarge mb-4"></h2>
     <div class="row g-4">       
         <?php foreach ($argomenti as $argomento) { 
             if($argomento->count>0){
