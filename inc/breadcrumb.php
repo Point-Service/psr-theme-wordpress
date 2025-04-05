@@ -361,7 +361,7 @@ class Breadcrumb_Trail {
 		    
                               //SINGLE PAGE
 
-		    
+	              
 				if (get_post_type() == 'commissario') {					
 			           $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";				    
 				   $this->items[] =  "<a href='" . home_url("commissario") . "'>" . __("OSL", "design_comuni_italia") . "</a>";					
@@ -374,6 +374,22 @@ class Breadcrumb_Trail {
 					$this->items[] = get_the_title();
 					return;
 				}
+              
+              		    
+				if (get_post_type() == 'progetto') {					
+			           $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";				    
+				   $this->items[] =  "<a href='" . home_url("progetto") . "'>" . __("Progetto", "design_comuni_italia") . "</a>";					
+                                   $terms = get_the_terms(get_the_ID(), 'tipi_progetto');
+				    if ($terms) {
+				        foreach ($terms as $term) {				
+				            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_progetto')), $term->name);
+				        }
+				    }
+					$this->items[] = get_the_title();
+					return;
+				}
+		    
+              
 		    
 				if (get_post_type() == 'servizio') {
 					$this->items[] =  "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
