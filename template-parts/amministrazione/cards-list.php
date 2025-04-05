@@ -11,9 +11,7 @@ $arr_pages = array_keys((array)$pages);
             $page = $pages[$page_name]; 
             // Ottieni la tipologia del post per ogni pagina
             $post_type = get_post_type($page['ID']);
-	echo $post_type;
-	echo '<br>';
-	 echo esc_attr($post_type); 
+	echo $page['link'];
         ?>
         <div class="col-12 col-md-6 col-lg-4">
             <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
