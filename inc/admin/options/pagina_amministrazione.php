@@ -89,5 +89,19 @@ function dci_register_pagina_amministrazione_options(){
                  'data-conditional-value' => 'true',
              ),
      ) );
-
+    
+     $amministrazione_options->add_field( array(
+         'id' => $prefix . 'ck_osl1',
+         'name'        => __( 'Attiva la Sezione OSL', 'design_comuni_italia' ),
+         'desc'    => __('Visualizza la Sezione OSL sulla parte amministrativa.', 'design_comuni_italia'),
+             'type'    => 'radio_inline',
+             'default' => 'false', 
+             'options' => array(
+                 'true'  => __('Sì', 'design_comuni_italia'),
+                 'false' => __('No', 'design_comuni_italia'),
+             ),
+             'attributes' => array(
+                 'data-conditional-value' => 'true',
+             ),
+     ) );
 }
