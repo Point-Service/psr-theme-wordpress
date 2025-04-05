@@ -31,7 +31,6 @@ function dci_register_post_type_commissario() {
 
     remove_post_type_support( 'commissario', 'editor');
 }
-
 /**
  * Aggiungo label sotto il titolo
  */
