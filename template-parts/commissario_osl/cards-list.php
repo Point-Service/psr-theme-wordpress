@@ -3,11 +3,10 @@
 global $post;
 
 
-//Se la sezione viene disattivata con caricare niente
+// Se la sezione viene disattivata, non caricare nulla
 $ck_osl = dci_get_option('ck_osl', 'Amministrazione');
 if ($ck_osl !== 'true') {
-    // Sezione disabilitata, mostra una tabella stilizzata
-    echo '
+?>
     <div style="max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <table style="width: 100%; border-collapse: collapse;">
             <thead>
@@ -27,10 +26,9 @@ if ($ck_osl !== 'true') {
             </tbody>
         </table>
     </div>
-    ';
+<?php
     exit; // Fermiamo l'esecuzione del codice dopo aver mostrato il messaggio
 }
-
 
 
 
