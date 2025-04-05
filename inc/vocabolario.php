@@ -435,7 +435,7 @@ if(!function_exists("dci_tipi_commissario")){
             'Normativa',
             'Comunicati Stampa',
             'Rassegna Stampa',
-            'Modulistica OSL'
+            'Modulistica OSL',
             'Contatti OSL'
         ];
         return $tipi_commissario_arr;
