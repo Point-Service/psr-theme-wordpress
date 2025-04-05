@@ -12,7 +12,7 @@ $arr_pages = array_keys((array)$pages);
             // Ottieni la tipologia del post per ogni pagina
             $post_type = get_post_type($page['ID']);
 	echo $post_type;
-	echo'<br>'
+	echo '<br>';
 	 echo esc_attr($post_type); 
         ?>
         <div class="col-12 col-md-6 col-lg-4">
