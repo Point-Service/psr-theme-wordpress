@@ -1,6 +1,21 @@
-ho $ck_osl<?php 
+<?php 
 
 global $post;
+
+
+
+
+           $ck_osl = dci_get_option('ck_osl', 'Amministrazione');
+            // Condizione per fare il redirect se ck_osl non è true e lo slug è 'commissario-osl'
+            if ($ck_osl !== 'true') {
+                // Redirect verso un'altra pagina, ad esempio '/altro-link'
+                wp_redirect(home_url('/index')); 
+                exit; // Importante: chiamare exit dopo wp_redirect per fermare l'esecuzione dello script
+            }
+
+
+
+
 
 $descrizione_breve = dci_get_meta("descrizione_breve", '_dci_commissario_', $post->ID);
 $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_commissario_', $post->ID);
@@ -29,18 +44,6 @@ if ($tipo) {
         $custom_icon = "#it-copy";         
     }
 
-
-           $ck_osl = dci_get_option('ck_osl', 'Amministrazione');
-            // Condizione per fare il redirect se ck_osl non è true e lo slug è 'commissario-osl'
-            if ($ck_osl !== 'true') {
-                // Redirect verso un'altra pagina, ad esempio '/altro-link'
-                wp_redirect(home_url('/index')); 
-                exit; // Importante: chiamare exit dopo wp_redirect per fermare l'esecuzione dello script
-            }
-
-
-
-    
 
 } 
 
