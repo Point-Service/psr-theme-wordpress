@@ -364,7 +364,7 @@ class Breadcrumb_Trail {
 		    
 				if (get_post_type() == 'commissario') {					
 			           $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";				    
-				   $this->items[] =  "<a href='" . home_url("commissario") . "'>" . __("Commissario", "design_comuni_italia") . "</a>";					
+				   $this->items[] =  "<a href='" . home_url("commissario") . "'>" . __("OSL", "design_comuni_italia") . "</a>";					
                                    $terms = get_the_terms(get_the_ID(), 'tipi_commissario');
 				    if ($terms) {
 				        foreach ($terms as $term) {				
