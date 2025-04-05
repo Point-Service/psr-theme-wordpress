@@ -70,8 +70,7 @@ get_header();
         </div>
 
 
-<?
-  
+<?php
 
 // Se la sezione viene disattivata, non caricare nulla
 $ck_osl = dci_get_option('ck_osl', 'Amministrazione');
@@ -99,12 +98,6 @@ if ($ck_osl !== 'true') {
 <?php
     exit; // Fermiamo l'esecuzione del codice dopo aver mostrato il messaggio
 <?php }?>
-
-
-
-
-
-    
 
         <div class="container">
             <div class="row border-top border-light row-column-border row-column-menu-left">
