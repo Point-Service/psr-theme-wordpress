@@ -9,9 +9,11 @@ $arr_pages = array_keys((array)$pages);
     <div class="row g-4">
         <?php foreach ($arr_pages as $key => $page_name) { 
             $page = $pages[$page_name]; 
-            // Ottieni la tipologia del post per ogni pagina
-            $post_type = get_post_type($page['ID']);
-	echo $page['link'];
+
+	  $slug = basename($url_parts['path']); // Ottieni l'ultima parte del path dell'URL
+
+    echo $slug; // Mostra solo lo slug (ultima parte dell'URL)
+	
         ?>
         <div class="col-12 col-md-6 col-lg-4">
             <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
