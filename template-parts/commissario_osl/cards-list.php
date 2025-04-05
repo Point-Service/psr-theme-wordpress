@@ -4,15 +4,14 @@ global $post;
 
 
 
+$ck_osl = dci_get_option('ck_osl', 'Amministrazione');
 
-           $ck_osl = dci_get_option('ck_osl', 'Amministrazione');
-            // Condizione per fare il redirect se ck_osl non è true e lo slug è 'commissario-osl'
-            if ($ck_osl !== 'true') {
-                // Redirect verso un'altra pagina, ad esempio '/altro-link'
-                wp_redirect(home_url('/index')); 
-                exit; // Importante: chiamare exit dopo wp_redirect per fermare l'esecuzione dello script
-            }
-
+// Condizione per fare il redirect se ck_osl non è true
+if ($ck_osl !== 'true') {
+    // Redirect verso un'altra pagina, ad esempio '/index'
+    wp_redirect(home_url('/index')); 
+    exit; // Importante: chiamare exit dopo wp_redirect per fermare l'esecuzione dello script
+}
 
 
 
