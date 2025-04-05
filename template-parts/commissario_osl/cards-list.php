@@ -26,7 +26,7 @@ if ($ck_osl !== 'true') {
             </tbody>
         </table>
     </div>
- </div>
+    <div class="col-12 col-md-6 col-xl-4">
 <?php
     get_footer();     
     exit; // Fermiamo l'esecuzione del codice dopo aver mostrato il messaggio
