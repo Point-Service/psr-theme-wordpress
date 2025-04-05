@@ -97,7 +97,7 @@ if ($ck_osl !== 'true') {
     </div>
 <?php
     exit; // Fermiamo l'esecuzione del codice dopo aver mostrato il messaggio
-<?php }?>
+ }?>
 
         <div class="container">
             <div class="row border-top border-light row-column-border row-column-menu-left">
