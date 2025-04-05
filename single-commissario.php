@@ -234,11 +234,18 @@ if ($ck_osl !== 'true') {
                         </div>
                       </div>
                 </div>
-            </div>
+         
 
             <?php get_template_part("template-parts/common/valuta-servizio"); ?>
 
     <?php }?>
     </main>
        <?php
-get_footer();                     
+get_footer();           
+
+
+
+
+
+
+
