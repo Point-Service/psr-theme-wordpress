@@ -3,14 +3,10 @@
 global $post;
 
 
-
+//Se la sezione viene disattivata con caricare niente
 $ck_osl = dci_get_option('ck_osl', 'Amministrazione');
-
-// Condizione per fare il redirect se ck_osl non è true
 if ($ck_osl !== 'true') {
-    // Redirect verso un'altra pagina, ad esempio '/index'
-    wp_redirect(home_url('/index')); 
-    exit; // Importante: chiamare exit dopo wp_redirect per fermare l'esecuzione dello script
+    exit; 
 }
 
 
