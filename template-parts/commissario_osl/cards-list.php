@@ -31,18 +31,11 @@ if ($tipo) {
 
 
 
-
-
-         // Se è un URL completo, prendi solo la parte finale del path
-            $url_parts = wp_parse_url($page['link']);
             $slug = basename($url_parts['path']);
-            $ck_osl = dci_get_option('ck_osl', 'Amministrazione');
 
-echo $slug;
-echo $ck_osl;
     
             // Condizione per fare il redirect se ck_osl non è true e lo slug è 'commissario-osl'
-            if ($ck_osl !== 'true' && $slug === 'commissario-osl') {
+            if ($ck_osl !== 'true') {
                 // Redirect verso un'altra pagina, ad esempio '/altro-link'
                 wp_redirect(home_url('/index')); 
                 exit; // Importante: chiamare exit dopo wp_redirect per fermare l'esecuzione dello script
