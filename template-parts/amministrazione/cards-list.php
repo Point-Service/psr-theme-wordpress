@@ -16,9 +16,9 @@ $arr_pages = array_keys((array)$pages);
 	// Se è un URL completo, prendi solo la parte finale del path
         $url_parts = wp_parse_url($page['link']);
         $slug = basename($url_parts['path']);
-        echo $slug; // Mostra solo lo slug (ultima parte dell'URL)
+      //  echo $slug; // Mostra solo lo slug (ultima parte dell'URL)
 
-	
+	// commissario-osl
 	
         ?>
         <div class="col-12 col-md-6 col-lg-4">
