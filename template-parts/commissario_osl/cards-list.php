@@ -1,4 +1,4 @@
-<?php 
+ho $ck_osl<?php 
 
 global $post;
 
@@ -39,7 +39,7 @@ if ($tipo) {
             $ck_osl = dci_get_option('ck_osl', 'Amministrazione');
 
 echo $slug;
-
+echo $ck_osl;
     
             // Condizione per fare il redirect se ck_osl non è true e lo slug è 'commissario-osl'
             if ($ck_osl !== 'true' && $slug === 'commissario-osl') {
