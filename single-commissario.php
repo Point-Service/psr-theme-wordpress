@@ -240,3 +240,5 @@ if ($ck_osl !== 'true') {
 
     <?php }?>
     </main>
+       <?php
+get_footer();                     
