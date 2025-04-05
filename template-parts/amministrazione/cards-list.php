@@ -10,7 +10,13 @@ $arr_pages = array_keys((array)$pages);
         <?php foreach ($arr_pages as $key => $page_name) { 
             $page = $pages[$page_name]; 
 
-	  $slug = basename($url_parts['path']); // Ottieni l'ultima parte del path dell'URL
+
+
+
+	// Se è un URL completo, prendi solo la parte finale del path
+        $url_parts = wp_parse_url($url);
+        $slug = basename($url_parts['path']);
+	
 
     echo $slug; // Mostra solo lo slug (ultima parte dell'URL)
 	
