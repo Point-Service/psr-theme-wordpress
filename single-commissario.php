@@ -96,6 +96,7 @@ if ($ck_osl !== 'true') {
         </table>
     </div>
 <?php
+get_footer();         
     exit; // Fermiamo l'esecuzione del codice dopo aver mostrato il messaggio
  }?>
 
