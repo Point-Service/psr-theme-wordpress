@@ -163,9 +163,7 @@ function dci_get_sercheable_tipologie() {
  */
 function dci_get_post_types_grouped($group = "", $tag = false)
 {
-    echo $post_types;
-
-    
+   
     if ($group == "")
         $group = "any";
     if ($group === "amministrazione")
