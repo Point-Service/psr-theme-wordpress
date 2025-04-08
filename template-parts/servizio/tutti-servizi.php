@@ -41,7 +41,13 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         <a class="list-item ps-0 title-medium underline" href="<?php echo get_permalink($post->ID); ?>">
                                             <span><?php echo $post->post_title; ?></span>          
                                              <p class="text-paragraph">
-                                                <?php echo $dci_get_meta('descrizione_breve', '_dci_servizio_', $servizio_id); ?>
+                                                <?php
+                                                    $descrizione_breve = $dci_get_meta('descrizione_breve', '_dci_servizio_', $servizio_id);
+                                                    if (empty($descrizione_breve)) {
+                                                        $descrizione_breve = 'Descrizione non disponibile'; // testo di fallback
+                                                    }
+                                                    echo $descrizione_breve;
+                                                    ?>
                                             </p>
             
                                         </a>
