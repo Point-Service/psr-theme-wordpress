@@ -31,7 +31,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                         <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
                             <div class="link-list-wrap">
                                 <h2 class="title-xsmall-semi-bold">
-                                    <span><b>SERVIZI IN EVIDENZA</b></span>
+                                    <span>SERVIZI IN EVIDENZA</span>
                                 </h2>
                                 <ul class="link-list t-primary">
                                     <?php foreach ($servizi_evidenza as $servizio_id) { 
@@ -39,7 +39,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     ?>
                                     <li class="mb-3 mt-3">
                                         <a class="list-item ps-0 title-medium underline" href="<?php echo get_permalink($post->ID); ?>">
-                                            <span><?php echo $post->post_title; ?></span>             
+                                            <span><?php echo $post->post_title; ?></span>
                                         </a>
                                     </li>
                                     <?php } ?>
