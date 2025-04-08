@@ -18,7 +18,6 @@
             <div class="row variable-gutters">
               <div class="col">
                 <div class="modal-title">
-                    <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
                   <button
                     class="search-link d-md-none"
                     type="button"
@@ -76,6 +75,7 @@
                     >
                       <span class="">Cerca</span>
                     </button>
+                  <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
                   </div>
               </div>
             </div>
