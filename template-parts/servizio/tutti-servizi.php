@@ -36,15 +36,15 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 <ul class="link-list t-primary">
                                     <?php foreach ($servizi_evidenza as $servizio_id) { 
                                         $post = get_post($servizio_id);    
+                                        $descrizione_breve = $dci_get_meta('descrizione_breve', '_dci_servizio_', $servizio_id);  // Ottieni la descrizione breve
                                     ?>
                                     <li class="mb-3 mt-3">
                                         <a class="list-item ps-0 title-medium underline" href="<?php echo get_permalink($post->ID); ?>">
-                                            <span><?php echo $post->post_title; ?></span>          
-                                             <p class="text-paragraph">
-                                    
-                                            </p>
-            
+                                            <span><?php echo $post->post_title; ?></span>             
                                         </a>
+                                            <p class="text-paragraph">
+                                              <?php echo esc_html($descrizione_breve); ?>  <!-- Stampa la descrizione breve -->
+                                            </p>
                                     </li>
                                     <?php } ?>
                                 </ul>
