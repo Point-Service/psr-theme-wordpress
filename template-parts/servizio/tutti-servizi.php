@@ -40,8 +40,8 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     <li class="mb-3 mt-3">
                                         <a class="list-item ps-0 title-medium underline" href="<?php echo get_permalink($post->ID); ?>">
                                             <span><?php echo $post->post_title; ?></span>
-                                            <?php echo $post->descrizione_breve; ?>
-                   h
+                 kijkijkijkijkijkijkijkijkijkijkij
+                                            <?php echo $post->descrizione_breve; ?>                   
                                         </a>
                                     </li>
                                     <?php } ?>
