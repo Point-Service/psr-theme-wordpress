@@ -11,6 +11,7 @@
     aria-hidden="true"
   >
   <div class="modal-dialog modal-lg" role="document">
+     <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
     <div class="modal-content perfect-scrollbar">
       <div class="modal-body">
         <form role="search" id="search-form-modal" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
@@ -31,7 +32,7 @@
                       ></use>
                     </svg>
                   </button>
-                  <p><span class="h2"><?php _e("Cerca","design_comuni_italia"); ?></span></p>
+                  <p><span class="h2"><?php _e("","design_comuni_italia"); ?></span></p>
                   <button
                     class="search-link d-none d-md-block"
                     type="button"
@@ -80,7 +81,6 @@
 
                   <div class="row variable-gutters p-4">
                       <div class="col-lg-5">
-                          <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
                        
                           <div class="h4 other-link-title">Ricerche frequenti</div>
                           <div class="link-list-wrapper mb-4">
