@@ -180,6 +180,8 @@ function dci_get_post_types_grouped($group = "", $tag = false)
         $post_types = array("evento", "luogo");
     else if ($group === "documenti-e-dati")
         $post_types = array("documento_pubblico", "dataset");
+    else if ($group === "commissario")
+        $post_types = array("commissario", "commissario");   
     else
         $post_types = dci_get_sercheable_tipologie();
 
