@@ -100,7 +100,7 @@
                 "temi_dataset"
             ]
         },
-        "persona_pubblica" : {
+            "persona_pubblica" : {
             "name" : "persona_pubblica",
             "capability" : "persone_pubbliche",
             "prefix" : "_dci_persona_pubblica_",
@@ -108,6 +108,16 @@
             "plural_name" : "Persone Pubbliche",
             "group_id": "amministrazione",
             "group_name" : "Amministrazione",
+            "taxonomy" : []
+        },
+            "commissario" : {
+            "name" : "commissario",
+            "capability" : "commissario",
+            "prefix" : "_dci_commissario_",
+            "singular_name" : "OSL",
+            "plural_name" : "OSL",
+            "group_id": "commissario",
+            "group_name" : "Commissario",
             "taxonomy" : []
         },
         "punto_contatto" : {
