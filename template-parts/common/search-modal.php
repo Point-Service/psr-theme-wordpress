@@ -80,8 +80,8 @@
             </div>
 
                   <div class="row variable-gutters p-4">
-                      <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
-                      <div class="col-lg-5">                       
+                      <div class="col-lg-5">    
+                          <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
                           <div class="h4 other-link-title">Ricerche frequenti</div>
                           <div class="link-list-wrapper mb-4">
                             <ul class="link-list">
