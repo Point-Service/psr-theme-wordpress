@@ -41,7 +41,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         <a class="list-item ps-0 title-medium underline" href="<?php echo get_permalink($post->ID); ?>">                                           
                                           <svg class="icon">
                                               <use xlink:href="#it-wifi"></use>
-                                          </svg><span><?php echo $post->post_title; ?></span>             
+                                          </svg> <span><?php echo $post->post_title; ?></span>             
                                         </a>
                                             <p class="text-paragraph">
 
