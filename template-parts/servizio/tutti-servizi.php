@@ -44,6 +44,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         </a>
                                             <p class="text-paragraph">
                                               <?php echo esc_html($descrizione_breve); ?>  <!-- Stampa la descrizione breve -->
+                                                g
                                             </p>
                                     </li>
                                     <?php } ?>
