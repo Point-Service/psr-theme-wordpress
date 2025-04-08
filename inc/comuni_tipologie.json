@@ -120,7 +120,7 @@
             "group_name" : "OSL",
             "taxonomy" : []
         },
-            "progetto" : {
+            "progetti" : {
             "name" : "progetto",
             "capability" : "progetto",
             "prefix" : "_dci_progetto_",
