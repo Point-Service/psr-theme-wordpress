@@ -11,9 +11,9 @@
     aria-hidden="true"
   >
   <div class="modal-dialog modal-lg" role="document">
-     <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
     <div class="modal-content perfect-scrollbar">
       <div class="modal-body">
+        <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
         <form role="search" id="search-form-modal" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
           <div class="container">
             <div class="row variable-gutters">
