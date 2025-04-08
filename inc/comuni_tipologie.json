@@ -117,7 +117,17 @@
             "singular_name" : "OSL",
             "plural_name" : "OSL",
             "group_id": "commissario",
-            "group_name" : "Commissario",
+            "group_name" : "OSL",
+            "taxonomy" : []
+        },
+            "progetto" : {
+            "name" : "progetto",
+            "capability" : "progetto",
+            "prefix" : "_dci_progetto_",
+            "singular_name" : "Progetto",
+            "plural_name" : "Progetti",
+            "group_id": "progetto",
+            "group_name" : "Progetto PNNR",
             "taxonomy" : []
         },
         "punto_contatto" : {
