@@ -13,7 +13,6 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content perfect-scrollbar">
       <div class="modal-body">
-        <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
         <form role="search" id="search-form-modal" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
           <div class="container">
             <div class="row variable-gutters">
@@ -32,6 +31,7 @@
                       ></use>
                     </svg>
                   </button>
+                  <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
                   <p><span class="h2"><?php _e("","design_comuni_italia"); ?></span></p>
                   <button
                     class="search-link d-none d-md-block"
