@@ -190,11 +190,11 @@ function dci_get_post_types_grouped($group = "", $tag = false)
         $post_types = dci_get_sercheable_tipologie();
 
     // rimuovo post types che non hanno la categoria
-  //  if ($tag) {
-    //    if (($key = array_search("page", $post_types)) !== false) {
-     //       unset($post_types[$key]);
-   //     }
-   // }
+    if ($tag) {
+        if (($key = array_search("page", $post_types)) !== false) {
+           unset($post_types[$key]);
+       }
+    }
     return $post_types;
 }
 
