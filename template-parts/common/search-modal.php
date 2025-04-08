@@ -74,9 +74,9 @@
                       class="btn btn-primary"
                     >
                       <span class="">Cerca</span>
-                    </button>
-                  <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
+                    </button>   
                   </div>
+               <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
               </div>
             </div>
 
