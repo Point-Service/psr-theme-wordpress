@@ -31,7 +31,6 @@
                       ></use>
                     </svg>
                   </button>
-                  <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
                   <p><span class="h2"><?php _e("","design_comuni_italia"); ?></span></p>
                   <button
                     class="search-link d-none d-md-block"
@@ -69,6 +68,7 @@
                         value="<?php echo get_search_query(); ?>"
                       />
                     </div>
+                    <a href="/?s=" class="chip chip-simple chip-lg" data-focus-mouse="false"><span class="chip-label">RICERCA PARAMETRICA</span></a>
                     <button
                       type="submit"
                       class="btn btn-primary"
