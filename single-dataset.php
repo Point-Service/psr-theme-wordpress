@@ -283,7 +283,7 @@ get_header();
                                 $with_border = true;
                                 get_template_part("template-parts/unita-organizzativa/card");
                                 
-                                } ?>
+                                 ?>
                             </div>
                             <!-- <div class="col-12 col-sm-4">
                                 <h6><small>Persone</small></h6>
