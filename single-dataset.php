@@ -277,8 +277,17 @@ get_header();
                         <h3>Ufficio responsabile</h3>
                         <div class="row">
                             <div class="col-12 col-sm-8">
-                            sasasasasasasasa
-                                <?php foreach ($ufficio_responsabile as $uo_id) {
+             
+                                <?php
+            
+            $uo_id= $ufficio_responsabile
+            $with_border = true;
+            get_template_part("template-parts/unita-organizzativa/card");
+            
+            
+            
+            
+            foreach ($ufficio_responsabile as $uo_id) {
                                     $with_border = true;
 
 echo $uo_id;
