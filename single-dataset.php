@@ -277,7 +277,7 @@ get_header();
                         <h3>Ufficio responsabile</h3>
                         <div class="row">
                             <div class="col-12 col-sm-8">
-             
+             <p></p>
                                 <?php            
                                 $uo_id= $ufficio_responsabile;
                                 $with_border = true;
