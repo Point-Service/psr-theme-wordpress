@@ -37,7 +37,7 @@ get_header();
             $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
             $riferimenti_normativi = dci_get_wysiwyg_field("riferimenti_normativi"); 
             
-echo $ufficio_responsabile;
+
 
             ?>
             <div class="container" id="main-container">
@@ -277,9 +277,10 @@ echo $ufficio_responsabile;
                         <h3>Ufficio responsabile</h3>
                         <div class="row">
                             <div class="col-12 col-sm-8">
+                            
                                 <?php foreach ($ufficio_responsabile as $uo_id) {
                                     $with_border = true;
-                                    get_template_part("template-parts/unita-organizzativa/card");
+                                    get_template_part("template-parts/unita-organizzativa/card-full");
                                 } ?>
                             </div>
                             <!-- <div class="col-12 col-sm-4">
