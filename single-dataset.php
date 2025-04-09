@@ -278,22 +278,11 @@ get_header();
                         <div class="row">
                             <div class="col-12 col-sm-8">
              
-                                <?php
-            
-            $uo_id= $ufficio_responsabile
-            $with_border = true;
-            get_template_part("template-parts/unita-organizzativa/card");
-            
-            
-            
-            
-            foreach ($ufficio_responsabile as $uo_id) {
-                                    $with_border = true;
-
-echo $uo_id;
-echo $ufficio_responsabile;
-                            
-                                    get_template_part("template-parts/unita-organizzativa/card");
+                                <?php            
+                                $uo_id= $ufficio_responsabile;
+                                $with_border = true;
+                                get_template_part("template-parts/unita-organizzativa/card");
+                                
                                 } ?>
                             </div>
                             <!-- <div class="col-12 col-sm-4">
