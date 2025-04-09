@@ -282,7 +282,7 @@ get_header();
                                     $with_border = true;
 
 echo $uo_id;
-
+echo $ufficio_responsabile;
                             
                                     get_template_part("template-parts/unita-organizzativa/card");
                                 } ?>
