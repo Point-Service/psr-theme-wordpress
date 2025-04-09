@@ -28,7 +28,7 @@ get_header();
             $ufficio_responsabile = dci_get_meta("ufficio_responsabile", $prefix, $post->ID);
             $file_documento = dci_get_meta("file_documento", $prefix, $post->ID);
             $descrizione = dci_get_wysiwyg_field("descrizione_estesa", $prefix, $post->ID);
-            $autori = dci_get_meta("autori");
+            $autori = dci_get_wysiwyg_field("autori", $prefix, $post->ID);
             $formati = dci_get_wysiwyg_field("distribuzione", $prefix, $post->ID);
             $licenza = wp_get_post_terms( $post->ID, array( 'licenze' ) );
             $servizi = dci_get_meta("servizi", $prefix, $post->ID);
