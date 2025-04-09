@@ -36,7 +36,8 @@ get_header();
             $documenti_collegati = dci_get_meta("documenti_collegati", $prefix, $post->ID);
             $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
             $riferimenti_normativi = dci_get_wysiwyg_field("riferimenti_normativi"); 
-
+            
+echo $ufficio_responsabile;
 
             ?>
             <div class="container" id="main-container">
