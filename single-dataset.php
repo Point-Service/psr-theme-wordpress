@@ -280,6 +280,10 @@ get_header();
                             
                                 <?php foreach ($ufficio_responsabile as $uo_id) {
                                     $with_border = true;
+
+echo $uo_id;
+
+                            
                                     get_template_part("template-parts/unita-organizzativa/card-full");
                                 } ?>
                             </div>
