@@ -1,6 +1,6 @@
 <?php
 /**
- * Documento pubblico template file
+ * Dataset template file
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
@@ -37,8 +37,6 @@ get_header();
             $more_info = dci_get_wysiwyg_field("ulteriori_informazioni");
             $riferimenti_normativi = dci_get_wysiwyg_field("riferimenti_normativi"); 
             
-
-
             ?>
             <div class="container" id="main-container">
                 <div class="row">
