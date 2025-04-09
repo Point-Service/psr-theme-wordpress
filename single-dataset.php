@@ -284,7 +284,7 @@ get_header();
 echo $uo_id;
 
                             
-                                    get_template_part("template-parts/unita-organizzativa/card-full");
+                                    get_template_part("template-parts/unita-organizzativa/card");
                                 } ?>
                             </div>
                             <!-- <div class="col-12 col-sm-4">
