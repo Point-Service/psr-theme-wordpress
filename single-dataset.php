@@ -275,9 +275,9 @@ get_header();
                     <?php } ?>
                     <article id="ufficio_responsabile" class="it-page-section anchor-offset mt-5">
                         <h3>Ufficio responsabile</h3>
+                         <p></p>
                         <div class="row">
-                            <div class="col-12 col-sm-8">
-             <p></p>
+                            <div class="col-12 col-sm-8">            
                                 <?php            
                                 $uo_id= $ufficio_responsabile;
                                 $with_border = true;
