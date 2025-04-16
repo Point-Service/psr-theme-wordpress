@@ -187,17 +187,16 @@ get_header();
                             </div>
                         </div>
                     <article class="it-page-section anchor-offset" data-audio>                        
-                        <h4 id="descrizione">Descrizione e Scopo</h4>
-                        <div class="richtext-wrapper lora">
+                        <h4 class="h4" id="descrizione">Descrizione e Scopo</h4>
+                        <div class="richtext-wrapper lora text-justify">
                             <?php echo $descrizione_scopo; ?>
                         </div>
                     </article>
                     <br>
 
                     <article class="it-page-section anchor-offset" data-audio>                        
-                        <h4 id="dettagli">Dettagli</h4>
-                        <div class="richtext-wrapper lora">
-
+                        <h4 class="h4" id="dettagli">Dettagli</h4>
+                        <div class="richtext-wrapper lora text-justify">
                             <strong>Missione: </strong><?php foreach ($missioni as $missione) { ?>
                                 <?= $missione->name?><br>
                             <?php }?>
@@ -213,18 +212,22 @@ get_header();
                     
                     <?php if(isset($importo) AND !empty($importo)){?>
                         <article class="it-page-section anchor-offset" data-audio>                        
-                            <h4 id="importo">Importo Finanziato</h4>
-                            <div class="richtext-wrapper lora">
+                            <h4 class="h4" id="importo">Importo Finanziato</h4>
+                            <div class="richtext-wrapper lora  text-justify">
                                 <?= $importo; ?>
                             </div>
+                            <br>
+                            <div class="col-12 footer-items-wrapper logo-wrapper">
+                                    <img class="ue-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnDeHmoF5L5Fkqq-Ohesy45F6z-_ku02O2Fg&s" width="50%">
+                            </div>  
                         </article>
                         <br>
                     <?php }?>
                    
                     <?php if(isset($modalita_accesso) AND !empty($modalita_accesso)){?>
                         <article class="it-page-section anchor-offset" data-audio>                        
-                            <h4 id="modalita">Modalità di Accesso al Finanziamento</h4>
-                            <div class="richtext-wrapper lora">
+                            <h4 class="h4" id="modalita">Modalità di Accesso al Finanziamento</h4>
+                            <div class="richtext-wrapper lora text-justify">
                                 <?= $modalita_accesso; ?>
                             </div>
                         </article>
@@ -234,8 +237,8 @@ get_header();
                     
                     <?php if(isset($attivita_finanziata)AND !empty($attivita_finanziata)){?>
                         <article class="it-page-section anchor-offset" data-audio>                        
-                            <h4 id="attivita">Modalità di Accesso al Finanziamento</h4>
-                            <div class="richtext-wrapper lora">
+                            <h4 class="h4" id="attivita">Modalità di Accesso al Finanziamento</h4>
+                            <div class="richtext-wrapper lora text-justify">
                                 <?= $attivita_finanziata; ?>
                             </div>
                         </article>
@@ -244,12 +247,12 @@ get_header();
                     
                     <?php if(isset($avanzamento_progetto) AND !empty($avanzamento_progetto)){?>
                         <article class="it-page-section anchor-offset mt-5">
-                            <h4 id="avanzamento">Avanzamento del Progetto</h4>
-                            <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                            <h4 class="h4" id="avanzamento">Avanzamento del Progetto</h4>
+                            <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal  text-justify">
                                 <?= $avanzamento_progetto; ?>
                             </div>
                             <?php if(is_array($file_avanzamento) AND count($file_avanzamento)){?>
-                                <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                                <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal text-justify">
                                 <?php foreach ($file_avanzamento as $all_url) {
                                     $all_id = attachment_url_to_postid($all_url);
                                     $file = get_post($all_id);
@@ -316,7 +319,7 @@ get_header();
                                 ></use>
                                 </svg>
                                 <div class="card-body">
-                                <h5 class="card-title">
+                                <h5 class="h5" class="card-title">
                                     <a class="text-decoration-none" target="_blanck" href="<?php echo get_the_guid($allegato); ?>" aria-label="Scarica l'allegato <?php echo $allegato->post_title; ?>" title="Scarica l'allegato <?php echo $allegato->post_title; ?>">
                                         <?php echo $allegato->post_title; ?>
                                     </a>
@@ -329,7 +332,7 @@ get_header();
                     <?php } ?>
 
                     <article class="it-page-section anchor-offset mt-5">
-                        <h4 id="a-cura-di">A cura di</h4>
+                        <h4 class="h4" id="a-cura-di">A cura di</h4>
                         <div class="row">
                         <div class="col-12 col-sm-8">
                             <h6><small>Questa pagina è gestita da</small></h6>
