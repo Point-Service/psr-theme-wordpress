@@ -776,7 +776,7 @@ class Breadcrumb_Trail {
 		
                     }
 			
-                     else if (is_tax(array("tipo_evento"))) {	
+                     else if (is_tax(array("tipi_evento"))) {	
      
 			    // Link a "Vivere il Comune"
 			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
@@ -837,7 +837,7 @@ class Breadcrumb_Trail {
 			    			    
                     }
                     else {			 
-                        $this->add_term_archive_items();
+                      //  $this->add_term_archive_items();
                     }
                 }
 				elseif ( is_author() )
