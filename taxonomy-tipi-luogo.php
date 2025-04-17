@@ -80,12 +80,12 @@ get_header();
                     <?php foreach ($luoghi as $luogo) { 
                         $load_card_type = "tipo_luogo";
                         $hide_tipos = true;
-                        get_template_part("template-parts/luogo/card-full");    
+                        get_template_part("template-parts/luogo/card");    
                     } ?>
                  </div>
                        <?php get_template_part("template-parts/search/more-results"); ?>
               </div>
-              
+              jhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhgjhg
               <?php if ( is_array($amministrazione) && count($amministrazione) ) { ?>
                 <div class="col-12 col-lg-4 pt-50 pb-30 pt-lg-5 ps-lg-5">
                   <div class="link-list-wrap">
