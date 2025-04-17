@@ -660,7 +660,7 @@ class Breadcrumb_Trail {
 						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_evento' ) ), $term->name );
 					  }
 					}
-					    
+					    echo 'dsadsds';
 					    
 				    }
 				}
