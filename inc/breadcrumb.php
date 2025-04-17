@@ -837,7 +837,7 @@ class Breadcrumb_Trail {
 			    			    
                     }
                     else {			 
-                      //  $this->add_term_archive_items();
+                       $this->add_term_archive_items();
                     }
                 }
 				elseif ( is_author() )
