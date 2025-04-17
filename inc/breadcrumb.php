@@ -806,7 +806,7 @@ class Breadcrumb_Trail {
 			if ($term instanceof WP_Term) {
 			    $term_name = $term->name; // Nome del termine
 			    $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
-			}			    
+						    
                     }else if (is_tax(array("tipi_progetto"))){
                        // $this->items[] = "<a href='".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
 			$this->items[] = "<a href='index.php/".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
