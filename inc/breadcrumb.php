@@ -652,8 +652,7 @@ class Breadcrumb_Trail {
 				        
 				    } elseif ($category === 'eventi') {
 				        $category_link = home_url("vivere-il-comune/eventi");
-				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
-				        echo 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";				  
                                        $terms = get_the_terms(get_the_ID(),'tipi_evento');
 					if($terms){
 					  foreach ($terms as $term) {
@@ -798,7 +797,16 @@ class Breadcrumb_Trail {
 			    $term_name = $term->name; // Nome del termine
 			    $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
 			}
-			    
+                    else if (is_tax(array("tipi_evento"))){
+                        $this->items[] = "<a href='".home_url("evento")."'>".__("Evento", "design_comuni_italia")."</a>";
+                        // Ottieni i termini associati al post corrente nella tassonomia 'tipi_evento'
+			$terms = get_the_terms(get_the_ID(), 'tipi_evento');	    			    
+			// Ottieni l'oggetto del termine corrente
+			$term = get_queried_object();			
+			if ($term instanceof WP_Term) {
+			    $term_name = $term->name; // Nome del termine
+			    $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
+			}			    
                     }else if (is_tax(array("tipi_progetto"))){
                        // $this->items[] = "<a href='".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
 			$this->items[] = "<a href='index.php/".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
