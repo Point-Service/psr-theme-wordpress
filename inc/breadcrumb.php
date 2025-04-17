@@ -653,7 +653,7 @@ class Breadcrumb_Trail {
 				    } elseif ($category === 'eventi') {
 				        $category_link = home_url("vivere-il-comune/eventi");
 				        $this->items[] = "<a href='" . esc_url($category_link) . "'>" . __("Eventi", "design_comuni_italia") . "</a>";
-				        
+				        echo 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
                                        $terms = get_the_terms(get_the_ID(),'tipi_evento');
 					if($terms){
 					  foreach ($terms as $term) {
