@@ -776,19 +776,26 @@ class Breadcrumb_Trail {
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		
                     }
+			
+                     else if (is_tax(array("tipi_evento"))) {	
 
-                     else if (is_tax(array("tipi_evento"))) {		
+
+echo 'dsss';
+
+
+			     
 			    // Link a "Vivere il Comune"
 			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
 			
-			    // Link a "Luoghi" (sottocategoria di Vivere il Comune)
+			    // Link a "Eventi" (sottocategoria di Vivere il Comune)
 			    $evento_link = home_url("vivere-il-comune/eventi");
 			    $this->items[] = "<a href='" . esc_url($evento_link) . "'>" . __("Evento", "design_comuni_italia") . "</a>"; 
 			
 			    // Nome della categoria attuale (es. "Chiesa")
 			    $term_name = single_term_title('', false);
 			    $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-			}			    
+			}
+			     
 		   else if (is_tax(array("tipi_luogo"))) {		
 			    // Link a "Vivere il Comune"
 			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
