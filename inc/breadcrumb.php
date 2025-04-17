@@ -660,8 +660,7 @@ class Breadcrumb_Trail {
 						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_evento' ) ), $term->name );
 					  }
 					}
-					    echo 'dsadsds';
-					    
+								    
 				    }
 				}
 
@@ -777,13 +776,8 @@ class Breadcrumb_Trail {
 		
                     }
 			
-                     else if (is_tax(array("tipi_evento"))) {	
-
-
-echo 'dsss';
-
-
-			     
+                     else if (is_tax(array("tipo_evento"))) {	
+     
 			    // Link a "Vivere il Comune"
 			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
 			
