@@ -46,7 +46,7 @@ get_header();
       $data_element = 'data-element="page-name"';
       get_template_part("template-parts/hero/hero"); 
     ?>
-  iiiiiiiiiiiiiiiiiiiiiiii
+
     <div class="bg-grey-card">
       <form role="search" id="search-form" method="get" class="search-form">
           <button type="submit" class="d-none"></button>
@@ -80,7 +80,7 @@ get_header();
                     <?php foreach ($luoghi as $luogo) { 
                         $load_card_type = "tipo_luogo";
                         $hide_tipos = true;
-                        get_template_part("template-parts/luogo/card");    
+                        get_template_part("template-parts/luogo/card-full");    
                     } ?>
                  </div>
                        <?php get_template_part("template-parts/search/more-results"); ?>
