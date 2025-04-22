@@ -50,9 +50,9 @@ $arr_pages = array_keys((array)$pages);
                 <div class="card shadow-sm rounded">
                     <div class="card-body">
                         <a class="text-decoration-none" href="/dataset">
-                            <h3 class="card-title t-primary title-xlarge">
+                            <h4 class="card-title t-primary title-xlarge">
                                 Dataset
-                            </h3>
+                            </h4>
                         </a>
                         <p class="text-paragraph mb-0">
                             "Dataset" fornisce l'accesso ai dati aperti pubblicati dall'Autorità Nazionale Anticorruzione (ANAC) riguardanti i contratti pubblici in Italia. Questi dataset, disponibili in formato aperto, comprendono informazioni dettagliate sulle procedure di appalto, le stazioni appaltanti e altri elementi chiave relativi ai contratti pubblici, permettendo un'analisi approfondita e promuovendo la trasparenza nel settore degli appalti pubblici.
