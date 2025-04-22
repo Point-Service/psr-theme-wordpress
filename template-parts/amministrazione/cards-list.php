@@ -10,7 +10,7 @@ $icone_slug = [
     'commissario-osl' => '#it-pa',
     'documenti-e-dati'    => '#it-folder',
     'commissione'         => '#it-users',
-    'regolamenti'         => '#it-file',
+    'regolamenti'         => '#it-files',
     'personale-amministrativo' => '#it-user',
     // Aggiungi altri slug e relative icone qui
 ];
@@ -69,7 +69,7 @@ $icone_slug = [
                         <a class="text-decoration-none" href="/dataset">
                             <h3 class="card-title t-primary title-xlarge">
                                 <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
-                                    <use href="#it-folder"></use>
+                                    <use href="#it-piattaforme"></use>
                                 </svg>
                                 Dataset
                             </h3>
@@ -85,42 +85,4 @@ $icone_slug = [
     </div>
 </div>
 
-<?php
-// Percorso al file sprite
-$sprite_path = get_template_directory() . '/assets/svg/warning.svg'; // <-- adatta questo!
-
-if (file_exists($sprite_path)) {
-    // Carica il contenuto del file
-    $sprite_content = file_get_contents($sprite_path);
-    
-    // Debug: Stampa il contenuto del file SVG
-    echo '<pre>';
-    echo htmlspecialchars($sprite_content);  // Usa htmlspecialchars per visualizzare i caratteri speciali
-    echo '</pre>';
-
-    // Trova tutti i simboli
-    preg_match_all('/<symbol id="([^"]+)"/', $sprite_content, $matches);
-
-    // Debug: Stampa i risultati della regex
-    echo '<pre>';
-    print_r($matches);
-    echo '</pre>';
-
-    // Verifica se ci sono simboli trovati
-    if (!empty($matches[1])) {
-        echo '<div class="row g-3">';
-        foreach ($matches[1] as $icon_id) {
-            echo '<div class="col-3">';
-            echo '<svg class="icon icon-primary me-2" aria-hidden="true" width="24" height="24"><use href="#' . $icon_id . '"></use></svg>';
-            echo '<code>#' . $icon_id . '</code>';
-            echo '</div>';
-        }
-        echo '</div>';
-    } else {
-        echo 'Nessuna icona trovata.';
-    }
-} else {
-    echo 'File sprite non trovato: ' . $sprite_path;
-}
-?>
 
