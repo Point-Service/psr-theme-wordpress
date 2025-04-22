@@ -9,7 +9,7 @@ $st_colore = dci_get_meta('colore',$prefix, $sito_tematico->ID);
 $st_img = dci_get_meta('immagine',$prefix, $sito_tematico->ID);
 
 $colore_sfondo = dci_get_meta('colore',$prefix, $sito_tematico->ID) ?: false;
-$sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
+$sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 ?>
 
 <a href="<?php echo $st_link ?>" style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : '' ?> rounded mt-0 p-3 shadow-sm border border-light" target="_blank">
