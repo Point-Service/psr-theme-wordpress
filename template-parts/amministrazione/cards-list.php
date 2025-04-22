@@ -69,7 +69,7 @@ $icone_slug = [
                         <a class="text-decoration-none" href="/dataset">
                             <h3 class="card-title t-primary title-xlarge">
                                 <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
-                                    <use href="#it-file"></use>
+                                    <use href="#it-folder"></use>
                                 </svg>
                                 Dataset
                             </h3>
