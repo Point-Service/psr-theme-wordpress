@@ -88,7 +88,6 @@ $icone_slug = [
 <?php
 // Percorso al file sprite
 $sprite_path = get_template_directory() . '/assets/svg/warning.svg'; // <-- adatta questo!
-
 if (file_exists($sprite_path)) {
     $sprite_content = file_get_contents($sprite_path);
     preg_match_all('/<symbol id="([^"]+)"/', $sprite_content, $matches);
