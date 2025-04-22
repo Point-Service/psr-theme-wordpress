@@ -28,9 +28,6 @@ foreach ($incarichi as $incarico) {
             <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
                 <div class="card no-after rounded">
                     <div class="row g-2 g-md-0">
-                        <!-- Foto a sinistra -->
-
-
                         <!-- Dati a destra -->
                         <div class="col-8 col-md-9">
                             <div class="card-body p-2">
@@ -41,6 +38,15 @@ foreach ($incarichi as $incarico) {
                                     </a>
                                 </div>
 
+                            <!-- Foto a sinistra -->
+                            <div class="col-4 col-md-3">
+                                <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
+                            </div>
+
+
+
+
+                                
                                 <!-- Data di inizio incarico (ora sotto il nome) -->
                                 <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
 
