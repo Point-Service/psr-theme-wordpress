@@ -176,14 +176,14 @@ get_header();
 
                                                 <?php if ($img1) { ?>
                                                     <section class="hero-img mb-20 mb-lg-50">
-                                                        <div class="img-responsive-wrapper">
+                                                   
                                                             <center>
                                                                 <div class="img-wrapper">
                                                                     <!-- Applica la classe CSS img-resized per ridimensionare l'immagine -->
                                                                     <?php dci_get_img($img1, 'rounded img-fluid img-responsive foto-soft-style img-resized'); ?>
                                                                 </div>
                                                             </center>
-                                                        </div>
+                                               
                                                     </section>
                                                 <?php } ?>
 
