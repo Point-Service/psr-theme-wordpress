@@ -34,7 +34,7 @@ foreach ($incarichi as $incarico) {
                             <div class="card-body card-img-none rounded-top">
                                 <div class="category-top cmp-list-card-img__body">
                                     <span class="category cmp-list-card-img__body-heading-title underline">
-                                     <?php echo the_title(); ?>
+                                    <a href="<?php echo get_permalink(); ?>" class="category cmp-list-card-img__body-heading-title underline"><?php echo the_title(); ?></a>
                                     </span>
                                     <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                                 </div>
