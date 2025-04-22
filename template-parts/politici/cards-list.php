@@ -36,9 +36,9 @@ foreach ($incarichi as $incarico) {
                                 <div class="category-top cmp-list-card-img__body">
                                     <a href="<?php echo get_permalink(); ?>" class="category cmp-list-card-img__body-heading-title underline">
                                         <?php echo the_title(); ?>
-                                    </a><span class="data"><font size="1" color="grey"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></font></span>
+                                    </a>
                                 </div>
-
+                                 <span class="data"><font size="1" color="grey"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></font></span>
                                 
                                 <!-- Foto a sinistra -->
                                 <div class="col-4 col-md-3">
