@@ -123,7 +123,7 @@ if ($img) {
                                     </svg>
   
                                 <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
-                                 <?php echo strtoupper($tipo->name); ?>
+                                <h3> <?php echo strtoupper($tipo->name); ?></h3>
                              </a>
                             <?php } ?>
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
