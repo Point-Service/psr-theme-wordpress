@@ -41,7 +41,10 @@ foreach ($incarichi as $incarico) {
                                    <h3 class="h5 card-title"></h3>
                                     <!-- Foto a sinistra -->
                                     <div class="col-4 col-md-3">
-                                        <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
+                                        <?php if ($img) { 
+                                            // Applichiamo le classi per il bordo e l'ombra
+                                            dci_get_img($img, 'rounded-circle img-fluid img-responsive foto-stilizzata'); 
+                                        } ?>
                                     </div>
 
                                     <!-- Elenco degli incarichi -->
@@ -72,5 +75,17 @@ foreach ($incarichi as $incarico) {
     }
 }
 ?>
+<style>
+    /* Aggiungi un bordo arrotondato e un'ombra leggera alla foto */
+.foto-stilizzata {
+    border: 4px solid #f0f0f0; /* Bordo grigio chiaro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+    transition: box-shadow 0.3s ease-in-out; /* Transizione per l'ombra */
+}
+
+.foto-stilizzata:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); /* Ombra più forte al passaggio del mouse */
+}
+</style>
 
 
