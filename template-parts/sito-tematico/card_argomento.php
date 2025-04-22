@@ -12,18 +12,26 @@ $colore_sfondo = dci_get_meta('colore',$prefix, $sito_tematico->ID) ?: false;
 $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 ?>
 
-<a href="<?php echo $st_link ?>" style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : '' ?>  " target="_blank">
+<a href="<?php echo $st_link ?>" 
+   style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : 'background-color:#f7f7f7;' ?>" 
+   class="card card-teaser <?= $colore_sfondo ? '' : '' ?> mt-0 p-3 shadow-sm" 
+   target="_blank">
+
     <?php if($st_img) { ?>
-           <div class="avatar size-lg me-3">
+       <div class="avatar size-lg me-3">
             <?php dci_get_img($st_img); ?>
-        </div>
+       </div>
     <?php } ?>
-    <div class="card-body">
-        <h3 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-black':'text-dark' ?>">
+
+    <div class="card-body" style="background-color: #f7f7f7; padding: 20px; border-radius: 8px;">
+        <h3 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-black' : 'text-dark' ?>"
+            style="font-size: 1.25rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>;">
             <?php echo $sito_tematico->post_title ?>
         </h3>
-        <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-black':'' ?>">
+        <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-black' : '' ?>"
+           style="color: <?= $sfondo_scuro ? '#333' : '#555' ?>; font-size: 0.9rem;">
             <?php echo $st_descrizione; ?>
         </p>
     </div>
 </a>
+
