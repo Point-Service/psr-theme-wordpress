@@ -1,20 +1,6 @@
 <?php
 $pages = dci_get_children_pages('amministrazione');
 $arr_pages = array_keys((array)$pages);
-
-// Mappa slug → nome icona
-$icone_slug = [
-    'aree-amministrative' => '#it-pa',
-    'uffici' => '#it-pa',
-    'organi-di-governo' => '#it-pa',
-    'commissario-osl' => '#it-pa',
-    'documenti-e-dati'    => '#it-folder',
-    'commissione'         => '#it-users',
-    'regolamenti'         => '#it-files',
-    'personale-amministrativo' => '#it-folder',
-    // Aggiungi altri slug e relative icone qui
-];
-
 ?>
 <div class="container py-5">
     <h2 class="title-xxlarge mb-4">
@@ -42,9 +28,6 @@ $icone_slug = [
                 <div class="card shadow-sm rounded">
                     <div class="card-body">
                         <a class="text-decoration-none" href="<?php echo $page['link']; ?>" data-element="management-category-link">
-                                <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
-                                    <use href="<?php echo $icona; ?>"></use>
-                                </svg>
                             <h3 class="card-title t-primary title-xlarge">
                                 <?php echo $page_name; ?>
                             </h3>
@@ -67,9 +50,6 @@ $icone_slug = [
                 <div class="card shadow-sm rounded">
                     <div class="card-body">
                         <a class="text-decoration-none" href="/dataset">
-                               <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
-                                    <use href="#it-piattaforme"></use>
-                                </svg>
                             <h3 class="card-title t-primary title-xlarge">
                                 Dataset
                             </h3>
