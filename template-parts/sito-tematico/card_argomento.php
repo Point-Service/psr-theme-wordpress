@@ -12,7 +12,7 @@ $colore_sfondo = dci_get_meta('colore',$prefix, $sito_tematico->ID) ?: false;
 $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 ?>
 
-<a href="<?php echo $st_link ?>" style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : '' ?> rounded mt-0 p-6 shadow-sm border border-light" target="_blank">
+<a href="<?php echo $st_link ?>" style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : '' ?>  mt-0 p-5 shadow-sm border border-light" target="_blank">
     <?php if($st_img) { ?>
            <div class="avatar size-lg me-3">
             <?php dci_get_img($st_img); ?>
