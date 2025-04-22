@@ -42,8 +42,7 @@ foreach ($incarichi as $incarico) {
                                     <!-- Foto a sinistra -->
                                     <div class="col-4 col-md-3">
                                         <?php if ($img) { 
-                                            // Applichiamo le classi per il bordo e l'ombra
-                                            dci_get_img($img, 'rounded-circle img-fluid img-responsive foto-stilizzata'); 
+                                            dci_get_img($img, 'rounded img-fluid img-responsive foto-soft-style'); 
                                         } ?>
                                     </div>
 
@@ -76,16 +75,15 @@ foreach ($incarichi as $incarico) {
 }
 ?>
 <style>
-    /* Aggiungi un bordo arrotondato e un'ombra leggera alla foto */
-.foto-stilizzata {
-    border: 4px solid #f0f0f0; /* Bordo grigio chiaro */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombra leggera */
-    transition: box-shadow 0.3s ease-in-out; /* Transizione per l'ombra */
+/* Stile più leggero per la foto */
+.foto-soft-style {
+    border: 1px solid #ddd;              /* Bordo molto leggero */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Ombra quasi impercettibile */
+    padding: 2px;
+    background-color: #fff;              /* Sfondo bianco per risalto se su sfondo grigio */
+    border-radius: 6px;                  /* Angoli leggermente arrotondati */
 }
 
-.foto-stilizzata:hover {
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); /* Ombra più forte al passaggio del mouse */
-}
 </style>
 
 
