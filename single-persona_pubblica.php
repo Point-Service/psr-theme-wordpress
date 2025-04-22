@@ -23,8 +23,11 @@ get_header();
         $competenze = dci_get_wysiwyg_field("competenze") ?? '';
 
         $foto_id = dci_get_meta("foto_id");
+        
         $img = wp_get_attachment_image_src($foto_id, "item-gallery");
-
+        
+        $img1 = dci_get_meta('foto'); // Foto associata all'incarico
+        
         $data_insediamento = dci_get_meta("data_inizio_incarico") ?? '';
 
         $responsabili = dci_get_meta("responsabile") ?? [];
@@ -312,7 +315,9 @@ get_header();
                     <?php } ?>
 
 
-
+                                        <?php if ($img) { 
+                                            dci_get_img($img, 'rounded img-fluid img-responsive foto-soft-style'); 
+                                        } ?>
 
 
 
