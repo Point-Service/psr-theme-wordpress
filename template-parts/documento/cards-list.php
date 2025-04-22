@@ -80,11 +80,11 @@
                         <div class="card-body">
                             <div class="category-top cmp-list-card-img__body">
                                             <?php if (isset($tipo) && isset($tipo->term_id)) : ?>
-                                            <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font></a>
+                                            <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black"  size="2"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font></a>
                                             <?php else : ?>
-                                            <a class="text-decoration-none" href="/dataset"><font color="black"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font></a>
+                                            <a class="text-decoration-none" href="/dataset"><font color="black"  size="2"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font></a>
                                             <?php endif; ?>
-                                <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
+                                <span class="data"  size="1"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
                             </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
                                 <h3 class="h5 card-title"><?php
@@ -143,10 +143,10 @@
                                 <span class="category cmp-list-card-img__body-heading-title underline">                                    
                                     <span class="text">
                                         <?php if (isset($tipo) && isset($tipo->term_id)) : ?>
-                                                <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black" size="1"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font>
+                                                <a class="text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>"><font color="black" size="2"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font>
                                             </a>
                                             <?php else : ?>
-                                             <a class="text-decoration-none" href="/dataset"><font color="black" size="1"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font></a></font>
+                                             <a class="text-decoration-none" href="/dataset"><font color="black" size="2"><?php echo isset($tipo->name) ? strtoupper($tipo->name) : 'DATASET'; ?></font></a></font>
                                             <?php endif; ?>
                                         <font color="grey" size="1"><span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span></font>
                                     </span>      
