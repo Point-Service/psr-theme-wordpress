@@ -308,8 +308,8 @@ get_header();
 
                     
 
-                                         <?php if ($img) { 
-                                            dci_get_img($img, 'rounded img-fluid img-responsive foto-soft-style'); 
+                                         <?php if ($img1) { 
+                                            dci_get_img($img1, 'rounded img-fluid img-responsive foto-soft-style'); 
                                         } ?>
 
                 
