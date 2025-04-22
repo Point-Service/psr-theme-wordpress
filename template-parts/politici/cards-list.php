@@ -44,10 +44,7 @@ foreach ($incarichi as $incarico) {
                                     <div class="col-4 col-md-3">
                                         <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
                                     </div>
-    
-                                <p class="card-text d-none d-md-block">
-                                    <?php echo $description; ?>
-                                </p>
+
     
                                     <!-- Elenco degli incarichi -->
                                     <div class="incarichi mt-2">
@@ -65,7 +62,6 @@ foreach ($incarichi as $incarico) {
                                         <?php echo $description; ?>
                                     </p>
     
-                                
                             </div>
                         </div>
                     </div>
