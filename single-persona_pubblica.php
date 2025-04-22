@@ -164,19 +164,24 @@ get_header();
                                         <div class="accordion-item">
                                             <span class="accordion-header" id="accordion-title-one">
 
-                                                <!-- Sezione immagine con CSS aggiornato per mantenere proporzioni -->
-                                                <style>
-                                                    .hero-img .img-wrapper img {
-                                                        width: 100%;
-                                                        /* Adatta la larghezza dell'immagine al contenitore */
-                                                        height: auto;
-                                                        /* Mantiene le proporzioni */
-                                                        object-fit: contain;
-                                                        /* Assicura che l'immagine non venga ritagliata */
-                                                        display: block;
-                                                        /* Evita spazi indesiderati */
-                                                    }
-                                                </style>
+                                                <?php if ($img) { ?>
+                                                    <section class="hero-img mb-20 mb-lg-50">
+                                                        <div class="img-responsive-wrapper">
+                                                            <center>
+                                                                <div class="img-wrapper">                    
+
+                                                                     <?php if ($img1) { 
+                                                                        dci_get_img($img1, 'rounded img-fluid img-responsive foto-soft-style'); 
+                                                                    } ?>
+
+                                                                </div>
+                                                            </center>
+                                                        </div>
+                                                    </section>
+                                                <?php } ?>
+
+
+                                                
                                                 <button class="accordion-button pb-10 px-3 text-uppercase" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#collapse-one"
                                                     aria-expanded="true" aria-controls="collapse-one">
@@ -305,12 +310,6 @@ get_header();
                 </div>
             </div>
             <div class="col-12 col-lg-8 offset-lg-1">
-
-                    
-
-                                         <?php if ($img1) { 
-                                            dci_get_img($img1, 'rounded img-fluid img-responsive foto-soft-style'); 
-                                        } ?>
 
                 
                 <div class="it-page-sections-container">
