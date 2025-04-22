@@ -88,10 +88,25 @@ $icone_slug = [
 <?php
 // Percorso al file sprite
 $sprite_path = get_template_directory() . '/assets/svg/warning.svg'; // <-- adatta questo!
+
 if (file_exists($sprite_path)) {
+    // Carica il contenuto del file
     $sprite_content = file_get_contents($sprite_path);
+    
+    // Debug: Stampa il contenuto del file SVG
+    echo '<pre>';
+    echo htmlspecialchars($sprite_content);  // Usa htmlspecialchars per visualizzare i caratteri speciali
+    echo '</pre>';
+
+    // Trova tutti i simboli
     preg_match_all('/<symbol id="([^"]+)"/', $sprite_content, $matches);
 
+    // Debug: Stampa i risultati della regex
+    echo '<pre>';
+    print_r($matches);
+    echo '</pre>';
+
+    // Verifica se ci sono simboli trovati
     if (!empty($matches[1])) {
         echo '<div class="row g-3">';
         foreach ($matches[1] as $icon_id) {
@@ -108,3 +123,4 @@ if (file_exists($sprite_path)) {
     echo 'File sprite non trovato: ' . $sprite_path;
 }
 ?>
+
