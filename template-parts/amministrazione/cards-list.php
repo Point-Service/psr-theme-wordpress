@@ -4,14 +4,14 @@ $arr_pages = array_keys((array)$pages);
 
 // Mappa slug → nome icona
 $icone_slug = [
-    'aree-amministrative' => '#user_ldap_team',
+    'aree-amministrative' => '#it-pa',
     'uffici' => '#it-pa',
     'organi-di-governo' => '#it-pa',
     'commissario-osl' => '#it-pa',
     'documenti-e-dati'    => '#it-folder',
     'commissione'         => '#it-users',
     'regolamenti'         => '#it-files',
-    'personale-amministrativo' => '#it-user',
+    'personale-amministrativo' => '#it-folder',
     // Aggiungi altri slug e relative icone qui
 ];
 
