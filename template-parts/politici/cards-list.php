@@ -74,12 +74,15 @@ foreach ($incarichi as $incarico) {
     }
 }
 ?>
-<style>/* CSS per limitare la larghezza dell'immagine */
-/* CSS per limitare la larghezza dell'immagine a 300px solo se è più larga di 300px */
-.img-resized {
-    max-width: 300px;  /* Imposta la larghezza massima a 300px */
-    width: 100%;       /* La larghezza si adatta al contenitore */
-    height: auto;      /* Mantieni le proporzioni dell'immagine */
-}</style>
+<style>
+/* Stile più leggero per la foto */
+.foto-soft-style {
+    border: 1px solid #ddd;              /* Bordo molto leggero */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Ombra quasi impercettibile */
+    padding: 2px;
+    background-color: #fff;              /* Sfondo bianco per risalto se su sfondo grigio */
+    border-radius: 6px;                  /* Angoli leggermente arrotondati */
+}
 
+</style>
 
