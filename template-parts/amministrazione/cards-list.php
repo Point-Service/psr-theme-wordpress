@@ -85,3 +85,27 @@ $icone_slug = [
     </div>
 </div>
 
+<?php
+// Percorso al file sprite
+$sprite_path = get_template_directory() . '/assets/svg/sprite.svg'; // <-- adatta questo!
+
+if (file_exists($sprite_path)) {
+    $sprite_content = file_get_contents($sprite_path);
+    preg_match_all('/<symbol id="([^"]+)"/', $sprite_content, $matches);
+
+    if (!empty($matches[1])) {
+        echo '<div class="row g-3">';
+        foreach ($matches[1] as $icon_id) {
+            echo '<div class="col-3">';
+            echo '<svg class="icon icon-primary me-2" aria-hidden="true" width="24" height="24"><use href="#' . $icon_id . '"></use></svg>';
+            echo '<code>#' . $icon_id . '</code>';
+            echo '</div>';
+        }
+        echo '</div>';
+    } else {
+        echo 'Nessuna icona trovata.';
+    }
+} else {
+    echo 'File sprite non trovato: ' . $sprite_path;
+}
+?>
