@@ -24,51 +24,57 @@ foreach ($incarichi as $incarico) {
 
         // Inizia la visualizzazione della persona
         ?>
-        <div class="col-md-6 col-lg-4 col-xl-3" style="margin-bottom: 20px;"> <!-- Margine esterno -->
+
+    
+    
+        <div class="col-md-6 col-xl-4">
             <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
                 <div class="card no-after rounded">
-                    <div class="row g-2 g-md-0">
-                        <!-- Dati a destra -->
-                        <div class="col-8 col-md-9">
-                            <div class="card-body p-2">
-                                
-                                <!-- Nome con link -->
+                    <div class="row g-2 g-md-0 flex-md-column">
+                        <div class="col-12 order-1 order-md-2">
+                            <div class="card-body card-img-none rounded-top">
                                 <div class="category-top cmp-list-card-img__body">
-                                    <a href="<?php echo get_permalink(); ?>" class="category cmp-list-card-img__body-heading-title underline">
-                                        <?php echo the_title(); ?>
-                                    </a>
-                                    <span class="data"><font size="1" color="grey"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></font></span>
+                                    <span class="category cmp-list-card-img__body-heading-title underline">
+                                     <?php echo the_title(); ?>
+                                    </span>
+                                    <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                                 </div>
-                                 
-                                
-                                <!-- Foto a sinistra -->
-                                <div class="col-4 col-md-3">
-                                    <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
-                                </div>
-
-
-                                <!-- Elenco degli incarichi -->
-                                <div class="incarichi mt-2">
-                                    <?php
-                                    // Stampa tutti gli incarichi associati a questa persona
-                                    foreach ($incarichi as $incarico) {
-                                        $nome_incarico = get_the_title($incarico);
-                                        echo '<span class="badge bg-primary badge-sm">' . $nome_incarico . '</span><br>'; // Ogni incarico su una nuova riga
-                                    }
-                                    ?>
-                                </div>
-
-                                <!-- Descrizione -->
-                                <p class="card-text mt-2" style="font-size: 0.9rem;">
+                                   <h3 class="h5 card-title"></h3>
+                                    <!-- Foto a sinistra -->
+                                    <div class="col-4 col-md-3">
+                                        <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
+                                    </div>
+    
+                                <p class="card-text d-none d-md-block">
                                     <?php echo $description; ?>
                                 </p>
+    
+                                    <!-- Elenco degli incarichi -->
+                                    <div class="incarichi mt-2">
+                                        <?php
+                                        // Stampa tutti gli incarichi associati a questa persona
+                                        foreach ($incarichi as $incarico) {
+                                            $nome_incarico = get_the_title($incarico);
+                                            echo '<span class="badge bg-primary badge-sm">' . $nome_incarico . '</span><br>'; // Ogni incarico su una nuova riga
+                                        }
+                                        ?>
+                                    </div>
+    
+                                    <!-- Descrizione -->
+                                    <p class="card-text mt-2" style="font-size: 0.9rem;">
+                                        <?php echo $description; ?>
+                                    </p>
+    
+                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <?php 
+
+      
+      <?php 
     }
 }
 ?>
