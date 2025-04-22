@@ -303,22 +303,13 @@ get_header();
             </div>
             <div class="col-12 col-lg-8 offset-lg-1">
 
-
-
-
-                                            <?php if ($img) { ?>
-                                               
-                                                   
-                                                      
-                                                            <img src="<?php echo url($img[0]); ?>" 
-                                                                 alt="descrizione immagine" 
-                                                                 title="titolo immagine" 
-                                                                 >
-                                                     
-                                              
-                                              
-                                            <?php } ?>
-
+                    
+                    <?php if ($img) { ?>
+                        <img src="<?php echo esc_url($img[0]); ?>" 
+                             alt="descrizione immagine" 
+                             title="titolo immagine" 
+                             class="img-resized">
+                    <?php } ?>
 
 
 
@@ -572,4 +563,9 @@ get_footer();
 ?>
 
 ?>
-
+<style>/* CSS per limitare la larghezza dell'immagine */
+.img-resized {
+    max-width: 300px;         /* Imposta la larghezza massima a 300px */
+    width: 100%;              /* L'immagine si adatta al 100% della larghezza del contenitore */
+    height: auto;             /* L'altezza si adatta automaticamente per mantenere le proporzioni */
+}</style>
