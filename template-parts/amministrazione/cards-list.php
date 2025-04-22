@@ -30,7 +30,9 @@ $arr_pages = array_keys((array)$pages);
                 <div class="card-body">
                 <!-- Aggiungi la tipologia come classe CSS -->
                 <a class="text-decoration-none <?php echo esc_attr($post_type); ?>" href="<?php echo $page['link']; ?>" data-element="management-category-link">
-                    <h3 class="card-title t-primary title-xlarge"><?php echo $page_name; ?></h3>
+                      <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
+                                <use href="#it-pa"></use>
+                            </svg><h3 class="card-title t-primary title-xlarge"><?php echo $page_name; ?></h3>
                 </a>
                 <p class="text-paragraph mb-0">
                     <?php echo $page['description']; ?>
