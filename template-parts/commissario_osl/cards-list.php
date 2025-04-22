@@ -81,7 +81,9 @@ if ($img) {
                                         <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" />
                                     </svg>
                             <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
+                               <h3 class="card-title t-primary title-xlarge">
                                 <?php echo strtoupper($tipo->name); ?>
+                              </h3>                
                             </a>
                     <?php } ?>
                     <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
@@ -123,7 +125,9 @@ if ($img) {
                                     </svg>
   
                                 <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
-                                <h5><?php echo strtoupper($tipo->name); ?></h5>
+                              <h3 class="card-title t-primary title-xlarge">
+                                <?php echo strtoupper($tipo->name); ?>
+                              </h3>
                              </a>
                             <?php } ?>
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
