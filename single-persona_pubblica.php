@@ -164,7 +164,7 @@ get_header();
                                         <div class="accordion-item">
                                             <span class="accordion-header" id="accordion-title-one">
 
-                                                <?php if ($img) { ?>
+                                                <?php if ($img1) { ?>
                                                     <section class="hero-img mb-20 mb-lg-50">
                                                         <div class="img-responsive-wrapper">
                                                             <center>
