@@ -35,7 +35,7 @@
                 <div class="col-8 order-1 order-md-2">
                 <div class="card-body">
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
-                        <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
+                       <h3 class="h5 card-title"><svg class="icon icon-primary icon-sm me-2" aria-hidden="true"><use href="#it-pa"></use></svg><?php echo the_title(); ?></h3>
                     </a>
                     <p class="card-text d-none d-md-block">
                         <?php echo $description; ?>
