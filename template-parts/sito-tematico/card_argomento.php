@@ -17,8 +17,8 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
    class="card card-teaser <?= $colore_sfondo ? '' : '' ?> mt-0 p-3 shadow-sm" 
    target="_blank">
 
-    <div class="card-body" style="background-color: #f7f7f7; padding: 20px; border-radius: 8px; display: flex; flex-direction: column;">
-        
+    <div class="card-body" style="background-color: #f7f7f7; padding: 20px; border-radius: 8px; display: flex; flex-direction: row; align-items: center;">
+
         <!-- Icona -->
         <?php if($st_img) { ?>
             <div class="avatar size-lg me-3" style="flex-shrink: 0;">
@@ -28,18 +28,20 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
         <!-- Titolo -->
         <h3 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-black' : 'text-dark' ?>"
-            style="font-size: 1.25rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>; margin-bottom: 10px;">
+            style="font-size: 1.25rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>; margin-bottom: 0;">
             <?php echo $sito_tematico->post_title ?>
         </h3>
 
-        <!-- Descrizione -->
-        <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-black' : '' ?>"
-           style="color: <?= $sfondo_scuro ? '#333' : '#555' ?>; font-size: 0.9rem;">
-            <?php echo $st_descrizione; ?>
-        </p>
-
     </div>
+
+    <!-- Descrizione sotto il titolo -->
+    <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-black' : '' ?>"
+       style="color: <?= $sfondo_scuro ? '#333' : '#555' ?>; font-size: 0.9rem; padding: 0 20px 20px;">
+        <?php echo $st_descrizione; ?>
+    </p>
+
 </a>
+
 
 
 
