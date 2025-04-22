@@ -307,7 +307,7 @@ get_header();
 
 
                                             <?php if ($img) { ?>
-                                                <section class="hero-img mb-20 mb-lg-50">
+                                               
                                                     <div class="img-responsive-wrapper">
                                                         <div class="img-wrapper">
                                                             <img src="<?php echo esc_url($img[0]); ?>" 
@@ -316,7 +316,7 @@ get_header();
                                                                  class="img-fluid img-responsive">
                                                         </div>
                                                     </div>
-                                                </section>
+                                              
                                             <?php } ?>
 
 
