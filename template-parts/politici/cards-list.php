@@ -26,7 +26,6 @@ foreach ($incarichi as $incarico) {
         ?>
 
     
-    
         <div class="col-md-6 col-xl-4">
             <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr">
                 <div class="card no-after rounded">
@@ -45,7 +44,6 @@ foreach ($incarichi as $incarico) {
                                         <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
                                     </div>
 
-    
                                     <!-- Elenco degli incarichi -->
                                     <div class="incarichi mt-2">
                                         <?php
