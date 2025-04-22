@@ -31,7 +31,7 @@ $arr_pages = array_keys((array)$pages);
                 <!-- Aggiungi la tipologia come classe CSS -->
                 <a class="text-decoration-none <?php echo esc_attr($post_type); ?>" href="<?php echo $page['link']; ?>" data-element="management-category-link">
                       <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
-                                <use href="#it-pa"></use>
+                                <use href="#it-folder"></use>
                             </svg><h3 class="card-title t-primary title-xlarge"><?php echo $page_name; ?></h3>
                 </a>
                 <p class="text-paragraph mb-0">
@@ -53,6 +53,9 @@ $arr_pages = array_keys((array)$pages);
                 <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
                     <div class="card shadow-sm rounded">
                         <div class="card-body">
+			    <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
+                                <use href="#it-folder"></use>
+                            </svg>
                             <a class="text-decoration-none" href="/dataset">
                                 <h3 class="card-title t-primary title-xlarge">Dataset</h3>
                             </a>
