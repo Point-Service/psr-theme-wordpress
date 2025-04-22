@@ -308,14 +308,14 @@ get_header();
 
                                             <?php if ($img) { ?>
                                                
-                                                    <div class="img-responsive-wrapper">
+                                                   
                                                         <div class="img-wrapper">
                                                             <img src="<?php echo esc_url($img[0]); ?>" 
                                                                  alt="descrizione immagine" 
                                                                  title="titolo immagine" 
-                                                                 class="img-fluid img-responsive">
+                                                                 >
                                                         </div>
-                                                    </div>
+                                              
                                               
                                             <?php } ?>
 
