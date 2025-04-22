@@ -310,7 +310,7 @@ get_header();
                                                
                                                    
                                                       
-                                                            <img src="<?php echo esc_url($img[0]); ?>" 
+                                                            <img src="<?php echo url($img[0]); ?>" 
                                                                  alt="descrizione immagine" 
                                                                  title="titolo immagine" 
                                                                  >
