@@ -31,7 +31,7 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
         <p class="card-text pb-3">Visita il sito:</p>
         <?php 
             $custom_class = "no-after mt-0";
-            get_template_part("template-parts/sito-tematico/card");
+            get_template_part("template-parts/sito-tematico/card_argomento");
         ?>
         <?php } ?>
 
