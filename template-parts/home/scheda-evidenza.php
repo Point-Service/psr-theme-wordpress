@@ -228,5 +228,5 @@ if ($post_type_label == 'Servizio') {
             </svg>
         </a>
     </div>     
-</div>
+</div>hghhhhhhhhhhhhhhhhhhhhhh
 <?php } ?>
