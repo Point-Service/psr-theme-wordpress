@@ -7,6 +7,7 @@ $icone_slug = [
     'aree-amministrative' => '#it-pa',
     'uffici' => '#it-pa',
     'organi-di-governo' => '#it-pa',
+    'commissione-osl' => '#it-pa',
     'documenti-e-dati'    => '#it-folder',
     'commissione'         => '#it-users',
     'regolamenti'         => '#it-file',
