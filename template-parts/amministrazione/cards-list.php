@@ -11,7 +11,7 @@ $icone_slug = [
     'documenti-e-dati'    => '#it-folder',
     'commissione'         => '#it-users',
     'regolamenti'         => '#it-file',
-    'dataset'         => '#it-file',
+    'personale-amministrativo' => '#it-users',
     // Aggiungi altri slug e relative icone qui
 ];
 
