@@ -36,7 +36,7 @@ foreach ($incarichi as $incarico) {
                                 <div class="category-top cmp-list-card-img__body">
                                     <a href="<?php echo get_permalink(); ?>" class="category cmp-list-card-img__body-heading-title underline">
                                         <?php echo the_title(); ?>
-                                    </a>
+                                    </a> <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
                                 </div>
 
                                 
@@ -45,9 +45,6 @@ foreach ($incarichi as $incarico) {
                                     <?php if ($img) { dci_get_img($img, 'rounded-top img-fluid img-responsive'); } ?>
                                 </div>
 
-
-                                <!-- Data di inizio incarico (ora sotto il nome) -->
-                                <span class="data"><?php echo $arrdata[0].' '.$monthName.' '.$arrdata[2] ?></span>
 
                                 <!-- Elenco degli incarichi -->
                                 <div class="incarichi mt-2">
