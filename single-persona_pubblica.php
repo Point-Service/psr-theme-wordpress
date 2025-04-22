@@ -564,8 +564,9 @@ get_footer();
 
 ?>
 <style>/* CSS per limitare la larghezza dell'immagine */
+/* CSS per limitare la larghezza dell'immagine a 300px solo se è più larga di 300px */
 .img-resized {
-    max-width: 300px;         /* Imposta la larghezza massima a 300px */
-    width: 100%;              /* L'immagine si adatta al 100% della larghezza del contenitore */
-    height: auto;             /* L'altezza si adatta automaticamente per mantenere le proporzioni */
+    max-width: 300px;  /* Imposta la larghezza massima a 300px */
+    width: 100%;       /* La larghezza si adatta al contenitore */
+    height: auto;      /* Mantieni le proporzioni dell'immagine */
 }</style>
