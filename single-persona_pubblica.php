@@ -174,20 +174,6 @@ get_header();
                                                         /* Evita spazi indesiderati */
                                                     }
                                                 </style>
-
-                                            <?php if ($img) { ?>
-                                                <section class="hero-img mb-20 mb-lg-50">
-                                                    <div class="img-responsive-wrapper">
-                                                        <div class="img-wrapper">
-                                                            <img src="<?php echo esc_url($img[0]); ?>" 
-                                                                 alt="descrizione immagine" 
-                                                                 title="titolo immagine" 
-                                                                 class="img-fluid img-responsive">
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            <?php } ?>
-
                                                 <button class="accordion-button pb-10 px-3 text-uppercase" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#collapse-one"
                                                     aria-expanded="true" aria-controls="collapse-one">
@@ -316,6 +302,30 @@ get_header();
                 </div>
             </div>
             <div class="col-12 col-lg-8 offset-lg-1">
+
+
+
+
+                                            <?php if ($img) { ?>
+                                                <section class="hero-img mb-20 mb-lg-50">
+                                                    <div class="img-responsive-wrapper">
+                                                        <div class="img-wrapper">
+                                                            <img src="<?php echo esc_url($img[0]); ?>" 
+                                                                 alt="descrizione immagine" 
+                                                                 title="titolo immagine" 
+                                                                 class="img-fluid img-responsive">
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            <?php } ?>
+
+
+
+
+
+
+
+                
                 <div class="it-page-sections-container">
                     <?php if (!empty($incarichi)) { ?>
                         <section class="it-page-section mb-30">
@@ -563,27 +573,3 @@ get_footer();
 
 ?>
 
-<style>
-/* Stile per l'immagine */
-.hero-img .img-responsive-wrapper {
-    width: 100%;                /* La larghezza si adatta al 100% del contenitore */
-    height: auto;               /* L'altezza si adatta proporzionalmente */
-    display: flex;
-    justify-content: center;    /* Centra l'immagine orizzontalmente */
-    align-items: center;        /* Centra l'immagine verticalmente */
-}
-
-.hero-img .img-wrapper {
-    width: 100%;                /* Imposta la larghezza del contenitore al 100% */
-    max-width: 100%;            /* Assicura che l'immagine non superi mai la larghezza */
-    height: auto;               /* Mantieni le proporzioni originali */
-    overflow: hidden;           /* Se necessario, nasconde qualsiasi parte che fuoriesce */
-}
-
-.hero-img img {
-    width: 100%;                /* La larghezza dell'immagine si adatta al contenitore */
-    height: auto;               /* L'altezza si adatta proporzionalmente */
-    object-fit: contain;        /* Mantiene le proporzioni dell'immagine senza tagliarla */
-}
-    
-</style>
