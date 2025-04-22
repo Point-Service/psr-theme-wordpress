@@ -42,10 +42,10 @@ $icone_slug = [
                 <div class="card shadow-sm rounded">
                     <div class="card-body">
                         <a class="text-decoration-none" href="<?php echo $page['link']; ?>" data-element="management-category-link">
-                            <h3 class="card-title t-primary title-xlarge">
                                 <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
                                     <use href="<?php echo $icona; ?>"></use>
                                 </svg>
+                            <h3 class="card-title t-primary title-xlarge">
                                 <?php echo $page_name; ?>
                             </h3>
                         </a>
@@ -67,10 +67,10 @@ $icone_slug = [
                 <div class="card shadow-sm rounded">
                     <div class="card-body">
                         <a class="text-decoration-none" href="/dataset">
-                            <h3 class="card-title t-primary title-xlarge">
-                                <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
+                               <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
                                     <use href="#it-piattaforme"></use>
                                 </svg>
+                            <h3 class="card-title t-primary title-xlarge">
                                 Dataset
                             </h3>
                         </a>
