@@ -18,20 +18,16 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
    target="_blank">
 
     <?php if($st_img) { ?>
-       <div class="avatar size-lg me-3">
+       <div class="avatar size-lg me-3" style="display: inline-flex; align-items: center;">
             <?php dci_get_img($st_img); ?>
        </div>
     <?php } ?>
 
-    <div class="card-body" style="background-color: #f7f7f7; padding: 20px; border-radius: 8px;">
+    <div class="card-body" style="background-color: #f7f7f7; padding: 20px; border-radius: 8px; display: flex; align-items: center;">
         <h3 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-black' : 'text-dark' ?>"
-            style="font-size: 1.25rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>;">
+            style="font-size: 1.25rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>; margin-bottom: 0;">
             <?php echo $sito_tematico->post_title ?>
         </h3>
-        <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-black' : '' ?>"
-           style="color: <?= $sfondo_scuro ? '#333' : '#555' ?>; font-size: 0.9rem;">
-            <?php echo $st_descrizione; ?>
-        </p>
     </div>
 </a>
 
