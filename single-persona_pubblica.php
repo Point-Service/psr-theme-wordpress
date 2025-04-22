@@ -307,19 +307,10 @@ get_header();
             <div class="col-12 col-lg-8 offset-lg-1">
 
                     
-                    <?php if ($img) { ?>
-                        <img src="<?php echo esc_url($img[0]); ?>" 
-                             alt="descrizione immagine" 
-                             title="titolo immagine" 
-                             class="img-resized">
-                    <?php } ?>
 
-
-                                        <?php if ($img) { 
+                                         <?php if ($img) { 
                                             dci_get_img($img, 'rounded img-fluid img-responsive foto-soft-style'); 
                                         } ?>
-
-
 
                 
                 <div class="it-page-sections-container">
