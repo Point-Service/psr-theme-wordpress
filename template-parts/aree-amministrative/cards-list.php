@@ -55,8 +55,8 @@
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
-                            </svg><h3 class="h5 card-title">                              <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
-                                <use href="#it-pa"></use> <?php echo the_title(); ?></h3>
+                            </svg><h3 class="h5 card-title"><svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
+                                <use href="#it-pa"></use><?php echo the_title(); ?></h3>
                             </a>
                             <p class="card-text d-none d-md-block">
                                 <?php echo $description; ?>
