@@ -285,9 +285,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <?php
-//var_dump(get_template_directory_uri());
 
-var_dump($theme_folder);
+echo $theme_folder;
 ?>
 
 
