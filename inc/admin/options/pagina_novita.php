@@ -1,24 +1,6 @@
 <?php
 
-// Funzione per la validazione e il salvataggio manuale dei campi vuoti
-function dci_save_empty_custom_attached_posts($object_id, $field_id, $args) {
-    $field = CMB2_Field::get_field($args['field_id']);
-    
-    // Verifica se il campo 'contenuti_evidenziati' è vuoto
-    if ('custom_attached_posts' === $field->args('type')) {
-        $value = $field->get_value($object_id);
-        
-        if (empty($value)) {
-            // Se vuoto, salviamo un array vuoto
-            update_post_meta($object_id, $field->args('id'), array());
-        }
-    }
-}
-
-// Aggiungi il filtro per la validazione e il salvataggio manuale
-add_action('cmb2_save_field', 'dci_save_empty_custom_attached_posts', 10, 3);
-
-function dci_register_pagina_novita_options(){
+function dci_register_pagina_novita_options() {
     $prefix = '';
 
     /**
@@ -88,6 +70,21 @@ function dci_register_pagina_novita_options(){
         'type'    => 'pw_multiselect',
         'options' => dci_get_terms_options('argomenti'),
     ));
+
+    // Aggiungiamo la funzione che interviene sul salvataggio dei campi
+    add_action('cmb2_save_field', 'dci_save_empty_custom_attached_posts', 10, 3);
+}
+
+function dci_save_empty_custom_attached_posts($object_id, $field_id, $args) {
+    // Verifica che il campo sia 'custom_attached_posts'
+    if ('custom_attached_posts' === $args['type']) {
+        $field_value = get_post_meta($object_id, $args['id'], true);
+
+        // Se il campo è vuoto, forziamo il salvataggio di un array vuoto
+        if (empty($field_value)) {
+            update_post_meta($object_id, $args['id'], array());
+        }
+    }
 }
 
 // Registrazione della funzione nell'init di WordPress
