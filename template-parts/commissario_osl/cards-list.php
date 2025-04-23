@@ -118,16 +118,18 @@ if ($img) {
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
                             <div class="category-top cmp-list-card-img__body">
-                            <?php if ($tipo){?>
-                               
-                                    <svg class="icon">
-                                        <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" />
-                                    </svg>
-  
-                                <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
-                                 <?php echo strtoupper($tipo->name); ?>
-                             </a>
-                            <?php } ?>
+                                <font size='1'>
+                                    <?php if ($tipo){?>
+                                       
+                                            <svg class="icon">
+                                                <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" /></use>
+                                            </svg>
+          
+                                        <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
+                                         <?php echo strtoupper($tipo->name); ?>
+                                     </a>
+                                    <?php } ?>
+                                </font>
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                             </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
