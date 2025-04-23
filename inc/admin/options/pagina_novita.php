@@ -28,6 +28,8 @@ function dci_register_pagina_novita_options(){
         'desc' => __( 'Configurazione della pagina Novità' , 'design_comuni_italia' ),
         'type' => 'title',
     ) );
+
+    
     $novita_options->add_field(array(
             'name' => __('Contenuti in evidenza', 'design_comuni_italia'),
             'desc' => __('Seleziona le notizie da mostrare nella sezione In Evidenza.', 'design_comuni_italia'),
@@ -46,6 +48,7 @@ function dci_register_pagina_novita_options(){
             ),
         'attributes' => array(
             'data-max-items' => 3, //change the value here to how many posts may be attached.
+            'data-min-items' = 0,
         )
         )
     );
