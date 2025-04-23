@@ -52,8 +52,6 @@ function dci_register_comune_options(){
         ),
     ));
 
-    // Altri campi... (salta la parte già presente)
-
     // Aggiungi il campo per visualizzare il percorso attuale del template
     $header_options->add_field( array(
         'id'    => $prefix . 'percorso_template',
@@ -66,14 +64,14 @@ function dci_register_comune_options(){
         ),
     ));
 
-    // Aggiungi il pulsante per ricalcolare il percorso
+    // Aggiungi un campo hidden per il pulsante (non direttamente supportato da CMB2)
     $header_options->add_field( array(
         'id'   => $prefix . 'ricalcola_percorso',
         'name' => __('Ricalcola Percorso Template', 'design_comuni_italia'),
         'desc' => __('Clicca per ricalcolare e aggiornare il percorso del template.', 'design_comuni_italia'),
-        'type' => 'button',
+        'type' => 'text', // Usando un campo di testo per attivare il pulsante
         'attributes' => array(
-            'class' => 'button ricalcola-percorso-button',
+            'class' => 'hidden-button', // La classe usata per il pulsante
         ),
     ));
 
@@ -83,12 +81,17 @@ function dci_register_comune_options(){
         ?>
         <script type="text/javascript">
             jQuery(document).ready(function($) {
-                // Aggiungi un gestore dell'evento clic sul pulsante
-                $('.ricalcola-percorso-button').on('click', function() {
+                // Aggiungi un gestore dell'evento clic sul "pulsante" che in realtà è un campo text invisibile
+                $('.hidden-button').on('focus', function() {
                     var percorsoTemplate = '<?php echo get_template_directory_uri(); ?>'; // Calcola il percorso
 
                     // Imposta il campo con il nuovo percorso
                     $('#<?php echo $prefix; ?>percorso_template').val(percorsoTemplate);
+                });
+
+                // Simula un "click" al campo per triggerare il calcolo
+                $('.hidden-button').on('click', function() {
+                    $(this).focus(); // Attiva il focus per ricalcolare
                 });
             });
         </script>
