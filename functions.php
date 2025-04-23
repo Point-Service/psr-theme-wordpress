@@ -170,10 +170,18 @@ function dci_scripts() {
     wp_enqueue_style( 'dci-wp-style', get_template_directory_uri()."/style.css", array('dci-comuni'));
 
 
-	wp_enqueue_script( 'dci-modernizr', get_template_directory_uri() . '/assets/js/modernizr.custom.js');
+    wp_enqueue_script( 'dci-modernizr', get_template_directory_uri() . '/assets/js/modernizr.custom.js');
 
 	// print css
     wp_enqueue_style('dci-print-style',get_template_directory_uri() . '/print.css', array(),'20190912','print' );
+
+
+
+    // Aggiungi il codice JavaScript inline per passare il percorso del tema
+    wp_add_inline_script( 'dci-comuni', '
+        const theme_folder = "' . get_template_directory_uri() . '"; // URL del tema
+    ', 'after');
+
 
 	// footer
     //load Bootstrap Italia latest js if exists in node_modules
@@ -282,6 +290,11 @@ function getFileSizeAndFormat($url) {
 
     return $file_format . ' ' . $size_formatted;
 }
+
+
+
+
+
 
 function my_custom_one_time_function() {
     // Controlla se l'opzione è già stata impostata
