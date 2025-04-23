@@ -79,14 +79,12 @@ if ($img) {
                       
                             <?php if ($tipo){?><use>
                                 <font size="2">
-                                    <h3 class="card-title t-primary title-xlarge">
                                             <svg class="icon" icon-primary icon-sm me-2" aria-hidden="true">
                                                 <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" /></use>
                                             </svg>
                                     <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                         <?php echo strtoupper($tipo->name); ?>
                                     </a>
-                                         </h3>
                                 </font>
                             <?php } ?>
                     
@@ -125,15 +123,12 @@ if ($img) {
                                
                                     <?php if ($tipo){?>
                                      <font size="2">
-                                       <h3 class="card-title t-primary title-xlarge">
                                             <svg class="icon" icon-primary icon-sm me-2" aria-hidden="true">
                                                 <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" /></use>
-                                            </svg>
-          
+                                            </svg>          
                                         <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                          <?php echo strtoupper($tipo->name); ?>
                                         </a>
-                                     </h3>
                                      </font>
                                     <?php } ?>
                                 </font>
