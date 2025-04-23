@@ -24,7 +24,7 @@
                             <a class="text-decoration-none" href="<?php echo get_permalink($post->ID); ?>" data-element="management-category-link">
                                 <h3 class="card-title t-primary title-xlarge">
                                  <svg class="icon icon-primary icon-sm me-2" aria-hidden="true">
-                                  <use href="#it-folder"></use>
+                                  <use href="#user_ldap_team"></use>
                                  </svg> <?php echo $post->post_title; ?>
                                 </h3>
                             </a>
