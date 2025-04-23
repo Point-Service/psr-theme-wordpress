@@ -52,80 +52,7 @@ function dci_register_comune_options(){
         ),
     ));
 
-    $header_options->add_field( array(
-        'id'    => $prefix . 'nome_regione',
-        'name'  => __( 'Nome Regione *', 'design_comuni_italia' ),
-        'desc'  => __( 'La Regione di appartenenza del Comune' , 'design_comuni_italia' ),
-        'type'  => 'text',
-        'attributes' => array(
-            'required' => 'required'
-        ),
-    ));
-
-    $header_options->add_field( array(
-        'id'    => $prefix . 'url_sito_regione',
-        'name'  => __( 'Sito Regione', 'design_comuni_italia' ),
-        'desc'  => __( 'Link al sito della Regione di Appartenenza' , 'design_comuni_italia' ),
-        'type'  => 'text_url',
-        'attributes' => array(
-            'required' => 'required'
-        ),
-    ));
-
-    $header_options->add_field( array(
-        'id'    => $prefix . 'motto_comune',
-        'name'  => __( 'Motto del Comune ', 'design_comuni_italia' ),
-        'desc'  => __( 'Il Motto del Comune, viene visualizzato sotto il nome del Comune' , 'design_comuni_italia' ),
-        'type'  => 'text',
-    ));
-
-    $header_options->add_field( array(
-        'id'    => $prefix . 'stemma_comune',
-        'name'  => __('Stemma', 'design_comuni_italia' ),
-        'desc'  => __( 'Lo stemma del Comune. Si raccomanda di caricare un\'immagine in formato svg' , 'design_comuni_italia' ),
-        'type'  => 'file',
-        'query_args' => array(
-            'type' => array(
-                'image/svg',
-            )
-        )
-    ));
-
-    $header_options->add_field( array(
-        'id'    => $prefix . 'stemma_comune_mobile',
-        'name'  => __('Stemma per mobile', 'design_comuni_italia' ),
-        'desc'  => __( 'Utilizzare questo campo per caricare un\'immagine alternativa dello stemma del Comune visibile dal menu hamburger (mobile). Si raccomanda di caricare un\'immagine in formato svg' , 'design_comuni_italia' ),
-        'type'  => 'file',
-        'query_args' => array(
-            'type' => array(
-                'image/svg',
-            )
-        )
-    ));
-
-    // Altri campi per i link
-    $header_options->add_field( array(
-        'id'    => $prefix . 'link_albopretorio',
-        'name'  => __('Link Albo pretorio', 'design_comuni_italia' ),
-        'desc'  => __( 'Utilizzare questo campo per inserire il link esterno ad albo pretorio (Lasciare vuoto se interno)'),
-        'type'  => 'text_url'
-    ));
-
-    $header_options->add_field( array(
-        'id'    => $prefix . 'link_ammtrasparente',
-        'name'  => __('Link Amministrazione Trasparente', 'design_comuni_italia' ),
-        'desc'  => __( 'Utilizzare questo campo per inserire il link esterno ad amministrazione trasparente (Lasciare vuoto se interna)'),
-        'type'  => 'text_url'
-    ));
-
-    $header_options->add_field( array(
-        'id'    => $prefix . 'link_pagopa',
-        'name'  => __('Link PagoPA', 'design_comuni_italia' ),
-        'desc'  => __( 'Utilizzare questo campo per inserire il link esterno a pagoPA (Lasciare vuoto se interna)'),
-        'type'  => 'text_url'
-    ));
-
-    // ... Altri campi simili
+    // Altri campi... (salta la parte già presente)
 
     // Aggiungi il campo per visualizzare il percorso attuale del template
     $header_options->add_field( array(
@@ -139,7 +66,36 @@ function dci_register_comune_options(){
         ),
     ));
 
-    // Continuazione degli altri campi che hai nel codice precedente...
+    // Aggiungi il pulsante per ricalcolare il percorso
+    $header_options->add_field( array(
+        'id'   => $prefix . 'ricalcola_percorso',
+        'name' => __('Ricalcola Percorso Template', 'design_comuni_italia'),
+        'desc' => __('Clicca per ricalcolare e aggiornare il percorso del template.', 'design_comuni_italia'),
+        'type' => 'button',
+        'attributes' => array(
+            'class' => 'button ricalcola-percorso-button',
+        ),
+    ));
+
+    // Inserisci il JavaScript per il pulsante
+    add_action('admin_footer', 'dci_ricalcola_percorso_script');
+    function dci_ricalcola_percorso_script() {
+        ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                // Aggiungi un gestore dell'evento clic sul pulsante
+                $('.ricalcola-percorso-button').on('click', function() {
+                    var percorsoTemplate = '<?php echo get_template_directory_uri(); ?>'; // Calcola il percorso
+
+                    // Imposta il campo con il nuovo percorso
+                    $('#<?php echo $prefix; ?>percorso_template').val(percorsoTemplate);
+                });
+            });
+        </script>
+        <?php
+    }
+
+    // Altri campi (per i link, email e ecc.)
 
     $header_options->add_field( array(
         'id'    => $prefix . 'dichiarazioneaccessibilita',
@@ -162,7 +118,7 @@ function dci_register_comune_options(){
             'data-conditional-value' => "false",
         ),
     ));
-  
 }
+
 add_action('cmb2_admin_init', 'dci_register_comune_options');
 
