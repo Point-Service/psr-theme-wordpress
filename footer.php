@@ -284,11 +284,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<?php
-
-echo $theme_folder;
-?>
-
 
 </body>
 </html>
