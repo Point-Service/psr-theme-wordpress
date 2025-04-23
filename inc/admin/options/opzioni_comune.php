@@ -1,4 +1,5 @@
-function dci_register_comune_options() {
+<?php
+ function dci_register_comune_options() {
     $prefix = '';
 
     /**
