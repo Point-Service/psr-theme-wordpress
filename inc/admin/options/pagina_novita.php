@@ -1,20 +1,22 @@
 <?php
 
-// Funzione per la validazione dei campi vuoti
-function dci_validate_empty_fields($check, $field) {
+// Funzione per la validazione e il salvataggio manuale dei campi vuoti
+function dci_save_empty_custom_attached_posts($object_id, $field_id, $args) {
+    $field = CMB2_Field::get_field($args['field_id']);
+    
+    // Verifica se il campo 'contenuti_evidenziati' è vuoto
     if ('custom_attached_posts' === $field->args('type')) {
-        // Verifica se il campo è vuoto
-        $value = $field->get_value();
+        $value = $field->get_value($object_id);
+        
         if (empty($value)) {
-            // Se vuoto, forza il salvataggio di un array vuoto
-            $field->save_value(array());
+            // Se vuoto, salviamo un array vuoto
+            update_post_meta($object_id, $field->args('id'), array());
         }
     }
-    return $check;
 }
 
-// Aggiungi il filtro per la validazione
-add_filter('cmb2_validate', 'dci_validate_empty_fields', 10, 2);
+// Aggiungi il filtro per la validazione e il salvataggio manuale
+add_action('cmb2_save_field', 'dci_save_empty_custom_attached_posts', 10, 3);
 
 function dci_register_pagina_novita_options(){
     $prefix = '';
@@ -51,7 +53,7 @@ function dci_register_pagina_novita_options(){
     // Sezione "Contenuti in evidenza"
     $novita_options->add_field(array(
         'name' => __('Contenuti in evidenza', 'design_comuni_italia'),
-        'desc' => __('Seleziona le notizie da mostrare nella sezione In Evidenza.1', 'design_comuni_italia'),
+        'desc' => __('Seleziona le notizie da mostrare nella sezione In Evidenza.', 'design_comuni_italia'),
         'id' => $prefix . 'contenuti_evidenziati',
         'type'    => 'custom_attached_posts',
         'column'  => true, // Output in the admin post-listing as a custom column.
