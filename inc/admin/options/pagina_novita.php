@@ -49,6 +49,26 @@ function dci_register_pagina_novita_options(){
         )
         )
     );
+
+
+
+    // Impostiamo un valore di fallback per i campi che potrebbero essere vuoti
+    add_filter('cmb2_validate', 'dci_validate_empty_fields', 10, 2);
+
+    // Funzione di validazione per gestire campi vuoti
+    function dci_validate_empty_fields($check, $field) {
+        if ('custom_attached_posts' === $field->args('type')) {
+            // Verifica se il campo è vuoto
+            $value = $field->get_value();
+            if (empty($value)) {
+                // Se vuoto, forza il salvataggio di un array vuoto
+                $field->save_value(array());
+            }
+        }
+        return $check;
+    }
+
+    
     $novita_options->add_field( array(
         'id' => $prefix . 'novita_argomenti',
         'name'        => __( 'Sezione Argomenti', 'design_comuni_italia' ),
