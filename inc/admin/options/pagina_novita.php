@@ -51,7 +51,7 @@ function dci_register_pagina_novita_options(){
     // Sezione "Contenuti in evidenza"
     $novita_options->add_field(array(
         'name' => __('Contenuti in evidenza', 'design_comuni_italia'),
-        'desc' => __('Seleziona le notizie da mostrare nella sezione In Evidenza.', 'design_comuni_italia'),
+        'desc' => __('Seleziona le notizie da mostrare nella sezione In Evidenza.1', 'design_comuni_italia'),
         'id' => $prefix . 'contenuti_evidenziati',
         'type'    => 'custom_attached_posts',
         'column'  => true, // Output in the admin post-listing as a custom column.
