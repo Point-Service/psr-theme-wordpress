@@ -76,16 +76,20 @@ if ($img) {
                 <div class="col-12 order-1 order-md-2">
                 <div class="card-body">
                     <div class="category-top cmp-list-card-img__body">
-                        <h3 class="card-title t-primary title-xlarge">
+                      
                             <?php if ($tipo){?><use>
+                                <font size="2">
+                                    <h3 class="card-title t-primary title-xlarge">
                                             <svg class="icon" icon-primary icon-sm me-2" aria-hidden="true">
                                                 <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" /></use>
                                             </svg>
                                     <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                         <?php echo strtoupper($tipo->name); ?>
                                     </a>
+                                         </h3>
+                                </font>
                             <?php } ?>
-                       </h3>
+                    
                     <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                     </div>
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
@@ -120,6 +124,7 @@ if ($img) {
                             <div class="category-top cmp-list-card-img__body">
                                
                                     <?php if ($tipo){?>
+                                     <font size="2">
                                        <h3 class="card-title t-primary title-xlarge">
                                             <svg class="icon" icon-primary icon-sm me-2" aria-hidden="true">
                                                 <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" /></use>
@@ -129,6 +134,7 @@ if ($img) {
                                          <?php echo strtoupper($tipo->name); ?>
                                         </a>
                                      </h3>
+                                     </font>
                                     <?php } ?>
                                 </font>
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
