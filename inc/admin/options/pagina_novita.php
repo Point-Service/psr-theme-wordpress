@@ -48,7 +48,7 @@ function dci_register_pagina_novita_options(){
             ),
         'attributes' => array(
             'data-max-items' => 3, //change the value here to how many posts may be attached.
-            'data-min-items' = 0,
+            'data-min-items' => 0,
         )
         )
     );
