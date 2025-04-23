@@ -76,7 +76,7 @@ if ($img) {
                 <div class="col-12 order-1 order-md-2">
                 <div class="card-body">
                     <div class="category-top cmp-list-card-img__body">
-                        <font size='1'>
+                        <font size='2'>
                             <?php if ($tipo){?><use>
                                             <svg class="icon">
                                                 <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" /></use>
@@ -118,7 +118,7 @@ if ($img) {
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
                             <div class="category-top cmp-list-card-img__body">
-                                <font size='1'>
+                                <font size='2'>
                                     <?php if ($tipo){?>
                                        
                                             <svg class="icon">
