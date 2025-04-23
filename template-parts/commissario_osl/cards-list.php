@@ -78,7 +78,7 @@ if ($img) {
                     <div class="category-top cmp-list-card-img__body">
                         <font size='2'>
                             <?php if ($tipo){?><use>
-                                            <svg class="icon">
+                                            <svg class="icon" icon-primary icon-sm me-2" aria-hidden="true">
                                                 <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" /></use>
                                             </svg>
                                     <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
@@ -121,7 +121,7 @@ if ($img) {
                                 <font size='2'>
                                     <?php if ($tipo){?>
                                        
-                                            <svg class="icon">
+                                            <svg class="icon" icon-primary icon-sm me-2" aria-hidden="true">
                                                 <use xlink:href="<?php echo $custom_icon ? $custom_icon : $default_icon; ?>" /></use>
                                             </svg>
           
