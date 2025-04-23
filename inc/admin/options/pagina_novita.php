@@ -48,10 +48,10 @@ function dci_register_pagina_novita_options(){
             ),
         'attributes' => array(
             'data-max-items' => 3, //change the value here to how many posts may be attached.
-            'data-min-items' => 0,
         )
         )
     );
+    
     $novita_options->add_field( array(
         'id' => $prefix . 'novita_argomenti',
         'name'        => __( 'Sezione Argomenti', 'design_comuni_italia' ),
