@@ -70,7 +70,23 @@ function dci_register_pagina_servizi_options(){
         'name' => __('Servizi Maggioli URL', 'design_comuni_italia' ),
         'desc' => __( 'Utilizzare questo Campo solo se bisogna caricare servizi esterni da Maggioli (Aggiungendo un URL al campo verranno caricati i servizi presenti sulla pagina di destinazione automaticamente.)'),
         'type' => 'text'
-    ));   
+    ));
+
+    $servizi_options->add_field(array(
+        'id' => $prefix . 'mostra_categorie',
+        'name' => __('Mostra tutte le categorie dei servizi', 'design_comuni_italia'),
+        'desc' => __('Se abilitata, vengono mostrate tutte le categorie dei servizi', 'design_comuni_italia'),
+        'type' => 'radio_inline',
+        'default' => 'true',
+        'options' => array(
+            'true' => __('Si', 'design_comuni_italia'),
+            'false' => __('No', 'design_comuni_italia'),
+        ),
+        'attributes' => array(
+            'data-conditional-value' => "false",
+        ),
+    ));
+
     
 }
 
