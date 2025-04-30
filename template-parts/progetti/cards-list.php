@@ -1,7 +1,7 @@
 <?php 
 global $post;
 
-$description = dci_get_meta('descrizione_breve','_dci_progetto_', $post->ID);
+$nome_misura = dci_get_meta('nome_misura','_dci_progetto_', $post->ID);
 $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", '_dci_progetto_', $post->ID);
 $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
 $img = dci_get_meta('immagine', '_dci_progetto_', $post->ID);
@@ -36,10 +36,10 @@ if ($img) {
                     <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                     </div>
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                        <h3 class="h5 card-title u-grey-light"><?php echo the_title(); ?></h3>
+                        <h3 class="h5 card-title u-grey-light"><?php echo $nome_misura ?></h3>
                     </a>
                     <p class="card-text d-none d-md-block">
-                        <?php echo $description; ?>
+                        <?php echo the_title(); ?>
                     </p>
                 </div>
                 </div>
@@ -68,10 +68,10 @@ if ($img) {
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                             </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                                <h3 class="h5 card-title u-grey-light"><?php echo the_title(); ?></h3>
+                                <h3 class="h5 card-title u-grey-light"><?php echo $nome_misura; ?></h3>
                             </a>
                             <p class="card-text d-none d-md-block">
-                                <?php echo $description; ?>
+                                <?php echo the_title(); ?>
                             </p>
                         </div>
                     </div>
