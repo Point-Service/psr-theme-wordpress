@@ -19,7 +19,7 @@ get_header();
             $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
 
             $prefix= '_dci_progetto_';
-            $descrizione = dci_get_meta("descrizione_breve", $prefix, $post->ID);
+            $nome_misura = dci_get_meta("nome_misura", $prefix, $post->ID);
             $descrizione_scopo = dci_get_meta("descrizione_scopo", $prefix, $post->ID);
             $data_pubblicazione_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
             $date = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pubblicazione_arr[0], $data_pubblicazione_arr[2]));
@@ -57,7 +57,7 @@ get_header();
                         <h1 data-audio><?php the_title(); ?></h1>
                         <h2 class="visually-hidden" data-audio>Dettagli della notizia</h2>
                         <p data-audio>
-                            <?php echo $descrizione; ?>
+                            <?php echo $nome_misura; ?>
                         </p>
                         
                         <div class="row mt-5 mb-4">
@@ -133,14 +133,14 @@ get_header();
                                                                 <?php if(isset($attivita_finanziata) AND !empty($attivita_finanziata)){?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#attivita">
-                                                                    <span class="title-medium">Attivita Finanziate</span>
+                                                                    <span class="title-medium">Attività Finanziate</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if(isset($avanzamento_progetto) AND !empty($avanzamento_progetto)){?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#avanzamento">
-                                                                    <span class="title-medium">Attivita del progetto</span>
+                                                                    <span class="title-medium">Avanzamento del progetto</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
@@ -359,3 +359,4 @@ get_header();
     </main>
     <?php
 get_footer();?>
+
