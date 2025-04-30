@@ -1,7 +1,7 @@
 <?php
 global $should_have_grey_background;
 $mostra_categiorie_servizi = dci_get_option("mostra_categorie", "servizi");
-var_dump($mostra_categiorie_servizi);
+//var_dump($mostra_categiorie_servizi);
 if($mostra_categiorie_servizi=="true"){
     $categorie_servizio_names = array_column(get_terms(
         array(
