@@ -95,16 +95,15 @@ function dci_add_Progetto_metaboxes() {
     ) );
 
     $cmb_apertura->add_field( array(
-        'id' => $prefix . 'descrizione_breve',
-        'name'        => __( 'Descrizione breve *', 'design_comuni_italia' ),
-        'desc' => __( 'Descrizione sintentica del progetto, inferiore a 255 caratteri' , 'design_comuni_italia' ),
+        'id' => $prefix . 'nome_misura',
+        'name' => __( 'Nome della misura *', 'design_comuni_italia' ),
+        'desc' => __( 'Inserire il nome della misura seguito dal tipo di intervento, ad esempio: "M1C1 Intervento 1.2". Il testo deve essere inferiore a 100 caratteri.', 'design_comuni_italia' ),
         'type' => 'textarea',
-        'attributes'    => array(
-            'maxlength'  => '255',
-            'required'    => 'required'
+        'attributes' => array(
+            'maxlength' => '100',
+            'required' => 'required'
         ),
     ) );
-
     
     $cmb_apertura->add_field( array(
         'id' => $prefix . 'descrizione_scopo',
@@ -120,8 +119,6 @@ function dci_add_Progetto_metaboxes() {
         ),
     ) );
 
-
-
     // DETTAGLI
     $cmb_dettagli = new_cmb2_box( array(
         'id'           => $prefix . 'box_dettagli',
@@ -131,7 +128,6 @@ function dci_add_Progetto_metaboxes() {
         'priority'     => 'high',
     ) );
 
-    
     $cmb_dettagli->add_field( array(
         'id' => $prefix . 'componente',
         'name'        => __( 'Componente del Progetto *', 'design_comuni_italia' ),
@@ -272,7 +268,6 @@ function dci_add_Progetto_metaboxes() {
 
 
 }
-
 
 /**
  * aggiungo js per controllo compilazione campi
