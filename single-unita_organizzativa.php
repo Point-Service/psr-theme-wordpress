@@ -20,6 +20,7 @@ get_header();
 	        $documenti = dci_get_meta("documenti", $prefix, $post->ID);
 	        
 	        // Initialize variables to avoid errors
+            $img = dci_get_meta("immagine",$prefix, $post->ID) ?? '';
 	        $sottotitolo = dci_get_meta("sottotitolo") ?? '';
 	        $descrizione_breve = dci_get_meta("descrizione_breve") ?? '';
 	        $competenze = dci_get_wysiwyg_field("competenze") ?? '';
@@ -50,45 +51,36 @@ get_header();
 	
 	        $more_info = dci_get_wysiwyg_field("ulteriori_informazioni") ?? '';
 	        $condizioni_servizio = dci_get_meta("condizioni_servizio") ?? '';
-	        $uo_id = intval(dci_get_meta("unita_responsabile")) ?? 0;
+	        //$uo_id = intval(dci_get_meta("unita_responsabile")) ?? 0;
 	        $argomenti = get_the_terms($post, 'argomenti') ?? [];
 	        
 	        // valori per metatag
-	        $categorie = get_the_terms($post, 'categorie_servizio') ?? [];
-	        $categoria_servizio = !empty($categorie) ? $categorie[0]->name : '';		    
+	        // $categorie = get_the_terms($post, 'categorie_servizio') ?? [];
+	        // $categoria_servizio = !empty($categorie) ? $categorie[0]->name : '';		    
 
 	
-	        if (isset($canale_fisico_uffici[0])) {
-	            $ufficio = get_post($canale_fisico_uffici[0]);
-	            if ($ufficio) {
-	                $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID) ?? null;
-	                $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id) ?? '';
-	                $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id) ?? '';
-	                $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id) ?? '';
-	            }
-	        }
+	        // if (isset($canale_fisico_uffici[0])) {
+	        //     $ufficio = get_post($canale_fisico_uffici[0]);
+	        //     if ($ufficio) {
+	        //         $luogo_id = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio->ID) ?? null;
+	        //         $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $luogo_id) ?? '';
+	        //         $quartiere = dci_get_meta('quartiere', '_dci_luogo_', $luogo_id) ?? '';
+	        //         $cap = dci_get_meta('cap', '_dci_luogo_', $luogo_id) ?? '';
+	        //     }
+	        // }
 	
-	        function convertToPlain($text) {
-	            $text = str_replace(array("\r", "\n"), '', $text);
-	            $text = str_replace('"', '\"', $text);
-	            $text = str_replace('&nbsp;', ' ', $text);
-	            return trim(strip_tags($text));
-	        }
+	        // function convertToPlain($text) {
+	        //     $text = str_replace(array("\r", "\n"), '', $text);
+	        //     $text = str_replace('"', '\"', $text);
+	        //     $text = str_replace('&nbsp;', ' ', $text);
+	        //     return trim(strip_tags($text));
+	        // }
 	        ?>
 	</main>
 
             <script type="application/ld+json" data-element="metatag">{
                     "name": "<?= $post->post_title; ?>",
-                    "serviceType": "<?= $categoria_servizio; ?>",
-                    "serviceOperator": {
-                        "name": "<?= $ipa; ?>"
-                    },
-                    "areaServed": {
-                        "name": "<?= convertToPlain($copertura_geografica); ?>"
-                    },
-                    "audience": {
-                        "name": "<?= convertToPlain($destinatari); ?>"
-                    },                   
+                    "UO_Type": "<?= $tipologia; ?>",
             }</script>
 <div class="container" id="main-container">
     <div class="row">
@@ -151,6 +143,29 @@ get_header();
                                             <div class="accordion">
                                                 <div class="accordion-item">
                                                     <span class="accordion-header" id="accordion-title-one">
+                                                    
+                                                <?php if ($img) { ?>
+                                                    <style>
+                                                        /* Stile più leggero per la foto */
+                                                        .img-resized {
+                                                            /* border: 1px solid #ddd;              Bordo molto leggero */
+                                                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Ombra quasi impercettibile */
+                                                            padding: 2px;
+                                                            background-color: #fff;              /* Sfondo bianco per risalto se su sfondo grigio */
+                                                            border-radius: 8px;                  /* Angoli leggermente arrotondati */
+                                                        }
+                                                        
+                                                        </style>
+                                                    <section class="hero-img mb-20 mb-lg-50 aling-itmes-center">
+                                                            <center>
+                                                                <div class="img-wrapper">
+                                                                    <!-- Applica la classe CSS img-resized per ridimensionare l'immagine -->
+                                                                    <?php dci_get_img($img, 'rounded img-fluid img-responsive foto-soft-style img-resized'); ?>
+                                                                </div>
+                                                            </center>
+                                               
+                                                    </section>
+                                                <?php } ?>
                                                         <button class="accordion-button pb-10 px-3 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
                                                             Indice della pagina
                                                             <svg class="icon icon-xs right">
@@ -164,38 +179,49 @@ get_header();
                                                     <div id="collapse-one" class="accordion-collapse collapse show" role="region" aria-labelledby="accordion-title-one">
                                                         <div class="accordion-body">
                                                             <ul class="link-list" data-element="page-index">
-                                                                <?php if ($competenze ) { ?>
+                                                                <?php if ($competenze) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#who-needs">
+                                                                    <a class="nav-link" href="#competenze">
                                                                         <span class="title-medium">Competenze</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( $area_riferimento ) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#description">
-                                                                        <span class="title-medium">Area di Riferimento</span>
+                                                                    <a class="nav-link" href="#uo_riferimento">
+                                                                        <?php if($tipologie=="ufficio"){?>
+                                                                            <span class="title-medium">Area di Riferimento</span>
+                                                                        <?php }else{?>
+                                                                            <span class="title-medium">Uffici collegati</span>
+                                                                        <?php }?>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( is_array($responsabili)) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#how-to">
+                                                                    <a class="nav-link" href="#responsabile">
                                                                         <span class="title-medium">Responsabile</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( is_array($persone) ) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#needed">
+                                                                    <a class="nav-link" href="#persone">
                                                                         <span class="title-medium">Persone</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
                                                                 <?php if ( is_array($servizi) ) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#obtain">
+                                                                    <a class="nav-link" href="#servizi">
                                                                         <span class="title-medium">Servizi collegati</span>
+                                                                    </a>
+                                                                </li>
+                                                                <?php } ?>
+                                                                <?php if (isset($more_info)AND !empty($more_info)){ ?>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="#more-info">
+                                                                        <span class="title-medium">Ulteriori informazioni</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
@@ -206,7 +232,7 @@ get_header();
 									
 									if (!empty($sede_principale)) { ?>
 									    <li class="nav-item">
-									        <a class="nav-link" href="#deadlines">
+									        <a class="nav-link" href="#sede">
 									            <span class="title-medium">Sede principale</span>
 									        </a>
 									    </li>
@@ -214,22 +240,22 @@ get_header();
 									
 									<?php if (!empty($altre_sedi)) { ?>
 									    <li class="nav-item">
-									        <a class="nav-link" href="#costs">
+									        <a class="nav-link" href="#altre-sedi">
 									            <span class="title-medium">Altre sedi</span>
 									        </a>
 									    </li>
 								<?php } ?>
                                                                 <?php if ( $allegati ) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#more-info">
+                                                                    <a class="nav-link" href="#allegati">
                                                                         <span class="title-medium">Allegati</span>
                                                                     </a>
                                                                 </li>
                                                                 <?php } ?>
        
-                                                                <?php if ( $uo_id ) { ?>
+                                                                <?php if ( $contatti ) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#contacts">
+                                                                    <a class="nav-link" href="#contatti">
                                                                         <span class="title-medium">Contatti</span>
                                                                     </a>
                                                                 </li>
@@ -251,64 +277,46 @@ get_header();
                     <div class="col-12 col-lg-8 offset-lg-1">
                         <div class="it-page-sections-container">
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="who-needs">Competenze</h2>
+                                <h2 class="title-xxlarge mb-3" id="competenze">Competenze</h2>
                                 <div class="richtext-wrapper lora">
                                     <?php echo $competenze ?>
                                 </div>
                             </section>
                             <?php if ($tipologia) { ?>
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="description">Tipologia di Organizzazione</h2>
+                                <h2 class="title-xxlarge mb-3" id="tipo_organizzazione">Tipologia di Organizzazione</h2>
                                 <div class="richtext-wrapper lora"><?php echo $tipologia; ?></div>
                             </section>
                             <?php } ?>
-										
+				
 				<?php if ($area_riferimento && is_array($area_riferimento) && count($area_riferimento) > 0) { ?>
-				    <section class="it-page-section mb-30">
-				        <h2 class="title-xxlarge mb-3" id="costs">Area di Riferimento</h2>
-				        <div class="richtext-wrapper lora">
-				            <?php foreach ($area_riferimento as $uo_id) {
+				    <section class="it-page-section mb-30" id="uo_riferimento">
+                        <?php if($tipologia=="ufficio"){
+                            echo '<h2 class="title-xxlarge mb-3" id="costs">Area di Riferimento</h2>';
+                            echo '<div class="richtext-wrapper lora">';
+				            foreach ($area_riferimento as $uo_id) {
 				                get_template_part("template-parts/unita-organizzativa/card-full");
-				            } ?>
-				        </div>
+				            } 
+				            echo '</div>';
+                        }else{
+                            echo '<h2 class="title-xxlarge mb-3" id="costs">Uffici collegati</h2>';
+                            echo '<div class="richtext-wrapper lora">';
+                            echo '<div class="row">';
+                            foreach ($area_riferimento as $uo_id) {
+                                get_template_part("template-parts/unita-organizzativa/card-custom");
+                            }
+                            
+                            echo '</div>'; 
+                            echo '</div>'; 
+                            
+                        } ?>
 				    </section>
 				<?php } ?>
 
-										
-	                         <?php 
-					// Assicurati che la variabile sia definita prima di usarla
-					$costi = $costi ?? null; // Imposta a null se non è definita
-					
-					if (!empty($costi)) { ?>
-					    <section class="it-page-section mb-30">
-					        <h2 class="title-xxlarge mb-3" id="costs">Quanto costa</h2>
-					        <div class="richtext-wrapper lora"><?php echo $costi; ?></div>
-					    </section>
-				  <?php } ?>
-                            
-                            <?php if ( $more_info ) {  ?>
-                            <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="more-info">Ulteriori informazioni</h2>
-                                <div class="richtext-wrapper lora">
-                                    <?php echo $more_info ?>
-                                </div>
-                            </section>
-                            <?php }  ?>
-                            <?php if ( $condizioni_servizio ) {
-                                $file_url = $condizioni_servizio;
-                            ?>
-                            <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="conditions">Condizioni di servizio</h2>
-                                <div class="richtext-wrapper lora">Per conoscere i dettagli di
-                                    scadenze, requisiti e altre informazioni importanti, leggi i termini e le condizioni di servizio.
-                                </div>
-                                <?php get_template_part("template-parts/single/attachment"); ?>
-                            </section>
-                            <?php } ?>
 
-                            <section class="it-page-section">
+                            <section class="it-page-section" id="responsabile">
 			      <?php if ( $responsabile ) {?>
-                                <h2 class="mb-3" id="contacts">Responsabile</h2>                                
+                                <h2 class="mb-3" >Responsabile</h2>                                
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
                                         <div class="cmp-card-latest-messages mb-3 mb-30">
@@ -339,8 +347,8 @@ get_header();
                                 </div>
                                 <?php } ?>
                             </section>
-                            <section class="it-page-section">
-                                <h2 class="mb-3" id="contacts">Persone</h2>
+                            <section class="it-page-section" id="persone">
+                                <h2 class="mb-3">Persone</h2>
                                 <div class="row">
                                       <?php 
                                     $with_border = true;
@@ -350,30 +358,49 @@ get_header();
                                     <br>
                                 </div>
                             </section>
-                            <?php  if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) {                                     
-		              	     if ($servizi && is_array($servizi) && count($servizi)>0 ) { ?>
-				        <article id="servizi" class="it-page-section anchor-offset mt-5">
-					    <h3>Servizi collegati</h3><p></p>
-					    <?php foreach ($servizi as $servizio_id) { ?>
-					        <div class="row">
-					            <div class="col-12 col-sm-8">
-					                <?php 
-					                    $servizio = get_post($servizio_id);
-					                    $with_border = true;
-					                    get_template_part("template-parts/servizio/card");
-					                ?>
-					            </div>
-					        </div><p></p>
-					    <?php } ?>
-					</article>
-                            <?php } }?>
+                            <?php  
+if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) < 5) {                                     
+    if ($servizi && is_array($servizi) && count($servizi) > 0) { ?>
+        <article id="servizi" class="it-page-section anchor-offset mt-5">
+            <h3>Servizi collegati</h3>
+            <div class="row">
+                <?php 
+                $i = 0;
+                foreach ($servizi as $servizio_id) { 
+                    $servizio = get_post($servizio_id);
+                    $with_border = true;
+                ?>
+                    <div class="col-12 col-md-6 mb-4">
+                        <?php get_template_part("template-parts/servizio/card"); ?>
+                    </div>
+                    <?php 
+                    $i++;
+                    // Chiudo e riapro la riga ogni 2 card se necessario (opzionale con Bootstrap, utile se si desidera maggiore controllo)
+                    if ($i % 2 == 0 && $i < count($servizi)) {
+                        echo '</div><div class="row">';
+                    }
+                } ?>
+            </div>
+        </article>
+<?php 
+    } 
+} 
+?>
+
+<?php if ( $more_info ) {  ?>
+                            <section class="it-page-section mb-30">
+                                <h2 class="title-xxlarge mb-3" id="more-info">Ulteriori informazioni</h2>
+                                <div class="richtext-wrapper lora">
+                                    <?php echo $more_info ?>
+                                </div>
+                            </section>
+                            <?php }  ?>
+
 				
-                            <?php if ($sede_principale)
-					echo $sede_principale->post_title;	                   
-				    { ?>
+                            <?php if ($sede_principale){ ?>
 			    <p></p>
-                            <section class="it-page-section">
-                                  <h3 class="mt-4" id="contacts">Sede principale</h3>
+                            <section class="it-page-section" id="sede">
+                                  <h3 class="mt-4">Sede principale</h3>
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-6 mb-30">
                                         <div class="card-wrapper rounded h-auto mt-10">
@@ -415,7 +442,7 @@ get_header();
 
 				
                             <section class="it-page-section mb-30">
-                                <h2 class="title-xxlarge mb-3" id="costs">Contatti</h2>
+                                <h2 class="title-xxlarge mb-3" id="contatti">Contatti</h2>
                                 <div class="richtext-wrapper lora">
 					<?php foreach ($punti_contatto as $pc_id) {
 	                                    get_template_part('template-parts/single/punto-contatto');
@@ -439,3 +466,4 @@ get_header();
 get_footer();
 
  ?>
+
