@@ -16,6 +16,7 @@ get_header();
 			
 			?>
 			<?php get_template_part("template-parts/hero/hero"); ?>
+			<?php get_template_part("template-parts/servizio/evidenza"); ?>
 			<?php get_template_part("template-parts/servizio/tutti-servizi"); ?>
 			<?php get_template_part("template-parts/servizio/categorie"); ?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
@@ -28,6 +29,4 @@ get_header();
 
 <?php
 get_footer();
-
-
 
