@@ -9,11 +9,9 @@ foreach ($luoghi as $luogo) {
 
 
     try {
-        // Recupera la posizione GPS
-        $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
+    // Recupera la posizione GPS
+    $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
     } catch (Exception $e) {
-        // Se c'è un errore, continua senza fare nulla
-        $posizione_gps = ''; // Imposta a vuoto in caso di errore
     }
 
 
