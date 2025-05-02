@@ -9,18 +9,23 @@ foreach ($luoghi as $luogo) {
 
 
     try {
-    // Recupera la posizione GPS
-    $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
+        // Recupera la posizione GPS
+        $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
     } catch (Exception $e) {
+        // Se c'è un errore, continua senza fare nulla
+        $posizione_gps = ''; // Imposta a vuoto in caso di errore
     }
+
 
     
     if ($posizione_gps && $posizione_gps["lat"] && $posizione_gps["lng"]) {
 
-        if (!empty($posizione_gps) && $posizione_gps !== '' {        
-        $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
-        $arr_luoghi[$c]["post_title"] = $luogo->post_title;
-      }
+        // Se la posizione GPS non è una stringa vuota
+        if ($posizione_gps !== '') {
+            // Recupera l'indirizzo e il titolo del luogo solo se la posizione GPS è valida
+            $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
+            $arr_luoghi[$c]["post_title"] = $luogo->post_title;
+        }
 
         
         $arr_luoghi[$c]["permalink"] = get_permalink($luogo);
