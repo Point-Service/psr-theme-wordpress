@@ -233,11 +233,7 @@ get_header();
             $luoghi = array($indirizzo);
             get_template_part("template-parts/luogo/card-info"); 
                  ?>
-                      </center>
-  
-                     <div class="richtext-wrapper font-serif mt-3">  
-          <?php echo $indirizzo; ?>
-         </div>
+                      </center> 
             </article>
           <?php } ?>  
 
