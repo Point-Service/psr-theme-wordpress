@@ -6,14 +6,14 @@ $c=0;
 $posizione_gps = '';
 foreach ($luoghi as $luogo) {
 
- //   $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
+    $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
 
     if ($posizione_gps && $posizione_gps["lat"] && $posizione_gps["lng"]) {
 
         // Se posizione_gps non è una stringa vuota, continua
 
-          //  $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
-         //   $arr_luoghi[$c]["post_title"] = $luogo->post_title;
+            $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
+            $arr_luoghi[$c]["post_title"] = $luogo->post_title;
    
         
         $arr_luoghi[$c]["permalink"] = get_permalink($luogo);
