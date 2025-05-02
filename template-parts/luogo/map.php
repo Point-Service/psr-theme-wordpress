@@ -48,3 +48,9 @@ if($c) { ?>
         });
     </script>
 <?php } ?> 
+    <div class="card-footer py-3 mb-0">
+        <svg class="icon">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#it-map-marker"></use>
+        </svg>
+        <a title="Indicazioni stradali di <?php echo addslashes($indirizzo); ?>" href="https://www.google.com/maps/dir/<?php echo $posizione_gps["lat"]; ?>,<?php echo $posizione_gps["lng"]; ?>/@<?php echo $posizione_gps["lat"]; ?>,<?php echo $posizione_gps["lng"]; ?>,15z?hl=it">Indicazioni stradali su Google Maps</a>
+    </div>
