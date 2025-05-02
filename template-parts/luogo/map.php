@@ -34,7 +34,7 @@ if($c) { ?>
  <div class="card-header">
  
         <div class="card-title h6">     
-        <?php echo $post_title; ?>
+        <?php echo $indirizzo; ?>
         </div>
   
 
