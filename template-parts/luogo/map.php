@@ -2,26 +2,16 @@
 global $luoghi;
 $prefix = '_dci_luogo_';
 $arr_luoghi = array();
-$c = 0;
-
-// Assicurati che $luoghi contenga oggetti WP_Post, se invece sono solo ID, recuperali con get_post()
+$c=0;
 foreach ($luoghi as $luogo) {
-    // Se $luogo è un ID e non un oggetto WP_Post, recuperiamo l'oggetto
-    if (is_numeric($luogo)) {
-        $luogo = get_post($luogo);
-    }
-    
-    // Ora $luogo è un oggetto WP_Post
-    if ($luogo && $luogo instanceof WP_Post) {
-        $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
-        if ($posizione_gps && $posizione_gps["lat"] && $posizione_gps["lng"]) {
-            $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
-            $arr_luoghi[$c]["post_title"] = $luogo->post_title;
-            $arr_luoghi[$c]["permalink"] = get_permalink($luogo);
-            $arr_luoghi[$c]["gps"] = $posizione_gps;
-            $arr_luoghi[$c]["indirizzo"] = $indirizzo;
-            $c++;
-        }
+    $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
+    if ($posizione_gps && $posizione_gps["lat"] && $posizione_gps["lng"]) {
+        $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
+        $arr_luoghi[$c]["post_title"] = $luogo->post_title;
+        $arr_luoghi[$c]["permalink"] = get_permalink($luogo);
+        $arr_luoghi[$c]["gps"] = $posizione_gps;
+        $arr_luoghi[$c]["indirizzo"] = $indirizzo;
+        $c++;
     }
 }
 
