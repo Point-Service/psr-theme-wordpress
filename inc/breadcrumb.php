@@ -453,10 +453,7 @@ class Breadcrumb_Trail {
 					    $added_links = [];
 					
 					    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
-					    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
-
-					
-					
+					    $terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
 				
 					
 					    if ($terms && !is_wp_error($terms)) {
@@ -464,7 +461,6 @@ class Breadcrumb_Trail {
 						    
 					        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
 					        foreach ($terms as $term) {
-
 
 							
 					            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
