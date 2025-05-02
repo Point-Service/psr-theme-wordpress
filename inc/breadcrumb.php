@@ -456,7 +456,7 @@ class Breadcrumb_Trail {
 					    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
 					
 					    if ($terms && !is_wp_error($terms)) {
-
+echo 're';
 						    
 					        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
 					        foreach ($terms as $term) {
