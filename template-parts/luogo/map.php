@@ -1,7 +1,18 @@
 <?php
-global $luoghi;
+global $luoghi, $luogo;
 $prefix = '_dci_luogo_';
 $arr_luoghi = array();
+
+
+   $post_title = $luogo->post_title;
+   $permalink = get_permalink($luogo);
+
+
+    $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
+    $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
+    $quartiere = dci_get_meta("quartiere", $prefix, $luogo->ID);
+    $circoscrizione = dci_get_meta("circoscrizione", $prefix, $luogo->ID);
+
 
 $c=0;
 foreach ($luoghi as $luogo) {
