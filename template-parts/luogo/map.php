@@ -18,13 +18,11 @@ foreach ($luoghi as $luogo) {
     
     if ($posizione_gps && $posizione_gps["lat"] && $posizione_gps["lng"]) {
 
-        // Se la posizione GPS non è una stringa vuota
+        // Se posizione_gps non è una stringa vuota, continua
         if ($posizione_gps !== '') {
-            // Recupera l'indirizzo e il titolo del luogo solo se la posizione GPS è valida
             $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
             $arr_luoghi[$c]["post_title"] = $luogo->post_title;
         }
-
         
         $arr_luoghi[$c]["permalink"] = get_permalink($luogo);
         $arr_luoghi[$c]["gps"] = $posizione_gps;
