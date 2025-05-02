@@ -457,7 +457,7 @@ class Breadcrumb_Trail {
 
 					
 					echo 're';
-
+					echo $terms;
 					
 					    if ($terms && !is_wp_error($terms)) {
 
