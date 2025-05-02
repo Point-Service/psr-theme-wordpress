@@ -32,25 +32,8 @@ if($c) { ?>
 
     
  <div class="card-header">
-        <?php if($showTitle) { ?>
-        <div class="card-title h6">
-            <?php if($showTitle) { 
-                echo '<p class="mb-0">';
-                echo $showPermalink ? '<a href="' . get_permalink($luogo)  . '">':'';
-                echo $post_title;
-                echo $showPermalink ? '</a>':'';
-                if($childof && !$showParent) {
-                    echo '<small class="d-block">di ' . get_the_title($childof)  . '</small>';
-                }
-                echo "</p>";
-            } ?>
-
-        </div>
-            <?php
-        } ?>
             <?php 
-
-        if(isset($indirizzo) && $indirizzo != ""){ ?>
+                  if(isset($indirizzo) && $indirizzo != ""){ ?>
 			<div class="d-block"><?php echo $indirizzo; ?></div>
 		<?php } ?>
 
