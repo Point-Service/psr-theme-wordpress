@@ -9,10 +9,8 @@
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $uo_id);
     $responsabili = dci_get_meta("responsabile", $prefix, $uo_id);
     $responsabile = $responsabili[0];
-    
-    // Gestione Incarichi
-    $incarichi = dci_get_meta("incarichi", '_dci_persona_pubblica_', $responsabile);
-    $incarico = get_the_title($incarichi[0]);
+
+
     $nome_incarico = '';
 
     $prefix = '_dci_punto_contatto_';
