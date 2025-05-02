@@ -16,6 +16,7 @@ foreach ($luoghi as $luogo) {
 }
 
 if($c) { ?>
+<div class="card card-bg rounded mt-4 no-after">
     <div class="map-wrapper map-column mt-4">
         <div class="map-wrapper">
             <div class="map" id="map_all"></div>
@@ -54,3 +55,4 @@ if($c) { ?>
         </svg>
         <a title="Indicazioni stradali di <?php echo addslashes($indirizzo); ?>" href="https://www.google.com/maps/dir/<?php echo $posizione_gps["lat"]; ?>,<?php echo $posizione_gps["lng"]; ?>/@<?php echo $posizione_gps["lat"]; ?>,<?php echo $posizione_gps["lng"]; ?>,15z?hl=it">Indicazioni stradali su Google Maps</a>
     </div>
+</div>
