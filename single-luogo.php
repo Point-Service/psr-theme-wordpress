@@ -231,7 +231,7 @@ get_header();
           <center>
           <?php 
             $luoghi = array($indirizzo);
-            get_template_part("template-parts/luogo/map"); 
+            get_template_part("template-parts/luogo/card-info"); 
                  ?>
                       </center>
   
