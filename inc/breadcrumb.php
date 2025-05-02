@@ -471,14 +471,14 @@ class Breadcrumb_Trail {
 					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE' || strtoupper(esc_html($term->name)) == 'COMMISSIONE') {
 						    
 					                // Controlliamo e aggiungiamo il link Politici solo se non è già presente
-					                $politici_link = home_url("amministrazione/politici");
-					                $politici_text = "Politici";
+					              //  $politici_link = home_url("amministrazione/politici");
+					              //  $politici_text = "Politici";
 					                
 					                // Controlliamo se il link è già stato aggiunto
-					                if (!in_array($politici_link, $added_links)) {
+					             //   if (!in_array($politici_link, $added_links)) {
 					            //        $this->items[] = "<a href='" . esc_url($politici_link) . "'>$politici_text</a>";
 					            //        $added_links[] = $politici_link; // Aggiungiamo il link all'array dei link aggiunti
-					                }
+					              //  }
 					
 					                // Controlliamo e aggiungiamo il link Organi di Governo solo se non è già presente
 					                $organi_link = home_url("amministrazione/organi-di-governo");
