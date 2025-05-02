@@ -32,21 +32,47 @@ if($c) { ?>
 
     
  <div class="card-header">
- 
-        <div class="card-title h6">     
-        <?php echo $indirizzo; ?>
+        <?php if($showTitle) { ?>
+        <div class="card-title h6">
+            <?php if($showTitle) { 
+                echo '<p class="mb-0">';
+                echo $showPermalink ? '<a href="' . get_permalink($luogo)  . '">':'';
+                echo $post_title;
+                echo $showPermalink ? '</a>':'';
+                if($childof && !$showParent) {
+                    echo '<small class="d-block">di ' . get_the_title($childof)  . '</small>';
+                }
+                echo "</p>";
+            } ?>
+
         </div>
-  
+            <?php
+        } ?>
+            <?php 
 
+        if(isset($indirizzo) && $indirizzo != ""){ ?>
+			<div class="d-block"><?php echo $indirizzo; ?></div>
+		<?php } ?>
 
+        <?php if($quartiere || $circoscrizione) { ?>
+            <small class="d-block"><?php echo $quartiere; ?> <?php if($quartiere && $circoscrizione) { echo "-"; } ?> <?php echo $circoscrizione; ?></small>
+        <?php } ?>
 
+        <?php if(isset($cap) && $cap != ""){ ?>
+			<div class="location-title">
+			    <span><?php _e( "CAP", "design_comuni_italia" ); ?></span>
+            </div>
+            <div class="location-content">
+                <p><?php echo $cap; ?></p>
+            </div>
+		<?php } ?>
+	</div><!-- /card-header -->
 
-    
-    <div class="map-wrapper map-column mt-4">
-        <div class="map-wrapper">
-            <div class="map" id="map_all"></div>
-        </div>
-    </div>
+    <div class="card-body p-0">
+            <div class="map-wrapper">
+                <div class="map" id="map_all"></div>
+            </div>
+
     <script>
         jQuery(function() {
             var mymap = L.map('map_all', {
@@ -80,4 +106,5 @@ if($c) { ?>
         </svg>
         <a title="Indicazioni stradali di <?php echo addslashes($indirizzo); ?>" href="https://www.google.com/maps/dir/<?php echo $posizione_gps["lat"]; ?>,<?php echo $posizione_gps["lng"]; ?>/@<?php echo $posizione_gps["lat"]; ?>,<?php echo $posizione_gps["lng"]; ?>,15z?hl=it">Indicazioni stradali su Google Maps</a>
     </div>
+</div>
 </div>
