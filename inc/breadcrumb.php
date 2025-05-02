@@ -569,18 +569,32 @@ class Breadcrumb_Trail {
 					// Recupera gli incarichi, se esistono
 					$incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post				
 					
-				        // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
-				        $incarico = get_the_title($incarichi[0]);
-				
-				        // Recupero dei termini di tipo incarico
-				        $tipo_incarico_terms = get_the_terms(get_post($incarichi[0]), 'tipi_incarico');
-				
-				        // Controllo se i termini di tipo incarico esistono e non ci sono errori
-				        if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
-				            $tipo_incarico = $tipo_incarico_terms[0]->name;
-				        } else {
-				            $tipo_incarico = ''; // Valore di fallback se non ci sono termini
-				        }
+					// Verifica che ci siano incarichi prima di procedere
+					if (!empty($incarichi) && isset($incarichi[0])) {
+					    // Prende il primo incarico (se esiste) per mostrare il titolo e il tipo di incarico
+					    $incarico_id = $incarichi[0];
+					
+					    // Controllo se l'ID dell'incarico è valido (es. se il post esiste)
+					    if ($incarico = get_post($incarico_id)) {
+					        $incarico_title = get_the_title($incarico);
+					    } else {
+					        $incarico_title = ''; // Valore di fallback se l'incarico non esiste
+					    }
+					
+					    // Recupero dei termini di tipo incarico
+					    $tipo_incarico_terms = get_the_terms($incarico, 'tipi_incarico');
+					
+					    // Controllo se i termini di tipo incarico esistono e non ci sono errori
+					    if (!empty($tipo_incarico_terms) && !is_wp_error($tipo_incarico_terms) && isset($tipo_incarico_terms[0])) {
+					        $tipo_incarico = $tipo_incarico_terms[0]->name;
+					    } else {
+					        $tipo_incarico = ''; // Valore di fallback se non ci sono termini
+					    }
+					} else {
+					    // Fallback nel caso in cui non ci siano incarichi
+					    $incarico_title = '';
+					    $tipo_incarico = '';
+					}
 				
 
 				        // Determina la destinazione in base al tipo di incarico
