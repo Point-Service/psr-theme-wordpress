@@ -454,9 +454,13 @@ class Breadcrumb_Trail {
 					
 					    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
 					    $terms = get_the_terms($post, 'tipi_unita_organizzativa');
+
+					
+					echo 're';
+
 					
 					    if ($terms && !is_wp_error($terms)) {
-echo 're';
+
 						    
 					        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
 					        foreach ($terms as $term) {
