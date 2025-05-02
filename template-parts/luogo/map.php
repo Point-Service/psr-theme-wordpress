@@ -2,6 +2,7 @@
 global $luoghi;
 $prefix = '_dci_luogo_';
 $arr_luoghi = array();
+
 $c=0;
 foreach ($luoghi as $luogo) {
     $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
@@ -17,6 +18,19 @@ foreach ($luoghi as $luogo) {
 
 if($c) { ?>
 <div class="card card-bg rounded mt-4 no-after">
+
+    
+ <div class="card-header">
+ 
+        <div class="card-title h6">     
+        <?php echo addslashes($marker["post_title"]); ?>
+        </div>
+  
+
+
+
+
+    
     <div class="map-wrapper map-column mt-4">
         <div class="map-wrapper">
             <div class="map" id="map_all"></div>
