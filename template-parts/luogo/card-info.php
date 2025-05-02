@@ -6,25 +6,12 @@ $c=0;
 $post_title = $luogo->post_title;
 $permalink = get_permalink($luogo);
 
-$childof = dci_get_meta("childof", $prefix, $luogo->ID);
 
-if(!empty($childof)) {
-    $childofwhile = $childof;
-    while(!empty($childofwhile)) {
-	    echo '1';
-        $posizione_gps = dci_get_meta("posizione_gps", $prefix, $childof);
-        $indirizzo = dci_get_meta("indirizzo", $prefix, $childof);
-        $quartiere = dci_get_meta("quartiere", $prefix, $childof);
-        $circoscrizione = dci_get_meta("circoscrizione", $prefix, $childof);
-        $childofwhile = dci_get_meta("childof", $prefix, $childof);
-    }  
-} else {
-	    echo '2';
     $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
     $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
     $quartiere = dci_get_meta("quartiere", $prefix, $luogo->ID);
     $circoscrizione = dci_get_meta("circoscrizione", $prefix, $luogo->ID);
-}
+
 
 ?>
 
@@ -46,14 +33,7 @@ if(!empty($childof)) {
         </div>
             <?php
         } ?>
-            <?php if($childof && $showParent) {
-                echo "<p>";
-                echo '<span class="d-block">Questo luogo fa parte di: </span>';
-                    ?><a href="<?php echo get_permalink($childof); ?>" data-focus-mouse="false">
-                         <?php echo get_the_title($childof); ?>
-                    </a><?php
-                echo "</p>";
-            }
+            <?php 
 
         if(isset($indirizzo) && $indirizzo != ""){ ?>
 			<div class="d-block"><?php echo $indirizzo; ?></div>
