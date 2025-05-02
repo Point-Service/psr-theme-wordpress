@@ -3,11 +3,26 @@ global $luoghi;
 $prefix = '_dci_luogo_';
 $arr_luoghi = array();
 $c=0;
+$posizione_gps = '';
 foreach ($luoghi as $luogo) {
+
+
+
+    try {
+    // Recupera la posizione GPS
     $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
+    } catch (Exception $e) {
+    }
+
+    
     if ($posizione_gps && $posizione_gps["lat"] && $posizione_gps["lng"]) {
+
+        if (!empty($posizione_gps) && $posizione_gps !== '' {        
         $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
         $arr_luoghi[$c]["post_title"] = $luogo->post_title;
+      }
+
+        
         $arr_luoghi[$c]["permalink"] = get_permalink($luogo);
         $arr_luoghi[$c]["gps"] = $posizione_gps;
         $arr_luoghi[$c]["indirizzo"] = $indirizzo;
