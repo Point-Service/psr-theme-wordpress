@@ -11,6 +11,7 @@ $childof = dci_get_meta("childof", $prefix, $luogo->ID);
 if(!empty($childof)) {
     $childofwhile = $childof;
     while(!empty($childofwhile)) {
+	    echo '1';
         $posizione_gps = dci_get_meta("posizione_gps", $prefix, $childof);
         $indirizzo = dci_get_meta("indirizzo", $prefix, $childof);
         $quartiere = dci_get_meta("quartiere", $prefix, $childof);
@@ -18,6 +19,7 @@ if(!empty($childof)) {
         $childofwhile = dci_get_meta("childof", $prefix, $childof);
     }  
 } else {
+	    echo '2';
     $posizione_gps = dci_get_meta("posizione_gps", $prefix, $luogo->ID);
     $indirizzo = dci_get_meta("indirizzo", $prefix, $luogo->ID);
     $quartiere = dci_get_meta("quartiere", $prefix, $luogo->ID);
