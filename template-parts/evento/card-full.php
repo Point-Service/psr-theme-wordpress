@@ -62,7 +62,7 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
                 </p>                 
                 <?php if (!empty($luogo_evento)) { ?>
                     <span class="data fw-normal"><!-- SVG per l'icona fa-map-marker-alt -->
-                         Luogo : 
+                         Luogo :<p class="my-0"></p>
                         <?php 
                         // Ottieni i dettagli del luogo
                         $luogo_post = get_post($luogo_evento);
@@ -75,7 +75,7 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
                     </span>
                 <?php } elseif (!empty($luogo_notizia)) { ?>
                     <span class="data fw-normal"> | 
-                      Luogo :
+                      Luogo :<p class="my-0"></p>
                       <?php echo esc_html($luogo_notizia); ?>
                     </span>
                 <?php } ?>
