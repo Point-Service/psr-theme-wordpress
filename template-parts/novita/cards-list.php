@@ -29,7 +29,7 @@ if ($img) {
                 <div class="col-12 order-1 order-md-2">
                 <div class="card-body">
                     <div class="category-top cmp-list-card-img__body">
-
+                    <?php if ($tipo){
                                 <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                  <?php echo strtoupper($tipo->name); ?>
                              </a>
