@@ -45,13 +45,11 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
                     <a class="category text-decoration-none"
                         href="<?= get_term_link($tipo_evento->term_id); ?>">
                         <?php echo $tipo_evento->name; ?>
-                    <?php if ($start_timestamp && $end_timestamp ) { ?>
-                        
+                    </a>
+                    <?php if ($start_timestamp && $end_timestamp ) { ?>                        
                                 <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
 
-
                     <?php } ?>
-                    </a>
                 </div>
                 <h3 class="h5 card-title u-grey-light mb-0">
                     <a class="text-decoration-none"
