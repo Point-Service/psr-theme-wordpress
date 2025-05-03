@@ -1,4 +1,30 @@
+<?php
+global $count, $scheda;
 
+$post_id = dci_get_option('notizia_evidenziata', 'homepage', true)[0] ?? null;
+$prefix = '_dci_notizia_';
+
+if ($post_id) {
+    $post = get_post($post_id);
+    $img = dci_get_meta("immagine", $prefix, $post->ID);
+    $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
+    $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+    $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
+    $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
+    $luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
+    
+
+    $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');    
+    if ($tipo_terms && !is_wp_error($tipo_terms)) {
+        $tipo = $tipo_terms[0];  // Prendi il primo termine trovato
+    } else {
+        $tipo = null;  // Nessun termine trovato
+    }
+
+}
+
+
+?>
 
             <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>     
                 <div class="row">
