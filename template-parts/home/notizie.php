@@ -164,7 +164,7 @@ for ($i = 1; $i <= 20; $i++) {
                             foreach ($schede as $scheda) {
                                 if ($scheda) {
                                    // get_template_part("template-parts/home/scheda-evidenza");
-                                    get_template_part("template-parts/home/carosello");
+                                  //  get_template_part("template-parts/home/carosello");
                                 }
                                 ++$count;
                             }
