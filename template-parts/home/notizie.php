@@ -61,7 +61,7 @@ for ($i = 1; $i <= 20; $i++) {
                             ?>
             
             <?php if (!empty(array_filter($schede))) { ?>
-                <div class="bg-light py-4">
+                <div class="py-4">
                     <!-- Sezione delle schede -->
                     <div class="row mb-1">
                         <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
