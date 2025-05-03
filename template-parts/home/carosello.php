@@ -1,3 +1,13 @@
+   <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Aggiungi uno stile di base se necessario -->
+    <style>
+        .carousel-item img {
+            max-height: 500px; /* Impostazione opzionale per la massima altezza delle immagini */
+            object-fit: cover;
+        }
+    </style>
 <div id="caroselloHome" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#caroselloHome" data-slide-to="0" class="active"></li>
