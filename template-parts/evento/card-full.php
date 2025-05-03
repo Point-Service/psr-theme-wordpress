@@ -45,6 +45,12 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
                     <a class="category text-decoration-none"
                         href="<?= get_term_link($tipo_evento->term_id); ?>">
                         <?php echo $tipo_evento->name; ?>
+                    <?php if ($start_timestamp && $end_timestamp ) { ?>
+                        
+                                <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
+
+
+                    <?php } ?>
                     </a>
                 </div>
                 <h3 class="h5 card-title u-grey-light mb-0">
@@ -56,13 +62,6 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
                 </h3>                
                 <p class="text-paragraph-card mb-5">
                     <?php echo $descrizione; ?>
-                    <?php if ($start_timestamp && $end_timestamp ) { ?>
-                          <blockquote class="text-paragraph-card mb-5 shadow-sm" style="border-left: 4px <?php echo $is_evento_attivo; ?>; background-color: #ffffff;">
-                            <p class="mb-0">
-                                <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
-                            </p>
-                        </blockquote>
-                    <?php } ?>
                 </p>                 
                 <?php if (!empty($luogo_evento)) { ?>
                     <span class="data fw-normal"><!-- SVG per l'icona fa-map-marker-alt -->
