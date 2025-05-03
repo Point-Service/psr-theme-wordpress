@@ -15,8 +15,6 @@ if ($tipo_terms && !is_wp_error($tipo_terms)) {
 } else {
     $tipo = null;
 }
-
-
 if ($img) {
 ?>
     <div class="col-12 col-md-6 col-xl-4">
@@ -29,7 +27,7 @@ if ($img) {
                 <div class="col-12 order-1 order-md-2">
                 <div class="card-body">
                     <div class="category-top cmp-list-card-img__body">
-                    <?php if ($tipo){
+                    <?php if ($tipo){ ?>  
                                 <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                  <?php echo strtoupper($tipo->name); ?>
                              </a>
@@ -126,7 +124,8 @@ if ($img) {
                     <div class="col-12 order-1 order-md-2">
                         <div class="card-body card-img-none rounded-top">
                             <div class="category-top cmp-list-card-img__body">
-                            <?php if ($tipo){
+                            <?php if ($tipo){?>
+                              
                                 <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                                  <?php echo strtoupper($tipo->name); ?>
                              </a>
@@ -218,7 +217,4 @@ if ($img) {
         </div>
     </div>
 <?php } ?>
-
-
-
 
