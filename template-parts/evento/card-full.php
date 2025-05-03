@@ -48,7 +48,6 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
                     </a>
                     <?php if ($start_timestamp && $end_timestamp ) { ?>                        
                                 <span class="data u-grey-light"><font size="2">Dal <?php echo $start_date; ?>  al  <?php echo $end_date; ?></font></span>
-
                     <?php } ?>
                 </div>
                 <h3 class="h5 card-title u-grey-light mb-0">
@@ -63,9 +62,7 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
                 </p>                 
                 <?php if (!empty($luogo_evento)) { ?>
                     <span class="data fw-normal"><!-- SVG per l'icona fa-map-marker-alt -->
-                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-map-marker-alt" viewBox="0 0 16 16">
-                             <path d="M8 0C4.686 0 2 3.582 2 7c0 4.418 6 9 6 9s6-4.582 6-9c0-3.418-2.686-7-6-7zm0 11.5s-3-3.736-3-4.5c0-1.314 1.343-2.5 3-2.5s3 1.186 3 2.5c0 .764-3 4.5-3 4.5z"/>
-                         </svg>
+                         Luogo : <p></p>
                         <?php 
                         // Ottieni i dettagli del luogo
                         $luogo_post = get_post($luogo_evento);
