@@ -60,8 +60,8 @@ for ($i = 1; $i <= 20; $i++) {
                           }
                             ?>
             
-                <?php if (!empty(array_filter($schede))) { ?>
-            
+            <?php if (!empty(array_filter($schede))) { ?>
+                <div class="bg-light py-4">
                     <!-- Sezione delle schede -->
                     <div class="row mb-1">
                         <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
@@ -70,17 +70,13 @@ for ($i = 1; $i <= 20; $i++) {
                             foreach ($schede as $scheda) {
                                 if ($scheda) {
                                       get_template_part("template-parts/home/scheda-evidenza");
-
                                 }
                                 ++$count;
                             }
                             ?>
-                        </div>
-
-
-                        
+                        </div>                        
                     </div>
-
+            
                     <!-- Mostra il pulsante solo se ci sono schede -->
                     <div class="row my-4 justify-content-md-center">
                         <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
@@ -91,7 +87,10 @@ for ($i = 1; $i <= 20; $i++) {
                             </button>
                         </a>
                     </div>
-                <?php } ?>
+                </div>
+            <?php } ?>
+
+    
         </div>
     </div>
 </section>
