@@ -152,6 +152,10 @@ for ($i = 1; $i <= 20; $i++) {
                 </div>
                 <?php }?>
                 <?php if (!empty(array_filter($schede))) { ?>
+
+
+
+            
                     <!-- Sezione delle schede -->
                     <div class="row mb-1">
                         <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
@@ -159,12 +163,16 @@ for ($i = 1; $i <= 20; $i++) {
                             $count = 1;
                             foreach ($schede as $scheda) {
                                 if ($scheda) {
-                                    get_template_part("template-parts/home/scheda-evidenza");
+                                 //   get_template_part("template-parts/home/scheda-evidenza");
+                                    get_template_part("template-parts/home/carosello");
                                 }
                                 ++$count;
                             }
                             ?>
                         </div>
+
+
+                        
                     </div>
 
                     <!-- Mostra il pulsante solo se ci sono schede -->
