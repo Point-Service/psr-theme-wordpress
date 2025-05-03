@@ -54,6 +54,7 @@ for ($i = 1; $i <= 20; $i++) {
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
+            <!-- Richiamo la prima notizia in Evidenza -->
                       <?php  if ($post_id) {                                    
                               get_template_part("template-parts/home/notizia_in_evidenza");                  
                           }
