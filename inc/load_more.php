@@ -60,7 +60,7 @@ function load_more(){
 	    	'post_type'      => 'documento_pubblico',
 			'post_status'    => 'publish',
 			'orderby' => 'text_date_timestamp',
-			'order'   => 'desc'
+			'order'   => 'desc',
 			'tax_query'      => array(
 			        array(
 			            'taxonomy' => 'tipi_documento', // La tassonomia personalizzata
