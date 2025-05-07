@@ -50,7 +50,29 @@ function load_more(){
         'orderby'   => 'meta_value_num',
     );
 
-	if ( $post_types != "notizia" ) {
+
+
+     if ( $post_types != "documento_pubblico" ) {
+	
+		$args = array(
+			's' => $_POST['search'],
+	    	'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+	    	'post_type'      => 'documento_pubblico',
+			'post_status'    => 'publish',
+			'orderby' => 'text_date_timestamp',
+			'order'   => 'desc'
+			'tax_query'      => array(
+			        array(
+			            'taxonomy' => 'tipi_documento', // La tassonomia personalizzata
+			            'field'    => 'slug',           // Filtra per slug
+			            'terms'    => $obj->slug,       // Ottieni il termine della tassonomia selezionata
+			        ),
+		);
+	}
+
+	 
+	
+	if ( $post_types != "notizia" && $post_types != "documento_pubblico") {
 	
 		$args = array(
 			's' => $_POST['search'],
@@ -61,6 +83,11 @@ function load_more(){
 			'order'   => 'desc'
 		);
 	}
+
+
+	
+	
+	
 
 	if ( isset($url_query_params["post_terms"]) ) {
 		$taxquery = array(
