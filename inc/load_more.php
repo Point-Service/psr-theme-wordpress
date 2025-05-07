@@ -27,100 +27,112 @@ function load_template_part($template_name, $part_name=null) {
 add_action("wp_ajax_load_more" , "load_more");
 add_action("wp_ajax_nopriv_load_more" , "load_more");
 function load_more(){
-	global $servizio, $i, $hide_categories;
-
+	global $wp_query, $servizio, $i, $hide_categories;
+	
+    // prepare our arguments for the query
 	$load_card_type = $_POST['load_card_type'];
-	$post_types = json_decode(stripslashes($_POST['post_types']), true);
-	$url_query_params = json_decode(stripslashes($_POST['query_params']), true);
-	$additional_filter = json_decode(stripslashes($_POST['additional_filter']), true);
+	$post_types = json_decode( stripslashes( $_POST['post_types'] ), true );
+	$url_query_params =  json_decode( stripslashes( $_POST['query_params'] ), true );
+	$additional_filter =  json_decode( stripslashes( $_POST['additional_filter'] ), true );
 
 	$args = array(
-		's' => sanitize_text_field($_POST['search']),
-		'posts_per_page' => intval($_POST['post_count']) + intval($_POST['load_posts']),
-		'post_type' => $post_types,
-		'post_status' => 'publish',
-		'order' => 'DESC',
+        's' => $_POST['search'],
+        'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+        'post_type'      => $post_types,
+		'post_status'    => 'publish',
+        'order'          => 'DESC',
 		'meta_query' => array(
-			array(
-				'key' => '_dci_notizia_data_pubblicazione',
-			)
-		),
-		'meta_type' => 'text_date_timestamp',
-		'orderby' => 'meta_value_num',
-	);
+            array(
+                'key' => '_dci_notizia_data_pubblicazione',
+            )
+        ),
+        'meta_type' => 'text_date_timestamp',
+        'orderby'   => 'meta_value_num',
+    );
 
-	// Sovrascrivi argomenti se presenti
-	if (isset($url_query_params["post_terms"])) {
-		$args['tax_query'] = array(
-			array(
-				'taxonomy' => 'argomenti',
-				'field' => 'id',
-				'terms' => array_map('intval', $url_query_params["post_terms"]),
-			)
+	if ( $post_types != "notizia" ) {
+	
+		$args = array(
+			's' => $_POST['search'],
+	    	'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+	    	'post_type'      => $post_types,
+			'post_status'    => 'publish',
+			'orderby' => 'text_date_timestamp',
+			'order'   => 'desc'
 		);
 	}
 
-	if (isset($url_query_params["post_types"])) {
-		$args['post_type'] = $url_query_params["post_types"];
+	if ( isset($url_query_params["post_terms"]) ) {
+		$taxquery = array(
+			array(
+				'taxonomy' => 'argomenti',
+				'field' => 'id',
+				'terms' => $url_query_params["post_terms"]
+			)
+		);
+	
+		$args['tax_query'] = $taxquery;
 	}
-	if (isset($url_query_params["s"])) {
-		$args['s'] = sanitize_text_field($url_query_params["s"]);
-	}
-	if (!empty($additional_filter)) {
-		$args = array_merge($args, $additional_filter);
-	}
+	if ( isset($url_query_params["post_types"]) ) $args['post_type'] = $url_query_params["post_types"];
+	if ( isset($url_query_params["s"]) ) $args['s'] = $url_query_params["s"];
+	if ( isset($additional_filter) ) $args = $args + $additional_filter;
+ 
+	// it is always better to use WP_Query but not here
+	$new_query = query_posts( $args );
 
-	// Usa WP_Query
-	$new_query = new WP_Query($args);
 	$out = '';
-	$i = 0;
+    if( have_posts() ) :
+		
+		$i = 0;
+		// run the loop
+		while( have_posts() ): the_post();
+		$post = get_post();
+		++$i;
 
-	if ($new_query->have_posts()) :
-		while ($new_query->have_posts()) : $new_query->the_post();
-			$post = get_post();
-			++$i;
-
-			switch ($load_card_type) {
-				case 'servizio':
-				case 'categoria_servizio':
-					$servizio = $post;
-					if ($load_card_type === 'categoria_servizio') $hide_categories = true;
-					$out .= load_template_part("template-parts/servizio/card");
-					break;
-				case 'notizia':
-					$out .= load_template_part("template-parts/novita/cards-list");
-					break;
-				case 'documento':
-					$out .= load_template_part("template-parts/documento/cards-list");
-					break;
-				case 'global-search':
-					$out .= load_template_part("template-parts/search/item");
-					break;
-				case 'commissario':
-					$out .= load_template_part("template-parts/commissario_osl/cards-list");
-					break;
-				case 'progetto':
-					$out .= load_template_part("template-parts/progetti/cards-list");
-					break;
-				case 'personale-amministrativo':
-					$out .= load_template_part("template-parts/personale-amministrativo/cards-list");
-					break;
-				case 'domanda-frequente':
-					$out .= load_template_part("template-parts/domanda-frequente/item");
-					break;
-				case 'luogo':
-					$out .= load_template_part("template-parts/luogo/card-full");
-					break;
-			}
+		if ($load_card_type == "servizio"){
+			$servizio = $post;
+			$out .= load_template_part("template-parts/servizio/card");  
+		}
+		if ($load_card_type == "categoria_servizio"){
+			$servizio = $post;
+			$hide_categories = true;
+			$out .= load_template_part("template-parts/servizio/card");  
+		}
+		if ($load_card_type == "notizia"){
+			$out .= load_template_part("template-parts/novita/cards-list");  
+		}
+		if ($load_card_type == "documento"){
+			$out .= load_template_part("template-parts/documento/cards-list");  
+		}
+		if ($load_card_type == "global-search"){
+			$out .= load_template_part("template-parts/search/item");  
+		}
+		if ($load_card_type == "commissario"){
+			$out .= load_template_part("template-parts/commissario_osl/cards-list");  
+		}
+		if ($load_card_type == "progetto"){
+			$out .= load_template_part("template-parts/progetti/cards-list");  
+		}
+		if ($load_card_type == "personale-amministrativo"){
+			$out .= load_template_part("template-parts/personale-amministrativo/cards-list");  
+		}
+		if ($load_card_type == "domanda-frequente"){
+			$out .= load_template_part("template-parts/domanda-frequente/item");  
+		}	
+		if ($load_card_type == "luogo"){
+			$out .= load_template_part("template-parts/luogo/card-full");  
+		}	 
 		endwhile;
+ 
 	endif;
 
-	wp_reset_postdata();
-
-	wp_send_json(array(
-		'response' => $out,
-		'post_count' => $new_query->post_count,
-		'all_results' => ($new_query->found_posts <= $new_query->post_count),
-	));
+	$res = array();
+	$res['response'] = $out;
+	$res['post_count'] = count($new_query);
+	if ($wp_query->found_posts == count($new_query)) {
+		$res['all_results'] = true;
+	}
+	$res = json_encode($res);
+    wp_reset_postdata();
+    die($res);
 }
-
