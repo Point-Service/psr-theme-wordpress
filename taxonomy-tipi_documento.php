@@ -16,8 +16,9 @@ $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
+    'post_status'    => 'publish',
     'post_type'      => 'documento_pubblico',
-    'orderby'        => 'post_title',
+    'orderby'        => 'text_date_timestamp',    
     'order'          => 'DESC',
     'tax_query'      => array(
         array(
