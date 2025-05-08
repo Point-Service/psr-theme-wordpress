@@ -69,7 +69,7 @@ get_header();
                   </span>
                   </div>
                   </div>
-                  <p id="autocomplete-label" class="mb-4"><strong><?php echo $the_query->found_posts; ?> </strong>documenti trovati in ordine alfabetico</p>
+                  <p id="autocomplete-label" class="mb-4"><strong><?php echo $the_query->found_posts; ?> </strong>elementi trovati in ordine alfabetico</p>
                 </div>
                 <div class="row g-4" id="load-more">
                 <?php foreach ($servizi as $servizio) { 
@@ -79,7 +79,6 @@ get_header();
                         <?php get_template_part("template-parts/servizio/card");  ?>
                         </div>  
                     <?php   } ?>
-
                      <?php     
                         if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) >5 ) { ?>
                             <?php get_template_part("template-parts/servizio/card_maggioli"); ?>
