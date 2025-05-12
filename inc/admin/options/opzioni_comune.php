@@ -125,7 +125,46 @@ function dci_register_comune_options(){
         'type'  => 'text_url'
     ));
 
-    // ... Altri campi simili
+       $header_options->add_field( array(
+        'id'    => $prefix . 'link_suap',
+        'name' => __('Link SUAP', 'design_comuni_italia' ),
+        'desc' => __( 'Utilizzare questo campo per inserire il link esterno a SUAP (Lasciare vuoto se interna)'),
+        'type' => 'text_url'
+    ));
+
+    $header_options->add_field( array(
+        'id'    => $prefix . 'link_sue',
+        'name' => __('Link SUE', 'design_comuni_italia' ),
+        'desc' => __( 'Utilizzare questo campo per inserire il link esterno a SUE (Lasciare vuoto se interna)'),
+        'type' => 'text_url'
+    ));
+
+    $header_options->add_field( array(
+        'id'    => $prefix . 'email_principale',
+        'name' => __('E-mail principale', 'design_comuni_italia' ),
+        'desc' => __( 'Utilizzare questo campo per specificare email principale del sito'),
+        'type' => 'text'
+    ));
+    $header_options->add_field( array(
+        'id'    => $prefix . 'prenota_appuntamento',
+        'name' => __('Link Prenota Appuntamento', 'design_comuni_italia' ),
+        'desc' => __( 'Utilizzare questo campo per specificare il link alla pagina prenota appuntamento'),
+        'type' => 'text'
+    ));
+
+
+    
+  $header_options->add_field( array(
+        'id'    => $prefix . 'favicon',
+        'name' => __('Icona', 'design_comuni_italia' ),
+        'desc' => __( 'L\'immagine da utilizzare come icona (favicon). Si raccomanda di caricare un\'immagine in formato svg' , 'design_comuni_italia' ),
+        'type' => 'file',
+        'query_args'   => array(
+        'type' => array(
+            'image/svg',
+        ))
+    ));
+
 
     // Aggiungi il campo per visualizzare il percorso attuale del template
     $header_options->add_field( array(
