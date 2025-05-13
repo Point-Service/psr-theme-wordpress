@@ -353,7 +353,18 @@ function createMenu()
     dci_add_menu_to_location($menu_servizi,'menu-footer-col-2');
 
 
-    
+    //voici menu Novità
+    //placeholder
+    dci_create_custom_menu_item(__( 'Notizie', 'design_comuni_italia'),$menu_novita, '/novita' );
+    dci_create_custom_menu_item(__( 'Comunicati', 'design_comuni_italia'),$menu_novita, '/novita');
+    dci_create_custom_menu_item(__( 'Avvisi', 'design_comuni_italia'),$menu_novita, '/novita');
+    //TERMINI DI TASSONOMIA
+    //dci_create_term_menu_item('news','tipi_notizia',$menu_novita, 'Notizie');
+    //dci_create_term_menu_item('comunicato stampa','tipi_notizia',$menu_novita, 'Comunicati');
+    //dci_create_term_menu_item('avviso','tipi_notizia',$menu_novita, 'Avvisi');
+
+    //assegno menu terza colonna footer (sopra)
+    dci_add_menu_to_location($menu_novita,'menu-footer-col-3-1');
 
 
 
