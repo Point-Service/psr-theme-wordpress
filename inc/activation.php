@@ -396,6 +396,9 @@ function createMenu()
     //assegno menu terza colonna footer (sotto)
     dci_add_menu_to_location($menu_vivere_comune,'menu-footer-col-3-2');
 
+
+    
+
     //voci menu Argomenti (in alto a destra)
     dci_create_term_menu_item('Agricoltura','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
     dci_create_term_menu_item('Tempo libero','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
@@ -414,7 +417,7 @@ function createMenu()
     dci_create_custom_menu_item(__( 'Note legali', 'design_comuni_italia'),$menu_info_2);
     dci_create_custom_menu_item(__( 'Dichiarazione di accessibilità', 'design_comuni_italia'),$menu_info_2);
     //assegno menu a location
-    dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
+//    dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
 
     
 }
