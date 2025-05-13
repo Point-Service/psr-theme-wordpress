@@ -370,6 +370,17 @@ function createMenu()
     dci_add_menu_to_location($menu_novita,'menu-footer-col-3-1');
 
     
+        //voci menu Argomenti (in alto a destra)
+    dci_create_term_menu_item('Agricoltura','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
+    dci_create_term_menu_item('Tempo libero','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
+    dci_create_term_menu_item('Istruzione','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
+    dci_create_page_menu_item(__('Argomenti', 'design_comuni_italia'), $menu_argomenti, __('Tutti gli argomenti','design_comuni_italia'));
+    //assegna menu a posizione topright
+    dci_add_menu_to_location($menu_argomenti,'menu-header-right');
+
+
+
+
 
     //menu info colonna 1
     //dci_create_custom_menu_item(__( 'Leggi le FAQ', 'design_comuni_italia'),$menu_info_1);
@@ -382,14 +393,6 @@ function createMenu()
     dci_add_menu_to_location($menu_info_1,'menu-footer-info-1');
 
 
-
-        //voci menu Argomenti (in alto a destra)
-    dci_create_term_menu_item('Agricoltura','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
-    dci_create_term_menu_item('Tempo libero','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
-    dci_create_term_menu_item('Istruzione','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
-    dci_create_page_menu_item(__('Argomenti', 'design_comuni_italia'), $menu_argomenti, __('Tutti gli argomenti','design_comuni_italia'));
-    //assegna menu a posizione topright
-    dci_add_menu_to_location($menu_argomenti,'menu-header-right');
     
 
     //voci menu Vivere il Comune
