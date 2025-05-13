@@ -150,7 +150,6 @@ function loadSvg(){
         'it-google',
         'it-designers-italia',
         'it-team-digitale',
-        'user_ldap_team',
     ];
     options.forEach(element => jQuery('.' + element).html('<img src= "' + theme_folder +'/assets/svg/' + element + '.svg" alt="'+element+'" style="width:30px; margin-right:10px;">'));
 }
