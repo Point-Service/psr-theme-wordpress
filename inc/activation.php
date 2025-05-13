@@ -356,13 +356,9 @@ function createMenu()
     dci_create_term_menu_item('Istruzione','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
     dci_create_page_menu_item(__('Argomenti', 'design_comuni_italia'), $menu_argomenti, __('Tutti gli argomenti','design_comuni_italia'));
     dci_add_menu_to_location($menu_argomenti,'menu-header-right');
-    
-    dci_create_page_menu_item(__( 'Amministrazione', 'design_comuni_italia'),$menu_main);
-    dci_create_page_menu_item(__( 'Novità', 'design_comuni_italia'),$menu_main);
-    dci_create_page_menu_item(__( 'Servizi', 'design_comuni_italia'),$menu_main);
-    dci_create_page_menu_item(__( 'Vivere il Comune', 'design_comuni_italia'),$menu_main);
-    dci_add_menu_to_location($menu_main,'menu-header-main');
-    
+
+
+
     dci_create_page_menu_item(__( 'Organi di governo', 'design_comuni_italia'),$menu_amministrazione);
     dci_create_page_menu_item(__( 'Aree amministrative', 'design_comuni_italia'),$menu_amministrazione);
     dci_create_page_menu_item(__( 'Uffici', 'design_comuni_italia'),$menu_amministrazione);
@@ -371,6 +367,14 @@ function createMenu()
     dci_create_page_menu_item(__( 'Personale amministrativo', 'design_comuni_italia'),$menu_amministrazione);
     dci_create_page_menu_item(__( 'Documenti e dati', 'design_comuni_italia'),$menu_amministrazione);
     dci_add_menu_to_location($menu_amministrazione,'menu-footer-col-1');
+    
+    
+    dci_create_page_menu_item(__( 'Amministrazione', 'design_comuni_italia'),$menu_main);
+    dci_create_page_menu_item(__( 'Novità', 'design_comuni_italia'),$menu_main);
+    dci_create_page_menu_item(__( 'Servizi', 'design_comuni_italia'),$menu_main);
+    dci_create_page_menu_item(__( 'Vivere il Comune', 'design_comuni_italia'),$menu_main);
+    dci_add_menu_to_location($menu_main,'menu-header-main');
+    
 
     
     dci_create_custom_menu_item(__( 'Luoghi', 'design_comuni_italia'),$menu_vivere_comune, '/vivere-il-comune');
