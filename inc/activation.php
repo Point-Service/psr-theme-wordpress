@@ -4,6 +4,9 @@
  * attivazione del Tema
  */
 function dci_theme_activation() {
+
+    set_time_limit(120);  // Imposta il limite a 120 secondi per questa funzione
+    
     // inserisco i termini di tassonomia
     insertCustomTaxonomyTerms();
 
