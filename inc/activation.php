@@ -387,7 +387,7 @@ function createMenu()
 
 
     
-
+    /**
    
     //menu info colonna 1
     //dci_create_custom_menu_item(__( 'Leggi le FAQ', 'design_comuni_italia'),$menu_info_1);
@@ -407,7 +407,7 @@ function createMenu()
     //assegno menu a location
     dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
 
-    /**
+
     //menu footer bottom (media policy, mappa del sito)
     dci_create_custom_menu_item(__( 'Media policy','design_comuni_italia'),$menu_footer);
     dci_create_custom_menu_item(__( 'Mappa del sito','design_comuni_italia'),$menu_footer);
