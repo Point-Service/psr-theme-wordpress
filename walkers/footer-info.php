@@ -39,7 +39,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 	
                // Sovrascrivi l'URL per "Comunicati" se è vuoto
 	        if ($item->title == 'Comunicati' && $item->url == '/novita') {
-	            $item->url = '/tipi_notizia/comunicati';
+	            $item->url = '/tipi_notizia/comunicato-stampa';
 	        }
 
                // Sovrascrivi l'URL per "Notizie" se è vuoto
@@ -57,32 +57,6 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
                    $item->url = '/page-templates/prenotazioni';
 		}
 
-		
-		// Sovrascrivi l'URL per "Segnalazione disservizio" se è vuoto
-		if ($item->title == 'Segnalazione disservizio' && $item->url == '#') {
-		    $item->url = 'mailto:' . dci_get_option("email_principale");
-		}
-		
-		// Sovrascrivi l'URL per "Amministrazione trasparente" se è vuoto
-		if ($item->title == 'Amministrazione trasparente' && $item->url == '#') {
-		   $item->url =  esc_url(dci_get_option("link_ammtrasparente")) . '" target="_blank" ';
-		}
-
-		// Sovrascrivi l'URL per "Informativa privacy" se è vuoto
-		if ($item->title == 'Informativa privacy' && $item->url == '#') {
-		   $item->url = '/page-templates/privacy';
-		}
-		
-		// Sovrascrivi l'URL per "Dichiarazione di accessibilità" se è vuoto richiama il link sul pannello Admin solo se compilato
-		$accessibilita_url = dci_get_option("dichiarazioneaccessibilita");		
-		if ($item->title == 'Dichiarazione di accessibilità' && $item->url == '#' && !empty($accessibilita_url)) {
-		    $item->url = esc_url(dci_get_option("dichiarazioneaccessibilita")) . '" target="_blank" ';
-		}
-		
-		// Sovrascrivi l'URL per "note-legali" se è vuoto
-		if ($item->title == 'Note legali' && $item->url == '#') {
-		   $item->url = '/page-templates/note-legali';
-		}		
 
 		
 		$data_element = '';
@@ -102,7 +76,11 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 		        if ($item->title == 'Note legali') {
 		            $data_element = "data-element='legal-notes'";
 		        }
+
 		
+		        if ($item->title == 'Informativa privacy') {
+		            $data_element = "data-element='privacy-policy-link'";
+		        }
 
 
 		$output .= '<a href="' . $item->url . '" '.$data_element.'>';
