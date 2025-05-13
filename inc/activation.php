@@ -400,70 +400,81 @@ function createMenu()
  * @return mixed the id of the menu created
  */
 function dci_create_menu($name) {
-
+    // Elimina il menu se esiste già per forzare la ricreazione
     wp_delete_nav_menu($name);
-    $menu_object = wp_get_nav_menu_object($name);
 
+    // Crea nuovo menu se non esiste
+    $menu_object = wp_get_nav_menu_object($name);
     if ($menu_object) {
-        $menu_item = $menu_object->term_id;
+        return $menu_object->term_id;
     } else {
         $menu_id = wp_create_nav_menu($name);
-        $menu = get_term_by('id', $menu_id, 'nav_menu');
+        return $menu_id;
     }
-
-    return $menu_id;
 }
 
-function dci_create_custom_menu_item($item_name,  $menu_id, $link = '#') {
+function dci_create_custom_menu_item($item_name, $menu_id, $link = '#') {
+    if (!$menu_id) return;
+
     wp_update_nav_menu_item($menu_id, 0, array(
-        'menu-item-title' =>$item_name,
-        'menu-item-url' => $link,
-        'menu-item-status' => 'publish',
-        'menu-item-type' => 'custom', // optional
-        'menu-item-attr-title' => $item_name,
+        'menu-item-title'     => $item_name,
+        'menu-item-url'       => esc_url_raw($link),
+        'menu-item-status'    => 'publish',
+        'menu-item-type'      => 'custom',
+        'menu-item-attr-title'=> sanitize_text_field($item_name),
     ));
 }
 
-function dci_create_page_menu_item($page_name, $menu_id ,$label = '') {
-    $page= get_page_by_title( $page_name);
-    $item_label =  ($label !== '') ? $label : $page_name;
+function dci_create_page_menu_item($page_name, $menu_id, $label = '') {
+    if (!$menu_id) return;
+
+    $page = get_page_by_title($page_name);
+    $item_label = ($label !== '') ? $label : $page_name;
+
     if ($page) {
-       wp_update_nav_menu_item($menu_id, 0, array(
-           'menu-item-title' =>$item_label,
-           'menu-item-status' => 'publish',
-           'menu-item-type' => 'post_type',
-           'menu-item-object-id' => $page->ID,
-           'menu-item-object' => 'page',
-           'menu-item-attr-title' => $page->post_name
-       ));
+        wp_update_nav_menu_item($menu_id, 0, array(
+            'menu-item-title'     => $item_label,
+            'menu-item-status'    => 'publish',
+            'menu-item-type'      => 'post_type',
+            'menu-item-object-id' => $page->ID,
+            'menu-item-object'    => 'page',
+            'menu-item-attr-title'=> sanitize_title($page->post_name)
+        ));
     }
 }
 
-function dci_create_archive_menu_item($post_type, $menu_id ,$label = '') {
+function dci_create_archive_menu_item($post_type, $menu_id, $label = '') {
+    if (!$menu_id) return;
 
-    $item_label =  ($label !== '') ? $label : $post_type;
+    $item_label = ($label !== '') ? $label : ucfirst($post_type);
+
     wp_update_nav_menu_item($menu_id, 0, array(
-        'menu-item-title' => $item_label,
-        'menu-item-status' => 'publish',
-        'menu-item-object' => $post_type,
-        'menu-item-type' => 'post_type_archive',
-        'menu-item-attr-title' => $item_label
+        'menu-item-title'     => $item_label,
+        'menu-item-status'    => 'publish',
+        'menu-item-object'    => $post_type,
+        'menu-item-type'      => 'post_type_archive',
+        'menu-item-attr-title'=> sanitize_title($item_label)
     ));
 }
 
 function dci_create_term_menu_item($term_name, $taxonomy, $menu_id, $item_label = '') {
+    if (!$menu_id) return;
+
     $term = get_term_by('name', $term_name, $taxonomy);
-    if ($term){
+    if ($term && !is_wp_error($term)) {
+        $label = ($item_label !== '') ? $item_label : $term->name;
+
         wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-status' => 'publish',
-            'menu-item-type' => 'taxonomy',
+            'menu-item-title'     => $label,
+            'menu-item-status'    => 'publish',
+            'menu-item-type'      => 'taxonomy',
+            'menu-item-object'    => $taxonomy,
             'menu-item-object-id' => $term->term_id,
-            'menu-item-object' => $taxonomy,
-            'menu-item-attr-title' => ($item_label != '') ? $item_label : $term->slug,
-            'menu-item-title' => ($item_label != '') ? $item_label : $term->name
+            'menu-item-attr-title'=> sanitize_title($label)
         ));
     }
 }
+
 
 function dci_add_menu_to_location($menu_id, $location_id) {
     $locations_primary_arr = get_theme_mod('nav_menu_locations');
