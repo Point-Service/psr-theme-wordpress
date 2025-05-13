@@ -320,7 +320,13 @@ function createMenu()
 
     //aggiungo le voci
 
-
+    //Main menu
+    dci_create_page_menu_item(__( 'Amministrazione', 'design_comuni_italia'),$menu_main);
+    dci_create_page_menu_item(__( 'Novità', 'design_comuni_italia'),$menu_main);
+    dci_create_page_menu_item(__( 'Servizi', 'design_comuni_italia'),$menu_main);
+    dci_create_page_menu_item(__( 'Vivere il Comune', 'design_comuni_italia'),$menu_main);
+    //assegno menu a header main location
+    dci_add_menu_to_location($menu_main,'menu-header-main');
 
 
 
