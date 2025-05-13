@@ -4,6 +4,7 @@
  * attivazione del Tema
  */
 function dci_theme_activation() {
+
     // inserisco i termini di tassonomia
     insertCustomTaxonomyTerms();
 
@@ -13,14 +14,17 @@ function dci_theme_activation() {
     //inserisco le descrizioni di default per la tassonomia Categorie di Servizio
     updateCategorieServizio();
 
+    
     //creo le pagine
     insertPages($pagine = dci_get_pagine_obj());
 
+    //creo i menu
+    createMenu();
+    
     //creo i permessi e le capabilites
     createCapabilities();
 
-    //creo i menu
-    createMenu();
+
 
     // controllo se è una prima installazione
     $dci_has_installed = get_option("dci_has_installed");
