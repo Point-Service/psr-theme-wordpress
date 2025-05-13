@@ -343,7 +343,13 @@ function createMenu()
 
 
 
-
+   //menu Servizi
+    // pagine di secondo livello (corrispondenza con termini dei tassonomia)
+    foreach( dci_categorie_servizio_array() as $term_name) {
+        dci_create_term_menu_item($term_name,'categorie_servizio',$menu_servizi);
+    }
+    //assegno menu seconda colonna footer
+    dci_add_menu_to_location($menu_servizi,'menu-footer-col-2');
 
 
 
@@ -384,13 +390,7 @@ function createMenu()
     //assegno menu prima colonna footer
     dci_add_menu_to_location($menu_amministrazione,'menu-footer-col-1');
 
-    //menu Servizi
-    // pagine di secondo livello (corrispondenza con termini dei tassonomia)
-    foreach( dci_categorie_servizio_array() as $term_name) {
-        dci_create_term_menu_item($term_name,'categorie_servizio',$menu_servizi);
-    }
-    //assegno menu seconda colonna footer
-    dci_add_menu_to_location($menu_servizi,'menu-footer-col-2');
+ 
 
     //voici menu Novità
     //placeholder
