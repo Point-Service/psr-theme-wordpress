@@ -317,9 +317,12 @@ function createMenu()
     $menu_info_1 = dci_create_menu('Info 1', 'design_comuni_italia');
     $menu_info_2 = dci_create_menu('Info 2', 'design_comuni_italia');
     //$menu_footer =  dci_create_menu(__('Footer bottom', 'design_comuni_italia'));
+    
 
     //aggiungo le voci
 
+
+    
     //Main menu
     dci_create_page_menu_item(__( 'Amministrazione', 'design_comuni_italia'),$menu_main);
     dci_create_page_menu_item(__( 'Novità', 'design_comuni_italia'),$menu_main);
@@ -360,6 +363,8 @@ function createMenu()
     //assegno menu seconda colonna footer
     dci_add_menu_to_location($menu_servizi,'menu-footer-col-2');
 
+
+    
     //voici menu Novità
     //placeholder
     dci_create_custom_menu_item(__( 'Notizie', 'design_comuni_italia'),$menu_novita, '/novita' );
@@ -369,10 +374,12 @@ function createMenu()
     //dci_create_term_menu_item('news','tipi_notizia',$menu_novita, 'Notizie');
     //dci_create_term_menu_item('comunicato stampa','tipi_notizia',$menu_novita, 'Comunicati');
     //dci_create_term_menu_item('avviso','tipi_notizia',$menu_novita, 'Avvisi');
-
     //assegno menu terza colonna footer (sopra)
     dci_add_menu_to_location($menu_novita,'menu-footer-col-3-1');
 
+
+
+    
     //voci menu Vivere il Comune
     dci_create_custom_menu_item(__( 'Luoghi', 'design_comuni_italia'),$menu_vivere_comune, '/vivere-il-comune');
     dci_create_custom_menu_item(__( 'Eventi', 'design_comuni_italia'),$menu_vivere_comune, '/vivere-il-comune');
@@ -384,15 +391,26 @@ function createMenu()
     dci_add_menu_to_location($menu_vivere_comune,'menu-footer-col-3-2');
 
 
+    //menu info colonna 1
+    //dci_create_custom_menu_item(__( 'Leggi le FAQ', 'design_comuni_italia'),$menu_info_1);
+    //dci_create_archive_menu_item('domanda_frequente', $menu_info_1, __( 'Leggi le FAQ', 'design_comuni_italia'));
+    dci_create_page_menu_item(__('Domande frequenti', 'design_comuni_italia'), $menu_info_1, __('Leggi le FAQ','design_comuni_italia'));
+    dci_create_page_menu_item(__('Prenotazioni', 'design_comuni_italia'), $menu_info_1, __( 'Prenotazione appuntamento', 'design_comuni_italia'));
+    dci_create_custom_menu_item(__( 'Segnalazione disservizio', 'design_comuni_italia'),$menu_info_1);
+    dci_create_page_menu_item(__( 'Assistenza', 'design_comuni_italia'), $menu_info_1, __( 'Richiesta assistenza', 'design_comuni_italia'));
+    //assegno menu a location
+    dci_add_menu_to_location($menu_info_1,'menu-footer-info-1');
+
+    //menu info colonna 2
+    dci_create_custom_menu_item(__( 'Amministrazione trasparente', 'design_comuni_italia'),$menu_info_2);
+    dci_create_custom_menu_item(__( 'Informativa privacy', 'design_comuni_italia'),$menu_info_2);
+    dci_create_custom_menu_item(__( 'Note legali', 'design_comuni_italia'),$menu_info_2);
+    dci_create_custom_menu_item(__( 'Dichiarazione di accessibilità', 'design_comuni_italia'),$menu_info_2);
+    //assegno menu a location
+    dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
 
 
 
-
-
-
-
-
-    
 }
 
 /**
