@@ -321,10 +321,6 @@ function createMenu()
     //aggiungo le voci
 
 
-
-
-
-
     //menu info colonna 1
     //dci_create_custom_menu_item(__( 'Leggi le FAQ', 'design_comuni_italia'),$menu_info_1);
     //dci_create_archive_menu_item('domanda_frequente', $menu_info_1, __( 'Leggi le FAQ', 'design_comuni_italia'));
@@ -333,7 +329,7 @@ function createMenu()
     dci_create_custom_menu_item(__( 'Segnalazione disservizio', 'design_comuni_italia'),$menu_info_1);
     dci_create_page_menu_item(__( 'Assistenza', 'design_comuni_italia'), $menu_info_1, __( 'Richiesta assistenza', 'design_comuni_italia'));
     //assegno menu a location
-    dci_add_menu_to_location($menu_info_1,'menu-footer-info-1');
+ //   dci_add_menu_to_location($menu_info_1,'menu-footer-info-1');
 
 
     //menu info colonna 2
@@ -342,7 +338,7 @@ function createMenu()
     dci_create_custom_menu_item(__( 'Note legali', 'design_comuni_italia'),$menu_info_2);
     dci_create_custom_menu_item(__( 'Dichiarazione di accessibilità', 'design_comuni_italia'),$menu_info_2);
     //assegno menu a location
-    dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
+ //   dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
 
 
 
@@ -370,7 +366,7 @@ function createMenu()
     dci_create_page_menu_item(__( 'Personale amministrativo', 'design_comuni_italia'),$menu_amministrazione);
     dci_create_page_menu_item(__( 'Documenti e dati', 'design_comuni_italia'),$menu_amministrazione);
     //assegno menu prima colonna footer
-    dci_add_menu_to_location($menu_amministrazione,'menu-footer-col-1');
+ //   dci_add_menu_to_location($menu_amministrazione,'menu-footer-col-1');
 
     
 
@@ -380,7 +376,7 @@ function createMenu()
         dci_create_term_menu_item($term_name,'categorie_servizio',$menu_servizi);
     }
     //assegno menu seconda colonna footer
-    dci_add_menu_to_location($menu_servizi,'menu-footer-col-2');
+ //   dci_add_menu_to_location($menu_servizi,'menu-footer-col-2');
 
 
     
@@ -408,7 +404,7 @@ function createMenu()
     //dci_create_page_menu_item(__( 'Eventi', 'design_comuni_italia'), $menu_vivere_comune);
 
     //assegno menu terza colonna footer (sotto)
-  //  dci_add_menu_to_location($menu_vivere_comune,'menu-footer-col-3-2');
+   // dci_add_menu_to_location($menu_vivere_comune,'menu-footer-col-3-2');
 
 
 
@@ -420,7 +416,7 @@ function createMenu()
     dci_create_term_menu_item('Istruzione','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
     dci_create_page_menu_item(__('Argomenti', 'design_comuni_italia'), $menu_argomenti, __('Tutti gli argomenti','design_comuni_italia'));
     //assegna menu a posizione topright
-    dci_add_menu_to_location($menu_argomenti,'menu-header-right');
+   // dci_add_menu_to_location($menu_argomenti,'menu-header-right');
 
 
 
