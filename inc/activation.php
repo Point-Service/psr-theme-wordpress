@@ -116,6 +116,11 @@ function insertCustomTaxonomyTerms() {
     $tipi_progetto_array = dci_tipi_progetto_array();
     recursionInsertTaxonomy($tipi_progetto_array, 'tipi_progetto');
 
+    // Tipi di documenti commissario
+
+    $tipi_commissario_array = dci_tipi_commissario_array();
+    recursionInsertTaxonomy($tipi_commissario_array, 'tipi_commissario');
+
     /**
      * Tipi di Evento
      */
