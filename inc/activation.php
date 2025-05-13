@@ -306,7 +306,7 @@ function createCapabilities() {
  */
 function createMenu()
 {
-      //creo i menu
+    //creo i menu
     $menu_main = dci_create_menu(__('Main Menu', "design_comuni_italia"));
     $menu_amministrazione = dci_create_menu(__('Amministrazione', "design_comuni_italia"));
     $menu_novita = dci_create_menu(__('Novità', "design_comuni_italia"));
@@ -328,16 +328,6 @@ function createMenu()
     //assegno menu a header main location
     dci_add_menu_to_location($menu_main,'menu-header-main');
 
-
-    //voci menu Argomenti (in alto a destra)
-    dci_create_term_menu_item('Agricoltura','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
-    dci_create_term_menu_item('Tempo libero','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
-    dci_create_term_menu_item('Istruzione','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
-    dci_create_page_menu_item(__('Argomenti', 'design_comuni_italia'), $menu_argomenti, __('Tutti gli argomenti','design_comuni_italia'));
-    //assegna menu a posizione topright
-    dci_add_menu_to_location($menu_argomenti,'menu-header-right');
-
-
     //menu Amministrazione
     dci_create_page_menu_item(__( 'Organi di governo', 'design_comuni_italia'),$menu_amministrazione);
     dci_create_page_menu_item(__( 'Aree amministrative', 'design_comuni_italia'),$menu_amministrazione);
@@ -349,8 +339,6 @@ function createMenu()
     //assegno menu prima colonna footer
     dci_add_menu_to_location($menu_amministrazione,'menu-footer-col-1');
 
-
-
     //menu Servizi
     // pagine di secondo livello (corrispondenza con termini dei tassonomia)
     foreach( dci_categorie_servizio_array() as $term_name) {
@@ -358,7 +346,6 @@ function createMenu()
     }
     //assegno menu seconda colonna footer
     dci_add_menu_to_location($menu_servizi,'menu-footer-col-2');
-
 
     //voici menu Novità
     //placeholder
@@ -373,8 +360,6 @@ function createMenu()
     //assegno menu terza colonna footer (sopra)
     dci_add_menu_to_location($menu_novita,'menu-footer-col-3-1');
 
-
-
     //voci menu Vivere il Comune
     //placeholder
     dci_create_custom_menu_item(__( 'Luoghi', 'design_comuni_italia'),$menu_vivere_comune, '/vivere-il-comune');
@@ -386,8 +371,13 @@ function createMenu()
     //assegno menu terza colonna footer (sotto)
     dci_add_menu_to_location($menu_vivere_comune,'menu-footer-col-3-2');
 
-
-
+    //voci menu Argomenti (in alto a destra)
+    dci_create_term_menu_item('Agricoltura','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
+    dci_create_term_menu_item('Tempo libero','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
+    dci_create_term_menu_item('Istruzione','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
+    dci_create_page_menu_item(__('Argomenti', 'design_comuni_italia'), $menu_argomenti, __('Tutti gli argomenti','design_comuni_italia'));
+    //assegna menu a posizione topright
+    dci_add_menu_to_location($menu_argomenti,'menu-header-right');
 
     
 }
