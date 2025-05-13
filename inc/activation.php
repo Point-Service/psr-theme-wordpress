@@ -382,7 +382,7 @@ function createMenu()
     //assegno menu prima colonna footer
     dci_add_menu_to_location($menu_amministrazione,'menu-footer-col-1');
 
-
+    
     //voci menu Vivere il Comune
     dci_create_custom_menu_item(__( 'Luoghi', 'design_comuni_italia'),$menu_vivere_comune, '/vivere-il-comune');
     dci_create_custom_menu_item(__( 'Eventi', 'design_comuni_italia'),$menu_vivere_comune, '/vivere-il-comune');
@@ -392,10 +392,8 @@ function createMenu()
 
     //assegno menu terza colonna footer (sotto)
     dci_add_menu_to_location($menu_vivere_comune,'menu-footer-col-3-2');
+
     
- 
-
-
     //voici menu Novità
     //placeholder
     dci_create_custom_menu_item(__( 'Notizie', 'design_comuni_italia'),$menu_novita, '/novita' );
