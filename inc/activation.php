@@ -391,7 +391,6 @@ function createMenu()
 
 
 
-
     
 
     //menu info colonna 2
