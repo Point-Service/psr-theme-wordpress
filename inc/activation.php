@@ -331,7 +331,16 @@ function createMenu()
 
 
 
-
+    //menu Amministrazione
+    dci_create_page_menu_item(__( 'Organi di governo', 'design_comuni_italia'),$menu_amministrazione);
+    dci_create_page_menu_item(__( 'Aree amministrative', 'design_comuni_italia'),$menu_amministrazione);
+    dci_create_page_menu_item(__( 'Uffici', 'design_comuni_italia'),$menu_amministrazione);
+    dci_create_page_menu_item(__( 'Enti e fondazioni', 'design_comuni_italia'),$menu_amministrazione);
+    dci_create_page_menu_item(__( 'Politici', 'design_comuni_italia'),$menu_amministrazione);
+    dci_create_page_menu_item(__( 'Personale amministrativo', 'design_comuni_italia'),$menu_amministrazione);
+    dci_create_page_menu_item(__( 'Documenti e dati', 'design_comuni_italia'),$menu_amministrazione);
+    //assegno menu prima colonna footer
+    dci_add_menu_to_location($menu_amministrazione,'menu-footer-col-1');
 
 
 
