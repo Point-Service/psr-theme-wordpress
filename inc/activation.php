@@ -399,8 +399,8 @@ function createMenu()
     //assegno menu a location
 
     
-    dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
-   dci_add_menu_to_location($menu_info_1,'menu-footer-info-1');
+  //  dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
+ //   dci_add_menu_to_location($menu_info_1,'menu-footer-info-1');
 
 
     
