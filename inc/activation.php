@@ -329,15 +329,8 @@ function createMenu()
     dci_add_menu_to_location($menu_main,'menu-header-main');
 
 
-    //voci menu Argomenti (in alto a destra)
-    dci_create_term_menu_item('Agricoltura','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
-    dci_create_term_menu_item('Tempo libero','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
-    dci_create_term_menu_item('Istruzione','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
-    dci_create_page_menu_item(__('Argomenti', 'design_comuni_italia'), $menu_argomenti, __('Tutti gli argomenti','design_comuni_italia'));
-    //assegna menu a posizione topright
-    dci_add_menu_to_location($menu_argomenti,'menu-header-right');
 
-    
+
     //menu Amministrazione
     dci_create_page_menu_item(__( 'Organi di governo', 'design_comuni_italia'),$menu_amministrazione);
     dci_create_page_menu_item(__( 'Aree amministrative', 'design_comuni_italia'),$menu_amministrazione);
@@ -349,6 +342,8 @@ function createMenu()
     //assegno menu prima colonna footer
     dci_add_menu_to_location($menu_amministrazione,'menu-footer-col-1');
 
+
+
     //menu Servizi
     // pagine di secondo livello (corrispondenza con termini dei tassonomia)
     foreach( dci_categorie_servizio_array() as $term_name) {
@@ -356,6 +351,7 @@ function createMenu()
     }
     //assegno menu seconda colonna footer
     dci_add_menu_to_location($menu_servizi,'menu-footer-col-2');
+
 
     //voici menu Novità
     //placeholder
@@ -370,6 +366,8 @@ function createMenu()
     //assegno menu terza colonna footer (sopra)
     dci_add_menu_to_location($menu_novita,'menu-footer-col-3-1');
 
+
+
     //voci menu Vivere il Comune
     //placeholder
     dci_create_custom_menu_item(__( 'Luoghi', 'design_comuni_italia'),$menu_vivere_comune, '/vivere-il-comune');
@@ -381,17 +379,19 @@ function createMenu()
     //assegno menu terza colonna footer (sotto)
     dci_add_menu_to_location($menu_vivere_comune,'menu-footer-col-3-2');
 
+    //voci menu Argomenti (in alto a destra)
+    dci_create_term_menu_item('Agricoltura','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
+    dci_create_term_menu_item('Tempo libero','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
+    dci_create_term_menu_item('Istruzione','argomenti',$menu_argomenti); //voce tassonomia argomenti come placeholder
+    dci_create_page_menu_item(__('Argomenti', 'design_comuni_italia'), $menu_argomenti, __('Tutti gli argomenti','design_comuni_italia'));
+    //assegna menu a posizione topright
+    dci_add_menu_to_location($menu_argomenti,'menu-header-right');
+
+
+
 
 
     
- /**
-   
-    //menu footer bottom (media policy, mappa del sito)
-    dci_create_custom_menu_item(__( 'Media policy','design_comuni_italia'),$menu_footer);
-    dci_create_custom_menu_item(__( 'Mappa del sito','design_comuni_italia'),$menu_footer);
-    //assegno menu a posizione topright
-    dci_add_menu_to_location($menu_footer,'menu-footer-bottom');
-    */
 }
 
 /**
@@ -400,81 +400,70 @@ function createMenu()
  * @return mixed the id of the menu created
  */
 function dci_create_menu($name) {
-    // Elimina il menu se esiste già per forzare la ricreazione
-    wp_delete_nav_menu($name);
 
-    // Crea nuovo menu se non esiste
+    wp_delete_nav_menu($name);
     $menu_object = wp_get_nav_menu_object($name);
+
     if ($menu_object) {
-        return $menu_object->term_id;
+        $menu_item = $menu_object->term_id;
     } else {
         $menu_id = wp_create_nav_menu($name);
-        return $menu_id;
+        $menu = get_term_by('id', $menu_id, 'nav_menu');
     }
+
+    return $menu_id;
 }
 
-function dci_create_custom_menu_item($item_name, $menu_id, $link = '#') {
-    if (!$menu_id) return;
-
+function dci_create_custom_menu_item($item_name,  $menu_id, $link = '#') {
     wp_update_nav_menu_item($menu_id, 0, array(
-        'menu-item-title'     => $item_name,
-        'menu-item-url'       => esc_url_raw($link),
-        'menu-item-status'    => 'publish',
-        'menu-item-type'      => 'custom',
-        'menu-item-attr-title'=> sanitize_text_field($item_name),
+        'menu-item-title' =>$item_name,
+        'menu-item-url' => $link,
+        'menu-item-status' => 'publish',
+        'menu-item-type' => 'custom', // optional
+        'menu-item-attr-title' => $item_name,
     ));
 }
 
-function dci_create_page_menu_item($page_name, $menu_id, $label = '') {
-    if (!$menu_id) return;
-
-    $page = get_page_by_title($page_name);
-    $item_label = ($label !== '') ? $label : $page_name;
-
+function dci_create_page_menu_item($page_name, $menu_id ,$label = '') {
+    $page= get_page_by_title( $page_name);
+    $item_label =  ($label !== '') ? $label : $page_name;
     if ($page) {
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'     => $item_label,
-            'menu-item-status'    => 'publish',
-            'menu-item-type'      => 'post_type',
-            'menu-item-object-id' => $page->ID,
-            'menu-item-object'    => 'page',
-            'menu-item-attr-title'=> sanitize_title($page->post_name)
-        ));
+       wp_update_nav_menu_item($menu_id, 0, array(
+           'menu-item-title' =>$item_label,
+           'menu-item-status' => 'publish',
+           'menu-item-type' => 'post_type',
+           'menu-item-object-id' => $page->ID,
+           'menu-item-object' => 'page',
+           'menu-item-attr-title' => $page->post_name
+       ));
     }
 }
 
-function dci_create_archive_menu_item($post_type, $menu_id, $label = '') {
-    if (!$menu_id) return;
+function dci_create_archive_menu_item($post_type, $menu_id ,$label = '') {
 
-    $item_label = ($label !== '') ? $label : ucfirst($post_type);
-
+    $item_label =  ($label !== '') ? $label : $post_type;
     wp_update_nav_menu_item($menu_id, 0, array(
-        'menu-item-title'     => $item_label,
-        'menu-item-status'    => 'publish',
-        'menu-item-object'    => $post_type,
-        'menu-item-type'      => 'post_type_archive',
-        'menu-item-attr-title'=> sanitize_title($item_label)
+        'menu-item-title' => $item_label,
+        'menu-item-status' => 'publish',
+        'menu-item-object' => $post_type,
+        'menu-item-type' => 'post_type_archive',
+        'menu-item-attr-title' => $item_label
     ));
 }
 
 function dci_create_term_menu_item($term_name, $taxonomy, $menu_id, $item_label = '') {
-    if (!$menu_id) return;
-
     $term = get_term_by('name', $term_name, $taxonomy);
-    if ($term && !is_wp_error($term)) {
-        $label = ($item_label !== '') ? $item_label : $term->name;
-
+    if ($term){
         wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'     => $label,
-            'menu-item-status'    => 'publish',
-            'menu-item-type'      => 'taxonomy',
-            'menu-item-object'    => $taxonomy,
+            'menu-item-status' => 'publish',
+            'menu-item-type' => 'taxonomy',
             'menu-item-object-id' => $term->term_id,
-            'menu-item-attr-title'=> sanitize_title($label)
+            'menu-item-object' => $taxonomy,
+            'menu-item-attr-title' => ($item_label != '') ? $item_label : $term->slug,
+            'menu-item-title' => ($item_label != '') ? $item_label : $term->name
         ));
     }
 }
-
 
 function dci_add_menu_to_location($menu_id, $location_id) {
     $locations_primary_arr = get_theme_mod('nav_menu_locations');
