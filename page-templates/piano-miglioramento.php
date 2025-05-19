@@ -55,7 +55,7 @@ get_header();
 <li>migliorare il tempo di risposta del server potenziando le risorse e implementando delle politiche di caching lato server.</li>
 </ul>
 </td>
-<td style="width: 33.3333%; height: 176px;">primo semestre 2025</td>
+<td style="width: 33.3333%; height: 176px;">secondo semestre 2025</td>
 </tr>
 <tr style="height: 80px;">
 <td style="width: 33.3333%; height: 80px;"><strong>Cumulative Layout Shift</strong></td>
@@ -64,7 +64,7 @@ get_header();
 <li>definire per ogni immagine le dimensioni della stessa, per evitare spostamenti di layout in fase di caricamento.</li>
 </ul>
 </td>
-<td style="width: 33.3333%; height: 80px;">primo semestre 2025</td>
+<td style="width: 33.3333%; height: 80px;">secondo semestre 2025</td>
 </tr>
 <tr style="height: 152px;">
 <td style="width: 33.3333%; height: 152px;"><strong>Speed Index</strong></td>
@@ -74,7 +74,7 @@ get_header();
 <li>migliorare il tempo di risposta del server potenziando le risorse e implementando delle politiche di caching lato server.</li>
 </ul>
 </td>
-<td style="width: 33.3333%; height: 152px;">primo semestre 2025</td>
+<td style="width: 33.3333%; height: 152px;">secondo semestre 2025</td>
 </tr>
 </tbody>
 </table></div>
