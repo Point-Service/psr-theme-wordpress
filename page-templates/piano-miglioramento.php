@@ -97,7 +97,7 @@ get_header();
                             <strong>Problema e azioni che verranno intraprese per risolverlo:</strong>
                             Le risorse JS verranno divise e compresse per poter essere caricate un pezzo alla volta, all'occorrenza.
                         </p>
-                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                  
                     </dd>
 
                     <dt>Cumulative Layout Shift (CLS)</dt>
@@ -114,7 +114,7 @@ get_header();
                             <strong>Problema e azioni che verranno intraprese per risolverlo:</strong>
                             Alcune immagini non presentano gli attributi width e height. Verranno aggiunti tali attributi.
                         </p>
-                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                   
                     </dd>
 
                     <dt>Speed Index</dt>
