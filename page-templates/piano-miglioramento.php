@@ -18,72 +18,130 @@ get_header();
 
 <main>
   <div class="container">
-    <div class="row mt-lg-50">
+    <div class="col-12">
+            <h1 class="text-secondary">    Piano di miglioramento del sito e dei servizi
+            </h1>
+            <article class="richtext-wrapper lora">
+                <p>
+                    Nell'ottica di migliorare l'esperienza utente del seguente portale istituzionale,
+                    verranno nei prossimi mesi intraprese delle azioni e applicate delle modifiche volte a velocizzare il caricamento del sito e dei servizi
+                    per rispettare il Criterio "C.SE.4.1 - Velocità e tempi di risposta".                </p>
+                <p>
+                    In particolare, facendo riferimento al report
+                    prodotto da <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener noreferrer">Lighthouse
+                        PageSpeed Insights</a>,
+                    la performance del sito può essere incrementata nei punti seguenti:
+                </p>
+                <dl>
+                    <dt>First Contentful Paint (FCP)</dt>
+                    <dd>
+                        <p>
+                            <strong>Cos'è?</strong>
+                            È una metrica incentrata sull'utente per misurare la
+                            velocità di caricamento percepita perché segna il primo punto nella sequenza temporale di
+                            caricamento
+                            della pagina in cui l'utente può vedere qualsiasi cosa sullo schermo: un FCP veloce aiuta a
+                            rassicurare l'utente che sta succedendo qualcosa.
+                        </p>
+                        <p>
+                            <strong>Problema e azioni che verranno intraprese per risolverlo:</strong>
+                            Alcune risorse JS e CSS bloccano la prima visualizzazione della pagina. Verrà implementato il
+                            caricamento asincrono delle risorse più pesanti, e caricare solamente le risorse necessarie alla
+                            corretta visualizzazione del contenuto. Verrà inoltre implementato il caricamento lento per le
+                            immagini.
+                        </p>
+                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                    </dd>
 
- <div class="container py-4">
-            <h4>Metriche oggetto del piano di miglioramento</h4>
-<div class="table-responsive"><table class="table  table-striped table-bordered table-hover"  class="Table Table--withBorder" style="border-collapse: collapse; width: 100%; height: 608px;">
-<thead>
-<tr style="background-color: #0059b3; color: #ffffff;">
-<th style="width: 33.3333%; text-align: center; height: 24px;"><strong>Metrica</strong></th>
-<th style="width: 33.3333%; text-align: center; height: 24px;"><strong>Azioni future di miglioramento</strong></th>
-<th style="width: 33.3333%; text-align: center; height: 24px;"><strong>Tempistiche previste</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr style="height: 176px;">
-<td style="width: 33.3333%; height: 176px;"><strong>First Contentful Paint</strong></td>
-<td style="width: 33.3333%; height: 176px;">
-<div id="accordion-panel-1" class="Accordion-panel fr-accordion__panel js-fr-accordion__panel" tabindex="0" role="tabpanel" aria-labelledby="accordion-header-1" aria-hidden="false" data-focus-mouse="false">
-<div class="Prose u-padding-top-xs">
-<ul>
-<li>ottimizzazione e minimizzazione di fogli di stile CSS e codice JS per ridurre le risorse caricate;</li>
-<li>generale alleggerimento del peso delle pagine ottimizzando i contenuti;</li>
-<li>configurazione del server web per abilitare la compressione delle risposte.</li>
-</ul>
-</div>
-</div>
-</td>
-<td style="width: 33.3333%; height: 176px;">primo semestre 2025</td>
-</tr>
-<tr style="height: 176px;">
-<td style="width: 33.3333%; height: 176px;"><strong>Largest Content Paint</strong></td>
-<td style="width: 33.3333%; height: 176px;">
-<ul>
-<li>ottimizzazione delle immagini utilizzando tipi di file più leggeri e moderni (passare a webp, ad esempio);</li>
-<li>eventuale utilizzo di CDN rapide per contenuti statici;</li>
-<li>migliorare il tempo di risposta del server potenziando le risorse e implementando delle politiche di caching lato server.</li>
-</ul>
-</td>
-<td style="width: 33.3333%; height: 176px;">secondo semestre 2025</td>
-</tr>
-<tr style="height: 80px;">
-<td style="width: 33.3333%; height: 80px;"><strong>Cumulative Layout Shift</strong></td>
-<td style="width: 33.3333%; height: 80px;">
-<ul>
-<li>definire per ogni immagine le dimensioni della stessa, per evitare spostamenti di layout in fase di caricamento.</li>
-</ul>
-</td>
-<td style="width: 33.3333%; height: 80px;">secondo semestre 2025</td>
-</tr>
-<tr style="height: 152px;">
-<td style="width: 33.3333%; height: 152px;"><strong>Speed Index</strong></td>
-<td style="width: 33.3333%; height: 152px;">
-<ul>
-<li>ridurre / rimuove risorse bloccanti del render (ottimizzare caricamenti di js e CSS);</li>
-<li>migliorare il tempo di risposta del server potenziando le risorse e implementando delle politiche di caching lato server.</li>
-</ul>
-</td>
-<td style="width: 33.3333%; height: 152px;">secondo semestre 2025</td>
-</tr>
-</tbody>
-</table></div>
-        </div>
+                    <dt>Largest Contentful Paint (LCP)</dt>
+                    <dd>
+                        <p>
+                            <strong>Cos'è?</strong>
+                            È una metrica Core Web Vital per misurare la
+                            velocità di caricamento percepita perché segna il punto nella sequenza temporale di caricamento
+                            della pagina in cui il contenuto principale della pagina è stato probabilmente caricato: un LCP
+                            veloce aiuta a rassicurare l'utente che la pagina è utile.
+                        </p>
+                        <p>
+                            <strong>Problema e azioni che verranno intraprese per risolverlo:</strong>
+                            Alcune risorse JS e CSS bloccano la prima visualizzazione della pagina. Verrà implementato il
+                            caricamento asincrono delle risorse più pesanti, e caricare solamente le risorse necessarie alla
+                            corretta visualizzazione del contenuto. Verrà inoltre implementato il caricamento lento per le
+                            immagini.
+                        </p>
+                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                    </dd>
 
-      
-            </div>
+                    <dt>Total Blocking Time (TBT)</dt>
+                    <dd>
+                        <p>
+                            <strong>Cos'è?</strong>
+                            È una metrica di laboratorio per misurare la reattività
+                            del carico perché aiuta a quantificare la gravità di quanto non interattiva è una pagina prima
+                            che
+                            diventi interattiva in modo affidabile: un TBT basso aiuta a garantire che la pagina sia
+                            utilizzabile.
+                        </p>
+                        <p>
+                            <strong>Problema e azioni che verranno intraprese per risolverlo:</strong>
+                            Le risorse JS verranno divise per poter essere caricate un pezzo alla volta, all'occorrenza.
+                        </p>
+                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                    </dd>
+
+                    <dt>Time To Interactive (TTI)</dt>
+                    <dd>
+                        <p>
+                            <strong>Cos'è?</strong>
+                            È una metrica che indica quanto tempo la pagina impiega per diventare pienamente interattiva,
+                            ossia quando
+                            è presente il contenuto (FCP) e la pagina risponde alle interazioni dell'utente.
+                        </p>
+                        <p>
+                            <strong>Problema e azioni che verranno intraprese per risolverlo:</strong>
+                            Le risorse JS verranno divise e compresse per poter essere caricate un pezzo alla volta, all'occorrenza.
+                        </p>
+                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                    </dd>
+
+                    <dt>Cumulative Layout Shift (CLS)</dt>
+                    <dd>
+                        <p>
+                            <strong>Cos'è?</strong>
+                            È una metrica Core Web Vital incentrata sull'utente per misurare la
+                            stabilità visiva perché aiuta a quantificare la frequenza con
+                            cui gli utenti sperimentano cambiamenti di layout imprevisti: un CLS basso aiuta a garantire che
+                            la
+                            pagina sia piacevole.
+                        </p>
+                        <p>
+                            <strong>Problema e azioni che verranno intraprese per risolverlo:</strong>
+                            Alcune immagini non presentano gli attributi width e height. Verranno aggiunti tali attributi.
+                        </p>
+                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                    </dd>
+
+                    <dt>Speed Index</dt>
+                    <dd>
+                        <p>
+                            <strong>Cos'è?</strong>
+                            Misura la velocità con cui il contenuto viene visualizzato visivamente durante il caricamento
+                            della
+                            pagina.
+                        </p>
+                        <p>
+                            <strong>Problema e azioni che verranno intraprese per risolverlo:</strong>
+                            Verrà effettuato un refactor del backend per poter ottimizzare l'esecuzione del codice e di
+                            conseguenza il caricamento delle pagine web. Verrà, infine, ricreata l'infrastruttura server,
+                            incrementandone le risorse e ottimizzandone l'uso, per poter eseguire l'applicazione e i servizi
+                            associati in modo più
+                            performante.
+                        </p>
+                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                    </dd>
+                </dl>
+            </article>
         </div>
-    </div>
 </div>
 
 
