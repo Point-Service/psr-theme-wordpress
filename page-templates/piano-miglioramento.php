@@ -15,7 +15,6 @@ get_header();
 			the_post();
 			?>
 			<?php get_template_part("template-parts/hero/hero"); ?>
-
 <main>
   <div class="container">
     <div class="col-12">
