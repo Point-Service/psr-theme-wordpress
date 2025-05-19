@@ -136,6 +136,7 @@ get_header();
            
                     </dd>
                 </dl>
+		    <p><strong>Il piano di miglioramento prevede di recepire, entro il 2025, i consigli riportati da Google Lighthouse maggiormente impattanti sul punteggio di ciascuna metrica. L'obiettivo è di conseguire stabilmente un punteggio superiore a 50 nella compilazione dei tipi di istanze più frequenti.</strong></p>
             </article>
         </div>
 </div>
