@@ -268,6 +268,7 @@ function dci_get_admin_menu_order() {
         'edit.php?post_type=appuntamento',
         'edit.php?post_type=richiesta_assistenza',
         'edit.php?post_type=segnala_disservizio',
+        'edit.php?post_type=piano-miglioramento',
         'edit.php?post_type=domanda_frequente',
         'edit.php?post_type=rating',
         'edit.php?post_type=page',
