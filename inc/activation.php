@@ -398,6 +398,7 @@ function createMenu()
     dci_create_custom_menu_item(__( 'Informativa privacy', 'design_comuni_italia'),$menu_info_2);
     dci_create_custom_menu_item(__( 'Note legali', 'design_comuni_italia'),$menu_info_2);
     dci_create_custom_menu_item(__( 'Dichiarazione di accessibilità', 'design_comuni_italia'),$menu_info_2);
+    dci_create_custom_menu_item(__( 'Piano di miglioramento del sito', 'design_comuni_italia'),$menu_info_2);
     //assegno menu a location
     dci_add_menu_to_location($menu_info_2,'menu-footer-info-2');
 
