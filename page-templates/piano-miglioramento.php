@@ -50,7 +50,7 @@ get_header();
                             corretta visualizzazione del contenuto. Verrà inoltre implementato il caricamento lento per le
                             immagini.
                         </p>
-                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                 
                     </dd>
 
                     <dt>Largest Contentful Paint (LCP)</dt>
@@ -69,7 +69,7 @@ get_header();
                             corretta visualizzazione del contenuto. Verrà inoltre implementato il caricamento lento per le
                             immagini.
                         </p>
-                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+             
                     </dd>
 
                     <dt>Total Blocking Time (TBT)</dt>
@@ -86,7 +86,7 @@ get_header();
                             <strong>Problema e azioni che verranno intraprese per risolverlo:</strong>
                             Le risorse JS verranno divise per poter essere caricate un pezzo alla volta, all'occorrenza.
                         </p>
-                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+                    
                     </dd>
 
                     <dt>Time To Interactive (TTI)</dt>
@@ -137,7 +137,7 @@ get_header();
                             associati in modo più
                             performante.
                         </p>
-                        <p><strong>Tempistiche di realizzazione:</strong> entro il 31/12/2025</p>
+           
                     </dd>
                 </dl>
             </article>
