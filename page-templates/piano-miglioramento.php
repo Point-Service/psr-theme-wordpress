@@ -18,8 +18,6 @@ get_header();
 <main>
   <div class="container">
     <div class="col-12">
-            <h1 class="text-secondary">    Piano di miglioramento del sito e dei servizi
-            </h1>
             <article class="richtext-wrapper lora">
                 <p>
                     Nell'ottica di migliorare l'esperienza utente del seguente portale istituzionale,
@@ -67,8 +65,7 @@ get_header();
                             caricamento asincrono delle risorse più pesanti, e caricare solamente le risorse necessarie alla
                             corretta visualizzazione del contenuto. Verrà inoltre implementato il caricamento lento per le
                             immagini.
-                        </p>
-             
+                        </p>             
                     </dd>
 
                     <dt>Total Blocking Time (TBT)</dt>
