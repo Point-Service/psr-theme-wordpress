@@ -76,7 +76,7 @@ global $the_query, $load_posts, $load_card_type;
                     foreach ($posts as $post) {get_template_part('template-parts/aree-amministrative/cards-list');$count++;
                 }?>
             </div>
-            <?php if($count>6){
+            <?php if($count>=$load_posts){
                 get_template_part("template-parts/search/more-results");
             } ?>
         </div>
