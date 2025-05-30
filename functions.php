@@ -327,3 +327,33 @@ function my_custom_one_time_function() {
     }
 }
 add_action('init', 'my_custom_one_time_function');
+
+
+
+function personalizza_menu_aspetto() {
+    global $submenu;
+
+    if (isset($submenu['themes.php'])) {
+        // Estrai tutte le voci esistenti
+        $voci = $submenu['themes.php'];
+
+        // Trova e rimuovi "Ricarica i dati della Trasparenza"
+        foreach ($voci as $key => $voce) {
+            if (strpos($voce[2], 'reload-trasparenza-theme-options') !== false) {
+                $ricarica = $voce;
+                unset($voci[$key]);
+                break;
+            }
+        }
+
+        // Riaggiungi "Ricarica i dati della Trasparenza" in fondo
+        if (isset($ricarica)) {
+            $voci[] = $ricarica;
+        }
+
+        // Sovrascrivi il menu con il nuovo ordine
+        $submenu['themes.php'] = $voci;
+    }
+}
+add_action('admin_menu', 'personalizza_menu_aspetto', 999);
+
