@@ -328,22 +328,3 @@ function my_custom_one_time_function() {
 }
 add_action('init', 'my_custom_one_time_function');
 
-
-
-function personalizza_menu_aspetto() {
-    // 1. Rimuovi la voce
-    remove_submenu_page(
-        'themes.php', // menu padre: "Aspetto"
-        'reload-trasparenza-theme-options' // slug esatto
-    );
-
-    // 2. Riaggiungila in fondo
-    add_submenu_page(
-        'themes.php',
-        __('Ricarica i dati della Trasparenza', 'textdomain'),
-        __('Ricarica i dati della Trasparenza', 'textdomain'),
-        'manage_options',
-        'reload-trasparenza-theme-options'
-    );
-}
-add_action( 'admin_menu', 'personalizza_menu_aspetto', PHP_INT_MAX );
