@@ -45,6 +45,20 @@ function dci_reload_trasparenza_option_page() {
 }*/
 //add_action('admin_menu', 'dci_add_trasparenza_theme_page');
 
+add_action(
+    'admin_menu',
+    function () {
+        add_theme_page(
+            'Ricarica i dati della Trasparenza',
+            'Ricarica i dati della Trasparenza',
+            'manage_options',
+            'reload-trasparenza-theme-options',
+            'dci_reload_trasparenza_option_page',
+            PHP_INT_MAX // questo assicura che finisca in fondo
+        );
+    },
+    PHP_INT_MAX
+);
 
 // ===========================
 // Struttura delle tassonomie
