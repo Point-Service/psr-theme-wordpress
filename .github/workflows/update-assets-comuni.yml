@@ -36,4 +36,3 @@ jobs:
         with:
           title: "chore(deps): update assets"
           branch: feature/update-assets
- 
