@@ -14,7 +14,7 @@ function dci_trasparenza_activation() {
         update_option('default_comment_status', '');
     }
 }
-//add_action('after_switch_theme', 'dci_trasparenza_activation');
+add_action('after_switch_theme', 'dci_trasparenza_activation');
 //dci_reload_trasparenza_option_page('themes.php', 'dci_trasparenza_activation');
 add_action('admin_menu', 'dci_trasparenza_activation');
 
