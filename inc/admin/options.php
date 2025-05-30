@@ -30,6 +30,8 @@ function dci_register_main_options_metabox() {
 
     dci_register_pagina_amministrazione_options();
 
+    dci_register_pagina_trasparenza_options();
+
     dci_register_pagina_novita_options();
 
     dci_register_pagina_servizi_options();
