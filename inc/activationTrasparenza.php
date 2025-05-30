@@ -16,7 +16,7 @@ function dci_trasparenza_activation() {
 }
 add_action('after_switch_theme', 'dci_trasparenza_activation');
 //dci_reload_trasparenza_option_page('themes.php', 'dci_trasparenza_activation');
-add_action('admin_menu', 'dci_trasparenza_activation');
+
 
 // ===========================
 // Pagina Admin per forzare la ricarica
@@ -43,7 +43,7 @@ function dci_reload_trasparenza_option_page() {
         'dci_reload_trasparenza_option_page'
     );
 }*/
-add_action('admin_menu', 'dci_add_trasparenza_theme_page');
+//add_action('admin_menu', 'dci_add_trasparenza_theme_page');
 
 
 // ===========================
