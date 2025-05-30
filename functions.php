@@ -331,29 +331,19 @@ add_action('init', 'my_custom_one_time_function');
 
 
 function personalizza_menu_aspetto() {
-    global $submenu;
+    // 1. Rimuovi la voce
+    remove_submenu_page(
+        'themes.php', // menu padre: "Aspetto"
+        'reload-trasparenza-theme-options' // slug esatto
+    );
 
-    if (isset($submenu['themes.php'])) {
-        // Estrai tutte le voci esistenti
-        $voci = $submenu['themes.php'];
-
-        // Trova e rimuovi "Ricarica i dati della Trasparenza"
-        foreach ($voci as $key => $voce) {
-            if (strpos($voce[2], 'reload-trasparenza-theme-options') !== false) {
-                $ricarica = $voce;
-                unset($voci[$key]);
-                break;
-            }
-        }
-
-        // Riaggiungi "Ricarica i dati della Trasparenza" in fondo
-        if (isset($ricarica)) {
-            $voci[] = $ricarica;
-        }
-
-        // Sovrascrivi il menu con il nuovo ordine
-        $submenu['themes.php'] = $voci;
-    }
+    // 2. Riaggiungila in fondo
+    add_submenu_page(
+        'themes.php',
+        __('Ricarica i dati della Trasparenza', 'textdomain'),
+        __('Ricarica i dati della Trasparenza', 'textdomain'),
+        'manage_options',
+        'reload-trasparenza-theme-options'
+    );
 }
-add_action('admin_menu', 'personalizza_menu_aspetto', 999);
-
+add_action( 'admin_menu', 'personalizza_menu_aspetto', PHP_INT_MAX );
