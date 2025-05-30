@@ -170,7 +170,7 @@
           "description": "Elenco dei progetti PNRR del comune",
           "template_name": "progetti",
           "children": {}
-        },    
+        },
     "Amministrazione Trasparente": {
           "title": "Amministrazione Trasparente",
           "slug": "amministrazione-trasparente",
