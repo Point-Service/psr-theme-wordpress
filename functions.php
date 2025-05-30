@@ -90,7 +90,7 @@ require get_template_directory() . '/walkers/footer-info.php';
 /**
  *  Caricamento dati Trasparenza
  */
-require_once get_template_directory() . '/inc/activationTrasparenza.php';
+// require_once get_template_directory() . '/inc/activationTrasparenza.php';
 
 
 /**
