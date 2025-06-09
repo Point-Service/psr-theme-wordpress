@@ -217,7 +217,7 @@ function dci_add_documento_pubblico_metaboxes()
         update_post_meta($post_id, $key_new, $new_files);
 
         // Rimuoviamo il campo vecchio
-        delete_post_meta($post_id, $key_old);
+     '   delete_post_meta($post_id, $key_old);
     }
 });
 
@@ -233,7 +233,7 @@ function dci_add_documento_pubblico_metaboxes()
             'id' => $prefix . 'file_documento',
             'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
             'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
-            'type' => 'file',
+            'type' => 'file_list',
             'preview_size' => array(100, 100),
             'text' => array(
                 'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
