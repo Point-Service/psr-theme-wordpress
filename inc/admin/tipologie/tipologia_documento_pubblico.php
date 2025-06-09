@@ -447,26 +447,24 @@ function dci_documento_pubblico_admin_script() {
         wp_enqueue_script( 'luogo-admin-script', get_template_directory_uri() . '/inc/admin-js/documento_pubblico.js' );
 }
 
-
 add_filter('cmb2_override_meta_value', function($value, $object_id, $args, $field) {
 
      $prefix = '_dci_documento_pubblico_';
 
-    // Applichiamo la logica solo al nuovo campo file_list
     if ($field->args('id') === $prefix . 'file_documento') {
 
-        // Se il nuovo campo è ancora vuoto
+        // Se il nuovo campo (file_list) è vuoto o contiene un valore non valido
         if (empty($value)) {
-            // Recupera il valore del campo vecchio (file singolo, URL)
-            $old_file_url = get_post_meta($object_id, $prefix . 'file_documento_deprecated', true);
+            // Recupera il vecchio valore, che potrebbe essere un URL singolo
+            $raw_value = get_post_meta($object_id, $prefix . 'file_documento', true);
 
-            if (!empty($old_file_url)) {
-                // Estrai il nome del file dalla URL
-                $filename = basename($old_file_url);
+            // Se il valore è una stringa (vecchio formato)
+            if (is_string($raw_value) && filter_var($raw_value, FILTER_VALIDATE_URL)) {
+                $filename = basename($raw_value);
 
-                // Ritorna nel formato richiesto da file_list
+                // Ritorna in formato file_list
                 return array(
-                    $old_file_url => $filename
+                    $raw_value => $filename
                 );
             }
         }
@@ -474,12 +472,6 @@ add_filter('cmb2_override_meta_value', function($value, $object_id, $args, $fiel
 
     return $value;
 }, 10, 4);
-
-
-
-
-
-
 
 
 
