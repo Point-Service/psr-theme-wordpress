@@ -178,18 +178,14 @@ function dci_add_documento_pubblico_metaboxes()
         'priority' => 'high',
     ));
 
-
+   /**
     $cmb_documento->add_field(array(
         'id' => $prefix . 'url_documento',
         'name' => __('Documento: URL', 'design_comuni_italia'),
         'desc' => __('Link al documento vero e proprio', 'design_comuni_italia'),
         'type' => 'text_url'
     ));
-    
-
-    
-
-
+    */
 
   add_action('cmb2_after_init', function () {
     if (!is_admin()) return;
@@ -235,8 +231,8 @@ function dci_add_documento_pubblico_metaboxes()
             $group_vals[] = ['url_documento' => $url_val];
             update_post_meta($post_id, $url_group_key, $group_vals);
         }
-    }
-});
+     }
+    });
 
 
     // Gruppo per URL multipli
