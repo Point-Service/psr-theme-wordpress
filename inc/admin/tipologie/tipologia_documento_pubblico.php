@@ -188,7 +188,7 @@ function dci_add_documento_pubblico_metaboxes()
 
 
         $cmb_documento->add_field(array(
-        'id' => $prefix . 'file_documento',
+        'id' => $prefix . 'file_documento_old',
         'name' => __('Documento: Carica file', 'design_comuni_italia'),
         'desc' => __('Se non è presente un link a risorsa esterna, bisogna ricordarsi di allegare il documento vero e proprio, in un formato scaricabile e stampabile da parte dell\'utente', 'design_comuni_italia'),
         'type' => 'file',
