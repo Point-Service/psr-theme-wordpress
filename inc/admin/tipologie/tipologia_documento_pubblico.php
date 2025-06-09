@@ -247,7 +247,7 @@ function dci_add_documento_pubblico_metaboxes()
                 'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
                 'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
                 'sortable'      => true,
-                'closed'        => true,
+                'closed'        => false,
             ),
         ));
 
@@ -275,14 +275,7 @@ function dci_add_documento_pubblico_metaboxes()
         'type' => 'checkbox',
     ));
 
-    add_filter('cmb2_override__dci_documento_pubblico_url_documento_group_meta_value', function($value, $object_id, $args, $field) {
-    if (empty($value) || !is_array($value)) {
-        return [];
-    }
-    return $value;
-}, 10, 4);
-
-      
+   
     
     
     // CAMPO NUOVO - MULTIPLI
