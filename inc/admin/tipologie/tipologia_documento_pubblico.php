@@ -186,7 +186,7 @@ function dci_add_documento_pubblico_metaboxes()
        
         $cmb_documento->add_field(array(
             'id' => $prefix . 'file_documento',
-            'name' => __('Documenti: Carica uno o più file', 'design_comuni_italia'),
+            'name' => __(' Vecchio   Documenti: Carica uno o più file', 'design_comuni_italia'),
             'desc' => __('Puoi caricare più file. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
             'type' => 'file',
             'preview_size' => array(100, 100),
