@@ -189,21 +189,20 @@ function dci_add_documento_pubblico_metaboxes()
         add_filter( 'cmb2_override_file_documento_deprecated_meta_value', 'carica_valore_deprecato_da_file_documento', 10, 4 );
         function carica_valore_deprecato_da_file_documento( $override_value, $object_id, $args, $field ) {
             // Recupera il valore vecchio dal campo 'file_documento'
-            $valore_vecchio = get_post_meta( $object_id, '_prefix_file_documento', true );
+            $valore_vecchio = get_post_meta( $object_id, '_dci_documento_pubblico_', true );
             return $valore_vecchio;
         }
       
         // CAMPO VECCHIO - PER COMPATIBILITÀ
-        $cmb_documento->add_field(array(
-            'id' => $prefix . 'file_documento_deprecated',
-            'name' => __('[OBSOLETO] Documento singolo.', 'design_comuni_italia'),
-            'desc' => __('Non usare più. È visibile solo per compatibilità con documenti caricati prima.', 'design_comuni_italia'),
-            'type' => 'file',
-            'attributes' => array(
-                'readonly' => 'readonly', // opzionale: per impedire modifiche
-            ),
-            'default' => get_post_meta(get_the_ID(), $prefix . 'file_documento', true),
-        ));
+            $cmb_documento->add_field(array(
+                'id' => $prefix . 'file_documento_deprecated',
+                'name' => __('[OBSOLETO] Documento singolo.', 'design_comuni_italia'),
+                'desc' => __('Valore storico. Non modificare.', 'design_comuni_italia'),
+                'type' => 'file',
+                'attributes' => array(
+                    'readonly' => 'readonly',
+                ),
+            ));
     
     // CAMPO NUOVO - MULTIPLI
         $cmb_documento->add_field(array(
