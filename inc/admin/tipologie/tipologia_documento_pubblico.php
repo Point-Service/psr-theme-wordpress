@@ -448,24 +448,25 @@ function dci_documento_pubblico_admin_script() {
 }
 
 
-
 add_filter('cmb2_override_meta_value', function($value, $object_id, $args, $field) {
 
+     $prefix = '_dci_documento_pubblico_';
 
-    // Ci interessa solo il campo nuovo
+    // Applichiamo la logica solo al nuovo campo file_list
     if ($field->args('id') === $prefix . 'file_documento') {
-        
-        // Se il campo nuovo è vuoto o non valorizzato
-        if (empty($value)) {
-            // Prendo il valore del campo vecchio
-            $old_value = get_post_meta($object_id, $prefix . 'file_documento_deprecated', true);
 
-            // Se esiste un file vecchio
-            if (!empty($old_value)) {
-                // Per file_list serve un array di array con ['ID' => attachment_id]
-                // Se $old_value è un ID, ritorno array con un solo file
+        // Se il nuovo campo è ancora vuoto
+        if (empty($value)) {
+            // Recupera il valore del campo vecchio (file singolo, URL)
+            $old_file_url = get_post_meta($object_id, $prefix . 'file_documento_deprecated', true);
+
+            if (!empty($old_file_url)) {
+                // Estrai il nome del file dalla URL
+                $filename = basename($old_file_url);
+
+                // Ritorna nel formato richiesto da file_list
                 return array(
-                    array('ID' => $old_value)
+                    $old_file_url => $filename
                 );
             }
         }
@@ -473,6 +474,7 @@ add_filter('cmb2_override_meta_value', function($value, $object_id, $args, $fiel
 
     return $value;
 }, 10, 4);
+
 
 
 
