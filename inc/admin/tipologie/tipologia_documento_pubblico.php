@@ -180,18 +180,17 @@ function dci_add_documento_pubblico_metaboxes()
 
 
 
-
-    
-        $cmb_documento->add_field(array(
-            'id' => $prefix . 'url_documento',
-            'name' => __('Documento: URL', 'design_comuni_italia'),
-            'desc' => __('Link al documento vero e proprio', 'design_comuni_italia'),
-            'type' => 'text_url',
-            'attributes' => array(
-                'class' => 'hidden-field',  // aggiungi una classe custom
-            ),
-        ));
-
+                
+            $cmb_documento->add_field(array(
+                'id' => $prefix . 'url_documento',
+                'name' => __('Documento: URL', 'design_comuni_italia'),
+                'desc' => __('Link al documento vero e proprio', 'design_comuni_italia'),
+                'type' => 'text_url',
+                'show_on_cb' => function() {
+                    return false; // campo sempre nascosto
+                },
+            ));
+            
 
 
     
