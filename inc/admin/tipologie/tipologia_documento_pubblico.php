@@ -168,49 +168,47 @@ function dci_add_documento_pubblico_metaboxes()
         ),
     ));
 
+    //DOCUMENTO
+    
+    $cmb_documento = new_cmb2_box(array(
+        'id' => $prefix . 'box_documento',
+        'title' => __('Documento *', 'design_comuni_italia'),
+        'object_types' => array('documento_pubblico'),
+        'context' => 'normal',
+        'priority' => 'high',
+    ));
 
-
-
-// DOCUMENTI MULTIPLI
-$cmb_documento = new_cmb2_box(array(
-    'id'            => $prefix . 'box_documento',
-    'title'         => __('Documenti *', 'design_comuni_italia'),
-    'object_types'  => array('documento_pubblico'),
-    'context'       => 'normal',
-    'priority'      => 'high',
-));
-
-$group_field_id = $cmb_documento->add_field(array(
-    'id'          => $prefix . 'documenti_multipli',
-    'type'        => 'group',
-    'description' => __('Aggiungi uno o più documenti (URL o file)', 'design_comuni_italia'),
-    'options'     => array(
-        'group_title'   => __('Documento {#}', 'design_comuni_italia'),
-        'add_button'    => __('Aggiungi documento', 'design_comuni_italia'),
-        'remove_button' => __('Rimuovi documento', 'design_comuni_italia'),
-        'sortable'      => true,
+    $cmb_documento->add_field(array(
+        'id' => $prefix . 'url_documento',
+        'name' => __('Documento: URL', 'design_comuni_italia'),
+        'desc' => __('Link al documento vero e proprio', 'design_comuni_italia'),
+        'type' => 'text_url'
+    ));
+// CAMPO VECCHIO - PER COMPATIBILITÀ
+$cmb_documento->add_field(array(
+    'id' => $prefix . 'file_documento_deprecated',
+    'name' => __('[OBSOLETO] Documento singolo', 'design_comuni_italia'),
+    'desc' => __('Non usare più. Usare il campo sottostante per caricare più documenti.', 'design_comuni_italia'),
+    'type' => 'file',
+    'attributes' => array(
+        'disabled' => false // puoi metterlo true se vuoi renderlo non modificabile
     ),
 ));
 
-$cmb_documento->add_group_field($group_field_id, array(
-    'name' => __('URL del documento', 'design_comuni_italia'),
-    'id'   => 'url',
-    'type' => 'text_url',
-    'desc' => __('Inserisci un URL esterno, se disponibile', 'design_comuni_italia'),
-));
-
-$cmb_documento->add_group_field($group_field_id, array(
-    'name' => __('File del documento', 'design_comuni_italia'),
-    'id'   => 'file',
-    'type' => 'file',
+// CAMPO NUOVO - MULTIPLI
+$cmb_documento->add_field(array(
+    'id' => $prefix . 'file_documento',
+    'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
+    'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
+    'type' => 'file_list',
+    'preview_size' => array(100, 100),
     'text' => array(
-        'add_upload_files_text' => __('Carica file', 'design_comuni_italia'),
+        'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
+        'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
+        'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
         'remove_text' => __('Rimuovi', 'design_comuni_italia'),
     ),
-    'desc' => __('Carica il file se non hai inserito un URL', 'design_comuni_italia'),
 ));
-
-
 
 
 
@@ -447,38 +445,6 @@ function dci_documento_pubblico_admin_script() {
     if( 'documento_pubblico' == $post_type )
         wp_enqueue_script( 'luogo-admin-script', get_template_directory_uri() . '/inc/admin-js/documento_pubblico.js' );
 }
-
-
-
-function migra_documenti_vecchi_in_multipli() {
-    $args = array(
-        'post_type' => 'documento_pubblico',
-        'post_status' => 'any',
-        'numberposts' => -1,
-    );
-    $posts = get_posts($args);
-
-    foreach ($posts as $post) {
-        $old_url  = get_post_meta($post->ID, '_prefix_url_documento', true);
-        $old_file = get_post_meta($post->ID, '_prefix_file_documento', true);
-        $new_data = array();
-
-        if (!empty($old_url)) {
-            $new_data[] = array('url' => $old_url, 'file' => '');
-        }
-
-        if (!empty($old_file)) {
-            $new_data[] = array('url' => '', 'file' => $old_file);
-        }
-
-        if (!empty($new_data)) {
-            update_post_meta($post->ID, '_prefix_documenti_multipli', $new_data);
-        }
-    }
-}
-add_action('init', 'migra_documenti_vecchi_in_multipli');
-
-
 
 /**
  * Valorizzo il post content in base al contenuto dei campi custom
