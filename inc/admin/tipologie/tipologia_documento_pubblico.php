@@ -461,6 +461,50 @@ function dci_documento_pubblico_admin_script() {
         wp_enqueue_script( 'luogo-admin-script', get_template_directory_uri() . '/inc/admin-js/documento_pubblico.js' );
 }
 
+
+
+
+
+
+
+function migra_documenti_vecchi_in_multipli() {
+    $args = array(
+        'post_type' => 'documento_pubblico',
+        'post_status' => 'any',
+        'numberposts' => -1,
+    );
+    $posts = get_posts($args);
+
+    foreach ($posts as $post) {
+        $old_url  = get_post_meta($post->ID, '_prefix_url_documento', true);
+        $old_file = get_post_meta($post->ID, '_prefix_file_documento', true);
+        $new_data = array();
+
+        if (!empty($old_url)) {
+            $new_data[] = array('url' => $old_url, 'file' => '');
+        }
+
+        if (!empty($old_file)) {
+            $new_data[] = array('url' => '', 'file' => $old_file);
+        }
+
+        if (!empty($new_data)) {
+            update_post_meta($post->ID, '_prefix_documenti_multipli', $new_data);
+        }
+    }
+}
+add_action('init', 'migra_documenti_vecchi_in_multipli');
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Valorizzo il post content in base al contenuto dei campi custom
  * @param $data
