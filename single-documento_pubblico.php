@@ -277,8 +277,9 @@ get_header();
 
 
                                                                     
-                           // Mostra il link URL esterno (se presente)
-                                if ($url_documento) { ?>
+                       
+                            // Mostra il link URL esterno singolo (se presente)
+                            if (!empty($url_documento)) { ?>
                                     <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
                                         <svg class="icon" aria-hidden="true">
                                             <use xlink:href="#it-clip"></use>
