@@ -222,34 +222,30 @@ add_action('cmb2_after_init', function() {
     
 
 add_filter('cmb2_render_file_list', function($output, $field_args, $field) {
-    // Prendiamo i file caricati
     $files = $field->value;
+
     if (empty($files) || !is_array($files)) {
         return $output;
     }
 
     $new_output = '<ul class="cmb-file-list">';
     foreach ($files as $file) {
-        // Se $file è stringa (vecchio formato), trasformiamolo in array con url solo per sicurezza
         if (is_string($file)) {
             $file_url = esc_url($file);
             $file_name = basename($file_url);
         } elseif (is_array($file)) {
-            // Caso standard: array con 'url' e 'name'
             $file_url = isset($file['url']) ? esc_url($file['url']) : '';
             $file_name = isset($file['name']) ? esc_html($file['name']) : basename($file_url);
         } else {
             continue;
         }
 
-        // Rileviamo tipo file
         $file_type = wp_check_filetype($file_url);
 
-        // Se è immagine, mostra preview, altrimenti icona generica
         if (strpos($file_type['type'], 'image/') === 0) {
             $preview = '<img src="' . $file_url . '" style="max-width:100px; max-height:100px;" alt="' . $file_name . '"/>';
         } else {
-            // Icona generica (puoi cambiare il link con un’altra icona se vuoi)
+            // Icona generica da mostrare immediatamente appena apri la pagina
             $icon_url = 'https://cdn-icons-png.flaticon.com/512/109/109612.png';
             $preview = '<img src="' . $icon_url . '" style="max-width:100px; max-height:100px;" alt="Icona file"/>';
         }
@@ -259,7 +255,6 @@ add_filter('cmb2_render_file_list', function($output, $field_args, $field) {
     $new_output .= '</ul>';
 
     return $new_output;
-
 }, 10, 3);
 
 
