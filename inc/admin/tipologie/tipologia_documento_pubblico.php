@@ -186,6 +186,69 @@ function dci_add_documento_pubblico_metaboxes()
     ));
     
 
+    add_action('cmb2_after_init', function() {
+    if (!is_admin()) return;
+
+    $prefix = '_dci_documento_pubblico_';
+    $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
+    if (!$post_id) return;
+
+    // Vecchio campo singolo URL
+    $key_old_url = $prefix . 'url_documento';
+    // Nuovo campo gruppo multiplo URL
+    $key_new_url_group = $prefix . 'url_documento_group';
+
+    // Vecchio campo file multipli e nuovo (come da tuo codice)
+    $key_old_files = $prefix . 'file_documento_old';
+    $key_new_files = $prefix . 'file_documento';
+
+    // --- MIGRAZIONE URL ---
+
+    $old_url = get_post_meta($post_id, $key_old_url, true);
+    $new_url_group = get_post_meta($post_id, $key_new_url_group, true);
+
+    if (!empty($old_url)) {
+        if (!is_array($new_url_group)) $new_url_group = [];
+
+        // Se il vecchio url NON è già presente nel gruppo (evitiamo doppioni)
+        $exists = false;
+        foreach ($new_url_group as $item) {
+            if (isset($item['url_documento']) && $item['url_documento'] === $old_url) {
+                $exists = true;
+                break;
+            }
+        }
+
+        if (!$exists) {
+            $new_url_group[] = ['url_documento' => $old_url];
+        }
+
+        update_post_meta($post_id, $key_new_url_group, $new_url_group);
+        delete_post_meta($post_id, $key_old_url);
+    }
+
+    // --- MIGRAZIONE FILES (il tuo codice esistente) ---
+
+    $old_files = get_post_meta($post_id, $key_old_files, true);
+    $new_files = get_post_meta($post_id, $key_new_files, true);
+
+    if (!empty($old_files)) {
+        if (!is_array($new_files)) $new_files = [];
+
+        $attachment_id = attachment_url_to_postid($old_files);
+        if ($attachment_id) {
+            $new_files[$attachment_id] = $old_files;
+        } else {
+            $new_files[] = $old_files;
+        }
+
+        update_post_meta($post_id, $key_new_files, $new_files);
+        delete_post_meta($post_id, $key_old_files);
+    }
+});
+
+    
+// Migrazione vecchi campi in nuovi, tutto in un unico hook
 add_action('cmb2_after_init', function() {
     if (!is_admin()) return;
 
@@ -193,29 +256,51 @@ add_action('cmb2_after_init', function() {
     $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
     if (!$post_id) return;
 
-    $key_new = $prefix . 'file_documento';
-    $key_old = $prefix . 'file_documento_old';
+    // MIGRAZIONE URL SINGOLO => GRUPPO URL MULTIPLI
+    $key_old_url = $prefix . 'url_documento';
+    $key_new_url_group = $prefix . 'url_documento_group';
 
-    $old_url = get_post_meta($post_id, $key_old, true);
-    $new_files = get_post_meta($post_id, $key_new, true);
+    $old_url = get_post_meta($post_id, $key_old_url, true);
+    $new_url_group = get_post_meta($post_id, $key_new_url_group, true);
 
     if (!empty($old_url)) {
-        if (!is_array($new_files)) $new_files = [];
+        if (!is_array($new_url_group)) $new_url_group = [];
 
-        // Otteniamo l'attachment ID se possibile
-        $attachment_id = attachment_url_to_postid($old_url);
-        if ($attachment_id) {
-            $new_files[$attachment_id] = $old_url;
-        } else {
-            // fallback se non troviamo ID
-            $new_files[] = $old_url;
+        $exists = false;
+        foreach ($new_url_group as $item) {
+            if (isset($item['url_documento']) && $item['url_documento'] === $old_url) {
+                $exists = true;
+                break;
+            }
         }
 
-        // Salviamo nel campo nuovo
-        update_post_meta($post_id, $key_new, $new_files);
+        if (!$exists) {
+            $new_url_group[] = ['url_documento' => $old_url];
+        }
 
-        // Rimuoviamo il campo vecchio
-        delete_post_meta($post_id, $key_old);
+        update_post_meta($post_id, $key_new_url_group, $new_url_group);
+        delete_post_meta($post_id, $key_old_url);
+    }
+
+    // MIGRAZIONE FILES VECCHIO => NUOVO
+    $key_old_files = $prefix . 'file_documento_old';
+    $key_new_files = $prefix . 'file_documento';
+
+    $old_files = get_post_meta($post_id, $key_old_files, true);
+    $new_files = get_post_meta($post_id, $key_new_files, true);
+
+    if (!empty($old_files)) {
+        if (!is_array($new_files)) $new_files = [];
+
+        $attachment_id = attachment_url_to_postid($old_files);
+        if ($attachment_id) {
+            $new_files[$attachment_id] = $old_files;
+        } else {
+            $new_files[] = $old_files;
+        }
+
+        update_post_meta($post_id, $key_new_files, $new_files);
+        delete_post_meta($post_id, $key_old_files);
     }
 });
 
@@ -226,41 +311,42 @@ add_action('cmb2_after_init', function() {
     
     // CAMPO NUOVO - MULTIPLI
 
-$cmb_documento->add_field(array(
-    'id'          => $prefix . 'url_documento_group',
-    'type'        => 'group',
-    'description' => __('Aggiungi uno o più link al documento', 'design_comuni_italia'),
-    'options'     => array(
-        'group_title'   => __('Link Documento {#}', 'design_comuni_italia'), // Titolo dinamico gruppo
-        'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
-        'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
-        'sortable'      => true,
-        'closed'        => true,
-    ),
-));
 
-// Dentro il gruppo aggiungi il campo URL singolo
-$cmb_documento->add_group_field($prefix . 'url_documento_group', array(
-    'name' => __('URL Documento', 'design_comuni_italia'),
-    'id'   => 'url_documento',
-    'type' => 'text_url',
-    'desc' => __('Inserisci il link al documento', 'design_comuni_italia'),
-));
+    $group_field_id = $cmb_documento->add_field(array(
+        'id'          => $prefix . 'url_documento_group',
+        'type'        => 'group',
+        'description' => __('Aggiungi uno o più link al documento', 'design_comuni_italia'),
+        'options'     => array(
+            'group_title'   => __('Link Documento {#}', 'design_comuni_italia'),
+            'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
+            'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
+            'sortable'      => true,
+            'closed'        => true,
+        ),
+    ));
 
-// Campo multiplo file caricati (file_list)
-$cmb_documento->add_field(array(
-    'id' => $prefix . 'file_documento',
-    'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
-    'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
-    'type' => 'file_list',
-    'preview_size' => array(100, 100),
-    'text' => array(
-        'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
-        'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
-        'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
-        'remove_text' => __('Rimuovi', 'design_comuni_italia'),
-    ),
-));
+    $cmb_documento->add_group_field($group_field_id, array(
+        'name' => __('URL Documento', 'design_comuni_italia'),
+        'id'   => 'url_documento',
+        'type' => 'text_url',
+        'desc' => __('Inserisci il link al documento', 'design_comuni_italia'),
+    ));
+
+    // File multipli
+    $cmb_documento->add_field(array(
+        'id'           => $prefix . 'file_documento',
+        'name'         => __('Documenti: Carica più file', 'design_comuni_italia'),
+        'desc'         => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
+        'type'         => 'file_list',
+        'preview_size' => array(100, 100),
+        'text'         => array(
+            'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
+            'remove_image_text'     => __('Rimuovi', 'design_comuni_italia'),
+            'file_text'             => __('Allegato: %{file}', 'design_comuni_italia'),
+            'remove_text'           => __('Rimuovi', 'design_comuni_italia'),
+        ),
+    ));
+});
 
 
 
