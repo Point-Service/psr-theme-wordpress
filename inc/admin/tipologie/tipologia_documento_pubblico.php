@@ -215,7 +215,7 @@ add_action('cmb2_after_init', function() {
         update_post_meta($post_id, $key_new, $new_files);
 
         // Rimuoviamo il campo vecchio
-       // delete_post_meta($post_id, $key_old);
+        delete_post_meta($post_id, $key_old);
     }
 });
 
@@ -234,7 +234,7 @@ add_action('cmb2_after_init', function() {
             'text' => array(
                 'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
                 'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
-                'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
+               // 'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
                 'remove_text' => __('Rimuovi', 'design_comuni_italia'),
             ),
         ));
