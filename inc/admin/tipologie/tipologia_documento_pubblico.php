@@ -346,7 +346,7 @@ add_action('cmb2_after_init', function() {
             'remove_text'           => __('Rimuovi', 'design_comuni_italia'),
         ),
     ));
-});
+
 
 
 
