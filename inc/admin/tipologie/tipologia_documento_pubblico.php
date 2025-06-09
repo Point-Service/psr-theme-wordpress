@@ -185,16 +185,7 @@ function dci_add_documento_pubblico_metaboxes()
         'type' => 'text_url'
     ));
     
-    // CAMPO VECCHIO - PER COMPATIBILITÀ
-    $cmb_documento->add_field(array(
-        'id' => $prefix . 'file_documento',
-        'name' => __('[OBSOLETO] Documento singolo.', 'design_comuni_italia'),
-        'desc' => __('Non usare più. Usare il campo sottostante per caricare più documenti.', 'design_comuni_italia'),
-        'type' => 'file',
-        'attributes' => array(
-     
-        ),
-    ));
+
     
     // CAMPO NUOVO - MULTIPLI
     $cmb_documento->add_field(array(
