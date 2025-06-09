@@ -300,16 +300,11 @@ get_header();
 
                                     <?php
                                     // Mostra i link multipli (url_documento_group)
-                                    if (!empty($url_documento_group) && is_array($url_documento_group)) {
+                                   if (!empty($url_documento_group) && is_array($url_documento_group)) {
                                         foreach ($url_documento_group as $link_item) {
-                                            // Supporta sia ACF repeater che array associativi
-                                            $url = '';
-                                            $titolo = '';
-                                    
-                                            if (is_array($link_item)) {
-                                                $url = !empty($link_item['url_documento']) ? esc_url($link_item['url_documento']) : '';
-                                                $titolo = !empty($link_item['titolo']) ? esc_html($link_item['titolo']) : basename($url);
-                                            }
+                                            $url = !empty($link_item['url_documento']) ? esc_url($link_item['url_documento']) : '';
+                                            $nome = !empty($link_item['titolo']) ? esc_html($link_item['titolo']) : basename($url);
+                                            $target_blank = !empty($link_item['target_blank']) ? ' target="_blank" rel="noopener noreferrer"' : '';
                                     
                                             if ($url) {
                                                 ?>
@@ -319,10 +314,10 @@ get_header();
                                                     </svg>
                                                     <div class="card-body">
                                                         <h5 class="card-title">
-                                                            <a class="text-decoration-none" href="<?= $url ?>"
-                                                               aria-label="Scarica il documento <?= $titolo ?>"
-                                                               title="Scarica il documento <?= $titolo ?>">
-                                                                <?= $titolo ?>
+                                                            <a class="text-decoration-none" href="<?= $url ?>"<?= $target_blank ?>
+                                                               aria-label="Scarica il documento <?= $nome ?>"
+                                                               title="Scarica il documento <?= $nome ?>">
+                                                                <?= $nome ?>
                                                             </a>
                                                         </h5>
                                                     </div>
@@ -331,6 +326,8 @@ get_header();
                                             }
                                         }
                                     }
+
+           
                                     ?>
 
                                 
