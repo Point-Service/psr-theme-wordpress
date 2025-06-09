@@ -180,12 +180,12 @@ function dci_add_documento_pubblico_metaboxes()
 
 
 
+
     $cmb_documento->add_field(array(
         'id' => $prefix . 'url_documento',
         'name' => __('Documento: URL', 'design_comuni_italia'),
         'desc' => __('Link al documento vero e proprio', 'design_comuni_italia'),
-        'type' => 'text_url',
-        ),
+        'type' => 'text_url'
     ));
             
 
