@@ -178,49 +178,81 @@ function dci_add_documento_pubblico_metaboxes()
         'priority' => 'high',
     ));
 
-    $cmb_documento->add_field(array(
-        'id' => $prefix . 'url_documento',
-        'name' => __('Documento: URL', 'design_comuni_italia'),
-        'desc' => __('Link al documento vero e proprio', 'design_comuni_italia'),
-        'type' => 'text_url'
-    ));
+
+
     
 
 
 
-        add_action('cmb2_after_init', function() {
-            if (!is_admin()) return;
-        
-            $prefix = '_dci_documento_pubblico_';
-            $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
-            if (!$post_id) return;
-        
-            $key = $prefix . 'file_documento';
-        
-            $value = get_post_meta($post_id, $key, true);
-        
-            // Se è una stringa singola (vecchio formato)
-            if (!empty($value) && is_string($value)) {
-                $new_files = [];
-        
-                // Ottieni ID allegato se possibile
-                $attachment_id = attachment_url_to_postid($value);
-                if ($attachment_id) {
-                    $new_files[$attachment_id] = $value;
-                } else {
-                    // fallback generico
-                    $new_files[] = $value;
-                }
-        
-                // Salva nel nuovo formato (array)
-                update_post_meta($post_id, $key, $new_files);
+  add_action('cmb2_after_init', function () {
+    if (!is_admin()) return;
+
+    $prefix = '_dci_documento_pubblico_';
+    $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
+    if (!$post_id) return;
+
+    // Migrate file_documento (da singolo a file_list)
+    $file_key = $prefix . 'file_documento';
+    $file_val = get_post_meta($post_id, $file_key, true);
+    if (!empty($file_val) && is_string($file_val)) {
+        $new_files = [];
+        $attachment_id = attachment_url_to_postid($file_val);
+        if ($attachment_id) {
+            $new_files[$attachment_id] = $file_val;
+        } else {
+            $new_files[] = $file_val;
+        }
+        update_post_meta($post_id, $file_key, $new_files);
+    }
+
+    // Migrate url_documento (da singolo a gruppo url_documento_group)
+    $url_key = $prefix . 'url_documento';
+    $url_group_key = $prefix . 'url_documento_group';
+
+    $url_val = get_post_meta($post_id, $url_key, true);
+    $group_vals = get_post_meta($post_id, $url_group_key, true);
+
+    if (!empty($url_val)) {
+        if (!is_array($group_vals)) $group_vals = [];
+
+        // Evita duplicati
+        $exists = false;
+        foreach ($group_vals as $item) {
+            if (isset($item['url_documento']) && $item['url_documento'] === $url_val) {
+                $exists = true;
+                break;
             }
-        });
-        
+        }
+
+        if (!$exists) {
+            $group_vals[] = ['url_documento' => $url_val];
+            update_post_meta($post_id, $url_group_key, $group_vals);
+        }
+    }
+});
+
+
+            // Gruppo per URL multipli
+            $cmb_documento->add_field(array(
+                'id'          => $prefix . 'url_documento_group',
+                'type'        => 'group',
+                'description' => __('Aggiungi uno o più link al documento', 'design_comuni_italia'),
+                'options'     => array(
+                    'group_title'   => __('Link Documento {#}', 'design_comuni_italia'),
+                    'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
+                    'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
+                    'sortable'      => true,
+                    'closed'        => true,
+                ),
+            ));
             
-
-
-
+            // Campo interno al gruppo: URL singolo
+            $cmb_documento->add_group_field($prefix . 'url_documento_group', array(
+                'name' => __('URL Documento', 'design_comuni_italia'),
+                'id'   => 'url_documento',
+                'type' => 'text_url',
+                'desc' => __('Inserisci il link al documento', 'design_comuni_italia'),
+            ));
 
 
     
