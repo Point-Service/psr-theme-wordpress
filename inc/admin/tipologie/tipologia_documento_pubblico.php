@@ -451,7 +451,6 @@ function dci_documento_pubblico_admin_script() {
 
 add_filter('cmb2_override_meta_value', function($value, $object_id, $args, $field) {
 
-    $prefix = 'tuo_prefix_'; // metti il tuo prefisso
 
     // Ci interessa solo il campo nuovo
     if ($field->args('id') === $prefix . 'file_documento') {
