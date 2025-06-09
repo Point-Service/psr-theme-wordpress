@@ -191,7 +191,7 @@ $cmb_documento->add_field(array(
     'desc' => __('Non usare più. Usare il campo sottostante per caricare più documenti.', 'design_comuni_italia'),
     'type' => 'file',
     'attributes' => array(
-        'disabled' => false // puoi metterlo true se vuoi renderlo non modificabile
+        'disabled' => true // puoi metterlo true se vuoi renderlo non modificabile
     ),
 ));
 
