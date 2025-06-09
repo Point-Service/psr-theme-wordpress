@@ -247,7 +247,7 @@ function dci_add_documento_pubblico_metaboxes()
                 'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
                 'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
                 'sortable'      => true,
-                'default_state' => 'collapsed',
+                'close' => true,
             ),
         ));
 
