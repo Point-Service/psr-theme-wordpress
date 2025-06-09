@@ -225,19 +225,43 @@ add_action('cmb2_after_init', function() {
 
     
     // CAMPO NUOVO - MULTIPLI
-        $cmb_documento->add_field(array(
-            'id' => $prefix . 'file_documento',
-            'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
-            'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
-            'type' => 'file_list',
-            'preview_size' => array(100, 100),  
-            'text' => array(
-                'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
-                'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
-               // 'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
-                'remove_text' => __('Rimuovi', 'design_comuni_italia'),
-            ),
-        ));
+
+$cmb_documento->add_field(array(
+    'id'          => $prefix . 'url_documento_group',
+    'type'        => 'group',
+    'description' => __('Aggiungi uno o più link al documento', 'design_comuni_italia'),
+    'options'     => array(
+        'group_title'   => __('Link Documento {#}', 'design_comuni_italia'), // Titolo dinamico gruppo
+        'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
+        'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
+        'sortable'      => true,
+        'closed'        => true,
+    ),
+));
+
+// Dentro il gruppo aggiungi il campo URL singolo
+$cmb_documento->add_group_field($prefix . 'url_documento_group', array(
+    'name' => __('URL Documento', 'design_comuni_italia'),
+    'id'   => 'url_documento',
+    'type' => 'text_url',
+    'desc' => __('Inserisci il link al documento', 'design_comuni_italia'),
+));
+
+// Campo multiplo file caricati (file_list)
+$cmb_documento->add_field(array(
+    'id' => $prefix . 'file_documento',
+    'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
+    'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
+    'type' => 'file_list',
+    'preview_size' => array(100, 100),
+    'text' => array(
+        'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
+        'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
+        'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
+        'remove_text' => __('Rimuovi', 'design_comuni_italia'),
+    ),
+));
+
 
 
 
