@@ -252,13 +252,7 @@ function dci_add_documento_pubblico_metaboxes()
         ));
 
         
-        add_filter('cmb2_override__dci_documento_pubblico_url_documento_group_meta_value', function ($data, $object_id, $args, $field) {
-            // Se non è un array valido, restituisce array vuoto (niente righe mostrate)
-            if (empty($data) || !is_array($data)) {
-                return array(); // Nessun elemento visualizzato
-            }
-            return $data;
-        }, 10, 4);
+
     
     // URL del documento
     $cmb_documento->add_group_field($prefix . 'url_documento_group', array(
@@ -281,7 +275,16 @@ function dci_add_documento_pubblico_metaboxes()
         'type' => 'checkbox',
     ));
 
+    
 
+        add_filter('cmb2_override__dci_documento_pubblico_url_documento_group_meta_value', function ($data, $object_id, $args, $field) {
+            // Se non è un array valido, restituisce array vuoto (niente righe mostrate)
+            if (empty($data) || !is_array($data)) {
+                return array(); // Nessun elemento visualizzato
+            }
+            return $data;
+        }, 10, 4);
+    
     
     // CAMPO NUOVO - MULTIPLI
         $cmb_documento->add_field(array(
