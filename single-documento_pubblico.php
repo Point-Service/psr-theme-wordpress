@@ -25,7 +25,7 @@ get_header();
         $tipo_documento = wp_get_post_terms($post->ID, array('tipi_documento', 'tipi_doc_albo_pretorio'));
         $descrizione_breve = dci_get_meta("descrizione_breve");
         $url_documento = dci_get_meta("url_documento");
-        $url_documento_group = wp_get_post_terms($post->ID, array('url_documento_group', true)));
+        $url_documento_group = wp_get_post_terms($post->ID, array('url_documento_group', true));
         $file_documento = dci_get_meta("file_documento");        
         $descrizione = dci_get_wysiwyg_field("descrizione_estesa");
         $ufficio_responsabile = dci_get_meta("ufficio_responsabile");
