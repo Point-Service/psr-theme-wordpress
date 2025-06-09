@@ -185,8 +185,6 @@ $cmb_documento->add_field(array(
     'name' => __('Documento: URL', 'design_comuni_italia'),
     'desc' => __('Link al documento vero e proprio', 'design_comuni_italia'),
     'type' => 'text_url',
-    'attributes' => array(
-        'readonly' => 'readonly',
     ),
 ));
 
