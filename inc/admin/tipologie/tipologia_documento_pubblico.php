@@ -188,53 +188,60 @@ function dci_add_documento_pubblico_metaboxes()
 
 
 
-    add_action( 'cmb2_admin_init', function() {
+  add_action('cmb2_after_init', function() {
+    if (!is_admin()) return;
+
     $prefix = '_dci_documento_pubblico_';
-
-    $cmb = new_cmb2_box( array(
-        'id'           => $prefix . 'metabox',
-        'title'        => 'Documento',
-        'object_types' => array( 'documento_pubblico' ),
-    ) );
-
-    // 🔸 Campo MULTIPLO: il nuovo campo da usare sempre
-    $cmb->add_field( array(
-        'name'         => 'Documenti: Carica più file',
-        'id'           => $prefix . 'file_documento',
-        'type'         => 'file_list',
-        'preview_size' => array( 100, 100 ),
-        'text'         => array(
-            'add_upload_files_text' => 'Aggiungi allegati',
-        ),
-    ) );
-} );
-
-add_action( 'cmb2_after_init', function() {
-    $prefix    = '_dci_documento_pubblico_';
-    $post_id   = isset($_GET['post']) ? absint($_GET['post']) : 0;
-    if ( ! $post_id ) return;
+    $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
+    if (!$post_id) return;
 
     $key_new = $prefix . 'file_documento';
-    $key_old = $prefix . 'file_documento_old'; // il campo singolo dismesso
+    $key_old = $prefix . 'file_documento_old';
 
-    $new_value = get_post_meta( $post_id, $key_new, true );
-    $old_value = get_post_meta( $post_id, $key_old, true );
+    $old_url = get_post_meta($post_id, $key_old, true);
+    $new_files = get_post_meta($post_id, $key_new, true);
 
-    // Se il vecchio campo ha un file e il nuovo è vuoto
-    if ( !empty($old_value) && (empty($new_value) || !is_array($new_value)) ) {
-        $attachment_id = attachment_url_to_postid( $old_value );
-        if ( $attachment_id ) {
-            $converted = array( $attachment_id => $old_value );
-            update_post_meta( $post_id, $key_new, $converted );
+    if (!empty($old_url)) {
+        if (!is_array($new_files)) $new_files = [];
+
+        // Otteniamo l'attachment ID se possibile
+        $attachment_id = attachment_url_to_postid($old_url);
+        if ($attachment_id) {
+            $new_files[$attachment_id] = $old_url;
         } else {
-            // fallback in caso non trovi l'ID
-            update_post_meta( $post_id, $key_new, array( $old_value ) );
+            // fallback se non troviamo ID
+            $new_files[] = $old_url;
         }
 
-        // 🔴 Rimuovi il valore vecchio
-        delete_post_meta( $post_id, $key_old );
+        // Salviamo nel campo nuovo
+        update_post_meta($post_id, $key_new, $new_files);
+
+        // Rimuoviamo il campo vecchio
+        delete_post_meta($post_id, $key_old);
     }
-} );
+});
+
+    
+
+
+
+
+
+    
+    // CAMPO NUOVO - MULTIPLI
+        $cmb_documento->add_field(array(
+            'id' => $prefix . 'file_documento',
+            'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
+            'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
+            'type' => 'file_list',
+            'preview_size' => array(100, 100),
+            'text' => array(
+                'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
+                'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
+               // 'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
+                'remove_text' => __('Rimuovi', 'design_comuni_italia'),
+            ),
+        ));
 
 
 
