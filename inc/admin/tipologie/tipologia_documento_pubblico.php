@@ -187,20 +187,57 @@ function dci_add_documento_pubblico_metaboxes()
     
 
     
-    // CAMPO NUOVO - MULTIPLI
-        $cmb_documento->add_field(array(
-            'id' => $prefix . 'file_documento',
-            'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
-            'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
-            'type' => 'file_list',
-            'preview_size' => array(100, 100),
-            'text' => array(
-                'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
-                'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
-                'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
-                'remove_text' => __('Rimuovi', 'design_comuni_italia'),
-            ),
-        ));
+add_action( 'cmb2_admin_init', function() {
+    $prefix = '_dci_documento_pubblico_';
+
+    $cmb = new_cmb2_box( array(
+        'id'            => $prefix . 'metabox',
+        'title'         => 'Documento',
+        'object_types'  => array( 'documento_pubblico' ),
+    ) );
+
+    // Campo singolo file (per retrocompatibilità)
+    $cmb->add_field( array(
+        'name' => 'Documento: URL',
+        'id'   => $prefix . 'file_documento',
+        'type' => 'file',
+    ) );
+
+    // Campo file_list (nuovo, multiplo)
+    $cmb->add_field( array(
+        'name' => 'Documenti: Carica più file',
+        'id'   => $prefix . 'file_documento',
+        'type' => 'file_list',
+        'preview_size' => array( 100, 100 ),
+        'text' => array(
+            'add_upload_files_text' => 'Aggiungi allegati',
+        ),
+    ) );
+} );
+
+// Trasferisci il file singolo nel file_list se serve
+add_action( 'cmb2_after_init', function() {
+    $prefix = '_dci_documento_pubblico_';
+    $meta_key = $prefix . 'file_documento';
+
+    $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
+    if ( ! $post_id ) return;
+
+    $file_list = get_post_meta( $post_id, $meta_key, true );
+    $file_single = get_post_meta( $post_id, $meta_key, true );
+
+    // Se è già un array (file_list popolato), non fare nulla
+    if ( is_array($file_list) && !empty($file_list) ) return;
+
+    // Se è una stringa (file singolo), trasformala in array e salva
+    if ( is_string($file_single) && !empty($file_single) ) {
+        $attachment_id = attachment_url_to_postid( $file_single );
+        if ( $attachment_id ) {
+            $new_array = array( $attachment_id => $file_single );
+            update_post_meta( $post_id, $meta_key, $new_array );
+        }
+    }
+} );
 
 
 
@@ -436,29 +473,6 @@ function dci_documento_pubblico_admin_script() {
     global $post_type;
     if( 'documento_pubblico' == $post_type )
         wp_enqueue_script( 'luogo-admin-script', get_template_directory_uri() . '/inc/admin-js/documento_pubblico.js' );
-}
-
-
-
-add_filter( 'cmb2_override__dci_documento_pubblico_file_documento', 'dci_migra_singolo_file_in_file_list', 10, 4 );
-
-function dci_migra_singolo_file_in_file_list( $override, $args, $field, $object_id ) {
-    $meta_key = $args['id']; // sarà "_dci_documento_pubblico_file_documento"
-
-    // Se c'è già un array, non fare nulla
-    $file_list = get_post_meta( $object_id, $meta_key, true );
-    if ( ! empty( $file_list ) && is_array( $file_list ) ) {
-        return $override;
-    }
-
-    // Se c'è un valore singolo (vecchio formato), trasformalo in file_list
-    if ( ! empty( $file_list ) && is_string( $file_list ) && filter_var( $file_list, FILTER_VALIDATE_URL ) ) {
-        return array(
-            $file_list => array( 'url' => $file_list ),
-        );
-    }
-
-    return $override; // Lascia vuoto se nulla trovato
 }
 
 
