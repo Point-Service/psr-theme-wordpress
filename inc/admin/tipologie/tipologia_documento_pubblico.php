@@ -185,7 +185,13 @@ function dci_add_documento_pubblico_metaboxes()
         'type' => 'text_url'
     ));
     
-
+        // Aggiungi questo dove registri il metabox o in un hook init
+        add_filter( 'cmb2_override_file_documento_deprecated_meta_value', 'carica_valore_deprecato_da_file_documento', 10, 4 );
+        function carica_valore_deprecato_da_file_documento( $override_value, $object_id, $args, $field ) {
+            // Recupera il valore vecchio dal campo 'file_documento'
+            $valore_vecchio = get_post_meta( $object_id, '_prefix_file_documento', true );
+            return $valore_vecchio;
+        }
       
         // CAMPO VECCHIO - PER COMPATIBILITÀ
         $cmb_documento->add_field(array(
@@ -199,6 +205,20 @@ function dci_add_documento_pubblico_metaboxes()
             'default' => get_post_meta(get_the_ID(), $prefix . 'file_documento', true),
         ));
     
+    // CAMPO NUOVO - MULTIPLI
+        $cmb_documento->add_field(array(
+            'id' => $prefix . 'file_documento',
+            'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
+            'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
+            'type' => 'file_list',
+            'preview_size' => array(100, 100),
+            'text' => array(
+                'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
+                'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
+                'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
+                'remove_text' => __('Rimuovi', 'design_comuni_italia'),
+            ),
+        ));
 
 
 
