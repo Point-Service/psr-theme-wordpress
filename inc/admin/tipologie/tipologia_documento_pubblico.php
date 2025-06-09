@@ -438,32 +438,29 @@ function dci_documento_pubblico_admin_script() {
         wp_enqueue_script( 'luogo-admin-script', get_template_directory_uri() . '/inc/admin-js/documento_pubblico.js' );
 }
 
-add_filter('cmb2_override_meta_value', function($value, $object_id, $args, $field) {
 
-     $prefix = '_dci_documento_pubblico_';
 
-    if ($field->args('id') === $prefix . 'file_documento') {
+add_filter( 'cmb2_override__dci_documento_pubblico_file_documento', 'migratore_compatibilita_file_singolo_in_file_list', 10, 4 );
 
-        // Se il nuovo campo (file_list) è vuoto o contiene un valore non valido
-        if (empty($value)) {
-            // Recupera il vecchio valore, che potrebbe essere un URL singolo
-            $raw_value = get_post_meta($object_id, $prefix . 'file_documento', true);
+function migratore_compatibilita_file_singolo_in_file_list( $override, $args, $field, $object_id ) {
+    $meta_key = $args['id'];
 
-            // Se il valore è una stringa (vecchio formato)
-            if (is_string($raw_value) && filter_var($raw_value, FILTER_VALIDATE_URL)) {
-                $filename = basename($raw_value);
-
-                // Ritorna in formato file_list
-                return array(
-                    $raw_value => $filename
-                );
-            }
-        }
+    // Verifica se il campo file_list ha già valori
+    $file_list = get_post_meta( $object_id, $meta_key, true );
+    if ( ! empty( $file_list ) && is_array( $file_list ) ) {
+        return $override; // Già popolato correttamente
     }
 
-    return $value;
-}, 10, 4);
+    // Cerca il valore del vecchio campo file (come URL stringa)
+    $file_singolo = get_post_meta( $object_id, $meta_key, true );
+    if ( is_string( $file_singolo ) && filter_var( $file_singolo, FILTER_VALIDATE_URL ) ) {
+        return array(
+            $file_singolo => array( 'url' => $file_singolo ),
+        );
+    }
 
+    return $override; // Campo vuoto se non trovato
+}
 
 
 
