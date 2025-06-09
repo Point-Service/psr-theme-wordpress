@@ -217,7 +217,7 @@ function dci_add_documento_pubblico_metaboxes()
         update_post_meta($post_id, $key_new, $new_files);
 
         // Rimuoviamo il campo vecchio
-     '   delete_post_meta($post_id, $key_old);
+     //  delete_post_meta($post_id, $key_old);
     }
 });
 
