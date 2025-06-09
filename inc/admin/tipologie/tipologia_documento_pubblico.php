@@ -234,20 +234,29 @@ function dci_add_documento_pubblico_metaboxes()
      }
     });
 
+    
+add_filter('cmb2_override__dci_documento_pubblico_url_documento_group_meta_value', function ($data, $object_id, $args, $field) {
+    // Se non è un array valido, restituisce array vuoto (niente righe mostrate)
+    if (empty($data) || !is_array($data)) {
+        return array(); // Nessun elemento visualizzato
+    }
+    return $data;
+}, 10, 4);
+
 
     // Gruppo per URL multipli
-    $cmb_documento->add_field(array(
-        'id'          => $prefix . 'url_documento_group',
-        'type'        => 'group',
-        'description' => __('Aggiungi uno o più link al documento', 'design_comuni_italia'),
-        'options'     => array(
-            'group_title'   => __('Link Documento {#}', 'design_comuni_italia'),
-            'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
-            'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
-            'sortable'      => true,
-            'closed'        => false,
-        ),
-    ));
+        $cmb_documento->add_field(array(
+            'id'          => $prefix . 'url_documento_group',
+            'type'        => 'group',
+            'description' => __('Aggiungi uno o più link al documento', 'design_comuni_italia'),
+            'options'     => array(
+                'group_title'   => __('Link Documento {#}', 'design_comuni_italia'),
+                'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
+                'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
+                'sortable'      => true,
+                'closed'        => false,
+            ),
+        ));
 
     
     
