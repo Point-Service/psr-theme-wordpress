@@ -168,14 +168,7 @@ function dci_add_documento_pubblico_metaboxes()
         ),
     ));
 
-    //DOCUMENTO
-    $cmb_documento = new_cmb2_box(array(
-        'id' => $prefix . 'box_documento',
-        'title' => __('Documento *', 'design_comuni_italia'),
-        'object_types' => array('documento_pubblico'),
-        'context' => 'normal',
-        'priority' => 'high',
-    ));
+
 
 
 // DOCUMENTI MULTIPLI
@@ -457,10 +450,6 @@ function dci_documento_pubblico_admin_script() {
 
 
 
-
-
-
-
 function migra_documenti_vecchi_in_multipli() {
     $args = array(
         'post_type' => 'documento_pubblico',
@@ -488,14 +477,6 @@ function migra_documenti_vecchi_in_multipli() {
     }
 }
 add_action('init', 'migra_documenti_vecchi_in_multipli');
-
-
-
-
-
-
-
-
 
 
 
