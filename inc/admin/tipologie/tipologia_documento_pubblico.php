@@ -183,31 +183,21 @@ function dci_add_documento_pubblico_metaboxes()
         'desc' => __('Link al documento vero e proprio', 'design_comuni_italia'),
         'type' => 'text_url'
     ));
-
-        $vecchio_file = get_post_meta($post->ID, $prefix . 'file_documento', true);
-        $mostra_vecchio = !empty($vecchio_file);
-        
-        // CAMPO VECCHIO (readonly solo se presente)
+       
         $cmb_documento->add_field(array(
             'id' => $prefix . 'file_documento',
-            'name' => __('[OBSOLETO] Documento singolo caricato in passato', 'design_comuni_italia'),
-            'desc' => __('Questo campo è stato usato in precedenza. È possibile solo rimuovere il file.', 'design_comuni_italia'),
+            'name' => __('Documenti: Carica uno o più file', 'design_comuni_italia'),
+            'desc' => __('Puoi caricare più file. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
             'type' => 'file',
-            'text' => array(
-                'add_upload_files_text' => '', // Nasconde "Aggiungi"
-                'remove_text' => __('Rimuovi file precedente', 'design_comuni_italia'),
+            'preview_size' => array(100, 100),
+            'text' => array(                
+                'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
+                'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
+                'remove_text' => __('Rimuovi', 'design_comuni_italia'),
             ),
-            'attributes' => array(
+              'attributes' => array(
                 'readonly' => 'readonly',
             ),
-            'show_on_cb' => function($field) use ($prefix) {
-                $post_id = isset($_GET['post']) ? intval($_GET['post']) : 0;
-                if ($post_id) {
-                    $file = get_post_meta($post_id, $prefix . 'file_documento', true);
-                    return !empty($file);
-                }
-                return false;
-            }
         ));
 
         // CAMPO NUOVO MULTIPLO
