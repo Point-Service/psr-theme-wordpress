@@ -440,27 +440,27 @@ function dci_documento_pubblico_admin_script() {
 
 
 
-add_filter( 'cmb2_override__dci_documento_pubblico_file_documento', 'migratore_compatibilita_file_singolo_in_file_list', 10, 4 );
+add_filter( 'cmb2_override__dci_documento_pubblico_file_documento', 'dci_migra_singolo_file_in_file_list', 10, 4 );
 
-function migratore_compatibilita_file_singolo_in_file_list( $override, $args, $field, $object_id ) {
-    $meta_key = $args['id'];
+function dci_migra_singolo_file_in_file_list( $override, $args, $field, $object_id ) {
+    $meta_key = $args['id']; // sarà "_dci_documento_pubblico_file_documento"
 
-    // Verifica se il campo file_list ha già valori
+    // Se c'è già un array, non fare nulla
     $file_list = get_post_meta( $object_id, $meta_key, true );
     if ( ! empty( $file_list ) && is_array( $file_list ) ) {
-        return $override; // Già popolato correttamente
+        return $override;
     }
 
-    // Cerca il valore del vecchio campo file (come URL stringa)
-    $file_singolo = get_post_meta( $object_id, $meta_key, true );
-    if ( is_string( $file_singolo ) && filter_var( $file_singolo, FILTER_VALIDATE_URL ) ) {
+    // Se c'è un valore singolo (vecchio formato), trasformalo in file_list
+    if ( ! empty( $file_list ) && is_string( $file_list ) && filter_var( $file_list, FILTER_VALIDATE_URL ) ) {
         return array(
-            $file_singolo => array( 'url' => $file_singolo ),
+            $file_list => array( 'url' => $file_list ),
         );
     }
 
-    return $override; // Campo vuoto se non trovato
+    return $override; // Lascia vuoto se nulla trovato
 }
+
 
 
 
