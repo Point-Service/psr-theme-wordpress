@@ -46,7 +46,7 @@ jQuery( document ).ready(function() {
         /**
          * controllo compilazione alternativa url documento - file documento
          */
-        if(document.activeElement.id === 'publish' &&(!jQuery('input[name^="_dci_documento_pubblico_url_documento"]').val() && jQuery('#_dci_documento_pubblico_file_documento-status').children().length == 0 && !jQuery('input[name^="_dci_documento_pubblico_file_documento"]').val())){
+        if(document.activeElement.id === 'publish' &&(!jQuery('input[name^="_dci_documento_pubblico_url_documento"]').val() && jQuery('#_dci_documento_pubblico_file_documento_lista-status').children().length == 0 && jQuery('#_dci_documento_pubblico_file_documento-status').children().length == 0 && !jQuery('input[name^="_dci_documento_pubblico_file_documento"]').val())){
             dci_highlight_alternative_field('#_dci_documento_pubblico_box_documento', 'Campo obbligatorio');
             return false;
         }
