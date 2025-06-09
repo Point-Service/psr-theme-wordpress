@@ -235,24 +235,19 @@ function dci_add_documento_pubblico_metaboxes()
     });
 
 
-
-
     // Gruppo per URL multipli
-        $cmb_documento->add_field(array(
-            'id'          => $prefix . 'url_documento_group',
-            'type'        => 'group',
-            'description' => __('Aggiungi uno o più link al documento', 'design_comuni_italia'),
-            'options'     => array(
-                'group_title'   => __('Link Documento {#}', 'design_comuni_italia'),
-                'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
-                'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
-                'sortable'      => true,
-                'closed'        => false,
-            ),
-        ));
-
-        
-
+    $cmb_documento->add_field(array(
+        'id'          => $prefix . 'url_documento_group',
+        'type'        => 'group',
+        'description' => __('Aggiungi uno o più link al documento', 'design_comuni_italia'),
+        'options'     => array(
+            'group_title'   => __('Link Documento {#}', 'design_comuni_italia'),
+            'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
+            'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
+            'sortable'      => true,
+            'closed'        => true,
+        ),
+    ));
     
     // URL del documento
     $cmb_documento->add_group_field($prefix . 'url_documento_group', array(
@@ -275,7 +270,7 @@ function dci_add_documento_pubblico_metaboxes()
         'type' => 'checkbox',
     ));
 
-   
+
     
     
     // CAMPO NUOVO - MULTIPLI
