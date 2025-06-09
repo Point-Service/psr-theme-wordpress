@@ -186,18 +186,34 @@ function dci_add_documento_pubblico_metaboxes()
     ));
     
 
+      
         // CAMPO VECCHIO - PER COMPATIBILITÀ
-    $cmb_documento->add_field(array(
-        'id' => $prefix . 'file_documento',
-        'name' => __('[OBSOLETO] Documento singolo.', 'design_comuni_italia'),
-        'desc' => __('Non usare più. Usare il campo sottostante per caricare più documenti.', 'design_comuni_italia'),
-        'type' => 'file',
-        'attributes' => array(
-     
-        ),
-    ));
+        $cmb_documento->add_field(array(
+            'id' => $prefix . 'file_documento_deprecated',
+            'name' => __('[OBSOLETO] Documento singolo.', 'design_comuni_italia'),
+            'desc' => __('Non usare più. È visibile solo per compatibilità con documenti caricati prima.', 'design_comuni_italia'),
+            'type' => 'file',
+            'attributes' => array(
+                'readonly' => 'readonly', // opzionale: per impedire modifiche
+            ),
+            'default' => get_post_meta(get_the_ID(), $prefix . 'file_documento', true),
+        ));
     
 
+    // CAMPO NUOVO - MULTIPLI
+    $cmb_documento->add_field(array(
+        'id' => $prefix . 'file_documento',
+        'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
+        'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
+        'type' => 'file_list',
+        'preview_size' => array(100, 100),
+        'text' => array(
+            'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
+            'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
+            'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
+            'remove_text' => __('Rimuovi', 'design_comuni_italia'),
+        ),
+    ));
 
 
     //DESCRIZIONE
