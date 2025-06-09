@@ -274,7 +274,7 @@ get_header();
                                     <?php
                                     }
                                 }
-                             <?php } ?>
+
                               <?php
                                 // Mostra i link multipli (nuovo formato)
                                 if (!empty($url_documento_group) && is_array($url_documento_group)) {
