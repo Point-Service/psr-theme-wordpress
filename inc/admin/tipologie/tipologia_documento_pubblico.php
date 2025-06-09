@@ -184,6 +184,22 @@ function dci_add_documento_pubblico_metaboxes()
         'type' => 'text_url'
     ));
 
+    
+    $cmb_documento->add_field(array(
+    'id' => $prefix . 'file_documento_lista',
+    'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
+    'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
+    'type' => 'file_list',
+    'preview_size' => array(100, 100),
+    'text' => array(
+        'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
+        'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
+        'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
+        'remove_text' => __('Rimuovi', 'design_comuni_italia'),
+      ),
+    ));
+    
+
 
     // Solo se c'è un file nel vecchio campo, mostra anche quello
     $cmb_documento->add_field(array(
