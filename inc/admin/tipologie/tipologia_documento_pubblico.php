@@ -196,7 +196,7 @@ function dci_add_documento_pubblico_metaboxes()
         // 'query_args' => array( 'type' => 'image' ), // Only images attachment
         // Optional, override default text strings
         'attributes' => array(
-            'disabled' => false // puoi metterlo true se vuoi renderlo non modificabile
+            'disabled' => true // puoi metterlo true se vuoi renderlo non modificabile
         'text' => array(      
             'remove_image_text' => __('Rimuovi allegato', 'design_comuni_italia'), // default: "Remove Image"
             'remove_text' => __('Rimuovi', 'design_comuni_italia'), // default: "Remove"
