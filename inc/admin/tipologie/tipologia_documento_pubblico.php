@@ -184,20 +184,45 @@ function dci_add_documento_pubblico_metaboxes()
         'type' => 'text_url'
     ));
        
-    $cmb_documento->add_field(array(
-        'id' => $prefix . 'file_documento',
-        'name' => __('Documento: Carica file', 'design_comuni_italia'),
-        'desc' => __('Se non è presente un link a risorsa esterna, bisogna ricordarsi di allegare il documento vero e proprio, in un formato scaricabile e stampabile da parte dell\'utente', 'design_comuni_italia'),
-        'type' => 'file',
-        // 'preview_size' => array( 100, 100 ), // Default: array( 50, 50 )
-        // 'query_args' => array( 'type' => 'image' ), // Only images attachment
-        // Optional, override default text strings
-        'text' => array(
-            'add_upload_files_text' => __('Aggiungi un nuovo allegato', 'design_comuni_italia'), // default: "Add or Upload Files"
-            'remove_image_text' => __('Rimuovi allegato', 'design_comuni_italia'), // default: "Remove Image"
-            'remove_text' => __('Rimuovi', 'design_comuni_italia'), // default: "Remove"
-        ),
-    ));
+// DOCUMENTI MULTIPLI
+$cmb_documento = new_cmb2_box(array(
+    'id'            => $prefix . 'box_documento',
+    'title'         => __('Documenti *', 'design_comuni_italia'),
+    'object_types'  => array('documento_pubblico'),
+    'context'       => 'normal',
+    'priority'      => 'high',
+));
+
+$group_field_id = $cmb_documento->add_field(array(
+    'id'          => $prefix . 'documenti_multipli',
+    'type'        => 'group',
+    'description' => __('Aggiungi uno o più documenti (URL o file)', 'design_comuni_italia'),
+    'options'     => array(
+        'group_title'   => __('Documento {#}', 'design_comuni_italia'),
+        'add_button'    => __('Aggiungi documento', 'design_comuni_italia'),
+        'remove_button' => __('Rimuovi documento', 'design_comuni_italia'),
+        'sortable'      => true,
+    ),
+));
+
+$cmb_documento->add_group_field($group_field_id, array(
+    'name' => __('URL del documento', 'design_comuni_italia'),
+    'id'   => 'url',
+    'type' => 'text_url',
+    'desc' => __('Inserisci un URL esterno, se disponibile', 'design_comuni_italia'),
+));
+
+$cmb_documento->add_group_field($group_field_id, array(
+    'name' => __('File del documento', 'design_comuni_italia'),
+    'id'   => 'file',
+    'type' => 'file',
+    'text' => array(
+        'add_upload_files_text' => __('Carica file', 'design_comuni_italia'),
+        'remove_text' => __('Rimuovi', 'design_comuni_italia'),
+    ),
+    'desc' => __('Carica il file se non hai inserito un URL', 'design_comuni_italia'),
+));
+
 
 
 
