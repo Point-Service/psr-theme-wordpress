@@ -231,7 +231,7 @@ add_action('cmb2_after_init', function() {
             'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
             'type' => 'file_list',
            // 'preview_size' => array(100, 100),
-             preview_size => false, 
+            'preview_size' => false, 
             'text' => array(
                 'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
                 'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
