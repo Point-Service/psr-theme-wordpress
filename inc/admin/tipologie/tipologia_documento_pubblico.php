@@ -188,36 +188,36 @@ function dci_add_documento_pubblico_metaboxes()
 
 
 
-add_action('cmb2_after_init', function() {
-    if (!is_admin()) return;
-
-    $prefix = '_dci_documento_pubblico_';
-    $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
-    if (!$post_id) return;
-
-    $key = $prefix . 'file_documento';
-
-    $value = get_post_meta($post_id, $key, true);
-
-    // Se è una stringa singola (vecchio formato)
-    if (!empty($value) && is_string($value)) {
-        $new_files = [];
-
-        // Ottieni ID allegato se possibile
-        $attachment_id = attachment_url_to_postid($value);
-        if ($attachment_id) {
-            $new_files[$attachment_id] = $value;
-        } else {
-            // fallback generico
-            $new_files[] = $value;
-        }
-
-        // Salva nel nuovo formato (array)
-        update_post_meta($post_id, $key, $new_files);
-    }
-});
-
-    
+        add_action('cmb2_after_init', function() {
+            if (!is_admin()) return;
+        
+            $prefix = '_dci_documento_pubblico_';
+            $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
+            if (!$post_id) return;
+        
+            $key = $prefix . 'file_documento';
+        
+            $value = get_post_meta($post_id, $key, true);
+        
+            // Se è una stringa singola (vecchio formato)
+            if (!empty($value) && is_string($value)) {
+                $new_files = [];
+        
+                // Ottieni ID allegato se possibile
+                $attachment_id = attachment_url_to_postid($value);
+                if ($attachment_id) {
+                    $new_files[$attachment_id] = $value;
+                } else {
+                    // fallback generico
+                    $new_files[] = $value;
+                }
+        
+                // Salva nel nuovo formato (array)
+                update_post_meta($post_id, $key, $new_files);
+            }
+        });
+        
+            
 
 
 
