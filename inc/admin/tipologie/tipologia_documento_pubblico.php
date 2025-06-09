@@ -221,43 +221,6 @@ add_action('cmb2_after_init', function() {
 
     
 
-add_filter('cmb2_render_file_list', function($output, $field_args, $field) {
-    $files = $field->value;
-
-    if (empty($files) || !is_array($files)) {
-        return $output;
-    }
-
-    $new_output = '<ul class="cmb-file-list">';
-    foreach ($files as $file) {
-        if (is_string($file)) {
-            $file_url = esc_url($file);
-            $file_name = basename($file_url);
-        } elseif (is_array($file)) {
-            $file_url = isset($file['url']) ? esc_url($file['url']) : '';
-            $file_name = isset($file['name']) ? esc_html($file['name']) : basename($file_url);
-        } else {
-            continue;
-        }
-
-        $file_type = wp_check_filetype($file_url);
-
-        if (strpos($file_type['type'], 'image/') === 0) {
-            $preview = '<img src="' . $file_url . '" style="max-width:100px; max-height:100px;" alt="' . $file_name . '"/>';
-        } else {
-            // Icona generica da mostrare immediatamente appena apri la pagina
-            $icon_url = 'https://cdn-icons-png.flaticon.com/512/109/109612.png';
-            $preview = '<img src="' . $icon_url . '" style="max-width:100px; max-height:100px;" alt="Icona file"/>';
-        }
-
-        $new_output .= '<li style="list-style:none; margin-bottom: 10px;">' . $preview . '<br><a href="' . $file_url . '" target="_blank" rel="noopener noreferrer">' . $file_name . '</a></li>';
-    }
-    $new_output .= '</ul>';
-
-    return $new_output;
-}, 10, 3);
-
-
 
 
     
@@ -267,7 +230,8 @@ add_filter('cmb2_render_file_list', function($output, $field_args, $field) {
             'name' => __('Documenti: Carica più file', 'design_comuni_italia'),
             'desc' => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
             'type' => 'file_list',
-            'preview_size' => array(100, 100),
+           // 'preview_size' => array(100, 100),
+             preview_size => false, 
             'text' => array(
                 'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
                 'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
