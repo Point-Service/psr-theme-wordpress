@@ -189,7 +189,7 @@ function dci_add_documento_pubblico_metaboxes()
         
         // CAMPO VECCHIO (readonly solo se presente)
         $cmb_documento->add_field(array(
-            'id' => $prefix . 'file_documento_old',
+            'id' => $prefix . 'file_documento',
             'name' => __('[OBSOLETO] Documento singolo caricato in passato', 'design_comuni_italia'),
             'desc' => __('Questo campo è stato usato in precedenza. È possibile solo rimuovere il file.', 'design_comuni_italia'),
             'type' => 'file',
@@ -210,20 +210,20 @@ function dci_add_documento_pubblico_metaboxes()
             }
         ));
 
-// CAMPO NUOVO MULTIPLO
-$cmb_documento->add_field(array(
-    'id' => $prefix . 'file_documento',
-    'name' => __('Documenti: Carica uno o più file', 'design_comuni_italia'),
-    'desc' => __('Puoi caricare più file. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
-    'type' => 'file_list',
-    'preview_size' => array(100, 100),
-    'text' => array(
-        'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
-        'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
-        'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
-        'remove_text' => __('Rimuovi', 'design_comuni_italia'),
-    ),
-));
+        // CAMPO NUOVO MULTIPLO
+        $cmb_documento->add_field(array(
+            'id' => $prefix . 'file_documento',
+            'name' => __('Documenti: Carica uno o più file', 'design_comuni_italia'),
+            'desc' => __('Puoi caricare più file. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
+            'type' => 'file_list',
+            'preview_size' => array(100, 100),
+            'text' => array(
+                'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
+                'remove_image_text' => __('Rimuovi', 'design_comuni_italia'),
+                'file_text' => __('Allegato: %{file}', 'design_comuni_italia'),
+                'remove_text' => __('Rimuovi', 'design_comuni_italia'),
+            ),
+        ));
 
 
 
