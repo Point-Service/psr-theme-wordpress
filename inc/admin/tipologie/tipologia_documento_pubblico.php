@@ -245,9 +245,11 @@ function dci_add_documento_pubblico_metaboxes()
             'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
             'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
             'sortable'      => true,
-            'closed'        => true,
+            'closed'        => false,
         ),
     ));
+
+    
     
     // URL del documento
     $cmb_documento->add_group_field($prefix . 'url_documento_group', array(
