@@ -298,7 +298,32 @@ get_header();
 
 
 
-
+<?php
+// Mostra i link multipli (url_documento_group)
+if (!empty($url_documento_group) && is_array($url_documento_group)) {
+    foreach ($url_documento_group as $link_item) {
+        if (!empty($link_item['url_documento'])) {
+            $url = esc_url($link_item['url_documento']);
+            $nome = !empty($link_item['titolo']) ? esc_html($link_item['titolo']) : basename($url);
+            ?>
+            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#it-clip"></use>
+                </svg>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a class="text-decoration-none" href="<?= $url ?>"
+                           aria-label="Scarica il documento <?= $nome ?>"
+                           title="Scarica il documento <?= $nome ?>">
+                            <?= $nome ?>
+                        </a>
+                    </h5>
+                </div>
+            </div>
+            <?php
+        }
+    }
+} ?>
                                 
 
 
