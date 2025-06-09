@@ -211,30 +211,7 @@ $cmb_documento->add_field(array(
         update_post_meta($post_id, $file_key, $new_files);
     }
 
-    // Migrate url_documento (da singolo a gruppo url_documento_group)
-    $url_key = $prefix . 'url_documento';
-    $url_group_key = $prefix . 'url_documento_group';
-
-    $url_val = get_post_meta($post_id, $url_key, true);
-    $group_vals = get_post_meta($post_id, $url_group_key, true);
-
-    if (!empty($url_val)) {
-        if (!is_array($group_vals)) $group_vals = [];
-
-        // Evita duplicati
-        $exists = false;
-        foreach ($group_vals as $item) {
-            if (isset($item['url_documento']) && $item['url_documento'] === $url_val) {
-                $exists = true;
-                break;
-            }
-        }
-
-        if (!$exists) {
-            $group_vals[] = ['url_documento' => $url_val];
-            update_post_meta($post_id, $url_group_key, $group_vals);
-        }
-     }
+   
     });
 
 
