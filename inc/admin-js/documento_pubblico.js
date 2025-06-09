@@ -48,17 +48,19 @@ jQuery( document ).ready(function() {
         if(document.activeElement.id === 'publish' &&
            (!jQuery('input[name^="_dci_documento_pubblico_url_documento"]').val() &&
             jQuery('#_dci_documento_pubblico_file_documento-status').children().length == 0 &&
-            !jQuery('input[name^="_dci_documento_pubblico_file_documento"]').val())){
+            jQuery('#_dci_documento_pubblico_file_documento_lista-status').children().length == 0 &&
+            !jQuery('input[name^="_dci_documento_pubblico_file_documento"]').val() &&
+            !jQuery('input[name^="_dci_documento_pubblico_file_documento_lista"]').val())) {
             dci_highlight_alternative_field('#_dci_documento_pubblico_box_documento', 'Campo obbligatorio');
             return false;
         }
 
         if(document.activeElement.id === 'publish' &&
-           (!jQuery('input[name^="_dci_documento_pubblico_url_documento"]').val() &&
-            jQuery('#_dci_documento_pubblico_file_documento-status').children().length == 0 &&
-            jQuery('#_dci_documento_pubblico_file_documento_lista-status').children().length == 0 &&
-            !jQuery('input[name^="_dci_documento_pubblico_file_documento"]').val() &&
-            !jQuery('input[name^="_dci_documento_pubblico_file_documento_lista"]').val())) {
+           (jQuery('input[name^="_dci_documento_pubblico_url_documento"]').val() &&
+            (jQuery('#_dci_documento_pubblico_file_documento-status').children().length != 0 ||
+             jQuery('#_dci_documento_pubblico_file_documento_lista-status').children().length != 0 ||
+             jQuery('input[name^="_dci_documento_pubblico_file_documento"]').val() ||
+             jQuery('input[name^="_dci_documento_pubblico_file_documento_lista"]').val()))) {
             dci_highlight_alternative_field('#_dci_documento_pubblico_box_documento','Inserire alternativamente un URL o un allegato');
             return false;
         }
