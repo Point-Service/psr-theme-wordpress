@@ -114,10 +114,10 @@ get_header();
                                                                 </li>
                                                             <?php } ?>
 
-                                                            <?php if ($url_documento || $file_documento) { ?>
+                                                            <?php if ($url_documento || $file_documento) ||  (is_array($file_documento) && count($file_documento)) ||  (is_array($url_documento) && count($url_documento)) { ?>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" href="#documento">
-                                                                        <span>Documento</span>
+                                                                    <a class="nav-link" href="#documenti">
+                                                                        <span>Documenti</span>
                                                                     </a>
                                                                 </li>
                                                             <?php } ?>
@@ -244,8 +244,8 @@ get_header();
                     }
                     
                     if ($url_documento || !empty($file_documento)) { ?>
-                        <section id="documento" class="it-page-section mb-5">
-                            <h4>Documento</h4>
+                        <section id="documenti" class="it-page-section mb-5">
+                            <h4>Documenti</h4>
                             <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                     
                                 <?php
@@ -329,9 +329,6 @@ get_header();
 
            
                                     ?>
-
-                                
-
 
                                 
                             </div><!-- ./card-wrapper -->
