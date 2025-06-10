@@ -114,7 +114,7 @@ get_header();
                                                                 </li>
                                                             <?php } ?>
 
-                                                            <?php if ($url_documento || $file_documento) ||  (is_array($file_documento) && count($file_documento)) ||  (is_array($url_documento) && count($url_documento)) { ?>
+                                                            <?php if ($url_documento || $file_documento) { ?>
                                                                 <li class="nav-item">
                                                                     <a class="nav-link" href="#documenti">
                                                                         <span>Documenti</span>
