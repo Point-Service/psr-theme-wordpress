@@ -13,7 +13,7 @@ $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
             <div class="img-responsive-wrapper cmp-list-card-img__wrapper">
                 <div class="img-responsive img-responsive-panoramic h-100">
                     <figure class="img-wrapper">
-                        <?php dci_get_img($img, 'rounded img-fluid img-responsive foto-soft-style'); ?>
+                        <?php dci_get_img($img, 'rounded img-fluid img-responsive'); ?>
                     </figure>
                 </div>
             </div>
@@ -55,14 +55,4 @@ $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
         </div>
     </div>
 </div>
-<style>
-/* Stile più leggero per la foto */
-.foto-soft-style {
-    border: 1px solid #ddd;              /* Bordo molto leggero */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Ombra quasi impercettibile */
-    padding: 2px;
-    background-color: #fff;              /* Sfondo bianco per risalto se su sfondo grigio */
-    border-radius: 6px;                  /* Angoli leggermente arrotondati */
-}
 
-</style>
