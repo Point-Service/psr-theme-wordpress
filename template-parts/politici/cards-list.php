@@ -42,7 +42,7 @@ foreach ($incarichi as $incarico) {
                                     <!-- Foto a sinistra -->
                                     <div class="col-4 col-md-3">
                                         <?php if ($img) { 
-                                            dci_get_img($img, 'rounded img-fluid img-responsive'); 
+                                            dci_get_img($img, 'rounded img-fluid'); 
                                         } ?>
                                     </div>
 
