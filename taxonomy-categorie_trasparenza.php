@@ -10,7 +10,7 @@ global $title, $description, $data_element, $elemento, $sito_tematico_id;
 
 get_header();
 $obj = get_queried_object();
-$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] :-1;
 $load_posts = -1;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $args = array(
@@ -30,6 +30,7 @@ $additional_filter = array(
     )
 );
 
+
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
 
@@ -39,14 +40,16 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     $description = $obj->description;
     $data_element = 'data-element="page-name"';
     get_template_part("template-parts/hero/hero");
-    ?>
-
-    <div class="bg-grey-card">
+    
+    if($obj->name="Contratti Pubblici"){
+     get_template_part("template-parts/amministrazione-trasparente/bandi");
+    }else{?>
+         <div class="bg-grey-card">
         <form role="search" id="search-form" method="get" class="search-form">
             <button type="submit" class="d-none"></button>
             <div class="container">
                 <div class="row">
-                    <h2 class="visually-hidden">Esplora tutti i servizi</h2>
+                    <h2 class="visually-hidden">Esplora tutti i documenti della trasparenza</h2>
 
                     <!-- Colonna sinistra: risultati -->
                     <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
@@ -112,11 +115,20 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 </div>
             </div>
         </form>
-    </div>
+        <!-- <div class="row my-4">
+				<nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+					<?php echo dci_bootstrap_pagination(); ?>
+				</nav>
+			</div> -->
 </main>
 
+	
 <?php
+}
 get_template_part("template-parts/common/valuta-servizio");
 get_template_part("template-parts/common/assistenza-contatti");
 get_footer();
+
 ?>
+
+   
