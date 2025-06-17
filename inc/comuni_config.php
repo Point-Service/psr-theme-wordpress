@@ -105,7 +105,8 @@ function dci_get_tassonomie_names(){
         'eventi_vita_impresa',
         'tipi_incarico',
         'stati_pratica',
-        'tipi_documento'
+        'tipi_documento',
+        'tipi_cat_amm_trasp'
     );
     return $tassonomie;
 }
@@ -151,7 +152,7 @@ function dci_get_sercheable_tipologie() {
         'aree_amministrative',
         'uffici',
         'progetti',
-        'commissario'
+        'commissario',
     );
 }
 
@@ -255,6 +256,8 @@ function dci_get_admin_menu_order() {
         'edit.php?post_type=documento_pubblico',
         'edit.php?post_type=dataset',
         'edit.php?post_type=commissario',
+        'edit.php?post_type=elemento_trasparenza',
+        'edit.php?post_type=bando',
         'edit.php?post_type=unita_organizzativa',
         'edit.php?post_type=persona_pubblica',
         'edit.php?post_type=punto_contatto',
@@ -268,7 +271,6 @@ function dci_get_admin_menu_order() {
         'edit.php?post_type=appuntamento',
         'edit.php?post_type=richiesta_assistenza',
         'edit.php?post_type=segnala_disservizio',
-        'edit.php?post_type=piano-miglioramento',
         'edit.php?post_type=domanda_frequente',
         'edit.php?post_type=rating',
         'edit.php?post_type=page',
