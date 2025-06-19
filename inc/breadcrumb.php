@@ -878,7 +878,7 @@ class Breadcrumb_Trail {
 else if (is_tax(array("elemento_trasparenza"))) {
     // Aggiungi "Home" come primo elemento (se non è già presente)
     if (!in_array("Home", $this->items)) {
-        $this->items[] = "<a href='" . home_url() . "'>" . __("Home", "design_comuni_italia") . "</a>";
+   //    $this->items[] = "<a href='" . home_url() . "'>" . __("Home", "design_comuni_italia") . "</a>";
     }
 
     // Aggiungi "Amministrazione Trasparente" solo se non è già presente
