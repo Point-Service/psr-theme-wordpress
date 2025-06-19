@@ -801,7 +801,15 @@ class Breadcrumb_Trail {
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		
-                    }                     else if (is_tax(array("tipi_evento"))) {	
+                    }                     
+                    else if (is_tax(array("elemento_trasparenza"))){
+			//$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+                        $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+		
+                    }       		    
+		    else if (is_tax(array("tipi_evento"))) {	
      
 			    // Link a "Vivere il Comune"
 			    $this->items[] = "<a href='" . home_url("vivere-il-comune") . "'>" . __("Vivere il Comune", "design_comuni_italia") . "</a>";	
