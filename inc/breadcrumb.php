@@ -779,6 +779,13 @@ class Breadcrumb_Trail {
 
                 elseif ( is_category() || is_tag() || is_tax() ){
 
+
+
+   var_dump($term);
+
+
+
+			
                     if (is_tax(array("categorie_servizio"))){
                         $this->items[] = "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
                         $this->items[] = single_term_title( '', false );
@@ -802,7 +809,10 @@ class Breadcrumb_Trail {
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		
 			    
-                    }                     
+                    }           
+
+
+			    
                     else if (is_tax(array("elemento_trasparenza"))){
 			//$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
                         $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
