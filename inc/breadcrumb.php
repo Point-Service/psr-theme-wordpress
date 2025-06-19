@@ -882,11 +882,6 @@ class Breadcrumb_Trail {
 		
                     } 
 
-
-
-
-
-
 			    
 		    else if (is_tax(array("tipi_evento"))) {	
      
