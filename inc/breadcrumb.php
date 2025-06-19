@@ -841,7 +841,7 @@ class Breadcrumb_Trail {
             $taxonomy_name = $term->taxonomy;
 
             // Stampa il nome della tassonomia
-            echo "Nome della tassonomia: " . $taxonomy_name;
+         //   echo "Nome della tassonomia: " . $taxonomy_name;
         }
     
     }
@@ -876,12 +876,12 @@ class Breadcrumb_Trail {
 
 			    
 else if (is_tax(array("elemento_trasparenza"))) {
-    // Aggiungi "Home" come primo elemento
+    // Aggiungi "Home" come primo elemento se non è già presente
     if (!in_array("Home", $this->items)) {
         $this->items[] = "<a href='" . home_url() . "'>" . __("Home", "design_comuni_italia") . "</a>";
     }
 
-    // Aggiungi "Amministrazione Trasparente" solo se non è già presente
+    // Aggiungi "Amministrazione Trasparente" se non è già presente
     if (!in_array("Amministrazione Trasparente", $this->items)) {
         $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
     }
@@ -893,24 +893,24 @@ else if (is_tax(array("elemento_trasparenza"))) {
         foreach ($terms as $term) {
             // Verifica se il termine ha un padre
             if ($term->parent) {
-                // Ottieni il termine padre
+                // Ottieni il termine padre di "tipi_cat_amm_trasp"
                 $parent_term = get_term($term->parent, 'tipi_cat_amm_trasp');
                 if ($parent_term) {
-                    // Aggiungi il termine padre (Amministrazione Trasparente)
+                    // Aggiungi il termine padre (Amministrazione Trasparente) prima
                     if (!in_array($parent_term->name, $this->items)) {
                         $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
                     }
                 }
             }
             
-            // Aggiungi il termine corrente (figlio)
+            // Aggiungi il termine corrente (figlio di "elemento_trasparenza")
             if (!in_array($term->name, $this->items)) {
                 $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
             }
         }
     }
 
-    // Recupera il termine attualmente visualizzato
+    // Recupera il nome del termine corrente (figlio)
     $term_name = single_term_title('', false);
     
     // Se il termine supera i 100 caratteri, lo tronca e aggiunge "..."
@@ -924,13 +924,14 @@ else if (is_tax(array("elemento_trasparenza"))) {
         $term_name = ucfirst(strtolower($term_name));
     }
     
-    // Aggiungi il termine alla lista degli elementi (assicurandosi che non sia già presente)
+    // Aggiungi il termine corrente (figlio) alla lista degli elementi (assicurandoti che non sia già presente)
     if (!in_array($term_name, $this->items)) {
         $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
     }
 
     return;
 }
+
 
 
 	
