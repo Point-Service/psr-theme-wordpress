@@ -418,7 +418,7 @@ class Breadcrumb_Trail {
 
 		    
 
-					if (get_post_type() == 'elemento_trasparenza') {
+				   if (get_post_type() == 'elemento_trasparenza') {
 					    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
 					
 					    // Recupera i termini associati al post nella tassonomia 'tipi_cat_amm_trasp'
@@ -435,20 +435,20 @@ class Breadcrumb_Trail {
 					                }
 					            }
 					
-					            // Aggiungi il termine figlio dopo il termine padre, tronca il nome del termine a 40 caratteri
+					            // Aggiungi il termine figlio dopo il termine padre, tronca il nome del termine a 35 caratteri
 					            $term_name = $term->name;
-					            if (strlen($term_name) > 40) {
-					                $term_name = substr($term_name, 0, 40) . '...'; // Troncamento del nome
+					            if (strlen($term_name) > 35) {
+					                $term_name = substr($term_name, 0, 35) . '...'; // Troncamento del nome
 					            }
 					            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term_name);
 					        }
 					    }
 					
-					    // Recupera il titolo della pagina e troncalo a 40 caratteri
+					    // Recupera il titolo della pagina e troncalo a 35 caratteri
 					    $title = get_the_title();
-					    // Se il titolo supera i 40 caratteri, lo tronca e aggiunge "..."
-					    if (strlen($title) > 40) {
-					        $title = substr($title, 0, 40) . '...';
+					    // Se il titolo supera i 35 caratteri, lo tronca e aggiunge "..."
+					    if (strlen($title) > 35) {
+					        $title = substr($title, 0, 35) . '...';
 					    }
 					    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
 					    if (preg_match('/[A-Z]{5,}/', $title)) {
@@ -459,13 +459,10 @@ class Breadcrumb_Trail {
 					    $this->items[] = $title;
 					
 					    return;
-					}
+				 }
 
 
 
-
-
-		    
 		    
 				if (get_post_type() == 'dataset') {
                                     $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
