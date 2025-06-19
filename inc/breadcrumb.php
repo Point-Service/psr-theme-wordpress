@@ -883,61 +883,40 @@ class Breadcrumb_Trail {
 
 			    
 else if (is_tax(array("elemento_trasparenza"))) {
-    // Aggiungi "Home" come primo elemento se non è già presente
-    if (!in_array("Home", $this->items)) {
-        $this->items[] = "<a href='" . home_url() . "'>" . __("Home", "design_comuni_italia") . "</a>";
-    }
 
-    // Aggiungi "Amministrazione Trasparente" se non è già presente
-    if (!in_array("Amministrazione Trasparente", $this->items)) {
-        $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-    }
+    // Aggiungi il link alla "Amministrazione Trasparente"
+    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
 
-    // Recupera i termini associati al post nella tassonomia 'tipi_cat_amm_trasp'
+    // Recupera i termini associati al post corrente nella tassonomia 'tipi_cat_amm_trasp'
     $terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');
 
     if ($terms) {
         foreach ($terms as $term) {
-            // Verifica se il termine ha un padre
+
+            // Se il termine ha un padre, aggiungi il termine padre prima del figlio
             if ($term->parent) {
-                // Ottieni il termine padre di "tipi_cat_amm_trasp"
                 $parent_term = get_term($term->parent, 'tipi_cat_amm_trasp');
                 if ($parent_term) {
-                    // Aggiungi il termine padre (Amministrazione Trasparente) prima
-                    if (!in_array($parent_term->name, $this->items)) {
-                        $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
-                    }
+                    // Aggiungi il link al termine padre
+                    $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
                 }
             }
-            
-            // Aggiungi il termine corrente (figlio di "elemento_trasparenza")
-            if (!in_array($term->name, $this->items)) {
-                $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
-            }
+
+            // Aggiungi il termine figlio (attuale)
+            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
         }
     }
 
-    // Recupera il nome del termine corrente (figlio)
-    $term_name = single_term_title('', false);
-    
-    // Se il termine supera i 100 caratteri, lo tronca e aggiunge "..."
-    if (strlen($term_name) > 100) {
-        $term_name = substr($term_name, 0, 97) . '...';
+    // Recupera il titolo del post e aggiungi al breadcrumb
+    $title = get_the_title();
+    if (strlen($title) > 100) {
+        $title = substr($title, 0, 97) . '...';
     }
-    
-    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
-    if (preg_match('/[A-Z]{5,}/', $term_name)) {
-        // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-        $term_name = ucfirst(strtolower($term_name));
-    }
-    
-    // Aggiungi il termine corrente (figlio) alla lista degli elementi (assicurandoti che non sia già presente)
-    if (!in_array($term_name, $this->items)) {
-        $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
-    }
+    $this->items[] = $title;
 
-    return;
+    return;  // Fine della logica per elemento_trasparenza
 }
+
 
 
 
