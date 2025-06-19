@@ -220,7 +220,7 @@ $prefix = "_dci_bando_";
             </div>
             <div class="col-12 col-md-auto">
                 <button type="submit" class="btn btn-primary w-100">
-                    <svg class="icon"><use href="#it-search"></use></svg> <?php _e('Cerca', 'design_comuni_italia'); ?>
+                    <svg class="icon"  style="color='white'" ><use href="#it-search"></use></svg> <?php _e('Cerca', 'design_comuni_italia'); ?>
                 </button>
             </div>
         </div>
