@@ -841,8 +841,9 @@ class Breadcrumb_Trail {
             $taxonomy_name = $term->taxonomy;
 
             // Stampa il nome della tassonomia
-          //  echo "Nome della tassonomia: " . $taxonomy_name;
+            echo "Nome della tassonomia: " . $taxonomy_name;
         }
+    
     }
 
 
@@ -875,7 +876,7 @@ class Breadcrumb_Trail {
 
 			    
 else if (is_tax(array("elemento_trasparenza"))) {
-    // Aggiungi "Home" come primo elemento (se non è già presente)
+    // Aggiungi "Home" come primo elemento
     if (!in_array("Home", $this->items)) {
         $this->items[] = "<a href='" . home_url() . "'>" . __("Home", "design_comuni_italia") . "</a>";
     }
@@ -887,22 +888,22 @@ else if (is_tax(array("elemento_trasparenza"))) {
 
     // Recupera i termini associati al post nella tassonomia 'tipi_cat_amm_trasp'
     $terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');
-    
+
     if ($terms) {
         foreach ($terms as $term) {
-            // Se il termine ha un genitore, recupera e aggiungi il termine genitore
+            // Verifica se il termine ha un padre
             if ($term->parent) {
-                // Ottieni il termine genitore
+                // Ottieni il termine padre
                 $parent_term = get_term($term->parent, 'tipi_cat_amm_trasp');
                 if ($parent_term) {
-                    // Aggiungi il termine genitore solo se non è già presente
+                    // Aggiungi il termine padre (Amministrazione Trasparente)
                     if (!in_array($parent_term->name, $this->items)) {
                         $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
                     }
                 }
             }
-
-            // Aggiungi il termine corrente (figlio) solo se non è già presente
+            
+            // Aggiungi il termine corrente (figlio)
             if (!in_array($term->name, $this->items)) {
                 $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
             }
@@ -930,6 +931,7 @@ else if (is_tax(array("elemento_trasparenza"))) {
 
     return;
 }
+
 
 	
 		    else if (is_tax(array("tipi_evento"))) {	
