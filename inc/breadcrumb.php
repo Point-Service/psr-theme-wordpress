@@ -385,7 +385,7 @@ class Breadcrumb_Trail {
                                    
 				   $this->items[] = get_the_title();
 				   return;
-				}
+			   }
               
               		    
 				if (get_post_type() == 'progetto') {					
