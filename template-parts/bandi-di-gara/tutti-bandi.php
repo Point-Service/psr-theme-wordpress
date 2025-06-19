@@ -169,7 +169,7 @@ $the_query = new WP_Query($args);
 $prefix = "_dci_bando_";
 ?>
 
-<div class="search-bar-container bg-light p-4 mb-4 rounded shadow-sm" style="background-color: #f0f0f0 !important;">
+<div class="search-bar-container bg-light p-4 mb-4 rounded shadow-sm" style="background-color: #FFFFFF !important;">
     <form role="search" method="get" class="search-form" action="<?php // echo esc_url(home_url('/')); ?>">
         <input type="hidden" name="post_type" value="bando" />
         <div class="row g-3">
