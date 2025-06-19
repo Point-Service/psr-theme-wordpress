@@ -781,7 +781,7 @@ class Breadcrumb_Trail {
 
 
 
-   var_dump($term);
+   var_dump($is_category);
 
 
 
