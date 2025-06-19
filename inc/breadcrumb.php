@@ -879,13 +879,14 @@ else if (is_tax(array("elemento_trasparenza"))) {
     $term = get_queried_object();
 
     if ($term instanceof WP_Term) {
-        // Controlla se il termine ha un termine padre
-        if ($term->parent) {
-            // Ottieni il termine padre
-            $parent_term = get_term($term->parent, 'elemento_trasparenza');
-            if ($parent_term && !is_wp_error($parent_term)) {
+        // Recupera il termine padre dalla tassonomia 'tipi_cat_amm_trasp'
+        $parent_terms = get_the_terms($term->term_id, 'tipi_cat_amm_trasp');
+        
+        if ($parent_terms && !is_wp_error($parent_terms)) {
+            // Assumiamo che ci sia un solo termine padre per ogni termine
+            foreach ($parent_terms as $parent_term) {
                 // Aggiungi il termine padre prima del termine figlio
-                $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'elemento_trasparenza')), $parent_term->name);
+                $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
             }
         }
 
@@ -893,6 +894,7 @@ else if (is_tax(array("elemento_trasparenza"))) {
         $this->items[] = dci_get_breadcrumb_label($term->name); // Senza __() perché è una variabile dinamica
     }
 }
+
 
 
 			    
