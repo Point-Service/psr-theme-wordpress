@@ -880,7 +880,7 @@ class Breadcrumb_Trail {
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		
-                    }      qui dovrebbe verificare e stampare il padre anche
+                    } 
 
 
 
