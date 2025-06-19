@@ -379,8 +379,8 @@ class Breadcrumb_Trail {
 
 
 		    	   if (get_post_type() == 'bando') {					
-                                   $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";				    
-				   $this->items[] =  "<a href='" . home_url("Contratti Pubblici") . "'>" . __("Contratti Pubblici", "design_comuni_italia") . "</a>";	
+                                   $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";			    
+				   $this->items[] =  "<a href='". home_url("amministrazione-trasparente") . "/" . home_url("Contratti Pubblici") . "'>" . __("Contratti Pubblici", "design_comuni_italia") . "</a>";	
 					
                                    
 				   $this->items[] = get_the_title();
