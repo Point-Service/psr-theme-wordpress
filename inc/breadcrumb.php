@@ -420,12 +420,12 @@ class Breadcrumb_Trail {
                 $parent_term = get_term($term->parent, 'tipi_cat_amm_trasp');
                 if ($parent_term) {
                     // Aggiungi il termine padre prima
-                    $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
+                  //  $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
                 }
             }
 
             // Aggiungi il termine figlio dopo il termine padre
-            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
+         //   $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
         }
     }
     
