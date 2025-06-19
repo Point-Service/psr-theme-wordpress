@@ -871,26 +871,12 @@ class Breadcrumb_Trail {
 			    
                     }           
    
-else if (is_tax(array("elemento_trasparenza"))) {		
-    $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-    
-    // Ottieni il termine corrente
-    $term = get_queried_object();
-
-    // Verifica se il termine ha un termine padre
-    if ($term->parent) {
-        // Ottieni il termine padre
-        $parent_term = get_term($term->parent, 'elemento_trasparenza');
-        if ($parent_term) {
-            // Aggiungi il termine padre
-            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'elemento_trasparenza')), $parent_term->name);
-        }
-    }
-
-    // Aggiungi il termine figlio
-    $this->items[] = __(dci_get_breadcrumb_label($term->name), "design_comuni_italia");
-}
-
+                    else if (is_tax(array("elemento_trasparenza"))){		
+                        $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
+		
+                    }  
 
 			    
 		    else if (is_tax(array("tipi_evento"))) {	
