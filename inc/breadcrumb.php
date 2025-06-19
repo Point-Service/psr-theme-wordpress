@@ -875,61 +875,16 @@ class Breadcrumb_Trail {
 			    
                     }           
    
-else if (is_tax(array("elemento_trasparenza"))) {
-    // Aggiungi "Home" come primo elemento (se non è già presente)
-    if (!in_array("Home", $this->items)) {
-   //    $this->items[] = "<a href='" . home_url() . "'>" . __("Home", "design_comuni_italia") . "</a>";
-    }
+else if (is_tax(array("elemento_trasparenza"))){		
+    $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
 
-    // Aggiungi "Amministrazione Trasparente" solo se non è già presente
-    if (!in_array("Amministrazione Trasparente", $this->items)) {
-        $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-    }
-
-    // Recupera i termini associati al post nella tassonomia 'tipi_cat_amm_trasp'
-    $terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');
-    
-    if ($terms) {
-        foreach ($terms as $term) {
-            // Verifica se il termine ha un termine padre
-            if ($term->parent) {
-                // Ottieni il termine padre
-                $parent_term = get_term($term->parent, 'tipi_cat_amm_trasp');
-                if ($parent_term) {
-                    // Aggiungi il termine padre prima (se non è già presente)
-                    if (!in_array($parent_term->name, $this->items)) {
-                        $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
-                    }
-                }
-            }
-
-            // Aggiungi il termine figlio dopo il termine padre (se non è già presente)
-            if (!in_array($term->name, $this->items)) {
-                $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
-            }
-        }
-    }
-
-    // Recupera il termine attualmente visualizzato
-    $term_name = single_term_title('', false);
-    
-    // Se il termine supera i 100 caratteri, lo tronca e aggiunge "..."
-    if (strlen($term_name) > 100) {
-        $term_name = substr($term_name, 0, 97) . '...';
-    }
-    
-    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
-    if (preg_match('/[A-Z]{5,}/', $term_name)) {
-        // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-        $term_name = ucfirst(strtolower($term_name));
-    }
-    
-    // Aggiungi il termine alla lista degli elementi (assicurandosi che non sia già presente)
-    if (!in_array($term_name, $this->items)) {
+    $terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');	    			    
+    // Ottieni l'oggetto del termine corrente
+    $term = get_queried_object();			
+    if ($term instanceof WP_Term) {
+        $term_name = $term->name; // Nome del termine
         $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
     }
-
-    return;
 }
 
 
