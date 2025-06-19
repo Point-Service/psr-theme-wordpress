@@ -781,8 +781,20 @@ class Breadcrumb_Trail {
 
 
 
-   var_dump($is_category);
+  // Se sei in una tassonomia personalizzata
+    if (is_tax()) {
+        // Ottieni l'oggetto del termine corrente
+        $term = get_queried_object();
 
+        // Verifica che sia un oggetto di tipo WP_Term
+        if ($term instanceof WP_Term) {
+            // Ottieni il nome della tassonomia
+            $taxonomy_name = $term->taxonomy;
+
+            // Stampa il nome della tassonomia
+            echo "Nome della tassonomia: " . $taxonomy_name;
+        }
+    }
 
 
 			
