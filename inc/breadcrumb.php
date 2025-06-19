@@ -844,17 +844,7 @@ class Breadcrumb_Trail {
 			    
                        else if (is_tax(array("elemento_trasparenza"))) {
  
-			$this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-			    
-			// Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
-			$terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');	    			    
-			// Ottieni l'oggetto del termine corrente
-			$term = get_queried_object();			
-			if ($term instanceof WP_Term) {
-			    $term_name = $term->name; // Nome del termine
-			    $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
-			}
-			    
+                        $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
                  }
