@@ -219,7 +219,7 @@ $prefix = "_dci_bando_";
                 </select>
             </div>
             <div class="col-12 col-md-auto">
-                <button type="submit" class="btn btn-primary form-control" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
+                <button type="submit" class="btn btn-primary form-control" style="padding: 0.22rem 0.7rem; font-size: 0.875rem;">
                     <svg class="icon" style="fill:#FFFFFF;"><use href="#it-search"></use></svg> <?php _e('Cerca', 'design_comuni_italia'); ?>
                 </button>
             </div>
