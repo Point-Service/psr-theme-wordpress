@@ -435,20 +435,20 @@ class Breadcrumb_Trail {
 					                }
 					            }
 					
-					            // Aggiungi il termine figlio dopo il termine padre, tronca il nome del termine a 60 caratteri
+					            // Aggiungi il termine figlio dopo il termine padre, tronca il nome del termine a 40 caratteri
 					            $term_name = $term->name;
-					            if (strlen($term_name) > 60) {
-					                $term_name = substr($term_name, 0, 60) . '...'; // Troncamento del nome
+					            if (strlen($term_name) > 40) {
+					                $term_name = substr($term_name, 0, 40) . '...'; // Troncamento del nome
 					            }
 					            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term_name);
 					        }
 					    }
 					
-					    // Recupera il titolo della pagina e troncalo a 60 caratteri
+					    // Recupera il titolo della pagina e troncalo a 40 caratteri
 					    $title = get_the_title();
-					    // Se il titolo supera i 60 caratteri, lo tronca e aggiunge "..."
-					    if (strlen($title) > 60) {
-					        $title = substr($title, 0, 60) . '...';
+					    // Se il titolo supera i 40 caratteri, lo tronca e aggiunge "..."
+					    if (strlen($title) > 40) {
+					        $title = substr($title, 0, 40) . '...';
 					    }
 					    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
 					    if (preg_match('/[A-Z]{5,}/', $title)) {
