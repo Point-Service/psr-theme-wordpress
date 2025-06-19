@@ -403,6 +403,24 @@ class Breadcrumb_Trail {
 					return;
 				}
 
+
+		    
+
+		    		if (get_post_type() == 'elemento_trasparenza') {
+					   $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+					$terms = get_the_terms(get_the_ID(),'tipi_cat_amm_trasp');
+					if($terms){
+					  foreach ($terms as $term) {
+						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_cat_amm_trasp' ) ), $term->name );
+					  }
+					}
+					$this->items[] = get_the_title();
+					return;
+				}
+
+
+
+		    
 		    
 				if (get_post_type() == 'dataset') {
                                     $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
@@ -777,11 +795,14 @@ class Breadcrumb_Trail {
 			
 		}
 
+
+			
+
                 elseif ( is_category() || is_tag() || is_tax() ){
 
 
 
-  // Se sei in una tassonomia personalizzata
+  // PER RISALIRE AL NOME TASSONOMIA
     if (is_tax()) {
         // Ottieni l'oggetto del termine corrente
         $term = get_queried_object();
@@ -792,7 +813,7 @@ class Breadcrumb_Trail {
             $taxonomy_name = $term->taxonomy;
 
             // Stampa il nome della tassonomia
-            echo "Nome della tassonomia: " . $taxonomy_name;
+          //  echo "Nome della tassonomia: " . $taxonomy_name;
         }
     }
 
