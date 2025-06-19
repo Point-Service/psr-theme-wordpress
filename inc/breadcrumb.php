@@ -406,46 +406,53 @@ class Breadcrumb_Trail {
 
 		    
 
-					if (get_post_type() == 'elemento_trasparenza') {
-					    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-					
-					    // Recupera i termini associati al post nella tassonomia 'tipi_cat_amm_trasp'
-					    $terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');
-					    if ($terms) {
-					        foreach ($terms as $term) {
-					            // Verifica se il termine ha un termine padre
-					            if ($term->parent) {
-					                // Ottieni il termine padre
-					                $parent_term = get_term($term->parent, 'tipi_cat_amm_trasp');
-					                if ($parent_term) {
-					                    // Aggiungi il nome del termine padre prima
-					                    $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
-					                }
-					            }
-					
-					            // Aggiungi il termine figlio dopo il termine padre
-					            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
-					        }
-					    }
-					
-					    // Recupera il titolo della pagina
-					    $title = get_the_title();
-					    // Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
-					    if (strlen($title) > 100) {
-					        $title = substr($title, 0, 97) . '...';
-					    }
-					    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
-					    if (preg_match('/[A-Z]{5,}/', $title)) {
-					        // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
-					        $title = ucfirst(strtolower($title));
-					    }
-					    // Aggiunge il titolo alla lista degli elementi
-					    $this->items[] = $title;
-					
-					    return;
-					}
+				else if (is_tax(array("elemento_trasparenza"))) {
+    // Debug: Verifica il tipo di post e la tassonomia
+    error_log('Current Post ID: ' . get_the_ID());  // Log del post corrente
+    error_log('Current Term: ' . single_term_title('', false));  // Log del termine corrente
 
+    // Aggiungi il link "Amministrazione Trasparente" se non è già nel breadcrumb
+    if (!in_array("Amministrazione Trasparente", $this->items)) {
+        $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+    }
 
+    // Recupera i termini associati al post corrente
+    $terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');
+    if ($terms) {
+        foreach ($terms as $term) {
+            error_log('Term Name: ' . $term->name);  // Log per vedere se otteniamo i termini
+
+            // Se il termine ha un padre, aggiungiamo il padre prima del termine figlio
+            if ($term->parent) {
+                $parent_term = get_term($term->parent, 'tipi_cat_amm_trasp');
+                if ($parent_term) {
+                    error_log('Parent Term: ' . $parent_term->name);  // Log per vedere il termine padre
+                    // Aggiungi il termine padre
+                    $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
+                }
+            }
+
+            // Aggiungi il termine figlio
+            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
+        }
+    }
+
+    // Recupera il titolo del post
+    $title = get_the_title();
+    if (strlen($title) > 100) {
+        $title = substr($title, 0, 97) . '...';
+    }
+
+    // Verifica se il titolo contiene almeno 5 lettere maiuscole consecutive
+    if (preg_match('/[A-Z]{5,}/', $title)) {
+        $title = ucfirst(strtolower($title));
+    }
+
+    // Aggiungi il titolo del post al breadcrumb
+    $this->items[] = $title;
+
+    return;
+}
 
 
 		    
