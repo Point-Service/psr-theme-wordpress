@@ -883,39 +883,53 @@ class Breadcrumb_Trail {
 
 			    
 else if (is_tax(array("elemento_trasparenza"))) {
-
-    // Aggiungi il link alla "Amministrazione Trasparente"
+    // Aggiungi il link a "Amministrazione Trasparente"
     $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-
-    // Recupera i termini associati al post corrente nella tassonomia 'tipi_cat_amm_trasp'
+    
+    // Recupera i termini associati al post nella tassonomia 'tipi_cat_amm_trasp'
     $terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');
-
+    
+    // Controlla se ci sono termini associati al post
     if ($terms) {
+        $parent_term_added = false;  // Variabile per evitare duplicazione del termine padre
+        
         foreach ($terms as $term) {
-
-            // Se il termine ha un padre, aggiungi il termine padre prima del figlio
-            if ($term->parent) {
+            // Verifica se il termine ha un termine padre
+            if ($term->parent && !$parent_term_added) {
+                // Ottieni il termine padre
                 $parent_term = get_term($term->parent, 'tipi_cat_amm_trasp');
                 if ($parent_term) {
-                    // Aggiungi il link al termine padre
+                    // Aggiungi il termine padre prima
                     $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
+                    $parent_term_added = true;  // Segna che il termine padre è stato aggiunto
                 }
             }
 
-            // Aggiungi il termine figlio (attuale)
+            // Aggiungi il termine figlio dopo il termine padre
             $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
         }
     }
-
-    // Recupera il titolo del post e aggiungi al breadcrumb
-    $title = get_the_title();
-    if (strlen($title) > 100) {
-        $title = substr($title, 0, 97) . '...';
+    
+    // Recupera il nome del termine visualizzato (es. "Disposizioni generali")
+    $term_name = single_term_title('', false);
+    
+    // Se il termine supera i 100 caratteri, lo tronca e aggiunge "..."
+    if (strlen($term_name) > 100) {
+        $term_name = substr($term_name, 0, 97) . '...';
     }
-    $this->items[] = $title;
-
-    return;  // Fine della logica per elemento_trasparenza
+    
+    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+    if (preg_match('/[A-Z]{5,}/', $term_name)) {
+        // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+        $term_name = ucfirst(strtolower($term_name));
+    }
+    
+    // Aggiungi il termine finale alla lista degli elementi
+    $this->items[] = dci_get_breadcrumb_label($term_name);  // Senza __() perché è una variabile dinamica
+    
+    return;
 }
+
 
 
 
