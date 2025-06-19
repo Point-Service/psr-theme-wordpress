@@ -794,7 +794,7 @@ class Breadcrumb_Trail {
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		
                     }
-			echo $is_category;
+		
                     else if (is_tax(array("tipi_cat_amm_trasp"))){
 			//$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
                         $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
