@@ -69,15 +69,7 @@ get_header();
                     <p class="fw-semibold font-monospace">
                         <?php echo $data_pubblicazione; ?>
                     </p>
-                </div>
-                <?php if (!empty($data_scadenza)) { ?>
-                    <div class="col-6">
-                        <small>Data scadenza:</small>
-                        <p class="fw-semibold font-monospace">
-                            <?php echo $data_scadenza; ?>
-                        </p>
-                    </div>
-                <?php } ?>
+                </div>              
             </div>
         </div>
 
@@ -192,24 +184,24 @@ get_header();
                     <?php } ?>
 
                     <?php if (!empty($url1) || !empty($url_documento_group)) { ?>
-    <article class="it-page-section anchor-offset mt-5">
-        <h4 id="url">Link</h4>
-        <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+            <article class="it-page-section anchor-offset mt-5">
+                <h4 id="url">Link</h4>
+                <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
 
-            <?php if (!empty($url1)) { ?>
-                <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#it-clip"></use>
-                    </svg>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a class="text-decoration-none" href="<?php echo esc_url($url1); ?>" aria-label="Vai alla pagina" title="Vai alla pagina">
-                                Vai alla pagina
-                            </a>
-                        </h5>
+                <?php if (!empty($url1)) { ?>
+                    <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#it-clip"></use>
+                        </svg>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a class="text-decoration-none" href="<?php echo esc_url($url1); ?>" aria-label="Vai alla pagina" title="Vai alla pagina">
+                                    Vai alla pagina
+                                </a>
+                            </h5>
+                        </div>
                     </div>
-                </div>
-            <?php } ?>
+                <?php } ?>
 
             <?php
             // Mostra i link multipli (url_documento_group)
