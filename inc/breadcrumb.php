@@ -875,28 +875,43 @@ class Breadcrumb_Trail {
 			    
                     }           
    
-else if (is_tax(array("elemento_trasparenza"))) {
-    // Link alla pagina principale di Amministrazione Trasparente
-    $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-
-    // Ottieni l'oggetto del termine corrente
-    $term = get_queried_object();
-
-    if ($term instanceof WP_Term) {
-        // Recupera il termine padre dalla tassonomia 'tipi_cat_amm_trasp'
-        $parent_terms = get_the_terms($term->term_id, 'tipi_cat_amm_trasp');
-        
-        if ($parent_terms && !is_wp_error($parent_terms)) {
-            // Assumiamo che ci sia un solo termine padre per ogni termine
-            foreach ($parent_terms as $parent_term) {
-                // Aggiungi il termine padre prima del termine figlio
-                $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
+if (get_post_type() == 'elemento_trasparenza') {
+    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+    
+    // Recupera i termini associati al post nella tassonomia 'tipi_cat_amm_trasp'
+    $terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');
+    if ($terms) {
+        foreach ($terms as $term) {
+            // Verifica se il termine ha un termine padre
+            if ($term->parent) {
+                // Ottieni il termine padre
+                $parent_term = get_term($term->parent, 'tipi_cat_amm_trasp');
+                if ($parent_term) {
+                    // Aggiungi il termine padre prima
+                    $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($parent_term, 'tipi_cat_amm_trasp')), $parent_term->name);
+                }
             }
-        }
 
-        // Aggiungi il termine figlio
-        $this->items[] = dci_get_breadcrumb_label($term->name); // Senza __() perché è una variabile dinamica
+            // Aggiungi il termine figlio dopo il termine padre
+            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_cat_amm_trasp')), $term->name);
+        }
     }
+    
+    // Recupera il titolo della pagina
+    $title = get_the_title();
+    // Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+    if (strlen($title) > 100) {
+        $title = substr($title, 0, 97) . '...';
+    }
+    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+    if (preg_match('/[A-Z]{5,}/', $title)) {
+        // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+        $title = ucfirst(strtolower($title));
+    }
+    // Aggiunge il titolo alla lista degli elementi
+    $this->items[] = $title;
+
+    return;
 }
 
 
