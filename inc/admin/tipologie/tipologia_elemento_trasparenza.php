@@ -253,6 +253,7 @@ function dci_add_elemento_trasparenza_metaboxes()
         'object_types'  => array('elemento_trasparenza'),
         'context'       => 'normal',
         'priority'      => 'high',
+        'closed'        => true,
     ));
 
     $cmb_apertura->add_field(array(
