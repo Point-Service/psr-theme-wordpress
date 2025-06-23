@@ -263,14 +263,7 @@ function dci_add_elemento_trasparenza_metaboxes()
         'date_format'   => 'd-m-Y',
     ));
 
-    $cmb_apertura->add_field(array(
-        'id'            => $prefix . 'data_scadenza',
-        'name'          => __('Data di scadenza', 'design_comuni_italia'),
-        'desc'          => __('Data oltre la quale il post non sarà più consultabile. Se lasciato vuoto, il post resterà sempre visibile.', 'design_comuni_italia'),
-        'type'          => 'text_date_timestamp',
-        'date_format'   => 'd-m-Y',
-    ));
-    
+
     $cmb_apertura->add_field(array(
         'id'            => $prefix . 'descrizione_breve',
         'name'          => __('Descrizione breve ', 'design_comuni_italia'),
