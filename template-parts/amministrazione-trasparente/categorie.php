@@ -177,7 +177,19 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 }
 
 </style>
+<script>
+  window.addEventListener('load', () => {
+    // Prendi il background-color di .it-header-slim-wrapper
+    const headerSlim = document.querySelector('.it-header-slim-wrapper');
+    if (headerSlim) {
+      const style = getComputedStyle(headerSlim);
+      const bgColor = style.backgroundColor;
 
+      // Imposta la variabile CSS --arrow-color con questo colore
+      document.documentElement.style.setProperty('--arrow-color', bgColor);
+    }
+  });
+</script>
 
 
 <script>
