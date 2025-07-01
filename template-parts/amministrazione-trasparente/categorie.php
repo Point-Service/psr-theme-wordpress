@@ -68,7 +68,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 /* Freccia prima del link */
 .content a {
-    padding-left: 2px; /* spazio dopo la freccia */
+    padding-left: 25px; /* spazio dopo la freccia */
     position: relative; /* serve per posizionare assolutamente ::before */
 }
 
