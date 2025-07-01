@@ -73,10 +73,18 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 
 <script>
-    function toggleContent(id) {
-        var content = document.getElementById(id);
-        content.style.display = (content.style.display === "block") ? "none" : "block";
-    }
+function toggleContent(id) {
+    var allContents = document.querySelectorAll('.content');
+    allContents.forEach(function(content) {
+        if (content.id === id) {
+            // Se è il contenuto cliccato, toggle display
+            content.style.display = (content.style.display === "block") ? "none" : "block";
+        } else {
+            // Chiudi tutte le altre sezioni
+            content.style.display = "none";
+        }
+    });
+}
 </script>
 
 <main>
