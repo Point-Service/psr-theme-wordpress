@@ -1,5 +1,5 @@
 <?php
-global $sito_tematico_id,$siti_tematici;
+global $sito_tematico_id, $siti_tematici;
 
 // Recupera le categorie principali (genitori)
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
@@ -69,14 +69,13 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                         'parent' => $genitore->term_id  // Ottieni le sottocategorie della categoria principale
                                     ));
 
-                                    // Verifica se ci sono sottocategorie prima di iniziare il markup HTML
+                                    // Se ci sono sottocategorie, visualizzale
                                     if (!empty($sottocategorie)) { ?>
                                         <ul class="link-list t-primary">
                                             <?php foreach ($sottocategorie as $sottocategoria) {
                                                 $link = get_term_link($sottocategoria);  // Ottieni il link della sottocategoria
-                                                $nome_sotto = esc_html($sottocategoria->name); ?>                                      
+                                                $nome_sotto = esc_html($sottocategoria->name); ?>
                                                 <li class="mb-3 mt-3">
-                                        <?php echo ucfirst($sottocategoria->name); ?>
                                                     <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
                                                         <svg class="icon">
                                                             <use xlink:href="#it-arrow-right-triangle"></use>
@@ -86,8 +85,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                                 </li>
                                             <?php } ?>
                                         </ul>
-                                    <?php } else { ?>
-                                        <p>Non ci sono sottocategorie per questa categoria.</p>
                                     <?php } ?>
                                 </div>
                             <?php } ?>
@@ -100,4 +97,5 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
         </form>
     </div>
 </main>
+
 
