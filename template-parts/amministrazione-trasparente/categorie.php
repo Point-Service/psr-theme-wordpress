@@ -68,7 +68,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 /* Freccia prima del link */
 .content a::before {
-    content: '▶';
+    content: '▶ ';
     position: absolute;
     left: 0;
     top: 50%;
