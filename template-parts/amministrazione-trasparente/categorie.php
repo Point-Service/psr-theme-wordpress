@@ -1,10 +1,8 @@
 <?php
-global $sito_tematico_id, $siti_tematici;
-
-// Recupera le categorie principali (genitori)
+global $sito_tematico_id,$siti_tematici;
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
-    'parent' => 0, // Le categorie senza genitore
+    'parent' => 0,
     'orderby' => 'ID',
     'order'   => 'ASC'
 ));
@@ -37,18 +35,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     .content a:hover {
         text-decoration: underline;
     }
-
-    .link-list {
-        list-style-type: none;
-        padding-left: 0;
-    }
-
-    .category-icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 8px;
-        vertical-align: middle;
-    }
 </style>
 
 <script>
@@ -72,46 +58,37 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                 $nome_genitore = esc_html($genitore->name);
                                 $id_genitore = 'cat_' . $genitore->term_id;
                                 ?>
-                                <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')">
-                                    <!-- Aggiunta dell'icona alla categoria -->
-                                    <img src="path_to_icon/<?= $genitore->slug ?>.png" alt="<?= $nome_genitore ?>" class="category-icon" />
-                                    <?= $nome_genitore ?>
-                                </h2>
+                                <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')"><?= $nome_genitore ?></h2>
                                 <div id="<?= $id_genitore ?>" class="content">
                                     <?php
-                                    // Recupera le sottocategorie solo per questa categoria
                                     $sottocategorie = get_terms('tipi_cat_amm_trasp', array(
                                         'hide_empty' => false,
-                                        'parent' => $genitore->term_id // Filtra per l'ID del genitore
+                                        'parent' => $genitore->term_id
                                     ));
-
-                                    // Se ci sono sottocategorie, visualizzale
-                                    if (!empty($sottocategorie)) {
                                     ?>
-                                        <ul class="link-list t-primary">
-                                            <?php foreach ($sottocategorie as $sotto) {
-                                                $link = get_term_link($sotto); // Ottieni il link per ogni sottocategoria
-                                                $nome_sotto = esc_html($sotto->name); ?>
-                                                <li class="mb-3 mt-3">
-                                                    <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
-                                                        <span><?= $nome_sotto; ?></span>
-                                                    </a>
-                                                </li>
-                                            <?php } ?>
-                                        </ul>
-                                    <?php } else { ?>
-                                        <p>Non ci sono sottocategorie per questa categoria.</p>
-                                    <?php } ?>
+                                    <ul class="link-list t-primary">
+                                        <?php foreach ($sottocategorie as $sotto) {
+                                            $link = get_term_link($sotto);
+                                            $nome_sotto = esc_html($sotto->name); ?>
+                                            <li class="mb-3 mt-3">
+                                                <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
+                                                    <svg class="icon">
+                                                        <use xlink:href="#it-arrow-right-triangle"></use>
+                                                    </svg>
+                                                    <span><?= $nome_sotto; ?></span>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
                                 </div>
                             <?php } ?>
                         </div>
                     </div>
                     <!-- Colonna destra: link utili -->
-                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+                   <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
                 </div>
             </div>
         </form>
     </div>
 </main>
-
 
