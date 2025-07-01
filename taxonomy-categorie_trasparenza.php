@@ -14,28 +14,17 @@ $obj = get_queried_object();
 // Recupera il numero di pagina corrente.
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
-// Parametri GET
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
+$load_posts = -1;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-$order_by = isset($_GET['order_by']) ? sanitize_text_field($_GET['order_by']) : 'date'; // default: date DESC
 
-// Costruzione args query con ordinamento dinamico
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
-    'paged' => $paged,
+    'paged'              => $paged,
 );
-
-if ($order_by === 'alpha') {
-    $args['orderby'] = 'title';
-    $args['order'] = 'ASC';   // Ordine alfabetico crescente
-} else {
-    $args['orderby'] = 'date';
-    $args['order'] = 'DESC';  // Data più recente prima (default)
-}
-
 $the_query = new WP_Query($args);
 
 $additional_filter = array(
@@ -55,8 +44,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     $description = $obj->description;
     $data_element = 'data-element="page-name"';
     get_template_part("template-parts/hero/hero"); 
-    get_template_part("template-parts/amministrazione-trasparente/sottocategorie"); 
-    ?>
+    get_template_part("template-parts/amministrazione-trasparente/sottocategorie"); ?>
 
     <div class="bg-grey-card">
 
@@ -73,7 +61,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
             </div>
         </div>
     <?php } else { ?>
-
         <form role="search" id="search-form" method="get" class="search-form">
             <button type="submit" class="d-none"></button>
             <div class="container">
@@ -83,14 +70,12 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     <!-- Colonna sinistra: risultati -->
                     <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
                         <div class="cmp-input-search">
-
-                            <!-- Input ricerca -->
                             <div class="form-group autocomplete-wrapper mb-2 mb-lg-4">
                                 <div class="input-group">
                                     <label for="autocomplete-two" class="visually-hidden">Cerca una parola chiave</label>
                                     <input type="search" class="autocomplete form-control"
                                         placeholder="Cerca una parola chiave" id="autocomplete-two" name="search"
-                                        value="<?php echo esc_attr($query); ?>" data-bs-autocomplete="[]">
+                                        value="<?php echo $query; ?>" data-bs-autocomplete="[]">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit" id="button-3">Invio</button>
                                     </div>
@@ -102,32 +87,12 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                     </span>
                                 </div>
                             </div>
-
-                            <!-- Pulsanti ordinamento -->
-                            <div class="mb-3">
-                                <?php
-                                // Mantieni i parametri GET esistenti tranne order_by
-                                $base_params = $_GET;
-                                unset($base_params['order_by']);
-                                ?>
-                                <a href="?<?php echo http_build_query(array_merge($base_params, ['order_by' => 'alpha'])); ?>" class="<?php echo $order_by === 'alpha' ? 'active' : ''; ?>">
-                                    Ordina Alfabetico
-                                </a>
-                                |
-                                <a href="?<?php echo http_build_query(array_merge($base_params, ['order_by' => 'date'])); ?>" class="<?php echo $order_by === 'date' ? 'active' : ''; ?>">
-                                    Ordina per Data
-                                </a>
-                            </div>
-
-                            <!-- Descrizione ordinamento -->
                             <p id="autocomplete-label" class="mb-4">
                                 <strong><?php echo $the_query->found_posts; ?></strong> elementi trovati in ordine
-                                <?php echo $order_by === 'date' ? 'per data (dal più recente)' : 'alfabetico'; ?>
+                                alfabetico
                             </p>
-
                         </div>
-
-                        <?php if ($the_query->have_posts()) { ?>
+                        <?php if ($the_query->found_posts != 0) { ?>
                             <?php $categoria = $the_query->posts; ?>
                             <div class="row g-4" id="load-more">
                                 <?php foreach ($categoria as $elemento) {
@@ -152,7 +117,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 </div>
             </div>
         </form>
-
     <?php } ?>
     </div>
 </main>
