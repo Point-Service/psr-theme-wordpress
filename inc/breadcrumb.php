@@ -356,10 +356,6 @@ class Breadcrumb_Trail {
                 $this->items = $custom_breadcrumbs;
                 return;
             }
-
-
-
-			
 			
             if ( is_singular() ) {
 		    
@@ -705,8 +701,6 @@ class Breadcrumb_Trail {
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
-
-				    
 			case 'Vivere il comune' :
 				// Aggiungi il link alla pagina principale "Vivere il Comune"
 			
@@ -769,19 +763,19 @@ class Breadcrumb_Trail {
 			    break;
 
 
-	                    case 'Amministrazione':
-	                        $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
-	                        $this->items[] = get_the_title();				 
-	                        return;
-	                        break;
-	                    case 'Servizi':
-	                        $this->items[] =  "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
-	                        $this->items[] = get_the_title();
-	                        return;
-	                        break;
-	    
-			    case 'Novità':
-			
+                    case 'Amministrazione':
+                        $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+                        $this->items[] = get_the_title();				 
+                        return;
+                        break;
+                    case 'Servizi':
+                        $this->items[] =  "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
+                        $this->items[] = get_the_title();
+                        return;
+                        break;
+    
+		    case 'Novità':
+		
 			    $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
 			
 			    // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
@@ -850,20 +844,20 @@ class Breadcrumb_Trail {
 
 
 
-			  // PER RISALIRE AL NOME TASSONOMIA
-			    if (is_tax()) {
-			        // Ottieni l'oggetto del termine corrente
-			        $term = get_queried_object();
-			
-			        // Verifica che sia un oggetto di tipo WP_Term
-			        if ($term instanceof WP_Term) {
-			            // Ottieni il nome della tassonomia
-			            $taxonomy_name = $term->taxonomy;
-			
-			            // Stampa il nome della tassonomia
-			          //  echo "Nome della tassonomia: " . $taxonomy_name;
-			        }
-			    }
+  // PER RISALIRE AL NOME TASSONOMIA
+    if (is_tax()) {
+        // Ottieni l'oggetto del termine corrente
+        $term = get_queried_object();
+
+        // Verifica che sia un oggetto di tipo WP_Term
+        if ($term instanceof WP_Term) {
+            // Ottieni il nome della tassonomia
+            $taxonomy_name = $term->taxonomy;
+
+            // Stampa il nome della tassonomia
+          //  echo "Nome della tassonomia: " . $taxonomy_name;
+        }
+    }
 
 
 			
@@ -883,39 +877,24 @@ class Breadcrumb_Trail {
 		
                     }
 		
-			else if (is_tax(array("tipi_cat_amm_trasp"))){
-			    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-			
-			    $term = get_queried_object();
-			    if ($term instanceof WP_Term) {
-			        $breadcrumb_terms = genera_breadcrumb_taxonomy_ricorsivo($term->term_id, $term->taxonomy);
-			
-			        $last_index = count($breadcrumb_terms) - 1;
-			        foreach ($breadcrumb_terms as $index => $crumb) {
-			            if ($index === $last_index) {
-			                $this->items[] = esc_html($crumb['name']);
-			            } else {
-			                $this->items[] = "<a href='" . esc_url($crumb['link']) . "'>" . esc_html($crumb['name']) . "</a>";
-			            }
-			        }
-			    }
-			}
-
-
-
-		else if (is_tax(array("elemento_trasparenza"))){
-		    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+                    else if (is_tax(array("tipi_cat_amm_trasp"))){
+			//$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+                        $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		
-		    $term = get_queried_object();
-		    if ($term instanceof WP_Term) {
-		        $breadcrumb_terms = genera_breadcrumb_taxonomy_ricorsivo($term->term_id, $term->taxonomy);
+			    
+                    }           
+
+
+			    
+                    else if (is_tax(array("elemento_trasparenza"))){
+			//$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+                        $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+                        $term_name = single_term_title( '', false );
+                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		
-		        foreach ($breadcrumb_terms as $crumb) {
-		            $this->items[] = "<a href='" . esc_url($crumb['link']) . "'>" . esc_html($crumb['name']) . "</a>";
-		        }
-		    }
-		}
-		     		    
+                    }       		    
 		    else if (is_tax(array("tipi_evento"))) {	
      
 			    // Link a "Vivere il Comune"
@@ -1026,37 +1005,6 @@ class Breadcrumb_Trail {
 		$this->items = array_unique( apply_filters( 'breadcrumb_trail_items', $this->items, $this->args ) );
 	}
 
-
-
-
-
-		function genera_breadcrumb_taxonomy_ricorsivo($term_id, $taxonomy) {
-		    $breadcrumb = [];
-		
-		    while ($term_id) {
-		        $term = get_term($term_id, $taxonomy);
-		        if (!$term || is_wp_error($term)) break;
-		
-		        // Inseriamo il termine in cima all'array (per ordine corretto)
-		        array_unshift($breadcrumb, [
-		            'name' => $term->name,
-		            'link' => get_term_link($term),
-		        ]);
-		
-		        $term_id = $term->parent;
-		    }
-		
-		    return $breadcrumb;
-		}
-
-
-
-
-
-
-
-
-	
 	/**
 	 * Gets front items based on $wp_rewrite->front.
 	 *
