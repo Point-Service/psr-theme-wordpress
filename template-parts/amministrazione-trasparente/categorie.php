@@ -12,172 +12,184 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 ?>
 
 <style>
-.title-custom {
-    font-size: 22px;               /* Titolo leggermente più grande */
-    background-color: var(--bs-light);    /* Sfondo leggero */
-    padding: 14px 20px;            /* Padding un po' più ampio */
-    border: 1px solid var(--bs-secondary); /* Bordo chiaro */
-    border-radius: 6px;           /* Angoli arrotondati */
+  :root {
+    --header-color: #007bff; /* valore di fallback */
+  }
+
+  .title-custom {
+    font-size: 22px;
+    background-color: #fff9f9;
+    padding: 14px 20px;
+    border: 1px solid var(--header-color);
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: 600;             /* Grassetto */
+    font-weight: 600;
     line-height: 1.3;
-    color: var(--bs-dark);        /* Testo scuro */
+    color: var(--header-color);
     user-select: none;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-bottom: 8px;           /* Spazio sotto il titolo */
-}
+    margin-bottom: 8px;
+  }
 
-.title-custom:hover {
-    background-color: var(--bs-primary);   /* Colore blu al passaggio mouse */
-    color: var(--bs-light);                 /* Testo chiaro */
-}
+  .title-custom:hover {
+    background-color: var(--header-color);
+    color: white;
+  }
 
-.content {
+  .content {
     display: none;
     padding: 15px 25px;
     font-size: 18px;
     line-height: 1.6;
-    color: var(--bs-dark);
-    background-color: var(--bs-light);
-    border-left: 3px solid var(--bs-primary); /* Bordo colorato a sinistra */
-    border-radius: 0 6px 6px 0;     /* Angoli arrotondati lato destro */
-    margin-bottom: 18px;             /* Spazio dopo il contenuto */
-}
+    color: #333;
+    background-color: #fafafa;
+    border-left: 3px solid var(--header-color);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 18px;
+  }
 
-.content a {
+  .content a {
     display: block;
     margin: 10px 0;
-    color: var(--bs-primary);
+    color: var(--header-color);
     text-decoration: none;
     padding-left: 20px;
     font-size: 18px;
     font-weight: 600;
     position: relative;
     transition: color 0.3s ease;
-}
+  }
 
-.content a::before {
+  .content a::before {
     content: '▶';
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
-    color: var(--bs-primary);
+    color: var(--header-color);
     transition: transform 0.3s ease;
-}
+  }
 
-.content a:hover {
+  .content a:hover {
     text-decoration: underline;
-    color: var(--bs-dark);
-}
+    color: #003366; /* un blu più scuro per hover */
+  }
 
-.content a:hover::before {
+  .content a:hover::before {
     transform: translateY(-50%) rotate(90deg);
-}
+  }
 
-/* Livello 2 e 3 e 4 uniformati */
+  /* Livello 2 e 3 e 4 uniformati */
 
-.sub-sub-list {
+  .sub-sub-list {
     margin-top: 15px;
-    margin-left: 32px;      /* rientro uguale per tutti */
+    margin-left: 32px;
     padding-left: 18px;
-    border-left: 2px solid var(--bs-secondary);
+    border-left: 2px solid #ccc;
     font-size: 17px;
     line-height: 1.5;
-    color: #555;            /* un grigio medio */
+    color: #555;
     font-style: italic;
-}
+  }
 
-.sub-sub-list li {
+  .sub-sub-list li {
     margin: 8px 0;
-}
+  }
 
-.sub-sub-list a {
+  .sub-sub-list a {
     color: #555;
     font-style: italic;
     padding-left: 12px;
     font-size: 16px;
     font-weight: 500;
     transition: color 0.3s ease;
-}
+  }
 
-.sub-sub-list a:hover {
-    color: var(--bs-primary);
+  .sub-sub-list a:hover {
+    color: var(--header-color);
     text-decoration: underline;
-}
+  }
 
-/* Livello 4: stesso stile e rientro degli altri livelli */
-
-.sub-sub-list .sub-sub-list {
-    margin-left: 32px;        /* uguale al livello 2 e 3 */
-    border-left: 2px solid var(--bs-secondary);
+  .sub-sub-list .sub-sub-list {
+    margin-left: 32px;
+    border-left: 2px solid #ccc;
     padding-left: 18px;
     font-style: italic;
     font-size: 17px;
     color: #555;
     font-weight: 500;
     line-height: 1.5;
-}
+  }
 
-.sub-sub-list .sub-sub-list li {
+  .sub-sub-list .sub-sub-list li {
     margin: 8px 0;
-}
+  }
 
-.sub-sub-list .sub-sub-list a {
+  .sub-sub-list .sub-sub-list a {
     font-style: italic;
     font-size: 16px;
     color: #555;
     font-weight: 500;
     padding-left: 12px;
     transition: color 0.3s ease;
-}
+  }
 
-.sub-sub-list .sub-sub-list a:hover {
-    color: var(--bs-primary);
+  .sub-sub-list .sub-sub-list a:hover {
+    color: var(--header-color);
     text-decoration: underline;
-}
+  }
 
-#toggle-all-container {
+  #toggle-all-container {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 1.5rem;
-}
+  }
 
-#toggle-all-btn {
+  #toggle-all-btn {
     font-size: 15px;
     height: 36px;
     padding: 6px 18px;
     cursor: pointer;
     border-radius: 5px;
-    border: 1.5px solid var(--bs-primary);
+    border: 1.5px solid var(--header-color);
     background-color: transparent;
-    color: var(--bs-primary);
+    color: var(--header-color);
     font-weight: 600;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     user-select: none;
-}
+  }
 
-#toggle-all-btn:hover {
-    background-color: var(--bs-primary);
-    color: var(--bs-light);
-    border-color: var(--bs-dark);
-}
+  #toggle-all-btn:hover {
+    background-color: var(--header-color);
+    color: white;
+    border-color: #003366;
+  }
 
-#toggle-all-wrapper {
+  #toggle-all-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
     font-weight: 700;
     font-size: 24px;
-    color: var(--bs-dark);
+    color: #222;
     letter-spacing: 0.03em;
-}
-
-
+  }
 </style>
 
+<script>
+  window.addEventListener('load', () => {
+    const header = document.querySelector('header, .it-header-center-wrapper, .it-header-navbar-wrapper'); 
+    // seleziona header o wrapper tipici del sito
+
+    if (header) {
+      const style = getComputedStyle(header);
+      const bgColor = style.backgroundColor;
+      document.documentElement.style.setProperty('--header-color', bgColor);
+    }
+  });
+</script>
 
 <script>
 function toggleContent(id) {
