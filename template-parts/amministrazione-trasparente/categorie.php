@@ -73,6 +73,14 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                         'parent' => $genitore->term_id // Filtra per l'ID del genitore
                                     ));
 
+                                    // Debug: verifica se le sottocategorie sono vuote
+                                    if (empty($sottocategorie)) {
+                                        echo "<p>Non ci sono sottocategorie per questa categoria.</p>";
+                                    } else {
+                                        echo "<p>Sottocategorie trovate: " . count($sottocategorie) . "</p>";
+                                    }
+
+                                    // Se ci sono sottocategorie, visualizzale
                                     if (!empty($sottocategorie)) {
                                     ?>
                                         <ul class="link-list t-primary">
@@ -89,8 +97,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                                 </li>
                                             <?php } ?>
                                         </ul>
-                                    <?php } else { ?>
-                                        <p>Non ci sono sottocategorie per questa categoria.</p>
                                     <?php } ?>
                                 </div>
                             <?php } ?>
