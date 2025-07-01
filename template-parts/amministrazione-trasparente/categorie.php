@@ -1,10 +1,12 @@
 <?php
-global $sito_tematico_id,$siti_tematici;
+global $sito_tematico_id, $siti_tematici;
+
+// Recupera le categorie principali (genitori)
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
-    'parent' => 0,
+    'parent' => 0, // Solo categorie principali (genitori)
     'orderby' => 'ID',
-    'order'   => 'ASC'
+    'order' => 'ASC'
 ));
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
@@ -20,7 +22,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     }
 
     .content {
-        display: none;
         padding: 10px;
     }
 
@@ -34,6 +35,11 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
     .content a:hover {
         text-decoration: underline;
+    }
+
+    .link-list {
+        list-style-type: none;
+        padding-left: 0;
     }
 </style>
 
@@ -61,33 +67,40 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                 <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')"><?= $nome_genitore ?></h2>
                                 <div id="<?= $id_genitore ?>" class="content">
                                     <?php
+                                    // Recupera le sottocategorie solo per questa categoria
                                     $sottocategorie = get_terms('tipi_cat_amm_trasp', array(
                                         'hide_empty' => false,
-                                        'parent' => $genitore->term_id
+                                        'parent' => $genitore->term_id // Filtra per l'ID del genitore
                                     ));
+
+                                    if (!empty($sottocategorie)) {
                                     ?>
-                                    <ul class="link-list t-primary">
-                                        <?php foreach ($sottocategorie as $sotto) {
-                                            $link = get_term_link($sotto);
-                                            $nome_sotto = esc_html($sotto->name); ?>
-                                            <li class="mb-3 mt-3">
-                                                <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
-                                                    <svg class="icon">
-                                                        <use xlink:href="#it-arrow-right-triangle"></use>
-                                                    </svg>
-                                                    <span><?= $nome_sotto; ?></span>
-                                                </a>
-                                            </li>
-                                        <?php } ?>
-                                    </ul>
+                                        <ul class="link-list t-primary">
+                                            <?php foreach ($sottocategorie as $sotto) {
+                                                $link = get_term_link($sotto); // Ottieni il link per ogni sottocategoria
+                                                $nome_sotto = esc_html($sotto->name); ?>
+                                                <li class="mb-3 mt-3">
+                                                    <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
+                                                        <svg class="icon">
+                                                            <use xlink:href="#it-arrow-right-triangle"></use>
+                                                        </svg>
+                                                        <span><?= $nome_sotto; ?></span>
+                                                    </a>
+                                                </li>
+                                            <?php } ?>
+                                        </ul>
+                                    <?php } else { ?>
+                                        <p>Non ci sono sottocategorie per questa categoria.</p>
+                                    <?php } ?>
                                 </div>
                             <?php } ?>
                         </div>
                     </div>
                     <!-- Colonna destra: link utili -->
-                   <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
                 </div>
             </div>
         </form>
     </div>
 </main>
+
