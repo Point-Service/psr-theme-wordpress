@@ -91,7 +91,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
                         <div class="mycontainer p-3">
 
-                            <?php foreach ($categorie_genitori as $genitore) {
+                                <?php foreach ($categorie_genitori as $genitore) {
                                 $nome_genitore = esc_html($genitore->name);
                                 $id_genitore = 'cat_' . $genitore->term_id;
                                 ?>
@@ -117,51 +117,18 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                                     </svg>
                                                     <span><?= $nome_sotto; ?></span>
                                                 </a>
-
+                            
                                                 <?php
-                                                // Terzo livello
-                                                $sub_sub_categories = get_terms('tipi_cat_amm_trasp', array(
-                                                    'hide_empty' => false,
-                                                    'parent' => $sotto->term_id
-                                                ));
-
-                                                if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) { ?>
-                                                    <ul class="sub-sub-list">
-                                                        <?php foreach ($sub_sub_categories as $sub_sub) { ?>
-                                                            <li>
-                                                                <a href="<?= get_term_link($sub_sub->term_id); ?>">
-                                                                    <?= esc_html($sub_sub->name); ?>
-                                                                </a>
-
-                                                                <?php
-                                                                // Quarto livello
-                                                                $sub_sub_sub_categories = get_terms('tipi_cat_amm_trasp', array(
-                                                                    'hide_empty' => false,
-                                                                    'parent' => $sub_sub->term_id
-                                                                ));
-
-                                                                if (!empty($sub_sub_sub_categories) && !is_wp_error($sub_sub_sub_categories)) { ?>
-                                                                    <ul class="sub-sub-list">
-                                                                        <?php foreach ($sub_sub_sub_categories as $sub_sub_sub) { ?>
-                                                                            <li>
-                                                                                <a href="<?= get_term_link($sub_sub_sub->term_id); ?>">
-                                                                                    <?= esc_html($sub_sub_sub->name); ?>
-                                                                                </a>
-                                                                            </li>
-                                                                        <?php } ?>
-                                                                    </ul>
-                                                                <?php } ?>
-
-                                                            </li>
-                                                        <?php } ?>
-                                                    </ul>
-                                                <?php } ?>
-
+                                                // Include sottocategorie 3° e 4° livello
+                                                $term_id = $sotto->term_id;
+                                                include locate_template('template-parts/amministrazione-trasparente/sottocategorie_list.php');
+                                                ?>
                                             </li>
                                         <?php } ?>
                                     </ul>
                                 </div>
                             <?php } ?>
+
 
                         </div>
                     </div>
