@@ -65,7 +65,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                     <?php
                                     // Passiamo il nome della categoria principale a categorie_list.php
                                     $title = $genitore->slug;
-                                    include 'categorie_list.php'; // Includiamo il file delle sottocategorie
+                                    include 'sottocategorie_list.php'; // Includiamo il file delle sottocategorie
                                     ?>
                                 </div>
                             <?php } ?>
