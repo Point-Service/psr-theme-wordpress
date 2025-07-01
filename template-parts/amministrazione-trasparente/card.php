@@ -13,7 +13,7 @@ $documenti         = dci_get_meta('file', $prefix, $elemento->ID);
 $documento = is_array($documenti) && !empty($documenti) ? get_permalink($elemento->ID) : $documenti;
 
 $arrayDataPubblicazione = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $elemento->ID); 
-$monthNamePubblicazione = date_i18n('F', mktime(0, 0, 0, $arrayDataPubblicazione[1], 10));
+$monthNamePubblicazione = ucfirst(strtolower(date_i18n('F', mktime(0, 0, 0, $arrayDataPubblicazione[1], 10))));
 
 // $arrayDataScadenza = dci_get_data_pubblicazione_arr("data_scadenza", $prefix, $elemento->ID); 
 // $monthNameScadenza = date_i18n('M', mktime(0, 0, 0, $arrayDataScadenza[1], 10));
@@ -45,8 +45,8 @@ if ($elemento->post_status === "publish") :
                     }
                 }?>
 
-            <span
-                class="data"><?php echo $arrayDataPubblicazione[0].' '.strtoupper($monthNamePubblicazione).' '.$arrayDataPubblicazione[2] ?>
+            <span                 
+                class="data"><?php echo echo $arrayDataPubblicazione[0] . ' ' . $monthNamePubblicazione . ' ' . $arrayDataPubblicazione[2]; ?>
             </span>
             <!-- <?php if($arrayDataPubblicazione[0]!=$arrayDataScadenza[0]) {?>
                      - <span class="data"><?php echo $arrayDataScadenza[0].' '.strtoupper($monthNameScadenza).' '.$arrayDataScadenza[2] ?></span>
