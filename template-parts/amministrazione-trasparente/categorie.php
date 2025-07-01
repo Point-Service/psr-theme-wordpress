@@ -13,7 +13,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 <style>
     .title-custom {
-        font-size: 19px;
+        font-size: 20px;
         background-color: rgb(255, 252, 252);
         padding: 10px;
         border: 1px solid #ccc;
@@ -44,7 +44,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
         margin-left: 20px;
         padding-left: 15px;
         border-left: 2px solid #e0e0e0;
-        font-size: 15px;
+        font-size: 17px;
     }
 
     .sub-sub-list li {
@@ -60,7 +60,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
     .sub-sub-list .sub-sub-list a {
         font-style: normal;
-        font-size: 14px;
+        font-size: 16px;
         color: #666;
     }
 
@@ -99,7 +99,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     align-items: center;
     margin-bottom: 1rem;
     font-weight: 600;
-    font-size: 21px;
+    font-size: 23px;
     color: #333;
 }
 
