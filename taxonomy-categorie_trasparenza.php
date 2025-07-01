@@ -13,19 +13,6 @@ $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'data_desc';
 
-$args = array(
-    's' => $query,
-    'posts_per_page' => $max_posts,
-    'post_type' => 'elemento_trasparenza',
-    'paged' => $paged,
-    'tax_query' => array(
-        array(
-            'taxonomy' => 'tipi_cat_amm_trasp',
-            'field'    => 'slug',
-            'terms'    => $obj->slug,
-        )
-    )
-);
 
 $args = array(
     's' => $query,
