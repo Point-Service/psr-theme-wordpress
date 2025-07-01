@@ -13,6 +13,7 @@ $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'data_desc';
 
+// Query WP base
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
@@ -31,7 +32,7 @@ if ($orderby === 'alpha') {
     $args['orderby'] = 'title';
     $args['order'] = 'ASC';
 } else {
-    // Ordina per data pubblicazione meta numerica YYYYMMDD
+    // Ordina per meta_value_num, il meta deve essere un numero YYYYMMDD
     $args['meta_key'] = '_data_pubblicazione_ordinabile';
     $args['orderby'] = 'meta_value_num';
     $args['order'] = 'DESC';
@@ -40,6 +41,47 @@ if ($orderby === 'alpha') {
 $the_query = new WP_Query($args);
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
+
+// Funzione da eseguire UNA SOLA VOLTA per popolare il meta _data_pubblicazione_ordinabile
+function aggiorna_meta_data_pubblicazione_ordinabile() {
+    $args = array(
+        'post_type' => 'elemento_trasparenza',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+    );
+
+    $query = new WP_Query($args);
+
+    while ($query->have_posts()) {
+        $query->the_post();
+        $post_id = get_the_ID();
+
+        // Qui prendi la data di pubblicazione da meta personalizzato "data_pubblicazione"
+        $data_pub = get_post_meta($post_id, '_dci_elemento_trasparenza_data_pubblicazione', true);
+
+        // Se non c’è o è vuoto, usa la data di pubblicazione WP standard
+        if (!$data_pub) {
+            $data_pub = get_the_date('Ymd', $post_id);
+        } else {
+            // Se la data è nel formato con slash o altro, prova a convertirla
+            $data_pub = preg_replace('/[^0-9]/', '', $data_pub); // rimuove tutto tranne numeri
+            if (strlen($data_pub) === 8) {
+                // ok
+            } else {
+                // fallback alla data WP
+                $data_pub = get_the_date('Ymd', $post_id);
+            }
+        }
+
+        if ($data_pub) {
+            update_post_meta($post_id, '_data_pubblicazione_ordinabile', intval($data_pub));
+        }
+    }
+    wp_reset_postdata();
+}
+// Se devi eseguire, togli il commento sotto una volta e ricarica pagina (poi commentalo di nuovo)
+// aggiorna_meta_data_pubblicazione_ordinabile();
+
 ?>
 
 <main>
