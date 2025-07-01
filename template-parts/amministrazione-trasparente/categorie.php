@@ -12,26 +12,35 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 ?>
 
 <style>
+/* Definisco la variabile principale basata sul colore header */
+:root {
+  --main-color: #0D5982; /* colore blu header */
+  --main-color-light: #3B7FBF; /* versione schiarita */
+}
+
+/* TITOLO */
 .title-custom {
-    font-size: 22px;               /* Titolo leggermente più grande */
-    background-color: #fff9f9;    /* Colore più soft */
-    padding: 14px 20px;            /* Padding un po' più ampio */
-    border: 1px solid #ddd;       /* Bordo chiaro */
-    border-radius: 6px;           /* Angoli arrotondati */
+    font-size: 22px;
+    background-color: white;               /* sfondo bianco */
+    padding: 14px 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: 600;             /* Grassetto */
+    font-weight: 600;
     line-height: 1.3;
     color: #222;
     user-select: none;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-bottom: 8px;           /* Spazio sotto il titolo */
+    margin-bottom: 8px;
 }
 
+/* Hover: sfondo più chiaro, testo bianco */
 .title-custom:hover {
-    background-color: #f0f8ff;   /* Cambia colore al passaggio mouse */
-    color: #007bff;
+    background-color: var(--main-color-light);
+    color: white;
 }
 
+/* CONTENUTO */
 .content {
     display: none;
     padding: 15px 25px;
@@ -39,15 +48,16 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     line-height: 1.6;
     color: #333;
     background-color: #fafafa;
-    border-left: 3px solid var(--arrow-color, #007bff); /* usa la stessa variabile */
+    border-left: 3px solid var(--main-color); /* bordo sinistro colore principale */
     border-radius: 0 6px 6px 0;
     margin-bottom: 18px;
 }
 
+/* LINK DENTRO IL CONTENUTO */
 .content a {
     display: block;
     margin: 10px 0;
-    color: #007bff;
+    color: var(--main-color);
     text-decoration: none;
     padding-left: 20px;
     font-size: 18px;
@@ -56,32 +66,33 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     transition: color 0.3s ease;
 }
 
-  .content a::before {
+/* Freccia prima del link */
+.content a::before {
     content: '▶';
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
-    color: var(--arrow-color, #007bff); /* default */
+    color: var(--main-color);
     transition: transform 0.3s ease;
-  }
+}
 
-
+/* Hover link e freccia */
 .content a:hover {
     text-decoration: underline;
-    color: #0056b3;
+    color: var(--main-color-light);
 }
 
 .content a:hover::before {
     transform: translateY(-50%) rotate(90deg);
+    color: var(--main-color-light);
 }
 
-/* Livello 2 e 3 e 4 uniformati */
-
+/* LISTE INTERNE */
 .sub-sub-list {
     margin-top: 15px;
-    margin-left: 32px;      /* rientro uguale per tutti */
+    margin-left: 32px;
     padding-left: 18px;
     border-left: 2px solid #ccc;
     font-size: 17px;
@@ -104,14 +115,12 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 }
 
 .sub-sub-list a:hover {
-    color: #007bff;
+    color: var(--main-color);
     text-decoration: underline;
 }
 
-/* Livello 4: stesso stile e rientro degli altri livelli */
-
 .sub-sub-list .sub-sub-list {
-    margin-left: 32px;        /* uguale al livello 2 e 3 */
+    margin-left: 32px;
     border-left: 2px solid #ccc;
     padding-left: 18px;
     font-style: italic;
@@ -135,10 +144,11 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 }
 
 .sub-sub-list .sub-sub-list a:hover {
-    color: #007bff;
+    color: var(--main-color);
     text-decoration: underline;
 }
 
+/* BOTTONE TOGGLE */
 #toggle-all-container {
     display: flex;
     justify-content: flex-end;
@@ -151,18 +161,18 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     padding: 6px 18px;
     cursor: pointer;
     border-radius: 5px;
-    border: 1.5px solid #007bff;
+    border: 1.5px solid var(--main-color);
     background-color: transparent;
-    color: #007bff;
+    color: var(--main-color);
     font-weight: 600;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     user-select: none;
 }
 
 #toggle-all-btn:hover {
-    background-color: #007bff;
+    background-color: var(--main-color);
     color: white;
-    border-color: #0056b3;
+    border-color: var(--main-color-light);
 }
 
 #toggle-all-wrapper {
@@ -175,6 +185,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     color: #222;
     letter-spacing: 0.03em;
 }
+
 
 </style>
 <script>
