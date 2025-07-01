@@ -18,7 +18,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
   .title-custom {
     font-size: 22px;
-    background-color: #fff9f9;
+    background-color: var(--primary-color);;
     padding: 14px 20px;
     border: 1px solid var(--header-color);
     border-radius: 6px;
