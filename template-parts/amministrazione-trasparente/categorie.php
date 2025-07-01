@@ -73,16 +73,17 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     text-decoration: none;
 }
 
+/* Freccia prima del link */
 .content a::before {
     content: '▶';
     position: absolute;
-    left: 5px;      /* spazio da sinistra per la freccia */
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
     color: var(--main-color);
     transition: transform 0.3s ease;
-}
+} 
 
 
 /* Hover link e freccia */
