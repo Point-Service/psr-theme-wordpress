@@ -31,29 +31,13 @@ if ($orderby === 'alpha') {
     $args['orderby'] = 'title';
     $args['order'] = 'ASC';
 } else {
-
-
-
-$args['meta_query'] = array(
-    'relation' => 'OR',
-    array(
-        'key' => '_data_pubblicazione_ordinabile',
-        'compare' => 'EXISTS',
-    ),
-    array(
-        'key' => '_data_pubblicazione_ordinabile',
-        'compare' => 'NOT EXISTS',
-    ),
-);
-
-$args['orderby'] = array(
-    'meta_value' => 'DESC',
-    'date' => 'DESC',
-);
-
-$args['meta_key'] = '_data_pubblicazione_ordinabile';
-
-
+    // Ordina per meta_key (data pubblicazione) se esiste, altrimenti per data post
+    $args['meta_key'] = '_data_pubblicazione_ordinabile';
+    $args['orderby'] = array(
+        'meta_value_num' => 'DESC',
+        'date' => 'DESC',
+    );
+}
 
 
 
