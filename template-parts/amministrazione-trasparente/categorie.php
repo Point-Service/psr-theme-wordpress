@@ -4,9 +4,9 @@ global $sito_tematico_id, $siti_tematici;
 // Recupera le categorie principali (genitori)
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
-    'parent' => 0, // Solo categorie principali (genitori)
+    'parent' => 0, // Le categorie senza genitore
     'orderby' => 'ID',
-    'order' => 'ASC'
+    'order'   => 'ASC'
 ));
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
@@ -22,6 +22,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     }
 
     .content {
+        display: none;
         padding: 10px;
     }
 
@@ -40,6 +41,13 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     .link-list {
         list-style-type: none;
         padding-left: 0;
+    }
+
+    .category-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        vertical-align: middle;
     }
 </style>
 
@@ -64,7 +72,11 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                 $nome_genitore = esc_html($genitore->name);
                                 $id_genitore = 'cat_' . $genitore->term_id;
                                 ?>
-                                <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')"><?= $nome_genitore ?></h2>
+                                <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')">
+                                    <!-- Aggiunta dell'icona alla categoria -->
+                                    <img src="path_to_icon/<?= $genitore->slug ?>.png" alt="<?= $nome_genitore ?>" class="category-icon" />
+                                    <?= $nome_genitore ?>
+                                </h2>
                                 <div id="<?= $id_genitore ?>" class="content">
                                     <?php
                                     // Recupera le sottocategorie solo per questa categoria
@@ -101,4 +113,5 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
         </form>
     </div>
 </main>
+
 
