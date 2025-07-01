@@ -91,7 +91,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     align-items: center;
     margin-bottom: 1rem;
     font-weight: 600;
-    font-size: 19px;
+    font-size: 21px;
     color: #333;
 }
 
