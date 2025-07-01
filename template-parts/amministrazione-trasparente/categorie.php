@@ -114,20 +114,28 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 .sub-sub-list .sub-sub-list {
     margin-left: 30px;
-    border-left: 1px dashed #bbb;   /* tratteggio leggero */
+    border-left: 1px dashed #bbb;
     padding-left: 14px;
-    font-style: normal;             /* niente corsivo */
-    font-size: 15.5px;              /* un po’ più piccolo */
-    color: #888;                    /* colore più chiaro/grigio */
-    font-weight: 500;               /* peso medio */
-    line-height: 1.4;
+    font-style: normal;
+    font-size: 15.5px;
+    color: #888;
+    font-weight: 500;
+    line-height: 1.5;  /* leggermente più alto per migliorare leggibilità */
 }
+
 .sub-sub-list .sub-sub-list a {
     font-style: normal;
     font-size: 16px;
     color: #666;
     font-weight: 600;
+    transition: color 0.3s ease;  /* aggiunto per uniformità con gli altri link */
 }
+
+.sub-sub-list .sub-sub-list a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
 
 
     
