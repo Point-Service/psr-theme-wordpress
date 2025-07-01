@@ -31,9 +31,23 @@ if ($orderby === 'alpha') {
     $args['orderby'] = 'title';
     $args['order'] = 'ASC';
 } else {
-    $args['meta_key'] = '_data_pubblicazione_ordinabile';
-    $args['orderby'] = 'meta_value';
-    $args['order'] = 'DESC';
+$args['meta_query'] = array(
+    'relation' => 'OR',
+    array(
+        'key' => '_data_pubblicazione_ordinabile',
+        'compare' => 'EXISTS',
+    ),
+    array(
+        'key' => '_data_pubblicazione_ordinabile',
+        'compare' => 'NOT EXISTS',
+    )
+);
+$args['orderby'] = array(
+    'meta_value' => 'DESC',
+    'date' => 'DESC'
+);
+$args['meta_key'] = '_data_pubblicazione_ordinabile';
+
 }
 
 $the_query = new WP_Query($args);
