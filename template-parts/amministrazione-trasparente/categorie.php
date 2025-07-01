@@ -275,10 +275,7 @@ function updateToggleAllButton() {
                                             
                                             <li class="mb-3 mt-3">
                                                 <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
-                                                    <svg class="icon">
-
-
-                                                        
+                                                    <svg class="icon">                                                        
                                                     </svg>
                                                     <span><?= $nome_sotto; ?></span>
                                                 </a>
