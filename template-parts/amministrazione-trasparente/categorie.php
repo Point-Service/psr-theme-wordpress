@@ -36,7 +36,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 /* Hover: sfondo più chiaro, testo bianco */
 .title-custom:hover {
-    background-color: var(--main-color-light);
+    background-color: color-mix(in srgb, var(--main-color) 15%, white);
     color: white;
 }
 
