@@ -65,9 +65,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     position: relative;
     transition: color 0.3s ease;
 }
-    .content:first-of-type a .icon {
-    display: none;
-}
 
 /* Freccia prima del link */
 .content a::before {
@@ -279,7 +276,9 @@ function updateToggleAllButton() {
                                             <li class="mb-3 mt-3">
                                                 <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
                                                     <svg class="icon">
-                                                        <use xlink:href="#it-arrow-right-triangle"></use>
+
+
+                                                        
                                                     </svg>
                                                     <span><?= $nome_sotto; ?></span>
                                                 </a>
