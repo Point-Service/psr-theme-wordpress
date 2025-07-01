@@ -111,11 +111,11 @@ function toggleAllCategories() {
     if (anyClosed) {
         // Apri tutte
         allContents.forEach(content => content.style.display = 'block');
-        toggleAllBtn.textContent = 'Chiudi tutte';
+        toggleAllBtn.textContent = 'Chiudi tutte le Categorie';
     } else {
         // Chiudi tutte
         allContents.forEach(content => content.style.display = 'none');
-        toggleAllBtn.textContent = 'Espandi tutte';
+        toggleAllBtn.textContent = 'Espandi tutte le Categorie';
     }
 }
 
@@ -124,7 +124,7 @@ function updateToggleAllButton() {
     var toggleAllBtn = document.getElementById('toggle-all-btn');
 
     var allOpen = Array.from(allContents).every(content => content.style.display === 'block');
-    toggleAllBtn.textContent = allOpen ? 'Chiudi tutte' : 'Espandi tutte';
+    toggleAllBtn.textContent = allOpen ? 'Chiudi tutte' : 'Espandi tutte le Categorie';
 }
 </script>
 
