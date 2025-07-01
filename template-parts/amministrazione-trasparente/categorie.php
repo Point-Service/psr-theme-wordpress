@@ -13,7 +13,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 <style>
   :root {
-    --header-color: #007bff; /* valore di fallback */
+    --header-color: #00458b; /* fallback blu header link */
   }
 
   .title-custom {
@@ -73,14 +73,12 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
   .content a:hover {
     text-decoration: underline;
-    color: #003366; /* un blu più scuro per hover */
+    color: #003366;
   }
 
   .content a:hover::before {
     transform: translateY(-50%) rotate(90deg);
   }
-
-  /* Livello 2 e 3 e 4 uniformati */
 
   .sub-sub-list {
     margin-top: 15px;
@@ -180,16 +178,20 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 <script>
   window.addEventListener('load', () => {
-    const header = document.querySelector('header, .it-header-center-wrapper, .it-header-navbar-wrapper'); 
-    // seleziona header o wrapper tipici del sito
+    // Prendiamo il colore dal primo link del menu header
+    const menuLink = document.querySelector('.it-header-center-wrapper a');
 
-    if (header) {
-      const style = getComputedStyle(header);
-      const bgColor = style.backgroundColor;
-      document.documentElement.style.setProperty('--header-color', bgColor);
+    if (menuLink) {
+      const style = getComputedStyle(menuLink);
+      const linkColor = style.color;
+      document.documentElement.style.setProperty('--header-color', linkColor);
     }
   });
 </script>
+
+
+
+
 
 <script>
 function toggleContent(id) {
