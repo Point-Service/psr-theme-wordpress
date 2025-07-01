@@ -1,7 +1,7 @@
 <?php
-GLOBAL $title, $title;
+GLOBAL $title, $title; // Prendi il valore di $title passato da categorie.php
 
-// Recupera la categoria principale usando lo slug (presumibilmente $title è lo slug della categoria principale)
+// Recupera la categoria principale utilizzando lo slug ($title)
 $categoria_genitore = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'field' => 'slug',
@@ -50,3 +50,4 @@ if ( ! empty( $sottocategorie ) ) { ?>
 <?php } else { ?>
     <p>Non ci sono sottocategorie per questa categoria.</p>
 <?php } ?>
+
