@@ -51,6 +51,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     border-left: 3px solid var(--main-color); /* bordo sinistro colore principale */
     border-radius: 0 6px 6px 0;
     margin-bottom: 18px;
+    position: relative; /* Per posizionamento freccia assoluto */
 }
 
 /* LINK DENTRO IL CONTENUTO */
@@ -66,7 +67,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     transition: color 0.3s ease;
 }
 
-/* Freccia prima del link */
+/* Freccia prima del link (gestita solo via CSS) */
 .content a::before {
     content: '▶';
     position: absolute;
@@ -76,6 +77,11 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     font-size: 14px;
     color: var(--main-color);
     transition: transform 0.3s ease;
+}
+
+/* Nascondi la freccia nel primo link di ogni lista */
+.content ul.link-list > li:first-child > a::before {
+    content: none;
 }
 
 /* Hover link e freccia */
@@ -186,10 +192,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     letter-spacing: 0.03em;
 }
 
-
 </style>
-
-
 
 <script>
 function toggleContent(id) {
@@ -253,7 +256,6 @@ function updateToggleAllButton() {
                                     </div>
                             </div>
 
-
                             <?php foreach ($categorie_genitori as $genitore) {
                                 $nome_genitore = esc_html($genitore->name);
                                 $id_genitore = 'cat_' . $genitore->term_id;
@@ -275,12 +277,6 @@ function updateToggleAllButton() {
                                             
                                             <li class="mb-3 mt-3">
                                                 <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
-                                                    <!-- Rimuovi o commenta questo SVG per la prima categoria -->
-                                                    <?php if ($genitore->term_id !== $sotto->parent) : ?>
-                                                        <svg class="icon">
-                                                            <use xlink:href="#it-arrow-right-triangle"></use>
-                                                        </svg>
-                                                    <?php endif; ?>
                                                     <span><?= $nome_sotto; ?></span>
                                                 </a>
                             
@@ -305,4 +301,5 @@ function updateToggleAllButton() {
         </form>
     </div>
 </main>
+
 
