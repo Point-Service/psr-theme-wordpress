@@ -56,16 +56,17 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     transition: color 0.3s ease;
 }
 
-.content a::before {
+  .content a::before {
     content: '▶';
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
-    color: #007bff;
+    color: var(--arrow-color, #007bff); /* default */
     transition: transform 0.3s ease;
-}
+  }
+
 
 .content a:hover {
     text-decoration: underline;
