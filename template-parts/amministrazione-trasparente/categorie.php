@@ -65,6 +65,9 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     position: relative;
     transition: color 0.3s ease;
 }
+    .content:first-of-type a .icon {
+    display: none;
+}
 
 /* Freccia prima del link */
 .content a::before {
