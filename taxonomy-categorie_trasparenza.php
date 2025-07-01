@@ -1,9 +1,5 @@
 <?php
-/**
- * Archivio Tassonomia trasparenza con ordinamento per data pubblicazione o titolo
- */
-
-global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_tematici;
+global $title, $description, $data_element, $elemento;
 
 get_header();
 $obj = get_queried_object();
@@ -13,39 +9,61 @@ $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'data_desc';
 
-
+// Recupera TUTTI i post senza ordinamento complesso
 $args = array(
     's' => $query,
-    'posts_per_page' => $max_posts,
+    'posts_per_page' => -1, // prendi tutti
     'post_type' => 'elemento_trasparenza',
-    'paged' => $paged,
     'tax_query' => array(
         array(
             'taxonomy' => 'tipi_cat_amm_trasp',
             'field' => 'slug',
             'terms' => $obj->slug,
-        )
+        ),
     ),
 );
 
-if ($orderby === 'alpha') {
-    $args['orderby'] = 'title';
-    $args['order'] = 'ASC';
-} else {
-    $args['meta_key'] = '_data_pubblicazione_ordinabile';
-    $args['orderby'] = array(
-        'meta_value_num' => 'DESC',
-        'date' => 'DESC',
-    );
+$all_posts = get_posts($args);
+
+// Funzione per ottenere la data da un post, meta oppure data post
+function get_data_ordinamento($post) {
+    $prefix = '_dci_elemento_trasparenza_';
+    $data_pub_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
+    if (!empty($data_pub_arr) && count($data_pub_arr) === 3) {
+        // Formatta in YYYYMMDD come numero per ordinare
+        $year = $data_pub_arr[2] < 100 ? 2000 + $data_pub_arr[2] : $data_pub_arr[2];
+        return intval(sprintf('%04d%02d%02d', $year, $data_pub_arr[1], $data_pub_arr[0]));
+    } else {
+        // fallback: data post in formato YYYYMMDD
+        return intval(get_the_date('Ymd', $post));
+    }
 }
 
-$the_query = new WP_Query($args);
+// Ordina array PHP
+if ($orderby === 'alpha') {
+    usort($all_posts, function($a, $b) {
+        return strcasecmp($a->post_title, $b->post_title);
+    });
+} else {
+    usort($all_posts, function($a, $b) {
+        return get_data_ordinamento($b) <=> get_data_ordinamento($a);
+    });
+}
 
+// Pagina manuale
+$total_posts = count($all_posts);
+$offset = ($paged -1) * $max_posts;
+$posts_paged = array_slice($all_posts, $offset, $max_posts);
 
+// Crea un WP_Query "fittizio" per la compatibilità col template
+$the_query = new WP_Query();
+$the_query->posts = $posts_paged;
+$the_query->post_count = count($posts_paged);
+$the_query->found_posts = $total_posts;
+$the_query->max_num_pages = ceil($total_posts / $max_posts);
+$the_query->query_vars = $args;
+$the_query->current_post = -1;
 
-
-
-$the_query = new WP_Query($args);
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
 
@@ -91,20 +109,21 @@ get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
                         </div>
 
                         <p id="autocomplete-label" class="mb-4">
-                            <strong><?php echo $the_query->found_posts; ?></strong> elementi trovati in ordine
+                            <strong><?php echo $total_posts; ?></strong> elementi trovati in ordine
                             <?php echo $orderby === 'alpha' ? 'alfabetico' : 'di data (decrescente)'; ?>
                         </p>
                     </div>
 
-                    <?php if ($the_query->have_posts()) { ?>
+                    <?php if (!empty($posts_paged)) { ?>
                         <div class="row g-4" id="load-more">
-                            <?php while ($the_query->have_posts()) {
-                                $the_query->the_post();
-                                $elemento = get_post();
+                            <?php 
+                            foreach ($posts_paged as $elemento) {
+                                setup_postdata($elemento);
                                 get_template_part("template-parts/amministrazione-trasparente/card");
-                            } ?>
+                            }
+                            wp_reset_postdata();
+                            ?>
                         </div>
-                        <?php wp_reset_postdata(); ?>
                     <?php } else { ?>
                         <div class="alert alert-info text-center" role="alert">
                             Nessun post trovato.
@@ -113,7 +132,10 @@ get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
 
                     <div class="row my-4">
                         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-                            <?php echo dci_bootstrap_pagination(); ?>
+                            <?php
+                            // Funzione di paginazione standard o personalizzata, compatibile
+                            echo dci_bootstrap_pagination($the_query->max_num_pages, $paged);
+                            ?>
                         </nav>
                     </div>
                 </div>
