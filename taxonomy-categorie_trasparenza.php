@@ -37,13 +37,11 @@ if ($orderby === 'alpha') {
         'meta_value_num' => 'DESC',
         'date' => 'DESC',
     );
-}
-
-
-
-    
 
 }
+
+
+
 
 $the_query = new WP_Query($args);
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
