@@ -85,6 +85,17 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
         cursor: pointer;
     }
 
+    #toggle-all-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+}
+
+
 </style>
 
 
@@ -111,11 +122,11 @@ function toggleAllCategories() {
     if (anyClosed) {
         // Apri tutte
         allContents.forEach(content => content.style.display = 'block');
-        toggleAllBtn.textContent = 'Chiudi tutte le Categorie';
+        toggleAllBtn.textContent = 'Chiudi tutte le Voci';
     } else {
         // Chiudi tutte
         allContents.forEach(content => content.style.display = 'none');
-        toggleAllBtn.textContent = 'Espandi tutte le Categorie';
+        toggleAllBtn.textContent = 'Espandi tutte le Voci';
     }
 }
 
@@ -124,7 +135,7 @@ function updateToggleAllButton() {
     var toggleAllBtn = document.getElementById('toggle-all-btn');
 
     var allOpen = Array.from(allContents).every(content => content.style.display === 'block');
-    toggleAllBtn.textContent = allOpen ? 'Chiudi tutte' : 'Espandi tutte le Categorie';
+    toggleAllBtn.textContent = allOpen ? 'Chiudi tutte' : 'Espandi tutte le Voci';
 }
 </script>
 
@@ -141,8 +152,11 @@ function updateToggleAllButton() {
                         <div class="mycontainer p-3">
 
                             <!-- BOTTONE PER ESPANDERE/CHIUDERE TUTTE -->
-                             <div id="toggle-all-container">
-                                <button type="button" id="toggle-all-btn" class="btn btn-primary" onclick="toggleAllCategories()">Espandi tutte le Categorie</button>
+                            <div id="toggle-all-wrapper">
+                                <div>Elenco di tutte le voci</div>
+                                <div id="toggle-all-container">
+                                    <button type="button" id="toggle-all-btn" class="btn btn-primary" onclick="toggleAllCategories()">Espandi tutte le Voci</button>
+                                </div>
                             </div>
 
 
