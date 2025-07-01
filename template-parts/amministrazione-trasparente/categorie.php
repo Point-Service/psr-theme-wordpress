@@ -70,7 +70,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                         'hide_empty' => false,
                                         'parent' => $genitore->term_id  // Ottieni le sottocategorie della categoria principale
                                     ));
-sasasasasasasasasasasasasasasasa
+
                                     // Verifica se ci sono sottocategorie da visualizzare
                                     if (!empty($sottocategorie)) { ?>
                                                                   saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
