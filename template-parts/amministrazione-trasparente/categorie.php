@@ -142,7 +142,7 @@ function updateToggleAllButton() {
 
                             <!-- BOTTONE PER ESPANDERE/CHIUDERE TUTTE -->
                              <div id="toggle-all-container">
-                                <button type="button" id="toggle-all-btn" class="btn btn-primary" onclick="toggleAllCategories()">Espandi tutte</button>
+                                <button type="button" id="toggle-all-btn" class="btn btn-primary" onclick="toggleAllCategories()">Espandi tutte le Categorie</button>
                             </div>
 
 
