@@ -103,9 +103,20 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 }
 
 .sub-sub-list a:hover {
-    color: #007bff;
+    color: var(--main-color);
     text-decoration: underline;
 }
+
+
+
+
+
+
+
+
+
+
+    
 
 /* Livello 4: stesso stile e rientro degli altri livelli */
 
