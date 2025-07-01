@@ -12,114 +12,56 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 ?>
 
 <style>
-.title-custom {
-    font-size: 22px;               /* +2 rispetto a 20 */
-    background-color: rgb(255, 252, 252);
-    padding: 14px 16px;            /* leggermente più padding */
-    border: 1px solid #ccc;
+ul.menu-categorie, ul.menu-categorie ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.menu-categorie > li {
+    font-weight: 700;
+    color: #0b4a71; /* colore blu scuro per categoria principale */
     cursor: pointer;
-    font-weight: 600;              /* un po’ più grassetto */
-    line-height: 1.3;              /* migliore leggibilità */
-    color: #222;                   /* colore testo più scuro */
-    user-select: none;             /* evita selezione accidentale */
+    margin-bottom: 8px;
 }
 
-.content {
-    display: none;
-    padding: 14px 20px;            /* padding più ampio */
-    font-size: 18px;               /* +1 rispetto a 17 */
-    line-height: 1.5;
-    color: #111;
-}
-
-.content a {
-    display: block;
-    margin: 8px 0;                 /* margini leggermente aumentati */
-    color: #111;
-    text-decoration: none;
-    padding-left: 14px;            /* padding più largo per “rientro” */
-    font-size: 18px;               /* +1 rispetto a 17 */
-    font-weight: 600;              /* leggermente più marcato */
-    transition: color 0.3s ease;
-}
-
-.content a:hover {
-    text-decoration: underline;
-    color: #007bff;                /* colore blu su hover per evidenziare */
-}
-
-.sub-sub-list {
-    margin-top: 12px;              /* più spazio sopra */
-    margin-left: 28px;             /* aumentato */
-    padding-left: 20px;            /* più padding */
-    border-left: 2px solid #d0d0d0;  /* colore bordo leggermente più chiaro */
-    font-size: 17.5px;             /* leggermente più grande */
-    line-height: 1.5;
-    color: #444;
-    font-style: italic;
-}
-
-.sub-sub-list li {
-    margin: 6px 0;                /* margine verticale maggiore */
-}
-
-.sub-sub-list a {
+ul.menu-categorie ul {
+    margin-left: 25px;  /* rientro sottocategorie */
+    border-left: 2px solid #ccc; /* linea verticale */
+    padding-left: 15px;
     color: #555;
     font-style: italic;
-    padding-left: 8px;             /* più padding */
-    font-size: 16px;               /* più grande */
-    font-weight: 500;
-    transition: color 0.3s ease;
+    font-size: 15px;
 }
 
-.sub-sub-list a:hover {
-    color: #007bff;
-    text-decoration: underline;
+ul.menu-categorie ul li {
+    font-weight: 400;
+    margin: 6px 0;
 }
 
-.sub-sub-list .sub-sub-list a {
+ul.menu-categorie ul ul {
+    margin-left: 20px; /* ulteriore rientro per sottosottocategorie */
+    border-left: 1px dashed #bbb;
+    padding-left: 15px;
     font-style: normal;
-    font-size: 17px;
     color: #666;
-    font-weight: 600;
+    font-size: 14.5px;
 }
 
-.sub-sub-list .sub-sub-list {
-    margin-left: 28px;
-    border-left: 1px dashed #bbb; /* colore leggermente più scuro */
-    padding-left: 14px;
+/* Evidenziare categoria attiva */
+ul.menu-categorie > li.active,
+ul.menu-categorie > li:hover {
+    color: #004080;
 }
 
-#toggle-all-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1.5rem;
+/* Link sottocategorie */
+ul.menu-categorie ul li a {
+    text-decoration: none;
+    color: inherit;
 }
 
-#toggle-all-btn {
-    font-size: 15px;             /* più leggibile */
-    height: 36px;                /* bottone un po’ più alto */
-    padding: 6px 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    user-select: none;
-}
-
-#toggle-all-btn:hover {
-    background-color: #007bff;
-    color: white;
-}
-
-#toggle-all-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    font-weight: 700;            /* più marcato */
-    font-size: 24px;             /* più grande */
-    color: #222;
-    letter-spacing: 0.03em;
+ul.menu-categorie ul li a:hover {
+    text-decoration: underline;
 }
 
 
