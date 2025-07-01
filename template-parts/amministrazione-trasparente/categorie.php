@@ -73,13 +73,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                         'parent' => $genitore->term_id // Filtra per l'ID del genitore
                                     ));
 
-                                    // Debug: verifica se le sottocategorie sono vuote
-                                    if (empty($sottocategorie)) {
-                                        echo "<p>Non ci sono sottocategorie per questa categoria.</p>";
-                                    } else {
-                                        echo "<p>Sottocategorie trovate: " . count($sottocategorie) . "</p>";
-                                    }
-
                                     // Se ci sono sottocategorie, visualizzale
                                     if (!empty($sottocategorie)) {
                                     ?>
@@ -89,14 +82,13 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                                 $nome_sotto = esc_html($sotto->name); ?>
                                                 <li class="mb-3 mt-3">
                                                     <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
-                                                        <svg class="icon">
-                                                            <use xlink:href="#it-arrow-right-triangle"></use>
-                                                        </svg>
                                                         <span><?= $nome_sotto; ?></span>
                                                     </a>
                                                 </li>
                                             <?php } ?>
                                         </ul>
+                                    <?php } else { ?>
+                                        <p>Non ci sono sottocategorie per questa categoria.</p>
                                     <?php } ?>
                                 </div>
                             <?php } ?>
