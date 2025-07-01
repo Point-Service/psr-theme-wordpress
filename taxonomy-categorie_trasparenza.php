@@ -1,6 +1,8 @@
 <?php
 /**
  * Archivio Tassonomia trasparenza
+ *
+ * @package Design_Comuni_Italia
  */
 
 global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_tematici;
@@ -8,52 +10,46 @@ global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_
 get_header();
 $obj = get_queried_object();
 
+// Recupera il numero di pagina corrente.
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
-$search_query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'data';
+$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'data_desc';
 
-// QUERY BASE
 $args = array(
-    's' => $search_query,
+    's' => $query,
     'posts_per_page' => $max_posts,
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
     'paged' => $paged,
-    'orderby' => 'title',
+    'orderby' => 'title', // default
     'order' => 'ASC'
 );
 
 $the_query = new WP_Query($args);
+$categoria = $the_query->posts;
 
-// Funzione per ottenere la data pubblicazione in formato Ymd
-function get_data_pubblicazione_Ymd($post, $prefix = '_dci_elemento_trasparenza_') {
-    $data = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
+// Funzione per ottenere data pubblicazione in formato Ymd
+function get_data_pubblicazione_Ymd($post) {
+    $prefix = '_dci_elemento_trasparenza_';
+    $arr = dci_get_data_pubblicazione_arr('data_pubblicazione', $prefix, $post->ID);
 
-    if (is_array($data) && count($data) === 3) {
-        $day   = str_pad(intval($data[0]), 2, "0", STR_PAD_LEFT);
-        $month = str_pad(intval($data[1]), 2, "0", STR_PAD_LEFT);
-        $year  = intval($data[2]);
-
-        if ($day > 0 && $month > 0 && $year > 0) {
-            if ($year < 100) {
-                $year += 2000;
-            }
-            return sprintf('%04d%02d%02d', $year, $month, $day);
-        }
+    if (!empty($arr) && is_array($arr) && count($arr) === 3) {
+        return sprintf('%04d%02d%02d', $arr[2], $arr[1], $arr[0]);
     }
 
-    // Fallback: usa la data di inserimento post
-    return date('Ymd', strtotime($post->post_date));
+    return get_the_date('Ymd', $post);
 }
 
-// Ordina per data se richiesto
-if ($orderby === 'data') {
-    usort($the_query->posts, function($a, $b) {
-        $dateA = get_data_pubblicazione_Ymd($a);
-        $dateB = get_data_pubblicazione_Ymd($b);
-        return $dateB <=> $dateA; // DESC
+// Ordinamento manuale se richiesto
+if ($orderby === 'data_desc') {
+    usort($categoria, function ($a, $b) {
+        return strcmp(get_data_pubblicazione_Ymd($b), get_data_pubblicazione_Ymd($a));
+    });
+} elseif ($orderby === 'alpha') {
+    usort($categoria, function ($a, $b) {
+        return strcmp($a->post_title, $b->post_title);
     });
 }
 
@@ -65,12 +61,11 @@ if ($orderby === 'data') {
     $description = $obj->description;
     $data_element = 'data-element="page-name"';
     get_template_part("template-parts/hero/hero");
-    get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
-    ?>
+    get_template_part("template-parts/amministrazione-trasparente/sottocategorie"); ?>
 
     <div class="bg-grey-card">
         <form role="search" id="search-form" method="get" class="search-form">
-            <input type="hidden" name="orderby" value="<?php echo esc_attr($orderby); ?>">
+            <button type="submit" class="d-none"></button>
             <div class="container">
                 <div class="row">
                     <h2 class="visually-hidden">Esplora tutti i documenti della trasparenza</h2>
@@ -81,10 +76,10 @@ if ($orderby === 'data') {
                                 <div class="input-group">
                                     <label for="autocomplete-two" class="visually-hidden">Cerca una parola chiave</label>
                                     <input type="search" class="autocomplete form-control"
-                                           placeholder="Cerca una parola chiave" id="autocomplete-two" name="search"
-                                           value="<?php echo esc_attr($search_query); ?>" data-bs-autocomplete="[]">
+                                        placeholder="Cerca una parola chiave" id="autocomplete-two" name="search"
+                                        value="<?php echo esc_attr($query); ?>" data-bs-autocomplete="[]">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">Invio</button>
+                                        <button class="btn btn-primary" type="submit" id="button-3">Invio</button>
                                     </div>
                                     <span class="autocomplete-icon" aria-hidden="true">
                                         <svg class="icon icon-sm icon-primary" role="img" aria-labelledby="autocomplete-label">
@@ -94,49 +89,50 @@ if ($orderby === 'data') {
                                 </div>
                             </div>
 
-                            <!-- Tasti ordinamento -->
-                            <div class="mb-4">
-                                <strong><?php echo $the_query->found_posts; ?></strong> elementi trovati -
-                                Ordinati per:
-                                <strong><?php echo $orderby === 'data' ? 'Data di pubblicazione' : 'Titolo (A-Z)'; ?></strong>
-                                <div class="mt-2">
-                                    <a href="?<?php echo http_build_query(array_merge($_GET, ['orderby' => 'data'])); ?>"
-                                       class="btn btn-outline-primary btn-sm me-2 <?php echo $orderby === 'data' ? 'active' : ''; ?>">
-                                        Ordina per Data
+                            <div class="d-flex align-items-center gap-3 mb-4">
+                                <p id="autocomplete-label" class="mb-0">
+                                    <strong><?php echo $the_query->found_posts; ?></strong> elementi trovati
+                                </p>
+
+                                <span class="small text-muted">
+                                    (ordinati per 
+                                    <?php
+                                    echo $orderby === 'alpha' ? 'titolo A-Z' : 'data di pubblicazione più recente';
+                                    ?>)
+                                </span>
+
+                                <div class="ms-auto">
+                                    <a href="?<?php echo http_build_query(array_merge($_GET, ['orderby' => 'data_desc'])); ?>" class="btn btn-outline-primary btn-sm <?php echo ($orderby === 'data_desc') ? 'active' : ''; ?>">
+                                        Ordina per data
                                     </a>
-                                    <a href="?<?php echo http_build_query(array_merge($_GET, ['orderby' => 'title'])); ?>"
-                                       class="btn btn-outline-primary btn-sm <?php echo $orderby === 'title' ? 'active' : ''; ?>">
-                                        Ordina Alfabeticamente
+                                    <a href="?<?php echo http_build_query(array_merge($_GET, ['orderby' => 'alpha'])); ?>" class="btn btn-outline-primary btn-sm <?php echo ($orderby === 'alpha') ? 'active' : ''; ?>">
+                                        Ordina A-Z
                                     </a>
                                 </div>
                             </div>
                         </div>
 
-                        <?php if ($the_query->found_posts > 0): ?>
+                        <?php if (!empty($categoria)) { ?>
                             <div class="row g-4" id="load-more">
-                                <?php foreach ($the_query->posts as $elemento):
-            $debug_date = get_data_pubblicazione_Ymd($elemento);
-    echo '<div style="color: red; font-size: 0.9em;">Data per ordinamento: ' . esc_html($debug_date) . '</div>';
-
+                                <?php foreach ($categoria as $elemento) {
+                                    $load_card_type = "elemento_trasparenza";
                                     get_template_part("template-parts/amministrazione-trasparente/card");
-                                endforeach; ?>
+                                } ?>
                             </div>
-                        <?php else: ?>
+                        <?php } else { ?>
                             <div class="alert alert-info text-center" role="alert">
                                 Nessun post trovato.
                             </div>
-                        <?php endif; ?>
-
-                        <!-- Paginazione -->
-                        <div class="row my-4">
-                            <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-                                <?php echo dci_bootstrap_pagination(); ?>
-                            </nav>
-                        </div>
+                        <?php } ?>
                     </div>
 
-                    <!-- Sidebar -->
                     <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+
+                    <div class="row my-4">
+                        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+                            <?php echo dci_bootstrap_pagination(); ?>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </form>
