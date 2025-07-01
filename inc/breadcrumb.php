@@ -844,20 +844,20 @@ class Breadcrumb_Trail {
 
 
 
-  // PER RISALIRE AL NOME TASSONOMIA
-    if (is_tax()) {
-        // Ottieni l'oggetto del termine corrente
-        $term = get_queried_object();
-
-        // Verifica che sia un oggetto di tipo WP_Term
-        if ($term instanceof WP_Term) {
-            // Ottieni il nome della tassonomia
-            $taxonomy_name = $term->taxonomy;
-
-            // Stampa il nome della tassonomia
-          //  echo "Nome della tassonomia: " . $taxonomy_name;
-        }
-    }
+			  // PER RISALIRE AL NOME TASSONOMIA
+			    if (is_tax()) {
+			        // Ottieni l'oggetto del termine corrente
+			        $term = get_queried_object();
+			
+			        // Verifica che sia un oggetto di tipo WP_Term
+			        if ($term instanceof WP_Term) {
+			            // Ottieni il nome della tassonomia
+			            $taxonomy_name = $term->taxonomy;
+			
+			            // Stampa il nome della tassonomia
+			          //  echo "Nome della tassonomia: " . $taxonomy_name;
+			        }
+			    }
 
 
 			
@@ -877,14 +877,25 @@ class Breadcrumb_Trail {
 		
                     }
 		
-                    else if (is_tax(array("tipi_cat_amm_trasp"))){
-			//$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
-                        $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-                        $term_name = single_term_title( '', false );
-                        $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
-		
-			    
-                    }           
+			else if (is_tax(array("tipi_cat_amm_trasp"))){
+			    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+			
+			    $term = get_queried_object();
+			    if ($term instanceof WP_Term) {
+			        $ancestors = get_ancestors($term->term_id, $term->taxonomy);
+			        $ancestors = array_reverse($ancestors);
+			
+			        foreach ($ancestors as $ancestor_id) {
+			            $ancestor = get_term($ancestor_id, $term->taxonomy);
+			            if (!is_wp_error($ancestor) && $ancestor) {
+			                $this->items[] = "<a href='" . esc_url(get_term_link($ancestor)) . "'>" . esc_html($ancestor->name) . "</a>";
+			            }
+			        }
+			
+			        $this->items[] = __(dci_get_breadcrumb_label($term->name), "design_comuni_italia");
+			    }
+			}
+     
 
 
 			    
