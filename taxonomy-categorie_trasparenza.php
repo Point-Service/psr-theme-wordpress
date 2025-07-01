@@ -3,84 +3,78 @@
  * Archivio Tassonomia trasparenza con ordinamento per data pubblicazione o titolo
  */
 
-global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_tematici;
-
 get_header();
 $obj = get_queried_object();
 
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$paged = max(1, get_query_var('paged'));
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
-$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+$query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'data_desc';
 
-// Query WP base
-$args = array(
-    's' => $query,
+// Funzione di supporto per popolare _data_pubblicazione_ordinabile su tutti i post
+function aggiorna_meta_data_pubblicazione_ordinabile() {
+    $args = [
+        'post_type' => 'elemento_trasparenza',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+    ];
+    $all_posts = new WP_Query($args);
+    if ($all_posts->have_posts()) {
+        while ($all_posts->have_posts()) {
+            $all_posts->the_post();
+            $post_id = get_the_ID();
+
+            // Prendi data personalizzata
+            $prefix = '_dci_elemento_trasparenza_';
+            $data_pub = get_post_meta($post_id, $prefix . 'data_pubblicazione', true);
+
+            // Pulizia e formattazione: deve essere numerico YYYYMMDD
+            if (!$data_pub) {
+                // Se non esiste, usa data WP
+                $data_pub = get_the_date('Ymd', $post_id);
+            } else {
+                // rimuove tutto tranne numeri
+                $data_pub = preg_replace('/[^0-9]/', '', $data_pub);
+
+                // se non è lunga 8 caratteri (YYYYMMDD), fallback
+                if (strlen($data_pub) !== 8) {
+                    $data_pub = get_the_date('Ymd', $post_id);
+                }
+            }
+
+            update_post_meta($post_id, '_data_pubblicazione_ordinabile', intval($data_pub));
+        }
+    }
+    wp_reset_postdata();
+}
+
+// Esegui questa funzione UNA SOLA VOLTA, poi commentala
+// aggiorna_meta_data_pubblicazione_ordinabile();
+
+$args = [
+    'post_type'      => 'elemento_trasparenza',
     'posts_per_page' => $max_posts,
-    'post_type' => 'elemento_trasparenza',
-    'paged' => $paged,
-    'tax_query' => array(
-        array(
+    'paged'          => $paged,
+    's'              => $query,
+    'tax_query'      => [
+        [
             'taxonomy' => 'tipi_cat_amm_trasp',
             'field'    => 'slug',
             'terms'    => $obj->slug,
-        )
-    )
-);
+        ]
+    ],
+];
 
 if ($orderby === 'alpha') {
     $args['orderby'] = 'title';
     $args['order'] = 'ASC';
 } else {
-    // Ordina per meta_value_num, il meta deve essere un numero YYYYMMDD
     $args['meta_key'] = '_data_pubblicazione_ordinabile';
     $args['orderby'] = 'meta_value_num';
     $args['order'] = 'DESC';
 }
 
 $the_query = new WP_Query($args);
-
-$siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
-
-// Funzione da eseguire UNA SOLA VOLTA per popolare il meta _data_pubblicazione_ordinabile
-function aggiorna_meta_data_pubblicazione_ordinabile() {
-    $args = array(
-        'post_type' => 'elemento_trasparenza',
-        'posts_per_page' => -1,
-        'post_status' => 'publish',
-    );
-
-    $query = new WP_Query($args);
-
-    while ($query->have_posts()) {
-        $query->the_post();
-        $post_id = get_the_ID();
-
-        // Qui prendi la data di pubblicazione da meta personalizzato "data_pubblicazione"
-        $data_pub = get_post_meta($post_id, '_dci_elemento_trasparenza_data_pubblicazione', true);
-
-        // Se non c’è o è vuoto, usa la data di pubblicazione WP standard
-        if (!$data_pub) {
-            $data_pub = get_the_date('Ymd', $post_id);
-        } else {
-            // Se la data è nel formato con slash o altro, prova a convertirla
-            $data_pub = preg_replace('/[^0-9]/', '', $data_pub); // rimuove tutto tranne numeri
-            if (strlen($data_pub) === 8) {
-                // ok
-            } else {
-                // fallback alla data WP
-                $data_pub = get_the_date('Ymd', $post_id);
-            }
-        }
-
-        if ($data_pub) {
-            update_post_meta($post_id, '_data_pubblicazione_ordinabile', intval($data_pub));
-        }
-    }
-    wp_reset_postdata();
-}
-// Se devi eseguire, togli il commento sotto una volta e ricarica pagina (poi commentalo di nuovo)
-// aggiorna_meta_data_pubblicazione_ordinabile();
 
 ?>
 
@@ -89,13 +83,13 @@ function aggiorna_meta_data_pubblicazione_ordinabile() {
 $title = $obj->name;
 $description = $obj->description;
 $data_element = 'data-element="page-name"';
+
 get_template_part("template-parts/hero/hero"); 
 get_template_part("template-parts/amministrazione-trasparente/sottocategorie"); 
 ?>
 
 <div class="bg-grey-card">
     <form role="search" id="search-form" method="get" class="search-form">
-        <button type="submit" class="d-none"></button>
         <div class="container">
             <div class="row">
                 <h2 class="visually-hidden">Esplora tutti i documenti della trasparenza</h2>
@@ -109,11 +103,6 @@ get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="submit">Invio</button>
                                 </div>
-                                <span class="autocomplete-icon" aria-hidden="true">
-                                    <svg class="icon icon-sm icon-primary" role="img" aria-labelledby="autocomplete-label">
-                                        <use href="#it-search"></use>
-                                    </svg>
-                                </span>
                             </div>
                         </div>
 
@@ -131,20 +120,19 @@ get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
                         </p>
                     </div>
 
-                    <?php if ($the_query->have_posts()) { ?>
+                    <?php if ($the_query->have_posts()) : ?>
                         <div class="row g-4" id="load-more">
-                            <?php while ($the_query->have_posts()) {
-                                $the_query->the_post();
+                            <?php while ($the_query->have_posts()) : $the_query->the_post();
                                 $elemento = get_post();
                                 get_template_part("template-parts/amministrazione-trasparente/card");
-                            } ?>
+                            endwhile; ?>
                         </div>
                         <?php wp_reset_postdata(); ?>
-                    <?php } else { ?>
+                    <?php else : ?>
                         <div class="alert alert-info text-center" role="alert">
                             Nessun post trovato.
                         </div>
-                    <?php } ?>
+                    <?php endif; ?>
 
                     <div class="row my-4">
                         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
@@ -165,5 +153,3 @@ get_template_part("template-parts/common/valuta-servizio");
 get_template_part("template-parts/common/assistenza-contatti");
 get_footer();
 ?>
-
-
