@@ -12,105 +12,105 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 ?>
 
 <style>
-  :root {
-    --header-color: #00458b; /* fallback blu header link */
-  }
-
-  .title-custom {
-    font-size: 22px;
-    background-color: var(--primary-color);;
-    padding: 14px 20px;
-    border: 1px solid var(--header-color);
-    border-radius: 6px;
+.title-custom {
+    font-size: 22px;               /* Titolo leggermente più grande */
+    background-color: #fff9f9;    /* Colore più soft */
+    padding: 14px 20px;            /* Padding un po' più ampio */
+    border: 1px solid #ddd;       /* Bordo chiaro */
+    border-radius: 6px;           /* Angoli arrotondati */
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 600;             /* Grassetto */
     line-height: 1.3;
-    color: var(--header-color);
+    color: #222;
     user-select: none;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-bottom: 8px;
-  }
+    margin-bottom: 8px;           /* Spazio sotto il titolo */
+}
 
-  .title-custom:hover {
-    background-color: var(--header-color);
-    color: white;
-  }
+.title-custom:hover {
+    background-color: #f0f8ff;   /* Cambia colore al passaggio mouse */
+    color: #007bff;
+}
 
-  .content {
+.content {
     display: none;
     padding: 15px 25px;
     font-size: 18px;
     line-height: 1.6;
     color: #333;
     background-color: #fafafa;
-    border-left: 3px solid var(--header-color);
-    border-radius: 0 6px 6px 0;
-    margin-bottom: 18px;
-  }
+    border-left: 3px solid #007bff; /* Bordo colorato a sinistra */
+    border-radius: 0 6px 6px 0;     /* Angoli arrotondati lato destro */
+    margin-bottom: 18px;             /* Spazio dopo il contenuto */
+}
 
-  .content a {
+.content a {
     display: block;
     margin: 10px 0;
-    color: var(--header-color);
+    color: #007bff;
     text-decoration: none;
     padding-left: 20px;
     font-size: 18px;
     font-weight: 600;
     position: relative;
     transition: color 0.3s ease;
-  }
+}
 
-  .content a::before {
+.content a::before {
     content: '▶';
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
-    color: var(--header-color);
+    color: #007bff;
     transition: transform 0.3s ease;
-  }
+}
 
-  .content a:hover {
+.content a:hover {
     text-decoration: underline;
-    color: #003366;
-  }
+    color: #0056b3;
+}
 
-  .content a:hover::before {
+.content a:hover::before {
     transform: translateY(-50%) rotate(90deg);
-  }
+}
 
-  .sub-sub-list {
+/* Livello 2 e 3 e 4 uniformati */
+
+.sub-sub-list {
     margin-top: 15px;
-    margin-left: 32px;
+    margin-left: 32px;      /* rientro uguale per tutti */
     padding-left: 18px;
     border-left: 2px solid #ccc;
     font-size: 17px;
     line-height: 1.5;
     color: #555;
     font-style: italic;
-  }
+}
 
-  .sub-sub-list li {
+.sub-sub-list li {
     margin: 8px 0;
-  }
+}
 
-  .sub-sub-list a {
+.sub-sub-list a {
     color: #555;
     font-style: italic;
     padding-left: 12px;
     font-size: 16px;
     font-weight: 500;
     transition: color 0.3s ease;
-  }
+}
 
-  .sub-sub-list a:hover {
-    color: var(--header-color);
+.sub-sub-list a:hover {
+    color: #007bff;
     text-decoration: underline;
-  }
+}
 
-  .sub-sub-list .sub-sub-list {
-    margin-left: 32px;
+/* Livello 4: stesso stile e rientro degli altri livelli */
+
+.sub-sub-list .sub-sub-list {
+    margin-left: 32px;        /* uguale al livello 2 e 3 */
     border-left: 2px solid #ccc;
     padding-left: 18px;
     font-style: italic;
@@ -118,53 +118,53 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     color: #555;
     font-weight: 500;
     line-height: 1.5;
-  }
+}
 
-  .sub-sub-list .sub-sub-list li {
+.sub-sub-list .sub-sub-list li {
     margin: 8px 0;
-  }
+}
 
-  .sub-sub-list .sub-sub-list a {
+.sub-sub-list .sub-sub-list a {
     font-style: italic;
     font-size: 16px;
     color: #555;
     font-weight: 500;
     padding-left: 12px;
     transition: color 0.3s ease;
-  }
+}
 
-  .sub-sub-list .sub-sub-list a:hover {
-    color: var(--header-color);
+.sub-sub-list .sub-sub-list a:hover {
+    color: #007bff;
     text-decoration: underline;
-  }
+}
 
-  #toggle-all-container {
+#toggle-all-container {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 1.5rem;
-  }
+}
 
-  #toggle-all-btn {
+#toggle-all-btn {
     font-size: 15px;
     height: 36px;
     padding: 6px 18px;
     cursor: pointer;
     border-radius: 5px;
-    border: 1.5px solid var(--header-color);
+    border: 1.5px solid #007bff;
     background-color: transparent;
-    color: var(--header-color);
+    color: #007bff;
     font-weight: 600;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     user-select: none;
-  }
+}
 
-  #toggle-all-btn:hover {
-    background-color: var(--header-color);
+#toggle-all-btn:hover {
+    background-color: #007bff;
     color: white;
-    border-color: #003366;
-  }
+    border-color: #0056b3;
+}
 
-  #toggle-all-wrapper {
+#toggle-all-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -173,23 +173,9 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     font-size: 24px;
     color: #222;
     letter-spacing: 0.03em;
-  }
+}
+
 </style>
-
-<script>
-  window.addEventListener('load', () => {
-    // Prendiamo il colore dal primo link del menu header
-    const menuLink = document.querySelector('.it-header-center-wrapper a');
-
-    if (menuLink) {
-      const style = getComputedStyle(menuLink);
-      const linkColor = style.color;
-      document.documentElement.style.setProperty('--header-color', linkColor);
-    }
-  });
-</script>
-
-
 
 
 
