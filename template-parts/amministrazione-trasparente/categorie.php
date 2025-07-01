@@ -59,6 +59,8 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                             <?php foreach ($categorie_genitori as $genitore) {
                                 $nome_genitore = esc_html($genitore->name);
                                 $id_genitore = 'cat_' . $genitore->term_id;
+
+    
                                 ?>
                                 <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')"><?= $nome_genitore ?></h2>
                                 <div id="<?= $id_genitore ?>" class="content">
@@ -68,9 +70,10 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                         'hide_empty' => false,
                                         'parent' => $genitore->term_id  // Ottieni le sottocategorie della categoria principale
                                     ));
-
+sasasasasasasasasasasasasasasasa
                                     // Verifica se ci sono sottocategorie da visualizzare
                                     if (!empty($sottocategorie)) { ?>
+                                                                  saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                                         <ul class="link-list t-primary">
                                             <?php foreach ($sottocategorie as $sotto) {
                                                 $link = get_term_link($sotto);  // Ottieni il link della sottocategoria
