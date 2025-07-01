@@ -68,20 +68,22 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 /* Freccia prima del link */
 .content a {
-    padding-left: 25px; /* spazio dopo la freccia */
-    position: relative; /* serve per posizionare assolutamente ::before */
+    position: relative; /* necessario perché ::before è absolute rispetto a questo */
+    padding-left: 25px; /* spazio per la freccia + distanza dal testo */
+    text-decoration: none;
 }
 
 .content a::before {
     content: '▶';
     position: absolute;
-    left: 5px;  /* sposta la freccia un po' a destra */
+    left: 5px;      /* spazio da sinistra per la freccia */
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
     color: var(--main-color);
     transition: transform 0.3s ease;
 }
+
 
 /* Hover link e freccia */
 .content a:hover {
