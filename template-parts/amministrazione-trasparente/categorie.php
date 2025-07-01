@@ -12,56 +12,147 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 ?>
 
 <style>
-ul.menu-categorie, ul.menu-categorie ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-ul.menu-categorie > li {
-    font-weight: 700;
-    color: #0b4a71; /* colore blu scuro per categoria principale */
+.title-custom {
+    font-size: 22px;               /* Titolo leggermente più grande */
+    background-color: #fff9f9;    /* Colore più soft */
+    padding: 14px 20px;            /* Padding un po' più ampio */
+    border: 1px solid #ddd;       /* Bordo chiaro */
+    border-radius: 6px;           /* Angoli arrotondati */
     cursor: pointer;
-    margin-bottom: 8px;
+    font-weight: 600;             /* Grassetto */
+    line-height: 1.3;
+    color: #222;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 8px;           /* Spazio sotto il titolo */
 }
 
-ul.menu-categorie ul {
-    margin-left: 25px;  /* rientro sottocategorie */
-    border-left: 2px solid #ccc; /* linea verticale */
-    padding-left: 15px;
+.title-custom:hover {
+    background-color: #f0f8ff;   /* Cambia colore al passaggio mouse */
+    color: #007bff;
+}
+
+.content {
+    display: none;
+    padding: 15px 25px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fafafa;
+    border-left: 3px solid #007bff; /* Bordo colorato a sinistra */
+    border-radius: 0 6px 6px 0;     /* Angoli arrotondati lato destro */
+    margin-bottom: 18px;             /* Spazio dopo il contenuto */
+}
+
+.content a {
+    display: block;
+    margin: 10px 0;
+    color: #007bff;
+    text-decoration: none;
+    padding-left: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.content a::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #007bff;
+    transition: transform 0.3s ease;
+}
+
+.content a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.content a:hover::before {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.sub-sub-list {
+    margin-top: 15px;
+    margin-left: 32px;
+    padding-left: 18px;
+    border-left: 2px solid #ccc;
+    font-size: 17px;
+    line-height: 1.5;
     color: #555;
     font-style: italic;
-    font-size: 15px;
 }
 
-ul.menu-categorie ul li {
-    font-weight: 400;
-    margin: 6px 0;
+.sub-sub-list li {
+    margin: 8px 0;
 }
 
-ul.menu-categorie ul ul {
-    margin-left: 20px; /* ulteriore rientro per sottosottocategorie */
-    border-left: 1px dashed #bbb;
-    padding-left: 15px;
-    font-style: normal;
-    color: #666;
-    font-size: 14.5px;
+.sub-sub-list a {
+    color: #555;
+    font-style: italic;
+    padding-left: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
-/* Evidenziare categoria attiva */
-ul.menu-categorie > li.active,
-ul.menu-categorie > li:hover {
-    color: #004080;
-}
-
-/* Link sottocategorie */
-ul.menu-categorie ul li a {
-    text-decoration: none;
-    color: inherit;
-}
-
-ul.menu-categorie ul li a:hover {
+.sub-sub-list a:hover {
+    color: #007bff;
     text-decoration: underline;
+}
+
+.sub-sub-list .sub-sub-list a {
+    font-style: normal;
+    font-size: 17px;
+    color: #666;
+    font-weight: 600;
+}
+
+.sub-sub-list .sub-sub-list {
+    margin-left: 30px;
+    border-left: 1px dashed #aaa;
+    padding-left: 14px;
+}
+
+#toggle-all-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+#toggle-all-btn {
+    font-size: 15px;
+    height: 36px;
+    padding: 6px 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1.5px solid #007bff;
+    background-color: transparent;
+    color: #007bff;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    user-select: none;
+}
+
+#toggle-all-btn:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+#toggle-all-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 24px;
+    color: #222;
+    letter-spacing: 0.03em;
 }
 
 
