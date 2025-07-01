@@ -356,6 +356,27 @@ class Breadcrumb_Trail {
                 $this->items = $custom_breadcrumbs;
                 return;
             }
+
+
+function genera_breadcrumb_categoria($term_id, $taxonomy = 'tipi_cat_amm_trasp') {
+    $breadcrumb = [];
+
+    while ($term_id) {
+        $term = get_term($term_id, $taxonomy);
+        if (!$term || is_wp_error($term)) break;
+
+        $breadcrumb[] = [
+            'name' => $term->name,
+            'link' => get_term_link($term),
+        ];
+
+        $term_id = $term->parent;  // risaliamo al genitore
+    }
+
+    // Inverti per partire dal genitore più alto
+    return array_reverse($breadcrumb);
+}
+			
 			
             if ( is_singular() ) {
 		    
