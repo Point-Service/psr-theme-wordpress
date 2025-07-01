@@ -1,6 +1,6 @@
 <?php
 /**
- * Archivio Tassonomia trasparenza con ordinamento personalizzato per data di pubblicazione o titolo
+ * Archivio Tassonomia trasparenza con ordinamento per data pubblicazione o titolo
  */
 
 global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_tematici;
@@ -13,67 +13,33 @@ $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'data_desc';
 
-$args = [
+$args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
     'post_type' => 'elemento_trasparenza',
     'paged' => $paged,
-    'tax_query' => [
-        [
+    'tax_query' => array(
+        array(
             'taxonomy' => 'tipi_cat_amm_trasp',
             'field'    => 'slug',
             'terms'    => $obj->slug,
-        ],
-    ],
-];
+        )
+    )
+);
 
-// Query senza ordinamento specifico per data
+if ($orderby === 'alpha') {
+    $args['orderby'] = 'title';
+    $args['order'] = 'ASC';
+} else {
+    // Ordina per data pubblicazione meta numerica YYYYMMDD
+    $args['meta_key'] = '_data_pubblicazione_ordinabile';
+    $args['orderby'] = 'meta_value_num';
+    $args['order'] = 'DESC';
+}
+
 $the_query = new WP_Query($args);
 
-// Funzione per ottenere data pubblicazione come intero YYYYMMDD
-function estrai_data_pubblicazione_int($post) {
-    $prefix = '_dci_elemento_trasparenza_';
-    $arrayDataPubblicazione = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
-
-    if (!empty($arrayDataPubblicazione) && count($arrayDataPubblicazione) === 3) {
-        $giorno = str_pad($arrayDataPubblicazione[0], 2, '0', STR_PAD_LEFT);
-        $mese = str_pad($arrayDataPubblicazione[1], 2, '0', STR_PAD_LEFT);
-        $anno = intval($arrayDataPubblicazione[2]);
-        if ($anno < 100) {
-            $anno += 2000;
-        }
-        return intval("{$anno}{$mese}{$giorno}");
-    }
-
-    // fallback: usa la data di pubblicazione WordPress
-    return intval(get_the_date('Ymd', $post));
-}
-
-// Se abbiamo risultati e ordinamento per data, ordiniamo i post in PHP
-if ($the_query->have_posts() && $orderby === 'data_desc') {
-    $posts_array = $the_query->posts;
-
-    usort($posts_array, function($a, $b) {
-        $dataA = estrai_data_pubblicazione_int($a);
-        $dataB = estrai_data_pubblicazione_int($b);
-        return $dataB <=> $dataA; // ordine decrescente (più recente prima)
-    });
-
-    // Sovrascriviamo i post nell'oggetto WP_Query con quelli ordinati
-    $the_query->posts = $posts_array;
-    $the_query->post_count = count($posts_array);
-} elseif ($orderby === 'alpha' && $the_query->have_posts()) {
-    // Ordina alfabeticamente per titolo in PHP (se vuoi)
-    $posts_array = $the_query->posts;
-    usort($posts_array, function($a, $b) {
-        return strcasecmp($a->post_title, $b->post_title);
-    });
-    $the_query->posts = $posts_array;
-    $the_query->post_count = count($posts_array);
-}
-
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
-
 ?>
 
 <main>
@@ -125,15 +91,13 @@ get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
 
                     <?php if ($the_query->have_posts()) { ?>
                         <div class="row g-4" id="load-more">
-                            <?php
-                            // Ciclo manuale su $the_query->posts perché li abbiamo ordinati in PHP
-                            foreach ($the_query->posts as $elemento) {
-                                setup_postdata($elemento);
+                            <?php while ($the_query->have_posts()) {
+                                $the_query->the_post();
+                                $elemento = get_post();
                                 get_template_part("template-parts/amministrazione-trasparente/card");
-                            }
-                            wp_reset_postdata();
-                            ?>
+                            } ?>
                         </div>
+                        <?php wp_reset_postdata(); ?>
                     <?php } else { ?>
                         <div class="alert alert-info text-center" role="alert">
                             Nessun post trovato.
