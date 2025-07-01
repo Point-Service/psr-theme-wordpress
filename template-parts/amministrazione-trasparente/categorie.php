@@ -59,8 +59,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                             <?php foreach ($categorie_genitori as $genitore) {
                                 $nome_genitore = esc_html($genitore->name);
                                 $id_genitore = 'cat_' . $genitore->term_id;
-
-    
                                 ?>
                                 <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')"><?= $nome_genitore ?></h2>
                                 <div id="<?= $id_genitore ?>" class="content">
@@ -71,33 +69,27 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                         'parent' => $genitore->term_id  // Ottieni le sottocategorie della categoria principale
                                     ));
 
-        // Verifica se ci sono sottocategorie prima di iniziare il markup HTML
-if ( ! empty( $sottocategorie ) ) { ?>
-<div class="container py-5" id="categorie">
-    <div class="row g-2">           
-        <?php foreach ( $sottocategorie as $sottocategoria ) { 
-        if($title != $sottocategoria->name){
-            ?>
-            <div class="col-md-3 col-xl-4">
-                <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
-                  <div class="card shadow-sm rounded">
-                    <div class="card-body">
-                        <a class="text-decoration-none" href="<?php echo get_term_link($sottocategoria->term_id); ?>" data-element="news-category-link"><h3 class="card-title t-primary title-xlarge"><?php echo ucfirst($sottocategoria->name); ?></h3></a>
-                        <p class="titillium text-paragraph mb-0 description">
-                            <?php echo $sottocategoria->description; ?>
-                        </p>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        <?php } } ?>
-    </div>
-</div>
-<?php } ?>
+                                    // Verifica se ci sono sottocategorie prima di iniziare il markup HTML
+                                    if (!empty($sottocategorie)) { ?>
+                                        <ul class="link-list t-primary">
+                                            <?php foreach ($sottocategorie as $sottocategoria) {
+                                                $link = get_term_link($sottocategoria);  // Ottieni il link della sottocategoria
+                                                $nome_sotto = esc_html($sottocategoria->name); ?>
+                                                <li class="mb-3 mt-3">
+                                                    <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
+                                                        <svg class="icon">
+                                                            <use xlink:href="#it-arrow-right-triangle"></use>
+                                                        </svg>
+                                                        <span><?= $nome_sotto; ?></span>
+                                                    </a>
+                                                </li>
+                                            <?php } ?>
                                         </ul>
-
+                                    <?php } else { ?>
+                                        <p>Non ci sono sottocategorie per questa categoria.</p>
+                                    <?php } ?>
                                 </div>
-               
+                            <?php } ?>
                         </div>
                     </div>
                     <!-- Colonna destra: link utili -->
