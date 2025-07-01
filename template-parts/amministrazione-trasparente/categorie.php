@@ -39,9 +39,9 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     line-height: 1.6;
     color: #333;
     background-color: #fafafa;
-    border-left: 3px solid #007bff; /* Bordo colorato a sinistra */
-    border-radius: 0 6px 6px 0;     /* Angoli arrotondati lato destro */
-    margin-bottom: 18px;             /* Spazio dopo il contenuto */
+    border-left: 3px solid var(--arrow-color, #007bff); /* usa la stessa variabile */
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 18px;
 }
 
 .content a {
