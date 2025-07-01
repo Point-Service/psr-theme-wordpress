@@ -30,15 +30,22 @@ $the_query = new WP_Query($args);
 // Funzione per ottenere la data pubblicazione in formato Ymd
 function get_data_pubblicazione_Ymd($post, $prefix = '_dci_elemento_trasparenza_') {
     $data = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
-    if ($data && !empty($data[0]) && !empty($data[1]) && !empty($data[2])) {
-        $day = str_pad(intval($data[0]), 2, "0", STR_PAD_LEFT);
+
+    if (is_array($data) && count($data) === 3) {
+        $day   = str_pad(intval($data[0]), 2, "0", STR_PAD_LEFT);
         $month = str_pad(intval($data[1]), 2, "0", STR_PAD_LEFT);
-        $year = intval($data[2]);
-        if ($year < 100) $year += 2000;
-        return sprintf('%04d%02d%02d', $year, $month, $day);
-    } else {
-        return date('Ymd', strtotime($post->post_date));
+        $year  = intval($data[2]);
+
+        if ($day > 0 && $month > 0 && $year > 0) {
+            if ($year < 100) {
+                $year += 2000;
+            }
+            return sprintf('%04d%02d%02d', $year, $month, $day);
+        }
     }
+
+    // Fallback: usa la data di inserimento post
+    return date('Ymd', strtotime($post->post_date));
 }
 
 // Ordina per data se richiesto
