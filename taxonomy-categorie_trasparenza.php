@@ -30,9 +30,11 @@ function get_data_ordinamento($post) {
     $prefix = '_dci_elemento_trasparenza_';
     $data_pub_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
     if (!empty($data_pub_arr) && count($data_pub_arr) === 3) {
-        // Formatta in YYYYMMDD come numero per ordinare
+        // Normalizza anno (assumendo due cifre per anni recenti)
         $year = $data_pub_arr[2] < 100 ? 2000 + $data_pub_arr[2] : $data_pub_arr[2];
-        return intval(sprintf('%04d%02d%02d', $year, $data_pub_arr[1], $data_pub_arr[0]));
+        $month = str_pad($data_pub_arr[1], 2, '0', STR_PAD_LEFT);
+        $day = str_pad($data_pub_arr[0], 2, '0', STR_PAD_LEFT);
+        return intval("{$year}{$month}{$day}");
     } else {
         // fallback: data post in formato YYYYMMDD
         return intval(get_the_date('Ymd', $post));
@@ -52,10 +54,10 @@ if ($orderby === 'alpha') {
 
 // Pagina manuale
 $total_posts = count($all_posts);
-$offset = ($paged -1) * $max_posts;
+$offset = ($paged - 1) * $max_posts;
 $posts_paged = array_slice($all_posts, $offset, $max_posts);
 
-// Crea un WP_Query "fittizio" per la compatibilità col template
+// Setup per WP_Query compatibilità
 $the_query = new WP_Query();
 $the_query->posts = $posts_paged;
 $the_query->post_count = count($posts_paged);
@@ -133,7 +135,6 @@ get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
                     <div class="row my-4">
                         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
                             <?php
-                            // Funzione di paginazione standard o personalizzata, compatibile
                             echo dci_bootstrap_pagination($the_query->max_num_pages, $paged);
                             ?>
                         </nav>
