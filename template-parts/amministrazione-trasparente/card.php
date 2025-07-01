@@ -13,7 +13,7 @@ $documenti         = dci_get_meta('file', $prefix, $elemento->ID);
 $documento = is_array($documenti) && !empty($documenti) ? get_permalink($elemento->ID) : $documenti;
 
 $arrayDataPubblicazione = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $elemento->ID); 
-$monthNamePubblicazione = date_i18n('M', mktime(0, 0, 0, $arrayDataPubblicazione[1], 10));
+$monthNamePubblicazione = date_i18n('F', mktime(0, 0, 0, $arrayDataPubblicazione[1], 10));
 
 // $arrayDataScadenza = dci_get_data_pubblicazione_arr("data_scadenza", $prefix, $elemento->ID); 
 // $monthNameScadenza = date_i18n('M', mktime(0, 0, 0, $arrayDataScadenza[1], 10));
