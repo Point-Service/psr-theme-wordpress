@@ -63,7 +63,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
-    color: #007bff;
+    color: var(--main-color);
     transition: transform 0.3s ease;
 }
 
