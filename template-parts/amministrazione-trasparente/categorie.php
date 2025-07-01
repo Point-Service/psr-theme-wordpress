@@ -1,10 +1,11 @@
 <?php
-global $sito_tematico_id,$siti_tematici;
+global $sito_tematico_id, $siti_tematici;
+
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'parent' => 0,
     'orderby' => 'ID',
-    'order'   => 'ASC'
+    'order' => 'ASC'
 ));
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
@@ -35,6 +36,19 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     .content a:hover {
         text-decoration: underline;
     }
+
+    .sub-sub-list {
+        margin-top: 5px;
+        margin-left: 20px;
+        padding-left: 15px;
+        border-left: 2px solid #ddd;
+        font-size: 14px;
+    }
+
+    .sub-sub-list a {
+        padding-left: 0 !important;
+        font-style: italic;
+    }
 </style>
 
 <script>
@@ -51,14 +65,18 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
             <div class="container">
                 <div class="row">
                     <h2 class="visually-hidden">Esplora tutti i servizi</h2>
+
                     <!-- Colonna sinistra: categorie -->
                     <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
                         <div class="mycontainer p-3">
+
                             <?php foreach ($categorie_genitori as $genitore) {
                                 $nome_genitore = esc_html($genitore->name);
                                 $id_genitore = 'cat_' . $genitore->term_id;
                                 ?>
+                                
                                 <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')"><?= $nome_genitore ?></h2>
+                                
                                 <div id="<?= $id_genitore ?>" class="content">
                                     <?php
                                     $sottocategorie = get_terms('tipi_cat_amm_trasp', array(
@@ -70,6 +88,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                         <?php foreach ($sottocategorie as $sotto) {
                                             $link = get_term_link($sotto);
                                             $nome_sotto = esc_html($sotto->name); ?>
+                                            
                                             <li class="mb-3 mt-3">
                                                 <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
                                                     <svg class="icon">
@@ -77,22 +96,41 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                                     </svg>
                                                     <span><?= $nome_sotto; ?></span>
                                                 </a>
+
+                                                <?php
+                                                // Recupera sottocategorie di secondo livello
+                                                $sub_sub_categories = get_terms('tipi_cat_amm_trasp', array(
+                                                    'hide_empty' => false,
+                                                    'parent' => $sotto->term_id
+                                                ));
+
+                                                if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) { ?>
+                                                    <ul class="sub-sub-list">
+                                                        <?php foreach ($sub_sub_categories as $sub_sub) { ?>
+                                                            <li>
+                                                                <a href="<?= get_term_link($sub_sub->term_id); ?>">
+                                                                    <?= esc_html($sub_sub->name); ?>
+                                                                </a>
+                                                            </li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                <?php } ?>
+
                                             </li>
-                                        <?php 
-                                    
-                                    
-                                    }
-    
+                                        <?php } ?>
                                     </ul>
                                 </div>
                             <?php } ?>
+
                         </div>
                     </div>
+
                     <!-- Colonna destra: link utili -->
-                   <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
                 </div>
             </div>
         </form>
     </div>
 </main>
+
 
