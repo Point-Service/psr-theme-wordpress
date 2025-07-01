@@ -1,5 +1,5 @@
 <?php
-global $sito_tematico_id,$siti_tematici;
+global $sito_tematico_id, $siti_tematici;
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'parent' => 0,
@@ -80,6 +80,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                             </li>
                                         <?php } ?>
                                     </ul>
+                                    <a href="sottocategorie_list.php?categoria=<?= urlencode($genitore->name); ?>" class="btn btn-primary mt-3">Vedi tutte le sottocategorie</a>
                                 </div>
                             <?php } ?>
                         </div>
