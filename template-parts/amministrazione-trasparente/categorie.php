@@ -172,7 +172,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 #toggle-all-btn:hover {
     background-color: var(--main-color);
     border-color: var(--main-color-light);
-    color: white;
+    color: white !important;
 }
 
 #toggle-all-wrapper {
