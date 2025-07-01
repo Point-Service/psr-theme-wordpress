@@ -37,22 +37,21 @@ if ($elemento->post_status === "publish") :
         <div class="card-header border-0 p-0">
             <?php if ($ck_sowh_section === 'true') {?>
             <?php
-                    $categorie = get_the_terms($elemento->ID, 'tipi_cat_amm_trasp');
-                    if ($categorie && !is_wp_error($categorie)) {
-                        foreach ($categorie as $cat) {
-                            echo '<span class="badge bg-secondary me-2">' . esc_html($cat->name) . ' -  </span> -';
-                        }
+                $categorie = get_the_terms($elemento->ID, 'tipi_cat_amm_trasp');
+                if ($categorie && !is_wp_error($categorie)) {
+                    foreach ($categorie as $cat) {
+                        echo '<span class="badge bg-secondary me-2">' . esc_html($cat->name) . ' -  </span> -';
                     }
-                }?>
+                }
+            }?>
 
-            <span                 
-                class="data"><?php echo echo $arrayDataPubblicazione[0] . ' ' . $monthNamePubblicazione . ' ' . $arrayDataPubblicazione[2]; ?>
+            <span class="data">
+                <?php echo $arrayDataPubblicazione[0] . ' ' . $monthNamePubblicazione . ' ' . $arrayDataPubblicazione[2]; ?>
             </span>
             <!-- <?php if($arrayDataPubblicazione[0]!=$arrayDataScadenza[0]) {?>
-                     - <span class="data"><?php echo $arrayDataScadenza[0].' '.strtoupper($monthNameScadenza).' '.$arrayDataScadenza[2] ?></span>
-                     <?php }?> -->
+                 - <span class="data"><?php echo $arrayDataScadenza[0].' '.strtoupper($monthNameScadenza).' '.$arrayDataScadenza[2] ?></span>
+                 <?php }?> -->
         </div>
-
 
         <div class="card-body p-0 my-2">
             <h3 class="green-title-big t-primary mb-8">
@@ -61,13 +60,13 @@ if ($elemento->post_status === "publish") :
                     data-element="service-link">
 
                     <?php
-           if (preg_match('/[A-Z]{5,}/', $title)) {
-               echo esc_html($url); // stampa solo il testo dell'URL
-               $titolo_documento = ucfirst(strtolower($title));
-           } else {
-               $titolo_documento = $title;
-           }
-           ?>
+                    if (preg_match('/[A-Z]{5,}/', $title)) {
+                        echo esc_html($url); // stampa solo il testo dell'URL
+                        $titolo_documento = ucfirst(strtolower($title));
+                    } else {
+                        $titolo_documento = $title;
+                    }
+                    ?>
 
                     <?php echo esc_html($titolo_documento); ?>
                 </a>
