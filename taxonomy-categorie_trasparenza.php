@@ -31,6 +31,9 @@ if ($orderby === 'alpha') {
     $args['orderby'] = 'title';
     $args['order'] = 'ASC';
 } else {
+
+
+
 $args['meta_query'] = array(
     'relation' => 'OR',
     array(
@@ -40,13 +43,21 @@ $args['meta_query'] = array(
     array(
         'key' => '_data_pubblicazione_ordinabile',
         'compare' => 'NOT EXISTS',
-    )
+    ),
 );
+
 $args['orderby'] = array(
     'meta_value' => 'DESC',
-    'date' => 'DESC'
+    'date' => 'DESC',
 );
+
 $args['meta_key'] = '_data_pubblicazione_ordinabile';
+
+
+
+
+
+    
 
 }
 
