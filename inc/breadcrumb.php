@@ -883,18 +883,23 @@ class Breadcrumb_Trail {
 		
                     }
 		
-                  else if (is_tax(array("tipi_cat_amm_trasp"))){
-		    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-		
-		    $term = get_queried_object();
-		    if ($term instanceof WP_Term) {
-		        $breadcrumb_terms = genera_breadcrumb_taxonomy_ricorsivo($term->term_id, $term->taxonomy);
-		
-		        foreach ($breadcrumb_terms as $crumb) {
-		            $this->items[] = "<a href='" . esc_url($crumb['link']) . "'>" . esc_html($crumb['name']) . "</a>";
-		        }
-		    }
-		}
+			else if (is_tax(array("tipi_cat_amm_trasp"))){
+			    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+			
+			    $term = get_queried_object();
+			    if ($term instanceof WP_Term) {
+			        $breadcrumb_terms = genera_breadcrumb_taxonomy_ricorsivo($term->term_id, $term->taxonomy);
+			
+			        $last_index = count($breadcrumb_terms) - 1;
+			        foreach ($breadcrumb_terms as $index => $crumb) {
+			            if ($index === $last_index) {
+			                $this->items[] = esc_html($crumb['name']);
+			            } else {
+			                $this->items[] = "<a href='" . esc_url($crumb['link']) . "'>" . esc_html($crumb['name']) . "</a>";
+			            }
+			        }
+			    }
+			}
 
 
 
