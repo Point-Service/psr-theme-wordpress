@@ -69,6 +69,22 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
         border-left: 1px dashed #ccc;
         padding-left: 10px;
     }
+
+    #toggle-all-container {
+    display: flex;
+    justify-content: flex-end; /* allinea il contenuto a destra */
+    margin-bottom: 1rem;
+    }
+    
+    #toggle-all-btn {
+        padding: 4px 12px;
+        font-size: 14px;
+        height: 30px;
+        line-height: 1.2;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
 </style>
 
 
@@ -125,7 +141,10 @@ function updateToggleAllButton() {
                         <div class="mycontainer p-3">
 
                             <!-- BOTTONE PER ESPANDERE/CHIUDERE TUTTE -->
-                            <button type="button" id="toggle-all-btn" class="btn btn-primary mb-3" onclick="toggleAllCategories()">Espandi tutte</button>
+                             <div id="toggle-all-container">
+                                <button type="button" id="toggle-all-btn" class="btn btn-primary" onclick="toggleAllCategories()">Espandi tutte</button>
+                            </div>
+
 
                             <?php foreach ($categorie_genitori as $genitore) {
                                 $nome_genitore = esc_html($genitore->name);
