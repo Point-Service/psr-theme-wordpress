@@ -1,5 +1,5 @@
 <?php
-GLOBAL $title, $title;
+global $title;
 
 $categoria_genitore = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
@@ -19,24 +19,29 @@ if ( ! empty( $categoria_genitore ) && ! is_wp_error( $categoria_genitore ) ) {
 
 // Verifica se ci sono sottocategorie prima di iniziare il markup HTML
 if ( ! empty( $sottocategorie ) ) { ?>
-<div class="container py-5" id="categorie">
-    <div class="row g-2">           
-        <?php foreach ( $sottocategorie as $sottocategoria ) { 
-        if($title != $sottocategoria->name){
-            ?>
-            <div class="col-md-3 col-xl-4">
-                <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
-                  <div class="card shadow-sm rounded">
-                    <div class="card-body">
-                        <a class="text-decoration-none" href="<?php echo get_term_link($sottocategoria->term_id); ?>" data-element="news-category-link"><h3 class="card-title t-primary title-xlarge"><?php echo ucfirst($sottocategoria->name); ?></h3></a>
-                        <p class="titillium text-paragraph mb-0 description">
-                            <?php echo $sottocategoria->description; ?>
-                        </p>
+    <div class="container py-5" id="categorie">
+        <div class="row g-2">           
+            <?php foreach ( $sottocategorie as $sottocategoria ) { 
+                // Evita di mostrare la categoria che è già visualizzata
+                if($title != $sottocategoria->name){
+                    ?>
+                    <div class="col-md-3 col-xl-4">
+                        <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
+                            <div class="card shadow-sm rounded">
+                                <div class="card-body">
+                                    <a class="text-decoration-none" href="<?php echo get_term_link($sottocategoria->term_id); ?>" data-element="news-category-link">
+                                        <h3 class="card-title t-primary title-xlarge"><?= ucfirst($sottocategoria->name); ?></h3>
+                                    </a>
+                                    <p class="titillium text-paragraph mb-0 description">
+                                        <?= $sottocategoria->description; ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-            </div>
-        <?php } } ?>
+                <?php 
+                }
+            } ?>
+        </div>
     </div>
-</div>
 <?php } ?>
