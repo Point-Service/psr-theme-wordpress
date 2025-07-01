@@ -115,6 +115,9 @@ if ($orderby === 'data') {
                         <?php if ($the_query->found_posts > 0): ?>
                             <div class="row g-4" id="load-more">
                                 <?php foreach ($the_query->posts as $elemento):
+            $debug_date = get_data_pubblicazione_Ymd($elemento);
+    echo '<div style="color: red; font-size: 0.9em;">Data per ordinamento: ' . esc_html($debug_date) . '</div>';
+
                                     get_template_part("template-parts/amministrazione-trasparente/card");
                                 endforeach; ?>
                             </div>
