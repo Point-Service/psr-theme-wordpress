@@ -80,7 +80,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                                         <svg class="icon">
                                                             <use xlink:href="#it-arrow-right-triangle"></use>
                                                         </svg>
-                                                        <span><?= $nome_sotto; ?></span>
+                                                        <span><?php echo $sottocategoria->description; ?></span>
                                                     </a>
                                                 </li>
                                             <?php } ?>
