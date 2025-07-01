@@ -66,12 +66,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     transition: color 0.3s ease;
 }
 
-/* Freccia prima del link */
-.content a {
-    position: relative; /* necessario perché ::before è absolute rispetto a questo */
-    padding-left: 25px; /* spazio per la freccia + distanza dal testo */
-    text-decoration: none;
-}
 
 /* Freccia prima del link */
 .content a::before {
