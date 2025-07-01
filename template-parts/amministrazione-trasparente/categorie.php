@@ -1,5 +1,7 @@
 <?php
 global $sito_tematico_id, $siti_tematici;
+
+// Recupera le categorie principali (genitori)
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'parent' => 0,
@@ -20,7 +22,8 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     }
 
     .content {
-        padding-left: 20px; /* Indenta le sottocategorie */
+        display: none;
+        padding: 10px;
     }
 
     .content a {
@@ -60,30 +63,10 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                 <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')"><?= $nome_genitore ?></h2>
                                 <div id="<?= $id_genitore ?>" class="content">
                                     <?php
-                                    $sottocategorie = get_terms('tipi_cat_amm_trasp', array(
-                                        'hide_empty' => false,
-                                        'parent' => $genitore->term_id
-                                    ));
-
-                                    // Verifica se ci sono sottocategorie
-                                    if ( ! empty( $sottocategorie ) ) { ?>
-                                        <ul class="link-list t-primary">
-                                            <?php foreach ($sottocategorie as $sotto) {
-                                                $link = get_term_link($sotto);
-                                                $nome_sotto = esc_html($sotto->name); ?>
-                                                <li class="mb-3 mt-3">
-                                                    <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
-                                                        <svg class="icon">
-                                                            <use xlink:href="#it-arrow-right-triangle"></use>
-                                                        </svg>
-                                                        <span><?= $nome_sotto; ?></span>
-                                                    </a>
-                                                </li>
-                                            <?php } ?>
-                                        </ul>
-                                    <?php } else { ?>
-                                        <p>Non ci sono sottocategorie per questa categoria.</p>
-                                    <?php } ?>
+                                    // Passiamo il nome della categoria principale a categorie_list.php
+                                    $title = $genitore->slug;
+                                    include 'categorie_list.php'; // Includiamo il file delle sottocategorie
+                                    ?>
                                 </div>
                             <?php } ?>
                         </div>
