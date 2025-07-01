@@ -1,15 +1,18 @@
 <?php
-global $title, $description, $data_element, $elemento;
+/**
+ * Archivio Tassonomia trasparenza con ordinamento personalizzato per data di pubblicazione o titolo
+ */
+
+global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_tematici;
 
 get_header();
 $obj = get_queried_object();
 
-$paged = max(1, get_query_var('paged'));
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'data_desc';
 
-// Query base con paginazione regolare
 $args = [
     's' => $query,
     'posts_per_page' => $max_posts,
@@ -18,46 +21,59 @@ $args = [
     'tax_query' => [
         [
             'taxonomy' => 'tipi_cat_amm_trasp',
-            'field' => 'slug',
-            'terms' => $obj->slug,
+            'field'    => 'slug',
+            'terms'    => $obj->slug,
         ],
     ],
 ];
 
-if ($orderby === 'alpha') {
-    $args['orderby'] = 'title';
-    $args['order'] = 'ASC';
-} else {
-    // Default: ordino per data inserimento (non preciso ma serve come fallback)
-    $args['orderby'] = 'date';
-    $args['order'] = 'DESC';
-}
-
+// Query senza ordinamento specifico per data
 $the_query = new WP_Query($args);
 
-// Funzione per ottenere la data da un post, meta oppure data post
-function get_data_ordinamento($post) {
+// Funzione per ottenere data pubblicazione come intero YYYYMMDD
+function estrai_data_pubblicazione_int($post) {
     $prefix = '_dci_elemento_trasparenza_';
-    $data_pub_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
-    if (!empty($data_pub_arr) && count($data_pub_arr) === 3) {
-        $year = $data_pub_arr[2] < 100 ? 2000 + $data_pub_arr[2] : $data_pub_arr[2];
-        $month = str_pad($data_pub_arr[1], 2, '0', STR_PAD_LEFT);
-        $day = str_pad($data_pub_arr[0], 2, '0', STR_PAD_LEFT);
-        return intval("{$year}{$month}{$day}");
-    } else {
-        return intval(get_the_date('Ymd', $post));
+    $arrayDataPubblicazione = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
+
+    if (!empty($arrayDataPubblicazione) && count($arrayDataPubblicazione) === 3) {
+        $giorno = str_pad($arrayDataPubblicazione[0], 2, '0', STR_PAD_LEFT);
+        $mese = str_pad($arrayDataPubblicazione[1], 2, '0', STR_PAD_LEFT);
+        $anno = intval($arrayDataPubblicazione[2]);
+        if ($anno < 100) {
+            $anno += 2000;
+        }
+        return intval("{$anno}{$mese}{$giorno}");
     }
+
+    // fallback: usa la data di pubblicazione WordPress
+    return intval(get_the_date('Ymd', $post));
 }
 
-if ($orderby === 'data_desc' && $the_query->have_posts()) {
-    $posts = $the_query->posts;
-    usort($posts, function($a, $b) {
-        return get_data_ordinamento($b) <=> get_data_ordinamento($a);
+// Se abbiamo risultati e ordinamento per data, ordiniamo i post in PHP
+if ($the_query->have_posts() && $orderby === 'data_desc') {
+    $posts_array = $the_query->posts;
+
+    usort($posts_array, function($a, $b) {
+        $dataA = estrai_data_pubblicazione_int($a);
+        $dataB = estrai_data_pubblicazione_int($b);
+        return $dataB <=> $dataA; // ordine decrescente (più recente prima)
     });
-    $the_query->posts = $posts;
+
+    // Sovrascriviamo i post nell'oggetto WP_Query con quelli ordinati
+    $the_query->posts = $posts_array;
+    $the_query->post_count = count($posts_array);
+} elseif ($orderby === 'alpha' && $the_query->have_posts()) {
+    // Ordina alfabeticamente per titolo in PHP (se vuoi)
+    $posts_array = $the_query->posts;
+    usort($posts_array, function($a, $b) {
+        return strcasecmp($a->post_title, $b->post_title);
+    });
+    $the_query->posts = $posts_array;
+    $the_query->post_count = count($posts_array);
 }
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
+
 ?>
 
 <main>
@@ -65,8 +81,8 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 $title = $obj->name;
 $description = $obj->description;
 $data_element = 'data-element="page-name"';
-get_template_part("template-parts/hero/hero");
-get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
+get_template_part("template-parts/hero/hero"); 
+get_template_part("template-parts/amministrazione-trasparente/sottocategorie"); 
 ?>
 
 <div class="bg-grey-card">
@@ -75,6 +91,7 @@ get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
         <div class="container">
             <div class="row">
                 <h2 class="visually-hidden">Esplora tutti i documenti della trasparenza</h2>
+
                 <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
                     <div class="cmp-input-search">
                         <div class="form-group autocomplete-wrapper mb-2 mb-lg-4">
@@ -106,22 +123,22 @@ get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
                         </p>
                     </div>
 
-                    <?php if ($the_query->have_posts()) : ?>
+                    <?php if ($the_query->have_posts()) { ?>
                         <div class="row g-4" id="load-more">
                             <?php
-                            while ($the_query->have_posts()) {
-                                $the_query->the_post();
-                                $elemento = get_post();
+                            // Ciclo manuale su $the_query->posts perché li abbiamo ordinati in PHP
+                            foreach ($the_query->posts as $elemento) {
+                                setup_postdata($elemento);
                                 get_template_part("template-parts/amministrazione-trasparente/card");
                             }
                             wp_reset_postdata();
                             ?>
                         </div>
-                    <?php else : ?>
+                    <?php } else { ?>
                         <div class="alert alert-info text-center" role="alert">
                             Nessun post trovato.
                         </div>
-                    <?php endif; ?>
+                    <?php } ?>
 
                     <div class="row my-4">
                         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
@@ -142,5 +159,4 @@ get_template_part("template-parts/common/valuta-servizio");
 get_template_part("template-parts/common/assistenza-contatti");
 get_footer();
 ?>
-
 
