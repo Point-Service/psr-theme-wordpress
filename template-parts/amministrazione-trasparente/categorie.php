@@ -22,15 +22,17 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
     .content {
         display: none;
-        padding: 10px;
+        padding: 10px 15px;
     }
 
     .content a {
         display: block;
-        margin: 5px 0;
-        color: rgb(17, 17, 17);
+        margin: 6px 0;
+        color: #111;
         text-decoration: none;
         padding-left: 10px;
+        font-size: 16px;
+        font-weight: 500;
     }
 
     .content a:hover {
@@ -38,18 +40,37 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     }
 
     .sub-sub-list {
-        margin-top: 5px;
+        margin-top: 8px;
         margin-left: 20px;
         padding-left: 15px;
-        border-left: 2px solid #ddd;
-        font-size: 14px;
+        border-left: 2px solid #e0e0e0;
+        font-size: 15px;
+    }
+
+    .sub-sub-list li {
+        margin: 4px 0;
     }
 
     .sub-sub-list a {
-        padding-left: 0 !important;
+        color: #444;
         font-style: italic;
+        padding-left: 5px;
+        font-size: 15px;
+    }
+
+    .sub-sub-list .sub-sub-list a {
+        font-style: normal;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .sub-sub-list .sub-sub-list {
+        margin-left: 20px;
+        border-left: 1px dashed #ccc;
+        padding-left: 10px;
     }
 </style>
+
 
 <script>
     function toggleContent(id) {
