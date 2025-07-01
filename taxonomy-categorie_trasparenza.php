@@ -27,18 +27,33 @@ $args = array(
     )
 );
 
+$args = array(
+    's' => $query,
+    'posts_per_page' => $max_posts,
+    'post_type' => 'elemento_trasparenza',
+    'paged' => $paged,
+    'tax_query' => array(
+        array(
+            'taxonomy' => 'tipi_cat_amm_trasp',
+            'field' => 'slug',
+            'terms' => $obj->slug,
+        )
+    ),
+);
+
 if ($orderby === 'alpha') {
     $args['orderby'] = 'title';
     $args['order'] = 'ASC';
 } else {
-    // Ordina per meta_key (data pubblicazione) se esiste, altrimenti per data post
     $args['meta_key'] = '_data_pubblicazione_ordinabile';
     $args['orderby'] = array(
         'meta_value_num' => 'DESC',
         'date' => 'DESC',
     );
-
 }
+
+$the_query = new WP_Query($args);
+
 
 
 
