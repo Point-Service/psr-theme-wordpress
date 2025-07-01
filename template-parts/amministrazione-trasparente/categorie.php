@@ -77,13 +77,38 @@ function toggleContent(id) {
     var allContents = document.querySelectorAll('.content');
     allContents.forEach(function(content) {
         if (content.id === id) {
-            // Se è il contenuto cliccato, toggle display
             content.style.display = (content.style.display === "block") ? "none" : "block";
         } else {
-            // Chiudi tutte le altre sezioni
             content.style.display = "none";
         }
     });
+    updateToggleAllButton();
+}
+
+function toggleAllCategories() {
+    var allContents = document.querySelectorAll('.content');
+    var toggleAllBtn = document.getElementById('toggle-all-btn');
+
+    // Controlla se almeno una categoria è chiusa
+    var anyClosed = Array.from(allContents).some(content => content.style.display !== 'block');
+
+    if (anyClosed) {
+        // Apri tutte
+        allContents.forEach(content => content.style.display = 'block');
+        toggleAllBtn.textContent = 'Chiudi tutte';
+    } else {
+        // Chiudi tutte
+        allContents.forEach(content => content.style.display = 'none');
+        toggleAllBtn.textContent = 'Espandi tutte';
+    }
+}
+
+function updateToggleAllButton() {
+    var allContents = document.querySelectorAll('.content');
+    var toggleAllBtn = document.getElementById('toggle-all-btn');
+
+    var allOpen = Array.from(allContents).every(content => content.style.display === 'block');
+    toggleAllBtn.textContent = allOpen ? 'Chiudi tutte' : 'Espandi tutte';
 }
 </script>
 
@@ -99,10 +124,13 @@ function toggleContent(id) {
                     <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
                         <div class="mycontainer p-3">
 
-                                <?php foreach ($categorie_genitori as $genitore) {
+                            <!-- BOTTONE PER ESPANDERE/CHIUDERE TUTTE -->
+                            <button type="button" id="toggle-all-btn" class="btn btn-primary mb-3" onclick="toggleAllCategories()">Espandi tutte</button>
+
+                            <?php foreach ($categorie_genitori as $genitore) {
                                 $nome_genitore = esc_html($genitore->name);
                                 $id_genitore = 'cat_' . $genitore->term_id;
-                                ?>
+                            ?>
                                 
                                 <h2 class="title-custom" onclick="toggleContent('<?= $id_genitore ?>')"><?= $nome_genitore ?></h2>
                                 
@@ -136,7 +164,6 @@ function toggleContent(id) {
                                     </ul>
                                 </div>
                             <?php } ?>
-
 
                         </div>
                     </div>
