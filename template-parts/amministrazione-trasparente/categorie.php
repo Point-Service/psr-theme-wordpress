@@ -75,6 +75,14 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     justify-content: flex-end; /* allinea il contenuto a destra */
     margin-bottom: 1rem;
     }
+
+    #toggle-all-btn {
+    font-size: 14px;
+    height: 30px;
+    padding: 0.25rem 1rem;
+    /* niente colore o sfondo qui: lo gestisce Bootstrap */
+    cursor: pointer;
+    }
     
     #toggle-all-btn {
         padding: 4px 12px;
@@ -154,9 +162,11 @@ function updateToggleAllButton() {
                             <!-- BOTTONE PER ESPANDERE/CHIUDERE TUTTE -->
                             <div id="toggle-all-wrapper">
                                 <div>Elenco di tutte le voci</div>
-                                <div id="toggle-all-container">
-                                    <button type="button" id="toggle-all-btn" class="btn btn-primary" onclick="toggleAllCategories()">Espandi tutte le Voci</button>
-                                </div>
+                                    <div id="toggle-all-container" class="d-flex justify-content-end mb-3">
+                                        <button type="button" id="toggle-all-btn" class="btn btn-outline-primary py-1 px-3" style="font-size:14px; height: 30px;" onclick="toggleAllCategories()">
+                                            Espandi tutte le Voci
+                                        </button>
+                                    </div>
                             </div>
 
 
