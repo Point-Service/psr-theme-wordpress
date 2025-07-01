@@ -275,9 +275,12 @@ function updateToggleAllButton() {
                                             
                                             <li class="mb-3 mt-3">
                                                 <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
-                                                    <svg class="icon">
-                                                        <use xlink:href="#it-arrow-right-triangle"></use>
-                                                    </svg>
+                                                    <!-- Rimuovi o commenta questo SVG per la prima categoria -->
+                                                    <?php if ($genitore->term_id !== $sotto->parent) : ?>
+                                                        <svg class="icon">
+                                                            <use xlink:href="#it-arrow-right-triangle"></use>
+                                                        </svg>
+                                                    <?php endif; ?>
                                                     <span><?= $nome_sotto; ?></span>
                                                 </a>
                             
