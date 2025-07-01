@@ -75,6 +75,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                             <?php foreach ($sottocategorie as $sottocategoria) {
                                                 $link = get_term_link($sottocategoria);  // Ottieni il link della sottocategoria
                                                 $nome_sotto = esc_html($sottocategoria->name); ?>
+                                        jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
                                                 <li class="mb-3 mt-3">
                                                     <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?= $link; ?>">
                                                         <svg class="icon">
