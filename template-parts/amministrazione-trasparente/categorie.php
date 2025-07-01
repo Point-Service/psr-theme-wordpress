@@ -100,4 +100,3 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     </div>
 </main>
 
-
