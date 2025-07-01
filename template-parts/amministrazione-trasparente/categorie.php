@@ -67,11 +67,15 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 }
 
 /* Freccia prima del link */
+.content a {
+    padding-left: 2px; /* spazio dopo la freccia */
+    position: relative; /* serve per posizionare assolutamente ::before */
+}
+
 .content a::before {
     content: '▶';
     position: absolute;
-    left: 0;
-    right: 1;
+    left: 5px;  /* sposta la freccia un po' a destra */
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
