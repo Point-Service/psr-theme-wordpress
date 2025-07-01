@@ -81,7 +81,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                         <?php 
                                     
                                     
-                                    } get_template_part("template-parts/amministrazione-trasparente/sottocategorie"); ?>
+                                    }
     
                                     </ul>
                                 </div>
