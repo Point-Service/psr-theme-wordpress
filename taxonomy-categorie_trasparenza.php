@@ -37,44 +37,45 @@ $meta_query = array('relation' => 'OR');
 $search_in_title = false;
 
 if (!empty($query)) {
-    switch ($search_field) {
-        case 'title':
-            $search_in_title = true;
-            break;
+switch ($search_field) {
+    case 'title':
+        $search_in_title = true;
+        break;
 
-        case 'descrizione':
-            $meta_query[] = array(
-                'key' => $prefix . 'descrizione',
-                'value' => $query,
-                'compare' => 'LIKE'
-            );
-            break;
+    case 'descrizione':
+        $meta_query[] = array(
+            'key' => $prefix . 'descrizione',
+            'value' => '%' . $query . '%',
+            'compare' => 'LIKE'
+        );
+        break;
 
-        case 'data_pubblicazione':
-            $meta_query[] = array(
-                'key' => $prefix . 'data_pubblicazione',
-                'value' => $query,
-                'compare' => 'LIKE',
-                'type' => 'CHAR'
-            );
-            break;
+    case 'data_pubblicazione':
+        $meta_query[] = array(
+            'key' => $prefix . 'data_pubblicazione',
+            'value' => '%' . $query . '%',
+            'compare' => 'LIKE',
+            'type' => 'CHAR'
+        );
+        break;
 
-        case 'all':
-        default:
-            $search_in_title = true;
-            $meta_query[] = array(
-                'key' => $prefix . 'descrizione',
-                'value' => $query,
-                'compare' => 'LIKE'
-            );
-            $meta_query[] = array(
-                'key' => $prefix . 'data_pubblicazione',
-                'value' => $query,
-                'compare' => 'LIKE',
-                'type' => 'CHAR'
-            );
-            break;
-    }
+    case 'all':
+    default:
+        $search_in_title = true;
+        $meta_query[] = array(
+            'key' => $prefix . 'descrizione',
+            'value' => '%' . $query . '%',
+            'compare' => 'LIKE'
+        );
+        $meta_query[] = array(
+            'key' => $prefix . 'data_pubblicazione',
+            'value' => '%' . $query . '%',
+            'compare' => 'LIKE',
+            'type' => 'CHAR'
+        );
+        break;
+}
+
 }
 
 $args = array(
