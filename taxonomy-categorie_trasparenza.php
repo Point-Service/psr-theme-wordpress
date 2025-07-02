@@ -49,7 +49,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 
 
-$data_pubblicazione = get_post_meta($elemento->ID, '_dci_elemento_trasparenza_data_pubblicazione', true);
+$data_pubblicazione = get_post_meta($elemento->ID, '_dci_elemento_trasparenza_, true);
 if ($data_pubblicazione) {
     echo '<p>Pubblicato il: ' . date('d-m-Y', $data_pubblicazione) . '</p>';
 }
