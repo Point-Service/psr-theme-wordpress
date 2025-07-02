@@ -78,6 +78,8 @@ if (!empty($query)) {
                 'value' => $query,
                 'compare' => 'LIKE'
             );
+
+           break;
             $meta_query[] = array(
                 'key' => $prefix . 'data_pubblicazione',
                 'value' => $query,
