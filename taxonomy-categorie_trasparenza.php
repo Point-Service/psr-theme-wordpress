@@ -24,6 +24,8 @@ $args = array(
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
     'paged'              => $paged,
+    'orderby' => 'data_pubblicazione',    // Ordina per data di pubblicazione
+    'order' => 'DESC',      // Ordina in ordine decrescente (dal più recente)
 );
 $the_query = new WP_Query($args);
 
