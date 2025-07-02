@@ -18,24 +18,24 @@ $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $load_posts = -1;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
-$prefix = '_dci_elemento_trasparenza_';
-
-// Gestione dell'ordinamento
-$order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc'; // Default è data_desc
-
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
-    'paged' => $paged,
-    'meta_key' => $prefix . 'data_pubblicazione', // Nome del campo personalizzato
-    'orderby' => ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? 'title' : 'meta_value_num',
-    'order' => ($order == 'data_desc' || $order == 'alfabetico_desc') ? 'DESC' : 'ASC', // Ordina in base all'ordinamento scelto
+    'paged'              => $paged,
 );
-
 $the_query = new WP_Query($args);
 
+$additional_filter = array(
+    array(
+        'taxonomy' => 'tipi_cat_amm_trasp',
+        'field' => 'slug',
+        'terms' => $obj->slug
+    )
+);
+
+$siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
 
 <main>
@@ -43,11 +43,24 @@ $the_query = new WP_Query($args);
     $title = $obj->name;
     $description = $obj->description;
     $data_element = 'data-element="page-name"';
-    get_template_part("template-parts/hero/hero");
-    get_template_part("template-parts/amministrazione-trasparente/sottocategorie");
-    ?>
+    get_template_part("template-parts/hero/hero"); 
+    get_template_part("template-parts/amministrazione-trasparente/sottocategorie"); ?>
 
     <div class="bg-grey-card">
+
+        <?php if ($obj->name == "Contratti Pubblici") { ?>
+            <div class="container my-5">
+                <div class="row">
+                    <h2 class="visually-hidden">Esplora tutti i bandi di gara</h2>
+                    <div class="col-12 col-lg-8 pt-20 pt-lg-20 pb-lg-20"></div>
+                    <div class="row g-3" id="load-more">
+                        <?php get_template_part("template-parts/bandi-di-gara/tutti-bandi"); ?>
+                    </div>
+                    <!-- <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?> -->
+                </div>
+            </div>
+        </div>
+    <?php } else { ?>
         <form role="search" id="search-form" method="get" class="search-form">
             <button type="submit" class="d-none"></button>
             <div class="container">
@@ -67,7 +80,8 @@ $the_query = new WP_Query($args);
                                         <button class="btn btn-primary" type="submit" id="button-3">Invio</button>
                                     </div>
                                     <span class="autocomplete-icon" aria-hidden="true">
-                                        <svg class="icon icon-sm icon-primary" role="img" aria-labelledby="autocomplete-label">
+                                        <svg class="icon icon-sm icon-primary" role="img"
+                                            aria-labelledby="autocomplete-label">
                                             <use href="#it-search"></use>
                                         </svg>
                                     </span>
@@ -75,23 +89,9 @@ $the_query = new WP_Query($args);
                             </div>
                             <p id="autocomplete-label" class="mb-4">
                                 <strong><?php echo $the_query->found_posts; ?></strong> elementi trovati in ordine
-                                <?php echo ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? "alfabetico" : "di pubblicazione"; ?>
-                                <?php echo ($order == 'desc' || $order == 'alfabetico_desc') ? "(Discendente)" : "(Ascendente)"; ?>
+                                alfabetico
                             </p>
                         </div>
-
-                        <!-- Sezione per ordinamento -->
-                        <div class="form-group mb-4">
-                             <span style="font-size: 1.2rem; font-weight: bold; color: #333;">Ordina per</span>
-                            <select id="order-select" name="order_type" class="form-control" style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem;">
-                                <option value="data_desc" <?php echo ($order == 'data_desc') ? 'selected' : ''; ?>>Data (Descendente)</option>
-                                <option value="data_asc" <?php echo ($order == 'data_asc') ? 'selected' : ''; ?>>Data (Ascendente)</option>
-                                <option value="alfabetico_asc" <?php echo ($order == 'alfabetico_asc') ? 'selected' : ''; ?>>Alfabetico (Ascendente)</option>
-                                <option value="alfabetico_desc" <?php echo ($order == 'alfabetico_desc') ? 'selected' : ''; ?>>Alfabetico (Discendente)</option>
-                            </select>
-                        </div>
-
-                        <!-- Risultati della ricerca -->
                         <?php if ($the_query->found_posts != 0) { ?>
                             <?php $categoria = $the_query->posts; ?>
                             <div class="row g-4" id="load-more">
@@ -109,7 +109,6 @@ $the_query = new WP_Query($args);
 
                     <!-- Colonna destra: link utili -->
                     <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
-
                     <div class="row my-4">
                         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
                             <?php echo dci_bootstrap_pagination(); ?>
@@ -118,21 +117,12 @@ $the_query = new WP_Query($args);
                 </div>
             </div>
         </form>
+    <?php } ?>
     </div>
 </main>
-
 <?php
 get_template_part("template-parts/common/valuta-servizio");
 get_template_part("template-parts/common/assistenza-contatti");
 get_footer();
 ?>
-
-<script>
-    // Aggiungi un gestore di eventi JavaScript per assicurarti che il form venga inviato automaticamente
-    // quando cambia l'ordinamento
-    document.getElementById('order-select').addEventListener('change', function() {
-        document.getElementById('search-form').submit();
-    });
-</script>
-
 
