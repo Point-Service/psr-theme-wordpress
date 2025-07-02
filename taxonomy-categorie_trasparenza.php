@@ -10,49 +10,32 @@ global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_
 get_header();
 $obj = get_queried_object();
 
+// Pulisco la query di ricerca
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $search_field = $_GET['search_field'] ?? 'all';
 
-// Filtro posts_search per aggiungere OR su titolo se search_field è 'all'
-add_filter('posts_search', function ($search, $wp_query) use ($query, $search_field) {
-    global $wpdb;
-    if (!empty($query) && ($search_field === 'all' || $search_field === null)) {
-        $like = '%' . $wpdb->esc_like($query) . '%';
-
-        if (empty($search)) {
-            // Se non c'è condizione search standard, aggiungo solo titolo
-            $search = $wpdb->prepare(" AND {$wpdb->posts}.post_title LIKE %s", $like);
-        } else {
-            // Inserisco OR titolo LIKE dentro la parentesi esistente, se c'è
-            $search = preg_replace(
-                '/\bAND\s*\(/i',
-                "AND ( {$wpdb->posts}.post_title LIKE '{$like}' OR ",
-                $search,
-                1
-            );
-        }
-    }
-    return $search;
-}, 10, 2);
-
-// Recupera il numero di pagina corrente.
+// Impostazioni base
 $paged = max(1, get_query_var('paged', 1));
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $prefix = '_dci_elemento_trasparenza_';
-
 $order = $_GET['order_type'] ?? 'data_desc';
 
+// Variabili per query
 $meta_query = [];
 $search_in_title = false;
+
+// Se il campo ricerca è 'all', devo cercare in titolo O meta_descrizione O meta_data_pubblicazione
+// WordPress non supporta "OR" diretto fra titolo e meta_query quindi usiamo filtro posts_search + meta_query (rel 'OR' per i meta)
 
 if (!empty($query)) {
     switch ($search_field) {
         case 'title':
-            // Cerca solo nel titolo con 's' (standard WP)
+            // Solo titolo -> uso query nativa WP con 's'
             $search_in_title = true;
             break;
 
         case 'descrizione':
+            // Solo descrizione
             $meta_query[] = [
                 'key'     => $prefix . 'descrizione',
                 'value'   => $query,
@@ -62,6 +45,7 @@ if (!empty($query)) {
             break;
 
         case 'data_pubblicazione':
+            // Solo data_pubblicazione
             $meta_query[] = [
                 'key'     => $prefix . 'data_pubblicazione',
                 'value'   => $query,
@@ -72,65 +56,103 @@ if (!empty($query)) {
 
         case 'all':
         default:
-            // Cerca in descrizione OR data_pubblicazione, senza usare 's'
-            $meta_query['relation'] = 'OR';
-            $meta_query[] = [
-                'key'     => $prefix . 'descrizione',
-                'value'   => $query,
-                'compare' => 'LIKE',
-                'type'    => 'CHAR',
+            // Cerca in meta descrizione OR meta data_pubblicazione
+            $meta_query = [
+                'relation' => 'OR',
+                [
+                    'key'     => $prefix . 'descrizione',
+                    'value'   => $query,
+                    'compare' => 'LIKE',
+                    'type'    => 'CHAR',
+                ],
+                [
+                    'key'     => $prefix . 'data_pubblicazione',
+                    'value'   => $query,
+                    'compare' => 'LIKE',
+                    'type'    => 'CHAR',
+                ],
             ];
-            $meta_query[] = [
-                'key'     => $prefix . 'data_pubblicazione',
-                'value'   => $query,
-                'compare' => 'LIKE',
-                'type'    => 'CHAR',
-            ];
-            $search_in_title = false; // titolo gestito dal filtro posts_search
+            // Per titolo, aggiungiamo filtro posts_search (vedi sotto)
+            $search_in_title = true;
             break;
     }
 }
 
+// Filtro per aggiungere ricerca titolo quando cerchiamo su meta_query + titolo insieme
+// Funziona solo se $search_in_title è true e c'è una meta_query
+
+if ($search_in_title) {
+    add_filter('posts_search', function ($search, $wp_query) use ($query, $search_field) {
+        global $wpdb;
+
+        // Per sicurezza evitiamo di modificare altre query
+        if (empty($query)) {
+            return $search;
+        }
+
+        // Escape per LIKE
+        $like = '%' . $wpdb->esc_like($query) . '%';
+
+        // Se non c'è già una clausola, creiamola solo per titolo
+        if (empty($search)) {
+            return $wpdb->prepare(" AND {$wpdb->posts}.post_title LIKE %s", $like);
+        } else {
+            // Se c'è una clausola esistente (meta_query), inserisco OR titolo dentro le parentesi
+            // Cerca il primo AND ( e inserisci OR titolo dentro le parentesi
+            // es. AND ( (meta_key=descrizione LIKE ...) OR (meta_key=data_pubblicazione LIKE ...) )
+            $search = preg_replace(
+                '/\bAND\s*\(/i',
+                "AND ( {$wpdb->posts}.post_title LIKE '{$like}' OR ",
+                $search,
+                1
+            );
+            return $search;
+        }
+    }, 10, 2);
+}
+
+// Costruisco args base della query
+
 $args = [
-    'posts_per_page'      => $max_posts,
-    'post_type'           => 'elemento_trasparenza',
-    'tipi_cat_amm_trasp'  => $obj->slug,
-    'paged'               => $paged,
-    'orderby'             => ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? 'title' : 'meta_value',
-    'order'               => ($order == 'data_desc' || $order == 'alfabetico_desc') ? 'DESC' : 'ASC',
+    'posts_per_page'     => $max_posts,
+    'post_type'          => 'elemento_trasparenza',
+    'tipi_cat_amm_trasp' => $obj->slug,
+    'paged'              => $paged,
 ];
 
-// Se cerco solo titolo, uso 's'
-if ($search_in_title) {
-    $args['s'] = $query;
-} elseif (!empty($meta_query)) {
-    $args['meta_query'] = $meta_query;
-}
-
-// Ordinamento per data (stringa)
-if ($order == 'data_desc' || $order == 'data_asc') {
+// Aggiungo ordine e ordinamento
+if ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') {
+    $args['orderby'] = 'title';
+    $args['order'] = ($order == 'alfabetico_desc') ? 'DESC' : 'ASC';
+} else {
+    // Ordina per meta_key data_pubblicazione (stringa)
     $args['orderby'] = 'meta_value';
     $args['meta_key'] = $prefix . 'data_pubblicazione';
-    $args['meta_type'] = 'CHAR'; // perché la data è in formato testo (es. "01 Aprile 2025")
+    $args['meta_type'] = 'CHAR';
+    $args['order'] = ($order == 'data_desc') ? 'DESC' : 'ASC';
 }
 
-// DEBUG: stampa args WP_Query
-echo '<pre style="background:#f9f9f9; padding:10px; border:1px solid #ccc;">';
-echo 'WP_Query args: ' . print_r($args, true);
-echo '</pre>';
+// Aggiungo ricerca a seconda del caso
 
-// Esegue la query
+if ($search_in_title && $search_field == 'title') {
+    // Solo ricerca titolo standard
+    $args['s'] = $query;
+} elseif (!$search_in_title && !empty($meta_query)) {
+    // Solo meta query senza titolo
+    $args['meta_query'] = $meta_query;
+} elseif ($search_in_title && !empty($meta_query)) {
+    // Cerca in meta_query + titolo: meta_query + filtro posts_search aggiunto sopra
+    $args['meta_query'] = $meta_query;
+    // Non metto 's' perché la ricerca titolo viene fatta con filtro posts_search (altrimenti WP fa AND tra s e meta_query)
+}
+
+// Eseguo query
 $the_query = new WP_Query($args);
 
-// DEBUG: stampa query SQL
-echo '<pre style="background:#f9f9f9; padding:10px; border:1px solid #ccc;">';
-echo 'SQL query: ' . esc_html($the_query->request);
-echo '</pre>';
-
+// Recupero opzioni siti tematici
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 
 ?>
-
 
 <main>
     <?php
@@ -148,7 +170,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 <div class="row">
                     <h2 class="visually-hidden">Esplora tutti i documenti della trasparenza</h2>
 
-                    <!-- Colonna sinistra -->
                     <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
                         <div class="cmp-input-search">
                             <div class="form-group autocomplete-wrapper mb-2 mb-lg-4">
@@ -180,11 +201,10 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                             <p id="autocomplete-label" class="mb-4">
                                 <strong><?php echo $the_query->found_posts; ?></strong> elementi trovati in ordine
                                 <?php echo ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? "alfabetico" : "di pubblicazione"; ?>
-                                <?php echo ($order == 'desc' || $order == 'alfabetico_desc') ? "(Discendente)" : "(Ascendente)"; ?>
+                                <?php echo ($order == 'data_desc' || $order == 'alfabetico_desc') ? "(Discendente)" : "(Ascendente)"; ?>
                             </p>
                         </div>
 
-                        <!-- Ordinamento -->
                         <div class="form-group mb-4">
                             <span style="font-size: 1.2rem; font-weight: bold; color: #333;">Ordina per</span>
                             <select id="order-select" name="order_type" class="form-control">
@@ -195,7 +215,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                             </select>
                         </div>
 
-                        <!-- Risultati -->
                         <?php if ($the_query->have_posts()) { ?>
                             <div class="row g-4" id="load-more">
                                 <?php while ($the_query->have_posts()) {
@@ -213,7 +232,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                         <?php } ?>
                     </div>
 
-                    <!-- Sidebar -->
                     <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
 
                     <div class="row my-4">
@@ -234,9 +252,11 @@ get_footer();
 ?>
 
 <script>
+    // Submit automatico on change dell'ordinamento
     document.getElementById('order-select').addEventListener('change', function() {
         setTimeout(function() {
             document.getElementById('search-form').submit();
         }, 100);
     });
 </script>
+
