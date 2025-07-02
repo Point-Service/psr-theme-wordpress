@@ -25,9 +25,9 @@ $args = array(
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
     'paged' => $paged,
-    'meta_key' => 'data_pubblicazione',  // Sostituisci con il nome del tuo campo personalizzato
-    'orderby' => 'meta_value',     // Ordina per il valore del campo personalizzato
-    'order' => 'DESC',             // Ordina in ordine decrescente (dal più recente)
+    'meta_key' => $prefix . 'data_pubblicazione',  // Nome del campo personalizzato
+    'orderby' => 'meta_value_num',                  // Ordina per il valore numerico (timestamp)
+    'order' => 'DESC',                              // Ordina in ordine decrescente (dal più recente)
 );
 
 
