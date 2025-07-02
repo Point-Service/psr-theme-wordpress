@@ -18,15 +18,19 @@ $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $load_posts = -1;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
+
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
-    'paged'              => $paged,
-    'orderby' => 'data_pubblicazione',    // Ordina per data di pubblicazione
-    'order' => 'DESC',      // Ordina in ordine decrescente (dal più recente)
+    'paged' => $paged,
+    'meta_key' => 'data_pubblicazione',  // Sostituisci con il nome del tuo campo personalizzato
+    'orderby' => 'meta_value',     // Ordina per il valore del campo personalizzato
+    'order' => 'DESC',             // Ordina in ordine decrescente (dal più recente)
 );
+
+
 $the_query = new WP_Query($args);
 
 $additional_filter = array(
@@ -38,7 +42,7 @@ $additional_filter = array(
 );
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
-echo'ff';
+
 ?>
 
 <main>
