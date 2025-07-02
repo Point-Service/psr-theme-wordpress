@@ -15,6 +15,7 @@ $obj = get_queried_object();
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
+$load_posts = -1;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
 $prefix = '_dci_elemento_trasparenza_';
@@ -22,9 +23,8 @@ $prefix = '_dci_elemento_trasparenza_';
 // Gestione dell'ordinamento
 $order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc'; // Default è data_desc
 
-// Aggiornamento della query
 $args = array(
-    's' => $query, // Cerca nel titolo e nel contenuto del post
+    's' => $query,
     'posts_per_page' => $max_posts,
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
@@ -32,20 +32,10 @@ $args = array(
     'meta_key' => $prefix . 'data_pubblicazione', // Nome del campo personalizzato
     'orderby' => ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? 'title' : 'meta_value_num',
     'order' => ($order == 'data_desc' || $order == 'alfabetico_desc') ? 'DESC' : 'ASC', // Ordina in base all'ordinamento scelto
-    'meta_query' => array(
-        'relation' => 'OR',
-        // Cerca nel campo personalizzato 'data_pubblicazione'
-        array(
-            'key' => $prefix . 'data_pubblicazione',
-            'value' => $query,
-            'compare' => 'LIKE'
-        ),
-    ),
 );
 
 $the_query = new WP_Query($args);
 
-// Recupero dei siti tematici
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
 
