@@ -113,13 +113,16 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                         </div>
 
                         <!-- Selettore di ordinamento -->
-                        <div class="form-group">
-                            <label for="order_by"><?php _e('Ordina per', 'design_comuni_italia'); ?></label>
-                            <select name="order_by" id="order_by" class="form-control" onchange="this.form.submit()">
-                                <option value="date_desc" <?php selected($_GET['order_by'], 'date_desc'); ?>>Data (dal più recente)</option>
-                                <option value="title_asc" <?php selected($_GET['order_by'], 'title_asc'); ?>>Ordine alfabetico (A-Z)</option>
-                            </select>
-                        </div>
+            
+                    <div class="form-group">
+                        <label for="order-select" style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Ordina per</label>
+                        <select id="order-select" name="order_type" class="form-control" style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem; margin-top: 0.5rem;">
+                            <option value="data_desc" <?php echo ($order == 'data_desc') ? 'selected' : ''; ?>>Data (Descendente)</option>
+                            <option value="data_asc" <?php echo ($order == 'data_asc') ? 'selected' : ''; ?>>Data (Ascendente)</option>
+                            <option value="alfabetico_asc" <?php echo ($order == 'alfabetico_asc') ? 'selected' : ''; ?>>Alfabetico (Ascendente)</option>
+                            <option value="alfabetico_desc" <?php echo ($order == 'alfabetico_desc') ? 'selected' : ''; ?>>Alfabetico (Discendente)</option>
+                        </select>
+                    </div>
 
                         <?php if ($the_query->found_posts != 0) { ?>
                             <?php $categoria = $the_query->posts; ?>
