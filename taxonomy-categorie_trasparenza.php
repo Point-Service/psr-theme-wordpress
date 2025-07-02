@@ -20,17 +20,30 @@ $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
 $prefix = '_dci_elemento_trasparenza_';
 
+// Impostazione dell'ordinamento in base alla selezione dell'utente
+$order_by = isset($_GET['order_by']) ? $_GET['order_by'] : 'date_desc'; // Valore di default
+
+if ($order_by === 'title_asc') {
+    $orderby = 'title';
+    $order = 'ASC';
+    $meta_key = '';  // Non serve meta_key per ordinamento alfabetico
+} else {
+    $orderby = 'meta_value_num';  // Per ordinare per data
+    $order = 'DESC';
+    $meta_key = $prefix . 'data_pubblicazione'; // La chiave per la data
+}
+
+// Parametri per la query
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
     'paged' => $paged,
-    'meta_key' => $prefix . 'data_pubblicazione',  // Nome del campo personalizzato
-    'orderby' => 'meta_value_num',                  // Ordina per il valore numerico (timestamp)
-    'order' => 'DESC',                              // Ordina in ordine decrescente (dal più recente)
+    'meta_key' => $meta_key,  // Imposta la chiave per la data se necessario
+    'orderby' => $orderby,    // Imposta l'ordinamento dinamico
+    'order' => $order,        // Imposta l'ordine (ASC o DESC)
 );
-
 
 $the_query = new WP_Query($args);
 
@@ -44,7 +57,6 @@ $additional_filter = array(
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 
-
 ?>
 
 <main>
@@ -52,11 +64,10 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     $title = $obj->name;
     $description = $obj->description;
     $data_element = 'data-element="page-name"';
-    get_template_part("template-parts/hero/hero"); 
+    get_template_part("template-parts/hero/hero");
     get_template_part("template-parts/amministrazione-trasparente/sottocategorie"); ?>
 
     <div class="bg-grey-card">
-
         <?php if ($obj->name == "Contratti Pubblici") { ?>
             <div class="container my-5">
                 <div class="row">
@@ -65,7 +76,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     <div class="row g-3" id="load-more">
                         <?php get_template_part("template-parts/bandi-di-gara/tutti-bandi"); ?>
                     </div>
-                    <!-- <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?> -->
                 </div>
             </div>
         </div>
@@ -83,14 +93,14 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                 <div class="input-group">
                                     <label for="autocomplete-two" class="visually-hidden">Cerca una parola chiave</label>
                                     <input type="search" class="autocomplete form-control"
-                                        placeholder="Cerca una parola chiave" id="autocomplete-two" name="search"
-                                        value="<?php echo $query; ?>" data-bs-autocomplete="[]">
+                                           placeholder="Cerca una parola chiave" id="autocomplete-two" name="search"
+                                           value="<?php echo $query; ?>" data-bs-autocomplete="[]">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit" id="button-3">Invio</button>
                                     </div>
                                     <span class="autocomplete-icon" aria-hidden="true">
                                         <svg class="icon icon-sm icon-primary" role="img"
-                                            aria-labelledby="autocomplete-label">
+                                             aria-labelledby="autocomplete-label">
                                             <use href="#it-search"></use>
                                         </svg>
                                     </span>
@@ -101,6 +111,16 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                 alfabetico
                             </p>
                         </div>
+
+                        <!-- Selettore di ordinamento -->
+                        <div class="form-group">
+                            <label for="order_by"><?php _e('Ordina per', 'design_comuni_italia'); ?></label>
+                            <select name="order_by" id="order_by" class="form-control">
+                                <option value="date_desc" <?php selected($_GET['order_by'], 'date_desc'); ?>>Data (dal più recente)</option>
+                                <option value="title_asc" <?php selected($_GET['order_by'], 'title_asc'); ?>>Ordine alfabetico (A-Z)</option>
+                            </select>
+                        </div>
+
                         <?php if ($the_query->found_posts != 0) { ?>
                             <?php $categoria = $the_query->posts; ?>
                             <div class="row g-4" id="load-more">
@@ -129,6 +149,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     <?php } ?>
     </div>
 </main>
+
 <?php
 get_template_part("template-parts/common/valuta-servizio");
 get_template_part("template-parts/common/assistenza-contatti");
