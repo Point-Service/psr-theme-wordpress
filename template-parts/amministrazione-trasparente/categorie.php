@@ -5,7 +5,7 @@ $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'parent' => 0,
     'orderby' => 'ID',
-    'order' => 'ASC'
+    'order' => 'data_pubblicazione'
 ));
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
