@@ -62,13 +62,12 @@ if (!empty($query)) {
             );
             break;
 
-        case 'data_pubblicazione':
-            $meta_query[] = array(
-                'key' => $prefix . 'data_pubblicazione',
-                'value' => $query,
-                'compare' => 'LIKE',
-                'type' => 'CHAR'
-            );
+                $meta_query[] = array(
+                    'key' => $prefix . 'data_pubblicazione',
+                    'value' => $query,
+                    'compare' => 'LIKE',
+                    'type' => 'CHAR'
+                );
             break;
 
         case 'all':
