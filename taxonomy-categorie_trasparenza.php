@@ -13,18 +13,17 @@ $obj = get_queried_object();
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $search_field = $_GET['search_field'] ?? 'all';
 
-// Filtro posts_search per ricerca fulltext su titolo se "all" (senza 's')
-// Modifica la clausola WHERE per aggiungere OR su titolo
+// Filtro posts_search per aggiungere OR su titolo se search_field è 'all'
 add_filter('posts_search', function ($search, $wp_query) use ($query, $search_field) {
     global $wpdb;
     if (!empty($query) && ($search_field === 'all' || $search_field === null)) {
         $like = '%' . $wpdb->esc_like($query) . '%';
 
         if (empty($search)) {
-            // Nessuna condizione, cerca solo titolo
+            // Se non c'è condizione search standard, aggiungo solo titolo
             $search = $wpdb->prepare(" AND {$wpdb->posts}.post_title LIKE %s", $like);
         } else {
-            // Inserisce OR titolo dentro le parentesi esistenti della clausola meta_query
+            // Inserisco OR titolo LIKE dentro la parentesi esistente, se c'è
             $search = preg_replace(
                 '/\bAND\s*\(/i',
                 "AND ( {$wpdb->posts}.post_title LIKE '{$like}' OR ",
@@ -73,7 +72,7 @@ if (!empty($query)) {
 
         case 'all':
         default:
-            // Cerca in descrizione OR data_pubblicazione, ma senza usare 's'
+            // Cerca in descrizione OR data_pubblicazione, senza usare 's'
             $meta_query['relation'] = 'OR';
             $meta_query[] = [
                 'key'     => $prefix . 'descrizione',
@@ -87,7 +86,7 @@ if (!empty($query)) {
                 'compare' => 'LIKE',
                 'type'    => 'CHAR',
             ];
-            $search_in_title = false; // Non mettere 's', gestito dal filtro posts_search
+            $search_in_title = false; // titolo gestito dal filtro posts_search
             break;
     }
 }
@@ -131,6 +130,7 @@ echo '</pre>';
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 
 ?>
+
 
 <main>
     <?php
