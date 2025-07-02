@@ -1,13 +1,12 @@
 <?php
 global $sito_tematico_id, $siti_tematici;
 
-$categorie_genitori = get_terms( 'tipi_cat_amm_trasp', array(
+$categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'parent' => 0,
-    'orderby' => 'meta_value_num',
-    'order' => 'DESC',
-    'meta_key' => 'data_pubblicazione', // Il nome del campo personalizzato
-) );
+    'orderby' => 'ID',
+    'order' => 'ASC'
+));
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
@@ -304,5 +303,4 @@ function updateToggleAllButton() {
         </form>
     </div>
 </main>
-
 
