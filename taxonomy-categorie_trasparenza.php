@@ -13,13 +13,25 @@ $obj = get_queried_object();
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $search_field = $_GET['search_field'] ?? 'all';
 
-// Filtro posts_search per ricerca fulltext su titolo se "all"
+// Filtro posts_search per ricerca fulltext su titolo se "all" (senza 's')
+// Modifica la clausola WHERE per aggiungere OR su titolo
 add_filter('posts_search', function ($search, $wp_query) use ($query, $search_field) {
     global $wpdb;
-    if (!empty($query) && $search_field === 'all' && strpos($search, 'WHERE') !== false) {
+    if (!empty($query) && ($search_field === 'all' || $search_field === null)) {
         $like = '%' . $wpdb->esc_like($query) . '%';
-        // aggiunge condizione OR su titolo senza sovrascrivere il resto
-        $search .= $wpdb->prepare(" OR {$wpdb->posts}.post_title LIKE %s", $like);
+
+        if (empty($search)) {
+            // Nessuna condizione, cerca solo titolo
+            $search = $wpdb->prepare(" AND {$wpdb->posts}.post_title LIKE %s", $like);
+        } else {
+            // Inserisce OR titolo dentro le parentesi esistenti della clausola meta_query
+            $search = preg_replace(
+                '/\bAND\s*\(/i',
+                "AND ( {$wpdb->posts}.post_title LIKE '{$like}' OR ",
+                $search,
+                1
+            );
+        }
     }
     return $search;
 }, 10, 2);
@@ -37,6 +49,7 @@ $search_in_title = false;
 if (!empty($query)) {
     switch ($search_field) {
         case 'title':
+            // Cerca solo nel titolo con 's' (standard WP)
             $search_in_title = true;
             break;
 
@@ -60,6 +73,7 @@ if (!empty($query)) {
 
         case 'all':
         default:
+            // Cerca in descrizione OR data_pubblicazione, ma senza usare 's'
             $meta_query['relation'] = 'OR';
             $meta_query[] = [
                 'key'     => $prefix . 'descrizione',
@@ -73,7 +87,7 @@ if (!empty($query)) {
                 'compare' => 'LIKE',
                 'type'    => 'CHAR',
             ];
-            $search_in_title = true; // cerca anche nel titolo
+            $search_in_title = false; // Non mettere 's', gestito dal filtro posts_search
             break;
     }
 }
@@ -87,36 +101,35 @@ $args = [
     'order'               => ($order == 'data_desc' || $order == 'alfabetico_desc') ? 'DESC' : 'ASC',
 ];
 
-// Aggiungo parametri di ricerca
+// Se cerco solo titolo, uso 's'
 if ($search_in_title) {
     $args['s'] = $query;
-}
-
-if (!$search_in_title && !empty($meta_query)) {
-    $args['meta_query'] = $meta_query;
-} elseif ($search_field === 'all' && !empty($meta_query)) {
-    // se "all", cerca sia titolo (con 's') sia meta_query con relazione OR
+} elseif (!empty($meta_query)) {
     $args['meta_query'] = $meta_query;
 }
 
-// Gestione ordinamento per data (testo)
+// Ordinamento per data (stringa)
 if ($order == 'data_desc' || $order == 'data_asc') {
     $args['orderby'] = 'meta_value';
     $args['meta_key'] = $prefix . 'data_pubblicazione';
-    $args['meta_type'] = 'CHAR'; // formato testo come '01 Aprile 2025'
+    $args['meta_type'] = 'CHAR'; // perché la data è in formato testo (es. "01 Aprile 2025")
 }
 
+// DEBUG: stampa args WP_Query
 echo '<pre style="background:#f9f9f9; padding:10px; border:1px solid #ccc;">';
 echo 'WP_Query args: ' . print_r($args, true);
 echo '</pre>';
 
+// Esegue la query
 $the_query = new WP_Query($args);
 
+// DEBUG: stampa query SQL
 echo '<pre style="background:#f9f9f9; padding:10px; border:1px solid #ccc;">';
 echo 'SQL query: ' . esc_html($the_query->request);
 echo '</pre>';
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
+
 ?>
 
 <main>
