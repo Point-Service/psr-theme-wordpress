@@ -13,39 +13,25 @@ $obj = get_queried_object();
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $search_field = $_GET['search_field'] ?? 'all';
 
-// DEBUG: stampa $_GET per controllare input
-// echo '<pre>'; print_r($_GET); echo '</pre>';
-
-// -- COMMENTO filtro originale, per debug --
-// add_filter('posts_search', function ($search, $wp_query) use ($query, $search_field) {
-//     global $wpdb;
-//     if (!is_admin() && !empty($query) && $search_field === 'all') {
-//         $search = " AND ({$wpdb->posts}.post_title LIKE '%" . esc_sql($wpdb->esc_like($query)) . "%')";
-//     }
-//     return $search;
-// }, 10, 2);
-
-// FILTRO posts_search riscritto in modo più sicuro e senza sovrascrivere tutta la clausola
+// Filtro posts_search per ricerca fulltext su titolo se "all"
 add_filter('posts_search', function ($search, $wp_query) use ($query, $search_field) {
     global $wpdb;
     if (!empty($query) && $search_field === 'all' && strpos($search, 'WHERE') !== false) {
         $like = '%' . $wpdb->esc_like($query) . '%';
-        // aggiunge condizione OR su titolo senza cancellare le altre condizioni
+        // aggiunge condizione OR su titolo senza sovrascrivere il resto
         $search .= $wpdb->prepare(" OR {$wpdb->posts}.post_title LIKE %s", $like);
     }
     return $search;
 }, 10, 2);
 
 // Recupera il numero di pagina corrente.
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-
+$paged = max(1, get_query_var('paged', 1));
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $prefix = '_dci_elemento_trasparenza_';
 
-// Gestione ordinamento
-$order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc';
+$order = $_GET['order_type'] ?? 'data_desc';
 
-$meta_query = array('relation' => 'OR');
+$meta_query = [];
 $search_in_title = false;
 
 if (!empty($query)) {
@@ -55,67 +41,77 @@ if (!empty($query)) {
             break;
 
         case 'descrizione':
-            $meta_query[] = array(
-                'key' => $prefix . 'descrizione',
-                'value' => $query,
-                'compare' => 'LIKE'
-            );
+            $meta_query[] = [
+                'key'     => $prefix . 'descrizione',
+                'value'   => $query,
+                'compare' => 'LIKE',
+                'type'    => 'CHAR',
+            ];
             break;
 
-                $meta_query[] = array(
-                    'key' => $prefix . 'data_pubblicazione',
-                    'value' => $query,
-                    'compare' => 'LIKE',
-                    'type' => 'CHAR'
-                );
+        case 'data_pubblicazione':
+            $meta_query[] = [
+                'key'     => $prefix . 'data_pubblicazione',
+                'value'   => $query,
+                'compare' => 'LIKE',
+                'type'    => 'CHAR',
+            ];
             break;
 
         case 'all':
         default:
-            $search_in_title = true;
-            $meta_query[] = array(
-                'key' => $prefix . 'descrizione',
-                'value' => $query,
-                'compare' => 'LIKE'
-            );
-
-           break;
-            $meta_query[] = array(
-                'key' => $prefix . 'data_pubblicazione',
-                'value' => $query,
+            $meta_query['relation'] = 'OR';
+            $meta_query[] = [
+                'key'     => $prefix . 'descrizione',
+                'value'   => $query,
                 'compare' => 'LIKE',
-                'type' => 'CHAR'
-            );
-
+                'type'    => 'CHAR',
+            ];
+            $meta_query[] = [
+                'key'     => $prefix . 'data_pubblicazione',
+                'value'   => $query,
+                'compare' => 'LIKE',
+                'type'    => 'CHAR',
+            ];
+            $search_in_title = true; // cerca anche nel titolo
             break;
     }
 }
 
-$args = array(
-    'posts_per_page' => $max_posts,
-    'post_type' => 'elemento_trasparenza',
-    'tipi_cat_amm_trasp' => $obj->slug,
-    'paged' => $paged,
-    'meta_key' => $prefix . 'data_pubblicazione',
-    'orderby' => ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? 'title' : 'meta_value_num',
-    'order' => ($order == 'data_desc' || $order == 'alfabetico_desc') ? 'DESC' : 'ASC',
-);
+$args = [
+    'posts_per_page'      => $max_posts,
+    'post_type'           => 'elemento_trasparenza',
+    'tipi_cat_amm_trasp'  => $obj->slug,
+    'paged'               => $paged,
+    'orderby'             => ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? 'title' : 'meta_value',
+    'order'               => ($order == 'data_desc' || $order == 'alfabetico_desc') ? 'DESC' : 'ASC',
+];
 
+// Aggiungo parametri di ricerca
 if ($search_in_title) {
     $args['s'] = $query;
 }
-if (!$search_in_title || $search_field === 'all') {
+
+if (!$search_in_title && !empty($meta_query)) {
+    $args['meta_query'] = $meta_query;
+} elseif ($search_field === 'all' && !empty($meta_query)) {
+    // se "all", cerca sia titolo (con 's') sia meta_query con relazione OR
     $args['meta_query'] = $meta_query;
 }
 
-// DEBUG: stampa gli args di WP_Query
+// Gestione ordinamento per data (testo)
+if ($order == 'data_desc' || $order == 'data_asc') {
+    $args['orderby'] = 'meta_value';
+    $args['meta_key'] = $prefix . 'data_pubblicazione';
+    $args['meta_type'] = 'CHAR'; // formato testo come '01 Aprile 2025'
+}
+
 echo '<pre style="background:#f9f9f9; padding:10px; border:1px solid #ccc;">';
 echo 'WP_Query args: ' . print_r($args, true);
 echo '</pre>';
 
 $the_query = new WP_Query($args);
 
-// DEBUG: stampa la query SQL eseguita
 echo '<pre style="background:#f9f9f9; padding:10px; border:1px solid #ccc;">';
 echo 'SQL query: ' . esc_html($the_query->request);
 echo '</pre>';
