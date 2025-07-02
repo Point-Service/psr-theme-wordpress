@@ -82,7 +82,7 @@ $the_query = new WP_Query($args);
 
                         <!-- Sezione per ordinamento -->
                         <div class="form-group mb-4">
-                            <label for="order-select" style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Ordina per</label>
+                            Ordina per
                             <select id="order-select" name="order_type" class="form-control" style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem;">
                                 <option value="data_desc" <?php echo ($order == 'data_desc') ? 'selected' : ''; ?>>Data (Descendente)</option>
                                 <option value="data_asc" <?php echo ($order == 'data_asc') ? 'selected' : ''; ?>>Data (Ascendente)</option>
