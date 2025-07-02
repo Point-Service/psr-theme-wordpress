@@ -36,8 +36,7 @@ $args = array(
 
 $the_query = new WP_Query($args);
 
-// Debugging
-// var_dump($the_query->posts);
+$siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
 
 <main>
