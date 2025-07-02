@@ -10,72 +10,74 @@ global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_
 get_header();
 $obj = get_queried_object();
 
-// Forza la ricerca nel titolo anche se c'è meta_query
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $search_field = $_GET['search_field'] ?? 'all';
 
+// Filtro per forzare la ricerca nel titolo se "all"
 add_filter('posts_search', function ($search, $wp_query) use ($query, $search_field) {
     global $wpdb;
-
     if (!is_admin() && !empty($query) && $search_field === 'all') {
         $search = " AND ({$wpdb->posts}.post_title LIKE '%" . esc_sql($wpdb->esc_like($query)) . "%')";
     }
-
     return $search;
 }, 10, 2);
 
-// Recupera il numero di pagina corrente.
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $prefix = '_dci_elemento_trasparenza_';
-
-// Gestione ordinamento
 $order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc';
 
 $meta_query = array('relation' => 'OR');
 $search_in_title = false;
 
 if (!empty($query)) {
-switch ($search_field) {
-    case 'title':
-        $search_in_title = true;
-        break;
+    switch ($search_field) {
+        case 'title':
+            $search_in_title = true;
+            break;
 
-    case 'descrizione':
-        $meta_query[] = array(
-            'key' => $prefix . 'descrizione',
-            'value' => '%' . $query . '%',
-            'compare' => 'LIKE'
-        );
-        break;
+        case 'descrizione':
+            $meta_query[] = array(
+                'key' => $prefix . 'descrizione',
+                'value' => '%' . $query . '%',
+                'compare' => 'LIKE'
+            );
+            break;
 
-    case 'data_pubblicazione':
-        $meta_query[] = array(
-            'key' => $prefix . 'data_pubblicazione',
-            'value' => '%' . $query . '%',
-            'compare' => 'LIKE',
-            'type' => 'CHAR'
-        );
-        break;
+        case 'data_pubblicazione':
+            if (preg_match('/^\d{4}$/', $query)) {
+                $meta_query[] = array(
+                    'key' => $prefix . 'data_pubblicazione',
+                    'value' => array($query . '0101', $query . '1231'),
+                    'compare' => 'BETWEEN',
+                    'type' => 'NUMERIC'
+                );
+            } else {
+                $meta_query[] = array(
+                    'key' => $prefix . 'data_pubblicazione',
+                    'value' => '%' . $query . '%',
+                    'compare' => 'LIKE',
+                    'type' => 'CHAR'
+                );
+            }
+            break;
 
-    case 'all':
-    default:
-        $search_in_title = true;
-        $meta_query[] = array(
-            'key' => $prefix . 'descrizione',
-            'value' => '%' . $query . '%',
-            'compare' => 'LIKE'
-        );
-        $meta_query[] = array(
-            'key' => $prefix . 'data_pubblicazione',
-            'value' => '%' . $query . '%',
-            'compare' => 'LIKE',
-            'type' => 'CHAR'
-        );
-        break;
-}
-
+        case 'all':
+        default:
+            $search_in_title = true;
+            $meta_query[] = array(
+                'key' => $prefix . 'descrizione',
+                'value' => '%' . $query . '%',
+                'compare' => 'LIKE'
+            );
+            $meta_query[] = array(
+                'key' => $prefix . 'data_pubblicazione',
+                'value' => '%' . $query . '%',
+                'compare' => 'LIKE',
+                'type' => 'CHAR'
+            );
+            break;
+    }
 }
 
 $args = array(
@@ -115,7 +117,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 <div class="row">
                     <h2 class="visually-hidden">Esplora tutti i documenti della trasparenza</h2>
 
-                    <!-- Colonna sinistra -->
                     <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
                         <div class="cmp-input-search">
                             <div class="form-group autocomplete-wrapper mb-2 mb-lg-4">
@@ -123,13 +124,13 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                     <label for="autocomplete-two" class="visually-hidden">Cerca una parola chiave</label>
                                     <input type="search" class="autocomplete form-control"
                                         placeholder="Cerca una parola chiave" id="autocomplete-two" name="search"
-                                        value="<?php echo $query; ?>" data-bs-autocomplete="[]">
+                                        value="<?php echo esc_attr($query); ?>" data-bs-autocomplete="[]">
 
                                     <select name="search_field" class="form-select" style="max-width: 200px; margin-left: 10px;">
-                                        <option value="all" <?php echo ($search_field === 'all') ? 'selected' : ''; ?>>Tutti i campi</option>
-                                        <option value="title" <?php echo ($search_field === 'title') ? 'selected' : ''; ?>>Titolo</option>
-                                        <option value="descrizione" <?php echo ($search_field === 'descrizione') ? 'selected' : ''; ?>>Descrizione</option>
-                                        <option value="data_pubblicazione" <?php echo ($search_field === 'data_pubblicazione') ? 'selected' : ''; ?>>Data pubblicazione</option>
+                                        <option value="all" <?php selected($search_field, 'all'); ?>>Tutti i campi</option>
+                                        <option value="title" <?php selected($search_field, 'title'); ?>>Titolo</option>
+                                        <option value="descrizione" <?php selected($search_field, 'descrizione'); ?>>Descrizione</option>
+                                        <option value="data_pubblicazione" <?php selected($search_field, 'data_pubblicazione'); ?>>Data pubblicazione</option>
                                     </select>
 
                                     <div class="input-group-append">
@@ -155,27 +156,26 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                         <div class="form-group mb-4">
                             <span style="font-size: 1.2rem; font-weight: bold; color: #333;">Ordina per</span>
                             <select id="order-select" name="order_type" class="form-control">
-                                <option value="data_desc" <?php echo ($order == 'data_desc') ? 'selected' : ''; ?>>Data (Discendente)</option>
-                                <option value="data_asc" <?php echo ($order == 'data_asc') ? 'selected' : ''; ?>>Data (Ascendente)</option>
-                                <option value="alfabetico_asc" <?php echo ($order == 'alfabetico_asc') ? 'selected' : ''; ?>>Alfabetico (Ascendente)</option>
-                                <option value="alfabetico_desc" <?php echo ($order == 'alfabetico_desc') ? 'selected' : ''; ?>>Alfabetico (Discendente)</option>
+                                <option value="data_desc" <?php selected($order, 'data_desc'); ?>>Data (Discendente)</option>
+                                <option value="data_asc" <?php selected($order, 'data_asc'); ?>>Data (Ascendente)</option>
+                                <option value="alfabetico_asc" <?php selected($order, 'alfabetico_asc'); ?>>Alfabetico (Ascendente)</option>
+                                <option value="alfabetico_desc" <?php selected($order, 'alfabetico_desc'); ?>>Alfabetico (Discendente)</option>
                             </select>
                         </div>
 
                         <!-- Risultati -->
-                        <?php if ($the_query->found_posts != 0) { ?>
-                            <?php $categoria = $the_query->posts; ?>
+                        <?php if ($the_query->have_posts()) : ?>
                             <div class="row g-4" id="load-more">
-                                <?php foreach ($categoria as $elemento) {
+                                <?php while ($the_query->have_posts()) : $the_query->the_post();
                                     $load_card_type = "elemento_trasparenza";
                                     get_template_part("template-parts/amministrazione-trasparente/card");
-                                } ?>
+                                endwhile; ?>
                             </div>
-                        <?php } else { ?>
+                        <?php else : ?>
                             <div class="alert alert-info text-center" role="alert">
                                 Nessun post trovato.
                             </div>
-                        <?php } ?>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Sidebar -->
