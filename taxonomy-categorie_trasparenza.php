@@ -115,7 +115,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                         <!-- Selettore di ordinamento -->
                         <div class="form-group">
                             <label for="order_by"><?php _e('Ordina per', 'design_comuni_italia'); ?></label>
-                            <select name="order_by" id="order_by" class="form-control">
+                            <select name="order_by" id="order_by" class="form-control" onchange="this.form.submit()">
                                 <option value="date_desc" <?php selected($_GET['order_by'], 'date_desc'); ?>>Data (dal più recente)</option>
                                 <option value="title_asc" <?php selected($_GET['order_by'], 'title_asc'); ?>>Ordine alfabetico (A-Z)</option>
                             </select>
@@ -155,3 +155,13 @@ get_template_part("template-parts/common/valuta-servizio");
 get_template_part("template-parts/common/assistenza-contatti");
 get_footer();
 ?>
+
+<script>
+    // Aggiungi un gestore di eventi JavaScript per assicurarti che il form venga inviato automaticamente
+    // quando cambia l'ordinamento
+    document.getElementById('order_by').addEventListener('change', function() {
+        document.getElementById('search-form').submit();
+    });
+</script>
+
+
