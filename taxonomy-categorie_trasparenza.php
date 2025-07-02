@@ -2,7 +2,6 @@
 /**
  * Archivio Tassonomia trasparenza
  *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#custom-taxonomies
  * @package Design_Comuni_Italia
  */
 
@@ -11,18 +10,28 @@ global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_
 get_header();
 $obj = get_queried_object();
 
+// Forza la ricerca nel titolo anche se c'è meta_query
+$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+$search_field = $_GET['search_field'] ?? 'all';
+
+add_filter('posts_search', function ($search, $wp_query) use ($query, $search_field) {
+    global $wpdb;
+
+    if (!is_admin() && !empty($query) && $search_field === 'all') {
+        $search = " AND ({$wpdb->posts}.post_title LIKE '%" . esc_sql($wpdb->esc_like($query)) . "%')";
+    }
+
+    return $search;
+}, 10, 2);
+
 // Recupera il numero di pagina corrente.
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
-$load_posts = -1;
-$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-$search_field = $_GET['search_field'] ?? 'all';
-
 $prefix = '_dci_elemento_trasparenza_';
 
-// Gestione dell'ordinamento
-$order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc'; // Default è data_desc
+// Gestione ordinamento
+$order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc';
 
 $meta_query = array('relation' => 'OR');
 $search_in_title = false;
@@ -45,7 +54,8 @@ if (!empty($query)) {
             $meta_query[] = array(
                 'key' => $prefix . 'data_pubblicazione',
                 'value' => $query,
-                'compare' => 'LIKE'
+                'compare' => 'LIKE',
+                'type' => 'CHAR'
             );
             break;
 
@@ -60,7 +70,8 @@ if (!empty($query)) {
             $meta_query[] = array(
                 'key' => $prefix . 'data_pubblicazione',
                 'value' => $query,
-                'compare' => 'LIKE'
+                'compare' => 'LIKE',
+                'type' => 'CHAR'
             );
             break;
     }
@@ -103,7 +114,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 <div class="row">
                     <h2 class="visually-hidden">Esplora tutti i documenti della trasparenza</h2>
 
-                    <!-- Colonna sinistra: risultati -->
+                    <!-- Colonna sinistra -->
                     <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
                         <div class="cmp-input-search">
                             <div class="form-group autocomplete-wrapper mb-2 mb-lg-4">
@@ -131,6 +142,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                     </span>
                                 </div>
                             </div>
+
                             <p id="autocomplete-label" class="mb-4">
                                 <strong><?php echo $the_query->found_posts; ?></strong> elementi trovati in ordine
                                 <?php echo ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? "alfabetico" : "di pubblicazione"; ?>
@@ -138,10 +150,10 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                             </p>
                         </div>
 
-                        <!-- Sezione per ordinamento -->
+                        <!-- Ordinamento -->
                         <div class="form-group mb-4">
-                             <span style="font-size: 1.2rem; font-weight: bold; color: #333;">Ordina per</span>
-                            <select id="order-select" name="order_type" class="form-control" style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem;">
+                            <span style="font-size: 1.2rem; font-weight: bold; color: #333;">Ordina per</span>
+                            <select id="order-select" name="order_type" class="form-control">
                                 <option value="data_desc" <?php echo ($order == 'data_desc') ? 'selected' : ''; ?>>Data (Discendente)</option>
                                 <option value="data_asc" <?php echo ($order == 'data_asc') ? 'selected' : ''; ?>>Data (Ascendente)</option>
                                 <option value="alfabetico_asc" <?php echo ($order == 'alfabetico_asc') ? 'selected' : ''; ?>>Alfabetico (Ascendente)</option>
@@ -149,7 +161,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                             </select>
                         </div>
 
-                        <!-- Risultati della ricerca -->
+                        <!-- Risultati -->
                         <?php if ($the_query->found_posts != 0) { ?>
                             <?php $categoria = $the_query->posts; ?>
                             <div class="row g-4" id="load-more">
@@ -165,7 +177,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                         <?php } ?>
                     </div>
 
-                    <!-- Colonna destra: link utili -->
+                    <!-- Sidebar -->
                     <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
 
                     <div class="row my-4">
@@ -192,3 +204,4 @@ get_footer();
         }, 100);
     });
 </script>
+
