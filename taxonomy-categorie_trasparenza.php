@@ -18,6 +18,7 @@ $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $load_posts = -1;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
+$prefix = '_dci_elemento_trasparenza_';
 
 $args = array(
     's' => $query,
