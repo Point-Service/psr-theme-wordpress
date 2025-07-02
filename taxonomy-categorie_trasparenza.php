@@ -84,6 +84,7 @@ if (!empty($query)) {
                 'compare' => 'LIKE',
                 'type' => 'CHAR'
             );
+
             break;
     }
 }
