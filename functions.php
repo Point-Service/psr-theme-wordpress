@@ -328,3 +328,14 @@ function my_custom_one_time_function() {
 }
 add_action('init', 'my_custom_one_time_function');
 
+
+// Ordina "Elemento Trasparenza" per data di pubblicazione
+add_action('pre_get_posts', 'dci_order_elemento_trasparenza_by_date');
+function dci_order_elemento_trasparenza_by_date($query) {
+    // Assicurati che la query sia quella giusta (solo per l'amministrazione dei post di tipo "elemento_trasparenza")
+    if (is_admin() && $query->is_main_query() && $query->get('post_type') == 'elemento_trasparenza') {
+        // Ordina per data di pubblicazione in ordine decrescente
+        $query->set('orderby', 'date');
+        $query->set('order', 'DESC');
+    }
+}
