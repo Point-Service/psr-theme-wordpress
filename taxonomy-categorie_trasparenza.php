@@ -38,6 +38,7 @@ $additional_filter = array(
 );
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
+echo'ff';
 ?>
 
 <main>
