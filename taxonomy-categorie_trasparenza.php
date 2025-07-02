@@ -153,5 +153,13 @@ get_template_part("template-parts/common/valuta-servizio");
 get_template_part("template-parts/common/assistenza-contatti");
 get_footer();
 ?>
+<script>
+    // Aggiungi un gestore di eventi JavaScript per assicurarti che il form venga inviato automaticamente
+    // quando cambia l'ordinamento
+    document.getElementById('order_by').addEventListener('change', function() {
+        document.getElementById('search-form').submit();
+    });
+</script>
+
 
 
