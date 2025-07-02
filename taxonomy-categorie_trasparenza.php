@@ -26,7 +26,9 @@ $args = array(
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
     'paged' => $paged,
-
+    'meta_key' => $prefix . 'data_pubblicazione',  // Nome del campo personalizzato
+    'orderby' => 'meta_value_num',                  // Ordina per il valore numerico (timestamp)
+    'order' => 'DESC',                              // Ordina in ordine decrescente (dal più recente)
 );
 
 
@@ -42,6 +44,15 @@ $additional_filter = array(
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 
+
+
+
+
+
+$data_pubblicazione = get_post_meta($elemento->ID, '_dci_elemento_trasparenza_data_pubblicazione', true);
+if ($data_pubblicazione) {
+    echo '<p>Pubblicato il: ' . date('d-m-Y', $data_pubblicazione) . '</p>';
+}
 ?>
 
 <main>
