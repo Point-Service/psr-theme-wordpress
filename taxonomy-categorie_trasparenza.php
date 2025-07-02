@@ -18,13 +18,15 @@ $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $load_posts = -1;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
+$prefix = '_dci_elemento_trasparenza_';
+
 $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
     'paged' => $paged,
-    'meta_key' => '_dci_elemento_trasparenza_' . 'data_pubblicazione',  // Nome del campo personalizzato
+    'meta_key' => $prefix . 'data_pubblicazione',  // Nome del campo personalizzato
     'orderby' => 'meta_value_num',                  // Ordina per il valore numerico (timestamp)
     'order' => 'DESC',                              // Ordina in ordine decrescente (dal più recente)
 );
