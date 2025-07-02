@@ -15,31 +15,13 @@ $obj = get_queried_object();
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
+$load_posts = -1;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-$order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc';
 
 $prefix = '_dci_elemento_trasparenza_';
 
-// A seconda dell'ordinamento selezionato, cambiamo l'ordine della query
-switch ($order) {
-    case 'alfabetico_asc':
-        $orderby = 'title';
-        $order_dir = 'ASC';
-        break;
-    case 'alfabetico_desc':
-        $orderby = 'title';
-        $order_dir = 'DESC';
-        break;
-    case 'data_asc':
-        $orderby = 'meta_value_num';
-        $order_dir = 'ASC';
-        break;
-    default:
-        // default 'data_desc'
-        $orderby = 'meta_value_num';
-        $order_dir = 'DESC';
-        break;
-}
+// Gestione dell'ordinamento
+$order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc'; // Default è data_desc
 
 $args = array(
     's' => $query,
@@ -47,22 +29,13 @@ $args = array(
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
     'paged' => $paged,
-    'meta_key' => $prefix . 'data_pubblicazione',  // Nome del campo personalizzato
-    'orderby' => $orderby,                  // Ordina in base alla selezione
-    'order' => $order_dir,                  // Ordina in ordine scelto (ASC o DESC)
+    'meta_key' => $prefix . 'data_pubblicazione', // Nome del campo personalizzato
+    'orderby' => ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? 'title' : 'meta_value_num',
+    'order' => ($order == 'data_desc' || $order == 'alfabetico_desc') ? 'DESC' : 'ASC', // Ordina in base all'ordinamento scelto
 );
 
 $the_query = new WP_Query($args);
 
-$additional_filter = array(
-    array(
-        'taxonomy' => 'tipi_cat_amm_trasp',
-        'field' => 'slug',
-        'terms' => $obj->slug
-    )
-);
-
-$siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
 
 <main>
@@ -108,9 +81,9 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                         </div>
 
                         <!-- Sezione per ordinamento -->
-                        <div class="form-group">
+                        <div class="form-group mb-4">
                             <label for="order-select" style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Ordina per</label>
-                            <select id="order-select" name="order_type" class="form-control" style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem; margin-top: 0.5rem;">
+                            <select id="order-select" name="order_type" class="form-control" style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem;">
                                 <option value="data_desc" <?php echo ($order == 'data_desc') ? 'selected' : ''; ?>>Data (Descendente)</option>
                                 <option value="data_asc" <?php echo ($order == 'data_asc') ? 'selected' : ''; ?>>Data (Ascendente)</option>
                                 <option value="alfabetico_asc" <?php echo ($order == 'alfabetico_asc') ? 'selected' : ''; ?>>Alfabetico (Ascendente)</option>
@@ -153,13 +126,13 @@ get_template_part("template-parts/common/valuta-servizio");
 get_template_part("template-parts/common/assistenza-contatti");
 get_footer();
 ?>
+
 <script>
     // Aggiungi un gestore di eventi JavaScript per assicurarti che il form venga inviato automaticamente
     // quando cambia l'ordinamento
-    document.getElementById('order_by').addEventListener('change', function() {
+    document.getElementById('order-select').addEventListener('change', function() {
         document.getElementById('search-form').submit();
     });
 </script>
-
 
 
