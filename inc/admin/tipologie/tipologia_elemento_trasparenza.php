@@ -58,35 +58,7 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     }
 }
 
-add_action('pre_get_posts', 'dci_limita_elementi_trasparenza_per_categoria_e_ruolo');
-function dci_limita_elementi_trasparenza_per_categoria_e_ruolo($query) {
-    if (!is_admin() || !$query->is_main_query()) return;
 
-    if ($query->get('post_type') !== 'elemento_trasparenza') return;
-
-    $user = wp_get_current_user();
-
-    // Esempio ruolo -> categoria ID (modifica secondo i tuoi ruoli e categorie)
-    if (in_array('redattore_bilanci', $user->roles)) {
-        $query->set('tax_query', array(
-            array(
-                'taxonomy' => 'tipi_cat_amm_trasp',
-                'field'    => 'term_id',
-                'terms'    => array(123), // cambia con ID categoria corretta
-            ),
-        ));
-    }
-
-    if (in_array('redattore_bandigare', $user->roles)) {
-        $query->set('tax_query', array(
-            array(
-                'taxonomy' => 'tipi_cat_amm_trasp',
-                'field'    => 'term_id',
-                'terms'    => array(456), // cambia con ID categoria corretta
-            ),
-        ));
-    }
-}
 
 // --------------
 // AGGIUNTA CARICAMENTO MULTIPLO - NON MODIFICARE IL CODICE SOPRA
