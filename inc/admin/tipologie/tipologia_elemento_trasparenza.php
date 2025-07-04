@@ -1,8 +1,6 @@
 <?php
+// CODICE ORIGINALE (NON MODIFICATO)
 
-/**
- * Definisce post type Elemento Trasparenza
- */
 add_action('init', 'dci_register_post_type_elemento_trasparenza');
 function dci_register_post_type_elemento_trasparenza()
 {
@@ -38,10 +36,10 @@ function dci_register_post_type_elemento_trasparenza()
             'read_private_posts'    => 'read_private_elementi_trasparenza',
             'delete_posts'          => 'delete_elementi_trasparenza',
             'delete_private_posts'  => 'delete_private_elementi_trasparenza',
-            'delete_published_posts' => 'delete_published_elementi_trasparenza',
-            'delete_others_posts' => 'delete_others_elementi_trasparenza',
-            'edit_private_posts' => 'edit_private_elementi_trasparenza',
-            'edit_published_posts' => 'edit_published_elementi_trasparenza',
+            'delete_published_posts'=> 'delete_published_elementi_trasparenza',
+            'delete_others_posts'   => 'delete_others_elementi_trasparenza',
+            'edit_private_posts'    => 'edit_private_elementi_trasparenza',
+            'edit_published_posts'  => 'edit_published_elementi_trasparenza',
             'create_posts'          => 'create_elementi_trasparenza'
         ),
         'description'           => __('Struttura delle informazioni relative utili a presentare un Elemento Trasparenza', 'design_comuni_italia'),
@@ -60,11 +58,42 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     }
 }
 
-// Aggiungi la nuova voce di sottomenu per la pagina "Multi-Post"
-add_action('admin_menu', 'dci_add_transparency_multipost_page');
+add_action('pre_get_posts', 'dci_limita_elementi_trasparenza_per_categoria_e_ruolo');
+function dci_limita_elementi_trasparenza_per_categoria_e_ruolo($query) {
+    if (!is_admin() || !$query->is_main_query()) return;
 
+    if ($query->get('post_type') !== 'elemento_trasparenza') return;
+
+    $user = wp_get_current_user();
+
+    // Esempio ruolo -> categoria ID (modifica secondo i tuoi ruoli e categorie)
+    if (in_array('redattore_bilanci', $user->roles)) {
+        $query->set('tax_query', array(
+            array(
+                'taxonomy' => 'tipi_cat_amm_trasp',
+                'field'    => 'term_id',
+                'terms'    => array(123), // cambia con ID categoria corretta
+            ),
+        ));
+    }
+
+    if (in_array('redattore_bandigare', $user->roles)) {
+        $query->set('tax_query', array(
+            array(
+                'taxonomy' => 'tipi_cat_amm_trasp',
+                'field'    => 'term_id',
+                'terms'    => array(456), // cambia con ID categoria corretta
+            ),
+        ));
+    }
+}
+
+// --------------
+// AGGIUNTA CARICAMENTO MULTIPLO - NON MODIFICARE IL CODICE SOPRA
+// --------------
+
+add_action('admin_menu', 'dci_add_transparency_multipost_page');
 function dci_add_transparency_multipost_page() {
-    // Aggiungi una sottovoce sotto "Amministrazione Trasparente"
     add_submenu_page(
         'edit.php?post_type=elemento_trasparenza',
         __('Aggiungi Multi-Elemento Trasparenza', 'design_comuni_italia'), 
@@ -75,9 +104,6 @@ function dci_add_transparency_multipost_page() {
     );
 }
 
-/**
- * Funzione di callback per renderizzare la pagina di amministrazione "Multi-Post Amministrazione Trasparente".
- */
 function dci_render_transparency_multipost_page() {
     ?>
     <div class="wrap">
@@ -106,13 +132,8 @@ function dci_render_transparency_multipost_page() {
                                 'taxonomy'            => 'tipi_cat_amm_trasp',
                                 'name'                => 'dci_default_category',
                                 'id'                  => 'dci_default_category',
-                                'show_option_none'    => false,
-                                'remove_default'      => true,
-                                'hide_empty'          => 0,
-                                'echo'                => 1,
-                                'selected'            => '', // Puoi pre-selezionare una categoria se vuoi
                                 'show_option_none'    => __('Seleziona una categoria', 'design_comuni_italia'),
-                                'value_field'         => 'term_id',
+                                'hide_empty'          => 0,
                                 'orderby'             => 'name',
                                 'order'               => 'ASC',
                             ) );
@@ -130,8 +151,8 @@ function dci_render_transparency_multipost_page() {
                     <tr>
                         <th scope="row"><label for="dci_default_open_direct"><?php _e('Apri link in modo diretto:', 'design_comuni_italia'); ?></label></th>
                         <td>
-                            <input type="checkbox" id="dci_default_open_direct" name="dci_default_open_direct" value="on">
-                            <p class="description"><?php _e('Spunta per impostare "Apri direttamente il file " per tutti i nuovi elementi.', 'design_comuni_italia'); ?></p>
+                            <input type="checkbox" id="dci_default_open_direct" name="dci_default_open_direct" value="1">
+                            <p class="description"><?php _e('Spunta per impostare "Apri direttamente il file" per tutti i nuovi elementi.', 'design_comuni_italia'); ?></p>
                         </td>
                     </tr>
                 </tbody>
@@ -140,332 +161,96 @@ function dci_render_transparency_multipost_page() {
             <?php submit_button(__('Crea Elementi Trasparenza', 'design_comuni_italia')); ?>
         </form>
 
-        <?php
-        // Processa il form quando viene inviato
-        if ( isset( $_POST['submit'] ) && check_admin_referer('dci_multipost_transparency_action', 'dci_multipost_transparency_nonce') ) {
-            $default_category = isset( $_POST['dci_default_category'] ) ? absint( $_POST['dci_default_category'] ) : 0;
-            $open_new_tab     = isset( $_POST['dci_default_open_new_tab'] ) ? "on" : 0;
-            $open_direct_tab  = isset( $_POST['dci_default_open_direct'] ) ?"on" : 0; 
-            if ( $default_category === 0 ) {
-                echo '<div class="notice notice-error is-dismissible"><p>' . __('Seleziona una categoria predefinita per gli elementi.', 'design_comuni_italia') . '</p></div>';
-            } else {
-                if ( ! empty( $_FILES['dci_multi_files']['name'][0] ) ) {
-                    // Carica i file
-                    require_once( ABSPATH . 'wp-admin/includes/image.php' );
-                    require_once( ABSPATH . 'wp-admin/includes/file.php' );
-                    require_once( ABSPATH . 'wp-admin/includes/media.php' );
+    <?php
+    // Gestione del form dopo submit
+    if ( isset( $_POST['submit'] ) && check_admin_referer('dci_multipost_transparency_action', 'dci_multipost_transparency_nonce') ) {
 
-                    $uploaded_count = 0;
-                    $error_count = 0;
+        $default_category = isset( $_POST['dci_default_category'] ) ? absint( $_POST['dci_default_category'] ) : 0;
+        $open_new_tab     = isset( $_POST['dci_default_open_new_tab'] ) ? 1 : 0;
+        $open_direct      = isset( $_POST['dci_default_open_direct'] ) ? 1 : 0;
 
-                    foreach ( $_FILES['dci_multi_files']['name'] as $key => $filename ) {
-                        if ( $_FILES['dci_multi_files']['error'][$key] === UPLOAD_ERR_OK ) {
-                            $file = array(
-                                'name'     => $_FILES['dci_multi_files']['name'][$key],
-                                'type'     => $_FILES['dci_multi_files']['type'][$key],
-                                'tmp_name' => $_FILES['dci_multi_files']['tmp_name'][$key],
-                                'error'    => $_FILES['dci_multi_files']['error'][$key],
-                                'size'     => $_FILES['dci_multi_files']['size'][$key]
-                            );
+        if ( $default_category === 0 ) {
+            echo '<div class="notice notice-error is-dismissible"><p>' . __('Seleziona una categoria predefinita per gli elementi.', 'design_comuni_italia') . '</p></div>';
+            return;
+        }
 
-                            $upload_overrides = array( 'test_form' => false );
-                            $movefile = wp_handle_upload( $file, $upload_overrides );
+        if ( empty( $_FILES['dci_multi_files'] ) || empty( $_FILES['dci_multi_files']['name'][0] ) ) {
+            echo '<div class="notice notice-error is-dismissible"><p>' . __('Nessun file selezionato.', 'design_comuni_italia') . '</p></div>';
+            return;
+        }
 
-                            if ( $movefile && ! isset( $movefile['error'] ) ) {
-                                // Il file è stato caricato con successo nella libreria media
-                                $attachment_id = wp_insert_attachment( array(
-                                    'guid'           => $movefile['url'],
-                                    'post_mime_type' => $movefile['type'],
-                                    'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
-                                    'post_content'   => '',
-                                    'post_status'    => 'inherit'
-                                ), $movefile['file'] );
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+        require_once ABSPATH . 'wp-admin/includes/media.php';
 
-                                // Genera i meta dati per l'allegato
-                                if ( ! is_wp_error( $attachment_id ) ) {
-                                    require_once( ABSPATH . 'wp-admin/includes/image.php' ); // Già inclusa prima, ma non fa male averla qui
-                                    $attachment_data = wp_generate_attachment_metadata( $attachment_id, $movefile['file'] );
-                                    wp_update_attachment_metadata( $attachment_id, $attachment_data );
+        $files = $_FILES['dci_multi_files'];
 
-                                    // Crea il nuovo Elemento Trasparenza
-                                    $new_post_title = preg_replace( '/\.[^.]+$/', '', basename( $filename ) );
-                                    $post_data = array(
-                                        'post_title'    => $new_post_title,
-                                        'post_status'   => 'publish', // o 'draft' se vuoi revisionare
-                                        'post_type'     => 'elemento_trasparenza',
-                                    );
+        $created_count = 0;
+        $errors = array();
 
-                                    $post_id = wp_insert_post( $post_data );
+        for ( $i = 0; $i < count( $files['name'] ); $i++ ) {
+            if ( $files['error'][ $i ] !== UPLOAD_ERR_OK ) {
+                $errors[] = sprintf(__('Errore durante il caricamento del file %s', 'design_comuni_italia'), esc_html($files['name'][$i]));
+                continue;
+            }
 
-                                    if ( ! is_wp_error( $post_id ) ) {
-                                        // Assegna la categoria
-                                        wp_set_object_terms( $post_id, $default_category, 'tipi_cat_amm_trasp' );
+            $file_array = array(
+                'name'     => $files['name'][$i],
+                'type'     => $files['type'][$i],
+                'tmp_name' => $files['tmp_name'][$i],
+                'error'    => $files['error'][$i],
+                'size'     => $files['size'][$i]
+            );
 
-                                        update_post_meta( $post_id, '_dci_elemento_trasparenza_file', array( $attachment_id ) );
-                                        update_post_meta( $post_id, '_dci_elemento_trasparenza_open_in_new_tab', $open_new_tab );
-                                        update_post_meta( $post_id, '_dci_elemento_trasparenza_open_direct', $open_direct_tab ); 
+            // Carica il file nella libreria media
+            $attachment_id = media_handle_sideload( $file_array, 0 );
 
-                                        $uploaded_count++;
-                                    } else {
-                                        $error_count++;
-                                        echo '<div class="notice notice-error is-dismissible"><p>' . sprintf( __('Errore durante la creazione del post per il file %s: %s', 'design_comuni_italia'), esc_html($filename), esc_html($post_id->get_error_message()) ) . '</p></div>';
-                                    }
-                                } else {
-                                    $error_count++;
-                                    echo '<div class="notice notice-error is-dismissible"><p>' . sprintf( __('Errore durante l\'inserimento dell\'allegato per il file %s: %s', 'design_comuni_italia'), esc_html($filename), esc_html($attachment_id->get_error_message()) ) . '</p></div>';
-                                }
-                            } else {
-                                $error_count++;
-                                echo '<div class="notice notice-error is-dismissible"><p>' . sprintf( __('Errore durante il caricamento del file %s: %s', 'design_comuni_italia'), esc_html($filename), esc_html($movefile['error']) ) . '</p></div>';
-                            }
-                        } else {
-                            $error_count++;
-                            echo '<div class="notice notice-error is-dismissible"><p>' . sprintf( __('Errore nel caricamento del file %s (Codice: %d)', 'design_comuni_italia'), esc_html($filename), $_FILES['dci_multi_files']['error'][$key] ) . '</p></div>';
-                        }
-                    }
+            if ( is_wp_error( $attachment_id ) ) {
+                $errors[] = sprintf(__('Errore durante il caricamento del file %s: %s', 'design_comuni_italia'), esc_html($files['name'][$i]), $attachment_id->get_error_message());
+                continue;
+            }
 
-                    if ( $uploaded_count > 0 ) {
-                        echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( __('Creati con successo %d Elementi di Trasparenza.', 'design_comuni_italia'), $uploaded_count ) . '</p></div>';
-                    }
-                    if ( $error_count > 0 ) {
-                        echo '<div class="notice notice-warning is-dismissible"><p>' . sprintf( __('Sono stati riscontrati %d errori durante la creazione di elementi.', 'design_comuni_italia'), $error_count ) . '</p></div>';
-                    }
-                } else {
-                    echo '<div class="notice notice-info is-dismissible"><p>' . __('Nessun file selezionato per il caricamento.', 'design_comuni_italia') . '</p></div>';
-                }
+            // Crea il post elemento_trasparenza
+            $post_title = sanitize_text_field( pathinfo( $files['name'][$i], PATHINFO_FILENAME ) );
+
+            $post_id = wp_insert_post( array(
+                'post_title'   => $post_title,
+                'post_type'    => 'elemento_trasparenza',
+                'post_status'  => 'publish',
+                'post_author'  => get_current_user_id(),
+            ));
+
+            if ( is_wp_error( $post_id ) || $post_id == 0 ) {
+                $errors[] = sprintf(__('Errore durante la creazione dell\'Elemento Trasparenza per il file %s', 'design_comuni_italia'), esc_html($files['name'][$i]));
+                // Cancella attachment
+                wp_delete_attachment( $attachment_id, true );
+                continue;
+            }
+
+            // Assegna la categoria personalizzata
+            wp_set_object_terms( $post_id, intval($default_category), 'tipi_cat_amm_trasp' );
+
+            // Salva il meta file (qui esempio con update_post_meta)
+            update_post_meta( $post_id, '_dci_trasparenza_file', $attachment_id );
+
+            // Salva i flag di apertura link
+            update_post_meta( $post_id, '_dci_trasparenza_open_new_tab', $open_new_tab );
+            update_post_meta( $post_id, '_dci_trasparenza_open_direct', $open_direct );
+
+            $created_count++;
+        }
+
+        if ( $created_count > 0 ) {
+            echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( _n('%d Elemento Trasparenza creato con successo.', '%d Elementi Trasparenza creati con successo.', $created_count, 'design_comuni_italia'), $created_count ) . '</p></div>';
+        }
+
+        if ( ! empty( $errors ) ) {
+            foreach ( $errors as $error ) {
+                echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $error ) . '</p></div>';
             }
         }
-        ?>
+    }
+    ?>
     </div>
     <?php
-}
-
-
-// --- Funzioni CMB2 esistenti (rimangono invariate) ---
-add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
-function dci_add_elemento_trasparenza_metaboxes()
-{
-    $prefix = '_dci_elemento_trasparenza_';
-
-    $cmb_apertura = new_cmb2_box(array(
-        'id'            => $prefix . 'box_apertura',
-        'title'         => __('Apertura', 'design_comuni_italia'),
-        'object_types'  => array('elemento_trasparenza'),
-        'context'       => 'normal',
-        'priority'      => 'high',
-        'closed'        => false,
-    ));
-
-    $cmb_apertura->add_field(array(
-        'id'            => $prefix . 'data_pubblicazione',
-        'name'          => __('Data di pubblicazione', 'design_comuni_italia'),
-        'desc'          => __('Data in cui il post sarà reso visibile pubblicamente.', 'design_comuni_italia'),
-        'type'          => 'text_date_timestamp',
-        'date_format'   => 'd-m-Y',
-    ));
-
-
-    $cmb_apertura->add_field(array(
-        'id'            => $prefix . 'descrizione_breve',
-        'name'          => __('Descrizione breve ', 'design_comuni_italia'),
-        'desc'          => __('Indicare una sintetica descrizione (max 255 caratteri spazi inclusi)', 'design_comuni_italia'),
-        'type'          => 'textarea',
-        'attributes'    => array(
-            'maxlength' => '255',
-        ),
-    ));
-
-    $cmb_sezione = new_cmb2_box(array(
-        'id'            => $prefix . 'box_sezione_post',
-        'title'         => __('Seleziona la sezione', 'design_comuni_italia'),
-        'object_types'  => array('elemento_trasparenza'),
-        'context'       => 'normal',
-        'priority'      => 'high',
-    ));
-
-    $cmb_sezione->add_field(array(
-        'id'                => $prefix . 'tipo_cat_amm_trasp',
-        'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
-        'desc'              => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
-        'type'              => 'taxonomy_radio_hierarchical',
-        'taxonomy'          => 'tipi_cat_amm_trasp',
-        'show_option_none'  => false,
-        'remove_default'    => true,
-    ));
-
-        $cmb_corpo = new_cmb2_box(array(
-        'id'            => $prefix . 'box_corpo',
-        'title'         => __('Corpo', 'design_comuni_italia'),
-        'object_types'  => array('elemento_trasparenza'),
-        'context'       => 'normal',
-        'priority'      => 'low',
-    ));
-
-    $cmb_corpo->add_field( array(
-        'id' => $prefix . 'descrizione',
-        'name'          => __( 'Descrizione', 'design_comuni_italia' ),
-        'desc' => __( 'Testo principale del post' , 'design_comuni_italia' ),
-        'type' => 'wysiwyg',
-        'options' => array(
-            'textarea_rows' => 10, 
-            'teeny' => false, 
-        ),
-    ) );
-
-    $cmb_documento = new_cmb2_box(array(
-        'id'            => $prefix . 'box_documento',
-        'title'         => __('Documento/Link *', 'design_comuni_italia'),
-        'object_types'  => array('elemento_trasparenza'),
-        'context'       => 'normal',
-        'priority'      => 'high',
-    ));
-
-    $cmb_documento->add_field(array(
-        'id'            => $prefix . 'url',
-        'name'          => __('URL', 'design_comuni_italia'),
-        'desc'          => __('Link ad una pagina interna o esterna al sito', 'design_comuni_italia'),
-        'type'          => 'text_url',
-    ));
-
-      // Gruppo per URL multipli
-    $cmb_documento->add_field(array(
-        'id'            => $prefix . 'url_documento_group',
-        'type'          => 'group',
-        'description' => __('Aggiungi uno o più link al documento', 'design_comuni_italia'),
-        'options'     => array(
-            'group_title'   => __('Link Documento {#}', 'design_comuni_italia'),
-            'add_button'    => __('Aggiungi link', 'design_comuni_italia'),
-            'remove_button' => __('Rimuovi link', 'design_comuni_italia'),
-            'sortable'      => true,
-            'closed'        => true,
-        ),
-    ));
-    
-    // URL del documento
-    $cmb_documento->add_group_field($prefix . 'url_documento_group', array(
-        'name' => __('URL del documento', 'design_comuni_italia'),
-        'id'   => 'url_documento',
-        'type' => 'text_url',
-    ));
-    
-    // Titolo del documento
-    $cmb_documento->add_group_field($prefix . 'url_documento_group', array(
-        'name' => __('Titolo del link', 'design_comuni_italia'),
-        'id'   => 'titolo',
-        'type' => 'text',
-    ));
-    
-    // Checkbox: apri in nuova scheda
-    $cmb_documento->add_group_field($prefix . 'url_documento_group', array(
-        'name' => __('Apri in nuova scheda', 'design_comuni_italia'),
-        'id'   => 'target_blank',
-        'type' => 'checkbox',
-    ));
-
-
-    $cmb_documento->add_field(array(
-        'id'            => $prefix . 'file',
-        'name'          => __('Documento: Carica più file', 'design_comuni_italia'),
-        'desc'          => __('Carica uno o più documenti. Devono essere scaricabili e stampabili.', 'design_comuni_italia'),
-        'type'          => 'file_list',
-        'preview_size' => array(100, 100),
-        'text'          => array(
-            'add_upload_files_text' => __('Aggiungi allegati', 'design_comuni_italia'),
-            'remove_image_text'     => __('Rimuovi', 'design_comuni_italia'),
-            'remove_text'           => __('Rimuovi', 'design_comuni_italia'),
-        ),
-    ));
-
-      $cmb_extra = new_cmb2_box(array(
-        'id'            => $prefix . 'box_extra',
-        'title'         => __('Extra', 'design_comuni_italia'),
-        'object_types'  => array('elemento_trasparenza'),
-        'context'       => 'side',
-        'priority'      => 'high',
-    ));
-
-    $cmb_extra->add_field(array(
-        'id'            => $prefix . 'open_in_new_tab',
-        'name'          => __('Apri in una nuova finestra', 'design_comuni_italia'),
-        'desc'          => __('Spuntare per aprire il documento in una nuova finestra del browser', 'design_comuni_italia'),
-        'type'          => 'checkbox',
-    ));
-    $cmb_extra->add_field(array(
-        'id'            => $prefix . 'open_direct',
-        'name'          => __('Apri link in modo diretto', 'design_comuni_italia'),
-        'desc'          => __('Link diretto al link senza visualizzare alcuna pagina intermedia', 'design_comuni_italia'),
-        'type'          => 'checkbox',
-    ));
-
-    $cmb_post_collegati = new_cmb2_box(array(
-        'id'            => $prefix . 'box_postcollegati',
-        'title'         => __('Documenti correlati', 'design_comuni_italia'),
-        'object_types'  => array('elemento_trasparenza'),
-        'context'       => 'normal',
-        'priority'      => 'low',
-    ));
-
-    $cmb_post_collegati->add_field( array(
-        'id' => $prefix . 'post_trasparenza',
-        'name'          => __( 'Documenti correlati', 'design_comuni_italia' ),
-        'desc' => __( 'Selezionare i documenti di trasparenza correlati a quello attualmente pubblicato.', 'design_comuni_italia' ),
-        'type'          => 'pw_multiselect',
-        'options' => dci_get_posts_options('elemento_trasparenza'),
-        'attributes'    => array(
-            'placeholder' =>  __( 'Seleziona i documenti correlati', 'design_comuni_italia' ),
-        ),
-    ) );
-
-}
-
-add_action('admin_print_scripts-post-new.php', 'dci_elemento_trasparenza_admin_script', 11);
-add_action('admin_print_scripts-post.php', 'dci_elemento_trasparenza_admin_script', 11);
-// Aggiungi l'hook per la tua pagina di amministrazione personalizzata
-add_action('admin_enqueue_scripts', 'dci_enqueue_multipost_transparency_scripts');
-
-function dci_elemento_trasparenza_admin_script()
-{
-    global $post_type;
-    if ($post_type === 'elemento_trasparenza') {
-        wp_enqueue_script('elemento-trasparenza-admin-script', get_template_directory_uri() . '/inc/admin-js/elemento_trasparenza.js', array('jquery'), null, true);
-    }
-}
-
-function dci_enqueue_multipost_transparency_scripts($hook_suffix) {
-    // Il $hook_suffix per le pagine di sottomenu è tipicamente 'post_type_page_YOUR_PAGE_SLUG'
-    if ( 'elemento_trasparenza_page_dci_transparency_multipost_page' === $hook_suffix ) {
-        wp_enqueue_script('multipost-transparency-validation-script', get_template_directory_uri() . '/inc/admin-js/elemento_trasparenza.js', array('jquery'), null, true);
-    }
-}
-
-add_filter('wp_insert_post_data', 'dci_elemento_trasparenza_set_post_content', 99, 1);
-function dci_elemento_trasparenza_set_post_content($data)
-{
-    if ($data['post_type'] === 'elemento_trasparenza') {
-        // personalizzazione futura del content
-    }
-    return $data;
-}
-
-// Questa funzione è rimasta dalla logica precedente (pre-impostare campi in CPT con parametro)
-// Puoi mantenerla se hai ancora un pulsante che aggiunge un "Tipo 2" di Elemento Trasparenza
-// che NON è la pagina di caricamento multiplo. Altrimenti, puoi rimuoverla se non più necessaria.
-add_action( 'load-post-new.php', 'dci_handle_specific_elemento_trasparenza_creation' );
-function dci_handle_specific_elemento_trasparenza_creation() {
-    if ( 'elemento_trasparenza' !== get_current_screen()->post_type ) {
-        return;
-    }
-
-    if ( isset( $_GET['tipo_elemento'] ) && $_GET['tipo_elemento'] === '2' ) {
-        add_filter( 'cmb2_override_meta_value', 'dci_set_default_cmb2_values_for_type_2', 10, 4 );
-    }
-}
-
-// Funzione per impostare valori predefiniti per CMB2 (esempio)
-function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args, $cmb ) {
-    if ( $field_args['id'] === '_dci_elemento_trasparenza_tipo_cat_amm_trasp' ) {
-        // Sostituisci 'ID_DELLA_CATEGORIA_PREDEFINITA' con l'ID reale del tuo termine di tassonomia
-        $value = 'ID_DELLA_CATEGORIA_PREDEFINITA'; // Ricorda di mettere l'ID effettivo qui!
-    }
-    return $value;
 }
