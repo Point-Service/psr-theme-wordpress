@@ -27,13 +27,22 @@ if ($yearTwoDigits < 100) {
 
 $ck_sowh_section = dci_get_option("ck_show_section", "Trasparenza");
 
-if($ck_link && !empty($url)){
-     $link = esc_url($url);
-}else if($ck_link && !empty($documento)){
-    $link = esc_url($documento);
-}else{
+// Inizializzazione del link
+if ($ck_link) {
+    // Link diretto (URL o file)
+    if (!empty($url)) {
+        $link = esc_url($url); // URL assoluto
+    } elseif (!empty($documento)) {
+        $link = esc_url($documento); // Es. URL file
+    } else {
+        $link = '#'; // fallback se mancano entrambi
+    }
+} else {
+    // Link alla scheda del post
     $link = get_permalink($elemento->ID);
 }
+
+
 
 if ($elemento->post_status === "publish") :
     $title=$elemento->post_title;
