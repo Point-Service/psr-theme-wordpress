@@ -16,25 +16,26 @@ global $uo_id, $inline, $audio;
 <main>
     <?php
     while (have_posts()) :
-        the_post();
-        $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
-
-        $prefix = '_dci_elemento_trasparenza_';
-        $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
-        $descrizione = dci_get_meta("descrizione", $prefix, $post->ID);
-        $file = dci_get_meta("file", $prefix, $post->ID);
-        $url1 = dci_get_meta("url", $prefix, $post->ID);
-        $url_documento_group = get_post_meta(get_the_ID(), $prefix . 'url_documento_group', true);
-        //var_dump($url_documento_group);
-        $data_pubblicazione_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
-        $data_pubblicazione = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pubblicazione_arr[0], $data_pubblicazione_arr[2]));
-
-        $data_scadenza_arr = dci_get_data_pubblicazione_arr("data_scadenza", $prefix, $post->ID);
-        $data_scadenza = date_i18n('d F Y', mktime(0, 0, 0, $data_scadenza_arr[1], $data_scadenza_arr[0], $data_scadenza_arr[2]));
-
+            the_post();
         
-        $documenti_collegati = dci_get_meta("post_trasparenza", $prefix, $post->ID);
-        
+            $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
+    
+            $prefix = '_dci_elemento_trasparenza_';
+            $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
+            $descrizione = dci_get_meta("descrizione", $prefix, $post->ID);
+            $file = dci_get_meta("file", $prefix, $post->ID);
+            $url1 = dci_get_meta("url", $prefix, $post->ID);
+            $url_documento_group = get_post_meta(get_the_ID(), $prefix . 'url_documento_group', true);
+            //var_dump($url_documento_group);
+            $data_pubblicazione_arr = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
+            $data_pubblicazione = date_i18n('d F Y', mktime(0, 0, 0, $data_pubblicazione_arr[1], $data_pubblicazione_arr[0], $data_pubblicazione_arr[2]));
+    
+            $data_scadenza_arr = dci_get_data_pubblicazione_arr("data_scadenza", $prefix, $post->ID);
+            $data_scadenza = date_i18n('d F Y', mktime(0, 0, 0, $data_scadenza_arr[1], $data_scadenza_arr[0], $data_scadenza_arr[2]));
+    
+            
+            $documenti_collegati = dci_get_meta("post_trasparenza", $prefix, $post->ID);
+            
         
              $ck_link = dci_get_meta('open_direct', $prefix, $post->ID);
                 if (!empty($ck_link)) {
