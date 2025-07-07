@@ -33,12 +33,13 @@ get_header();
         $data_scadenza = date_i18n('d F Y', mktime(0, 0, 0, $data_scadenza_arr[1], $data_scadenza_arr[0], $data_scadenza_arr[2]));
 
         $documenti_collegati = dci_get_meta("post_trasparenza", $prefix, $post->ID);
-        //$ck_link= dci_get_meta('open_direct', $prefix, $post->ID) === 'on';      
+        $ck_link1= dci_get_meta('open_direct', $prefix, $post->ID) === 'on';      
 
         $ck_link           = dci_get_meta('open_direct', $prefix, $elemento->ID) === 'on';
         $url               = dci_get_meta('url', $prefix, $elemento->ID);
 
       echo $ck_link;
+         echo $ck_link1;
     ?>
         <div class="container" id="main-container">
             <div class="row">
