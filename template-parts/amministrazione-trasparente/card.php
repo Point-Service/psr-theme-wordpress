@@ -51,6 +51,7 @@ if ($elemento->post_status === "publish") :
 
     
 ?>
+    hgjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
 <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
     <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
         <span class="visually-hidden">Categoria:</span>
