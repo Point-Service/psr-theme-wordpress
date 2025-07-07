@@ -27,7 +27,7 @@ if ($yearTwoDigits < 100) {
 
 $ck_sowh_section = dci_get_option("ck_show_section", "Trasparenza");
 
-echo $ck_link;
+echo 'hj';
 
 
 // Inizializzazione del link
