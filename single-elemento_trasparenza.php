@@ -10,7 +10,7 @@
 
 global $uo_id, $inline, $audio;
 
-get_header();
+
 ?>
 
 <main>
@@ -56,13 +56,12 @@ get_header();
             if (!empty($file_url)) {
                 echo "<script>window.location.href = '" . esc_js($file_url) . "';</script>";
                 exit;
-            } else {
-                echo '<p>Errore: file non trovato.</p>';
+              } 
             }
-        }
-
-
         
+
+
+       get_header(); 
     ?>
         <div class="container" id="main-container">
             <div class="row">
