@@ -43,13 +43,14 @@ $ck_link = dci_get_meta('open_direct', $prefix, $post->ID);
 
 if (!empty($ck_link)) {
 
-    $file_meta = dci_get_meta("file", $prefix, $post->ID);
+
     $file_url = '';
 
-    if (is_array($file_meta) && !empty($file_meta)) {
+    
+    if (is_array($file) && !empty($file)) {
         // ✅ Primo elemento è una stringa URL
-        $file_url = esc_url($file_meta[0]);
-    } elseif (is_string($file_meta)) {
+        $file_url = esc_url($file[0]);
+    } elseif (is_string($file)) {
         $file_url = esc_url($file_meta);
     }
 
