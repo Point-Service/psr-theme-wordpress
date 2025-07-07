@@ -49,8 +49,8 @@ if (!empty($ck_link)) {
     
     if (is_array($file) && !empty($file)) {
         
-      echo $file[1];
-        
+      echo $file[0];
+        echo $file;
         // ✅ Primo elemento è una stringa URL
         $file_url = esc_url($file[0]);
 
