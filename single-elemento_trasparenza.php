@@ -35,6 +35,10 @@ get_header();
         $documenti_collegati = dci_get_meta("post_trasparenza", $prefix, $post->ID);
         //$ck_link= dci_get_meta('open_direct', $prefix, $post->ID) === 'on';      
 
+        $ck_link           = dci_get_meta('open_direct', $prefix, $elemento->ID) === 'on';
+        $url               = dci_get_meta('url', $prefix, $elemento->ID);
+
+      echo $ck_link;
     ?>
         <div class="container" id="main-container">
             <div class="row">
@@ -159,7 +163,7 @@ get_header();
 
                     <?php if (is_array($file) && !empty($file)) { ?>
                         <article class="it-page-section anchor-offset mt-5">
-                            <h4 id="documenti">Documenti1</h4>
+                            <h4 id="documenti">Documenti</h4>
                             <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
                                 <?php foreach ($file as $file_url) {
                                     $documento_id = attachment_url_to_postid($file_url);
@@ -184,7 +188,7 @@ get_header();
                     <?php } ?>
 
                     <?php if (!empty($url1) || !empty($url_documento_group)) { ?>
-            <article class="it-page-section anchor-offset mt-5">
+                <article class="it-page-section anchor-offset mt-5">
                 <h4 id="url">Link</h4>
                 <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
 
