@@ -37,32 +37,30 @@ get_header();
         
 
 
-$ck_link = dci_get_meta('open_direct', $prefix, $post->ID) === 'on';
+$ck_link = dci_get_meta('open_direct', $prefix, $post->ID);
 
-if ($ck_link) {
-
-    echo 'OK';
+if (!empty($ck_link)) {
+echo 'ok';
     $file_meta = dci_get_meta("file", $prefix, $post->ID);
-    $file_url = '#';
+    $file_url = '';
 
-    // Se è un array
     if (is_array($file_meta) && !empty($file_meta)) {
         $first_file = $file_meta[0];
         $file_url = is_array($first_file) && isset($first_file['url'])
             ? esc_url($first_file['url'])
             : esc_url($first_file);
-    }
-    // Se è una stringa
-    elseif (is_string($file_meta) && !empty($file_meta)) {
+    } elseif (is_string($file_meta)) {
         $file_url = esc_url($file_meta);
     }
 
-    // Se abbiamo un URL valido, fai redirect
-    if ($file_url && $file_url !== '#') {
+    if (!empty($file_url)) {
         echo "<script>window.location.href = '" . esc_js($file_url) . "';</script>";
-        exit; // Ferma l'esecuzione del template
+        exit;
+    } else {
+        echo '<p>Errore: file non trovato.</p>';
     }
 }
+
 
 
         
