@@ -38,7 +38,7 @@ get_header();
 
 
 // Inizializzazione del link
-if ($ck_link) {
+if ($ck_link1) {
     echo 'sasasa';
     // Link diretto (URL o file)
     if (!empty($url)) {
