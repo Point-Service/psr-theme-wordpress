@@ -32,27 +32,37 @@ get_header();
         $data_scadenza_arr = dci_get_data_pubblicazione_arr("data_scadenza", $prefix, $post->ID);
         $data_scadenza = date_i18n('d F Y', mktime(0, 0, 0, $data_scadenza_arr[1], $data_scadenza_arr[0], $data_scadenza_arr[2]));
 
+        
         $documenti_collegati = dci_get_meta("post_trasparenza", $prefix, $post->ID);
-        $ck_link1= dci_get_meta('open_direct', $prefix, $post->ID) === 'on';      
+        
 
+$ck_link = dci_get_meta('open_direct', $prefix, $post->ID) === 'on';
 
+if ($ck_link) {
+    $file_meta = dci_get_meta("file", $prefix, $post->ID);
+    $file_url = '#';
 
-// Inizializzazione del link
-if ($ck_link1) {
-    // Link diretto (URL o file)
-    if (!empty($url)) {
-        $link = esc_url($url); // URL assoluto
-    } elseif (!empty($documento)) {
-        $link = esc_url($documento); // Es. URL file
-    } else {
-        $link = '#'; // fallback se mancano entrambi
+    // Se è un array
+    if (is_array($file_meta) && !empty($file_meta)) {
+        $first_file = $file_meta[0];
+        $file_url = is_array($first_file) && isset($first_file['url'])
+            ? esc_url($first_file['url'])
+            : esc_url($first_file);
+    }
+    // Se è una stringa
+    elseif (is_string($file_meta) && !empty($file_meta)) {
+        $file_url = esc_url($file_meta);
+    }
+
+    // Se abbiamo un URL valido, fai redirect
+    if ($file_url && $file_url !== '#') {
+        echo "<script>window.location.href = '" . esc_js($file_url) . "';</script>";
+        exit; // Ferma l'esecuzione del template
     }
 }
 
-        
-      echo $ck_link;
-         echo $url;
-        echo $url1a;
+
+
         
     ?>
         <div class="container" id="main-container">
