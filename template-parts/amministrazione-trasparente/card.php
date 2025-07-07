@@ -75,6 +75,7 @@ if ($elemento->post_status === "publish") :
                         } else {
                             $titolo_documento = $title;
                         }
+                    ?>
 
                     <?php echo esc_html($titolo_documento); ?>
                 </a>
