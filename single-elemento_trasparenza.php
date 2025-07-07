@@ -48,6 +48,10 @@ if (!empty($ck_link)) {
 
     
     if (is_array($file) && !empty($file)) {
+      echo'SI';
+
+
+        
         // ✅ Primo elemento è una stringa URL
         $file_url = esc_url($file[0]);
     } elseif (is_string($file)) {
