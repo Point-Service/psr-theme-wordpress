@@ -27,31 +27,17 @@ if ($yearTwoDigits < 100) {
 
 $ck_sowh_section = dci_get_option("ck_show_section", "Trasparenza");
 
-
-
-// Inizializzazione del link
-if ($ck_link) {
-    // Link diretto (URL o file)
-    if (!empty($url)) {
-        $link = esc_url($url); // URL assoluto
-    } elseif (!empty($documento)) {
-        $link = esc_url($documento); // Es. URL file
-    } else {
-        $link = '#'; // fallback se mancano entrambi
-    }
-} else {
-    // Link alla scheda del post
+if($ck_link && !empty($url)){
+     $link = esc_url($url);
+}else if($ck_link && !empty($documento)){
+    $link = esc_url($documento);
+}else{
     $link = get_permalink($elemento->ID);
 }
 
-
-
 if ($elemento->post_status === "publish") :
     $title=$elemento->post_title;
-
-    
 ?>
-    hgjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
 <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
     <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
         <span class="visually-hidden">Categoria:</span>
