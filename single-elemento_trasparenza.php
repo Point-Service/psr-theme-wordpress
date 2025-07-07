@@ -39,7 +39,7 @@ get_header();
         $url               = dci_get_meta('url', $prefix, $elemento->ID);
 
       echo $ck_link;
-       //  echo $ck_link1;
+         echo $url;
     ?>
         <div class="container" id="main-container">
             <div class="row">
