@@ -36,36 +36,30 @@ get_header();
         $documenti_collegati = dci_get_meta("post_trasparenza", $prefix, $post->ID);
         
 
-
-
-
-$ck_link = dci_get_meta('open_direct', $prefix, $post->ID);
-
-if (!empty($ck_link)) {
-    $file = dci_get_meta("file", $prefix, $post->ID);
-    $file_url = '';
-
-    if (is_array($file) && !empty($file)) {
-        foreach ($file as $url) {
-            if (!empty($url)) {
-                $file_url = esc_url($url);
-                break;
+        $ck_link = dci_get_meta('open_direct', $prefix, $post->ID);
+        
+        if (!empty($ck_link)) {
+            $file = dci_get_meta("file", $prefix, $post->ID);
+            $file_url = '';
+        
+            if (is_array($file) && !empty($file)) {
+                foreach ($file as $url) {
+                    if (!empty($url)) {
+                        $file_url = esc_url($url);
+                        break;
+                    }
+                }
+            } elseif (is_string($file)) {
+                $file_url = esc_url($file);
+            }
+        
+            if (!empty($file_url)) {
+                echo "<script>window.location.href = '" . esc_js($file_url) . "';</script>";
+                exit;
+            } else {
+                echo '<p>Errore: file non trovato.</p>';
             }
         }
-    } elseif (is_string($file)) {
-        $file_url = esc_url($file);
-    }
-
-    if (!empty($file_url)) {
-        echo "<script>window.location.href = '" . esc_js($file_url) . "';</script>";
-        exit;
-    } else {
-        echo '<p>Errore: file non trovato.</p>';
-    }
-}
-
-
-
 
 
         
@@ -237,39 +231,39 @@ if (!empty($ck_link)) {
                     </div>
                 <?php } ?>
 
-            <?php
-            // Mostra i link multipli (url_documento_group)
-            if (!empty($url_documento_group) && is_array($url_documento_group)) {
-                foreach ($url_documento_group as $link_item) {
-                    $url = !empty($link_item['url_documento']) ? esc_url($link_item['url_documento']) : '';
-                    $nome = !empty($link_item['titolo']) ? esc_html($link_item['titolo']) : basename($url);
-                    $target_blank = !empty($link_item['target_blank']) ? ' target="_blank" rel="noopener noreferrer"' : '';
-
-                    if ($url) {
-            ?>
-                        <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#it-clip"></use>
-                            </svg>
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <a class="text-decoration-none" href="<?= $url ?>" <?= $target_blank ?>
-                                        aria-label="Scarica il documento <?= $nome ?>"
-                                        title="Scarica il documento <?= $nome ?>">
-                                        <?= $nome ?>
-                                    </a>
-                                </h5>
-                            </div>
-                        </div>
-            <?php
+                    <?php
+                    // Mostra i link multipli (url_documento_group)
+                    if (!empty($url_documento_group) && is_array($url_documento_group)) {
+                        foreach ($url_documento_group as $link_item) {
+                            $url = !empty($link_item['url_documento']) ? esc_url($link_item['url_documento']) : '';
+                            $nome = !empty($link_item['titolo']) ? esc_html($link_item['titolo']) : basename($url);
+                            $target_blank = !empty($link_item['target_blank']) ? ' target="_blank" rel="noopener noreferrer"' : '';
+        
+                            if ($url) {
+                    ?>
+                                <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#it-clip"></use>
+                                    </svg>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a class="text-decoration-none" href="<?= $url ?>" <?= $target_blank ?>
+                                                aria-label="Scarica il documento <?= $nome ?>"
+                                                title="Scarica il documento <?= $nome ?>">
+                                                <?= $nome ?>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                </div>
+                    <?php
+                            }
+                        }
                     }
-                }
-            }
-            ?>
-
-        </div> <!-- .card-wrapper -->
-    </article>
-<?php } ?>
+                    ?>
+        
+                </div> <!-- .card-wrapper -->
+            </article>
+        <?php } ?>
 
                     <?php if (!empty($documenti_collegati)) { ?>
                         <article class="it-page-section anchor-offset mt-5"">
