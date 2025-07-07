@@ -27,7 +27,6 @@ if ($yearTwoDigits < 100) {
 
 $ck_sowh_section = dci_get_option("ck_show_section", "Trasparenza");
 
-echo 'hj';
 
 
 // Inizializzazione del link
@@ -49,6 +48,12 @@ if ($ck_link) {
 
 if ($elemento->post_status === "publish") :
     $title=$elemento->post_title;
+
+echo 'hj';
+
+
+
+    
 ?>
 <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
     <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
