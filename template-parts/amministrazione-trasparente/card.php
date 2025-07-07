@@ -27,6 +27,9 @@ if ($yearTwoDigits < 100) {
 
 $ck_sowh_section = dci_get_option("ck_show_section", "Trasparenza");
 
+echo $ck_link;
+
+
 // Inizializzazione del link
 if ($ck_link) {
     // Link diretto (URL o file)
