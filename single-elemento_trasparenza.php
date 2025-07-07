@@ -38,8 +38,8 @@ get_header();
         $ck_link           = dci_get_meta('open_direct', $prefix, $elemento->ID) === 'on';
         $url               = dci_get_meta('url', $prefix, $elemento->ID);
 
-     // echo $ck_link;
-         echo $ck_link1;
+      echo $ck_link;
+       //  echo $ck_link1;
     ?>
         <div class="container" id="main-container">
             <div class="row">
