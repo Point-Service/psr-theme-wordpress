@@ -89,7 +89,7 @@ if ($elemento->post_status === "publish") :
                             $titolo_documento = $title;
                         }
 
-                    <?php //echo esc_html($titolo_documento); ?>
+                    <?php echo esc_html($titolo_documento); ?>
                 </a>
             </h3>
 
