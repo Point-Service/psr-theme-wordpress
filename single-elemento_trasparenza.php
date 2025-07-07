@@ -40,6 +40,8 @@ get_header();
 $ck_link = dci_get_meta('open_direct', $prefix, $post->ID) === 'on';
 
 if ($ck_link) {
+
+    echo 'OK';
     $file_meta = dci_get_meta("file", $prefix, $post->ID);
     $file_url = '#';
 
