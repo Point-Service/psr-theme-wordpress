@@ -42,26 +42,18 @@ get_header();
 $ck_link = dci_get_meta('open_direct', $prefix, $post->ID);
 
 if (!empty($ck_link)) {
-
-
+    $file = dci_get_meta("file", $prefix, $post->ID);
     $file_url = '';
 
-     foreach ($file as $file_url) {
-        $documento_id = attachment_url_to_postid($file_url);
-        $documento = get_post($documento_id);
-        $titolo = $documento ? $documento->post_title : basename($file_url);
-
-         echo $file_url
-
-       }
     if (is_array($file) && !empty($file)) {
-
-        // ✅ Primo elemento è una stringa URL
-        $file_url = esc_url($file[0]);
-
-        
+        foreach ($file as $url) {
+            if (!empty($url)) {
+                $file_url = esc_url($url);
+                break;
+            }
+        }
     } elseif (is_string($file)) {
-        $file_url = esc_url($file_meta);
+        $file_url = esc_url($file);
     }
 
     if (!empty($file_url)) {
@@ -71,6 +63,7 @@ if (!empty($ck_link)) {
         echo '<p>Errore: file non trovato.</p>';
     }
 }
+
 
 
 
