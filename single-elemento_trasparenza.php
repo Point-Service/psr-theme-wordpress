@@ -35,9 +35,40 @@ get_header();
         $documenti_collegati = dci_get_meta("post_trasparenza", $prefix, $post->ID);
         $ck_link1= dci_get_meta('open_direct', $prefix, $post->ID) === 'on';      
 
+
+
+        $documenti         = dci_get_meta('file', $prefix, $elemento->ID);
+        $documento = is_array($documenti) && !empty($documenti) ? get_permalink($elemento->ID) : $documenti;
+
+        
         $ck_link           = dci_get_meta('open_direct', $prefix, $elemento->ID) === 'on';
         $url               = dci_get_meta('url', $prefix, $elemento->ID);
         $url1a              = dci_get_meta('url', $prefix, $post->ID);
+
+
+
+
+
+// Inizializzazione del link
+if ($ck_link) {
+    // Link diretto (URL o file)
+    if (!empty($url)) {
+        $link = esc_url($url); // URL assoluto
+    } elseif (!empty($documento)) {
+        $link = esc_url($documento); // Es. URL file
+    } else {
+        $link = '#'; // fallback se mancano entrambi
+    }
+} else {
+    // Link alla scheda del post
+    $link = get_permalink($elemento->ID);
+}
+
+
+
+
+
+        
       echo $ck_link;
          echo $url;
         echo $url1a;
