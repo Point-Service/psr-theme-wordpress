@@ -46,7 +46,14 @@ if (!empty($ck_link)) {
 
     $file_url = '';
 
-    
+     foreach ($file as $file_url) {
+        $documento_id = attachment_url_to_postid($file_url);
+        $documento = get_post($documento_id);
+        $titolo = $documento ? $documento->post_title : basename($file_url);
+
+         echo $file_url
+
+       }
     if (is_array($file) && !empty($file)) {
         
       echo $file[0];
