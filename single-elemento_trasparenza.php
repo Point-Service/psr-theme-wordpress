@@ -37,20 +37,9 @@ get_header();
 
 
 
-        $documenti         = dci_get_meta('file', $prefix, $elemento->ID);
-        $documento = is_array($documenti) && !empty($documenti) ? get_permalink($elemento->ID) : $documenti;
-
-        
-        $ck_link           = dci_get_meta('open_direct', $prefix, $elemento->ID) === 'on';
-        $url               = dci_get_meta('url', $prefix, $elemento->ID);
-        $url1a              = dci_get_meta('url', $prefix, $post->ID);
-
-
-
-
-
 // Inizializzazione del link
 if ($ck_link) {
+    echo 'sasasa';
     // Link diretto (URL o file)
     if (!empty($url)) {
         $link = esc_url($url); // URL assoluto
@@ -59,19 +48,13 @@ if ($ck_link) {
     } else {
         $link = '#'; // fallback se mancano entrambi
     }
-} else {
-    // Link alla scheda del post
-    $link = get_permalink($elemento->ID);
 }
-
-
-
-
 
         
       echo $ck_link;
          echo $url;
         echo $url1a;
+        
     ?>
         <div class="container" id="main-container">
             <div class="row">
