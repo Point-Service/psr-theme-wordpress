@@ -35,30 +35,42 @@ global $uo_id, $inline, $audio;
         
         $documenti_collegati = dci_get_meta("post_trasparenza", $prefix, $post->ID);
         
-
-        $ck_link = dci_get_meta('open_direct', $prefix, $post->ID);
         
-        if (!empty($ck_link)) {
-            $file = dci_get_meta("file", $prefix, $post->ID);
-            $file_url = '';
-        
-            if (is_array($file) && !empty($file)) {
-                foreach ($file as $url) {
-                    if (!empty($url)) {
-                        $file_url = esc_url($url);
-                        break;
+            // Controllo se il check è attivo
+            $ck_link = dci_get_meta('open_direct', $prefix, $post->ID);
+            if (!empty($ck_link)) {
+            
+                // Redirect automatico su file se presente
+                $file_url = '';
+                if (is_array($file) && !empty($file)) {
+                    foreach ($file as $url) {
+                        if (!empty($url)) {
+                            $file_url = esc_url($url);
+                            break;
+                        }
+                    }
+                } elseif (is_string($file)) {
+                    $file_url = esc_url($file);
+                }
+                if (!empty($file_url)) {
+                    echo "<script>window.location.href = '" . esc_js($file_url) . "';</script>";
+                    exit;
+                }
+            
+                // Redirect automatico su link se presente (url1 o url_documento_group)
+                if (!empty($url1) || !empty($url_documento_group)) {
+                    $link_url = '';
+                    if (!empty($url1)) {
+                        $link_url = esc_url($url1);
+                    } elseif (!empty($url_documento_group)) {
+                        $link_url = esc_url($url_documento_group);
+                    }
+                    if (!empty($link_url)) {
+                        echo "<script>window.location.href = '" . esc_js($link_url) . "';</script>";
+                        exit;
                     }
                 }
-            } elseif (is_string($file)) {
-                $file_url = esc_url($file);
             }
-        
-            if (!empty($file_url)) {
-                echo "<script>window.location.href = '" . esc_js($file_url) . "';</script>";
-                exit;
-              } 
-            }
-        
 
 
        get_header(); 
