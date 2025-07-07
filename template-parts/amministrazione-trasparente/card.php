@@ -49,10 +49,6 @@ if ($ck_link) {
 if ($elemento->post_status === "publish") :
     $title=$elemento->post_title;
 
-echo 'hj';
-
-
-
     
 ?>
 <div class="cmp-card-latest-messages card-wrapper" data-bs-toggle="modal" data-bs-target="#">
@@ -93,7 +89,7 @@ echo 'hj';
                             $titolo_documento = $title;
                         }
                     ?>
-
+<?php echo 'hggggggg'; ?>
                     <?php echo esc_html($titolo_documento); ?>
                 </a>
             </h3>
