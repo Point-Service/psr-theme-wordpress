@@ -424,7 +424,18 @@ add_action('admin_print_scripts-post.php', 'dci_elemento_trasparenza_admin_scrip
 add_action('admin_enqueue_scripts', 'dci_enqueue_multipost_transparency_scripts');
 
 
+add_action( 'edited_tipi_cat_amm_trasp', 'save_category_permissions', 10, 2 );
+add_action( 'created_tipi_cat_amm_trasp', 'save_category_permissions', 10, 2 );
 
+function save_category_permissions( $term_id, $tt_id ) {
+    if ( isset( $_POST['access_type'] ) ) {
+        update_term_meta( $term_id, 'access_type', sanitize_text_field( $_POST['access_type'] ) );
+    }
+    if ( isset( $_POST['authorized_roles'] ) && is_array( $_POST['authorized_roles'] ) ) {
+        $roles = array_map( 'sanitize_text_field', $_POST['authorized_roles'] );
+        update_term_meta( $term_id, 'authorized_roles', $roles );
+    }
+}
 
 
 
