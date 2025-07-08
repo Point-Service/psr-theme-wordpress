@@ -427,50 +427,6 @@ add_action('admin_enqueue_scripts', 'dci_enqueue_multipost_transparency_scripts'
 
 
 
-add_filter('the_content', 'dci_check_access_permissions');
-function dci_check_access_permissions($content) {
-    if (is_singular('elemento_trasparenza')) {
-        global $post;
-
-        // Recupera le categorie associate al post
-        $terms = get_the_terms($post->ID, 'tipi_cat_amm_trasp');
-        if (!$terms || is_wp_error($terms)) {
-            return $content; // Nessuna categoria, mostra contenuto normalmente
-        }
-
-        foreach ($terms as $term) {
-            $access_type = get_term_meta($term->term_id, 'access_type', true);
-            $authorized_roles = get_term_meta($term->term_id, 'authorized_roles', true);
-
-            // Se access_type richiede permessi e i ruoli autorizzati sono definiti
-            if ($access_type === 'restricted' && is_array($authorized_roles)) {
-                $user = wp_get_current_user();
-
-                // Controlla se l'utente ha almeno uno dei ruoli autorizzati
-                $allowed = false;
-                foreach ($authorized_roles as $role) {
-                    if (in_array($role, (array) $user->roles)) {
-                        $allowed = true;
-                        break;
-                    }
-                }
-
-                if (!$allowed) {
-                    // Utente non autorizzato: mostra messaggio o contenuto alternativo
-                    return '<p>Non hai i permessi per visualizzare questo contenuto.</p>';
-                }
-            }
-        }
-
-        // Se passa tutti i controlli, restituisci contenuto normale
-        return $content;
-    }
-
-    return $content; // Non CPT elemento_trasparenza: mostra normale
-}
-
-
-
 
 
 function dci_elemento_trasparenza_admin_script()
