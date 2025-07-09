@@ -29,10 +29,17 @@ $args = array(
     'post_type' => 'elemento_trasparenza',
     'tipi_cat_amm_trasp' => $obj->slug,
     'paged' => $paged,
-    'meta_key' => $prefix . 'data_pubblicazione', // Nome del campo personalizzato
-    'orderby' => ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? 'title' : 'meta_value_num',
-    'order' => ($order == 'data_desc' || $order == 'alfabetico_desc') ? 'DESC' : 'ASC', // Ordina in base all'ordinamento scelto
 );
+
+// Gestione dell'ordinamento
+if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
+    $args['orderby'] = 'title';
+    $args['order'] = ($order === 'alfabetico_desc') ? 'DESC' : 'ASC';
+} else {
+    // Ordinamento per data di pubblicazione del post (post_date)
+    $args['orderby'] = 'date';
+    $args['order'] = ($order === 'data_desc') ? 'DESC' : 'ASC';
+}
 
 $the_query = new WP_Query($args);
 
