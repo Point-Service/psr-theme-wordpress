@@ -75,10 +75,6 @@ get_header();
             }
         }
         
-
-echo 'tttt';
-
-
         
         $altre_cariche = dci_get_meta("altre_cariche") ?? [];
         
