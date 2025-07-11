@@ -61,7 +61,7 @@ function dci_elemento_trasparenza_add_content_after_title($post)
 }
 
 // Aggiungi la nuova voce di sottomenu per la pagina "Multi-Post"
-add_action('admin_menu', 'dci_add_transparency_multipost_page');
+add_action('admin_menu', 'dci_add_transparency_multipost_page', 20);
 
 function dci_add_transparency_multipost_page() {
     // Aggiungi una sottovoce sotto "Amministrazione Trasparente"
@@ -71,8 +71,7 @@ function dci_add_transparency_multipost_page() {
         __('Multi-Elemento', 'design_comuni_italia'),
         'create_elementi_trasparenza',              
         'dci_transparency_multipost_page',              
-        'dci_render_transparency_multipost_page',
-        8
+        'dci_render_transparency_multipost_page'
     );
 }
 
