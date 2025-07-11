@@ -71,7 +71,8 @@ function dci_add_transparency_multipost_page() {
         __('Multi-Elemento', 'design_comuni_italia'),
         'create_elementi_trasparenza',              
         'dci_transparency_multipost_page',              
-        'dci_render_transparency_multipost_page'
+        'dci_render_transparency_multipost_page',
+        8
     );
 }
 
