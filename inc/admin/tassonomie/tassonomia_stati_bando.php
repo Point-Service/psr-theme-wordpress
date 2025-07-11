@@ -87,6 +87,7 @@ function dci_add_bandi_submenu() {
         20
     );
 
+}
 
 /* ---------- 2. SEPARATORE VISIVO PRIMA DI "Bandi di gara" ---------- */
 add_action( 'admin_head', 'dci_admin_bando_separator_css' );
@@ -103,4 +104,4 @@ function dci_admin_bando_separator_css() {
 
 
     
-}
+
