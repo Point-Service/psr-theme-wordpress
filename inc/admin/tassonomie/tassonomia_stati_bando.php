@@ -3,7 +3,7 @@
 /**
  * Definisce la tassonomia Tipi stato bando
  */
-add_action( 'init', 'dci_register_taxonomy_tipi_stato_bando', -10);
+add_action( 'init', 'dci_register_taxonomy_tipi_stato_bando', -10 );
 function dci_register_taxonomy_tipi_stato_bando() {
 
     $labels = array(
@@ -36,8 +36,4 @@ function dci_register_taxonomy_tipi_stato_bando() {
 
     register_taxonomy( 'tipi_stato_bando', array( 'bando' ), $args );
 }
-
-
-
-    
 
