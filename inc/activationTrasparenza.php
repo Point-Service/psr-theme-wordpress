@@ -214,32 +214,18 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
     }
 }
 
-// ===========================
-// Funzione di inserimento tassonomie con ordinamento
-// ===========================
-function recursionInsertTaxonomy($terms, $taxonomy, $parent = 0) {
-    $order = 0;
-    foreach ($terms as $key => $value) {
-        if (is_array($value)) {
-            // $key è il nome del termine di primo livello (categoria principale)
-            // Inserisco il termine padre e poi ricorro per i figli
-            $term = wp_insert_term($key, $taxonomy, ['parent' => $parent]);
-            if (!is_wp_error($term)) {
-                // Aggiorno l'ordine del termine padre
-                update_term_meta($term['term_id'], 'term_order', $order);
-                // Inserisco i figli con il termine padre come parent
-                recursionInsertTaxonomy($value, $taxonomy, $term['term_id']);
-            }
-        } else {
-            // $value è un termine semplice, inserisco con il parent specificato
-            $term = wp_insert_term($value, $taxonomy, ['parent' => $parent]);
-            if (!is_wp_error($term)) {
-                update_term_meta($term['term_id'], 'term_order', $order);
-            }
-        }
-        $order++;
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ===========================
 // Funzione di inserimento tassonomie principale
