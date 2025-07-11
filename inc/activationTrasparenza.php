@@ -215,9 +215,8 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 }
 
 
-
 // ===========================
-// Funzione di inserimento tassonomie principale
+// Funzione di inserimento tassonomie
 // ===========================
 function insertTaxonomyTrasparenzaTerms() {
 
@@ -232,8 +231,4 @@ function insertTaxonomyTrasparenzaTerms() {
     // Tipi di stati di bando
     $tipi_stato_bando_array = dci_tipi_stato_bando_array();
     recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
-}
-
-
-?>
-
+}?>
