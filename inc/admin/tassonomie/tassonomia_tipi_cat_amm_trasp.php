@@ -38,38 +38,6 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 
 
 
-add_action('cmb2_admin_init', 'dci_register_taxonomy_metabox');
-function dci_register_taxonomy_metabox() {
-    if (!class_exists('CMB2_Box')) {
-        return; // Esce se CMB2 non è attivo
-    }
-    $prefix = '_dci_';
-
-    $cmb = new_cmb2_box(array(
-        'id'            => $prefix . 'tipi_cat_amm_trasp_metabox',
-        'title'         => __('Impostazioni categoria', 'design_comuni_italia'),
-        'object_types'  => array('term'),
-        'taxonomies'    => array('tipi_cat_amm_trasp'),
-        'new_term_section' => true,
-    ));
-
-    $cmb->add_field(array(
-        'name'       => __('Ordinamento', 'design_comuni_italia'),
-        'desc'       => __('Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia'),
-        'id'         => $prefix . 'ordinamento',
-        'type'       => 'text_small',
-        'attributes' => array(
-            'type'  => 'number',
-            'min'   => 0,
-            'step'  => 1,
-        ),
-    ));
-}
-
-
-
-
-
 
 // 3. Aggiunge colonna "Ordinamento" nella lista dei termini
 add_filter('manage_edit-tipi_cat_amm_trasp_columns', 'dci_add_ordinamento_column');
