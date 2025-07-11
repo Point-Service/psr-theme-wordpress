@@ -217,6 +217,52 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 
 
 
+function recursionInsertTaxonomy($terms, $taxonomy, $parent = 0, &$order = 0) {
+    if (empty($terms) || !is_array($terms)) {
+        return;
+    }
+
+    foreach ($terms as $key => $value) {
+        if (is_array($value)) {
+            // Controlla se il termine padre esiste già
+            $term_obj = term_exists($key, $taxonomy, $parent);
+            if ($term_obj === 0 || $term_obj === null) {
+                $term = wp_insert_term($key, $taxonomy, ['parent' => $parent]);
+                if (is_wp_error($term)) {
+                    error_log('Errore inserimento termine padre: ' . $term->get_error_message());
+                    continue;
+                }
+                $term_id = $term['term_id'];
+            } else {
+                $term_id = is_array($term_obj) ? $term_obj['term_id'] : $term_obj;
+            }
+
+            update_term_meta($term_id, 'ordinamento', $order);
+            $order++;
+
+            // Richiamo ricorsivo sui figli
+            recursionInsertTaxonomy($value, $taxonomy, $term_id, $order);
+        } else {
+            // Termini semplici
+            $term_obj = term_exists($value, $taxonomy, $parent);
+            if ($term_obj === 0 || $term_obj === null) {
+                $term = wp_insert_term($value, $taxonomy, ['parent' => $parent]);
+                if (is_wp_error($term)) {
+                    error_log('Errore inserimento termine figlio: ' . $term->get_error_message());
+                    continue;
+                }
+                $term_id = $term['term_id'];
+            } else {
+                $term_id = is_array($term_obj) ? $term_obj['term_id'] : $term_obj;
+            }
+
+            update_term_meta($term_id, 'ordinamento', $order);
+            $order++;
+        }
+    }
+}
+
+
 
 // ===========================
 // Funzione di inserimento tassonomie principale
