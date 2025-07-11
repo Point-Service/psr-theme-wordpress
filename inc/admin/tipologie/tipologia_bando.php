@@ -11,7 +11,6 @@ function dci_register_post_type_bando()
         'name'               => _x('Bandi di Gara', 'Post Type General Name', 'design_comuni_italia'),
         'singular_name'      => _x('Bando di Gara', 'Post Type Singular Name', 'design_comuni_italia'),
         'add_new'            => _x('Aggiungi un Bando', 'Post Type', 'design_comuni_italia'),
-        'add_new' => _x( 'Aggiungi un Bando', 'Post Type', 'design_comuni_italia' ),
         'add_new_item'       => __('Aggiungi un nuovo Bando di Gara', 'design_comuni_italia'),
         'edit_item'          => __('Modifica Bando di Gara', 'design_comuni_italia'),
         'featured_image'     => __('Immagine di riferimento', 'design_comuni_italia'),
