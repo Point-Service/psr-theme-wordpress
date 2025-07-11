@@ -270,7 +270,7 @@ function recursionInsertTaxonomy($terms, $taxonomy, &$order = 1) {
             update_term_meta($term_id, 'dci_order', $order++);
         }
     }
-}
+
 
 
 ?>
