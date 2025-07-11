@@ -219,6 +219,10 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 
 
 function recursionInsertTaxonomy($terms, $taxonomy, $parent = 0) {
+    if (empty($terms) || !is_array($terms)) {
+        // Se $terms è vuoto o non è un array, non facciamo nulla
+        return;
+    }
     $order = 0;
     foreach ($terms as $key => $value) {
         if (is_array($value)) {
@@ -228,7 +232,6 @@ function recursionInsertTaxonomy($terms, $taxonomy, $parent = 0) {
                 error_log('Errore inserimento termine padre: ' . $term->get_error_message());
             } else {
                 update_term_meta($term['term_id'], 'term_order', $order);
-                // Richiamo ricorsivo sui figli
                 recursionInsertTaxonomy($value, $taxonomy, $term['term_id']);
             }
         } else {
@@ -243,6 +246,7 @@ function recursionInsertTaxonomy($terms, $taxonomy, $parent = 0) {
         $order++;
     }
 }
+
 
 
 
