@@ -149,9 +149,3 @@ function dci_save_term_order_meta( $term_id ) {
 	}
 }
 
-
-add_action( 'current_screen', function ( $screen ) {
-    if ( $screen->taxonomy === 'tipi_cat_amm_trasp' ) {
-        error_log( 'Sono nella schermata tipi_cat_amm_trasp – ID: ' . $screen->id );
-    }
-} );
