@@ -15,7 +15,6 @@ function dci_trasparenza_activation() {
     }
 }
 add_action('after_switch_theme', 'dci_trasparenza_activation');
-//dci_reload_trasparenza_option_page('themes.php', 'dci_trasparenza_activation');
 
 
 // ===========================
@@ -167,7 +166,6 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
 }
 
 
-
 if (!function_exists("dci_tipi_procedura_contraente_array")) {
     function dci_tipi_procedura_contraente_array() {
         return [
@@ -221,20 +219,14 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 function insertTaxonomyTrasparenzaTerms() {
 
     // Categorie Trasparenza
-    $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
-    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+    recursionInsertTaxonomy(dci_tipi_cat_amm_trasp_array(), 'tipi_cat_amm_trasp', $order = 1);
 
     // Tipi di procedure contraente
-    $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
-    recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
+    recursionInsertTaxonomy(dci_tipi_procedura_contraente_array(), 'tipi_procedura_contraente', $order = 1);
 
     // Tipi di stati di bando
-    $tipi_stato_bando_array = dci_tipi_stato_bando_array();
-    recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
+    recursionInsertTaxonomy(dci_tipi_stato_bando_array(), 'tipi_stato_bando', $order = 1);
 }
-
-
-
 
 
 
@@ -272,7 +264,6 @@ function recursionInsertTaxonomy($terms, $taxonomy, &$order) {
     }
 }
 
-
-
 ?>
+
 
