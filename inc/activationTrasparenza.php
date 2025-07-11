@@ -109,7 +109,7 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
                "Atti delle amministrazioni aggiudicatrici e degli enti aggiudicatori distintamente per ogni procedura",
                "Contratti Pubblici",
             ],
-            "Sovvenzioni , contributi sussidi, vantaggi economci"=>[
+            "Sovvenzioni , contributi sussidi, vantaggi economici"=>[
                 "Criteri e modalità",
                 "Atti di concessione",
                 "Elenchi"
