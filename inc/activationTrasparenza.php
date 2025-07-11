@@ -231,7 +231,4 @@ function insertTaxonomyTrasparenzaTerms() {
     // Tipi di stati di bando
     $tipi_stato_bando_array = dci_tipi_stato_bando_array();
     recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
-}
-
-
-?>
+}?>
