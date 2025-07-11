@@ -3,7 +3,8 @@
 /**
  * Registra il custom post type "Bando"
  */
-add_action('init', 'dci_register_post_type_bando');
+
+add_action('init', 'dci_register_post_type_bando', 20);
 function dci_register_post_type_bando()
 {
     $labels = array(
