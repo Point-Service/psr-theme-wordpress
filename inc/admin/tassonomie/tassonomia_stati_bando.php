@@ -52,7 +52,7 @@ function dci_add_bandi_submenu()
         'edit_bando',
         'edit.php?post_type=bando',
         '',       // nessun callback personalizzato
-        5         // posizione
+        9         // posizione
     );
 
     // 2. Aggiungi nuovo Bando di gara
