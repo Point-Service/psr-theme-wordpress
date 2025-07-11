@@ -59,6 +59,19 @@ function dci_order_trasp_terms_by_meta( $args, $taxonomies ) {
 	return $args;
 }
 
+
+
+
+add_action( 'current_screen', function ( $screen ) {
+    if ( $screen->taxonomy === 'tipi_cat_amm_trasp' ) {
+        error_log( 'Sono nella schermata tipi_cat_amm_trasp – ID: ' . $screen->id );
+    }
+} );
+
+
+
+
+
 /*--------------------------------------------------------------
 # 3. COLONNA "Ordine" NELLA LISTA TERMINI
 --------------------------------------------------------------*/
