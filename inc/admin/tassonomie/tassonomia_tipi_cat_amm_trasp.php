@@ -40,40 +40,9 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 
 
 
-// 3. Aggiunge colonna "Ordinamento" nella lista dei termini
-add_filter('manage_edit-tipi_cat_amm_trasp_columns', 'dci_add_ordinamento_column');
-function dci_add_ordinamento_column($columns) {
-    $columns['ordinamento'] = __('Ordinamento', 'design_comuni_italia');
-    return $columns;
-}
-
-add_filter('manage_tipi_cat_amm_trasp_custom_column', 'dci_show_ordinamento_column', 10, 3);
-function dci_show_ordinamento_column($out, $column, $term_id) {
-    if ($column === 'ordinamento') {
-        $val = get_term_meta($term_id, '_dci_ordinamento', true);
-        return $val !== '' ? esc_html($val) : '&mdash;';
-    }
-    return $out;
-}
 
 
 
-add_action('pre_get_terms', 'dci_order_terms_by_ordinamento');
-function dci_order_terms_by_ordinamento($query) {
-    global $pagenow;
-
-    if (
-        is_admin() &&
-        $pagenow === 'edit-tags.php' &&
-        isset($_GET['taxonomy']) &&
-        $_GET['taxonomy'] === 'tipi_cat_amm_trasp' &&
-        !isset($_GET['orderby'])
-    ) {
-        $query->meta_key = '_dci_ordinamento';
-        $query->orderby  = 'meta_value_num';
-        $query->order    = 'ASC';
-    }
-}
 
 
 ?>
