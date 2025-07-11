@@ -37,22 +37,10 @@ function dci_register_taxonomy_tipi_stato_bando() {
     register_taxonomy( 'tipi_stato_bando', array( 'bando' ), $args );
 }
 
-add_action( 'admin_head', 'dci_admin_bando_separator_css' );
-function dci_admin_bando_separator_css() {
-    echo '<style>
-        /* Selettore per il submenu di "Amministrazione Trasparente" */
-        #toplevel_page_edit-post_type-elemento_trasparenza ul.wp-submenu li a[href="edit.php?post_type=bando"] {
-            border-top: 1px solid #ccc;
-            margin-top: 6px;
-            padding-top: 6px;
-        }
-    </style>';
-}
+/* ---------- 1. AGGIUNTA DEL SOTTOMENU ---------- */
+add_action( 'admin_menu', 'dci_add_bandi_submenu', 21 );
+function dci_add_bandi_submenu() {
 
-/* ---------- 2. AGGIUNTA DEL SOTTOMENU ---------- */
-add_action('admin_menu', 'dci_add_bandi_submenu', 21);
-function dci_add_bandi_submenu()
-{
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
 
     // 1. Bandi di gara - elenco
@@ -62,8 +50,8 @@ function dci_add_bandi_submenu()
         __('Bandi di gara', 'design_comuni_italia'),
         'edit_bando',
         'edit.php?post_type=bando',
-        '',       // nessun callback personalizzato
-        9         // posizione
+        '',
+        9
     );
 
     // 2. Aggiungi nuovo Bando di gara
@@ -74,7 +62,7 @@ function dci_add_bandi_submenu()
         'edit_posts',
         'post-new.php?post_type=bando',
         '',
-        10        // posizione
+        10
     );
 
     // 3. Tipi stato bandi
@@ -85,7 +73,7 @@ function dci_add_bandi_submenu()
         'manage_tipi_stato_bando',
         'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando',
         '',
-        15        // posizione
+        15
     );
 
     // 4. Tipi procedura contraente
@@ -96,8 +84,22 @@ function dci_add_bandi_submenu()
         'manage_tipi_procedura_contraente',
         'edit-tags.php?taxonomy=tipi_procedura_contraente&post_type=bando',
         '',
-        20        // posizione
+        20
     );
+}
+
+/* ---------- 2. SEPARATORE VISIVO PRIMA DI "Bandi di gara" ---------- */
+add_action( 'admin_head', 'dci_admin_bando_separator_css' );
+function dci_admin_bando_separator_css() {
+    echo '<style>
+        /* Submenu di Amministrazione Trasparente */
+        #toplevel_page_edit-post_type-elemento_trasparenza ul.wp-submenu li a[href="edit.php?post_type=bando"] {
+            border-top: 1px solid #ccc;
+            margin-top: 6px;
+            padding-top: 6px;
+        }
+    </style>';
+}
 
 
     
