@@ -235,7 +235,43 @@ function insertTaxonomyTrasparenzaTerms() {
 
 
 
+/**
+ * Funzione ricorsiva di inserimento termini tassonomie
+ * Supporta array semplici o multidimensionali (categorie con figli)
+ * Se $apply_order è true, assegna ordine progressivo meta 'dci_order' su ogni termine inserito/aggiornato
+ */
+function recursionInsertTaxonomy($terms, $taxonomy, $apply_order = false, &$order = 1) {
+    foreach ($terms as $key => $value) {
+        if (is_array($value)) {
+            // $key è il nome della categoria padre, inseriscila
+            $term = term_exists($key, $taxonomy);
+            if (!$term) {
+                $term = wp_insert_term($key, $taxonomy);
+            }
+            $term_id = is_array($term) ? $term['term_id'] : $term;
 
+            // Aggiorna meta ordine solo se richiesto
+            if ($apply_order) {
+                update_term_meta($term_id, 'dci_order', $order++);
+            }
+
+            // Inserisci i figli
+            recursionInsertTaxonomy($value, $taxonomy, $apply_order, $order);
+        } else {
+            // $value è il nome del termine semplice
+            $term = term_exists($value, $taxonomy);
+            if (!$term) {
+                $term = wp_insert_term($value, $taxonomy);
+            }
+            $term_id = is_array($term) ? $term['term_id'] : $term;
+
+            // Aggiorna meta ordine solo se richiesto
+            if ($apply_order) {
+                update_term_meta($term_id, 'dci_order', $order++);
+            }
+        }
+    }
+}
 
 
 
