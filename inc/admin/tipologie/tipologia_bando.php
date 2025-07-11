@@ -68,7 +68,7 @@ function dci_bando_extra_buttons() {
         return;
     }
 
-    // URL + label dei due pulsanti
+    // Pulsanti extra
     $extra_buttons = [
         [
             'id'   => 'dci-extra-tax-stato',
@@ -84,7 +84,12 @@ function dci_bando_extra_buttons() {
     ?>
     <style>
         /* margine tra i bottoni */
-        .dci-extra-btn { margin-left: 8px; }
+        .wrap .page-title-action {
+            margin-right: 8px; /* margine a destra del pulsante Add New */
+        }
+        .dci-extra-btn {
+            margin-left: 8px; /* margine tra pulsanti extra */
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -92,11 +97,13 @@ function dci_bando_extra_buttons() {
             const stdBtn = document.querySelector('.wrap .page-title-action'); // bottone WP "Aggiungi"
             if (!stdBtn) return;
 
+            // Aggiungo classi al pulsante "Add New"
+            stdBtn.classList.add('button', 'button-primary', 'button-large');
+
             <?php foreach ( $extra_buttons as $btn ) : ?>
                 (function() {
                     const link = document.createElement('a');
                     link.id        = '<?php echo esc_js( $btn['id'] ); ?>';
-                   // link.className = 'page-title-action dci-extra-btn';
                     link.className = 'button button-primary button-large dci-extra-btn';
                     link.href      = '<?php echo esc_url( $btn['href'] ); ?>';
                     link.textContent = '<?php echo esc_js( $btn['text'] ); ?>';
@@ -107,6 +114,7 @@ function dci_bando_extra_buttons() {
     </script>
     <?php
 }
+
 
 
 
