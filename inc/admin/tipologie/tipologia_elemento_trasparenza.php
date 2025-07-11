@@ -76,6 +76,43 @@ function dci_add_transparency_multipost_page() {
     );
 }
 
+
+
+
+
+
+
+// Aggiunge il campo "Ordine" nella pagina di aggiunta del termine
+add_action('tipi_cat_amm_trasp_add_form_fields', function() {
+    ?>
+    <div class="form-field term-order-wrap">
+        <label for="term_order"><?php _e('Ordine', 'design_comuni_italia'); ?></label>
+        <input name="term_order" id="term_order" type="number" value="0" min="0" />
+        <p class="description"><?php _e('Inserisci un numero per l\'ordinamento personalizzato.', 'design_comuni_italia'); ?></p>
+    </div>
+    <?php
+});
+
+// Aggiunge il campo "Ordine" nella pagina di modifica del termine
+add_action('tipi_cat_amm_trasp_edit_form_fields', function($term) {
+    $term_order = get_term_meta($term->term_id, 'term_order', true);
+    ?>
+    <tr class="form-field term-order-wrap">
+        <th scope="row"><label for="term_order"><?php _e('Ordine', 'design_comuni_italia'); ?></label></th>
+        <td>
+            <input name="term_order" id="term_order" type="number" value="<?php echo esc_attr($term_order ?: 0); ?>" min="0" />
+            <p class="description"><?php _e('Inserisci un numero per l\'ordinamento personalizzato.', 'design_comuni_italia'); ?></p>
+        </td>
+    </tr>
+    <?php
+});
+
+
+
+
+
+
+
 /**
  * Funzione di callback per renderizzare la pagina di amministrazione "Multi-Post Amministrazione Trasparente".
  */
