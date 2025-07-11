@@ -21,6 +21,7 @@ function dci_register_post_type_bando()
         'supports'            => array('title', 'author'),
         'hierarchical'        => false,
         'public'              => true,
+        'menu_position'       => 9,
         'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza', // <‑‑ cambio qui
       //  'menu_position'       => 5,
         'menu_icon'           => 'dashicons-media-interactive',
