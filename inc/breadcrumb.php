@@ -379,13 +379,16 @@ class Breadcrumb_Trail {
 
 	
 			    	   if (get_post_type() == 'bando') {					
-	                                   $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";			    
+	                                   $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";	
+                                           $this->items[] =  "<a href='/tipi_cat_amm_trasp//bandi-di-gara-e-contratti'>" . __("Bandi di Gara e contratti", "design_comuni_italia") . "</a>";			   
+
 					   $this->items[] =  "<a href='/tipi_cat_amm_trasp/contratti-pubblici'>" . __("Contratti Pubblici", "design_comuni_italia") . "</a>";	
 						
-	                                   
+	                           
 					   $this->items[] = get_the_title();
 					   return;
 				   }
+
 
 
 		    
