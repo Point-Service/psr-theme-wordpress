@@ -56,9 +56,9 @@ function dci_register_post_type_bando()
 
 
 /**
- * Aggiunge due pulsanti extra nella pagina elenco Bandi:
- * 1) "Aggiungi un nuovo Bando di Gara" (già presente)
- * 2) "Tipi stato bandi" → pagina tassonomia
+ * Pulsanti extra nella schermata elenco Bandi di Gara:
+ *  - Tipi stato bandi
+ *  - Tipi procedura contraente
  */
 add_action( 'admin_head-edit.php', 'dci_bando_extra_buttons' );
 function dci_bando_extra_buttons() {
@@ -68,46 +68,45 @@ function dci_bando_extra_buttons() {
         return;
     }
 
-    // Url e testi
-    $url_new   = admin_url( 'post-new.php?post_type=bando' );
-    $text_new  = esc_js( __( 'Aggiungi un nuovo Bando di Gara', 'design_comuni_italia' ) );
-
-    $url_tax   = admin_url( 'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando' );
-    $text_tax  = esc_js( __( 'Tipi stato bandi', 'design_comuni_italia' ) );
-
+    // URL + label dei due pulsanti
+    $extra_buttons = [
+        [
+            'id'   => 'dci-extra-tax-stato',
+            'text' => __( 'Tipi stato bandi', 'design_comuni_italia' ),
+            'href' => admin_url( 'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando' ),
+        ],
+        [
+            'id'   => 'dci-extra-tax-procedura',
+            'text' => __( 'Tipi procedura contraente', 'design_comuni_italia' ),
+            'href' => admin_url( 'edit-tags.php?taxonomy=tipi_procedura_contraente&post_type=bando' ),
+        ],
+    ];
     ?>
     <style>
-        #dci-extra-add-bando,
-        #dci-extra-tax-bando { margin-left: 8px; }
+        /* margine tra i bottoni */
+        .dci-extra-btn { margin-left: 8px; }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // bottone di default (serve per inserirsi subito dopo di lui)
-            const stdBtn = document.querySelector('.wrap .page-title-action');
+            const stdBtn = document.querySelector('.wrap .page-title-action'); // bottone WP "Aggiungi"
             if (!stdBtn) return;
 
-            // Primo pulsante custom — "Aggiungi un nuovo Bando di Gara"
-            const linkNew = document.createElement('a');
-            linkNew.id        = 'dci-extra-add-bando';
-            linkNew.className = 'page-title-action';
-            linkNew.href      = '<?php echo $url_new; ?>';
-            linkNew.textContent = '<?php echo $text_new; ?>';
-
-            // Secondo pulsante custom — "Tipi stato bandi"
-            const linkTax = document.createElement('a');
-            linkTax.id        = 'dci-extra-tax-bando';
-            linkTax.className = 'page-title-action';
-            linkTax.href      = '<?php echo $url_tax; ?>';
-            linkTax.textContent = '<?php echo $text_tax; ?>';
-
-            // Inserisci i due pulsanti dopo quello standard
-            stdBtn.after(linkNew);
-            linkNew.after(linkTax);
+            <?php foreach ( $extra_buttons as $btn ) : ?>
+                (function() {
+                    const link = document.createElement('a');
+                    link.id        = '<?php echo esc_js( $btn['id'] ); ?>';
+                    link.className = 'page-title-action dci-extra-btn';
+                    link.href      = '<?php echo esc_url( $btn['href'] ); ?>';
+                    link.textContent = '<?php echo esc_js( $btn['text'] ); ?>';
+                    stdBtn.after(link);
+                })();
+            <?php endforeach; ?>
         });
     </script>
     <?php
 }
+
 
 
 
