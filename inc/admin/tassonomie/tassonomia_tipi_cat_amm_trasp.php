@@ -49,12 +49,16 @@ function dci_register_taxonomy_metabox() {
 
     $prefix = '_dci_';
 
-    $cmb = new_cmb2_box(array(
-        'id'           => $prefix . 'tipi_cat_amm_trasp_metabox',
-        'title'        => __('Impostazioni categoria', 'design_comuni_italia'),
-        'object_types' => array('term'),
-        'taxonomies'   => array('tipi_cat_amm_trasp'),
-    ));
+        $cmb = new_cmb2_box(array(
+            'id'           => $prefix . 'tipi_cat_amm_trasp_metabox',
+            'title'        => __('Impostazioni categoria', 'design_comuni_italia'),
+            'object_types' => array('term'),
+            'taxonomies'   => array('tipi_cat_amm_trasp'),
+            'context'      => 'normal',
+            'priority'     => 'default',
+        ));
+
+    
 
     $cmb->add_field(array(
         'name'       => __('Ordinamento', 'design_comuni_italia'),
