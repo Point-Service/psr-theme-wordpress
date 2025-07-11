@@ -11,6 +11,7 @@ function dci_register_post_type_bando()
         'name'               => _x('Bandi di Gara', 'Post Type General Name', 'design_comuni_italia'),
         'singular_name'      => _x('Bando di Gara', 'Post Type Singular Name', 'design_comuni_italia'),
         'add_new'            => _x('Aggiungi un Bando', 'Post Type', 'design_comuni_italia'),
+        'add_new' => _x( 'Aggiungi un Bando', 'Post Type', 'design_comuni_italia' ),
         'add_new_item'       => __('Aggiungi un nuovo Bando di Gara', 'design_comuni_italia'),
         'edit_item'          => __('Modifica Bando di Gara', 'design_comuni_italia'),
         'featured_image'     => __('Immagine di riferimento', 'design_comuni_italia'),
@@ -55,26 +56,59 @@ function dci_register_post_type_bando()
 
 
 
+/**
+ * Aggiunge due pulsanti extra nella pagina elenco Bandi:
+ * 1) "Aggiungi un nuovo Bando di Gara" (già presente)
+ * 2) "Tipi stato bandi" → pagina tassonomia
+ */
+add_action( 'admin_head-edit.php', 'dci_bando_extra_buttons' );
+function dci_bando_extra_buttons() {
 
+    $screen = get_current_screen();
+    if ( $screen->post_type !== 'bando' || $screen->base !== 'edit' ) {
+        return;
+    }
 
-add_action( 'admin_menu', 'dci_bando_add_quick_link', 30 );   // priority > di 21 così compare dopo "Bandi di Gara"
-function dci_bando_add_quick_link() {
+    // Url e testi
+    $url_new   = admin_url( 'post-new.php?post_type=bando' );
+    $text_new  = esc_js( __( 'Aggiungi un nuovo Bando di Gara', 'design_comuni_italia' ) );
 
-    $parent_slug = 'edit.php?post_type=elemento_trasparenza';   // menù padre
+    $url_tax   = admin_url( 'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando' );
+    $text_tax  = esc_js( __( 'Tipi stato bandi', 'design_comuni_italia' ) );
 
-    add_submenu_page(
-        $parent_slug,                              // Dove inserirlo
-        __( 'Aggiungi un nuovo Bando di Gara', 'design_comuni_italia' ), // <title> della pagina (non viene usato: reindirizziamo)
-        __( 'Aggiungi Bando', 'design_comuni_italia' ),          // Testo che vedi nel menu
-        'edit_bandi',                               // Capability (la stessa usata per creare Bandi)
-        'post-new.php?post_type=bando',             // menu_slug = link diretto
-        ''                                          // Callback vuota (WordPress ignora perché segue il link)
-    );
+    ?>
+    <style>
+        #dci-extra-add-bando,
+        #dci-extra-tax-bando { margin-left: 8px; }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // bottone di default (serve per inserirsi subito dopo di lui)
+            const stdBtn = document.querySelector('.wrap .page-title-action');
+            if (!stdBtn) return;
+
+            // Primo pulsante custom — "Aggiungi un nuovo Bando di Gara"
+            const linkNew = document.createElement('a');
+            linkNew.id        = 'dci-extra-add-bando';
+            linkNew.className = 'page-title-action';
+            linkNew.href      = '<?php echo $url_new; ?>';
+            linkNew.textContent = '<?php echo $text_new; ?>';
+
+            // Secondo pulsante custom — "Tipi stato bandi"
+            const linkTax = document.createElement('a');
+            linkTax.id        = 'dci-extra-tax-bando';
+            linkTax.className = 'page-title-action';
+            linkTax.href      = '<?php echo $url_tax; ?>';
+            linkTax.textContent = '<?php echo $text_tax; ?>';
+
+            // Inserisci i due pulsanti dopo quello standard
+            stdBtn.after(linkNew);
+            linkNew.after(linkTax);
+        });
+    </script>
+    <?php
 }
-
-
-
-
 
 
 
@@ -88,19 +122,6 @@ function dci_bando_add_content_after_title($post)
         echo '<span><i>Il <strong>titolo</strong> corrisponde al <strong>titolo del bando di gara</strong>.</i></span><br><br>';
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * CMB2 Metaboxes per il CPT "Bando"
