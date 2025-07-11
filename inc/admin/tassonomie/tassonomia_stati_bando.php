@@ -3,7 +3,7 @@
 /**
  * Definisce la tassonomia Tipi stato bando
  */
-add_action( 'init', 'dci_register_taxonomy_tipi_stato_bando', -10 );
+add_action( 'init', 'dci_register_taxonomy_tipi_stato_bando', 20 );
 function dci_register_taxonomy_tipi_stato_bando() {
 
     $labels = array(
@@ -37,6 +37,8 @@ function dci_register_taxonomy_tipi_stato_bando() {
     register_taxonomy( 'tipi_stato_bando', array( 'bando' ), $args );
 }
 
+
+
 /* ---------- 1. AGGIUNTA DEL SOTTOMENU ---------- */
 add_action( 'admin_menu', 'dci_add_bandi_submenu', 21 );
 function dci_add_bandi_submenu() {
@@ -66,16 +68,6 @@ function dci_add_bandi_submenu() {
         9
     );
 
-    // 2. Aggiungi nuovo Bando di gara
-    add_submenu_page(
-        $parent_slug,
-        __('Aggiungi nuovo Bando di gara', 'design_comuni_italia'),
-        __('Aggiungi nuovo Bando di gara', 'design_comuni_italia'),
-        'edit_posts',
-        'post-new.php?post_type=bando',
-        '',
-        10
-    );
 
         // 2. Aggiungi nuovo Bando di gara
     add_submenu_page(
