@@ -39,32 +39,26 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 
 
 
-// Aggiungi campo Ordinamento alla tassonomia con CMB2
+// 2. Aggiungi il campo 'ordinamento' ai termini della tassonomia con CMB2
 add_action('cmb2_admin_init', 'dci_register_taxonomy_metabox');
 function dci_register_taxonomy_metabox() {
-
-    if (!function_exists('new_cmb2_box')) {
-        return; // Protezione se CMB2 non è caricato
-    }
-
     $prefix = '_dci_';
 
-        $cmb = new_cmb2_box(array(
-            'id'           => $prefix . 'tipi_cat_amm_trasp_metabox',
-            'title'        => __('Impostazioni categoria', 'design_comuni_italia'),
-            'object_types' => array('term'),
-            'taxonomies'   => array('tipi_cat_amm_trasp'),
-            'context'      => 'normal',
-            'priority'     => 'default',
-        ));
-
-    
+    $cmb = new_cmb2_box(array(
+        'id'           => $prefix . 'tipi_cat_amm_trasp_metabox',
+        'title'        => __('Impostazioni categoria', 'design_comuni_italia'),
+        'object_types' => array('term'),
+        'taxonomies'   => array('tipi_cat_amm_trasp'),
+        'new_term_section' => true,
+        'context'      => 'normal',
+        'priority'     => 'default',
+    ));
 
     $cmb->add_field(array(
         'name'       => __('Ordinamento', 'design_comuni_italia'),
-        'desc'       => __('Numero per definire l’ordine di visualizzazione.', 'design_comuni_italia'),
+        'desc'       => __('Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia'),
         'id'         => $prefix . 'ordinamento',
-        'type'       => 'text',
+        'type'       => 'text_small',
         'attributes' => array(
             'type'  => 'number',
             'min'   => 0,
