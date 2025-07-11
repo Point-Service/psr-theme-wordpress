@@ -4,7 +4,7 @@
  * Registra il custom post type "Bando"
  */
 
-add_action('init', 'dci_register_post_type_bando', 20);
+add_action('init', 'dci_register_post_type_bando', 21);
 function dci_register_post_type_bando()
 {
     $labels = array(
@@ -23,7 +23,7 @@ function dci_register_post_type_bando()
         'hierarchical'        => false,
         'public'              => true,
         'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza', // <‑‑ cambio qui
-        'menu_position'       => 20,
+        'menu_position'       => 21,
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
         'rewrite'             => array('slug' => 'bandi', 'with_front' => false),
