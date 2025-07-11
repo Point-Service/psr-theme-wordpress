@@ -214,8 +214,6 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
     }
 }
 
-
-
 // ===========================
 // Funzione di inserimento tassonomie con ordinamento
 // ===========================
@@ -262,3 +260,4 @@ function insertTaxonomyTrasparenzaTerms() {
 }
 
 ?>
+
