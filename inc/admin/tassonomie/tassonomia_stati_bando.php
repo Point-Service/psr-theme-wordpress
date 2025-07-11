@@ -44,41 +44,50 @@ function dci_add_bandi_submenu()
 {
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
 
-    // Bandi di gara - elenco (lista post tipo bando)
+    // 1. Bandi di gara - elenco
     add_submenu_page(
         $parent_slug,
         __('Bandi di gara', 'design_comuni_italia'),
         __('Bandi di gara', 'design_comuni_italia'),
         'edit_bando',
-        'edit.php?post_type=bando'
+        'edit.php?post_type=bando',
+        '',       // nessun callback personalizzato
+        5         // posizione
     );
 
-
-    // Aggiungi nuovo Bando di gara
+    // 2. Aggiungi nuovo Bando di gara
     add_submenu_page(
         $parent_slug,
         __('Aggiungi nuovo Bando di gara', 'design_comuni_italia'),
         __('Aggiungi nuovo Bando di gara', 'design_comuni_italia'),
-        'edit_posts', // Cambiato per test
-        'post-new.php?post_type=bando'
+        'edit_posts',
+        'post-new.php?post_type=bando',
+        '',
+        10        // posizione
     );
 
-    // Tipi stato bandi (gestione tassonomia)
+    // 3. Tipi stato bandi
     add_submenu_page(
         $parent_slug,
         __('Tipi stato bandi', 'design_comuni_italia'),
         __('Tipi stato bandi', 'design_comuni_italia'),
         'manage_tipi_stato_bando',
-        'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando'
+        'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando',
+        '',
+        15        // posizione
     );
 
-    // Tipi procedura contraente (gestione tassonomia)
+    // 4. Tipi procedura contraente
     add_submenu_page(
         $parent_slug,
         __('Tipi procedura contraente', 'design_comuni_italia'),
         __('Tipi procedura contraente', 'design_comuni_italia'),
         'manage_tipi_procedura_contraente',
-        'edit-tags.php?taxonomy=tipi_procedura_contraente&post_type=bando'
+        'edit-tags.php?taxonomy=tipi_procedura_contraente&post_type=bando',
+        '',
+        20        // posizione
     );
+}
+
     
 }
