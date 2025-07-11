@@ -96,8 +96,6 @@ function dci_bando_extra_buttons() {
             const stdBtn = document.querySelector('.wrap .page-title-action'); // bottone WP "Aggiungi"
             if (!stdBtn) return;
 
-            // Aggiungo classi al pulsante "Add New"
-            stdBtn.classList.add('button', 'button-primary', 'button-large');
 
             <?php foreach ( $extra_buttons as $btn ) : ?>
                 (function() {
