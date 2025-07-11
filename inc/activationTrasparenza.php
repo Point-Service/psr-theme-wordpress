@@ -15,7 +15,6 @@ function dci_trasparenza_activation() {
     }
 }
 add_action('after_switch_theme', 'dci_trasparenza_activation');
-//dci_reload_trasparenza_option_page('themes.php', 'dci_trasparenza_activation');
 
 
 // ===========================
@@ -109,7 +108,7 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
                "Atti delle amministrazioni aggiudicatrici e degli enti aggiudicatori distintamente per ogni procedura",
                "Contratti Pubblici",
             ],
-            "Sovvenzioni , contributi sussidi, vantaggi economci"=>[
+            "Sovvenzioni , contributi sussidi, vantaggi economici"=>[
                 "Criteri e modalità",
                 "Atti di concessione",
                 "Elenchi"
@@ -166,8 +165,6 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
     }
 }
 
-
-
 if (!function_exists("dci_tipi_procedura_contraente_array")) {
     function dci_tipi_procedura_contraente_array() {
         return [
@@ -193,7 +190,7 @@ if (!function_exists("dci_tipi_procedura_contraente_array")) {
             "30 - Procedura derivante oa legge regionale",
             "31 - Affidamento diretto per variante superiore al dell'importo contrattuale",
             "32 - Affidamento riservato",
-            "33 -Procedura negoziata per affidamenti sotto soglia",
+            "33 - Procedura negoziata per affidamenti sotto soglia",
             "34 - Procedura art. 16 comma 2. opr 280/2001 per opere urbanizzazione a scomputo primarie sotto soglia comunitaria",
             "35 - Parternariato per l'innovazione",
             "36 - Affidamento diretto per lavori. servizi o forniture supplementari",
@@ -231,4 +228,41 @@ function insertTaxonomyTrasparenzaTerms() {
     // Tipi di stati di bando
     $tipi_stato_bando_array = dci_tipi_stato_bando_array();
     recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
-}?>
+}
+
+
+/**
+ * Funzione ricorsiva di inserimento termini tassonomie
+ * Supporta array semplici o multidimensionali (categorie con figli)
+ * Assegna ordine progressivo meta 'dci_order' su ogni termine inserito/aggiornato
+ */
+function recursionInsertTaxonomy($terms, $taxonomy, &$order = 1) {
+    foreach ($terms as $key => $value) {
+        if (is_array($value)) {
+            // $key è il nome della categoria padre, inseriscila
+            $term = term_exists($key, $taxonomy);
+            if (!$term) {
+                $term = wp_insert_term($key, $taxonomy);
+            }
+            $term_id = is_array($term) ? $term['term_id'] : $term;
+
+            // Aggiorna meta ordine
+            update_term_meta($term_id, 'dci_order', $order++);
+            
+            // Inserisci i figli
+            recursionInsertTaxonomy($value, $taxonomy, $order);
+        } else {
+            // $value è il nome del termine semplice
+            $term = term_exists($value, $taxonomy);
+            if (!$term) {
+                $term = wp_insert_term($value, $taxonomy);
+            }
+            $term_id = is_array($term) ? $term['term_id'] : $term;
+
+            // Aggiorna meta ordine
+            update_term_meta($term_id, 'dci_order', $order++);
+        }
+    }
+}
+
+?>
