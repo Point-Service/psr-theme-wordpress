@@ -51,6 +51,71 @@ function dci_register_post_type_bando()
     remove_post_type_support('bando', 'editor');
 }
 
+
+
+/**
+ * Pulsanti extra nella schermata elenco Bandi di Gara:
+ *  - Tipi stato bandi
+ *  - Tipi procedura contraente
+ */
+add_action( 'admin_head-edit.php', 'dci_bando_extra_buttons' );
+function dci_bando_extra_buttons() {
+
+    $screen = get_current_screen();
+    if ( $screen->post_type !== 'bando' || $screen->base !== 'edit' ) {
+        return;
+    }
+
+    // Pulsanti extra
+    $extra_buttons = [
+        [
+            'id'   => 'dci-extra-tax-stato',
+            'text' => __( 'Tipi stato bandi', 'design_comuni_italia' ),
+            'href' => admin_url( 'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando' ),
+        ],
+        [
+            'id'   => 'dci-extra-tax-procedura',
+            'text' => __( 'Tipi procedura contraente', 'design_comuni_italia' ),
+            'href' => admin_url( 'edit-tags.php?taxonomy=tipi_procedura_contraente&post_type=bando' ),
+        ],
+    ];
+    ?>
+    <style>
+        /* margine tra i bottoni */
+        .wrap .page-title-action {
+            margin-right: 8px; /* margine a destra del pulsante Add New */
+        }
+        .dci-extra-btn {
+            margin-left: 8px; /* margine tra pulsanti extra */
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const stdBtn = document.querySelector('.wrap .page-title-action'); // bottone WP "Aggiungi"
+            if (!stdBtn) return;
+
+            // Aggiungo classi al pulsante "Add New"
+            stdBtn.classList.add('button', 'button-primary', 'button-large');
+
+            <?php foreach ( $extra_buttons as $btn ) : ?>
+                (function() {
+                    const link = document.createElement('a');
+                    link.id        = '<?php echo esc_js( $btn['id'] ); ?>';
+                    link.className = 'button button-primary button-large dci-extra-btn';
+                    link.href      = '<?php echo esc_url( $btn['href'] ); ?>';
+                    link.textContent = '<?php echo esc_js( $btn['text'] ); ?>';
+                    stdBtn.after(link);
+                })();
+            <?php endforeach; ?>
+        });
+    </script>
+    <?php
+}
+
+
+
+
 /**
  * Messaggio informativo sotto il titolo nel backend
  */
