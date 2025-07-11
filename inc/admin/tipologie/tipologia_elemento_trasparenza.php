@@ -72,7 +72,7 @@ function dci_add_transparency_multipost_page() {
         'create_elementi_trasparenza',              
         'dci_transparency_multipost_page',              
         'dci_render_transparency_multipost_page',
-        8
+        7
     );
 }
 
