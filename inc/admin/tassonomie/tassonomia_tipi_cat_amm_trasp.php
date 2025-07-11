@@ -36,28 +36,5 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
     register_taxonomy('tipi_cat_amm_trasp', array('elemento_trasparenza'), $args);
 }
 
-add_action( 'cmb2_admin_init', 'dci_register_taxonomy_metabox' );
-/**
- * Hook in and add a metabox to add fields to taxonomy terms
- */
-function dci_register_taxonomy_metabox() {
-    $prefix = 'dci_term_';
-
-    /**
-     * Metabox to add fields to categories and tags
-     */
-    $cmb_term = new_cmb2_box( array(
-        'id'               => $prefix . 'edit',
-        'title'            => __( 'Personalizzazione <b>pagina Argomento</b>' , 'design_comuni_italia' ), // Doesn't output for term boxes
-        'object_types'     => array( 'term' ), // Tells CMB2 to use term_meta vs post_meta
-        'taxonomies'       => array( 'argomenti' ), // Tells CMB2 which taxonomies should have these fields
-        // 'new_term_section' => true, // Will display in the "Add New Category" section
-        'context' => 'normal',
-        'priority' => 'high',
-    ) );
-
-
-}
-
 ?>
 
