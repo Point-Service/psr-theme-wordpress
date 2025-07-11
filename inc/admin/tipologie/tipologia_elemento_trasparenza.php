@@ -208,6 +208,20 @@ function dci_render_transparency_multipost_page() {
 
                                         update_post_meta( $post_id, '_dci_elemento_trasparenza_file', array( $attachment_id ) );
                                         update_post_meta( $post_id, '_dci_elemento_trasparenza_open_in_new_tab', $open_new_tab );
+
+                                        $cmb_extra->add_field(array(
+                                            'id'            => $prefix . 'ordinamento',
+                                            'name'          => __('Ordinamento', 'design_comuni_italia'),
+                                            'desc'          => __('Inserisci un valore numerico per l\'ordinamento', 'design_comuni_italia'),
+                                            'type'          => 'text',
+                                            'attributes'    => array(
+                                                'type' => 'number',
+                                                'min'  => 0,
+                                                'step' => 1,
+                                            ),
+                                        ));
+
+                                        
                                         update_post_meta( $post_id, '_dci_elemento_trasparenza_open_direct', $open_direct_tab ); 
 
                                         $uploaded_count++;
