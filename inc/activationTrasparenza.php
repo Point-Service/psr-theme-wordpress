@@ -265,4 +265,4 @@ function recursionInsertTaxonomy($terms, $taxonomy, &$order = 1) {
     }
 }
 
-
+?>
