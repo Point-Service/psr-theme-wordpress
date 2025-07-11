@@ -193,7 +193,7 @@ if (!function_exists("dci_tipi_procedura_contraente_array")) {
             "30 - Procedura derivante oa legge regionale",
             "31 - Affidamento diretto per variante superiore al dell'importo contrattuale",
             "32 - Affidamento riservato",
-            "33 -Procedura negoziata per affidamenti sotto soglia",
+            "33 - Procedura negoziata per affidamenti sotto soglia",
             "34 - Procedura art. 16 comma 2. opr 280/2001 per opere urbanizzazione a scomputo primarie sotto soglia comunitaria",
             "35 - Parternariato per l'innovazione",
             "36 - Affidamento diretto per lavori. servizi o forniture supplementari",
