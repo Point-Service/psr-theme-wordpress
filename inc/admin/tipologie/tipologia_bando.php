@@ -21,7 +21,7 @@ function dci_register_post_type_bando()
         'supports'            => array('title', 'author'),
         'hierarchical'        => false,
         'public'              => true,
-        'menu_position'       => 5,
+        'show_in_menu'        => 'amministrazione-trasparente', // <‑‑ cambio qui
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
         'rewrite'             => array('slug' => 'bandi', 'with_front' => false),
