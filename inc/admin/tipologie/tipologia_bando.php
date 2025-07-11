@@ -53,6 +53,31 @@ function dci_register_post_type_bando()
     remove_post_type_support('bando', 'editor');
 }
 
+
+
+
+
+add_action( 'admin_menu', 'dci_bando_add_quick_link', 30 );   // priority > di 21 così compare dopo "Bandi di Gara"
+function dci_bando_add_quick_link() {
+
+    $parent_slug = 'edit.php?post_type=elemento_trasparenza';   // menù padre
+
+    add_submenu_page(
+        $parent_slug,                              // Dove inserirlo
+        __( 'Aggiungi un nuovo Bando di Gara', 'design_comuni_italia' ), // <title> della pagina (non viene usato: reindirizziamo)
+        __( 'Aggiungi Bando', 'design_comuni_italia' ),          // Testo che vedi nel menu
+        'edit_bandi',                               // Capability (la stessa usata per creare Bandi)
+        'post-new.php?post_type=bando',             // menu_slug = link diretto
+        ''                                          // Callback vuota (WordPress ignora perché segue il link)
+    );
+}
+
+
+
+
+
+
+
 /**
  * Messaggio informativo sotto il titolo nel backend
  */
@@ -63,6 +88,19 @@ function dci_bando_add_content_after_title($post)
         echo '<span><i>Il <strong>titolo</strong> corrisponde al <strong>titolo del bando di gara</strong>.</i></span><br><br>';
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * CMB2 Metaboxes per il CPT "Bando"
