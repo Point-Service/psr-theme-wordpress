@@ -21,9 +21,8 @@ function dci_register_post_type_bando()
         'supports'            => array('title', 'author'),
         'hierarchical'        => false,
         'public'              => true,
-        'menu_position'       => 9,
         'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza', // <‑‑ cambio qui
-      //  'menu_position'       => 5,
+        'menu_position'       => 10,
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
         'rewrite'             => array('slug' => 'bandi', 'with_front' => false),
@@ -56,7 +55,7 @@ function dci_register_post_type_bando()
 /**
  * Messaggio informativo sotto il titolo nel backend
  */
-add_action('edit_form_after_title', 'dci_bando_add_content_after_title');
+add_action('edit_form_after_title', 'dci_bando_add_content_after_title', 20);
 function dci_bando_add_content_after_title($post)
 {
     if ($post->post_type == 'bando') {
