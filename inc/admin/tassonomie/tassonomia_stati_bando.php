@@ -77,6 +77,17 @@ function dci_add_bandi_submenu() {
         10
     );
 
+        // 2. Aggiungi nuovo Bando di gara
+    add_submenu_page(
+        $parent_slug,
+        __('Aggiungi nuovo Bando di gara', 'design_comuni_italia'),
+        __('Aggiungi nuovo Bando di gara', 'design_comuni_italia'),
+        'edit_posts',
+        'post-new.php?post_type=bando',
+        '',
+        10
+    );
+
     // 3. Tipi stato bandi
     add_submenu_page(
         $parent_slug,
