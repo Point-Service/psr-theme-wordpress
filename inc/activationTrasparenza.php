@@ -215,55 +215,57 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 }
 
 
-// ===========================
-// Funzione di inserimento tassonomie
-// ===========================
-function insertTaxonomyTrasparenzaTerms() {
 
-    // Categorie Trasparenza
-    $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
-    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+/* --------------------------------------------------------------------------
+ *  FUNZIONE RICORSIVA: inserisce i termini e assegna il meta “ordinamento”
+ * -------------------------------------------------------------------------- */
+function recursionInsertTaxonomy($terms, $taxonomy, $parent = 0, &$order = 0, $add_ordinamento = false) {
+    foreach ($terms as $key => $value) {
 
-    // Tipi di procedure contraente
-    $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
-    recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
+        $is_parent = is_array($value);
+        $term_name = $is_parent ? $key : $value;
 
-    // Tipi di stati di bando
-    $tipi_stato_bando_array = dci_tipi_stato_bando_array();
-    recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
+        $existing = term_exists($term_name, $taxonomy, $parent);
+        if ($existing && !is_wp_error($existing)) {
+            $term_id = is_array($existing) ? $existing['term_id'] : $existing;
+        } else {
+            $inserted = wp_insert_term($term_name, $taxonomy, ['parent' => $parent]);
+            if (is_wp_error($inserted)) {
+                error_log('Errore inserimento termine "' . $term_name . '": ' . $inserted->get_error_message());
+                continue;
+            }
+            $term_id = $inserted['term_id'];
+        }
+
+        // Solo se richiesto, salva ordinamento
+        if ($add_ordinamento) {
+            update_term_meta($term_id, 'ordinamento', $order);
+            $order++;
+        }
+
+        if ($is_parent) {
+            recursionInsertTaxonomy($value, $taxonomy, $term_id, $order, $add_ordinamento);
+        }
+    }
 }
 
 
-/**
- * Quando un termine di 'tipi_cat_amm_trasp' viene creato SENZA ordinamento,
- * gli assegno il successivo numero libero.
- */
-add_action( 'created_tipi_cat_amm_trasp', 'dci_set_auto_ordinamento_if_empty', 15, 2 ); // dopo il tuo save a priority 10
-function dci_set_auto_ordinamento_if_empty( $term_id, $tt_id ){
+/* --------------------------------------------------------------------------
+ *  CHIAMATA PRINCIPALE DURANTE L’ATTIVAZIONE DEL TEMA
+ * -------------------------------------------------------------------------- */
+function insertTaxonomyTrasparenzaTerms() {
+    $order = 0;
 
-    // Se l’utente ha già messo un numero, usiamo quello.
-    $ordinamento = get_term_meta( $term_id, 'ordinamento', true );
-    if ( $ordinamento !== '' && $ordinamento !== null ) {
-        return;
-    }
+    // Solo tipi_cat_amm_trasp ha ordinamento
+    $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
+    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp', 0, $order, true);
 
-    // Recupero il max esistente
-    $args = array(
-        'taxonomy'   => 'tipi_cat_amm_trasp',
-        'hide_empty' => false,
-        'meta_key'   => 'ordinamento',
-        'orderby'    => 'meta_value_num',
-        'order'      => 'DESC',
-        'number'     => 1,
-    );
-    $last = get_terms( $args );
+    // Gli altri non usano ordinamento
+    $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
+    recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
 
-    $next_order = 0;
-    if ( ! empty( $last ) && ! is_wp_error( $last ) ) {
-        $next_order = intval( get_term_meta( $last[0]->term_id, 'ordinamento', true ) ) + 1;
-    }
-
-    update_term_meta( $term_id, 'ordinamento', $next_order );
+    $tipi_stato_bando_array = dci_tipi_stato_bando_array();
+    recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
 }
 
 
