@@ -15,6 +15,7 @@ function dci_trasparenza_activation() {
     }
 }
 add_action('after_switch_theme', 'dci_trasparenza_activation');
+//dci_reload_trasparenza_option_page('themes.php', 'dci_trasparenza_activation');
 
 
 // ===========================
@@ -166,6 +167,7 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
 }
 
 
+
 if (!function_exists("dci_tipi_procedura_contraente_array")) {
     function dci_tipi_procedura_contraente_array() {
         return [
@@ -219,50 +221,24 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 function insertTaxonomyTrasparenzaTerms() {
 
     // Categorie Trasparenza
-    recursionInsertTaxonomy(dci_tipi_cat_amm_trasp_array(), 'tipi_cat_amm_trasp', $order = 1);
+    $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
+    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
 
     // Tipi di procedure contraente
-    recursionInsertTaxonomy(dci_tipi_procedura_contraente_array(), 'tipi_procedura_contraente', $order = 1);
+    $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
+    recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
 
     // Tipi di stati di bando
-    recursionInsertTaxonomy(dci_tipi_stato_bando_array(), 'tipi_stato_bando', $order = 1);
+    $tipi_stato_bando_array = dci_tipi_stato_bando_array();
+    recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
 }
 
 
 
-/**
- * Funzione ricorsiva di inserimento termini tassonomie
- * Supporta array semplici o multidimensionali (categorie con figli)
- * Assegna ordine progressivo meta 'dci_order' su ogni termine inserito/aggiornato
- */
-function recursionInsertTaxonomy($terms, $taxonomy, &$order) {
-    foreach ($terms as $key => $value) {
-        if (is_array($value)) {
-            // $key è il nome della categoria padre, inseriscila
-            $term = term_exists($key, $taxonomy);
-            if (!$term) {
-                $term = wp_insert_term($key, $taxonomy);
-            }
-            $term_id = is_array($term) ? $term['term_id'] : $term;
 
-            // Aggiorna meta ordine
-            update_term_meta($term_id, 'dci_order', $order++);
-            
-            // Inserisci i figli
-            recursionInsertTaxonomy($value, $taxonomy, $order);
-        } else {
-            // $value è il nome del termine semplice
-            $term = term_exists($value, $taxonomy);
-            if (!$term) {
-                $term = wp_insert_term($value, $taxonomy);
-            }
-            $term_id = is_array($term) ? $term['term_id'] : $term;
 
-            // Aggiorna meta ordine
-            update_term_meta($term_id, 'dci_order', $order++);
-        }
-    }
-}
+
+
 
 ?>
 
