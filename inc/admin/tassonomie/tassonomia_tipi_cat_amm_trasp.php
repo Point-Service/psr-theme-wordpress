@@ -47,9 +47,9 @@ function dci_register_taxonomy_metabox() {
     $cmb = new_cmb2_box(array(
         'id'           => $prefix . 'tipi_cat_amm_trasp_metabox',
         'title'        => __('Impostazioni categoria', 'design_comuni_italia'),
-        'object_types' => array('term'),
-        'taxonomies'   => array('tipi_cat_amm_trasp'),
-        'new_term_section' => true,
+        'object_types' => array('term'), // singolare 'term'
+        'taxonomies'   => array('tipi_cat_amm_trasp'), 
+        'new_term_section' => true,  // mostra campo anche in "aggiungi nuovo"
         'context'      => 'normal',
         'priority'     => 'default',
     ));
@@ -66,6 +66,7 @@ function dci_register_taxonomy_metabox() {
         ),
     ));
 }
+
 
 
 
