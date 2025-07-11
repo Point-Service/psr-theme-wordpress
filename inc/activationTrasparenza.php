@@ -243,7 +243,7 @@ function insertTaxonomyTrasparenzaTerms() {
  * Supporta array semplici o multidimensionali (categorie con figli)
  * Assegna ordine progressivo meta 'dci_order' su ogni termine inserito/aggiornato
  */
-function recursionInsertTaxonomy($terms, $taxonomy, &$order = 1) {
+function recursionInsertTaxonomy($terms, $taxonomy, &$order) {
     foreach ($terms as $key => $value) {
         if (is_array($value)) {
             // $key è il nome della categoria padre, inseriscila
@@ -270,6 +270,7 @@ function recursionInsertTaxonomy($terms, $taxonomy, &$order = 1) {
             update_term_meta($term_id, 'dci_order', $order++);
         }
     }
+}
 
 
 
