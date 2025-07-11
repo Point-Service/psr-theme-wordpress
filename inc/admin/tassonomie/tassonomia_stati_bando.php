@@ -37,6 +37,17 @@ function dci_register_taxonomy_tipi_stato_bando() {
     register_taxonomy( 'tipi_stato_bando', array( 'bando' ), $args );
 }
 
+add_action( 'admin_head', 'dci_admin_bando_separator_css' );
+function dci_admin_bando_separator_css() {
+    echo '<style>
+        /* Selettore per il submenu di "Amministrazione Trasparente" */
+        #toplevel_page_edit-post_type-elemento_trasparenza ul.wp-submenu li a[href="edit.php?post_type=bando"] {
+            border-top: 1px solid #ccc;
+            margin-top: 6px;
+            padding-top: 6px;
+        }
+    </style>';
+}
 
 /* ---------- 2. AGGIUNTA DEL SOTTOMENU ---------- */
 add_action('admin_menu', 'dci_add_bandi_submenu', 21);
