@@ -43,6 +43,18 @@ function dci_add_bandi_submenu() {
 
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
 
+ /* 0. ——— separatore ——— */
+    add_submenu_page(
+        $parent_slug,
+        '',                      // page‑title (vuoto: non vogliamo una schermata)
+        '────────────',          // menu‑title (caratteri orizzontali)
+        'read',                  // capability minima
+        'dci_dummy_separator',   // slug fantoccio
+        '__return_null',         // callback nullo
+        8                        // posizione (prima di 9)
+    );
+
+    
     // 1. Bandi di gara - elenco
     add_submenu_page(
         $parent_slug,
@@ -87,19 +99,6 @@ function dci_add_bandi_submenu() {
         20
     );
 
-}
-
-/* ---------- 2. SEPARATORE VISIVO PRIMA DI "Bandi di gara" ---------- */
-add_action( 'admin_head', 'dci_admin_bando_separator_css' );
-function dci_admin_bando_separator_css() {
-    echo '<style>
-        /* Submenu di Amministrazione Trasparente */
-        #toplevel_page_edit-post_type-elemento_trasparenza ul.wp-submenu li a[href="edit.php?post_type=bando"] {
-            border-top: 1px solid #ccc;
-            margin-top: 6px;
-            padding-top: 6px;
-        }
-    </style>';
 }
 
 
