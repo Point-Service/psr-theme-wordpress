@@ -103,7 +103,7 @@ function dci_bando_extra_buttons() {
                 (function() {
                     const link = document.createElement('a');
                     link.id        = '<?php echo esc_js( $btn['id'] ); ?>';
-                    link.className = 'button button-primary button-large';
+                    link.className = 'page-title-action';
                     link.href      = '<?php echo esc_url( $btn['href'] ); ?>';
                     link.textContent = '<?php echo esc_js( $btn['text'] ); ?>';
                     stdBtn.after(link);
