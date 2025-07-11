@@ -39,44 +39,45 @@ function dci_register_taxonomy_tipi_stato_bando() {
 
 
 /* ---------- 2. AGGIUNTA DEL SOTTOMENU ---------- */
-add_action( 'admin_menu', 'dci_add_tipi_stato_bando_submenu', 20 );
-function dci_add_tipi_stato_bando_submenu() {
-
-    // Slug del menu padre (“Amministrazione Trasparente”)
+add_action('admin_menu', 'dci_add_bandi_submenu', 20);
+function dci_add_bandi_submenu()
+{
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
 
-    
-    // Crea la voce che apre la schermata gestione termini
+    // Bandi di gara - elenco (lista post tipo bando)
     add_submenu_page(
-        $parent_slug,                                                        // genitore
-        __( 'Tipi stato bando', 'design_comuni_italia' ),                    // page‑title
-        __( 'Tipi stato bando', 'design_comuni_italia' ),                    // menu‑title
-        'manage_tipi_stato_bando',                                           // capability
-        'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando'            // link alla tassonomia
+        $parent_slug,
+        __('Bandi di gara', 'design_comuni_italia'),
+        __('Bandi di gara', 'design_comuni_italia'),
+        'edit_bando',
+        'edit.php?post_type=bando'
     );
 
+    // Aggiungi nuovo Bando di gara
     add_submenu_page(
-    'post-new.php?post_type=bando',
-    'Aggiungi Nuovo Bando',
-    'Aggiungi Nuovo Bando',
-    'manage_tipi_procedura_contraente',
-    'edit-tags.php?taxonomy=post-new.php?post_type=bando'
-   );
-    
-    add_submenu_page(
-    'edit.php?post_type=elemento_trasparenza',
-    'Tipi procedura contraente',
-    'Tipi procedura contraente',
-    'manage_tipi_procedura_contraente',
-    'edit-tags.php?taxonomy=tipi_procedura_contraente&post_type=bando'
-   );
+        $parent_slug,
+        __('Aggiungi nuovo Bando di gara', 'design_comuni_italia'),
+        __('Aggiungi nuovo Bando di gara', 'design_comuni_italia'),
+        'edit_bando',
+        'post-new.php?post_type=bando'
+    );
 
-     add_submenu_page(
-    'edit.php?post_type=elemento_trasparenza',
-    'Tipi procedura contraente',
-    'Tipi procedura contraente',
-    'manage_tipi_procedura_contraente',
-    'edit-tags.php?taxonomy=tipi_procedura_contraente&post_type=bando'
-   );
+    // Tipi stato bandi (gestione tassonomia)
+    add_submenu_page(
+        $parent_slug,
+        __('Tipi stato bandi', 'design_comuni_italia'),
+        __('Tipi stato bandi', 'design_comuni_italia'),
+        'manage_tipi_stato_bando',
+        'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando'
+    );
+
+    // Tipi procedura contraente (gestione tassonomia)
+    add_submenu_page(
+        $parent_slug,
+        __('Tipi procedura contraente', 'design_comuni_italia'),
+        __('Tipi procedura contraente', 'design_comuni_italia'),
+        'manage_tipi_procedura_contraente',
+        'edit-tags.php?taxonomy=tipi_procedura_contraente&post_type=bando'
+    );
     
 }
