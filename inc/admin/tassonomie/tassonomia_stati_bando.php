@@ -39,7 +39,7 @@ function dci_register_taxonomy_tipi_stato_bando() {
 
 
 /* ---------- 2. AGGIUNTA DEL SOTTOMENU ---------- */
-add_action('admin_menu', 'dci_add_bandi_submenu', 20);
+add_action('admin_menu', 'dci_add_bandi_submenu', 21);
 function dci_add_bandi_submenu()
 {
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
