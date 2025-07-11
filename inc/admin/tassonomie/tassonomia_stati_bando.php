@@ -87,7 +87,7 @@ function dci_add_bandi_submenu()
         '',
         20        // posizione
     );
-}
+
 
     
 }
