@@ -234,6 +234,37 @@ function insertTaxonomyTrasparenzaTerms() {
 }
 
 
+/**
+ * Quando un termine di 'tipi_cat_amm_trasp' viene creato SENZA ordinamento,
+ * gli assegno il successivo numero libero.
+ */
+add_action( 'created_tipi_cat_amm_trasp', 'dci_set_auto_ordinamento_if_empty', 15, 2 ); // dopo il tuo save a priority 10
+function dci_set_auto_ordinamento_if_empty( $term_id, $tt_id ){
+
+    // Se l’utente ha già messo un numero, usiamo quello.
+    $ordinamento = get_term_meta( $term_id, 'ordinamento', true );
+    if ( $ordinamento !== '' && $ordinamento !== null ) {
+        return;
+    }
+
+    // Recupero il max esistente
+    $args = array(
+        'taxonomy'   => 'tipi_cat_amm_trasp',
+        'hide_empty' => false,
+        'meta_key'   => 'ordinamento',
+        'orderby'    => 'meta_value_num',
+        'order'      => 'DESC',
+        'number'     => 1,
+    );
+    $last = get_terms( $args );
+
+    $next_order = 0;
+    if ( ! empty( $last ) && ! is_wp_error( $last ) ) {
+        $next_order = intval( get_term_meta( $last[0]->term_id, 'ordinamento', true ) ) + 1;
+    }
+
+    update_term_meta( $term_id, 'ordinamento', $next_order );
+}
 
 
 ?>
