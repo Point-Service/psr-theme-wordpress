@@ -15,6 +15,7 @@ function dci_trasparenza_activation() {
     }
 }
 add_action('after_switch_theme', 'dci_trasparenza_activation');
+//dci_reload_trasparenza_option_page('themes.php', 'dci_trasparenza_activation');
 
 
 // ===========================
@@ -165,6 +166,8 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
     }
 }
 
+
+
 if (!function_exists("dci_tipi_procedura_contraente_array")) {
     function dci_tipi_procedura_contraente_array() {
         return [
@@ -211,62 +214,24 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
     }
 }
 
+
 // ===========================
 // Funzione di inserimento tassonomie
 // ===========================
 function insertTaxonomyTrasparenzaTerms() {
 
-    // Ordine solo su tipi_cat_amm_trasp
+    // Categorie Trasparenza
     $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
-    $order = 1; // Inizializza contatore ordine
-    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp', true, $order);
+    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
 
-    // Altre tassonomie senza ordine
+    // Tipi di procedure contraente
     $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
-    recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente', false);
+    recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
 
+    // Tipi di stati di bando
     $tipi_stato_bando_array = dci_tipi_stato_bando_array();
-    recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando', false);
+    recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
 }
 
-
-/**
- * Funzione ricorsiva di inserimento termini tassonomie
- * Supporta array semplici o multidimensionali (categorie con figli)
- * Assegna ordine progressivo meta 'dci_order' solo se $apply_order è true
- */
-function recursionInsertTaxonomy($terms, $taxonomy, $apply_order = false, &$order = 1) {
-    foreach ($terms as $key => $value) {
-        if (is_array($value)) {
-            // $key è categoria padre
-            $term = term_exists($key, $taxonomy);
-            if (!$term) {
-                $term = wp_insert_term($key, $taxonomy);
-            }
-            $term_id = is_array($term) ? $term['term_id'] : $term;
-
-            if ($apply_order) {
-                update_term_meta($term_id, 'dci_order', $order++);
-            }
-
-            recursionInsertTaxonomy($value, $taxonomy, $apply_order, $order);
-
-        } else {
-            // $value è termine semplice
-            $term = term_exists($value, $taxonomy);
-            if (!$term) {
-                $term = wp_insert_term($value, $taxonomy);
-            }
-            $term_id = is_array($term) ? $term['term_id'] : $term;
-
-            if ($apply_order) {
-                update_term_meta($term_id, 'dci_order', $order++);
-            }
-        }
-    }
-}
 
 ?>
-
-
-
