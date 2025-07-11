@@ -60,8 +60,8 @@ function dci_add_bandi_submenu() {
     // 1. Bandi di gara - elenco
     add_submenu_page(
         $parent_slug,
-        __('Bandi di gara', 'design_comuni_italia'),
-        __('Bandi di gara', 'design_comuni_italia'),
+        __('Bandi di gara.', 'design_comuni_italia'),
+        __('Bandi di gara.', 'design_comuni_italia'),
         'edit_bando',
         'edit.php?post_type=bando',
         '',
