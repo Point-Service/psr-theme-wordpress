@@ -217,6 +217,37 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 
 
 
+function recursionInsertTaxonomy($terms, $taxonomy, $parent = 0, &$order = 0) {
+    if (empty($terms) || !is_array($terms)) {
+        return;
+    }
+
+    foreach ($terms as $key => $value) {
+        if (is_array($value)) {
+            // Inserisce il termine padre (chiave)
+            $term = wp_insert_term($key, $taxonomy, ['parent' => $parent]);
+            if (is_wp_error($term)) {
+                error_log('Errore inserimento termine padre: ' . $term->get_error_message());
+            } else {
+                update_term_meta($term['term_id'], 'ordinamento', $order);
+                $current_term_id = $term['term_id'];
+                $order++;  // Incremento globale ordine
+
+                // Richiamo ricorsivo sui figli
+                recursionInsertTaxonomy($value, $taxonomy, $current_term_id, $order);
+            }
+        } else {
+            // Inserisce il termine figlio (stringa)
+            $term = wp_insert_term($value, $taxonomy, ['parent' => $parent]);
+            if (is_wp_error($term)) {
+                error_log('Errore inserimento termine figlio: ' . $term->get_error_message());
+            } else {
+                update_term_meta($term['term_id'], 'ordinamento', $order);
+                $order++;  // Incremento globale ordine
+            }
+        }
+    }
+}
 
 
 
