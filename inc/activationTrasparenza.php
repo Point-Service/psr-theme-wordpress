@@ -218,17 +218,37 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 // ===========================
 // Funzione di inserimento tassonomie
 // ===========================
-function insertTaxonomyTrasparenzaTerms() {
+function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $ordine = 0) {
+    foreach ($terms as $term_name => $subterms) {
+        // Crea il termine con un campo personalizzato 'ordinamento'
+        $term = wp_insert_term(
+            $term_name,  // Nome del termine
+            $taxonomy,   // Tassonomia
+            array(
+                'parent' => $parent_id,  // ID del termine genitore
+                'slug'   => sanitize_title($term_name),  // Slug del termine
+            )
+        );
 
-    // Categorie Trasparenza
-    $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
-    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+        // Controlla se l'inserimento del termine è riuscito
+        if (!is_wp_error($term)) {
+            // Aggiungi un campo personalizzato 'ordinamento' con un valore incrementale
+            update_term_meta($term['term_id'], 'ordinamento', $ordine);
 
-    // Tipi di procedure contraente
-    $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
-    recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
+            // Incrementa l'ordine per il prossimo termine
+            $ordine++;
 
-    // Tipi di stati di bando
-    $tipi_stato_bando_array = dci_tipi_stato_bando_array();
-    recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
-}?>
+            // Se ci sono sotto-termini, chiamato ricorsivamente per inserirli
+            if (!empty($subterms)) {
+                recursionInsertTaxonomyWithOrder($subterms, $taxonomy, $term['term_id'], $ordine);
+            }
+        } else {
+            // Logga o gestisci l'errore se il termine non è stato inserito correttamente
+            error_log("Errore nell'inserimento del termine: " . $term_name);
+        }
+    }
+}
+
+
+
+?>
