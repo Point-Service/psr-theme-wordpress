@@ -223,6 +223,8 @@ function insertTaxonomyTrasparenzaTerms() {
     // Categorie Trasparenza
     $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
     recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+
+    
     sistemaidordinamentoTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
 
     
@@ -234,10 +236,6 @@ function insertTaxonomyTrasparenzaTerms() {
     $tipi_stato_bando_array = dci_tipi_stato_bando_array();
     recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
 }
-
-
-
-
 
 
 function sistemaidordinamentoTaxonomy($terms, $taxonomy, $parent_id = 0, $ordine = 0) {
@@ -258,7 +256,7 @@ function sistemaidordinamentoTaxonomy($terms, $taxonomy, $parent_id = 0, $ordine
 
         // Se ci sono sotto-termini, chiama ricorsivamente per aggiornarli
         if (!empty($subterms)) {
-            sistemaidordinamentoTaxonomy($subterms, $taxonomy, $term_id, $ordine);
+         //   sistemaidordinamentoTaxonomy($subterms, $taxonomy, $term_id, $ordine);
         }
     }
 }
