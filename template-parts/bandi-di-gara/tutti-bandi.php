@@ -168,21 +168,6 @@ if ( count( $meta_query_array ) > 1 ) {
 $the_query = new WP_Query($args);
 $prefix = "_dci_bando_";
 ?>
-<section>
-    In conformità con l'Articolo 37 del <strong>Codice dei Contratti Pubblici</strong> (D.Lgs. 50/2016), questa sezione raccoglie l'elenco dei contratti pubblici relativi a <strong>lavori, servizi e forniture</strong> stipulati dalle pubbliche amministrazioni.
-  <p>
-    L'articolo 37 stabilisce l'<strong>obbligo di trasparenza</strong> per tutte le fasi della gestione dei contratti, dalla programmazione fino alla realizzazione, garantendo l'<strong>accesso pubblico</strong> alle informazioni sui bandi e gli affidamenti.
-  </p>
-  <p>
-    Gli utenti possono consultare i <strong>contratti attivi</strong>, <strong>scaduti</strong> o <strong>in fase di aggiudicazione</strong>, e utilizzare i <strong>filtri</strong> per affinare la ricerca in base a parametri quali:
-  </p>
-  <ul>
-    <li>l'oggetto del contratto,</li>
-    <li>il CIG (Codice Identificativo Gara),</li>
-    <li>la procedura di selezione del contraente,</li>
-    <li>l'anno di riferimento.</li>
-  </ul>
-</section>
 
 <div class="search-bar-container bg-light p-4 mb-4 rounded shadow-sm" style="background-color: #f0f0f0 !important;">
     <form role="search" method="get" class="search-form" action="<?php // echo esc_url(home_url('/')); ?>">
