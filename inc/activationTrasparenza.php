@@ -238,7 +238,7 @@ function insertTaxonomyTrasparenzaTerms() {
 }
 
 
-function sistemaidordinamentoTaxonomy($terms, $taxonomy, $parent_id = 0, $ordine = 0) {
+function sistemaidordinamentoTaxonomy($terms, $taxonomy, $parent_id = 0, $ordine = 1) {
     foreach ($terms as $term_name => $subterms) {
         // Verifica se il termine esiste già nella tassonomia
         $existing_term = term_exists($term_name, $taxonomy);
