@@ -56,6 +56,8 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
                 "Piano triennale per la prevenzione della corruzione e della trasparenza",
                 'Atti generali',
                 "Oneri informativi per cittadini e imprese"
+            'TESTTTT' => [
+                "Prova"
             ],
             'Organizzazione' => [
                 'Organi di indirizzo politico-amministrativo',
