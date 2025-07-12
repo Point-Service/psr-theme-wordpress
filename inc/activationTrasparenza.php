@@ -220,34 +220,50 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 // ===========================
 function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $ordine = 0) {
     foreach ($terms as $term_name => $subterms) {
-        // Crea il termine con un campo personalizzato 'ordinamento'
-        $term = wp_insert_term(
-            $term_name,  // Nome del termine
-            $taxonomy,   // Tassonomia
-            array(
-                'parent' => $parent_id,  // ID del termine genitore
-                'slug'   => sanitize_title($term_name),  // Slug del termine
-            )
-        );
+        // Controlla se il termine esiste già nella tassonomia
+        $existing_term = term_exists($term_name, $taxonomy);
 
-        // Controlla se l'inserimento del termine è riuscito
-        if (!is_wp_error($term)) {
-            // Aggiungi un campo personalizzato 'ordinamento' con un valore incrementale
-            update_term_meta($term['term_id'], 'ordinamento', $ordine);
-
-            // Incrementa l'ordine per il prossimo termine
-            $ordine++;
-
-            // Se ci sono sotto-termini, chiamato ricorsivamente per inserirli
-            if (!empty($subterms)) {
-                recursionInsertTaxonomyWithOrder($subterms, $taxonomy, $term['term_id'], $ordine);
+        // Se il termine esiste, recupera l'ID del termine esistente
+        if ($existing_term) {
+            $term_id = $existing_term['term_id'];
+            
+            // Se il termine non ha già il campo 'ordinamento', lo aggiungi
+            if (!get_term_meta($term_id, 'ordinamento', true)) {
+                update_term_meta($term_id, 'ordinamento', $ordine);
             }
         } else {
-            // Logga o gestisci l'errore se il termine non è stato inserito correttamente
-            error_log("Errore nell'inserimento del termine: " . $term_name);
+            // Crea il termine se non esiste
+            $term = wp_insert_term(
+                $term_name,  // Nome del termine
+                $taxonomy,   // Tassonomia
+                array(
+                    'parent' => $parent_id,  // ID del termine genitore
+                    'slug'   => sanitize_title($term_name),  // Slug del termine
+                )
+            );
+
+            // Se l'inserimento è riuscito, recupera l'ID del termine appena inserito
+            if (!is_wp_error($term)) {
+                $term_id = $term['term_id'];
+                
+                // Aggiungi il campo 'ordinamento' solo se il termine è stato creato
+                update_term_meta($term_id, 'ordinamento', $ordine);
+            } else {
+                // Logga l'errore se il termine non è stato inserito
+                error_log("Errore nell'inserimento del termine: " . $term_name);
+            }
+        }
+
+        // Incrementa l'ordine per il prossimo termine
+        $ordine++;
+
+        // Se ci sono sotto-termini, chiamato ricorsivamente per inserirli
+        if (!empty($subterms)) {
+            recursionInsertTaxonomyWithOrder($subterms, $taxonomy, $term_id, $ordine);
         }
     }
 }
+
 
 
 
