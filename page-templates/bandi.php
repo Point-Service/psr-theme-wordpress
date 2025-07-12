@@ -17,7 +17,18 @@ get_header();
 
 ?>
 
-<?php
+
+	<main>
+		<?php
+		while ( have_posts() ) :
+			the_post();
+			
+			?>
+			<?php 
+				$with_shadow = true;
+				get_template_part("template-parts/hero/hero"); 
+			?>
+			<?php
 $titolo_bandi = get_field('titolo_bandi');
 $descrizione_bandi = get_field('descrizione_bandi');
 
@@ -35,17 +46,7 @@ if ($titolo_bandi || $descrizione_bandi) : ?>
     </div>
   </section>
 <?php endif; ?>
-
-	<main>
-		<?php
-		while ( have_posts() ) :
-			the_post();
 			
-			?>
-			<?php 
-				$with_shadow = true;
-				get_template_part("template-parts/hero/hero"); 
-			?>
 			<?php get_template_part("template-parts/bandi-di-gara/tutti-bandi"); ?>
 
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
