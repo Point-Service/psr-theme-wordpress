@@ -14,11 +14,12 @@ $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'parent' => 0,
-    'orderby' => 'term_id',  // Ordina prima per ID
-    'order' => 'ASC',
+    'orderby' => array(
+        'ID' => 'ASC',  // Ordina prima per ID
+        'meta_value_num' => 'ASC'  // Poi per 'ordinamento'
+    ),
     'meta_key' => 'ordinamento', // Usa il meta per l'ordinamento
     'meta_type' => 'NUMERIC',   // Assicurati che il tipo di ordinamento sia numerico
-    'orderby' => array('ID' => 'ASC', 'meta_value_num' => 'ASC'), // Ordina prima per ID, poi per 'ordinamento'
 ));
 
 
