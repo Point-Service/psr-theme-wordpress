@@ -244,8 +244,10 @@ function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $or
         if ($existing_term) {
             $term_id = $existing_term['term_id'];
         } else {
-            // Non creiamo il termine, perché non vogliamo riscrivere la struttura
-            continue;
+            // Crea il termine se non esiste
+            $term_id = wp_insert_term($term_name, $taxonomy, [
+                'parent' => $parent_id,
+            ])['term_id'];
         }
 
         // A questo punto abbiamo l'ID del termine, quindi possiamo solo aggiornare il metadato 'ordinamento'
