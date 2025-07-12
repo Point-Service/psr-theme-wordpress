@@ -21,25 +21,16 @@ add_action('after_switch_theme', 'dci_trasparenza_activation');
 // ===========================
 // Pagina Admin per forzare la ricarica
 // ===========================
-// Funzione per la pagina admin e il controllo della checkbox
 function dci_reload_trasparenza_option_page() {
-    // Se il parametro di azione è "reload", ricarica
     if (isset($_GET["action"]) && $_GET["action"] === "reload") {
-        dci_trasparenza_activation(); // Rilancia l'attivazione
+        dci_trasparenza_activation(); // Esegue nuovamente l'attivazione
         echo '<div class="notice notice-success is-dismissible"><p>Dati ricaricati con successo.</p></div>';
     }
 
-    // Verifica la checkbox (e.g., se è selezionata, ricarica anche l'ordinamento)
-    $checked = (isset($_POST['dci_reload_ordinamento']) && $_POST['dci_reload_ordinamento'] == 'true') ? 'checked' : '';
-
     echo "<div class='wrap'>";
-    echo "<form method='POST' action=''>";
-    echo '<label for="dci_reload_ordinamento">Ricarica Ordinamento:</label>';
-    echo '<input type="hidden" name="dci_reload_ordinamento" value="false">';  // Campo nascosto per il valore di default
-    echo '<input type="checkbox" name="dci_reload_ordinamento" value="true" ' . $checked . '>';
-    echo '<br><br>';
+    echo "<h1>Ricarica i dati della Trasparenza</h1>";
+    echo '<p>Questa operazione reinserisce le tassonomie e opzioni di default relative alla sezione "Amministrazione Trasparente".</p>';
     echo '<a href="' . esc_url(admin_url('themes.php?page=reload-trasparenza-theme-options&action=reload')) . '" class="button button-primary">Ricarica Trasparenza</a>';
-    echo "</form>";
     echo "</div>";
 }
 
@@ -234,10 +225,7 @@ function insertTaxonomyTrasparenzaTerms() {
     recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
 
     
-    // Verifica la checkbox e ricarica o meno l'ordinamento
-    if (isset($_POST['dci_reload_ordinamento']) && $_POST['dci_reload_ordinamento'] == 'true') {
-        sistemaidordinamentoTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
-    }
+    sistemaidordinamentoTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
 
     
     // Tipi di procedure contraente
