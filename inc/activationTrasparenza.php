@@ -244,38 +244,65 @@ function insertTaxonomyTrasparenzaTerms() {
     // Mappa: 'Nome termine' => 'Descrizione desiderata'
     $descrizioni = [
     
-        // 1. DISPOSIZIONI GENERALI
-        'Disposizioni generali' => "Documenti di inquadramento strategico, normativo e programmatorio dell’ente."
-                                 . "\n\nComprende il Piano Triennale per la Prevenzione della Corruzione e della Trasparenza,"
-                                 . " gli Atti Generali e gli Oneri Informativi per cittadini e imprese (artt. 10‑12 del D.Lgs. 33/2013).",
-    
-        // 2. ORGANIZZAZIONE
-        'Organizzazione' => "Struttura politico‑amministrativa dell’ente: organi di indirizzo, articolazione degli uffici,"
-                          . " telefoni e posta elettronica, oltre a eventuali sanzioni per mancata comunicazione dei dati "
-                          . "(artt. 13‑15 del D.Lgs. 33/2013).",
-    
-        // 3. PERSONALE
-        'Personale' => "Informazioni sul personale dipendente: incarichi di vertice, dirigenti, posizioni organizzative,"
-                     . " dotazione organica, tassi di assenza, contrattazione collettiva e integrativa, OIV."
-                     . "\n\nPubblicazione prevista dagli artt. 16‑20 del D.Lgs. 33/2013.",
-    
-        // 4. BANDI DI CONCORSO
-        'Bandi di concorso' => "Procedure selettive per l’assunzione di personale a tempo indeterminato o determinato."
-                             . "\n\nInclude avvisi, bandi, graduatorie e ogni atto relativo ai concorsi (art. 19 del D.Lgs. 33/2013).",
-    
-        // 5. BANDI DI GARA E CONTRATTI  ► sottocategoria gestita singolarmente qui sotto
-        'Contratti Pubblici' => "In adempimento all’Art. 37 del D.Lgs. 50/2016 (Codice dei Contratti Pubblici).\n\n"
-                              . "Elenco trasparente dei contratti pubblici di lavori, servizi e forniture stipulati "
-                              . "dall’amministrazione.",
-    
-        // 6. SOVVENZIONI, CONTRIBUTI, SUSSIDI, VANTAGGI ECONOMICI  ► sottocategoria gestita singolarmente qui sotto
-        'Atti di concessione' => "Ai sensi dell’Art. 26 del D.Lgs. 33/2013.\n\n"
-                               . "Atti con cui l’amministrazione concede sovvenzioni, contributi, sussidi, vantaggi economici "
-                               . "o altre forme di sostegno a persone, enti pubblici o privati.",
-    
-        // 7. BILANCI
-        'Bilanci' => "Bilancio preventivo, consuntivo e Piano degli indicatori e dei risultati attesi: documenti contabili "
-                   . "pubblicati per assicurare la massima trasparenza sull’impiego delle risorse (artt. 29‑32 del D.Lgs. 33/2013).",
+     // Disposizioni generali
+    "Piano triennale per la prevenzione della corruzione e della trasparenza" => 
+        "Documento programmatico che definisce le strategie e le misure per prevenire la corruzione "
+      . "e garantire la trasparenza nelle attività dell’amministrazione, in ottemperanza agli artt. 1 e 10 del D.Lgs. 33/2013.",
+
+    "Atti generali" =>
+        "Documenti amministrativi di carattere generale che disciplinano l’organizzazione, "
+      . "il funzionamento e le modalità operative dell’ente pubblico.",
+
+    "Oneri informativi per cittadini e imprese" => 
+        "Elenco delle informazioni e documenti che l’amministrazione è tenuta a pubblicare "
+      . "e aggiornare per garantire la massima trasparenza nei confronti di cittadini e imprese.",
+
+
+    // Organizzazione
+    "Organi di indirizzo politico-amministrativo" =>
+        "Informazioni relative agli organi politici e amministrativi, quali giunta, consiglio e dirigenti, "
+      . "con relativi incarichi e competenze.",
+
+    "Articolazione degli uffici" =>
+        "Descrizione della struttura organizzativa interna dell’amministrazione, con indicazione di uffici, servizi e loro funzioni.",
+
+    "Telefono e posta elettronica" =>
+        "Elenco dei recapiti telefonici e indirizzi di posta elettronica istituzionali per il contatto con l’amministrazione.",
+
+
+    // Personale
+    "Incarichi amministrativi di vertice" =>
+        "Informazioni sugli incarichi di vertice politico-amministrativo conferiti all’interno dell’ente, con relativi nominativi e dati.",
+
+    "Dirigenti" =>
+        "Elenco dei dirigenti dell’amministrazione con dettagli sugli incarichi e qualifiche professionali.",
+
+    "Posizioni organizzative" =>
+        "Informazioni sulle posizioni organizzative intermedie, con relativa descrizione di funzioni e competenze.",
+
+    "Tassi di assenza" =>
+        "Dati statistici relativi ai tassi di assenza del personale, per monitorare l’efficienza e la produttività.",
+
+
+    // Bandi di gara e contratti
+    "Contratti Pubblici" =>
+        "Elenco completo e aggiornato dei contratti pubblici di lavori, servizi e forniture stipulati "
+      . "dall’amministrazione, in conformità all’Art. 37 del D.Lgs. 50/2016.",
+
+
+    // Sovvenzioni, contributi sussidi, vantaggi economici
+    "Atti di concessione" =>
+        "Atti amministrativi con cui l’ente concede sovvenzioni, contributi, sussidi o vantaggi economici "
+      . "a soggetti pubblici o privati, secondo quanto previsto dall’Art. 26 del D.Lgs. 33/2013.",
+
+    // Bilanci
+    "Bilancio preventivo e consuntivo" =>
+        "Documenti contabili che illustrano le previsioni e i risultati finanziari dell’amministrazione, "
+      . "pubblicati per garantire trasparenza nell’utilizzo delle risorse pubbliche.",
+
+    "Piano degli indicatori e risultati attesi di bilancio" =>
+        "Piano dettagliato degli indicatori di performance e degli obiettivi finanziari attesi dall’ente.",
+        
     ];
 
     foreach ( $descrizioni as $term_name => $new_desc ) {
