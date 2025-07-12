@@ -218,58 +218,17 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 // ===========================
 // Funzione di inserimento tassonomie
 // ===========================
-function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $ordine = 0) {
-    foreach ($terms as $term_name => $subterms) {
-        // Controlla se il termine esiste già nella tassonomia
-        $existing_term = term_exists($term_name, $taxonomy);
+function insertTaxonomyTrasparenzaTerms() {
 
-        // Se il termine esiste, recupera l'ID del termine esistente
-        if ($existing_term) {
-            $term_id = $existing_term['term_id'];
-        } else {
-            // Crea il termine se non esiste
-            $term = wp_insert_term(
-                $term_name,  // Nome del termine
-                $taxonomy,   // Tassonomia
-                array(
-                    'parent' => $parent_id,  // ID del termine genitore
-                    'slug'   => sanitize_title($term_name),  // Slug del termine
-                )
-            );
+    // Categorie Trasparenza
+    $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
+    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
 
-            // Se l'inserimento è riuscito, recupera l'ID del termine appena inserito
-            if (!is_wp_error($term)) {
-                $term_id = $term['term_id'];
-            } else {
-                // Logga l'errore se il termine non è stato inserito
-                error_log("Errore nell'inserimento del termine: " . $term_name);
-                continue;
-            }
-        }
+    // Tipi di procedure contraente
+    $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
+    recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
 
-        // Verifica se il campo 'ordinamento' esiste già per il termine
-        $ordinamento = get_term_meta($term_id, 'ordinamento', true);
-        if (!$ordinamento) {
-            // Se non esiste, inizializza il campo 'ordinamento'
-            update_term_meta($term_id, 'ordinamento', $ordine);
-        } else {
-            // Se esiste, aggiorna il campo 'ordinamento' con il nuovo valore
-            update_term_meta($term_id, 'ordinamento', $ordine);
-        }
-
-        // Incrementa l'ordine per il prossimo termine
-        $ordine++;
-
-        // Se ci sono sotto-termini, chiamato ricorsivamente per inserirli
-        if (!empty($subterms)) {
-            recursionInsertTaxonomyWithOrder($subterms, $taxonomy, $term_id, $ordine);
-        }
-    }
-}
-
-
-
-
-
-
-?>
+    // Tipi di stati di bando
+    $tipi_stato_bando_array = dci_tipi_stato_bando_array();
+    recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
+}?>
