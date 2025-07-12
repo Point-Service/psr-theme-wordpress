@@ -14,7 +14,7 @@ $args = array(
 $the_query = new WP_Query($args);
 $prefix = "_dci_bando_"; // Keep the prefix here for consistency
 ?>
-
+aaaaaaaaaaaaaaaaaaaa
 <main class="container mt-4">
     <?php if ($the_query->have_posts()) : ?>
         <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
