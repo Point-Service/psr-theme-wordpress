@@ -446,25 +446,6 @@ if(!function_exists("dci_tipi_commissario")){
 
 
 
-
-
-if(!function_exists("tipi_cat_amm_trasp")){
-    function dci_tipi_commissario_array() {
-        $tipi_cat_amm_trasp_arr = [
-            'xxxxxxxxxxxxxxxx',
-            'bbbbbbbbbbbbbb'
-        ];
-        return $tipi_cat_amm_trasp_arr;
-    }
-}
-
-
-
-
-
-
-
-
 /**
  * Classificazione multi livello dei Luoghi di interesse pubblico, definita nella Tassonomia dei luoghi pubblici di interesse culturale
  */
