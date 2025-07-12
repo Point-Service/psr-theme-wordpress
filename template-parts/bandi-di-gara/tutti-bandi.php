@@ -184,7 +184,7 @@ $prefix = "_dci_bando_";
             <div class="col-md-6 col-lg-4">
                 <label for="procedura_contraente" class="form-label visually-hidden" style="color: #333;"><?php _e('Procedura scelta Contraente', 'design_comuni_italia'); ?></label>
                 <select class="form-select" id="procedura_contraente" name="procedura_contraente" style="background-color: #ffffff; color: #333; border: 1px solid #ccc;">
-                    <option value=""><?php _e('Procedura scelta Contraente', 'design_comuni_italia'); ?></option>
+                    <option value=""><?php _e('Procedura scelta Contraente', 'design_comuni_italia'); ?></option>uuuuuuuuuuuuuuuuuuuuuuuuuuu
                     <?php
                     // Ora la funzione è definita qui sopra e può essere chiamata
                     $procedure = dci_tipi_procedura_contraente_array();
