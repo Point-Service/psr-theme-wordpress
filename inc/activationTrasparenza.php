@@ -236,7 +236,10 @@ function insertTaxonomyTrasparenzaTerms() {
     recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
 
     
-    sistemaidordinamentoTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+    // Verifica la checkbox e ricarica o meno l'ordinamento
+    if (isset($_POST['dci_reload_ordinamento']) && $_POST['dci_reload_ordinamento'] == 'true') {
+        sistemaidordinamentoTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+    }
 
     
     // Tipi di procedure contraente
