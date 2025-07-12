@@ -243,13 +243,39 @@ function insertTaxonomyTrasparenzaTerms() {
 
     // Mappa: 'Nome termine' => 'Descrizione desiderata'
     $descrizioni = [
+    
+        // 1. DISPOSIZIONI GENERALI
+        'Disposizioni generali' => "Documenti di inquadramento strategico, normativo e programmatorio dell’ente."
+                                 . "\n\nComprende il Piano Triennale per la Prevenzione della Corruzione e della Trasparenza,"
+                                 . " gli Atti Generali e gli Oneri Informativi per cittadini e imprese (artt. 10‑12 del D.Lgs. 33/2013).",
+    
+        // 2. ORGANIZZAZIONE
+        'Organizzazione' => "Struttura politico‑amministrativa dell’ente: organi di indirizzo, articolazione degli uffici,"
+                          . " telefoni e posta elettronica, oltre a eventuali sanzioni per mancata comunicazione dei dati "
+                          . "(artt. 13‑15 del D.Lgs. 33/2013).",
+    
+        // 3. PERSONALE
+        'Personale' => "Informazioni sul personale dipendente: incarichi di vertice, dirigenti, posizioni organizzative,"
+                     . " dotazione organica, tassi di assenza, contrattazione collettiva e integrativa, OIV."
+                     . "\n\nPubblicazione prevista dagli artt. 16‑20 del D.Lgs. 33/2013.",
+    
+        // 4. BANDI DI CONCORSO
+        'Bandi di concorso' => "Procedure selettive per l’assunzione di personale a tempo indeterminato o determinato."
+                             . "\n\nInclude avvisi, bandi, graduatorie e ogni atto relativo ai concorsi (art. 19 del D.Lgs. 33/2013).",
+    
+        // 5. BANDI DI GARA E CONTRATTI  ► sottocategoria gestita singolarmente qui sotto
         'Contratti Pubblici' => "In adempimento all’Art. 37 del D.Lgs. 50/2016 (Codice dei Contratti Pubblici).\n\n"
                               . "Elenco trasparente dei contratti pubblici di lavori, servizi e forniture stipulati "
                               . "dall’amministrazione.",
-
+    
+        // 6. SOVVENZIONI, CONTRIBUTI, SUSSIDI, VANTAGGI ECONOMICI  ► sottocategoria gestita singolarmente qui sotto
         'Atti di concessione' => "Ai sensi dell’Art. 26 del D.Lgs. 33/2013.\n\n"
-                               . "Atti con cui l’amministrazione concede sovvenzioni, contributi, sussidi, "
-                               . "vantaggi economici o altre forme di sostegno a persone, enti pubblici o privati."
+                               . "Atti con cui l’amministrazione concede sovvenzioni, contributi, sussidi, vantaggi economici "
+                               . "o altre forme di sostegno a persone, enti pubblici o privati.",
+    
+        // 7. BILANCI
+        'Bilanci' => "Bilancio preventivo, consuntivo e Piano degli indicatori e dei risultati attesi: documenti contabili "
+                   . "pubblicati per assicurare la massima trasparenza sull’impiego delle risorse (artt. 29‑32 del D.Lgs. 33/2013).",
     ];
 
     foreach ( $descrizioni as $term_name => $new_desc ) {
