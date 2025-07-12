@@ -168,8 +168,10 @@ if ( count( $meta_query_array ) > 1 ) {
 $the_query = new WP_Query($args);
 $prefix = "_dci_bando_";
 ?>
+In conformità con l'Articolo 37 del Codice dei Contratti Pubblici (D.Lgs. 50/2016), questa sezione raccoglie l'elenco dei contratti pubblici relativi a lavori, servizi e forniture stipulati dalle pubbliche amministrazioni. L'articolo 37 stabilisce l'obbligo di trasparenza per tutte le fasi della gestione dei contratti, dalla programmazione fino alla realizzazione, garantendo l'accesso pubblico alle informazioni sui bandi e gli affidamenti. Gli utenti possono consultare i contratti attivi, scaduti o in fase di aggiudicazione, e utilizzare i filtri per affinare la ricerca in base a parametri quali l'oggetto, il CIG, la procedura di selezione del contraente e l'anno di riferimento.
+
 <div class="search-bar-container bg-light p-4 mb-4 rounded shadow-sm" style="background-color: #f0f0f0 !important;">
-    <form role="search" method="get" class="search-form" action="<?php  echo esc_url(home_url('/')); ?>">
+    <form role="search" method="get" class="search-form" action="<?php // echo esc_url(home_url('/')); ?>">
         <input type="hidden" name="post_type" value="bando" />
         <div class="row g-3">
             <div class="col-md-6 col-lg-4">
