@@ -169,10 +169,7 @@ $the_query = new WP_Query($args);
 $prefix = "_dci_bando_";
 ?>
 <section>
-  <h2>(Art. 37 D.Lgs. 50/2016)</h2>
-  <p>
     In conformità con l'Articolo 37 del <strong>Codice dei Contratti Pubblici</strong> (D.Lgs. 50/2016), questa sezione raccoglie l'elenco dei contratti pubblici relativi a <strong>lavori, servizi e forniture</strong> stipulati dalle pubbliche amministrazioni.
-  </p>
   <p>
     L'articolo 37 stabilisce l'<strong>obbligo di trasparenza</strong> per tutte le fasi della gestione dei contratti, dalla programmazione fino alla realizzazione, garantendo l'<strong>accesso pubblico</strong> alle informazioni sui bandi e gli affidamenti.
   </p>
