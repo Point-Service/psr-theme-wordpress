@@ -13,18 +13,22 @@ $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
 
 // Ordina ulteriormente per 'ordinamento' (campo meta) se presente
 usort($categorie_genitori, function($a, $b) {
-    // Ottieni i valori del campo meta 'ordinamento'
+    // Ottieni i valori del campo meta 'ordinamento' o usa un fallback
     $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
     $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
 
-    // Se entrambi i termini hanno un valore di ordinamento, confrontali
-    if ($ordinamento_a && $ordinamento_b) {
-        return $ordinamento_a - $ordinamento_b; // Ordinamento numerico crescente
+    // Se uno dei termini non ha un valore di 'ordinamento', usa un valore di fallback
+    if (empty($ordinamento_a)) {
+        $ordinamento_a = PHP_INT_MAX; // Usa un valore molto grande per mandarlo alla fine
+    }
+    if (empty($ordinamento_b)) {
+        $ordinamento_b = PHP_INT_MAX; // Lo stesso per il secondo termine
     }
 
-    // Se uno dei termini non ha il campo 'ordinamento', considera il termine con valore mancante
-    return ($ordinamento_a === '') ? 1 : -1;
+    // Confronta i valori di ordinamento
+    return $ordinamento_a - $ordinamento_b;
 });
+
 
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
