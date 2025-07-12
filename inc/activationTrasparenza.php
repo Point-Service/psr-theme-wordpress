@@ -228,13 +228,13 @@ function insertTaxonomyTrasparenzaTerms() {
     // Tipi di procedure contraente
     $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
     recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
-    sistemaidordinamentoTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
+
 
     
     // Tipi di stati di bando
     $tipi_stato_bando_array = dci_tipi_stato_bando_array();
     recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
-    sistemaidordinamentoTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
+
     
 }
 
