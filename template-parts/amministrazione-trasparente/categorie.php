@@ -2,25 +2,29 @@
 global $sito_tematico_id, $siti_tematici;
 
 
-/*
+
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'parent' => 0,
     'orderby' => 'ID',
     'order' => 'ASC'
 ));
-*/
 
-$categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
-    'hide_empty' => false,
-    'parent' => 0,
-    'orderby' => array(
-        'ID' => 'ASC',  // Ordina prima per ID
-        'meta_value_num' => 'ASC'  // Poi per 'ordinamento'
-    ),
-    'meta_key' => 'ordinamento', // Usa il meta per l'ordinamento
-    'meta_type' => 'NUMERIC',   // Assicurati che il tipo di ordinamento sia numerico
-));
+
+// Ordina ulteriormente per 'ordinamento' (campo meta) se presente
+usort($categorie_genitori, function($a, $b) {
+    // Ottieni i valori del campo meta 'ordinamento'
+    $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
+    $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
+
+    // Se entrambi i termini hanno un valore di ordinamento, confrontali
+    if ($ordinamento_a && $ordinamento_b) {
+        return $ordinamento_a - $ordinamento_b; // Ordinamento numerico crescente
+    }
+
+    // Se uno dei termini non ha il campo 'ordinamento', considera il termine con valore mancante
+    return ($ordinamento_a === '') ? 1 : -1;
+});
 
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
