@@ -19,7 +19,6 @@ $prefix = "_dci_bando_"; // Keep the prefix here for consistency
     <?php if ($the_query->have_posts()) : ?>
         <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
             <div class="card mb-4 border-light-subtle bg-grey-card shadow-sm">
-    fdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfds
                 <div class="card-body">
                     <div class="row g-0">
                         <div class="col-md-2 border-end border-light-subtle pe-3">
