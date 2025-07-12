@@ -222,7 +222,7 @@ function insertTaxonomyTrasparenzaTerms() {
 
     // Categorie Trasparenza
     $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
-    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+    recursionInsertTaxonomyWithOrder($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
 
     // Tipi di procedure contraente
     $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
@@ -231,4 +231,36 @@ function insertTaxonomyTrasparenzaTerms() {
     // Tipi di stati di bando
     $tipi_stato_bando_array = dci_tipi_stato_bando_array();
     recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
-}?>
+}
+
+
+
+function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $ordine = 0) {
+    foreach ($terms as $term_name => $subterms) {
+        // Verifica se il termine esiste già nella tassonomia
+        $existing_term = term_exists($term_name, $taxonomy);
+
+        // Se il termine esiste, recupera l'ID del termine esistente
+        if ($existing_term) {
+            $term_id = $existing_term['term_id'];
+        } else {
+            // Non creiamo il termine, perché non vogliamo riscrivere la struttura
+            continue;
+        }
+
+        // A questo punto abbiamo l'ID del termine, quindi possiamo solo aggiornare il metadato 'ordinamento'
+        update_term_meta($term_id, 'ordinamento', $ordine);
+
+        // Incrementa l'ordine per il prossimo termine
+        $ordine++;
+
+        // Se ci sono sotto-termini, chiama ricorsivamente per inserirli
+        if (!empty($subterms)) {
+            recursionInsertTaxonomyWithOrder($subterms, $taxonomy, $term_id, $ordine);
+        }
+    }
+}
+
+
+
+?>
