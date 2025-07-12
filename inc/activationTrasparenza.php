@@ -1,6 +1,6 @@
 <?php 
 
-function dci_trasparenza_activation() {
+function dci_trasparenza_activation($reload_ordinamento = false) {
     set_time_limit(400);  // Aumenta il timeout
 
     // Inserisce i termini di tassonomia
@@ -232,7 +232,13 @@ function insertTaxonomyTrasparenzaTerms() {
     // Categorie Trasparenza
     $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
     recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
-    sistemaidordinamentoTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+
+    
+    // Se la checkbox è selezionata (reload_ordinamento = true), esegui anche sistemaidordinamentoTaxonomy
+    if ($reload_ordinamento) {
+        sistemaidordinamentoTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+    }
+    
 
     // Tipi di procedure contraente
     $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
