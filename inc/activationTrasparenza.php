@@ -237,18 +237,23 @@ function insertTaxonomyTrasparenzaTerms() {
     recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
 
 
-    
-  /* --- AGGIORNO LA DESCRIZIONE DI "Contratti Pubblici" --- */
-    $term = get_term_by( 'name', 'Contratti Pubblici', 'tipi_cat_amm_trasp' );
-    if ( $term ) {
-        // Cambia descrizione solo se è assente o diversa da quella desiderata
-        $new_desc = 'Elenco dei contratti pubblici di lavori, servizi e forniture (Art. 37 D.Lgs. 50/2016).444';
-        if ( empty( $term->description ) || $term->description !== $new_desc ) {
-            wp_update_term( $term->term_id, 'tipi_cat_amm_trasp', [
-                'description' => $new_desc,
-            ] );
-        }
+/* --- AGGIORNO LA DESCRIZIONE DI "Contratti Pubblici" --- */
+$term = get_term_by('name', 'Contratti Pubblici', 'tipi_cat_amm_trasp');
+if ($term) {
+    // Nuova descrizione dettagliata
+    $new_desc = "Elenco trasparente dei contratti pubblici di lavori, servizi e forniture stipulati dall’amministrazione.\n
+    In adempimento all’Art. 37 del D.Lgs. 50/2016 (Codice dei Contratti Pubblici).\n\n
+    Include tutte le informazioni sulle singole procedure di affidamento...\n\n
+    I dati sono pubblicati in formato aperto...";
+
+    // Cambia descrizione solo se è assente o diversa da quella desiderata
+    if (empty($term->description) || $term->description !== $new_desc) {
+        wp_update_term($term->term_id, 'tipi_cat_amm_trasp', [
+            'description' => $new_desc,
+        ]);
     }
+}
+
 
     
     
