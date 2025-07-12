@@ -1,12 +1,26 @@
 <?php
 global $sito_tematico_id, $siti_tematici;
 
+
+/*
 $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'parent' => 0,
     'orderby' => 'ID',
     'order' => 'ASC'
 ));
+*/
+
+$categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
+    'hide_empty' => false,
+    'parent' => 0,
+    'orderby' => 'term_id',  // Ordina prima per ID
+    'order' => 'ASC',
+    'meta_key' => 'ordinamento', // Usa il meta per l'ordinamento
+    'meta_type' => 'NUMERIC',   // Assicurati che il tipo di ordinamento sia numerico
+    'orderby' => array('ID' => 'ASC', 'meta_value_num' => 'ASC'), // Ordina prima per ID, poi per 'ordinamento'
+));
+
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
