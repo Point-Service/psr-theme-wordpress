@@ -23,14 +23,23 @@ add_action('after_switch_theme', 'dci_trasparenza_activation');
 // ===========================
 function dci_reload_trasparenza_option_page() {
     if (isset($_GET["action"]) && $_GET["action"] === "reload") {
-        dci_trasparenza_activation(); // Esegue nuovamente l'attivazione
+        // Verifica se la checkbox 'reload_ordinamento' è selezionata
+        $reload_ordinamento = isset($_POST['reload_ordinamento']) && $_POST['reload_ordinamento'] === '1';
+
+        dci_trasparenza_activation($reload_ordinamento); // Passa il valore della checkbox alla funzione
         echo '<div class="notice notice-success is-dismissible"><p>Dati ricaricati con successo.</p></div>';
     }
 
     echo "<div class='wrap'>";
     echo "<h1>Ricarica i dati della Trasparenza</h1>";
     echo '<p>Questa operazione reinserisce le tassonomie e opzioni di default relative alla sezione "Amministrazione Trasparente".</p>';
-    echo '<a href="' . esc_url(admin_url('themes.php?page=reload-trasparenza-theme-options&action=reload')) . '" class="button button-primary">Ricarica Trasparenza</a>';
+    
+    // Aggiungi la checkbox per decidere se ricaricare anche gli ID di ordinamento
+    echo '<form method="post" action="' . esc_url(admin_url('themes.php?page=reload-trasparenza-theme-options&action=reload')) . '">';
+    echo '<label><input type="checkbox" name="reload_ordinamento" value="1" /> Ricarica anche gli ID di ordinamento delle categorie</label><br><br>';
+    echo '<input type="submit" class="button button-primary" value="Ricarica Trasparenza">';
+    echo '</form>';
+    
     echo "</div>";
 }
 
