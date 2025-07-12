@@ -57,9 +57,6 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
                 'Atti generali',
                 "Oneri informativi per cittadini e imprese"
             ],
-            'TESTTTT' => [
-                "Prova"
-              ],
             'Organizzazione' => [
                 'Organi di indirizzo politico-amministrativo',
                 "Sanzioni per mancata comunicazione dei dati",
