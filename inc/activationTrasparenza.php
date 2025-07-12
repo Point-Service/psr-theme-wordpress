@@ -33,10 +33,9 @@ function dci_reload_trasparenza_option_page() {
     $checked = (isset($_POST['dci_reload_ordinamento']) && $_POST['dci_reload_ordinamento'] == 'true') ? 'checked' : '';
 
     echo "<div class='wrap'>";
-    echo "<h1>Ricarica i dati della Trasparenza</h1>";
-    echo '<p>Questa operazione reinserisce le tassonomie e opzioni di default relative alla sezione "Amministrazione Trasparente".</p>';
-    echo '<form method="POST" action="">';
+    echo "<form method='POST' action=''>";
     echo '<label for="dci_reload_ordinamento">Ricarica Ordinamento:</label>';
+    echo '<input type="hidden" name="dci_reload_ordinamento" value="false">';  // Campo nascosto per il valore di default
     echo '<input type="checkbox" name="dci_reload_ordinamento" value="true" ' . $checked . '>';
     echo '<br><br>';
     echo '<a href="' . esc_url(admin_url('themes.php?page=reload-trasparenza-theme-options&action=reload')) . '" class="button button-primary">Ricarica Trasparenza</a>';
