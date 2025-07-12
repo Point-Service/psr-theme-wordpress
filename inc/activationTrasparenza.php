@@ -222,7 +222,8 @@ function insertTaxonomyTrasparenzaTerms() {
 
     // Categorie Trasparenza
     $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
-    recursionInsertTaxonomyWithOrder($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+    sistemaidordinamentoTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
 
     // Tipi di procedure contraente
     $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
@@ -235,46 +236,29 @@ function insertTaxonomyTrasparenzaTerms() {
 
 
 
-function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $ordine = 0) {
-    // Log dei dati in entrata
-    error_log("Inserimento tassonomie in corso. Tassonomia: $taxonomy, Ordine: $ordine, Parent ID: $parent_id");
-    
+function sistemaidordinamentoTaxonomy($terms, $taxonomy, $parent_id = 0, $ordine = 0) {
     foreach ($terms as $term_name => $subterms) {
-        // Log per ogni termine
-        error_log("Controllando termine: '$term_name', con parent_id: $parent_id");
-        
         // Verifica se il termine esiste già nella tassonomia
         $existing_term = term_exists($term_name, $taxonomy);
 
         if ($existing_term) {
-            // Se il termine esiste già, prendi il suo ID e controlla il parent
+            // Se il termine esiste già, prendi il suo ID
             $term_id = $existing_term['term_id'];
-            
-            // Se il parent_id è diverso, significa che il termine è un sotto-termine, quindi lo ignoriamo
-            $current_parent_id = get_term($term_id)->parent;
-            if ($current_parent_id != $parent_id) {
-                error_log("Il termine '$term_name' esiste già ma con un parent diverso ($current_parent_id). Salto questo termine.");
-                continue; // Saltiamo questo termine
-            }
-        } else {
-            // Altrimenti, crea il termine
-            $term_id = wp_insert_term($term_name, $taxonomy, [
-                'parent' => $parent_id,
-            ])['term_id'];
-        }
 
-        // A questo punto abbiamo l'ID del termine, quindi possiamo solo aggiornare il metadato 'ordinamento'
-        update_term_meta($term_id, 'ordinamento', $ordine);
+            // Aggiorna il metadato 'ordinamento' per il termine esistente
+            update_term_meta($term_id, 'ordinamento', $ordine);
+        }
 
         // Incrementa l'ordine per il prossimo termine
         $ordine++;
 
-        // Se ci sono sotto-termini, chiama ricorsivamente per inserirli
+        // Se ci sono sotto-termini, chiama ricorsivamente per aggiornarli
         if (!empty($subterms)) {
-            recursionInsertTaxonomyWithOrder($subterms, $taxonomy, $term_id, $ordine);
+            sistemaidordinamentoTaxonomy($subterms, $taxonomy, $term_id, $ordine);
         }
     }
 }
+
 
 
 
