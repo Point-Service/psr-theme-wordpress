@@ -241,10 +241,14 @@ function insertTaxonomyTrasparenzaTerms() {
 $term = get_term_by('name', 'Contratti Pubblici', 'tipi_cat_amm_trasp');
 if ($term) {
     // Nuova descrizione dettagliata
-    $new_desc = "Elenco trasparente dei contratti pubblici di lavori, servizi e forniture stipulati dall’amministrazione.<br>
-    In adempimento all’Art. 37 del D.Lgs. 50/2016 (Codice dei Contratti Pubblici).<br>
-    Include tutte le informazioni sulle singole procedure di affidamento...<br>
-    I dati sono pubblicati in formato aperto...";
+        $new_desc = "Elenco trasparente dei contratti pubblici di lavori, servizi e forniture stipulati dall’amministrazione.
+        
+        In adempimento all’Art. 37 del D.Lgs. 50/2016 (Codice dei Contratti Pubblici).
+        
+        Include tutte le informazioni sulle singole procedure di affidamento (CIG, oggetto, importo, contraente, modalità di scelta del contraente, tempi di esecuzione) e lo stato di avanzamento dall’indizione alla stipula.
+        
+        I dati sono pubblicati in formato aperto e aggiornati con cadenza costante per garantire completa tracciabilità, controllo diffuso e partecipazione dei cittadini.";
+
 
     // Cambia descrizione solo se è assente o diversa da quella desiderata
     if (empty($term->description) || $term->description !== $new_desc) {
