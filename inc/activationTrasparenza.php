@@ -253,6 +253,20 @@ if ($term) {
 }
 
 
+$term = get_term_by('name', 'Atti di concessione', 'tipi_cat_amm_trasp');
+if ($term) {
+       // Nuova descrizione dettagliata
+        $new_desc = "Art. 26 del D.Lgs. 33/2013 disciplina proprio la pubblicazione degli atti di concessione. <p> Atti con cui l’amministrazione concede sovvenzioni, contributi, sussidi, vantaggi economici o altre forme di sostegno a persone, enti pubblici o privati.";
+
+
+    // Cambia descrizione solo se è assente o diversa da quella desiderata
+    if (empty($term->description) || $term->description !== $new_desc) {
+        wp_update_term($term->term_id, 'tipi_cat_amm_trasp', [
+            'description' => $new_desc,
+        ]);
+    }
+}
+
     
     
 }
