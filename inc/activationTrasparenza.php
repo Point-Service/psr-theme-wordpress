@@ -235,6 +235,25 @@ function insertTaxonomyTrasparenzaTerms() {
     // Tipi di stati di bando
     $tipi_stato_bando_array = dci_tipi_stato_bando_array();
     recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
+
+
+
+
+    
+
+    // AGGIORNO DESCRIZIONE CONTRATTI PUBBLICI
+    function dci_set_contratti_pubblici_description() {
+        $term = get_term_by( 'name', 'Contratti Pubblici', 'tipi_cat_amm_trasp' );
+        if ( $term && empty( $term->description ) ) {
+            wp_update_term( $term->term_id, 'tipi_cat_amm_trasp', [
+                'description' => 'Elenco dei contratti pubblici di lavori, servizi e forniture (Art. 37 D.Lgs. 50/2016).fffffffff',
+            ] );
+        }
+    }
+    add_action( 'init', 'dci_set_contratti_pubblici_description', 20 );
+    
+
+    
 }
 
 
@@ -260,23 +279,6 @@ function sistemaidordinamentoTaxonomy($terms, $taxonomy, $parent_id = 0, $ordine
         }
     }
 }
-
-
-
-
-
-// AGGIORNO DESCRIZIONE CONTRATTI PUBBLICI
-function dci_set_contratti_pubblici_description() {
-    $term = get_term_by( 'name', 'Contratti Pubblici', 'tipi_cat_amm_trasp' );
-    if ( $term && empty( $term->description ) ) {
-        wp_update_term( $term->term_id, 'tipi_cat_amm_trasp', [
-            'description' => 'Elenco dei contratti pubblici di lavori, servizi e forniture (Art. 37 D.Lgs. 50/2016).',
-        ] );
-    }
-}
-add_action( 'init', 'dci_set_contratti_pubblici_description', 20 );
-
-
 
 
 
