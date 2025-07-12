@@ -1,6 +1,6 @@
 <?php 
 
-function dci_trasparenza_activation($reload_ordinamento = false) {
+function dci_trasparenza_activation() {
     set_time_limit(400);  // Aumenta il timeout
 
     // Inserisce i termini di tassonomia
