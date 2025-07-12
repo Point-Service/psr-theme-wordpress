@@ -168,7 +168,7 @@ if ( count( $meta_query_array ) > 1 ) {
 $the_query = new WP_Query($args);
 $prefix = "_dci_bando_";
 ?>
-
+bbbbbbbbbbbbbbbbbbbbbbbbb
 <div class="search-bar-container bg-light p-4 mb-4 rounded shadow-sm" style="background-color: #f0f0f0 !important;">
     <form role="search" method="get" class="search-form" action="<?php // echo esc_url(home_url('/')); ?>">
         <input type="hidden" name="post_type" value="bando" />
@@ -184,7 +184,7 @@ $prefix = "_dci_bando_";
             <div class="col-md-6 col-lg-4">
                 <label for="procedura_contraente" class="form-label visually-hidden" style="color: #333;"><?php _e('Procedura scelta Contraente', 'design_comuni_italia'); ?></label>
                 <select class="form-select" id="procedura_contraente" name="procedura_contraente" style="background-color: #ffffff; color: #333; border: 1px solid #ccc;">
-                    <option value=""><?php _e('Procedura scelta Contraente', 'design_comuni_italia'); ?></option>uuuuuuuuuuuuuuuuuuuuuuuuuuu
+                    <option value=""><?php _e('Procedura scelta Contraente', 'design_comuni_italia'); ?></option>
                     <?php
                     // Ora la funzione è definita qui sopra e può essere chiamata
                     $procedure = dci_tipi_procedura_contraente_array();
