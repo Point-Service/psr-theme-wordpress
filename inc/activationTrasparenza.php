@@ -240,11 +240,11 @@ function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $or
         // Verifica se il termine esiste già nella tassonomia
         $existing_term = term_exists($term_name, $taxonomy);
 
-        // Se il termine esiste, recupera l'ID del termine esistente
         if ($existing_term) {
+            // Se il termine esiste già, prendi il suo ID
             $term_id = $existing_term['term_id'];
         } else {
-            // Crea il termine se non esiste
+            // Altrimenti, crea il termine
             $term_id = wp_insert_term($term_name, $taxonomy, [
                 'parent' => $parent_id,
             ])['term_id'];
@@ -262,6 +262,7 @@ function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $or
         }
     }
 }
+
 
 
 
