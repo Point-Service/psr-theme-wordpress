@@ -40,7 +40,6 @@ function dci_reload_trasparenza_option_page() {
     echo '<input type="checkbox" name="dci_reload_ordinamento" value="true" ' . $checked . '>';
     echo '<br><br>';
     echo '<a href="' . esc_url(admin_url('themes.php?page=reload-trasparenza-theme-options&action=reload')) . '" class="button button-primary">Ricarica Trasparenza</a>';
-    echo '<input type="submit" value="Ricarica Ordinamento" class="button button-secondary">';
     echo "</form>";
     echo "</div>";
 }
