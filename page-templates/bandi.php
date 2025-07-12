@@ -29,7 +29,7 @@ get_header();
 				get_template_part("template-parts/hero/hero"); 
 			?>
 			
-			<?php echo'fffffff'; get_template_part("template-parts/bandi-di-gara/tutti-bandi");  ?>
+			<?php get_template_part("template-parts/bandi-di-gara/tutti-bandi"); ?>
 
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
