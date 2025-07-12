@@ -220,56 +220,62 @@ if (!function_exists("dci_tipi_stato_bando_array")) {
 // ===========================
 function insertTaxonomyTrasparenzaTerms() {
 
+    /* --------------------------- */
+    /* 1) Inserimento tassonomie   */
+    /* --------------------------- */
     // Categorie Trasparenza
     $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
-    recursionInsertTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
+    recursionInsertTaxonomy( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
+    sistemaidordinamentoTaxonomy( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
 
-    
-    sistemaidordinamentoTaxonomy($tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp');
-
-    
-    // Tipi di procedure contraente
+    // Tipi di procedura contraente
     $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
-    recursionInsertTaxonomy($tipi_procedura_contraente_array, 'tipi_procedura_contraente');
+    recursionInsertTaxonomy( $tipi_procedura_contraente_array, 'tipi_procedura_contraente' );
 
-    // Tipi di stati di bando
+    // Tipi di stato bando
     $tipi_stato_bando_array = dci_tipi_stato_bando_array();
-    recursionInsertTaxonomy($tipi_stato_bando_array, 'tipi_stato_bando');
+    recursionInsertTaxonomy( $tipi_stato_bando_array, 'tipi_stato_bando' );
 
 
-/* --- AGGIORNO LA DESCRIZIONE DI "Contratti Pubblici" --- */
-$term = get_term_by('name', 'Contratti Pubblici', 'tipi_cat_amm_trasp');
-if ($term) {
-    // Nuova descrizione dettagliata
-        $new_desc = "In adempimento all’Art. 37 del D.Lgs. 50/2016 (Codice dei Contratti Pubblici). <p> Elenco trasparente dei contratti pubblici di lavori, servizi e forniture stipulati dall’amministrazione.";
+    /* ----------------------------------------------------------- */
+    /* 2) Aggiornamento descrizioni dettagliate di termini chiave  */
+    /* ----------------------------------------------------------- */
 
+    // Mappa: 'Nome termine' => 'Descrizione desiderata'
+    $descrizioni = [
+        'Contratti Pubblici' => "In adempimento all’Art. 37 del D.Lgs. 50/2016 (Codice dei Contratti Pubblici).\n\n"
+                              . "Elenco trasparente dei contratti pubblici di lavori, servizi e forniture stipulati "
+                              . "dall’amministrazione.",
 
-    // Cambia descrizione solo se è assente o diversa da quella desiderata
-    if (empty($term->description) || $term->description !== $new_desc) {
-        wp_update_term($term->term_id, 'tipi_cat_amm_trasp', [
-            'description' => $new_desc,
-        ]);
+        'Atti di concessione' => "Ai sensi dell’Art. 26 del D.Lgs. 33/2013.\n\n"
+                               . "Atti con cui l’amministrazione concede sovvenzioni, contributi, sussidi, "
+                               . "vantaggi economici o altre forme di sostegno a persone, enti pubblici o privati."
+    ];
+
+    foreach ( $descrizioni as $term_name => $new_desc ) {
+        dci_update_term_description( $term_name, 'tipi_cat_amm_trasp', $new_desc );
     }
 }
 
+/**
+ * Aggiorna la descrizione di un termine se assente o diversa.
+ *
+ * @param string $term_name Nome del termine.
+ * @param string $taxonomy  Tassonomia di appartenenza.
+ * @param string $new_desc  Nuova descrizione (testo con \n\n per i paragrafi).
+ */
+function dci_update_term_description( $term_name, $taxonomy, $new_desc ) {
+    $term = get_term_by( 'name', $term_name, $taxonomy );
 
-$term = get_term_by('name', 'Atti di concessione', 'tipi_cat_amm_trasp');
-if ($term) {
-       // Nuova descrizione dettagliata
-        $new_desc = "Art. 26 del D.Lgs. 33/2013 disciplina proprio la pubblicazione degli atti di concessione. <p> Atti con cui l’amministrazione concede sovvenzioni, contributi, sussidi, vantaggi economici o altre forme di sostegno a persone, enti pubblici o privati.";
-
-
-    // Cambia descrizione solo se è assente o diversa da quella desiderata
-    if (empty($term->description) || $term->description !== $new_desc) {
-        wp_update_term($term->term_id, 'tipi_cat_amm_trasp', [
-            'description' => $new_desc,
-        ]);
+    if ( $term && ( empty( $term->description ) || $term->description !== $new_desc ) ) {
+        wp_update_term(
+            $term->term_id,
+            $taxonomy,
+            [ 'description' => $new_desc ]
+        );
     }
 }
 
-    
-    
-}
 
 
 function sistemaidordinamentoTaxonomy($terms, $taxonomy, $parent_id = 0, $ordine = 1) {
