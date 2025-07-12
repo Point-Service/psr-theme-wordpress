@@ -247,8 +247,15 @@ function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $or
             }
         }
 
-        // Aggiorna il campo 'ordinamento' sempre, a prescindere dal fatto che esista già
-        update_term_meta($term_id, 'ordinamento', $ordine);
+        // Verifica se il campo 'ordinamento' esiste già per il termine
+        $ordinamento = get_term_meta($term_id, 'ordinamento', true);
+        if (!$ordinamento) {
+            // Se non esiste, inizializza il campo 'ordinamento'
+            update_term_meta($term_id, 'ordinamento', $ordine);
+        } else {
+            // Se esiste, aggiorna il campo 'ordinamento' con il nuovo valore
+            update_term_meta($term_id, 'ordinamento', $ordine);
+        }
 
         // Incrementa l'ordine per il prossimo termine
         $ordine++;
@@ -259,6 +266,7 @@ function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $or
         }
     }
 }
+
 
 
 
