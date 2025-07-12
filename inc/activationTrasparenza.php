@@ -226,11 +226,6 @@ function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $or
         // Se il termine esiste, recupera l'ID del termine esistente
         if ($existing_term) {
             $term_id = $existing_term['term_id'];
-            
-            // Se il termine non ha già il campo 'ordinamento', lo aggiungi
-            if (!get_term_meta($term_id, 'ordinamento', true)) {
-                update_term_meta($term_id, 'ordinamento', $ordine);
-            }
         } else {
             // Crea il termine se non esiste
             $term = wp_insert_term(
@@ -245,14 +240,15 @@ function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $or
             // Se l'inserimento è riuscito, recupera l'ID del termine appena inserito
             if (!is_wp_error($term)) {
                 $term_id = $term['term_id'];
-                
-                // Aggiungi il campo 'ordinamento' solo se il termine è stato creato
-                update_term_meta($term_id, 'ordinamento', $ordine);
             } else {
                 // Logga l'errore se il termine non è stato inserito
                 error_log("Errore nell'inserimento del termine: " . $term_name);
+                continue;
             }
         }
+
+        // Aggiorna il campo 'ordinamento' sempre, a prescindere dal fatto che esista già
+        update_term_meta($term_id, 'ordinamento', $ordine);
 
         // Incrementa l'ordine per il prossimo termine
         $ordine++;
@@ -263,6 +259,7 @@ function recursionInsertTaxonomyWithOrder($terms, $taxonomy, $parent_id = 0, $or
         }
     }
 }
+
 
 
 
