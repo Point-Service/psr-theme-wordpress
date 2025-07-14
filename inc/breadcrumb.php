@@ -396,8 +396,8 @@ class Breadcrumb_Trail {
                                    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";	
 				   $this->items[] =  "<a href='/tipi_cat_amm_trasp/sovvenzioni-contributi-sussidi-vantaggi-economici'>" . __("sovvenzioni contributi sussidi vantaggi economici", "design_comuni_italia") . "</a>";
 				   
-				   $this->items[] =  "<a href='/tipi_cat_amm_trasp/sovvenzioni-contributi-sussidi-vantaggi-economici/atti-di-concessione'>" . __("Atti di Concessione", "design_comuni_italia") . "</a>";	
-					
+				   $this->items[] =  "<a href='/tipi_cat_amm_trasp/sovvenzioni-contributi-sussidi-vantaggi-economici/'>" . __("Atti di Concessione", "design_comuni_italia") . "</a>";	
+				
                                   
 				   $this->items[] = get_the_title();
 				   return;
