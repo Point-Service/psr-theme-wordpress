@@ -2,7 +2,7 @@
 global $prefix;
 
 if ( ! isset( $prefix ) ) {
-    $prefix = '_dci_incarichi_dip_';
+    $prefix = '_dci_icad_';
 }
 ?>
 
@@ -66,7 +66,7 @@ if ( ! isset( $prefix ) ) {
                         <span class="d-block"><?php echo !empty($rag_incarico) ? esc_html($rag_incarico) : '-'; ?></span>
                     </div>
                 </div>
-                </div>
+            </div>
         </div>
         <div class="row mt-3 pt-3 border-top border-light-subtle">
             <div class="col-md-6">
@@ -76,11 +76,9 @@ if ( ! isset( $prefix ) ) {
                     $allegati = get_post_meta(get_the_ID(), $prefix . 'allegati', true);
 
                     if (!empty($allegati) && is_array($allegati)) {
-                        // Inizializza la variabile $i
                         $i = 1;
                         foreach ($allegati as $file_id => $file_data) {
                             $file_url = isset($file_data['url']) ? esc_url($file_data['url']) : '';
-                            // Puoi usare il titolo dell'allegato da CMB2 se vuoi, o mantenere "Allegato X"
                             $file_title = isset($file_data['title']) ? esc_html($file_data['title']) : "Allegato " . $i;
                             ?>
                             <span class="d-inline-flex align-items-center mb-2 me-3">
@@ -94,7 +92,6 @@ if ( ! isset( $prefix ) ) {
                                 </span>
                             </span>
                             <?php
-                            // Incrementa $i ad ogni iterazione
                             $i++;
                         }
                     } else {
@@ -109,3 +106,4 @@ if ( ! isset( $prefix ) ) {
         </div>
     </div>
 </div>
+
