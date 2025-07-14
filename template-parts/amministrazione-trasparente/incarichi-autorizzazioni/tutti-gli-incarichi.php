@@ -1,7 +1,7 @@
 <?php
 global $post;
 
-$max_posts = 10; // 10 elementi per pagina
+$max_posts = 5;
 $selected_year = isset($_GET['year']) ? intval($_GET['year']) : '';
 $search_param = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
