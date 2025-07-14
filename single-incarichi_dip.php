@@ -41,6 +41,20 @@ while ( have_posts() ) :
 	$durata       = get_post_meta( $id, $prefix . 'durata',           true );
 
 	$allegati     = get_post_meta( $id, $prefix . 'allegati', true ); // file_list → array
+
+
+
+
+
+echo '<pre>';
+var_dump( $allegati );
+echo '</pre>';
+
+
+
+
+
+	
 	if ( ! is_array( $allegati ) ) $allegati = [];
 ?>
 
