@@ -71,15 +71,16 @@ function load_more(){
 				'orderby' => 'post_title',
 				'order'   => 'ASC'
 			);
-			case "incarichi_dip":
-				$args = array(
-				's' => $_POST['search'],
-				'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
-				'post_type'      => $post_types,
-				'post_status'    => 'publish',
-				'orderby' => 'data',
-				'order'   => 'DESC'
-			);		
+		    case "incarichi_dip":
+		        $args = array(
+		            's' => isset($_POST['search']) ? sanitize_text_field($_POST['search']) : '',
+		            'posts_per_page' => $posts_per_page,
+		            'paged' => $paged,
+		            'post_type' => $post_types,
+		            'post_status' => 'publish',
+		            'orderby' => 'data',
+		            'order' => 'DESC',
+		        );	
 			break;
 			default:
 				$args = array(
