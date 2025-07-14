@@ -128,7 +128,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes()
     $cmb_dettagli = new_cmb2_box(array(
         'id'           => $prefix . 'box_dettagli',
         'title'        => __('Dettagli  Beneficiario', 'design_comuni_italia'),
-        'object_types' => array('atto_concessione'),
+        'object_types' => array('incarichi_autorizzazioni'),
         'context'      => 'normal',
         'priority'     => 'high',
     ));
