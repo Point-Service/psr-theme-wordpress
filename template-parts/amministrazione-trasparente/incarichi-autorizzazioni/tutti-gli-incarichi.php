@@ -1,5 +1,5 @@
 <?php
-global $post;
+global $post, $load_posts, $load_card_type;
 $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 2;
 $load_posts = 2;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
