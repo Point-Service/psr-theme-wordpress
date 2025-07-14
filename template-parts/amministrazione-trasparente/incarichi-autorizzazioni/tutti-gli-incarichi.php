@@ -19,7 +19,7 @@ $prefix = "_dci_icad_";
 <?php if ($the_query->have_posts()) : ?>
     
     <?php while ($the_query->have_posts()) : $the_query->the_post();
-        get_template_part('template-parts/amministrazione-trasparente/incarichi-dipendenti/card');
+        get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card');
     endwhile;
     wp_reset_postdata(); ?>
     
