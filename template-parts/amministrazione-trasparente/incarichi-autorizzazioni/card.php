@@ -95,13 +95,15 @@ if ( ! isset( $prefix ) ) {
             <div class="col-md-6">
                 <h6 class="text-uppercase text-muted small">Allegati</h6>
                 <p class="mb-0">
-                    <?php
+                                      <?php
                     $allegati = get_post_meta(get_the_ID(), $prefix . 'allegati', true);
 
                     if (!empty($allegati) && is_array($allegati)) {
+                        // Inizializza la variabile $i
                         $i = 1;
                         foreach ($allegati as $file_id => $file_data) {
                             $file_url = isset($file_data['url']) ? esc_url($file_data['url']) : '';
+                            // Puoi usare il titolo dell'allegato da CMB2 se vuoi, o mantenere "Allegato X"
                             $file_title = isset($file_data['title']) ? esc_html($file_data['title']) : "Allegato " . $i;
                             ?>
                             <span class="d-inline-flex align-items-center mb-2 me-3">
@@ -115,12 +117,13 @@ if ( ! isset( $prefix ) ) {
                                 </span>
                             </span>
                             <?php
+                            // Incrementa $i ad ogni iterazione
                             $i++;
                         }
                     } else {
                         echo 'Nessun Allegato';
                     }
-                    ?>
+                    ?> 
                 </p>
             </div>
 
