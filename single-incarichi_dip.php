@@ -16,10 +16,9 @@ while ( have_posts() ) :
 	$prefix = '_dci_icad_';                          
 	$id     = get_the_ID();
 
-	/* ─────────────  META  ───────────── */
+	// Meta fields
 	$descrizione_breve = get_post_meta( $id, $prefix . 'descrizione_breve', true );
-
-	$data_pubbl  = get_the_date( 'j F Y', $id );
+	$data_pubbl        = get_the_date( 'j F Y', $id );
 
 	// Anno conferimento - gestione migliorata
 	$anno_conf_raw = get_post_meta( $id, $prefix . 'anno_conferimento', true );
@@ -57,15 +56,15 @@ while ( have_posts() ) :
 	$oggetto      = get_post_meta( $id, $prefix . 'oggetto_incarico', true );
 	$durata       = get_post_meta( $id, $prefix . 'durata',           true );
 
-	// Prendo gli allegati
+	// Allegati
 	$documenti = get_post_meta( $id, $prefix . 'allegati', true );
+	?>
 
-?>
-
-	<!-- ============  HEADER  ============ -->
 	<div class="container" id="main-container">
 		<div class="row">
-			<div class="col px-lg-4"><?php get_template_part( 'template-parts/common/breadcrumb' ); ?></div>
+			<div class="col px-lg-4">
+				<?php get_template_part( 'template-parts/common/breadcrumb' ); ?>
+			</div>
 		</div>
 
 		<div class="row">
@@ -77,7 +76,10 @@ while ( have_posts() ) :
 			</div>
 
 			<div class="col-lg-3 offset-lg-1">
-				<?php $inline = true; get_template_part( 'template-parts/single/actions' ); ?>
+				<?php 
+				$inline = true; 
+				get_template_part( 'template-parts/single/actions' ); 
+				?>
 			</div>
 		</div>
 
@@ -93,19 +95,19 @@ while ( have_posts() ) :
 		</div>
 	</div>
 
-	<!-- ============  CONTENUTO  ============ -->
 	<div class="container">
 		<div class="row border-top border-light row-column-border row-column-menu-left">
 			<aside class="col-lg-4">
-				<?php get_template_part( 'template-parts/single/page-index', null, [
+				<?php 
+				get_template_part( 'template-parts/single/page-index', null, [
 					'descrizione_breve' => $descrizione_breve,
 					'documenti'         => $documenti,
 					'compenso'          => $compenso,
-				] ); ?>
+				] ); 
+				?>
 			</aside>
 
 			<section class="col-lg-8 it-page-sections-container border-light mb-5">
-
 				<?php if ( $descrizione_breve ) : ?>
 					<article class="it-page-section anchor-offset">
 						<h4 id="desc-breve">Descrizione breve</h4>
@@ -120,7 +122,11 @@ while ( have_posts() ) :
 							<li><strong>Soggetto dichiarante:</strong> <?php echo esc_html( $sogg_dichiarante ?: 'Non specificato' ); ?></li>
 							<li><strong>Soggetto percettore:</strong>  <?php echo esc_html( $sogg_percettore  ?: 'Non specificato' ); ?></li>
 							<li><strong>Soggetto conferente:</strong>  <?php echo esc_html( $sogg_conferente  ?: 'Non specificato' ); ?></li>
-							<li><strong>Dirigente / Non dirigente:</strong> <?php echo $dirigente_flag === 'dirigente' ? 'Dirigente' : ( $dirigente_flag === 'non_dirigente' ? 'Non Dirigente' : '-' ); ?></li>
+							<li><strong>Dirigente / Non dirigente:</strong> 
+								<?php 
+									echo $dirigente_flag === 'dirigente' ? 'Dirigente' : ( $dirigente_flag === 'non_dirigente' ? 'Non Dirigente' : '-' ); 
+								?>
+							</li>
 							<li><strong>Data autorizzazione:</strong> <?php echo esc_html( $data_aut ); ?></li>
 							<li><strong>Durata:</strong> <?php echo esc_html( $durata ?: '-' ); ?></li>
 							<li><strong>Compenso lordo:</strong> <?php echo esc_html( $compenso ); ?></li>
@@ -167,13 +173,14 @@ while ( have_posts() ) :
 						</div>
 					</article>
 				<?php endif; ?>
-
 			</section>
 		</div>
 	</div>
 
-	<?php get_template_part( 'template-parts/common/valuta-servizio' ); ?>
-	<?php get_template_part( 'template-parts/common/assistenza-contatti' ); ?>
+	<?php 
+	get_template_part( 'template-parts/common/valuta-servizio' ); 
+	get_template_part( 'template-parts/common/assistenza-contatti' ); 
+	?>
 
 <?php
 endwhile;
@@ -181,5 +188,3 @@ endwhile;
 </main>
 
 <?php get_footer(); ?>
-
-
