@@ -372,7 +372,19 @@ class Breadcrumb_Trail {
 				            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_commissario')), $term->name);
 				        }
 				    }
-					$this->items[] = get_the_title();
+				         // Recupera il titolo della pagina e troncalo a 35 caratteri
+					    $title = get_the_title();
+					    // Se il titolo supera i 35 caratteri, lo tronca e aggiunge "..."
+					    if (strlen($title) > 35) {
+					        $title = substr($title, 0, 35) . '...';
+					    }
+					    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+					    if (preg_match('/[A-Z]{5,}/', $title)) {
+					        // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+					        $title = ucfirst(strtolower($title));
+					    }
+					    // Aggiunge il titolo alla lista degli elementi
+					    $this->items[] = $title;
 					return;
 				}
 		    
@@ -385,7 +397,19 @@ class Breadcrumb_Trail {
 					   $this->items[] =  "<a href='/tipi_cat_amm_trasp/contratti-pubblici'>" . __("Contratti Pubblici", "design_comuni_italia") . "</a>";	
 						
 	                           
-					   $this->items[] = get_the_title();
+					   // Recupera il titolo della pagina e troncalo a 35 caratteri
+					    $title = get_the_title();
+					    // Se il titolo supera i 35 caratteri, lo tronca e aggiunge "..."
+					    if (strlen($title) > 35) {
+					        $title = substr($title, 0, 35) . '...';
+					    }
+					    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+					    if (preg_match('/[A-Z]{5,}/', $title)) {
+					        // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+					        $title = ucfirst(strtolower($title));
+					    }
+					    // Aggiunge il titolo alla lista degli elementi
+					    $this->items[] = $title;
 					   return;
 				   }
 
@@ -400,7 +424,19 @@ class Breadcrumb_Trail {
 					
 	            
 					   
-					   $this->items[] = get_the_title();
+					    // Recupera il titolo della pagina e troncalo a 35 caratteri
+					    $title = get_the_title();
+					    // Se il titolo supera i 35 caratteri, lo tronca e aggiunge "..."
+					    if (strlen($title) > 35) {
+					        $title = substr($title, 0, 35) . '...';
+					    }
+					    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+					    if (preg_match('/[A-Z]{5,}/', $title)) {
+					        // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+					        $title = ucfirst(strtolower($title));
+					    }
+					    // Aggiunge il titolo alla lista degli elementi
+					    $this->items[] = $title;
 					   return;
 				   }
 	              
@@ -413,7 +449,19 @@ class Breadcrumb_Trail {
 					
 	            
 					   
-					   $this->items[] = get_the_title();
+					   // Recupera il titolo della pagina e troncalo a 35 caratteri
+					    $title = get_the_title();
+					    // Se il titolo supera i 35 caratteri, lo tronca e aggiunge "..."
+					    if (strlen($title) > 35) {
+					        $title = substr($title, 0, 35) . '...';
+					    }
+					    // Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+					    if (preg_match('/[A-Z]{5,}/', $title)) {
+					        // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+					        $title = ucfirst(strtolower($title));
+					    }
+					    // Aggiunge il titolo alla lista degli elementi
+					    $this->items[] = $title;
 					   return;
 				   }      
 
