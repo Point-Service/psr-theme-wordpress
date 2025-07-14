@@ -61,26 +61,13 @@ if ( ! isset( $prefix ) ) {
                         <span class="d-block"><?php echo !empty($soggetto_conferente) ? esc_html($soggetto_conferente) : '-'; ?></span>
                     </div>
 
-                    <div class="col-md-3 col-sm-6">
-                        <small class="text-uppercase text-muted d-block">Data conferimento autorizzazione</small>
-                     <?php
-$data_conferimento = get_post_meta(get_the_ID(), $prefix . 'data_conferimento_autorizzazione', true);
-echo '<!-- Data raw: ' . esc_html($data_conferimento) . ' -->'; // Per debug, si vede nel sorgente pagina
-
-if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $data_conferimento, $matches)) {
-    $data_formattata = $matches[3] . '-' . $matches[2] . '-' . $matches[1];
-    $timestamp = strtotime($data_formattata);
-} else {
-    $timestamp = strtotime($data_conferimento);
-}
-
-$data_conferimento_formatted = $timestamp ? date_i18n('j F Y', $timestamp) : '-';
-
-echo '<span class="d-block">' . esc_html($data_conferimento_formatted) . '</span>';
-?>
-
-                        <span class="d-block"><?php echo esc_html($data_conferimento_formatted); ?></span>
-                    </div>
+<div class="col-md-3 col-sm-6">
+    <small class="text-uppercase text-muted d-block">Data conferimento autorizzazione</small>
+    <?php
+    $data_conferimento = get_post_meta(get_the_ID(), $prefix . 'data_conferimento_autorizzazione', true);
+    echo $data_conferimento ? date_i18n('j F Y', intval($data_conferimento)) : '-';
+    ?>
+</div>
 
                     <div class="col-md-3 col-sm-6">
                         <small class="text-uppercase text-muted d-block">Durata</small>
