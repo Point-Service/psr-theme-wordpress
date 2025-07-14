@@ -4,23 +4,19 @@ global $post;
 $max_posts = 10; // 10 elementi per pagina
 $selected_year = isset($_GET['year']) ? intval($_GET['year']) : '';
 $search_param = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-
-// Gestione corretta di paged per query paginata
-$paged = 1;
-if (get_query_var('paged')) {
-    $paged = get_query_var('paged');
-} elseif (isset($_GET['paged']) && intval($_GET['paged']) > 0) {
-    $paged = intval($_GET['paged']);
-}
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 // URL base archivio CPT
 $form_action = get_post_type_archive_link('incarichi_dip');
 if (!$form_action) {
-    // fallback URL, cambia con il tuo percorso corretto
+    // fallback, sostituisci con URL corretto se necessario
     $form_action = site_url('/tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti/');
 }
 
-// Recupera anni disponibili dalla data di pubblicazione dei post
+// Pulisco la URL base da query params year e paged
+$base_url = remove_query_arg(['year', 'paged'], $form_action);
+
+// Prendo tutti gli anni di pubblicazione distinti dei post
 global $wpdb;
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date) AS year 
@@ -30,7 +26,7 @@ $years = $wpdb->get_col("
     ORDER BY year DESC
 ");
 
-// Argomenti query WP_Query
+// Costruisco query WP con filtro anno e ricerca
 $args = [
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -55,8 +51,8 @@ $the_query = new WP_Query($args);
 $prefix = "_dci_icad_";
 ?>
 
-<!-- Form filtro anno -->
-<form method="get" action="<?php echo esc_url($form_action); ?>" class="mb-4">
+<!-- FORM FILTRO ANNO -->
+<form method="get" action="<?php echo esc_url($base_url); ?>" class="mb-4">
     <label for="year-select">Filtra per anno pubblicazione:</label>
     <select id="year-select" name="year" onchange="this.form.submit()">
         <option value="">Tutti gli anni</option>
@@ -72,7 +68,7 @@ $prefix = "_dci_icad_";
     <?php endif; ?>
 </form>
 
-<!-- Loop post -->
+<!-- LOOP POST -->
 <?php if ($the_query->have_posts()) : ?>
 
     <?php while ($the_query->have_posts()) : $the_query->the_post();
@@ -80,19 +76,22 @@ $prefix = "_dci_icad_";
     endwhile;
     wp_reset_postdata(); ?>
 
-    <!-- Paginazione -->
+    <!-- PAGINAZIONE -->
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
+            $paginate_base = add_query_arg(
+                array_filter([
+                    'year' => $selected_year ?: null,
+                    'search' => $search_param ?: null,
+                ]),
+                $base_url
+            );
             echo paginate_links([
-                'base'      => esc_url_raw(add_query_arg('paged', '%#%', $form_action)),
-                'format'    => '',
+                'base'      => $paginate_base . '%_%',
+                'format'    => (strpos($paginate_base, '?') === false ? '?' : '&') . 'paged=%#%',
                 'current'   => max(1, $paged),
                 'total'     => $the_query->max_num_pages,
-                'add_args'  => [
-                    'year'   => $selected_year ?: '',
-                    'search' => $search_param ?: '',
-                ],
                 'prev_text' => __('« Precedente'),
                 'next_text' => __('Successivo »'),
                 'type'      => 'list',
@@ -106,4 +105,5 @@ $prefix = "_dci_icad_";
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
+
 
