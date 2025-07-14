@@ -80,16 +80,17 @@ $base_url = add_query_arg($query_args, $base_url);
 </form>
 
 <script>
-    document.getElementById('year-select').addEventListener('change', function(){
-        // Se vuoto rimuovo nome per evitare ?year= vuoto
-        if(this.value === '') {
-            this.removeAttribute('name');
+    const yearSelect = document.getElementById('year-select');
+    yearSelect.addEventListener('change', function() {
+        if (this.value === '') {
+            this.removeAttribute('name'); // NON inviare il parametro year se vuoto
         } else {
-            this.setAttribute('name', 'year');
+            this.setAttribute('name', 'year'); // Assicura che venga inviato solo se non vuoto
         }
         this.form.submit();
     });
 </script>
+
 
 <?php if ($the_query->have_posts()) : ?>
 
