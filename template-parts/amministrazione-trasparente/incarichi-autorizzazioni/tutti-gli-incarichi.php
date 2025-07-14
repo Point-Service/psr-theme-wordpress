@@ -1,22 +1,21 @@
 <?php
 global $post;
 
-$max_posts = 5;
+$max_posts = 10;
 $selected_year = isset($_GET['year']) ? intval($_GET['year']) : '';
 $search_param = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$paged = max(1, get_query_var('paged')); // Garantisco che sia almeno 1
 
-// URL base archivio CPT
+// URL base archive CPT
 $form_action = get_post_type_archive_link('incarichi_dip');
 if (!$form_action) {
-    // fallback, sostituisci con URL corretto se necessario
     $form_action = site_url('/tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti/');
 }
 
-// Pulisco la URL base da query params year e paged
-$base_url = remove_query_arg(['year', 'paged'], $form_action);
+// Pulisco URL da parametri
+$base_url = remove_query_arg(['paged'], $form_action);
 
-// Prendo tutti gli anni di pubblicazione distinti dei post
+// Estrazione anni disponibili
 global $wpdb;
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date) AS year 
@@ -26,20 +25,17 @@ $years = $wpdb->get_col("
     ORDER BY year DESC
 ");
 
-// Costruisco query WP con filtro anno e ricerca
 $args = [
-    'post_type'      => 'incarichi_dip',
+    'post_type' => 'incarichi_dip',
     'posts_per_page' => $max_posts,
-    'orderby'        => 'date',
-    'order'          => 'DESC',
-    'paged'          => $paged,
+    'orderby' => 'date',
+    'order' => 'DESC',
+    'paged' => $paged,
 ];
 
 if ($selected_year) {
     $args['date_query'] = [
-        [
-            'year' => $selected_year,
-        ],
+        ['year' => $selected_year],
     ];
 }
 
@@ -51,7 +47,7 @@ $the_query = new WP_Query($args);
 $prefix = "_dci_icad_";
 ?>
 
-<!-- FORM FILTRO ANNO -->
+<!-- Form filtro anno -->
 <form method="get" action="<?php echo esc_url($base_url); ?>" class="mb-4">
     <label for="year-select">Filtra per anno pubblicazione:</label>
     <select id="year-select" name="year" onchange="this.form.submit()">
@@ -68,7 +64,6 @@ $prefix = "_dci_icad_";
     <?php endif; ?>
 </form>
 
-<!-- LOOP POST -->
 <?php if ($the_query->have_posts()) : ?>
 
     <?php while ($the_query->have_posts()) : $the_query->the_post();
@@ -76,29 +71,36 @@ $prefix = "_dci_icad_";
     endwhile;
     wp_reset_postdata(); ?>
 
-    <!-- PAGINAZIONE -->
-    <div class="row my-4">
-        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+    <!-- PAGINAZIONE BOOTSTRAP -->
+    <nav aria-label="Navigazione pagine">
+        <ul class="pagination justify-content-center">
             <?php
-            $paginate_base = add_query_arg(
-                array_filter([
+            $big = 999999999; // numero grande per sostituzione paged
+
+            $paginate_links = paginate_links([
+                'base'      => esc_url_raw(add_query_arg(['paged' => $big], $base_url)),
+                'format'    => '?paged=%#%',
+                'current'   => $paged,
+                'total'     => $the_query->max_num_pages,
+                'prev_text' => '&laquo;',
+                'next_text' => '&raquo;',
+                'type'      => 'array',
+                'add_args'  => array_filter([
                     'year' => $selected_year ?: null,
                     'search' => $search_param ?: null,
                 ]),
-                $base_url
-            );
-            echo paginate_links([
-                'base'      => $paginate_base . '%_%',
-                'format'    => (strpos($paginate_base, '?') === false ? '?' : '&') . 'paged=%#%',
-                'current'   => max(1, $paged),
-                'total'     => $the_query->max_num_pages,
-                'prev_text' => __('« Precedente'),
-                'next_text' => __('Successivo »'),
-                'type'      => 'list',
             ]);
+
+            if ($paginate_links) {
+                foreach ($paginate_links as $link) {
+                    // Evidenzio la pagina corrente
+                    $active = strpos($link, 'current') !== false ? ' active' : '';
+                    echo '<li class="page-item' . $active . '">' . str_replace('page-numbers', 'page-link', $link) . '</li>';
+                }
+            }
             ?>
-        </nav>
-    </div>
+        </ul>
+    </nav>
 
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
