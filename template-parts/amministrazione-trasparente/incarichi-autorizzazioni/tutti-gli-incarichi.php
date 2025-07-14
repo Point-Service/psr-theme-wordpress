@@ -32,3 +32,4 @@ $prefix = "_dci_icad_";
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
+<?php get_template_part("template-parts/search/more-results"); ?>
