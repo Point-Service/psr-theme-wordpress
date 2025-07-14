@@ -130,6 +130,9 @@ function load_more(){
 		if ($load_card_type == "global-search"){
 			$out .= load_template_part("template-parts/search/item");  
 		}
+		if ($load_card_type == "incarichi_dip"){
+			$out .= load_template_part("template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card");  
+		}
 		if ($load_card_type == "commissario"){
 			$out .= load_template_part("template-parts/commissario_osl/cards-list");  
 		}
