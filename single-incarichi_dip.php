@@ -40,10 +40,8 @@ while ( have_posts() ) :
 	$oggetto      = get_post_meta( $id, $prefix . 'oggetto_incarico', true );
 	$durata       = get_post_meta( $id, $prefix . 'durata',           true );
 
-	// Recupera gli allegati (array di file)
+	// Prendo gli allegati
 	$documenti = get_post_meta( $id, $prefix . 'allegati', true );
-	// Per compatibilità, assegno anche $allegati (se serve altrove)
-	$allegati = $documenti;
 
 ?>
 
@@ -84,7 +82,7 @@ while ( have_posts() ) :
 			<aside class="col-lg-4">
 				<?php get_template_part( 'template-parts/single/page-index', null, [
 					'descrizione_breve' => $descrizione_breve,
-					'allegati'          => $allegati,
+					'documenti'         => $documenti,
 					'compenso'          => $compenso,
 				] ); ?>
 			</aside>
@@ -117,55 +115,41 @@ while ( have_posts() ) :
 					<h4 id="oggetto">Oggetto dell’incarico</h4>
 					<p><?php echo esc_html( $oggetto ?: '-' ); ?></p>
 				</article>
-	
-	            <?php if (!empty($documenti) && is_array($documenti)) { ?>
-                <article class="it-page-section anchor-offset mt-5">
-                    <h4 id="documenti">Documenti</h4>
-                    <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                        <?php
-                        foreach ($documenti as $item) {
-                            $file_url = isset($item['url']) ? $item['url'] : '';
-                            $file_id  = isset($item['id']) ? intval($item['id']) : attachment_url_to_postid($file_url);
 
-                            if (!$file_id || empty($file_url)) {
-                                continue;
-                            }
-
-                            $allegato = get_post($file_id);
-                            if (!$allegato) {
-                                continue;
-                            }
-
-                            $title_allegato = $allegato->post_title;
-
-                            if (strlen($title_allegato) > 50) {
-                                $title_allegato = substr($title_allegato, 0, 50) . '...';
-                            }
-                            if (preg_match('/[A-Z]{5,}/', $title_allegato)) {
-                                $title_allegato = ucfirst(strtolower($title_allegato));
-                            }
-                            ?>
-                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                <svg class="icon" aria-hidden="true">
-                                    <use xlink:href="#it-clip"></use>
-                                </svg>
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <a class="text-decoration-none" href="<?php echo esc_url($file_url); ?>"
-                                           aria-label="Scarica l'allegato <?php echo esc_attr($allegato->post_title); ?>"
-                                           title="Scarica l'allegato <?php echo esc_attr($allegato->post_title); ?>"
-                                           target="_blank" rel="noopener noreferrer">
-                                            <?php echo esc_html($title_allegato); ?>
-                                        </a>
-                                    </h5>
-                                </div>
-                            </div>
-                        <?php
-                        }
-                        ?>
-                    </div>
-                </article>
-	            <?php } ?>
+				<?php if ( ! empty( $documenti ) && is_array( $documenti ) ) : ?>
+					<article class="it-page-section anchor-offset mt-5">
+						<h4 id="documenti">Documenti</h4>
+						<div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+							<?php foreach ( $documenti as $file_url ) : 
+								$file_id = attachment_url_to_postid( $file_url );
+								$allegato = get_post( $file_id );
+								if ( $allegato ) : 
+									$title_allegato = $allegato->post_title;
+									if ( strlen( $title_allegato ) > 50 ) {
+										$title_allegato = substr( $title_allegato, 0, 50 ) . '...';
+									}
+									if ( preg_match( '/[A-Z]{5,}/', $title_allegato ) ) {
+										$title_allegato = ucfirst( strtolower( $title_allegato ) );
+									}
+							?>
+								<div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+									<svg class="icon" aria-hidden="true">
+										<use xlink:href="#it-clip"></use>
+									</svg>
+									<div class="card-body">
+										<h5 class="card-title">
+											<a class="text-decoration-none" href="<?php echo esc_url( $file_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="Scarica l'allegato <?php echo esc_attr( $allegato->post_title ); ?>" title="Scarica l'allegato <?php echo esc_attr( $allegato->post_title ); ?>">
+												<?php echo esc_html( $title_allegato ); ?>
+											</a>
+										</h5>
+									</div>
+								</div>
+							<?php 
+								endif;
+							endforeach; ?>
+						</div>
+					</article>
+				<?php endif; ?>
 
 			</section>
 		</div>
@@ -178,6 +162,8 @@ while ( have_posts() ) :
 endwhile;
 ?>
 </main>
+
+<?php get_footer(); ?>
 
 <?php get_footer(); ?>
 
