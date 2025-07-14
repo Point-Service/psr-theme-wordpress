@@ -4,7 +4,12 @@ global $post;
 $max_posts = 5;
 $selected_year = isset($_GET['year']) ? intval($_GET['year']) : '';
 $search_param = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = max(1, get_query_var('paged')); // Garantisco che sia almeno 1
+
+// Recupero il numero pagina (paged) da query var o da GET per sicurezza
+$paged = max(1, get_query_var('paged'));
+if (isset($_GET['paged'])) {
+    $paged = max(1, intval($_GET['paged']));
+}
 
 // URL base archive CPT
 $form_action = get_post_type_archive_link('incarichi_dip');
@@ -12,10 +17,10 @@ if (!$form_action) {
     $form_action = site_url('/tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti/');
 }
 
-// Pulisco URL da parametri
+// Pulisco URL da parametri 'paged'
 $base_url = remove_query_arg(['paged'], $form_action);
 
-// Estrazione anni disponibili
+// Estrazione anni disponibili tramite query diretta al DB
 global $wpdb;
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date) AS year 
@@ -25,6 +30,7 @@ $years = $wpdb->get_col("
     ORDER BY year DESC
 ");
 
+// Costruzione args WP_Query
 $args = [
     'post_type' => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -33,13 +39,13 @@ $args = [
     'paged' => $paged,
 ];
 
-if ($selected_year) {
+if (!empty($selected_year)) {
     $args['date_query'] = [
         ['year' => $selected_year],
     ];
 }
 
-if ($search_param) {
+if (!empty($search_param)) {
     $args['s'] = $search_param;
 }
 
@@ -72,40 +78,38 @@ $prefix = "_dci_icad_";
     wp_reset_postdata(); ?>
 
     <!-- PAGINAZIONE BOOTSTRAP -->
-    <nav aria-label="Navigazione pagine">
-        <ul class="pagination justify-content-center">
-            <?php
-            $big = 999999999; // numero grande per sostituzione paged
+    <?php
+    $big = 999999999; // numero grande per sostituzione paged
+    $base = str_replace($big, '%#%', esc_url(get_pagenum_link($big)));
 
-            $paginate_links = paginate_links([
-                'base'      => esc_url_raw(add_query_arg(['paged' => $big], $base_url)),
-                'format'    => '?paged=%#%',
-                'current'   => $paged,
-                'total'     => $the_query->max_num_pages,
-                'prev_text' => '&laquo;',
-                'next_text' => '&raquo;',
-                'type'      => 'array',
-                'add_args'  => array_filter([
-                    'year' => $selected_year ?: null,
-                    'search' => $search_param ?: null,
-                ]),
-            ]);
+    $paginate_links = paginate_links([
+        'base'      => $base,
+        'format'    => '',
+        'current'   => $paged,
+        'total'     => $the_query->max_num_pages,
+        'prev_text' => '&laquo;',
+        'next_text' => '&raquo;',
+        'type'      => 'array',
+        'add_args'  => array_filter([
+            'year' => $selected_year ?: null,
+            'search' => $search_param ?: null,
+        ]),
+    ]);
 
-            if ($paginate_links) {
-                foreach ($paginate_links as $link) {
-                    // Evidenzio la pagina corrente
-                    $active = strpos($link, 'current') !== false ? ' active' : '';
-                    echo '<li class="page-item' . $active . '">' . str_replace('page-numbers', 'page-link', $link) . '</li>';
-                }
-            }
-            ?>
-        </ul>
-    </nav>
+    if ($paginate_links) {
+        echo '<nav aria-label="Navigazione pagine"><ul class="pagination justify-content-center">';
+        foreach ($paginate_links as $link) {
+            $active = strpos($link, 'current') !== false ? ' active' : '';
+            $link = str_replace('page-numbers', 'page-link', $link);
+            echo '<li class="page-item' . $active . '">' . $link . '</li>';
+        }
+        echo '</ul></nav>';
+    }
+    ?>
 
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
-
 
