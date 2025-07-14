@@ -71,6 +71,15 @@ function load_more(){
 				'orderby' => 'post_title',
 				'order'   => 'ASC'
 			);
+			case "incarichi_dip":
+				$args = array(
+				's' => $_POST['search'],
+				'posts_per_page' => $_POST['post_count'] + $_POST['load_posts'],
+				'post_type'      => $post_types,
+				'post_status'    => 'publish',
+				'orderby' => 'data',
+				'order'   => 'DESC'
+			);		
 			break;
 			default:
 				$args = array(
@@ -131,10 +140,11 @@ function load_more(){
 			$out .= load_template_part("template-parts/search/item");  
 		}
 		if ($load_card_type == "incarichi_dip"){
-			$out .= load_template_part("template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card");  
+			$out .= load_template_part("template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card");  			
 		}
 		if ($load_card_type == "commissario"){
-			$out .= load_template_part("template-parts/commissario_osl/cards-list");  
+			$out .= load_template_part("template-parts/commissario_osl/cards-list"); 
+			
 		}
 		if ($load_card_type == "progetto"){
 			$out .= load_template_part("template-parts/progetti/cards-list");  
