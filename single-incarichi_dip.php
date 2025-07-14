@@ -121,22 +121,28 @@ while ( have_posts() ) :
 					<article class="it-page-section anchor-offset mt-5">
 						<h4 id="documenti">Documenti</h4>
 						<div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-							<?php foreach ( $allegati as $url => $title ) : ?>
+							<?php foreach ( $allegati as $url => $maybe_title ) : ?>
 							<?php
-								// Mostra solo il nome del file, anche se il titolo non è stato salvato
+								// Se $maybe_title è un numero (probabile ID) o stringa vuota ⇒ fallback al basename
 								$nome_file = basename( $url );
+								$titolo    = ( is_numeric( $maybe_title ) || $maybe_title === '' ) ? $nome_file : $maybe_title;
+								// Accorcia titoli troppo lunghi
+								if ( strlen( $titolo ) > 60 ) {
+									$titolo = substr( $titolo, 0, 57 ) . '…';
+								}
 							?>
 							<div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
 								<svg class="icon" aria-hidden="true"><use xlink:href="#it-clip"></use></svg>
 								<div class="card-body">
 									<h5 class="card-title">
 										<a class="text-decoration-none" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener noreferrer">
-											<?php echo esc_html( $nome_file ); ?>
+											<?php echo esc_html( $titolo ); ?>
 										</a>
 									</h5>
 								</div>
 							</div>
 						<?php endforeach; ?>
+
 
 						</div>
 					</article>
