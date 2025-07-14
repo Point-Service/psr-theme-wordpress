@@ -1,7 +1,6 @@
 <?php
 /**
- * Registra il custom post type "incarichi_conferiti_ai_dipendenti"
- * (sigla: ICAD)
+ * Registra il custom post type "incarichi_dip"
  */
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
@@ -12,7 +11,7 @@ function dci_register_post_type_icad() {
 		'add_new'        => _x( 'Aggiungi un Incarico conferito', 'Post Type',             'design_comuni_italia' ),
 		'add_new_item'   => __( 'Aggiungi un nuovo Incarico conferito', 'design_comuni_italia' ),
 		'edit_item'      => __( 'Modifica Incarico conferito',           'design_comuni_italia' ),
-		'featured_image' => __( 'Immagine di riferimento incarico',               'design_comuni_italia' ),
+		'featured_image' => __( 'Immagine di riferimento incarico',      'design_comuni_italia' ),
 	);
 
 	$args = array(
@@ -22,7 +21,6 @@ function dci_register_post_type_icad() {
 		'hierarchical' => true,
 		'public'       => true,
 		'show_in_menu' => 'edit.php?post_type=elemento_trasparenza',
-		// 'menu_position' => 5,
 		'menu_icon'    => 'dashicons-media-interactive',
 		'has_archive'  => false,
 		'map_meta_cap' => true,
@@ -45,16 +43,15 @@ function dci_register_post_type_icad() {
 		'description'   => __( 'Tipologia personalizzata per la pubblicazione degli incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
 	);
 
-	register_post_type( 'incarichi_conferiti_ai_dipendenti', $args );
+	register_post_type( 'incarichi_dip', $args );
 
-	// Rimuove l'editor di WordPress
-	remove_post_type_support( 'incarichi_conferiti_ai_dipendenti', 'editor' );
+	remove_post_type_support( 'incarichi_dip', 'editor' );
 }
 
 /* Messaggio informativo sotto al titolo */
 add_action( 'edit_form_after_title', 'dci_icad_add_content_after_title' );
 function dci_icad_add_content_after_title( $post ) {
-	if ( $post->post_type === 'incarichi_conferiti_ai_dipendenti' ) {
+	if ( $post->post_type === 'incarichi_dip' ) {
 		echo '<span><i>Il <strong>titolo/norma</strong> corrisponde al <strong>titolo dell\'incarico conferito</strong>.</i></span><br><br>';
 	}
 }
@@ -63,13 +60,13 @@ function dci_icad_add_content_after_title( $post ) {
 add_action( 'cmb2_init', 'dci_add_icad_metaboxes' );
 function dci_add_icad_metaboxes() {
 
-	$prefix = '_dci_icad_';   // prefisso univoco
+	$prefix = '_dci_icad_';
 
 	/* — Metabox: Apertura — */
 	$cmb_apertura = new_cmb2_box( array(
 		'id'           => $prefix . 'box_apertura',
 		'title'        => __( 'Informazioni sull\'incarico conferito', 'design_comuni_italia' ),
-		'object_types' => array( 'incarichi_conferiti_ai_dipendenti' ),
+		'object_types' => array( 'incarichi_dip' ),
 		'context'      => 'normal',
 		'priority'     => 'high',
 	) );
@@ -117,7 +114,7 @@ function dci_add_icad_metaboxes() {
 	$cmb_dettagli = new_cmb2_box( array(
 		'id'           => $prefix . 'box_dettagli',
 		'title'        => __( 'Dettagli beneficiario', 'design_comuni_italia' ),
-		'object_types' => array( 'incarichi_conferiti_ai_dipendenti' ),
+		'object_types' => array( 'incarichi_dip' ),
 		'context'      => 'normal',
 		'priority'     => 'high',
 	) );
@@ -145,7 +142,7 @@ function dci_add_icad_metaboxes() {
 	$cmb_documenti = new_cmb2_box( array(
 		'id'           => $prefix . 'box_documenti',
 		'title'        => __( 'Documenti', 'design_comuni_italia' ),
-		'object_types' => array( 'incarichi_conferiti_ai_dipendenti' ),
+		'object_types' => array( 'incarichi_dip' ),
 		'context'      => 'normal',
 		'priority'     => 'high',
 	) );
@@ -162,7 +159,7 @@ function dci_add_icad_metaboxes() {
 add_action( 'admin_print_scripts-post-new.php', 'dci_icad_admin_script', 11 );
 add_action( 'admin_print_scripts-post.php',      'dci_icad_admin_script', 11 );
 function dci_icad_admin_script() {
-	if ( get_current_screen()->post_type === 'incarichi_conferiti_ai_dipendenti' ) {
+	if ( get_current_screen()->post_type === 'incarichi_dip' ) {
 		wp_enqueue_script(
 			'icad-admin-script',
 			get_template_directory_uri() . '/inc/admin-js/incarichi_conferiti_ai_dipendenti.js',
@@ -175,7 +172,7 @@ function dci_icad_admin_script() {
 add_filter( 'wp_insert_post_data', 'dci_icad_set_post_content', 99, 1 );
 function dci_icad_set_post_content( $data ) {
 
-	if ( $data['post_type'] === 'incarichi_conferiti_ai_dipendenti' ) {
+	if ( $data['post_type'] === 'incarichi_dip' ) {
 
 		$descrizione_breve = isset( $_POST['_dci_icad_descrizione_breve'] )
 			? $_POST['_dci_icad_descrizione_breve']
