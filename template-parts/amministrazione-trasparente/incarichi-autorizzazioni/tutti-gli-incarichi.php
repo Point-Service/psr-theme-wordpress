@@ -2,6 +2,8 @@
 global $post;
 
 $max_posts = 5;
+
+// Recupera parametri GET, puliti e validi
 $selected_year = isset($_GET['year']) && is_numeric($_GET['year']) ? intval($_GET['year']) : '';
 $search_param = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $paged = max(1, get_query_var('paged'));
@@ -9,13 +11,13 @@ if (isset($_GET['paged'])) {
     $paged = max(1, intval($_GET['paged']));
 }
 
-// Ottengo link base archive CPT
+// Ottengo URL base archivio CPT
 $form_action = get_post_type_archive_link('incarichi_dip');
 if (!$form_action) {
     $form_action = site_url('/tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti/');
 }
 
-// Estrazione anni disponibili
+// Ottengo anni disponibili dal DB
 global $wpdb;
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date) AS year
@@ -24,7 +26,7 @@ $years = $wpdb->get_col("
     ORDER BY year DESC
 ");
 
-// Preparo query args
+// Costruisco args WP_Query
 $args = [
     'post_type' => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -36,14 +38,16 @@ $args = [
 if ($selected_year) {
     $args['date_query'] = [['year' => $selected_year]];
 }
-
 if ($search_param) {
     $args['s'] = $search_param;
 }
 
 $the_query = new WP_Query($args);
 
-// Costruisco array parametri GET pulito (solo parametri validi)
+// Costruisco base URL senza parametri di paginazione
+$base_url = remove_query_arg('paged', $form_action);
+
+// Costruisco array parametri GET da mantenere (solo se valorizzati)
 $query_args = [];
 if ($selected_year) {
     $query_args['year'] = $selected_year;
@@ -52,12 +56,11 @@ if ($search_param) {
     $query_args['search'] = $search_param;
 }
 
-// URL base pulito senza paged
-$base_url = remove_query_arg('paged', $form_action);
-$base_url = add_query_arg($query_args, $base_url);
+// Aggiungo i parametri al base_url
+$base_url_with_args = add_query_arg($query_args, $base_url);
 ?>
 
-<!-- FORM FILTRO ANNO -->
+<!-- Form filtro anno -->
 <form method="get" action="<?php echo esc_url($base_url); ?>" id="filter-form" class="mb-4">
     <label for="year-select">Filtra per anno pubblicazione:</label>
     <select id="year-select" name="year">
@@ -86,25 +89,28 @@ $base_url = add_query_arg($query_args, $base_url);
 </script>
 
 <?php if ($the_query->have_posts()) : ?>
+
     <?php while ($the_query->have_posts()) : $the_query->the_post();
         get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card');
-    endwhile; wp_reset_postdata(); ?>
+    endwhile;
+    wp_reset_postdata();
+    ?>
 
     <!-- PAGINAZIONE BOOTSTRAP -->
     <?php
-    // Costruisco base paginazione manualmente
-    $current_url = remove_query_arg('paged', $base_url);
-    $base = trailingslashit($current_url) . 'page/%#%/';
+    // Creo base per paginate_links con parametri GET e paginazione in query string
+    $paginate_base = $base_url_with_args;
+    // Rimuovo slash finale per evitare //page/ in caso di permalink, ma qui usiamo query string
+    $paginate_base = rtrim($paginate_base, '/');
 
     $paginate_links = paginate_links([
-        'base' => $base,
-        'format' => '',
+        'base' => $paginate_base . '%_%',     // base + format
+        'format' => '?paged=%#%',              // paginazione come query string
         'current' => $paged,
         'total' => $the_query->max_num_pages,
         'prev_text' => '&laquo;',
         'next_text' => '&raquo;',
         'type' => 'array',
-        'add_args' => [], // già inclusi in $base_url
     ]);
 
     if ($paginate_links) {
@@ -118,9 +124,8 @@ $base_url = add_query_arg($query_args, $base_url);
     }
     ?>
 
-<?php else: ?>
+<?php else : ?>
     <div class="alert alert-info text-center" role="alert">
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
-
