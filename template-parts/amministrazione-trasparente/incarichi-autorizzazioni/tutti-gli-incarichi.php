@@ -1,10 +1,13 @@
 <?php
 global $post;
+$max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 5;
+$load_posts = 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $args = array(
     'post_type'      => 'incarichi_dip',
+    'posts_per_page'    => $max_posts,
     'orderby'        => 'date',    // Ordina per data pubblicazione
     'order'          => 'DESC',    // Dalla più recente alla meno recente
     'paged'          => $paged,
