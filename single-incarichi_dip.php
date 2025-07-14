@@ -13,7 +13,7 @@ get_header();
 while ( have_posts() ) :
 	the_post();
 
-	$prefix = '_dci_icad_';                          // <‑‑ prefisso univoco CMB2
+	$prefix = '_dci_icad_';                          
 	$id     = get_the_ID();
 
 	/* ─────────────  META  ───────────── */
@@ -32,17 +32,18 @@ while ( have_posts() ) :
 	$sogg_percettore  = get_post_meta( $id, $prefix . 'soggetto_percettore',  true );
 	$sogg_conferente  = get_post_meta( $id, $prefix . 'soggetto_conferente',  true );
 
-	$dirigente_flag   = get_post_meta( $id, $prefix . 'dirigente_non_dirigente', true ); // 'dirigente' | 'non_dirigente'
+	$dirigente_flag   = get_post_meta( $id, $prefix . 'dirigente_non_dirigente', true );
 
 	$data_aut_raw = get_post_meta( $id, $prefix . 'data_conferimento_autorizzazione', true );
-	$data_aut     = $data_aut_raw ? date_i18n( 'j F Y', intval( $data_aut_raw ) ) : '-';
+	$data_aut     = $data_aut_raw ? date_i18n( 'j F Y', strtotime($data_aut_raw) ) : '-';
 
 	$oggetto      = get_post_meta( $id, $prefix . 'oggetto_incarico', true );
 	$durata       = get_post_meta( $id, $prefix . 'durata',           true );
 
-
-        // Gli allegati, assumendo che dci_get_meta restituisca un array di URL
-        $documenti = get_post_meta($post->ID, $prefix . 'allegati', true);
+	// Recupera gli allegati (array di file)
+	$documenti = get_post_meta( $id, $prefix . 'allegati', true );
+	// Per compatibilità, assegno anche $allegati (se serve altrove)
+	$allegati = $documenti;
 
 ?>
 
@@ -117,47 +118,54 @@ while ( have_posts() ) :
 					<p><?php echo esc_html( $oggetto ?: '-' ); ?></p>
 				</article>
 	
-	                    <?php if (!empty($documenti) && is_array($documenti)) { ?>
-                        <article class="it-page-section anchor-offset mt-5">
-                            <h4 id="documenti">Documenti</h4>
-                            <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-                                <?php
-                                foreach ($documenti as $file_url) { // Assumo che $documenti sia un array di URL
-                                    $file_id = attachment_url_to_postid($file_url); // Ottieni l'ID dal URL
-                                    $allegato = get_post($file_id); // Ottieni l'oggetto WP_Post per l'allegato
+	            <?php if (!empty($documenti) && is_array($documenti)) { ?>
+                <article class="it-page-section anchor-offset mt-5">
+                    <h4 id="documenti">Documenti</h4>
+                    <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
+                        <?php
+                        foreach ($documenti as $item) {
+                            $file_url = isset($item['url']) ? $item['url'] : '';
+                            $file_id  = isset($item['id']) ? intval($item['id']) : attachment_url_to_postid($file_url);
 
-                                    if ($allegato) { // Assicurati che l'allegato esista
-                                        $title_allegato = $allegato->post_title;
-                                        
-                                        if (strlen($title_allegato) > 50) {
-                                            $title_allegato = substr($title_allegato, 0, 50) . '...';
-                                        }
-                                        if (preg_match('/[A-Z]{5,}/', $title_allegato)) {
-                                            $title_allegato = ucfirst(strtolower($title_allegato));
-                                        }
-                                        ?>
-                                        <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-                                            <svg class="icon" aria-hidden="true">
-                                                <use xlink:href="#it-clip"></use>
-                                            </svg>
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <a class="text-decoration-none" href="<?php echo esc_url($file_url); ?>"
-                                                        aria-label="Scarica l'allegato <?php echo esc_attr($allegato->post_title); ?>"
-                                                        title="Scarica l'allegato <?php echo esc_attr($allegato->post_title); ?>"
-                                                        target="_blank" rel="noopener noreferrer">
-                                                        <?php echo esc_html($title_allegato); ?>
-                                                    </a>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    <?php
-                                    }
-                                } ?>
+                            if (!$file_id || empty($file_url)) {
+                                continue;
+                            }
+
+                            $allegato = get_post($file_id);
+                            if (!$allegato) {
+                                continue;
+                            }
+
+                            $title_allegato = $allegato->post_title;
+
+                            if (strlen($title_allegato) > 50) {
+                                $title_allegato = substr($title_allegato, 0, 50) . '...';
+                            }
+                            if (preg_match('/[A-Z]{5,}/', $title_allegato)) {
+                                $title_allegato = ucfirst(strtolower($title_allegato));
+                            }
+                            ?>
+                            <div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#it-clip"></use>
+                                </svg>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a class="text-decoration-none" href="<?php echo esc_url($file_url); ?>"
+                                           aria-label="Scarica l'allegato <?php echo esc_attr($allegato->post_title); ?>"
+                                           title="Scarica l'allegato <?php echo esc_attr($allegato->post_title); ?>"
+                                           target="_blank" rel="noopener noreferrer">
+                                            <?php echo esc_html($title_allegato); ?>
+                                        </a>
+                                    </h5>
+                                </div>
                             </div>
-                        </article>
-                    <?php } ?>
-
+                        <?php
+                        }
+                        ?>
+                    </div>
+                </article>
+	            <?php } ?>
 
 			</section>
 		</div>
