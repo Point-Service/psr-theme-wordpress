@@ -46,7 +46,7 @@ while ( have_posts() ) :
 
 
 
-echo '<pre>';
+echo 'yyyyyyyyyyyyyyyyy<pre>';
 var_dump( $allegati );
 echo '</pre>';
 
