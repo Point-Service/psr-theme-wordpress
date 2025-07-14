@@ -61,13 +61,13 @@ if ( ! isset( $prefix ) ) {
                         <span class="d-block"><?php echo !empty($soggetto_conferente) ? esc_html($soggetto_conferente) : '-'; ?></span>
                     </div>
 
-<div class="col-md-3 col-sm-6">
-    <small class="text-uppercase text-muted d-block">Data conferimento autorizzazione</small>
-    <?php
-    $data_conferimento = get_post_meta(get_the_ID(), $prefix . 'data_conferimento_autorizzazione', true);
-    echo $data_conferimento ? date_i18n('j F Y', intval($data_conferimento)) : '-';
-    ?>
-</div>
+                    <div class="col-md-3 col-sm-6">
+                        <small class="text-uppercase text-muted d-block">Data conferimento autorizzazione</small>
+                        <?php
+                        $data_conferimento = get_post_meta(get_the_ID(), $prefix . 'data_conferimento_autorizzazione', true);
+                        echo $data_conferimento ? date_i18n('j F Y', intval($data_conferimento)) : '-';
+                        ?>
+                    </div>
 
                     <div class="col-md-3 col-sm-6">
                         <small class="text-uppercase text-muted d-block">Durata</small>
