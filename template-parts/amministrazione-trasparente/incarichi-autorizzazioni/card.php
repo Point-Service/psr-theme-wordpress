@@ -65,7 +65,17 @@ if ( ! isset( $prefix ) ) {
                         <small class="text-uppercase text-muted d-block">Data conferimento autorizzazione</small>
                         <?php
                         $data_conferimento = get_post_meta(get_the_ID(), $prefix . 'data_conferimento_autorizzazione', true);
-                        $data_conferimento_formatted = !empty($data_conferimento) ? date_i18n('j F Y', strtotime($data_conferimento)) : '-';
+
+                        // Gestione data in formato dd/mm/yyyy
+                        if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $data_conferimento, $matches)) {
+                            // $matches[1] = giorno, $matches[2] = mese, $matches[3] = anno
+                            $data_formattata = $matches[3] . '-' . $matches[2] . '-' . $matches[1];
+                            $timestamp = strtotime($data_formattata);
+                        } else {
+                            $timestamp = strtotime($data_conferimento);
+                        }
+
+                        $data_conferimento_formatted = $timestamp ? date_i18n('j F Y', $timestamp) : '-';
                         ?>
                         <span class="d-block"><?php echo esc_html($data_conferimento_formatted); ?></span>
                     </div>
@@ -95,43 +105,41 @@ if ( ! isset( $prefix ) ) {
             <div class="col-md-6">
                 <h6 class="text-uppercase text-muted small">Allegati</h6>
                 <p class="mb-0">
-                                    <?php
-$allegati = get_post_meta(get_the_ID(), $prefix . 'allegati', true);
+                    <?php
+                    $allegati = get_post_meta(get_the_ID(), $prefix . 'allegati', true);
 
-if (!empty($allegati) && is_array($allegati)) {
-    $i = 1;
-    foreach ($allegati as $file_id => $file_data) {
-        // Forza l’uso dell’ID se disponibile
-        $attachment_id = intval($file_data['id'] ?? $file_id);
-        $file_url = wp_get_attachment_url($attachment_id);
-        $file_title = get_the_title($attachment_id);
+                    if (!empty($allegati) && is_array($allegati)) {
+                        $i = 1;
+                        foreach ($allegati as $file_id => $file_data) {
+                            // Forza l’uso dell’ID se disponibile
+                            $attachment_id = intval($file_data['id'] ?? $file_id);
+                            $file_url = wp_get_attachment_url($attachment_id);
+                            $file_title = get_the_title($attachment_id);
 
-        if (!$file_url) continue; // Salta se l'allegato non ha URL
+                            if (!$file_url) continue; // Salta se l'allegato non ha URL
 
-        // Fallback in caso di titolo vuoto
-        if (empty($file_title)) {
-            $file_title = 'Allegato ' . $i;
-        }
-
-        ?>
-        <span class="d-inline-flex align-items-center mb-2 me-3">
-            <svg class="icon icon-sm me-1" aria-hidden="true">
-                <use href="#it-file"></use>
-            </svg>
-            <span class="text fw-semibold">
-                <a class="text-decoration-none" href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener noreferrer">
-                    <?php echo esc_html($file_title); ?>
-                </a>
-            </span>
-        </span>
-        <?php
-        $i++;
-    }
-} else {
-    echo 'Nessun Allegato';
-}
-?>
-
+                            // Fallback in caso di titolo vuoto
+                            if (empty($file_title)) {
+                                $file_title = 'Allegato ' . $i;
+                            }
+                    ?>
+                            <span class="d-inline-flex align-items-center mb-2 me-3">
+                                <svg class="icon icon-sm me-1" aria-hidden="true">
+                                    <use href="#it-file"></use>
+                                </svg>
+                                <span class="text fw-semibold">
+                                    <a class="text-decoration-none" href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener noreferrer">
+                                        <?php echo esc_html($file_title); ?>
+                                    </a>
+                                </span>
+                            </span>
+                    <?php
+                            $i++;
+                        }
+                    } else {
+                        echo 'Nessun Allegato';
+                    }
+                    ?>
                 </p>
             </div>
 
