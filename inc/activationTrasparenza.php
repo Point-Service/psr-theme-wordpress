@@ -242,9 +242,9 @@ function insertTaxonomyTrasparenzaTerms() {
     /* ----------------------------------------------------------- */
 
     // Mappa: 'Nome termine' => 'Descrizione desiderata'
-    $descrizioni = [
-    
-     // Disposizioni generali
+  $descrizioni = [
+
+    // Disposizioni generali
     "Piano triennale per la prevenzione della corruzione e della trasparenza" => 
         "Documento programmatico che definisce le strategie e le misure per prevenire la corruzione "
       . "e garantire la trasparenza nelle attività dell’amministrazione, in ottemperanza agli artt. 1 e 10 del D.Lgs. 33/2013.",
@@ -257,11 +257,16 @@ function insertTaxonomyTrasparenzaTerms() {
         "Elenco delle informazioni e documenti che l’amministrazione è tenuta a pubblicare "
       . "e aggiornare per garantire la massima trasparenza nei confronti di cittadini e imprese.",
 
-
     // Organizzazione
     "Organi di indirizzo politico-amministrativo" =>
         "Informazioni relative agli organi politici e amministrativi, quali giunta, consiglio e dirigenti, "
       . "con relativi incarichi e competenze.",
+
+    "Sanzioni per mancata comunicazione dei dati" =>
+        "Dettagli sulle sanzioni previste per la mancata o ritardata comunicazione delle informazioni obbligatorie.",
+
+    "Rendiconti gruppi consiliari regionali/provinciali" =>
+        "Documentazione e rendicontazione economica dei gruppi consiliari a livello regionale e provinciale.",
 
     "Articolazione degli uffici" =>
         "Descrizione della struttura organizzativa interna dell’amministrazione, con indicazione di uffici, servizi e loro funzioni.",
@@ -269,6 +274,9 @@ function insertTaxonomyTrasparenzaTerms() {
     "Telefono e posta elettronica" =>
         "Elenco dei recapiti telefonici e indirizzi di posta elettronica istituzionali per il contatto con l’amministrazione.",
 
+    // Consulenti e collaboratori
+    "Titolari di incarichi di collaborazione o consulenza" =>
+        "Elenco dei soggetti esterni incaricati di collaborazioni o consulenze, con dettagli sugli incarichi conferiti.",
 
     // Personale
     "Incarichi amministrativi di vertice" =>
@@ -280,20 +288,98 @@ function insertTaxonomyTrasparenzaTerms() {
     "Posizioni organizzative" =>
         "Informazioni sulle posizioni organizzative intermedie, con relativa descrizione di funzioni e competenze.",
 
+    "Dotazione organica" =>
+        "Descrizione del personale in servizio in termini numerici e di qualifiche, suddivisa per aree e categorie.",
+
+    "Personale non a tempo indeterminato" =>
+        "Dettaglio sul personale assunto con contratti a tempo determinato o altre forme contrattuali non stabili.",
+
     "Tassi di assenza" =>
         "Dati statistici relativi ai tassi di assenza del personale, per monitorare l’efficienza e la produttività.",
 
+    "Incarichi conferiti e autorizzati ai dipendenti" =>
+        "Informazioni sugli incarichi aggiuntivi affidati ai dipendenti pubblici, con relativi dettagli e autorizzazioni.",
 
-    // Bandi di gara e contratti
+    "Contrattazione collettiva" =>
+        "Dettagli sugli accordi e contratti collettivi applicati all’interno dell’amministrazione.",
+
+    "Contrattazione integrativa" =>
+        "Informazioni sulle negoziazioni e accordi integrativi stipulati per migliorare le condizioni di lavoro.",
+
+    "OIV" =>
+        "Dati sull’Organismo Indipendente di Valutazione, con funzioni di controllo e monitoraggio della performance.",
+
+    // Bandi di concorso
+    "Concorsi" =>
+        "Elenco e informazioni relative ai bandi di concorso pubblico per l’assunzione nel settore pubblico.",
+
+    // Performance
+    "Piano della Performance" =>
+        "Documento programmatico che definisce obiettivi e risultati attesi dall’amministrazione pubblica.",
+
+    "Relazione sulla Performance" =>
+        "Rapporto annuale che analizza i risultati ottenuti in relazione agli obiettivi prefissati.",
+
+    "Ammontare complessivo dei premi" =>
+        "Informazioni sul totale delle risorse erogate sotto forma di premi e incentivi al personale.",
+
+    "Benessere organizzativo" =>
+        "Dati e iniziative volte a migliorare il clima e il benessere lavorativo all’interno dell’ente.",
+
+    // Enti controllati
+    "Enti pubblici vigilati" =>
+        "Elenco degli enti pubblici soggetti a vigilanza da parte dell’amministrazione.",
+
+    "Società partecipate" =>
+        "Informazioni sulle società a partecipazione pubblica, con dati su attività e governance.",
+
+    "Enti di diritto privato controllati" =>
+        "Dettaglio sugli enti privati sotto controllo pubblico e sulle modalità di controllo esercitate.",
+
+    "Rappresentazione grafica" =>
+        "Visualizzazioni grafiche e schemi relativi alla rete di enti e società controllate.",
+
+    // Attività e procedimenti
+    "Dati aggregati attività amministrativa" =>
+        "Raccolta e sintesi statistica delle principali attività svolte dall’amministrazione.",
+
+    "Tipologie di procedimento" =>
+        "Classificazione e descrizione delle diverse tipologie di procedimenti amministrativi gestiti.",
+
+    "Monitoraggio tempi procedimentali" =>
+        "Dati e analisi sui tempi medi di esecuzione dei procedimenti amministrativi.",
+
+    "Dichiarazioni sostitutive  e acquisizione d'ufficio dei dati" =>
+        "Informazioni sulle modalità di autocertificazione e sull’acquisizione automatica dei dati da parte dell’amministrazione.",
+
+    // Provvedimenti
+    "Provvedimenti organi indirizzo-politico" =>
+        "Elenco e dettagli dei provvedimenti adottati dagli organi di indirizzo politico-amministrativo.",
+
+    "Provvedimenti dirigenti" =>
+        "Informazioni relative ai provvedimenti emanati dai dirigenti dell’amministrazione.",
+
+    // Bandi di Gara e contratti
+    "Informazioni sulle singole procedure in formato tabellare" =>
+        "Dati dettagliati e organizzati delle singole procedure di gara in formato facilmente consultabile.",
+
+    "Atti delle amministrazioni aggiudicatrici e degli enti aggiudicatori distintamente per ogni procedura" =>
+        "Documenti ufficiali relativi alle amministrazioni che aggiudicano le gare, organizzati per procedura.",
+
     "Contratti Pubblici" =>
         "Elenco completo e aggiornato dei contratti pubblici di lavori, servizi e forniture stipulati "
       . "dall’amministrazione, in conformità all’Art. 37 del D.Lgs. 50/2016.",
 
+    // Sovvenzioni , contributi sussidi, vantaggi economici
+    "Criteri e modalità" =>
+        "Descrizione dei criteri e delle modalità con cui sono erogati sovvenzioni, contributi, sussidi e altri vantaggi economici.",
 
-    // Sovvenzioni, contributi sussidi, vantaggi economici
     "Atti di concessione" =>
         "Atti amministrativi con cui l’ente concede sovvenzioni, contributi, sussidi o vantaggi economici "
       . "a soggetti pubblici o privati, secondo quanto previsto dall’Art. 26 del D.Lgs. 33/2013.",
+
+    "Elenchi" =>
+        "Elenco dettagliato dei beneficiari di sovvenzioni, contributi, sussidi e vantaggi economici concessi dall’amministrazione.",
 
     // Bilanci
     "Bilancio preventivo e consuntivo" =>
@@ -302,8 +388,69 @@ function insertTaxonomyTrasparenzaTerms() {
 
     "Piano degli indicatori e risultati attesi di bilancio" =>
         "Piano dettagliato degli indicatori di performance e degli obiettivi finanziari attesi dall’ente.",
-        
-    ];
+
+    // Beni immobili e gestione patrimonio
+    "Patrimonio immobiliare" =>
+        "Informazioni sul patrimonio immobiliare dell’ente, comprese proprietà, beni e relativi dati gestionali.",
+
+    "Canoni di locazione o affitto" =>
+        "Dettaglio dei canoni di locazione o affitto pagati o incassati dall’amministrazione.",
+
+    // Controlli e rilievi sull'amministrazione
+    "Organismi indipendenti di valutazione, nuclei di valutazione o altri organismi con funzioni analoghe" =>
+        "Informazioni sugli organismi indipendenti che valutano la performance e l’efficienza dell’amministrazione.",
+
+    "Organi di revisione amministrativa e contabile" =>
+        "Dettagli sugli organi incaricati della revisione amministrativa e contabile interna.",
+
+    "Corte dei conti" =>
+        "Informazioni e documenti relativi ai controlli e alle decisioni della Corte dei conti sull’ente.",
+
+    // Servizi Erogati
+    "Carta dei servizi e standard di qualità" =>
+        "Documento che illustra i servizi offerti dall’amministrazione e gli standard di qualità garantiti.",
+
+    "Costi contabilizzati" =>
+        "Dati relativi ai costi sostenuti per l’erogazione dei servizi pubblici.",
+
+    "Tempi medi di erogazione dei servizi" =>
+        "Statistiche sui tempi medi necessari per la fornitura dei servizi ai cittadini.",
+
+    "Liste di attesa" =>
+        "Informazioni sulle liste di attesa per l’accesso a determinati servizi o prestazioni.",
+
+    // Pagamenti dell'amministrazione
+    "Dati sui pagamenti" =>
+        "Dati aggregati relativi ai pagamenti effettuati dall’amministrazione verso fornitori e terzi.",
+
+    "Indicatore di tempestività dei pagamenti" =>
+        "Indicatore che misura la tempestività con cui l’ente effettua i pagamenti, in conformità alla normativa vigente.",
+
+    "IBAN e pagamenti informatici" =>
+        "Informazioni sugli IBAN utilizzati e sulle modalità di pagamento elettronico adottate dall’amministrazione.",
+
+    "Dati sui pagamenti del servizio sanitario nazionale" =>
+        "Dati specifici relativi ai pagamenti effettuati nell’ambito del servizio sanitario nazionale.",
+
+    // Opere pubbliche
+    "Nuclei di valutazione e verifica degli investimenti pubblici" =>
+        "Informazioni sui nuclei incaricati della valutazione e verifica degli investimenti pubblici.",
+
+    "Atti di programmazione delle opere pubbliche" =>
+        "Documenti relativi alla programmazione e pianificazione delle opere pubbliche.",
+
+    "Tempi costi e indicatori di realizzazione delle opere pubbliche" =>
+        "Dati e indicatori relativi ai tempi, costi e qualità delle opere pubbliche realizzate.",
+
+    // Pianificazione e governo del territorio
+    "Pianificazione e governo del territorio" =>
+        "Informazioni e documenti relativi alla pianificazione urbanistica e al governo del territorio comunale.",
+
+    // Informazioni ambientali
+    "Informazioni ambientali" =>
+        "Dati e documenti riguardanti la gestione ambientale e le politiche di sostenibilità adottate dall’ente.",
+
+];
 
     foreach ( $descrizioni as $term_name => $new_desc ) {
         dci_update_term_description( $term_name, 'tipi_cat_amm_trasp', $new_desc );
