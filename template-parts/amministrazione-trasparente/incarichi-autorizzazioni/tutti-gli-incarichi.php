@@ -1,49 +1,37 @@
 <?php
 global $post;
 
-// Numero elementi per pagina fisso a 10
 $posts_per_page = 10;
-
-// Prendo l'anno selezionato da GET (se esiste)
 $selected_year = isset($_GET['year']) ? sanitize_text_field($_GET['year']) : '';
-
-// Pagina corrente (paged)
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
-// Recupero anni unici dal meta '_dci_icad_anno_conferimento' presenti nei post
+// --- Ottieni anni unici da post_date di tutti i post 'incarichi_dip' ---
 global $wpdb;
-$meta_key = '_dci_icad_anno_conferimento';
+$post_type = 'incarichi_dip';
+$years = $wpdb->get_col("
+    SELECT DISTINCT YEAR(post_date) 
+    FROM $wpdb->posts
+    WHERE post_type = '$post_type' 
+      AND post_status = 'publish'
+    ORDER BY post_date DESC
+");
 
-// Query per estrarre anni distinti presenti
-$years = $wpdb->get_col(
-    $wpdb->prepare(
-        "
-        SELECT DISTINCT meta_value FROM $wpdb->postmeta
-        WHERE meta_key = %s
-        ORDER BY meta_value DESC
-        ",
-        $meta_key
-    )
-);
-
-// Prepara argomenti base query WP_Query
-$args = array(
-    'post_type'      => 'incarichi_dip',
+// Prepara argomenti base query
+$args = [
+    'post_type'      => $post_type,
     'posts_per_page' => $posts_per_page,
     'orderby'        => 'date',
     'order'          => 'DESC',
     'paged'          => $paged,
-);
+];
 
-// Se è stato selezionato un anno valido, aggiungo meta_query per filtrare
-if ( $selected_year && in_array( $selected_year, $years, true ) ) {
-    $args['meta_query'] = array(
-        array(
-            'key'     => $meta_key,
-            'value'   => $selected_year,
-            'compare' => '=',
-        ),
-    );
+// Se è selezionato un anno valido, aggiungi filtro data
+if ( $selected_year && in_array($selected_year, $years, true) ) {
+    $args['date_query'] = [
+        [
+            'year' => intval($selected_year),
+        ]
+    ];
 }
 
 $the_query = new WP_Query($args);
@@ -52,7 +40,7 @@ $prefix = "_dci_icad_";
 
 <!-- Form filtro anno -->
 <form method="get" class="mb-4">
-    <label for="year-select">Filtra per anno conferimento:</label>
+    <label for="year-select">Filtra per anno pubblicazione:</label>
     <select id="year-select" name="year" onchange="this.form.submit()">
         <option value="">Tutti gli anni</option>
         <?php foreach ($years as $year_option) : ?>
