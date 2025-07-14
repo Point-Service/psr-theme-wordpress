@@ -5,7 +5,6 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $args = array(
     'post_type'      => 'incarichi_dip',
-    'posts_per_page' => $max_posts,
     'orderby'        => 'date',    // Ordina per data pubblicazione
     'order'          => 'DESC',    // Dalla più recente alla meno recente
     'paged'          => $paged,
