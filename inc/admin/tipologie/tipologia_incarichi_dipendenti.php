@@ -20,18 +20,17 @@ function dci_register_post_type_icad() {
 	);
 
 	$args = array(
-		'label'         => __( 'Incarico conferito', 'design_comuni_italia' ),
-		'labels'        => $labels,
-		'supports'      => array( 'title', 'author' ),
-		'hierarchical'  => true,
-		'public'        => true,
-		'show_in_menu'  => 'edit.php?post_type=elemento_trasparenza',
-		'menu_icon'     => 'dashicons-media-interactive',
-		'has_archive'   => false,
-		'map_meta_cap'  => true,
-		// usa capability standard "post" per evitare problemi di permessi
+		'label'           => __( 'Incarico conferito', 'design_comuni_italia' ),
+		'labels'          => $labels,
+		'supports'        => array( 'title', 'author' ),
+		'hierarchical'    => true,
+		'public'          => true,
+		'show_in_menu'    => 'edit.php?post_type=elemento_trasparenza',
+		'menu_icon'       => 'dashicons-media-interactive',
+		'has_archive'     => false,
+		'map_meta_cap'    => true,
 		'capability_type' => 'post',
-		'description'   => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
+		'description'     => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
 	);
 
 	register_post_type( 'incarichi_dip', $args );
@@ -49,14 +48,13 @@ function dci_icad_notice_after_title( $post ) {
 }
 
 /* -------------------------------------------------
-   CMB2 Metaboxes
+   CMB2 Metaboxes con nuovi campi
 --------------------------------------------------*/
 add_action( 'cmb2_init', 'dci_icad_metaboxes' );
 function dci_icad_metaboxes() {
 
 	$prefix = '_dci_icad_';
 
-	/* — Apertura — */
 	$cmb_apertura = new_cmb2_box( array(
 		'id'           => $prefix . 'box_apertura',
 		'title'        => __( 'Informazioni sull\'incarico conferito', 'design_comuni_italia' ),
@@ -64,63 +62,65 @@ function dci_icad_metaboxes() {
 	) );
 
 	$cmb_apertura->add_field( array(
-		'id'      => $prefix . 'tipo_stato',
-		'name'    => __( 'Stato dell\'incarico *', 'design_comuni_italia' ),
-		'type'    => 'taxonomy_radio_hierarchical',
-		'taxonomy'=> 'tipi_stato_bando',
-	) );
-
-	$cmb_apertura->add_field( array(
-		'id'          => $prefix . 'anno_beneficio',
-		'name'        => __( 'Anno di beneficio *', 'design_comuni_italia' ),
+		'id'          => $prefix . 'anno_conferimento',
+		'name'        => __( 'Anno di Conferimento', 'design_comuni_italia' ),
 		'type'        => 'text_date_timestamp',
 		'date_format' => 'Y',
 	) );
 
 	$cmb_apertura->add_field( array(
-		'id'   => $prefix . 'rag_incarico',
-		'name' => __( 'Ragione dell\'incarico *', 'design_comuni_italia' ),
+		'id'   => $prefix . 'soggetto_dichiarante',
+		'name' => __( 'Soggetto dichiarante', 'design_comuni_italia' ),
 		'type' => 'text',
 	) );
 
 	$cmb_apertura->add_field( array(
-		'id'   => $prefix . 'importo',
-		'name' => __( 'Importo *', 'design_comuni_italia' ),
+		'id'   => $prefix . 'soggetto_percettore',
+		'name' => __( 'Soggetto percettore', 'design_comuni_italia' ),
 		'type' => 'text',
 	) );
 
 	$cmb_apertura->add_field( array(
-		'id'   => $prefix . 'responsabile',
-		'name' => __( 'Responsabile *', 'design_comuni_italia' ),
+		'id'      => $prefix . 'dirigente_non_dirigente',
+		'name'    => __( 'Dirigente/Non Dirigente', 'design_comuni_italia' ),
+		'type'    => 'select',
+		'options' => array(
+			'dirigente'     => __( 'Dirigente', 'design_comuni_italia' ),
+			'non_dirigente' => __( 'Non Dirigente', 'design_comuni_italia' ),
+		),
+	) );
+
+	$cmb_apertura->add_field( array(
+		'id'   => $prefix . 'soggetto_conferente',
+		'name' => __( 'Soggetto Conferente', 'design_comuni_italia' ),
 		'type' => 'text',
 	) );
 
-	/* — Dettagli beneficiario — */
-	$cmb_dettagli = new_cmb2_box( array(
-		'id'           => $prefix . 'box_dettagli',
-		'title'        => __( 'Dettagli beneficiario', 'design_comuni_italia' ),
-		'object_types' => array( 'incarichi_dip' ),
+	$cmb_apertura->add_field( array(
+		'id'          => $prefix . 'data_conferimento_autorizzazione',
+		'name'        => __( 'Data conferimento autorizzazione dell’incarico', 'design_comuni_italia' ),
+		'type'        => 'text_date_timestamp',
+		'date_format' => 'd/m/Y',
 	) );
 
-	$cmb_dettagli->add_field( array(
-		'id'   => $prefix . 'descrizione_breve',
-		'name' => __( 'Descrizione breve', 'design_comuni_italia' ),
-		'type' => 'textarea',
-	) );
-
-	$cmb_dettagli->add_field( array(
-		'id'   => $prefix . 'ragione_sociale',
-		'name' => __( 'Ragione sociale *', 'design_comuni_italia' ),
+	$cmb_apertura->add_field( array(
+		'id'   => $prefix . 'oggetto_incarico',
+		'name' => __( 'Oggetto dell’incarico', 'design_comuni_italia' ),
 		'type' => 'text',
 	) );
 
-	$cmb_dettagli->add_field( array(
-		'id'   => $prefix . 'codice_fiscale',
-		'name' => __( 'Codice fiscale / P. IVA *', 'design_comuni_italia' ),
+	$cmb_apertura->add_field( array(
+		'id'   => $prefix . 'durata',
+		'name' => __( 'Durata', 'design_comuni_italia' ),
 		'type' => 'text',
 	) );
 
-	/* — Documenti — */
+	$cmb_apertura->add_field( array(
+		'id'   => $prefix . 'compenso_lordo',
+		'name' => __( 'Compenso Lordo', 'design_comuni_italia' ),
+		'type' => 'text',
+	) );
+
 	$cmb_documenti = new_cmb2_box( array(
 		'id'           => $prefix . 'box_documenti',
 		'title'        => __( 'Documenti', 'design_comuni_italia' ),
@@ -157,15 +157,17 @@ function dci_icad_set_post_content( $data ) {
 
 	if ( $data['post_type'] === 'incarichi_dip' ) {
 
-		$descrizione_breve = isset( $_POST['_dci_icad_descrizione_breve'] )
-			? $_POST['_dci_icad_descrizione_breve']
+		$prefix = '_dci_icad_';
+
+		$descrizione_breve = isset( $_POST[$prefix . 'oggetto_incarico'] )
+			? sanitize_text_field( $_POST[$prefix . 'oggetto_incarico'] )
 			: '';
 
-		$testo_completo    = isset( $_POST['_dci_icad_testo_completo'] )
-			? $_POST['_dci_icad_testo_completo']
+		$soggetto_dichiarante = isset( $_POST[$prefix . 'soggetto_dichiarante'] )
+			? sanitize_text_field( $_POST[$prefix . 'soggetto_dichiarante'] )
 			: '';
 
-		$data['post_content'] = $descrizione_breve . "\n\n" . $testo_completo;
+		$data['post_content'] = $descrizione_breve . "\n\n" . 'Dichiarante: ' . $soggetto_dichiarante;
 	}
 
 	return $data;
