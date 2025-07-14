@@ -7,8 +7,8 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
-    'orderby'        => 'meta_value_num',
-    'order'          => 'DESC',
+    'orderby'        => 'date',    // Ordina per data pubblicazione
+    'order'          => 'DESC',    // Dalla più recente alla meno recente
     'paged'          => $paged,
 );
 
@@ -19,7 +19,7 @@ $prefix = "_dci_icad_";
 <?php if ($the_query->have_posts()) : ?>
     
     <?php while ($the_query->have_posts()) : $the_query->the_post();
-        get_template_part('template-parts/amministrazione-trasparente/incarichi-dipendenti/card');
+        get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card');
     endwhile;
     wp_reset_postdata(); ?>
     
