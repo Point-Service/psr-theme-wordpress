@@ -3,30 +3,33 @@ global $post;
 
 $max_posts = 5;
 
-// Recupera parametri GET, puliti e validi
+// Prendo parametri GET, puliti
 $selected_year = isset($_GET['year']) && is_numeric($_GET['year']) ? intval($_GET['year']) : '';
 $search_param = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = max(1, get_query_var('paged'));
-if (isset($_GET['paged'])) {
+$paged = 1;
+if (get_query_var('paged')) {
+    $paged = max(1, intval(get_query_var('paged')));
+} elseif (isset($_GET['paged'])) {
     $paged = max(1, intval($_GET['paged']));
 }
 
-// Ottengo URL base archivio CPT
+// URL archivio CPT
 $form_action = get_post_type_archive_link('incarichi_dip');
 if (!$form_action) {
     $form_action = site_url('/tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti/');
 }
 
-// Ottengo anni disponibili dal DB
+// Prendo anni disponibili dal DB
 global $wpdb;
 $years = $wpdb->get_col("
-    SELECT DISTINCT YEAR(post_date) AS year
-    FROM $wpdb->posts
-    WHERE post_type = 'incarichi_dip' AND post_status = 'publish'
+    SELECT DISTINCT YEAR(post_date) AS year 
+    FROM $wpdb->posts 
+    WHERE post_type = 'incarichi_dip' 
+      AND post_status = 'publish' 
     ORDER BY year DESC
 ");
 
-// Costruisco args WP_Query
+// Costruisco query WP
 $args = [
     'post_type' => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -38,6 +41,7 @@ $args = [
 if ($selected_year) {
     $args['date_query'] = [['year' => $selected_year]];
 }
+
 if ($search_param) {
     $args['s'] = $search_param;
 }
@@ -47,7 +51,7 @@ $the_query = new WP_Query($args);
 // Costruisco base URL senza parametri di paginazione
 $base_url = remove_query_arg('paged', $form_action);
 
-// Costruisco array parametri GET da mantenere (solo se valorizzati)
+// Mantengo solo parametri valorizzati
 $query_args = [];
 if ($selected_year) {
     $query_args['year'] = $selected_year;
@@ -56,8 +60,9 @@ if ($search_param) {
     $query_args['search'] = $search_param;
 }
 
-// Aggiungo i parametri al base_url
+// Aggiungo parametri GET
 $base_url_with_args = add_query_arg($query_args, $base_url);
+$base_url_with_args = rtrim($base_url_with_args, '/');
 ?>
 
 <!-- Form filtro anno -->
@@ -98,30 +103,31 @@ $base_url_with_args = add_query_arg($query_args, $base_url);
 
     <!-- PAGINAZIONE BOOTSTRAP -->
     <?php
-    // Creo base per paginate_links con parametri GET e paginazione in query string
-    $paginate_base = $base_url_with_args;
-    // Rimuovo slash finale per evitare //page/ in caso di permalink, ma qui usiamo query string
-    $paginate_base = rtrim($paginate_base, '/');
+    $total_pages = $the_query->max_num_pages;
 
-    $paginate_links = paginate_links([
-        'base' => $paginate_base . '%_%',     // base + format
-        'format' => '?paged=%#%',              // paginazione come query string
-        'current' => $paged,
-        'total' => $the_query->max_num_pages,
-        'prev_text' => '&laquo;',
-        'next_text' => '&raquo;',
-        'type' => 'array',
-    ]);
+    if ($total_pages > 1) :
 
-    if ($paginate_links) {
-        echo '<nav aria-label="Navigazione pagine"><ul class="pagination justify-content-center">';
-        foreach ($paginate_links as $link) {
-            $active = strpos($link, 'current') !== false ? ' active' : '';
-            $link = str_replace('page-numbers', 'page-link', $link);
-            echo '<li class="page-item' . $active . '">' . $link . '</li>';
+        $paginate_links = paginate_links([
+            'base' => $base_url_with_args . '%_%',
+            'format' => '?paged=%#%',
+            'current' => $paged,
+            'total' => $total_pages,
+            'prev_text' => '&laquo;',
+            'next_text' => '&raquo;',
+            'type' => 'array',
+        ]);
+
+        if ($paginate_links) {
+            echo '<nav aria-label="Navigazione pagine"><ul class="pagination justify-content-center">';
+            foreach ($paginate_links as $link) {
+                $active = strpos($link, 'current') !== false ? ' active' : '';
+                $link = str_replace('page-numbers', 'page-link', $link);
+                echo '<li class="page-item' . $active . '">' . $link . '</li>';
+            }
+            echo '</ul></nav>';
         }
-        echo '</ul></nav>';
-    }
+
+    endif;
     ?>
 
 <?php else : ?>
@@ -129,3 +135,4 @@ $base_url_with_args = add_query_arg($query_args, $base_url);
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
+
