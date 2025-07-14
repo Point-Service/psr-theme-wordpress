@@ -71,16 +71,6 @@ function load_more(){
 				'orderby' => 'post_title',
 				'order'   => 'ASC'
 			);
-		    case "incarichi_dip":
-		        $args = array(
-		            's' => isset($_POST['search']) ? sanitize_text_field($_POST['search']) : '',
-		            'posts_per_page' => $posts_per_page,
-		            'paged' => $paged,
-		            'post_type' => $post_types,
-		            'post_status' => 'publish',
-		            'orderby' => 'data',
-		            'order' => 'DESC',
-		        );	
 			break;
 			default:
 				$args = array(
@@ -121,9 +111,7 @@ function load_more(){
 		while( have_posts() ): the_post();
 		$post = get_post();
 		++$i;
-			
-echo $load_card_type;
-			
+
 		if ($load_card_type == "servizio"){
 			$servizio = $post;
 			$out .= load_template_part("template-parts/servizio/card");  
@@ -142,12 +130,8 @@ echo $load_card_type;
 		if ($load_card_type == "global-search"){
 			$out .= load_template_part("template-parts/search/item");  
 		}
-		if ($load_card_type == "incarichi_dip"){
-			$out .= load_template_part("template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card");  			
-		}
 		if ($load_card_type == "commissario"){
-			$out .= load_template_part("template-parts/commissario_osl/cards-list"); 
-			
+			$out .= load_template_part("template-parts/commissario_osl/cards-list");  
 		}
 		if ($load_card_type == "progetto"){
 			$out .= load_template_part("template-parts/progetti/cards-list");  
