@@ -12,7 +12,7 @@ function dci_register_post_type_icad() {
 		'add_new'        => _x( 'Aggiungi un Incarico conferito', 'Post Type',             'design_comuni_italia' ),
 		'add_new_item'   => __( 'Aggiungi un nuovo Incarico conferito', 'design_comuni_italia' ),
 		'edit_item'      => __( 'Modifica Incarico conferito',           'design_comuni_italia' ),
-		'featured_image' => __( 'Immagine di riferimento',               'design_comuni_italia' ),
+		'featured_image' => __( 'Immagine di riferimento incarico',               'design_comuni_italia' ),
 	);
 
 	$args = array(
