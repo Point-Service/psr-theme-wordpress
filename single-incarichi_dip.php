@@ -47,7 +47,8 @@ while ( have_posts() ) :
 	// Data conferimento autorizzazione - gestione migliorata
 	$data_aut_raw = get_post_meta( $id, $prefix . 'data_conferimento_autorizzazione', true );
 	if ( ! empty( $data_aut_raw ) ) {
-	    $timestamp = strtotime( $data_aut_raw );
+	    // Assumiamo che sia un timestamp Unix (numero intero)
+	    $timestamp = intval( $data_aut_raw );
 	    $data_aut = $timestamp ? date_i18n( 'j F Y', $timestamp ) : '-';
 	} else {
 	    $data_aut = '-';
