@@ -1,80 +1,81 @@
 <?php
 
 /**
- * Registra il custom post type "incarichi_autorizzazioni"
+ * Registra il custom post type "atto_concessione"
  */
-add_action('init', 'dci_register_post_type_incarichi_autorizzazioni');
-function dci_register_post_type_incarichi_autorizzazioni()
+add_action('init', 'dci_register_post_type_atto_concessione');
+function dci_register_post_type_atto_concessione()
 {
     $labels = array(
-        'name'               => _x('Incarichi e Autorizzazioni', 'Post Type General Name', 'design_comuni_italia'),
-        'singular_name'      => _x('Incarichi e Autorizzazioni', 'Post Type Singular Name', 'design_comuni_italia'),
-        'add_new'            => _x('Aggiungi un Incarichi e Autorizzazione', 'Post Type', 'design_comuni_italia'),
-        'add_new_item'       => __('Aggiungi un nuovo Incarico e Autorizzazione', 'design_comuni_italia'),
-        'edit_item'          => __('Modifica un Incarico e Autorizzazione', 'design_comuni_italia'),
+        'name'               => _x('Atti di Concessione', 'Post Type General Name', 'design_comuni_italia'),
+        'singular_name'      => _x('Atto di Concessione', 'Post Type Singular Name', 'design_comuni_italia'),
+        'add_new'            => _x('Aggiungi un Atto di Concessione', 'Post Type', 'design_comuni_italia'),
+        'add_new_item'       => __('Aggiungi un nuovo Atto di Concessione', 'design_comuni_italia'),
+        'edit_item'          => __('Modifica Atto di Concessione', 'design_comuni_italia'),
         'featured_image'     => __('Immagine di riferimento', 'design_comuni_italia'),
     );
 
     $args = array(
-        'label'               => __('Incarico e Autorizzazione', 'design_comuni_italia'),
+        'label'               => __('Atto di Concessione', 'design_comuni_italia'),
         'labels'              => $labels,
         'supports'            => array('title', 'author'),
         'hierarchical'        => true,
         'public'              => true,
-        'menu_position'       => 5,
+        'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza', // <‑‑ cambio qui
+      // 'menu_position'       => 5,        
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
         //'rewrite'             => array('slug' => 'atto-concessione', 'with_front' => false),
         'map_meta_cap'        => true,
         'capabilities' => array(
-            'edit_post'             => 'edit_incarichi_autorizzazioni',
-            'read_post'             => 'read_incarichi_autorizzazioni',
-            'delete_post'           => 'delete_incarichi_autorizzazioni',
-            'edit_posts'            => 'edit_incarichi_autorizzazioni',
-            'edit_others_posts'     => 'edit_others_incarichi_autorizzazioni',
-            'publish_posts'         => 'publish_incarichi_autorizzazioni',
-            'read_private_posts'    => 'read_private_incarichi_autorizzazioni',
-            'delete_posts'          => 'delete_incarichi_autorizzazioni',
-            'delete_private_posts'  => 'delete_private_incarichi_autorizzazioni',
-            'delete_published_posts' => 'delete_published_incarichi_autorizzazioni',
-            'delete_others_posts' => 'delete_others_incarichi_autorizzazioni',
-            'edit_private_posts' => 'edit_private_incarichi_autorizzazioni',
-            'edit_published_posts' => 'edit_published_incarichi_autorizzazioni',
-            'create_posts'          => 'create_incarichi_autorizzazioni'
+            'edit_post'             => 'edit_atto_concessione',
+            'read_post'             => 'read_atto_concessione',
+            'delete_post'           => 'delete_atto_concessione',
+            'edit_posts'            => 'edit_atto',
+            'edit_others_posts'     => 'edit_others_atti',
+            'publish_posts'         => 'publish_atto',
+            'read_private_posts'    => 'read_private_atto',
+            'delete_posts'          => 'delete_atto',
+            'delete_private_posts'  => 'delete_private_atto',
+            'delete_published_posts' => 'delete_published_atto',
+            'delete_others_posts' => 'delete_others_atto',
+            'edit_private_posts' => 'edit_private_atto',
+            'edit_published_posts' => 'edit_published_atto',
+            'create_posts'          => 'create_atto'
         ),
-        'description'         => __("Tipologia personalizzata per la pubblicazione degli incarichi e autorizzazioni del Comune.", 'design_comuni_italia'),
+        'description'         => __("Tipologia personalizzata per la pubblicazione dei atto di concessione del Comune.", 'design_comuni_italia'),
     );
 
-    register_post_type('incarichi_autorizzazioni', $args);
+    register_post_type('atto_concessione', $args);
 
     // Rimuove il supporto all'editor
-    remove_post_type_support('incarichi_autorizzazioni', 'editor');
+    remove_post_type_support('atto_concessione', 'editor');
 }
 
 /**
  * Messaggio informativo sotto il titolo nel backend
  */
-add_action('edit_form_after_title', 'dci_incarichi_autorizzazioni_add_content_after_title');
-function dci_incarichi_autorizzazioni_add_content_after_title($post)
+add_action('edit_form_after_title', 'dci_atto_concessione_add_content_after_title');
+function dci_atto_concessione_add_content_after_title($post)
 {
-    if ($post->post_type == 'incarichi_autorizzazioni') {
-        echo '<span><i>Il <strong>titolo/norma</strong> corrisponde al <strong>titolo dell incarico e autorizzazione</strong>.</i></span><br><br>';
+    if ($post->post_type == 'atto_concessione') {
+        echo '<span><i>Il <strong>titolo/norma</strong> corrisponde al <strong>titolo del Atto di Concessione</strong>.</i></span><br><br>';
     }
 }
 
 /**
  * CMB2 Metaboxes per il CPT "atto_concessione"
  */
-add_action('cmb2_init', 'dci_add_incarichi_autorizzazioni_metaboxes');
-function dci_add_incarichi_autorizzazioni_metaboxes()
+add_action('cmb2_init', 'dci_add_atto_concessione_metaboxes');
+function dci_add_atto_concessione_metaboxes()
 {
     $prefix = '_dci_atto_concessione_';
 
     // Metabox: Apertura
     $cmb_apertura = new_cmb2_box(array(
         'id'           => $prefix . 'box_apertura',
-        'title'        => __('Informazioni sul incarichi_autorizzazioni', 'design_comuni_italia'),
-        'object_types' => array('incarichi_autorizzazioni'),
+        'title'        => __('Informazioni sul atto_concessione', 'design_comuni_italia'),
+        'object_types' => array('atto_concessione'),
         'context'      => 'normal',
         'priority'     => 'high',
     ));
@@ -171,14 +172,28 @@ function dci_add_incarichi_autorizzazioni_metaboxes()
     ) );
 }
 
+/**
+ * Includi JS personalizzato nella pagina di modifica/creazione progetto
+*/
+add_action('admin_print_scripts-post-new.php', 'dci_atto_concessione_admin_script', 11);
+add_action('admin_print_scripts-post.php', 'dci_atto_concessione_admin_script', 11);
 
-
-add_filter('wp_insert_post_data', 'dci_incarichi_autorizzazioni_set_post_content', 99, 1);
-function dci_incarichi_autorizzazioni_set_post_content($data)
+function dci_atto_concessione_admin_script()
 {
-    if ($data['post_type'] == 'incarichi_autorizzazioni') {
-        $descrizione_breve = isset($_POST['_dci_incarichi_autorizzazioni_descrizione_breve']) ? $_POST['_dci_incarichi_autorizzazioni_descrizione_breve'] : '';
-        $testo_completo    = isset($_POST['_dci_incarichi_autorizzazioni_testo_completo']) ? $_POST['_dci_incarichi_autorizzazioni_testo_completo'] : '';
+    global $post_type;
+    if ($post_type == 'atto_concessione') {
+        wp_enqueue_script('atto_concessione-admin-script', get_template_directory_uri() . '/inc/admin-js/atto_concessione.js');
+    }
+}
+
+// Imposta il contenuto del post "Progetto" con i campi personalizzati
+
+add_filter('wp_insert_post_data', 'dci_atto_concessione_set_post_content', 99, 1);
+function dci_atto_concessione_set_post_content($data)
+{
+    if ($data['post_type'] == 'atto_concessione') {
+        $descrizione_breve = isset($_POST['_dci_atto_concessione_descrizione_breve']) ? $_POST['_dci_atto_concessione_descrizione_breve'] : '';
+        $testo_completo    = isset($_POST['_dci_atto_concessione_testo_completo']) ? $_POST['_dci_atto_concessione_testo_completo'] : '';
 
         $data['post_content'] = $descrizione_breve . '<br>' . $testo_completo;
     }
