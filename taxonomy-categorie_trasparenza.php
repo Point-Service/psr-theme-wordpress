@@ -81,7 +81,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     <?php // get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?> 
                 </div>
             </div>
-        </div>	
+        </div>
     <?php } else { ?>
         
         <form role="search" id="search-form" method="get" class="search-form">
