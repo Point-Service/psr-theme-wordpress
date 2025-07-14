@@ -63,13 +63,13 @@ function dci_incarichi_autorizzazioni_add_content_after_title($post)
     }
 }
 
-/**
- * CMB2 Metaboxes per il CPT "atto_concessione"
- */
+
 add_action('cmb2_init', 'dci_add_incarichi_autorizzazioni_metaboxes');
 function dci_add_incarichi_autorizzazioni_metaboxes()
 {
-    $prefix = '_dci_atto_concessione_';
+
+   
+    $prefix = '_dci_incarichi_autorizzazioni_';
 
     // Metabox: Apertura
     $cmb_apertura = new_cmb2_box(array(
@@ -159,7 +159,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes()
     $cmb_documenti = new_cmb2_box( array(
         'id'           => $prefix . 'box_documenti',
         'title'        => __( 'Documenti', 'design_comuni_italia' ),
-        'object_types' => array('atto_concessione'),
+        'object_types' => array('incarichi_autorizzazioni'),
         'context'      => 'normal',
         'priority'     => 'high',
     ) );
