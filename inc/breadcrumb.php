@@ -894,57 +894,24 @@ class Breadcrumb_Trail {
 		
                     }
 		
-			else if ( is_tax( array( 'tipi_cat_amm_trasp' ) ) ) {
+  		  else if (is_tax(array("tipi_cat_amm_trasp"))){
+			    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
 			
-				// 1) Breadcrumb root
-				$this->items[] = "<a href='" . home_url( 'amministrazione-trasparente' ) . "'>" .
-					__( 'Amministrazione Trasparente', 'design_comuni_italia' ) . '</a>';
+			    $term = get_queried_object();
+			    if ($term instanceof WP_Term) {
+			        $ancestors = get_ancestors($term->term_id, $term->taxonomy);
+			        $ancestors = array_reverse($ancestors);
 			
-				$term = get_queried_object();
+			        foreach ($ancestors as $ancestor_id) {
+			            $ancestor = get_term($ancestor_id, $term->taxonomy);
+			            if (!is_wp_error($ancestor) && $ancestor) {
+			                $this->items[] = "<a href='" . esc_url(get_term_link($ancestor)) . "'>" . esc_html($ancestor->name) . "</a>";
+			            }
+			        }
 			
-				if ( $term instanceof WP_Term ) {
-			
-					/* ---------- 2) Definisci le eccezioni ---------- */
-					$special_cases = array(
-						// slug attuale                         => slug desiderato
-						'atti-di-concessione'                   => 'atti-di-concessione-sovvenzioni-contributi-sussidi-vantaggi-economici',
-						// aggiungi altre eccezioni qui …
-					);
-			
-					/* ---------- 3) Aggiungi antenati ---------- */
-					$ancestors = get_ancestors( $term->term_id, $term->taxonomy );
-					$ancestors = array_reverse( $ancestors );
-			
-					foreach ( $ancestors as $ancestor_id ) {
-						$ancestor = get_term( $ancestor_id, $term->taxonomy );
-						if ( ! is_wp_error( $ancestor ) && $ancestor ) {
-			
-							$ancestor_slug = $ancestor->slug;
-			
-							// Se lo slug dell'antenato è in $special_cases, sostituiscilo
-							if ( isset( $special_cases[ $ancestor_slug ] ) ) {
-								$ancestor_link = home_url( trailingslashit( $term->taxonomy ) . $special_cases[ $ancestor_slug ] );
-							} else {
-								$ancestor_link = get_term_link( $ancestor );
-							}
-			
-							$this->items[] = "<a href='" . esc_url( $ancestor_link ) . "'>" .
-								esc_html( $ancestor->name ) . '</a>';
-						}
-					}
-			
-					/* ---------- 4) Termine corrente ---------- */
-					$current_slug = $term->slug;
-			
-					if ( isset( $special_cases[ $current_slug ] ) ) {
-						$current_link = home_url( trailingslashit( $term->taxonomy ) . $special_cases[ $current_slug ] );
-						$this->items[] = "<a href='" . esc_url( $current_link ) . "'>" .
-							esc_html( $term->name ) . '</a>';
-					} else {
-						$this->items[] = esc_html( $term->name ); // Label corrente (no link)
-					}
-				}
-			}
+			        $this->items[] = __(dci_get_breadcrumb_label($term->name), "design_comuni_italia");
+			    }
+			}  
      
 
 
