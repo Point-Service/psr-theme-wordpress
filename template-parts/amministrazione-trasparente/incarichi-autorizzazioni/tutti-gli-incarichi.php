@@ -16,8 +16,6 @@ $args = array(
 $the_query = new WP_Query($args);
 $prefix = "_dci_incarichi_autorizzazioni_";
 
-
-echo'sassasa';
 ?>
 
 <?php if ($the_query->have_posts()) : ?>
