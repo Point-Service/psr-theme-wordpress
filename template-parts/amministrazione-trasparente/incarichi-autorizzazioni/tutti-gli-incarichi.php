@@ -5,32 +5,28 @@ $max_posts = 5;
 $selected_year = isset($_GET['year']) ? intval($_GET['year']) : '';
 $search_param = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
-// Recupero la pagina corrente in modo sicuro
+// Paged da query var e da GET (fallback)
 $paged = max(1, get_query_var('paged'));
 if (isset($_GET['paged'])) {
     $paged = max(1, intval($_GET['paged']));
 }
 
-// URL base archive CPT
+// Base URL archive
 $form_action = get_post_type_archive_link('incarichi_dip');
 if (!$form_action) {
     $form_action = site_url('/tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti/');
 }
 
-// Rimuovo parametro 'paged' dal base url per usarlo in form e paginazione
-$base_url = remove_query_arg(['paged'], $form_action);
-
-// Estraggo gli anni disponibili (da WPDB)
+// Estraggo gli anni dal DB
 global $wpdb;
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date) AS year 
     FROM $wpdb->posts 
-    WHERE post_type = 'incarichi_dip' 
-      AND post_status = 'publish'
+    WHERE post_type = 'incarichi_dip' AND post_status = 'publish'
     ORDER BY year DESC
 ");
 
-// Preparo gli args della query
+// Preparo query args
 $args = [
     'post_type' => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -50,6 +46,20 @@ if (!empty($search_param)) {
 }
 
 $the_query = new WP_Query($args);
+
+// PREPARO L'URL PER FORM E PAGINAZIONE
+// 1. Rimuovo 'paged' e parametri vuoti ('year' se vuoto)
+$query_args = [];
+if (!empty($selected_year)) {
+    $query_args['year'] = $selected_year;
+}
+if (!empty($search_param)) {
+    $query_args['search'] = $search_param;
+}
+
+// 2. Costruisco base URL senza paged (per form e paginazione)
+$base_url = remove_query_arg('paged', $form_action);
+$base_url = add_query_arg($query_args, $base_url);
 ?>
 
 <!-- FORM FILTRO ANNO -->
@@ -71,7 +81,7 @@ $the_query = new WP_Query($args);
 
 <script>
     document.getElementById('year-select').addEventListener('change', function(){
-        // Se l'anno è vuoto rimuovo il name per evitare ?year= vuoto in URL
+        // Se vuoto rimuovo nome per evitare ?year= vuoto
         if(this.value === '') {
             this.removeAttribute('name');
         } else {
@@ -90,24 +100,22 @@ $the_query = new WP_Query($args);
 
     <!-- PAGINAZIONE BOOTSTRAP -->
     <?php
-    $big = 999999999;
+    // Prendo URL corrente senza 'paged' (per costruire la base)
+    $current_url = remove_query_arg('paged', $base_url);
 
-    // Costruisco base per paginazione rimuovendo 'paged' e aggiungendo placeholder %#%
-    $base = remove_query_arg('paged', esc_url(get_pagenum_link($big)));
-    $base = add_query_arg('paged', '%#%', $base);
+    // Costruisco base paginazione con placeholder
+    // Controllo se URL termina con slash
+    $base = trailingslashit($current_url) . 'page/%#%/';
 
     $paginate_links = paginate_links([
-        'base'      => $base,
-        'format'    => '',
-        'current'   => $paged,
-        'total'     => $the_query->max_num_pages,
+        'base' => $base,
+        'format' => '',
+        'current' => $paged,
+        'total' => $the_query->max_num_pages,
         'prev_text' => '&laquo;',
         'next_text' => '&raquo;',
-        'type'      => 'array',
-        'add_args'  => array_filter([
-            'year' => !empty($selected_year) ? $selected_year : null,
-            'search' => !empty($search_param) ? $search_param : null,
-        ]),
+        'type' => 'array',
+        'add_args' => [], // tutti i parametri già presenti in $base
     ]);
 
     if ($paginate_links) {
@@ -126,4 +134,3 @@ $the_query = new WP_Query($args);
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
-
