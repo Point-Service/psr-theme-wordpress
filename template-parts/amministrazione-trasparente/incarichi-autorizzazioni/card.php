@@ -2,7 +2,7 @@
 global $prefix;
 
 if ( ! isset( $prefix ) ) {
-    $prefix = '_dci_incarichi_autorizzazioni_';
+    $prefix = '_dci_icad_';
 }
 ?>
 
@@ -130,4 +130,3 @@ if ( ! isset( $prefix ) ) {
         </div>
     </div>
 </div>
-
