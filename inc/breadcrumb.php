@@ -392,20 +392,32 @@ class Breadcrumb_Trail {
 
 
 		    
-		    	   if (get_post_type() == 'atto_concessione') {					
-                                   $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";	
-				   $this->items[] =  "<a href='/tipi_cat_amm_trasp/sovvenzioni-contributi-sussidi-vantaggi-economici'>" . __("sovvenzioni contributi sussidi vantaggi economici", "design_comuni_italia") . "</a>";
-				   
-				   $this->items[] =  "<a href='/tipi_cat_amm_trasp/atti-di-concessione-sovvenzioni-contributi-sussidi-vantaggi-economici/'>" . __("Atti di Concessione", "design_comuni_italia") . "</a>";	
-				
-            
-				   
-				   $this->items[] = get_the_title();
-				   return;
-			   }
-              
+			    	   if (get_post_type() == 'atto_concessione') {					
+	                                   $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";	
+					   $this->items[] =  "<a href='/tipi_cat_amm_trasp/sovvenzioni-contributi-sussidi-vantaggi-economici'>" . __("sovvenzioni contributi sussidi vantaggi economici", "design_comuni_italia") . "</a>";
+					   
+					   $this->items[] =  "<a href='/tipi_cat_amm_trasp/atti-di-concessione-sovvenzioni-contributi-sussidi-vantaggi-economici/'>" . __("Atti di Concessione", "design_comuni_italia") . "</a>";	
+					
+	            
+					   
+					   $this->items[] = get_the_title();
+					   return;
+				   }
 	              
-              		    
+		              
+			    	   if (get_post_type() == 'incarichi_dip') {					
+	                                   $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";	
+					   $this->items[] =  "<a href='/tipi_cat_amm_trasp/personale/'>" . __("Personale", "design_comuni_italia") . "</a>";
+					   
+					   $this->items[] =  "<a href='/tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti/'>" . __("Incarichi conferiti e autorizzati ai dipendenti", "design_comuni_italia") . "</a>";	
+					
+	            
+					   
+					   $this->items[] = get_the_title();
+					   return;
+				   }      
+
+		    
 				if (get_post_type() == 'progetto') {					
 			          
                                     $this->items[] = "<a href='index.php/".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";						
