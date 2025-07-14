@@ -21,9 +21,20 @@ while ( have_posts() ) :
 
 	$data_pubbl  = get_the_date( 'j F Y', $id );
 
+	// Anno conferimento - gestione migliorata
 	$anno_conf_raw = get_post_meta( $id, $prefix . 'anno_conferimento', true );
-	$anno_conf     = $anno_conf_raw ? date_i18n( 'Y', intval( $anno_conf_raw ) ) : '-';
+	if ( ! empty( $anno_conf_raw ) ) {
+	    if ( preg_match( '/^\d{4}$/', $anno_conf_raw ) ) {
+	        $anno_conf = $anno_conf_raw;
+	    } else {
+	        $timestamp = strtotime( $anno_conf_raw );
+	        $anno_conf = $timestamp ? date_i18n( 'Y', $timestamp ) : '-';
+	    }
+	} else {
+	    $anno_conf = '-';
+	}
 
+	// Compenso lordo - gestione numerica
 	$compenso_raw = get_post_meta( $id, $prefix . 'compenso_lordo', true );
 	$compenso_num = floatval( str_replace( [ '.', ',' ], [ '', '.' ], $compenso_raw ) );
 	$compenso     = $compenso_num > 0 ? number_format( $compenso_num, 2, ',', '.' ) . '€' : 'Non specificato';
@@ -34,8 +45,14 @@ while ( have_posts() ) :
 
 	$dirigente_flag   = get_post_meta( $id, $prefix . 'dirigente_non_dirigente', true );
 
+	// Data conferimento autorizzazione - gestione migliorata
 	$data_aut_raw = get_post_meta( $id, $prefix . 'data_conferimento_autorizzazione', true );
-	$data_aut     = $data_aut_raw ? date_i18n( 'j F Y', strtotime($data_aut_raw) ) : '-';
+	if ( ! empty( $data_aut_raw ) ) {
+	    $timestamp = strtotime( $data_aut_raw );
+	    $data_aut = $timestamp ? date_i18n( 'j F Y', $timestamp ) : '-';
+	} else {
+	    $data_aut = '-';
+	}
 
 	$oggetto      = get_post_meta( $id, $prefix . 'oggetto_incarico', true );
 	$durata       = get_post_meta( $id, $prefix . 'durata',           true );
@@ -165,5 +182,4 @@ endwhile;
 
 <?php get_footer(); ?>
 
-<?php get_footer(); ?>
 
