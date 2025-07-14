@@ -2,7 +2,7 @@
 global $prefix;
 
 if ( ! isset( $prefix ) ) {
-    $prefix = '_dci_icad_';
+    $prefix = '_dci_incarichi_autorizzazioni_';
 }
 ?>
 
@@ -16,58 +16,81 @@ if ( ! isset( $prefix ) ) {
                         <p class="mb-0"><strong><?php the_title(); ?></strong></p>
                     </div>
                 </div>
+
                 <div class="row align-items-center mb-3">
                     <div class="col-md-3 col-sm-6">
-                        <small class="text-uppercase text-muted d-block">Beneficiario</small>
+                        <small class="text-uppercase text-muted d-block">Anno di Conferimento</small>
                         <?php
-                        $rag_soc = get_post_meta(get_the_ID(), $prefix . 'ragione_sociale', true);
-                        $cod_fisc = get_post_meta(get_the_ID(), $prefix . 'codice_fiscale', true);
-
-                        $codice_fiscale = !empty($cod_fisc) ? $cod_fisc : 'Non specificato';
-                        $ragione_sociale = !empty($rag_soc) ? $rag_soc : 'Non specificato';
+                        $anno_conferimento = get_post_meta(get_the_ID(), $prefix . 'anno_conferimento', true);
+                        $anno_conferimento_formatted = !empty($anno_conferimento) ? date_i18n('Y', intval($anno_conferimento)) : '-';
                         ?>
-                        <span class="d-block"><?php echo esc_html($ragione_sociale); ?></span>
-                        <span class="text-muted small d-block"><?php echo esc_html($codice_fiscale); ?></span>
+                        <span class="d-block"><?php echo esc_html($anno_conferimento_formatted); ?></span>
                     </div>
 
                     <div class="col-md-3 col-sm-6">
-                        <small class="text-uppercase text-muted d-block">Responsabile</small>
+                        <small class="text-uppercase text-muted d-block">Soggetto dichiarante</small>
                         <?php
-                        $responsabile = !empty(get_post_meta(get_the_ID(), $prefix . 'responsabile', true)) ? get_post_meta(get_the_ID(), $prefix . 'responsabile', true) : "Non specificato";
+                        $soggetto_dichiarante = get_post_meta(get_the_ID(), $prefix . 'soggetto_dichiarante', true);
                         ?>
-                        <span class="d-block"><?php echo esc_html($responsabile); ?></span>
+                        <span class="d-block"><?php echo !empty($soggetto_dichiarante) ? esc_html($soggetto_dichiarante) : '-'; ?></span>
                     </div>
 
-                    <div class="col-md-2 col-sm-6">
-                        <small class="text-uppercase text-muted d-block">Tempi</small>
+                    <div class="col-md-3 col-sm-6">
+                        <small class="text-uppercase text-muted d-block">Soggetto percettore</small>
                         <?php
-                        $post_date = get_the_date('j F Y', get_the_ID());
-                        $anno_beneficio = get_post_meta(get_the_ID(), $prefix . 'anno_beneficio', true);
-                        $formatted_anno_beneficio = !empty($anno_beneficio) ? date_i18n('Y', $anno_beneficio) : '-';
+                        $soggetto_percettore = get_post_meta(get_the_ID(), $prefix . 'soggetto_percettore', true);
                         ?>
-                        <span class="d-block">Pubblicato: <?php echo $post_date ? esc_html($post_date) : '-'; ?></span>
-                        <span class="d-block">Beneficio: <?php echo $formatted_anno_beneficio; ?></span>
+                        <span class="d-block"><?php echo !empty($soggetto_percettore) ? esc_html($soggetto_percettore) : '-'; ?></span>
                     </div>
 
-                    <div class="col-md-2 col-sm-6">
-                        <small class="text-uppercase text-muted d-block">Importo</small>
+                    <div class="col-md-3 col-sm-6">
+                        <small class="text-uppercase text-muted d-block">Dirigente/Non Dirigente</small>
                         <?php
-                        $importo = get_post_meta(get_the_ID(), $prefix . 'importo', true);
-                        $importo_numeric = floatval(str_replace(',', '.', preg_replace('/[^\d,]+/', '', $importo)));
+                        $dirigente = get_post_meta(get_the_ID(), $prefix . 'dirigente_non_dirigente', true);
                         ?>
-                        <span class="d-block"><?php echo $importo_numeric !== 0.0 ? esc_html(number_format($importo_numeric, 2, ',', '.')) . '€' : '-'; ?></span>
-                    </div>
-
-                    <div class="col-md-2 col-sm-12">
-                        <small class="text-uppercase text-muted d-block">Ragione dell'incarico</small>
-                        <?php
-                        $rag_incarico = get_post_meta(get_the_ID(), $prefix . 'rag_incarico', true);
-                        ?>
-                        <span class="d-block"><?php echo !empty($rag_incarico) ? esc_html($rag_incarico) : '-'; ?></span>
+                        <span class="d-block"><?php echo !empty($dirigente) ? esc_html($dirigente) : '-'; ?></span>
                     </div>
                 </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-md-3 col-sm-6">
+                        <small class="text-uppercase text-muted d-block">Soggetto Conferente</small>
+                        <?php
+                        $soggetto_conferente = get_post_meta(get_the_ID(), $prefix . 'soggetto_conferente', true);
+                        ?>
+                        <span class="d-block"><?php echo !empty($soggetto_conferente) ? esc_html($soggetto_conferente) : '-'; ?></span>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <small class="text-uppercase text-muted d-block">Data conferimento autorizzazione</small>
+                        <?php
+                        $data_conferimento = get_post_meta(get_the_ID(), $prefix . 'data_conferimento_autorizzazione', true);
+                        $data_conferimento_formatted = !empty($data_conferimento) ? date_i18n('j F Y', strtotime($data_conferimento)) : '-';
+                        ?>
+                        <span class="d-block"><?php echo esc_html($data_conferimento_formatted); ?></span>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <small class="text-uppercase text-muted d-block">Durata</small>
+                        <?php
+                        $durata = get_post_meta(get_the_ID(), $prefix . 'durata', true);
+                        ?>
+                        <span class="d-block"><?php echo !empty($durata) ? esc_html($durata) : '-'; ?></span>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <small class="text-uppercase text-muted d-block">Compenso Lordo</small>
+                        <?php
+                        $compenso = get_post_meta(get_the_ID(), $prefix . 'compenso_lordo', true);
+                        $compenso_numeric = floatval(str_replace(',', '.', preg_replace('/[^\d,]+/', '', $compenso)));
+                        ?>
+                        <span class="d-block"><?php echo $compenso_numeric !== 0.0 ? esc_html(number_format($compenso_numeric, 2, ',', '.')) . '€' : '-'; ?></span>
+                    </div>
+                </div>
+
             </div>
         </div>
+
         <div class="row mt-3 pt-3 border-top border-light-subtle">
             <div class="col-md-6">
                 <h6 class="text-uppercase text-muted small">Allegati</h6>
@@ -97,9 +120,10 @@ if ( ! isset( $prefix ) ) {
                     } else {
                         echo 'Nessun Allegato';
                     }
-                    ?>      
+                    ?>
                 </p>
             </div>
+
             <div class="col-md-6 text-end">
                 <a href="<?php echo esc_url(get_permalink()); ?>" class="btn btn-link btn-sm">Clicca qui per consultare il dettaglio</a>
             </div>
