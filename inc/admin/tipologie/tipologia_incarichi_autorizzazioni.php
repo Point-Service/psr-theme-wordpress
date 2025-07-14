@@ -21,7 +21,8 @@ function dci_register_post_type_incarichi_autorizzazioni()
         'supports'            => array('title', 'author'),
         'hierarchical'        => true,
         'public'              => true,
-        'menu_position'       => 5,
+        'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza', // <‑‑ cambio qui
+        //'menu_position'       => 5,
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
         //'rewrite'             => array('slug' => 'atto-concessione', 'with_front' => false),
