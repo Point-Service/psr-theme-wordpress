@@ -53,7 +53,7 @@ $the_query = new WP_Query($args);
 ?>
 
 <!-- FORM filtro anno -->
-<form method="get" action="<?php echo esc_url($form_action); ?>" class="mb-4">
+<form method="get" action="<?php echo esc_url( $form_action ); ?>" class="mb-4">
     <label for="year-select">Filtra per anno pubblicazione:</label>
     <select id="year-select" name="year" onchange="this.form.submit()">
         <option value="">Tutti gli anni</option>
