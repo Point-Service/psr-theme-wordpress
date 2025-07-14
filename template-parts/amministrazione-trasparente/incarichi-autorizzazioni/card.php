@@ -63,20 +63,22 @@ if ( ! isset( $prefix ) ) {
 
                     <div class="col-md-3 col-sm-6">
                         <small class="text-uppercase text-muted d-block">Data conferimento autorizzazione</small>
-                        <?php
-                        $data_conferimento = get_post_meta(get_the_ID(), $prefix . 'data_conferimento_autorizzazione', true);
+                     <?php
+$data_conferimento = get_post_meta(get_the_ID(), $prefix . 'data_conferimento_autorizzazione', true);
+echo '<!-- Data raw: ' . esc_html($data_conferimento) . ' -->'; // Per debug, si vede nel sorgente pagina
 
-                        // Gestione data in formato dd/mm/yyyy
-                        if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $data_conferimento, $matches)) {
-                            // $matches[1] = giorno, $matches[2] = mese, $matches[3] = anno
-                            $data_formattata = $matches[3] . '-' . $matches[2] . '-' . $matches[1];
-                            $timestamp = strtotime($data_formattata);
-                        } else {
-                            $timestamp = strtotime($data_conferimento);
-                        }
+if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $data_conferimento, $matches)) {
+    $data_formattata = $matches[3] . '-' . $matches[2] . '-' . $matches[1];
+    $timestamp = strtotime($data_formattata);
+} else {
+    $timestamp = strtotime($data_conferimento);
+}
 
-                        $data_conferimento_formatted = $timestamp ? date_i18n('j F Y', $timestamp) : '-';
-                        ?>
+$data_conferimento_formatted = $timestamp ? date_i18n('j F Y', $timestamp) : '-';
+
+echo '<span class="d-block">' . esc_html($data_conferimento_formatted) . '</span>';
+?>
+
                         <span class="d-block"><?php echo esc_html($data_conferimento_formatted); ?></span>
                     </div>
 
