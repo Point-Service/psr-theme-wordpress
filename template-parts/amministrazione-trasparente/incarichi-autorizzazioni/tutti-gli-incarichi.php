@@ -1,6 +1,5 @@
 <?php
 global $post;
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
