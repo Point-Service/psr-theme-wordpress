@@ -8,7 +8,7 @@ function dci_register_post_type_incarichi_autorizzazioni() {
 	$labels = array(
 		'name'               => _x( 'Incarichi e Autorizzazioni', 'Post Type General Name', 'design_comuni_italia' ),
 		'singular_name'      => _x( 'Incarichi e Autorizzazioni', 'Post Type Singular Name', 'design_comuni_italia' ),
-		'add_new'            => _x( 'Aggiungi un Incarichi e Autorizzazione', 'Post Type', 'design_comuni_italia' ),
+		'add_new'            => _x( 'Aggiungi un Incarico e Autorizzazione', 'Post Type', 'design_comuni_italia' ),
 		'add_new_item'       => __( 'Aggiungi un nuovo Incarico e Autorizzazione', 'design_comuni_italia' ),
 		'edit_item'          => __( 'Modifica un Incarico e Autorizzazione', 'design_comuni_italia' ),
 		'featured_image'     => __( 'Immagine di riferimento', 'design_comuni_italia' ),
@@ -56,7 +56,7 @@ add_action( 'edit_form_after_title', 'dci_incarichi_autorizzazioni_add_content_a
 function dci_incarichi_autorizzazioni_add_content_after_title( $post ) {
 
 	if ( $post->post_type == 'incarichi_autorizzazioni' ) {
-		echo '<span><i>Il <strong>titolo/norma</strong> corrisponde al <strong>titolo dell incarico e autorizzazione</strong>.</i></span><br><br>';
+		echo '<span><i>Il <strong>titolo/norma</strong> corrisponde al <strong>titolo dell\'incarico e autorizzazione</strong>.</i></span><br><br>';
 	}
 }
 
@@ -71,7 +71,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes() {
 	/* ————— Metabox: Apertura ————— */
 	$cmb_apertura = new_cmb2_box( array(
 		'id'           => $prefix . 'box_apertura',
-		'title'        => __( 'Informazioni sul incarichi_autorizzazioni', 'design_comuni_italia' ),
+		'title'        => __( 'Informazioni su incarichi e autorizzazioni', 'design_comuni_italia' ),
 		'object_types' => array( 'incarichi_autorizzazioni' ),
 		'context'      => 'normal',
 		'priority'     => 'high',
@@ -80,7 +80,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes() {
 	$cmb_apertura->add_field( array(
 		'id'               => $prefix . 'tipo_stato',
 		'name'             => __( 'Stato dell\'atto *', 'design_comuni_italia' ),
-		'desc'             => __( 'Selezionare la stato dell\'atto', 'design_comuni_italia' ),
+		'desc'             => __( 'Selezionare lo stato dell\'atto', 'design_comuni_italia' ),
 		'type'             => 'taxonomy_radio_hierarchical',
 		'taxonomy'         => 'tipi_stato_bando',
 		'show_option_none' => false,
@@ -89,7 +89,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes() {
 
 	$cmb_apertura->add_field( array(
 		'id'          => $prefix . 'anno_beneficio',
-		'name'        => __( 'Anno Beneficio *', 'design_comuni_italia' ),
+		'name'        => __( 'Anno di beneficio *', 'design_comuni_italia' ),
 		'desc'        => __( 'Seleziona l\'anno di beneficio dell\'atto', 'design_comuni_italia' ),
 		'type'        => 'text_date_timestamp',
 		'date_format' => 'Y',
@@ -98,7 +98,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes() {
 	$cmb_apertura->add_field( array(
 		'id'   => $prefix . 'rag_incarico',
 		'name' => __( 'Ragione dell\'incarico *', 'design_comuni_italia' ),
-		'desc' => __( 'Spoecificare la ragione dell\'incarico dell\'atto', 'design_comuni_italia' ),
+		'desc' => __( 'Specificare la ragione dell\'incarico', 'design_comuni_italia' ),
 		'type' => 'text',
 	) );
 
@@ -112,15 +112,15 @@ function dci_add_incarichi_autorizzazioni_metaboxes() {
 	$cmb_apertura->add_field( array(
 		'id'   => $prefix . 'responsabile',
 		'name' => __( 'Responsabile *', 'design_comuni_italia' ),
-		'desc' => __( 'Indica il Responsabile dell\'atto', 'design_comuni_italia' ),
+		'desc' => __( 'Indica il responsabile dell\'atto', 'design_comuni_italia' ),
 		'type' => 'text',
 	) );
 
 	/* ————— Metabox: Dettagli ————— */
 	$cmb_dettagli = new_cmb2_box( array(
 		'id'           => $prefix . 'box_dettagli',
-		'title'        => __( 'Dettagli Beneficiario', 'design_comuni_italia' ),
-		'object_types' => array( 'incarichi_autorizzazioni' ),   // <‑‑ nome oggetto corretto
+		'title'        => __( 'Dettagli beneficiario', 'design_comuni_italia' ),
+		'object_types' => array( 'incarichi_autorizzazioni' ),
 		'context'      => 'normal',
 		'priority'     => 'high',
 	) );
@@ -128,7 +128,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes() {
 	$cmb_dettagli->add_field( array(
 		'id'   => $prefix . 'descrizione_breve',
 		'name' => __( 'Descrizione breve', 'design_comuni_italia' ),
-		'desc' => __( 'Descrizione sintentica dell\'atto, inferiore a 255 caratteri', 'design_comuni_italia' ),
+		'desc' => __( 'Descrizione sintetica dell\'atto, inferiore a 255 caratteri', 'design_comuni_italia' ),
 		'type' => 'textarea',
 	) );
 
@@ -140,7 +140,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes() {
 
 	$cmb_dettagli->add_field( array(
 		'id'   => $prefix . 'codice_fiscale',
-		'name' => __( 'Codice fiscale/P.Iva *', 'design_comuni_italia' ),
+		'name' => __( 'Codice fiscale / P. IVA *', 'design_comuni_italia' ),
 		'type' => 'text',
 	) );
 
@@ -148,7 +148,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes() {
 	$cmb_documenti = new_cmb2_box( array(
 		'id'           => $prefix . 'box_documenti',
 		'title'        => __( 'Documenti', 'design_comuni_italia' ),
-		'object_types' => array( 'incarichi_autorizzazioni' ),   // <‑‑ nome oggetto corretto
+		'object_types' => array( 'incarichi_autorizzazioni' ),
 		'context'      => 'normal',
 		'priority'     => 'high',
 	) );
@@ -156,7 +156,7 @@ function dci_add_incarichi_autorizzazioni_metaboxes() {
 	$cmb_documenti->add_field( array(
 		'id'   => $prefix . 'allegati',
 		'name' => __( 'Allegati', 'design_comuni_italia' ),
-		'desc' => __( 'Elenco di documenti allegati al Atto di Concessione', 'design_comuni_italia' ),
+		'desc' => __( 'Elenco di documenti allegati all\'atto di concessione', 'design_comuni_italia' ),
 		'type' => 'file_list',
 	) );
 }
