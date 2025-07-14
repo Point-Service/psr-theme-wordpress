@@ -114,15 +114,14 @@ while ( have_posts() ) :
 					<h4 id="oggetto">Oggetto dell’incarico</h4>
 					<p><?php echo esc_html( $oggetto ?: '-' ); ?></p>
 				</article>
-
+	
 				<?php if ( $allegati ) : ?>
 					<article class="it-page-section anchor-offset mt-5">
 						<h4 id="documenti">Documenti</h4>
 						<div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
-							<?php foreach ( $allegati as $file ) : ?>
+							<?php foreach ( $allegati as $url => $title ) : ?>
 								<?php
-								$url   = $file['url']   ?? '';
-								$title = $file['title'] ?? basename( $url );
+								$title = $title ?: basename( $url );
 								$title = strlen( $title ) > 60 ? substr( $title, 0, 57 ) . '…' : $title;
 								?>
 								<div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
@@ -139,6 +138,7 @@ while ( have_posts() ) :
 						</div>
 					</article>
 				<?php endif; ?>
+
 
 			</section>
 		</div>
