@@ -43,18 +43,6 @@ while ( have_posts() ) :
 	$allegati     = get_post_meta( $id, $prefix . 'allegati', true ); // file_list → array
 
 
-
-
-
-echo 'yyyyyyyyyyyyyyyyy<pre>';
-var_dump( $allegati );
-echo '</pre>';
-
-
-
-
-
-	
 	if ( ! is_array( $allegati ) ) $allegati = [];
 ?>
 
@@ -134,21 +122,22 @@ echo '</pre>';
 						<h4 id="documenti">Documenti</h4>
 						<div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal">
 							<?php foreach ( $allegati as $url => $title ) : ?>
-								<?php
-								$title = $title ?: basename( $url );
-								$title = strlen( $title ) > 60 ? substr( $title, 0, 57 ) . '…' : $title;
-								?>
-								<div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
-									<svg class="icon" aria-hidden="true"><use xlink:href="#it-clip"></use></svg>
-									<div class="card-body">
-										<h5 class="card-title">
-											<a class="text-decoration-none" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener noreferrer">
-												<?php echo esc_html( $title ); ?>
-											</a>
-										</h5>
-									</div>
+							<?php
+								// Mostra solo il nome del file, anche se il titolo non è stato salvato
+								$nome_file = basename( $url );
+							?>
+							<div class="card card-teaser shadow-sm p-4 mt-3 rounded border border-light flex-nowrap">
+								<svg class="icon" aria-hidden="true"><use xlink:href="#it-clip"></use></svg>
+								<div class="card-body">
+									<h5 class="card-title">
+										<a class="text-decoration-none" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener noreferrer">
+											<?php echo esc_html( $nome_file ); ?>
+										</a>
+									</h5>
 								</div>
-							<?php endforeach; ?>
+							</div>
+						<?php endforeach; ?>
+
 						</div>
 					</article>
 				<?php endif; ?>
