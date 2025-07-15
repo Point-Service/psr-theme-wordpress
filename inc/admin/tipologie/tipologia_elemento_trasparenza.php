@@ -317,28 +317,43 @@ function dci_add_elemento_trasparenza_metaboxes()
     ));
 
 add_filter('cmb2_render_taxonomy_radio_hierarchical', function($field, $escaped_value, $object_id, $object_type, $field_type_object){
-    // Prendi tutti i termini della tassonomia
+    $taxonomy = $field->args('taxonomy');
+
+    // Prendo tutti i termini della tassonomia, anche quelli senza post
     $terms = get_terms(array(
-        'taxonomy' => $field->args('taxonomy'),
+        'taxonomy' => $taxonomy,
         'hide_empty' => false,
     ));
 
-    echo '<ul>';
+    if (is_wp_error($terms) || empty($terms)) {
+        echo 'Nessuna categoria disponibile.';
+        return true;
+    }
+
+    echo '<ul style="list-style:none; padding-left: 0;">';
+
     foreach ($terms as $term) {
         $url = get_term_link($term);
+        if (is_wp_error($url)) {
+            $url = '#';
+        }
+
         $checked = checked($escaped_value, $term->term_id, false);
 
-        echo '<li>';
+        echo '<li style="margin-bottom: 5px;">';
         echo '<label>';
         echo '<input type="radio" name="' . esc_attr($field->args('id')) . '" value="' . esc_attr($term->term_id) . '" ' . $checked . '> ';
         echo esc_html($term->name);
-        echo ' <small>(' . esc_url($url) . ')</small>';
+        echo ' <a href="' . esc_url($url) . '" target="_blank" style="font-size: 0.85em; color: #0073aa; margin-left: 5px; text-decoration: underline;">[link]</a>';
         echo '</label>';
         echo '</li>';
     }
     echo '</ul>';
+
+    // Torna true per dire a CMB2 che il campo è già stato renderizzato
     return true;
 }, 10, 5);
+
 
     
     
