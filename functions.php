@@ -334,28 +334,50 @@ add_action('init', 'my_custom_one_time_function');
 
 
 
+
+
 /**
- * Evidenzia in grassetto (e con colore) le categorie di primo livello
+ * Evidenzia in grassetto le categorie di primo livello
  * nel metabox CMB2 "Seleziona la sezione".
  */
-add_action( 'admin_enqueue_scripts', function ( $hook ) {
+add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2', 20 );
+function dci_bold_parent_terms_cmb2( $hook ) {
 
-    // applica solo su /wp-admin/post-new.php?post_type=elemento_trasparenza
-    if ( $hook !== 'post-new.php' || empty( $_GET['post_type'] ) || $_GET['post_type'] !== 'elemento_trasparenza' ) {
+    // Applica solo su /wp-admin/post-new.php?post_type=elemento_trasparenza
+    if ( $hook !== 'post-new.php' || ( $_GET['post_type'] ?? '' ) !== 'elemento_trasparenza' ) {
         return;
     }
 
-    // CSS in‑line: i <label> dentro <li class="depth-0"> diventano bold
-    $css = '
-        /* metabox CMB2 radio gerarchico */
-        .cmb2-radio-list li.depth-0 > label,
-        .cmb2-checkbox-list li.depth-0 > label {
-            font-weight: 700;           /* grassetto */
-            color: #000;                /* colore testo (facoltativo) */
-        }
-    ';
-    wp_add_inline_style( 'wp-admin', $css ); // attacca il CSS alla stylesheet di WP‑admin
-} );
+    /* ----------  CSS inline  ---------- */
+    wp_add_inline_style(
+        // usiamo un handle già presente, ad es. 'wp-admin'
+        'wp-admin',
+        '.cmb2-parent-term { font-weight:700; color:#000; }'
+    );
+
+    /* ----------  JS inline  ---------- */
+    wp_add_inline_script(
+        // carichiamo dopo jQuery core
+        'jquery-core',
+        <<<JS
+        (function($){
+            $(document).ready(function(){
+                // trova tutte le liste radio/checkbox di CMB2
+                $('.cmb2-radio-list, .cmb2-checkbox-list').each(function(){
+                    $(this).children('li').each(function(){
+                        var \$label = $(this).children('label').first();
+                        // se il label NON contiene &nbsp; => livello 0 (categoria principale)
+                        if ( \$label.length && \$label.html().indexOf('&nbsp;') === -1 ) {
+                            \$label.addClass('cmb2-parent-term');
+                        }
+                    });
+                });
+            });
+        })(jQuery);
+JS
+    );
+}
+
 
 
 
