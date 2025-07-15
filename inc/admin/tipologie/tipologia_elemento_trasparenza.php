@@ -301,7 +301,7 @@ function dci_get_visible_amministrazione_terms() {
         foreach ($terms as $term) {
             $visible = get_term_meta($term->term_id, 'visualizza_elemento', true);
 
-            // Se il meta è '0' escludi (nascondi), altrimenti includi
+            // Se è '0' escludi, altrimenti includi
             if ($visible !== '0') {
                 $options[$term->term_id] = $term->name;
             }
@@ -310,6 +310,7 @@ function dci_get_visible_amministrazione_terms() {
 
     return $options;
 }
+
 
 
 
