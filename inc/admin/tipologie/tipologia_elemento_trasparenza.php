@@ -71,6 +71,9 @@ function dci_elemento_trasparenza_add_content_after_title($post)
         <a href="edit.php?post_type=bando" class="button button-secondary">
             Bandi di Gara e contratti - <b>Contratti Pubblici</b>
         </a>
+        <a href="edit.php?post_type=atto_concessione" class="button button-secondary">
+            Sovvenzioni , contributi sussidi, vantaggi economici - <b>Atti di concessione</b>
+        </a>
     </div>
     <?php
 }
