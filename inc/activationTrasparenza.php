@@ -167,6 +167,19 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
 }
 
 
+if ( ! function_exists( 'dci_tipi_cat_amm_trasp_links' ) ) {
+    function dci_tipi_cat_amm_trasp_links() {
+        return [
+         
+            'Atti di concessione'                               => 'edit.php?post_type=atto_concessione',
+            
+
+            // Aggiungi qui altre associazioni voce → URL quando ti servono…
+        ];
+    }
+}
+
+
 
 if (!function_exists("dci_tipi_procedura_contraente_array")) {
     function dci_tipi_procedura_contraente_array() {
