@@ -325,13 +325,23 @@ function dci_add_elemento_trasparenza_metaboxes()
 }
 
 
-    $items = dci_tipi_cat_amm_trasp_array();
+$items = dci_tipi_cat_amm_trasp_array();
 
 foreach ($items as $group => $subitems) {
+    echo "<h3>" . esc_html($group) . "</h3>";
+    echo "<ul>";
     foreach ($subitems as $item) {
-        echo 'Nome: ' . $item['name'] . ' - URL: ' . ($item['url'] ?: 'nessun url') . "<br>";
+        echo "<li>";
+        echo esc_html($item['name']);
+        if (!empty($item['url'])) {
+            // Pulsante/link accanto al nome
+            echo ' <a href="' . esc_url(admin_url($item['url'])) . '" class="button" target="_blank" style="margin-left:10px;">Vai</a>';
+        }
+        echo "</li>";
     }
+    echo "</ul>";
 }
+
     
 
 $cmb_sezione->add_field(array(
