@@ -280,20 +280,22 @@ function dci_add_elemento_trasparenza_metaboxes()
     ));
 
 
-	cmb_apertura->add_field(array(
-	    'name' => __('Azioni rapide', 'design_comuni_italia'),
-	    'type' => 'title',
-	    'id'   => $prefix . 'azioni_title',
-	));
-	
-	$cmb_apertura->add_field(array(
-	    'id'   => $prefix . 'azioni_html',
-	    'type' => 'html',
-	    'content' => '
-	        <a href="https://esempio.it/azione-1" class="button button-primary" target="_blank" style="margin-right:10px;">Azione 1</a>
-	        <a href="https://esempio.it/azione-2" class="button" target="_blank">Azione 2</a>
-	    ',
+$cmb_apertura->add_field(array(
+    'name' => __('Azioni rapide', 'design_comuni_italia'),
+    'type' => 'title',
+    'id'   => $prefix . 'azioni_title',
 ));
+
+$cmb_apertura->add_field(array(
+    'id'   => $prefix . 'azioni_html',
+    'type' => 'html',
+    'content' => '
+        <a href="https://esempio.it/azione-1" class="button button-primary" target="_blank" style="margin-right:10px;">Azione 1</a>
+        <a href="https://esempio.it/azione-2" class="button" target="_blank">Azione 2</a>
+    ',
+));
+
+	
 
 
 
