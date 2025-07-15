@@ -145,45 +145,35 @@ function dci_render_transparency_multipost_page() {
         <h2><?php _e('Seleziona Voci con eventuali link personalizzati', 'design_comuni_italia'); ?></h2>
 
         <?php
-        // Recupera array [categoria => [voci]] e override ['voce' => 'url']
-        $menu = dci_tipi_cat_amm_trasp_array();
-        $override_links = dci_tipi_cat_amm_trasp_links();
+$menu = dci_tipi_cat_amm_trasp_array();
+$override_links = dci_tipi_cat_amm_trasp_links();
 
-        echo '<ul style="list-style:none; padding-left:0;">';
+echo '<ul style="list-style:none; padding-left:0;">';
 
-        foreach ($menu as $categoria => $voci) {
-            echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
+foreach ($menu as $categoria => $voci) {
+    echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
 
-            foreach ($voci as $voce) {
-                // Se oggetto, prendi ->name, altrimenti stringa
-                $voce_name = is_object($voce) ? $voce->name : $voce;
+    foreach ($voci as $voce) {
+        $voce_name = is_object($voce) ? $voce->name : $voce;
 
-                // Normalizza per confronto
-                $norm_voce = strtolower(trim($voce_name));
-                $found_url = '';
+        // Cerca URL nel override usando il nome voce
+        $custom_url = $override_links[$voce_name] ?? '';
 
-                // Cerca corrispondenza nell'array override normalizzato
-                foreach ($override_links as $key => $url) {
-                    if ($norm_voce === strtolower(trim($key))) {
-                        $found_url = $url;
-                        break;
-                    }
-                }
-
-                $disabled = $found_url ? 'disabled' : '';
-                $checkbox = '<input type="checkbox" name="dci_terms[]" value="' . esc_attr($voce_name) . '" ' . $disabled . '>';
-                $button = $found_url
-                    ? ' <a href="' . esc_url($found_url) . '" class="button button-small" target="_blank">' . esc_html__('Vai', 'design_comuni_italia') . '</a>'
-                    : '';
-
-                echo '<li style="margin-bottom:6px;">' . $checkbox . ' ' . esc_html($voce_name) . $button . '</li>';
-            }
-
-            echo '</ul></li>';
+        echo '<li>' . esc_html($voce_name);
+        if ($custom_url) {
+            echo ' — URL: <code>' . esc_html($custom_url) . '</code>';
+        } else {
+            echo ' — <em>nessun URL associato</em>';
         }
+        echo '</li>';
+    }
 
-        echo '</ul>';
-        ?>
+    echo '</ul></li>';
+}
+
+echo '</ul>';
+?>
+
 
     </div>
     <?php
