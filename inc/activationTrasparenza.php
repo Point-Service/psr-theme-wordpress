@@ -486,7 +486,7 @@ function dci_update_term_description( $term_name, $taxonomy, $new_desc ) {
  */
 function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 ) {
 
-    $to_hide = dci_terms_to_hide();   // nomi da nascondere
+    $to_hide = dci_terms_to_hide();
 
     foreach ( $terms as $key => $children ) {
 
@@ -506,11 +506,15 @@ function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 
             continue;
         }
 
-        // Sovrascrivi sempre il meta 'ordinamento'
         update_term_meta( $term_id, 'ordinamento', $ordine );
 
-        // Calcola visibilità e sovrascrivi sempre il meta 'visualizza_elemento'
-        $visible = in_array( $term_name, $to_hide, true ) ? '0' : '1';
+        $visible = '1';
+        foreach ($to_hide as $hide_term) {
+            if (strcasecmp(trim($term_name), trim($hide_term)) === 0) {
+                $visible = '0';
+                break;
+            }
+        }
         update_term_meta( $term_id, 'visualizza_elemento', $visible );
 
         $ordine++;
@@ -520,6 +524,7 @@ function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 
         }
     }
 }
+
 
 
 
