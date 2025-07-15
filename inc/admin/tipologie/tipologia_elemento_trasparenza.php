@@ -260,15 +260,6 @@ function dci_render_transparency_multipost_page() {
 }
 
 
-// TEMPORARY: mostra l'ID di ogni metabox generato da CMB2
-add_action( 'cmb2_before_box', function ( $object_id, $cmb ) {
-	echo "<!-- CMB2 BOX ID: {$cmb->cmb_id} -->\n";
-	// Se hai WP_DEBUG_LOG attivo, puoi anche fare:
-	// error_log( 'CMB2 BOX ID: ' . $cmb->cmb_id );
-}, 1, 2 );
-
-
-
 
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
@@ -288,6 +279,25 @@ function dci_add_elemento_trasparenza_metaboxes()
         'closed'        => false,
     ));
 
+
+	cmb_apertura->add_field(array(
+	    'name' => __('Azioni rapide', 'design_comuni_italia'),
+	    'type' => 'title',
+	    'id'   => $prefix . 'azioni_title',
+	));
+	
+	$cmb_apertura->add_field(array(
+	    'id'   => $prefix . 'azioni_html',
+	    'type' => 'html',
+	    'content' => '
+	        <a href="https://esempio.it/azione-1" class="button button-primary" target="_blank" style="margin-right:10px;">Azione 1</a>
+	        <a href="https://esempio.it/azione-2" class="button" target="_blank">Azione 2</a>
+	    ',
+));
+
+
+
+	
     // $cmb_apertura->add_field(array(
     //     'id'            => $prefix . 'data_pubblicazione',
     //     'name'          => __('Data di pubblicazione', 'design_comuni_italia'),
