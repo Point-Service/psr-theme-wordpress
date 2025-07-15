@@ -301,15 +301,18 @@ function dci_get_visible_amministrazione_terms() {
         foreach ($terms as $term) {
             $visible = get_term_meta($term->term_id, 'visualizza_elemento', true);
 
-            // Se è '0' escludi, altrimenti includi
-            if ($visible !== '0') {
-                $options[$term->term_id] = $term->name;
+            // Se il valore è esattamente '0' allora skip
+            if ($visible === '0') {
+                continue; // salta questo termine
             }
+            // Se manca o è vuoto o diverso da '0', includi
+            $options[$term->term_id] = $term->name;
         }
     }
 
     return $options;
 }
+
 
 
 
