@@ -63,7 +63,7 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     }
 
     if ($post->post_type === 'elemento_trasparenza') {
-        echo "<span><i>Il <b>Titolo</b> è il <b>Nome del elemento dell'amministrazione trasparente</b>.</i></span><br><br>";
+        echo "<span><i>Il <b>Titolo</b> è il <b>Nome dell'elemento dell'amministrazione trasparente</b>.</i></span><br><br>";
     }
     
     // Titolo sopra i pulsanti
