@@ -79,7 +79,6 @@ function dci_add_transparency_multipost_page() {
 
 
 
-
 add_action( 'admin_head-post-new.php', 'dci_elemento_trasparenza_extra_buttons' );
 function dci_elemento_trasparenza_extra_buttons() {
 
@@ -88,7 +87,6 @@ function dci_elemento_trasparenza_extra_buttons() {
         return;
     }
 
-    // Pulsanti extra
     $extra_buttons = [
         [
             'id'   => 'dci-extra-tax-stato',
@@ -103,28 +101,34 @@ function dci_elemento_trasparenza_extra_buttons() {
     ];
     ?>
     <style>
-        /* margine tra i bottoni */
-        .wrap .page-title-action {
-            margin-right: 8px; /* margine a destra del pulsante Add New */
-        }
         .dci-extra-btn {
-            margin-left: 8px; /* margine tra pulsanti extra */
+            display: inline-block;
+            margin-left: 8px;
+            padding: 6px 12px;
+            background-color: #0073aa;
+            color: #fff !important;
+            border-radius: 3px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .dci-extra-btn:hover {
+            background-color: #005177;
         }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-
-            const stdBtn = document.querySelector('.wrap .page-title-action'); // bottone WP "Aggiungi"
-            if (!stdBtn) return;
+            const pageTitle = document.querySelector('.wrap > h1.wp-heading-inline');
+            if (!pageTitle) return;
 
             <?php foreach ( $extra_buttons as $btn ) : ?>
                 (function() {
                     const link = document.createElement('a');
-                    link.id        = '<?php echo esc_js( $btn['id'] ); ?>';
-                    link.className = 'page-title-action dci-extra-btn';
-                    link.href      = '<?php echo esc_url( $btn['href'] ); ?>';
+                    link.id = '<?php echo esc_js( $btn['id'] ); ?>';
+                    link.className = 'dci-extra-btn';
+                    link.href = '<?php echo esc_url( $btn['href'] ); ?>';
+                    link.target = '_blank';
                     link.textContent = '<?php echo esc_js( $btn['text'] ); ?>';
-                    stdBtn.after(link);
+                    pageTitle.after(link);
                 })();
             <?php endforeach; ?>
         });
