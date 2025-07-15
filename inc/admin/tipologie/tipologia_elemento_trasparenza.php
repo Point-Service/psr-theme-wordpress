@@ -279,51 +279,30 @@ function dci_render_transparency_multipost_page() {
     <?php
 }
 
+function dci_tax_radio_show_id( $field_html, $field_args, $field_obj, $term ) {
 
+	// per "— Nessuna —" lascia invariato
+	if ( empty( $term ) ) {
+		return $field_html;
+	}
+
+	// inserisce l’ID fra parentesi dopo il nome
+	$label      = sprintf( '%s <small style="opacity:.7;">(#%d)</small>', esc_html( $term->name ), $term->term_id );
+	$checked    = checked( $field_obj->escaped_value(), $term->term_id, false );
+	$disabled   = disabled( isset( $field_args['disable_terms'] ) && in_array( $term->term_id, $field_args['disable_terms'], true ), true, false );
+
+	return sprintf(
+		'<li><label><input type="radio" name="%1$s" value="%2$d" %3$s %4$s/> %5$s</label></li>',
+		esc_attr( $field_obj->_name() ),
+		$term->term_id,
+		$checked,
+		$disabled,
+		$label
+	);
+}
 
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
-
-
-
-
-/**
- * ID dei term da disabilitare (figli compresi, se vuoi).
- */
-function dci_locked_terms() {
-    return array( 1, 4 );   // <‑‑ SOSTITUISCI con i tuoi ID reali
-}
-
-/**
- * Applica l'attributo disabled ai radio di CMB2 taxonomy_radio(_hierarchical)
- */
-add_filter( 'cmb2_taxonomy_radio_attributes', 'dci_lock_some_terms', 10, 4 );
-
-function dci_lock_some_terms( $atts, $field_args, $term, $field ) {
-
-    // Solo per il nostro field:
-    if ( $field->id() !== '_dci_elemento_trasparenza_tipo_cat_amm_trasp' ) {
-        return $atts;
-    }
-
-    // Se il termine è tra quelli bloccati
-    if ( in_array( $term->term_id, dci_locked_terms(), true ) ) {
-        $atts['disabled'] = 'disabled';               // disabilita il radio
-        $atts['class']  = ( $atts['class'] ?? '' ) . ' dci-term-disabled';
-    }
-
-    return $atts;
-}
-
-/* (opzionale) stile grigio per i label dei termini bloccati */
-add_action( 'admin_head', function () {
-    echo '<style>
-            .dci-term-disabled + label { color:#999!important; font-style:italic; }
-          </style>';
-} );
-
-
-
 
 function dci_add_elemento_trasparenza_metaboxes()
 {
@@ -365,17 +344,19 @@ function dci_add_elemento_trasparenza_metaboxes()
         'priority'      => 'high',
     ));
 
-    $cmb_sezione->add_field( array(
-        'id'               => $prefix . 'tipo_cat_amm_trasp',
-        'name'             => __( 'Categoria Trasparenza *', 'design_comuni_italia' ),
-        'type'             => 'taxonomy_radio_hierarchical',
-        'taxonomy'         => 'tipi_cat_amm_trasp',
-        'show_option_none' => false,
-        'remove_default'   => true,
-        'query_args'       => array(
-            'hide_empty' => false,   // mostri anche i termini senza post
-        ),
-    ) );
+        $cmb_sezione->add_field( array(
+        	'id'               => $prefix . 'tipo_cat_amm_trasp',
+        	'name'             => __( 'Categoria Trasparenza *', 'design_comuni_italia' ),
+        	'type'             => 'taxonomy_radio_hierarchical',
+        	'taxonomy'         => 'tipi_cat_amm_trasp',
+        	'show_option_none' => false,
+        	'remove_default'   => true,
+        	'query_args'       => array(
+        		'hide_empty' => false,
+        	),
+        	// ↴ nuova callback
+        	'display_cb'       => 'dci_tax_radio_show_id',
+        ) );
     
         $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
