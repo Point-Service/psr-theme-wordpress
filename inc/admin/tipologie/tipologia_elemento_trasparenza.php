@@ -301,20 +301,17 @@ function dci_get_visible_amministrazione_terms() {
         foreach ($terms as $term) {
             $visible = get_term_meta($term->term_id, 'visualizza_elemento', true);
 
-            // Log per debug
-            error_log("Term ID {$term->term_id} - Name: {$term->name} - visualizza_elemento: " . var_export($visible, true));
-
-            // Se il meta è esattamente '0' (stringa) o 0 (int), skip
-            if ($visible === '0' || $visible === 0) {
-                continue;
+            // Se il meta è vuoto o '1', consideriamo visibile
+            if ($visible === '' || $visible === '1') {
+                $options[$term->term_id] = $term->name;
             }
-
-            $options[$term->term_id] = $term->name;
+            // Se è '0', non aggiungiamo
         }
     }
 
     return $options;
 }
+
 
 
 
