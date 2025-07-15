@@ -279,6 +279,24 @@ function dci_render_transparency_multipost_page() {
 }
 
 
+add_filter('cmb2_taxonomy_radio_hierarchical_terms', function($terms, $field) {
+    // Verifica che il campo sia quello che vuoi filtrare
+    if ($field->args('id') === 'PREFIX_tipo_cat_amm_trasp') {
+        $filtered_terms = array();
+
+        foreach ($terms as $term) {
+            // Recupera il meta campo del termine
+            $flag = get_term_meta($term->term_id, '_visualizza_elemento_lista', true);
+            if ($flag === '1') {
+                $filtered_terms[] = $term;
+            }
+        }
+
+        return $filtered_terms;
+    }
+
+    return $terms;
+}, 10, 2);
 
 
 
