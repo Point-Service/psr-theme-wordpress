@@ -115,32 +115,36 @@ function dci_save_term_meta( $term_id ) {
  * ---------------------------------------------------------------- */
 
 /* 4.1 – Aggiunge “Ordinamento” e “Visualizza” */
-/* 4.1 – Ordina le colonne: Nome | Slug | Ordinamento | Visualizza | Conteggio */
-add_filter( 'manage_edit-tipi_cat_amm_trasp_columns', 'dci_add_custom_columns' );
-function dci_add_custom_columns( $columns ) {
+add_filter('manage_edit-tipi_cat_amm_trasp_columns', 'dci_custom_column_order');
+function dci_custom_column_order($columns) {
+    $new_columns = [];
 
-	// colonna originale “count” (Conteggio) la rimuoviamo temporaneamente…
-	$count = $columns['posts'];     // WP usa chiave 'posts' per il conteggio
-	unset( $columns['posts'] );
+    foreach ($columns as $key => $label) {
+        $new_columns[$key] = $label;
 
-	// …e ricostruiamo l’array nell’ordine desiderato
-	$new = array();
+        // Dopo "name" inserisci Ordinamento e Visualizza
+        if ($key === 'name') {
+            $new_columns['ordinamento'] = __('Ordinamento', 'design_comuni_italia');
+            $new_columns['visualizza_item'] = __('Visualizza', 'design_comuni_italia');
+        }
 
-	foreach ( $columns as $key => $label ) {
-		$new[ $key ] = $label;
+        // Dopo "visualizza_item" sposta il Conteggio
+        if ($key === 'visualizza_item' || $key === 'ordinamento') {
+            if (isset($columns['posts'])) {
+                $new_columns['posts'] = $columns['posts'];
+                unset($columns['posts']); // evitiamo duplicati
+            }
+        }
+    }
 
-		// subito dopo “name” inseriamo Ordinamento e Visualizza
-		if ( 'name' === $key ) {
-			$new['ordinamento']     = __( 'Ordinamento', 'design_comuni_italia' );
-			$new['visualizza_item'] = __( 'Visualizza',  'design_comuni_italia' );
-		}
-	}
+    // Se per qualche motivo non è stato inserito prima
+    if (isset($columns['posts']) && !isset($new_columns['posts'])) {
+        $new_columns['posts'] = $columns['posts'];
+    }
 
-	// infine aggiungiamo di nuovo la colonna Conteggio
-	$new['posts'] = $count;
-
-	return $new;
+    return $new_columns;
 }
+
 
 
 /* 4.2 – Popola le colonne */
