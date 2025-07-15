@@ -115,19 +115,33 @@ function dci_save_term_meta( $term_id ) {
  * ---------------------------------------------------------------- */
 
 /* 4.1 – Aggiunge “Ordinamento” e “Visualizza” */
+/* 4.1 – Ordina le colonne: Nome | Slug | Ordinamento | Visualizza | Conteggio */
 add_filter( 'manage_edit-tipi_cat_amm_trasp_columns', 'dci_add_custom_columns' );
 function dci_add_custom_columns( $columns ) {
 
+	// colonna originale “count” (Conteggio) la rimuoviamo temporaneamente…
+	$count = $columns['posts'];     // WP usa chiave 'posts' per il conteggio
+	unset( $columns['posts'] );
+
+	// …e ricostruiamo l’array nell’ordine desiderato
 	$new = array();
+
 	foreach ( $columns as $key => $label ) {
 		$new[ $key ] = $label;
+
+		// subito dopo “name” inseriamo Ordinamento e Visualizza
 		if ( 'name' === $key ) {
 			$new['ordinamento']     = __( 'Ordinamento', 'design_comuni_italia' );
 			$new['visualizza_item'] = __( 'Visualizza',  'design_comuni_italia' );
 		}
 	}
+
+	// infine aggiungiamo di nuovo la colonna Conteggio
+	$new['posts'] = $count;
+
 	return $new;
 }
+
 
 /* 4.2 – Popola le colonne */
 add_filter( 'manage_tipi_cat_amm_trasp_custom_column', 'dci_show_custom_columns', 10, 3 );
