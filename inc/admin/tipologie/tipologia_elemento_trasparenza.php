@@ -152,36 +152,39 @@ function dci_render_transparency_multipost_page() {
 
         <?php
         // Qui recuperi i dati come nel tuo esempio
-        $menu = dci_tipi_cat_amm_trasp_array();    // array [categoria => [voci]]
-        $override_links = dci_tipi_cat_amm_trasp_links(); // [ 'voce' => 'url' ]
-
-        echo '<ul style="list-style:none; padding-left:0;">';
-
-           foreach ($menu as $categoria => $voci) {
-            echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
-
-            foreach ($voci as $voce) {
-                // Se $voce è un oggetto, prendi il nome; altrimenti usa la stringa direttamente
-                $voce_name = is_object($voce) ? $voce->name : $voce;
-        
-                // Cerca URL custom in override_links usando il nome
-                $custom_url = $override_links[$voce_name] ?? '';
-        
-                // Se c'è URL, disabilita checkbox e mostra pulsante
-                $disabled = $custom_url ? 'disabled' : '';
-                $checkbox = '<input type="checkbox" name="dci_terms[]" value="' . esc_attr($voce_name) . '" ' . $disabled . '>';
-                $button = $custom_url
-                    ? ' <a href="' . esc_url($custom_url) . '" class="button button-small" target="_blank">' . esc_html__('Vai', 'design_comuni_italia') . '</a>'
-                    : '';
-        
-                echo '<li style="margin-bottom:6px;">' . $checkbox . ' ' . esc_html($voce_name) . $button . '</li>';
+            $menu = dci_tipi_cat_amm_trasp_array();    
+            $override_links = dci_tipi_cat_amm_trasp_links();
+            
+            // Normalizza le chiavi in override_links per confronto robusto
+            $normalized_override_links = [];
+            foreach ($override_links as $key => $url) {
+                $normalized_override_links[trim(strtolower($key))] = $url;
             }
-        
-            echo '</ul></li>';
-        }
-
-
-        echo '</ul>';
+            
+            echo '<ul style="list-style:none; padding-left:0;">';
+            
+            foreach ($menu as $categoria => $voci) {
+                echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
+            
+                foreach ($voci as $voce) {
+                    $voce_name = is_object($voce) ? $voce->name : $voce;
+                    $key = trim(strtolower($voce_name));
+                    
+                    $custom_url = $normalized_override_links[$key] ?? '';
+            
+                    $disabled = $custom_url ? 'disabled' : '';
+                    $checkbox = '<input type="checkbox" name="dci_terms[]" value="' . esc_attr($voce_name) . '" ' . $disabled . '>';
+                    $button = $custom_url
+                        ? ' <a href="' . esc_url($custom_url) . '" class="button button-small" target="_blank">' . esc_html__('Vai', 'design_comuni_italia') . '</a>'
+                        : '';
+            
+                    echo '<li style="margin-bottom:6px;">' . $checkbox . ' ' . esc_html($voce_name) . $button . '</li>';
+                }
+            
+                echo '</ul></li>';
+            }
+            
+            echo '</ul>';
         ?>
 
         <!-- FINE BLOCCO -->
