@@ -63,24 +63,26 @@ function dci_edit_ordinamento_field($term, $taxonomy) {
     <?php
 }
 
-// 2.b Aggiungi campo "Visualizza elemento" al form di aggiunta/modifica termini
-add_action('tipi_cat_amm_trasp_add_form_fields', 'dci_add_visualizza_elemento_field', 20, 2);
-add_action('tipi_cat_amm_trasp_edit_form_fields', 'dci_edit_visualizza_elemento_field', 20, 2);
+// 3. Aggiungi campo "Visualizza elemento" al form di aggiunta/modifica termini
+add_action('tipi_cat_amm_trasp_add_form_fields', 'dci_add_visualizza_elemento_field', 10, 2);
+add_action('tipi_cat_amm_trasp_edit_form_fields', 'dci_edit_visualizza_elemento_field', 10, 2);
 
 function dci_add_visualizza_elemento_field($taxonomy) {
     ?>
     <div class="form-field term-visualizza-elemento-wrap">
         <label for="visualizza_elemento">
             <input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" checked />
-            <?php _e('Visualizza elemento', 'design_comuni_italia'); ?>
+            <?php _e('Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia'); ?>
         </label>
-        <p class="description"><?php _e('Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia'); ?></p>
     </div>
     <?php
 }
 
 function dci_edit_visualizza_elemento_field($term, $taxonomy) {
     $visualizza = get_term_meta($term->term_id, 'visualizza_elemento', true);
+    if ($visualizza === '') {
+        $visualizza = '1'; // Default a spuntato se meta vuoto
+    }
     ?>
     <tr class="form-field term-visualizza-elemento-wrap">
         <th scope="row"><?php _e('Visualizza elemento', 'design_comuni_italia'); ?></th>
@@ -94,47 +96,32 @@ function dci_edit_visualizza_elemento_field($term, $taxonomy) {
     <?php
 }
 
-// 3. Salva il valore del campo ordinamento
-add_action('created_tipi_cat_amm_trasp', 'dci_save_ordinamento_meta', 10, 2);
-add_action('edited_tipi_cat_amm_trasp', 'dci_save_ordinamento_meta', 10, 2);
+// 4. Salva i valori dei campi "Ordinamento" e "Visualizza elemento"
+add_action('created_tipi_cat_amm_trasp', 'dci_save_term_meta', 10, 2);
+add_action('edited_tipi_cat_amm_trasp', 'dci_save_term_meta', 10, 2);
 
-function dci_save_ordinamento_meta($term_id, $tt_id) {
+function dci_save_term_meta($term_id, $tt_id) {
     if (isset($_POST['ordinamento'])) {
         $ordinamento = intval($_POST['ordinamento']);
         update_term_meta($term_id, 'ordinamento', $ordinamento);
     }
+    // Salva checkbox visualizza_elemento, se spuntato salva '1', altrimenti '0'
+    $visualizza = isset($_POST['visualizza_elemento']) ? '1' : '0';
+    update_term_meta($term_id, 'visualizza_elemento', $visualizza);
 }
 
-// 3.b Salva il valore del campo visualizza_elemento
-add_action('created_tipi_cat_amm_trasp', 'dci_save_visualizza_elemento_meta', 20, 2);
-add_action('edited_tipi_cat_amm_trasp', 'dci_save_visualizza_elemento_meta', 20, 2);
-
-function dci_save_visualizza_elemento_meta($term_id, $tt_id) {
-    // Salva come '1' se il checkbox è presente, altrimenti '0'
-    $value = (isset($_POST['visualizza_elemento']) && $_POST['visualizza_elemento'] == '1') ? '1' : '0';
-    update_term_meta($term_id, 'visualizza_elemento', $value);
-}
-
-// 4. Mostra la colonna Ordinamento nella lista termini
+// 5. Mostra la colonna Ordinamento nella lista termini
 add_filter('manage_edit-tipi_cat_amm_trasp_columns', 'dci_add_ordinamento_column');
 function dci_add_ordinamento_column($columns) {
     $columns['ordinamento'] = __('Ordinamento', 'design_comuni_italia');
-    $columns['visualizza_elemento'] = __('Visualizza elemento', 'design_comuni_italia');
     return $columns;
 }
 
-add_filter('manage_tipi_cat_amm_trasp_custom_column', 'dci_show_custom_columns', 10, 3);
-function dci_show_custom_columns($out, $column, $term_id) {
+add_filter('manage_tipi_cat_amm_trasp_custom_column', 'dci_show_ordinamento_column', 10, 3);
+function dci_show_ordinamento_column($out, $column, $term_id) {
     if ($column === 'ordinamento') {
         $val = get_term_meta($term_id, 'ordinamento', true);
         return $val !== '' ? esc_html($val) : '&mdash;';
     }
-    if ($column === 'visualizza_elemento') {
-        $val = get_term_meta($term_id, 'visualizza_elemento', true);
-        return ($val === '1') ? __('Sì', 'design_comuni_italia') : __('No', 'design_comuni_italia');
-    }
     return $out;
 }
-
-?>
-
