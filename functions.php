@@ -331,3 +331,34 @@ add_action('init', 'my_custom_one_time_function');
 
 
 
+
+
+
+
+
+
+add_filter('cmb2_taxonomy_radio_hierarchical_term_args', function($args, $field) {
+    // Controlla che sia il campo desiderato (opzionale, meglio se sì)
+    if ($field->args('id') === '_dci_elemento_trasparenza_tipo_cat_amm_trasp') {
+        global $wpdb;
+        // Prendi tutti i termini con visualizza_elemento=0 da escludere
+        $exclude_ids = $wpdb->get_col("
+            SELECT term_id FROM {$wpdb->termmeta} WHERE meta_key = 'visualizza_elemento' AND meta_value = '0'
+        ");
+        if (!empty($exclude_ids)) {
+            // Se esiste già exclude, uniscilo
+            if (!empty($args['exclude'])) {
+                if (is_array($args['exclude'])) {
+                    $args['exclude'] = array_merge($args['exclude'], $exclude_ids);
+                } else {
+                    $args['exclude'] = array_merge(explode(',', $args['exclude']), $exclude_ids);
+                }
+            } else {
+                $args['exclude'] = $exclude_ids;
+            }
+        }
+    }
+    return $args;
+}, 10, 2);
+
+
