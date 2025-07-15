@@ -139,33 +139,45 @@ function dci_render_transparency_multipost_page() {
         <h2><?php _e('Seleziona Voci con eventuali link personalizzati', 'design_comuni_italia'); ?></h2>
 
         <?php
-        $menu = dci_tipi_cat_amm_trasp_array();
-        $override_links = dci_tipi_cat_amm_trasp_links();
+      $menu = dci_tipi_cat_amm_trasp_array();
+$override_links = dci_tipi_cat_amm_trasp_links();
 
-        echo '<ul style="list-style:none; padding-left:0;">';
+echo '<ul style="list-style:none; padding-left:0;">';
 
-        foreach ($menu as $categoria => $voci) {
-            echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
+foreach ($menu as $categoria => $voci) {
+    echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
 
-            foreach ($voci as $voce) {
-                $voce_name = is_object($voce) ? $voce->name : $voce;
+    foreach ($voci as $index => $voce) {
+        $voce_name = is_object($voce) ? $voce->name : $voce;
 
-                // Cerca URL personalizzato per la voce
-                $custom_url = $override_links[$voce_name] ?? '';
+        // Genera un id univoco per ogni radio input (puoi adattare come vuoi)
+        $id_safe = sanitize_title($voce_name); // es: "atti-di-concessione"
+        $input_id = '_dci_elemento_trasparenza_tipo_cat_amm_trasp_' . $id_safe;
 
-                echo '<li>' . esc_html($voce_name);
-                if ($custom_url) {
-                    echo ' — URL: <code>' . esc_html($custom_url) . '</code>';
-                } else {
-                    echo ' — <em>nessun URL associato</em>';
-                }
-                echo '</li>';
-            }
+        // Valore (qui puoi personalizzare, ad esempio slug o nome normalizzato)
+        $value = $id_safe;
 
-            echo '</ul></li>';
+        // URL se presente
+        $custom_url = $override_links[$voce_name] ?? '';
+
+        echo '<li>';
+        echo '<input type="radio" class="cmb2-option" name="_dci_elemento_trasparenza_tipo_cat_amm_trasp" id="' . esc_attr($input_id) . '" value="' . esc_attr($value) . '">';
+        echo ' <label for="' . esc_attr($input_id) . '">' . esc_html($voce_name) . '</label>';
+
+        if ($custom_url) {
+            echo ' — <a href="' . esc_url($custom_url) . '" target="_blank" rel="noopener noreferrer">Link</a>';
+        } else {
+            echo ' — <em>nessun URL associato</em>';
         }
 
-        echo '</ul>';
+        echo '</li>';
+    }
+
+    echo '</ul></li>';
+}
+
+echo '</ul>';
+
         ?>
 
     </div>
