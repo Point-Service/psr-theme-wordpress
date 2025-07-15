@@ -260,31 +260,15 @@ function dci_render_transparency_multipost_page() {
 }
 
 
-add_action( 'cmb2_before_box', 'dci_render_apertura_buttons_banner', 5, 2 );
-function dci_render_apertura_buttons_banner( $object_id, $cmb ) {
+// TEMPORARY: mostra l'ID di ogni metabox generato da CMB2
+add_action( 'cmb2_before_box', function ( $object_id, $cmb ) {
+	echo "<!-- CMB2 BOX ID: {$cmb->cmb_id} -->\n";
+	// Se hai WP_DEBUG_LOG attivo, puoi anche fare:
+	// error_log( 'CMB2 BOX ID: ' . $cmb->cmb_id );
+}, 1, 2 );
 
-	// Agiamo solo sul box “Apertura”
-	if ( $cmb->cmb_id !== '_dci_elemento_trasparenza_box_apertura'
-	     && $cmb->cmb_id !== 'cmb2-metabox-_dci_elemento_trasparenza_box_apertura' ) {
-		return;
-	}
 
-	?>
-	<div class="notice-info" style="margin:12px 0 18px; padding:12px 16px; border-left:4px solid #2271b1;">
-		<p style="font-weight:600; margin:0 0 8px;">
-			<?php esc_html_e( 'Azioni rapide', 'design_comuni_italia' ); ?>
-		</p>
 
-		<a href="#url-fittizio-uno" class="button button-primary" style="margin-right:8px;">
-			<?php esc_html_e( 'Pulsante A', 'design_comuni_italia' ); ?>
-		</a>
-
-		<a href="#url-fittizio-due"  class="button">
-			<?php esc_html_e( 'Pulsante B', 'design_comuni_italia' ); ?>
-		</a>
-	</div>
-	<?php
-}
 
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
