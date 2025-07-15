@@ -83,7 +83,7 @@ function dci_add_transparency_multipost_page() {
 /**
  * Pulsanti extra nella schermata elenco Bandi di Gara:
  */
-add_action( 'admin_head-edit.php', 'dci_elemento_trasparenza_extra_buttons' );
+add_action( 'post-new.php', 'dci_elemento_trasparenza_extra_buttons' );
 function dci_elemento_trasparenza_extra_buttons() {
 
     $screen = get_current_screen();
