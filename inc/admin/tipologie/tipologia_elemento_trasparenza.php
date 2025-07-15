@@ -283,33 +283,41 @@ function dci_render_transparency_multipost_page() {
 
 
 
-
 // 1. ID dei termini da disabilitare
 function dci_get_locked_terms() {
-    return array( 1, 2, 3 ); // <-- sostituisci con i tuoi
+    return array( 1, 2, 3 );        // <‑‑ metti qui gli ID da bloccare
 }
 
-// 2. Filtro per disabilitare radio
+/**
+ * 2. Filtro: per taxonomy_radio_hierarchical
+ *    hook corretto = cmb2_taxonomy_radio_hierarchical_attributes
+ */
 add_filter(
-    'cmb2_taxonomy_radio_attributes',
+    'cmb2_taxonomy_radio_hierarchical_attributes',
     'dci_disable_some_tax_terms',
     10,
     4
 );
 
-// 3. Funzione callback
+/**
+ * 3. Callback: aggiunge disabled ai termini bloccati
+ */
 function dci_disable_some_tax_terms( $atts, $field_args, $term, $field_object ) {
+
+    // Applichiamo soltanto al nostro field
     if ( $field_object->id() !== '_dci_elemento_trasparenza_tipo_cat_amm_trasp' ) {
         return $atts;
     }
 
+    // Se il termine è tra quelli da bloccare → disabled
     if ( in_array( $term->term_id, dci_get_locked_terms(), true ) ) {
         $atts['disabled'] = 'disabled';
-        $atts['class']   .= ' dci-term-disabled';
+        $atts['class']    = ( $atts['class'] ?? '' ) . ' dci-term-disabled';
     }
 
     return $atts;
 }
+
 
 
 
