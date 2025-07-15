@@ -286,6 +286,33 @@ function dci_render_transparency_multipost_page() {
 }
 
 
+/**
+ * Restituisce [ term_id => nome ] SOLO per i termini
+ * con meta `visualizza_elemento` diverso da "0".
+ */
+function dci_get_visible_amministrazione_terms() {
+
+    $terms = get_terms( array(
+        'taxonomy'   => 'tipi_cat_amm_trasp',
+        'hide_empty' => false,
+    ) );
+
+    $out = array();
+
+    foreach ( $terms as $t ) {
+        // Se il meta è vuoto → trattiamolo come "visibile" (default = 1)
+        $meta = get_term_meta( $t->term_id, 'visualizza_elemento', true );
+        if ( $meta === '0' ) {
+            continue;                 // salta il termine “nascosto”
+        }
+        $out[ $t->term_id ] = $t->name;
+    }
+
+    return $out;
+}
+
+
+
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
 function dci_add_elemento_trasparenza_metaboxes()
@@ -328,15 +355,17 @@ function dci_add_elemento_trasparenza_metaboxes()
         'priority'      => 'high',
     ));
 
-    $cmb_sezione->add_field(array(
-        'id'                => $prefix . 'tipo_cat_amm_trasp',
-        'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
-        'desc'              => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
-        'type'              => 'taxonomy_radio_hierarchical',
-        'taxonomy'          => 'tipi_cat_amm_trasp',
-        'show_option_none'  => false,
-        'remove_default'    => true,
-    ));
+        $cmb_sezione->add_field( array(
+            'id'                => $prefix . 'tipo_cat_amm_trasp',
+            'name'              => __( 'Categoria Trasparenza *', 'design_comuni_italia' ),
+            'desc'              => __( 'Selezionare una categoria …', 'design_comuni_italia' ),
+            'type'              => 'taxonomy_radio_hierarchical',
+            'taxonomy'          => 'tipi_cat_amm_trasp',
+            'show_option_none'  => false,
+            'remove_default'    => true,
+            /* ↓↓↓ usa la callback che restituisce SOLO i termini “visibili” ↓↓↓ */
+            'options_cb'        => 'dci_get_visible_amministrazione_terms',
+        ) );
 
         $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
