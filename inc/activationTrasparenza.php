@@ -478,18 +478,18 @@ function dci_update_term_description( $term_name, $taxonomy, $new_desc ) {
 
 
 
+
 /**
- * Inserisce/aggiorna i termini (ricorsivo) e imposta:
- *  - meta 'ordinamento' progressivo
- *  - meta 'visualizza_elemento' (0 = nascosto, 1 = visibile)
+ * Inserisce / aggiorna i termini e IMPOSTA SEMPRE
+ *   – meta 'ordinamento' progressivo
+ *   – meta 'visualizza_elemento'  (0 = nascosto, 1 = visibile)
  */
 function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 ) {
 
-    $to_hide = dci_terms_to_hide(); // array dei nomi da nascondere
+    $to_hide = dci_terms_to_hide();   // nomi da nascondere
 
     foreach ( $terms as $key => $children ) {
 
-        // Se l’array è numerico ([0=>'foo']) sposta il valore
         if ( is_int( $key ) ) {
             $term_name = $children;
             $children  = [];
@@ -497,33 +497,30 @@ function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 
             $term_name = $key;
         }
 
-        // Crea o recupera il termine
-        $result = wp_insert_term( $term_name, $taxonomy, [ 'parent' => $parent ] );
+        $result  = wp_insert_term( $term_name, $taxonomy, [ 'parent' => $parent ] );
+        $term_id = ( is_wp_error( $result ) && 'term_exists' === $result->get_error_code() )
+                 ? (int) $result->get_error_data()
+                 : ( ! is_wp_error( $result ) ? (int) $result['term_id'] : 0 );
 
-        if ( is_wp_error( $result ) && 'term_exists' === $result->get_error_code() ) {
-            $term_id = (int) $result->get_error_data();
-        } elseif ( ! is_wp_error( $result ) ) {
-            $term_id = (int) $result['term_id'];
-        } else {
-            continue; // errore diverso
+        if ( ! $term_id ) {
+            continue;
         }
 
-        /* ----------  METADATI  ---------- */
-        // ordinamento progressivo
+        // Sovrascrivi sempre il meta 'ordinamento'
         update_term_meta( $term_id, 'ordinamento', $ordine );
 
-        // visualizza_elemento → 0 se il termine è nella lista da nascondere, altrimenti 1
+        // Calcola visibilità e sovrascrivi sempre il meta 'visualizza_elemento'
         $visible = in_array( $term_name, $to_hide, true ) ? '0' : '1';
         update_term_meta( $term_id, 'visualizza_elemento', $visible );
 
-        $ordine++; // incrementa per il prossimo termine
+        $ordine++;
 
-        /* ----------  RICORSIONE SUI FIGLI  ---------- */
         if ( ! empty( $children ) && is_array( $children ) ) {
-            recursionInsertTaxonomy( $children, $taxonomy, $term_id, $ordine );
+            recursionInsertTaxonomy1( $children, $taxonomy, $term_id, $ordine );
         }
     }
 }
+
 
 
 
