@@ -286,6 +286,42 @@ function dci_render_transparency_multipost_page() {
 }
 
 
+/**
+ * Evidenzia in grassetto i termini di primo livello (depth 0)
+ * nel radio‐button CMB2 della tassonomia tipi_cat_amm_trasp.
+ */
+add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2' );
+function dci_bold_parent_terms_cmb2( $hook ) {
+
+    // Carica SOLO su "Aggiungi nuovo Elemento Trasparenza"
+    if ( $hook !== 'post-new.php' || empty( $_GET['post_type'] ) || $_GET['post_type'] !== 'elemento_trasparenza' ) {
+        return;
+    }
+
+    // 1) CSS: rende in grassetto i <label> cui aggiungeremo la classe .dci-parent-term
+    $css = '.cmb2 .dci-parent-term { font-weight: 700; }';
+    wp_add_inline_style( 'wp-admin', $css );
+
+    // 2) JS: quando il metabox è pronto, individua i <li> di depth 0 e aggiunge la classe al <label>
+    // (CMB2 genera <li id="cmb2-tax-...-0"><label> ...)
+    $js = <<<JS
+    (function($){
+        $(document).ready(function(){
+            $('.cmb2-checkbox-list, .cmb2-radio-list').each(function(){
+                $(this).children('li').each(function(){
+                    var \$li = $(this);
+                    // solo i termini senza &nbsp; nel testo del label = depth 0
+                    var \$label = \$li.find('> label');
+                    if ( \$label.length && \$label.text().trim().indexOf('  ') === -1 ) { // NB: c'è uno NBSP
+                        \$label.addClass('dci-parent-term');
+                    }
+                });
+            });
+        });
+    })(jQuery);
+    JS;
+    wp_add_inline_script( 'jquery-core', $js );
+}
 
 
 
@@ -330,14 +366,6 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 
     return $clauses;
 }
-
-
-
-
-
-
-
-
 
 
 
