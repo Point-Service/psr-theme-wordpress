@@ -85,71 +85,70 @@ function dci_add_transparency_multipost_page() {
 
 
 
-
-/**
- * Pulsanti extra nella schermata elenco Bandi di Gara:
- *  - Tipi stato bandi
- *  - Tipi procedura contraente
- */
-add_action( 'admin_head-edit.php', 'dci_bando_extra_buttons' );
-function dci_bando_extra_buttons() {
+add_action('admin_head-post.php', 'dci_elemento_trasparenza_extra_buttons_metabox');
+add_action('admin_head-post-new.php', 'dci_elemento_trasparenza_extra_buttons_metabox');
+function dci_elemento_trasparenza_extra_buttons_metabox() {
 
     $screen = get_current_screen();
-    if ( $screen->post_type !== 'bando' || $screen->base !== 'edit' ) {
+    if ( $screen->post_type !== 'elemento_trasparenza' ) {
         return;
     }
 
-    // Pulsanti extra
-    $extra_buttons = [
-        [
-            'id'   => 'dci-extra-tax-stato',
-            'text' => __( 'Tipi stato bandi', 'design_comuni_italia' ),
-            'href' => admin_url( 'edit-tags.php?taxonomy=tipi_stato_bando&post_type=bando' ),
-        ],
-        [
-            'id'   => 'dci-extra-tax-procedura',
-            'text' => __( 'Tipi procedura contraente', 'design_comuni_italia' ),
-            'href' => admin_url( 'edit-tags.php?taxonomy=tipi_procedura_contraente&post_type=bando' ),
-        ],
-    ];
     ?>
     <style>
-        /* margine tra i bottoni */
-        .wrap .page-title-action {
-            margin-right: 8px; /* margine a destra del pulsante Add New */
+        /* Stile margini pulsanti */
+        #dci-extra-btns-container a {
+            margin-right: 10px;
+            display: inline-block;
+            padding: 4px 12px;
+            background: #0073aa;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
         }
-        .dci-extra-btn {
-            margin-left: 8px; /* margine tra pulsanti extra */
+        #dci-extra-btns-container a:hover {
+            background: #005177;
         }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Trova il titolo del metabox di apertura (esempio: #_dci_elemento_trasparenza_box_apertura)
+            const metaboxTitle = document.querySelector('#_dci_elemento_trasparenza_box_apertura .hndle');
+            if (!metaboxTitle) return;
 
-            const stdBtn = document.querySelector('.wrap .page-title-action'); // bottone WP "Aggiungi"
-            if (!stdBtn) return;
+            // Crea un contenitore pulsanti
+            const container = document.createElement('div');
+            container.id = 'dci-extra-btns-container';
 
+            // Crea i pulsanti
+            const buttons = [
+                {
+                    id: 'dci-extra-btn-azione1',
+                    href: 'https://esempio.it/azione-1',
+                    text: '<?php echo esc_js( __("Azione 1", "design_comuni_italia") ); ?>'
+                },
+                {
+                    id: 'dci-extra-btn-azione2',
+                    href: 'https://esempio.it/azione-2',
+                    text: '<?php echo esc_js( __("Azione 2", "design_comuni_italia") ); ?>'
+                }
+            ];
 
-            <?php foreach ( $extra_buttons as $btn ) : ?>
-                (function() {
-                    const link = document.createElement('a');
-                    link.id        = '<?php echo esc_js( $btn['id'] ); ?>';
-                    link.className = 'page-title-action';
-                    link.href      = '<?php echo esc_url( $btn['href'] ); ?>';
-                    link.textContent = '<?php echo esc_js( $btn['text'] ); ?>';
-                    stdBtn.after(link);
-                })();
-            <?php endforeach; ?>
+            buttons.forEach(function(btn) {
+                const a = document.createElement('a');
+                a.id = btn.id;
+                a.href = btn.href;
+                a.target = '_blank';
+                a.textContent = btn.text;
+                container.appendChild(a);
+            });
+
+            // Inserisci il contenitore PRIMA del titolo del metabox
+            metaboxTitle.parentNode.insertBefore(container, metaboxTitle);
         });
     </script>
     <?php
 }
-
-
-
-
-
-
-
 
 
 
