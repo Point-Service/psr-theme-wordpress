@@ -1,23 +1,5 @@
 jQuery( document ).ready(function() {
 
-
-
-
-jQuery(document).ready(function($){
-    $('#<?php echo esc_js($prefix . 'tipo_cat_amm_trasp'); ?>').on('change', function(){
-        var selected = $(this).find('option:selected').text().trim();
-        var url = dciUrlMap[selected];
-        if (url && url.length > 0) {
-            window.location.href = url;
-        }
-    });
-});
-
-
-
-
-    
-
     /**
      * gestione campi obbligatori
      */
