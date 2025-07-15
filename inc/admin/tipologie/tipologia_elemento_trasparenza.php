@@ -316,16 +316,7 @@ function dci_add_elemento_trasparenza_metaboxes()
         'remove_default'    => true,
     ));
 
-add_filter('term_name', function($name, $term) {
-    if ($term->taxonomy === 'tipi_cat_amm_trasp') {
-        $url = get_term_meta($term->term_id, 'url_categoria', true);
-        if ($url && $url !== '') {
-            // Aggiungi l'URL in chiaro dopo il nome, ad esempio in parentesi
-            $name .= ' (' . esc_html($url) . ')';
-        }
-    }
-    return $name;
-}, 10, 2);
+
 
     
     
