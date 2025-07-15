@@ -312,7 +312,6 @@ function dci_add_elemento_trasparenza_metaboxes()
         'desc'              => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
         'type'              => 'taxonomy_radio_hierarchical',
         'taxonomy'          => 'tipi_cat_amm_trasp',
-        'url'               => 'tipi_cat_amm_trasp',
         'show_option_none'  => false,
         'remove_default'    => true,
     ));
