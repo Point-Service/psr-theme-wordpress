@@ -87,7 +87,7 @@ add_action( 'admin_head-edit.php', 'dci_elemento_trasparenza_extra_buttons' );
 function dci_elemento_trasparenza_extra_buttons() {
 
     $screen = get_current_screen();
-    if ( $screen->post_type !== 'elemento_trasparenza' || $screen->base !== 'edit' ) {
+    if ( $screen->post_type !== 'elemento_trasparenza' || $screen->base !== 'post-new' ) {
         return;
     }
 
