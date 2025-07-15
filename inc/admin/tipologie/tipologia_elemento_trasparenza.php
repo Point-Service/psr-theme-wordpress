@@ -286,29 +286,28 @@ function dci_render_transparency_multipost_page() {
 }
 
 
-/**
- * Restituisce [ term_id => nome ] SOLO per i termini
- * con meta `visualizza_elemento` diverso da "0".
- */
 function dci_get_visible_amministrazione_terms() {
-
-    $terms = get_terms( array(
-        'taxonomy'   => 'tipi_cat_amm_trasp',
+    $terms = get_terms([
+        'taxonomy' => 'tipi_cat_amm_trasp',
         'hide_empty' => false,
-    ) );
+        'meta_query' => [
+            [
+                'key'     => 'visualizza_elemento',
+                'value'   => '1',
+                'compare' => '=',
+            ],
+        ],
+    ]);
 
-    $out = array();
+    $options = [];
 
-    foreach ( $terms as $t ) {
-        // Se il meta è vuoto → trattiamolo come "visibile" (default = 1)
-        $meta = get_term_meta( $t->term_id, 'visualizza_elemento', true );
-        if ( $meta === '0' ) {
-            continue;                 // salta il termine “nascosto”
+    if (!is_wp_error($terms) && !empty($terms)) {
+        foreach ($terms as $term) {
+            $options[$term->term_id] = $term->name;
         }
-        $out[ $t->term_id ] = $t->name;
     }
 
-    return $out;
+    return $options;
 }
 
 
