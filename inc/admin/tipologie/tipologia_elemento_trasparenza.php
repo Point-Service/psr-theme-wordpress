@@ -288,27 +288,24 @@ function dci_render_transparency_multipost_page() {
 
 function dci_get_visible_amministrazione_terms() {
     $terms = get_terms([
-        'taxonomy' => 'tipi_cat_amm_trasp',
+        'taxonomy'   => 'tipi_cat_amm_trasp',
         'hide_empty' => false,
-        'meta_query' => [
-            [
-                'key'     => 'visualizza_elemento',
-                'value'   => '1',
-                'compare' => '=',
-            ],
-        ],
     ]);
 
     $options = [];
 
     if (!is_wp_error($terms) && !empty($terms)) {
         foreach ($terms as $term) {
-            $options[$term->term_id] = $term->name;
+            $visible = get_term_meta($term->term_id, 'visualizza_elemento', true);
+            if ($visible == '1') {
+                $options[$term->term_id] = $term->name;
+            }
         }
     }
 
     return $options;
 }
+
 
 
 
