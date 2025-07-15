@@ -312,11 +312,34 @@ function dci_add_elemento_trasparenza_metaboxes()
         'desc'              => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
         'type'              => 'taxonomy_radio_hierarchical',
         'taxonomy'          => 'tipi_cat_amm_trasp',
+        'url'               => 'tipi_cat_amm_trasp',
         'show_option_none'  => false,
         'remove_default'    => true,
     ));
 
+add_filter('cmb2_render_taxonomy_radio_hierarchical', function($field, $escaped_value, $object_id, $object_type, $field_type_object){
+    // Prendi tutti i termini della tassonomia
+    $terms = get_terms(array(
+        'taxonomy' => $field->args('taxonomy'),
+        'hide_empty' => false,
+    ));
 
+    echo '<ul>';
+    foreach ($terms as $term) {
+        $url = get_term_link($term);
+        $checked = checked($escaped_value, $term->term_id, false);
+
+        echo '<li>';
+        echo '<label>';
+        echo '<input type="radio" name="' . esc_attr($field->args('id')) . '" value="' . esc_attr($term->term_id) . '" ' . $checked . '> ';
+        echo esc_html($term->name);
+        echo ' <small>(' . esc_url($url) . ')</small>';
+        echo '</label>';
+        echo '</li>';
+    }
+    echo '</ul>';
+    return true;
+}, 10, 5);
 
     
     
