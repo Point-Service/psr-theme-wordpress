@@ -324,7 +324,8 @@ function dci_add_elemento_trasparenza_metaboxes()
         'priority'      => 'high',
     ));
 
-        $cmb->add_field(array(
+    
+    $cmb_sezione->add_field(array(
             'name'       => 'Seleziona Elemento Trasparenza',
             'id'         => $prefix . 'elemento_trasparenza',
             'type'       => 'post_search_text', // o 'post_select' o 'post_object'
