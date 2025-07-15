@@ -53,118 +53,119 @@ if (!function_exists("dci_tipi_cat_amm_trasp_array")) {
     function dci_tipi_cat_amm_trasp_array() {
         return [
             'Disposizioni generali' => [
-                "Piano triennale per la prevenzione della corruzione e della trasparenza",
-                'Atti generali',
-                "Oneri informativi per cittadini e imprese"
+                ['name' => "Piano triennale per la prevenzione della corruzione e della trasparenza", 'url' => ''],
+                ['name' => 'Atti generali', 'url' => ''],
+                ['name' => "Oneri informativi per cittadini e imprese", 'url' => '']
             ],
             'Organizzazione' => [
-                'Organi di indirizzo politico-amministrativo',
-                "Sanzioni per mancata comunicazione dei dati",
-                "Rendiconti gruppi consiliari regionali/provinciali",
-                "Articolazione degli uffici",
-                "Telefono e posta elettronica"
+                ['name' => 'Organi di indirizzo politico-amministrativo', 'url' => ''],
+                ['name' => "Sanzioni per mancata comunicazione dei dati", 'url' => ''],
+                ['name' => "Rendiconti gruppi consiliari regionali/provinciali", 'url' => ''],
+                ['name' => "Articolazione degli uffici", 'url' => ''],
+                ['name' => "Telefono e posta elettronica", 'url' => '']
             ],
             'Consulenti e collaboratori' => [
-                'Titolari di incarichi di collaborazione o consulenza'
+                ['name' => 'Titolari di incarichi di collaborazione o consulenza', 'url' => '']
             ],
             'Personale' => [
-                'Incarichi amministrativi di vertice',
-                'Dirigenti',
-                'Posizioni organizzative',
-                'Dotazione organica',
-                'Personale non a tempo indeterminato',
-                'Tassi di assenza',
-                "Incarichi conferiti e autorizzati ai dipendenti",
-                "Contrattazione collettiva",
-                "Contrattazione integrativa",
-                "OIV"
+                ['name' => 'Incarichi amministrativi di vertice', 'url' => ''],
+                ['name' => 'Dirigenti', 'url' => ''],
+                ['name' => 'Posizioni organizzative', 'url' => ''],
+                ['name' => 'Dotazione organica', 'url' => ''],
+                ['name' => 'Personale non a tempo indeterminato', 'url' => ''],
+                ['name' => 'Tassi di assenza', 'url' => ''],
+                ['name' => "Incarichi conferiti e autorizzati ai dipendenti", 'url' => ''],
+                ['name' => "Contrattazione collettiva", 'url' => ''],
+                ['name' => "Contrattazione integrativa", 'url' => ''],
+                ['name' => "OIV", 'url' => '']
             ],
             'Bandi di concorso' => [
-                'Concorsi'
+                ['name' => 'Concorsi', 'url' => '']
             ],
-            'Performance'=> [
-                "Piano della Performance",
-                "Relazione sulla Performance",
-                "Ammontare complessivo dei premi",
-                "Benessere organizzativo"
+            'Performance' => [
+                ['name' => "Piano della Performance", 'url' => ''],
+                ['name' => "Relazione sulla Performance", 'url' => ''],
+                ['name' => "Ammontare complessivo dei premi", 'url' => ''],
+                ['name' => "Benessere organizzativo", 'url' => '']
             ],
-            'Enti controllati' =>[
-                "Enti pubblici vigilati",
-                "Società partecipate",
-                "Enti di diritto privato controllati",
-                "Rappresentazione grafica"
+            'Enti controllati' => [
+                ['name' => "Enti pubblici vigilati", 'url' => ''],
+                ['name' => "Società partecipate", 'url' => ''],
+                ['name' => "Enti di diritto privato controllati", 'url' => ''],
+                ['name' => "Rappresentazione grafica", 'url' => '']
             ],
-            "Attività e procedimenti"=>[
-                "Dati aggregati attività amministrativa",
-                "Tipologie di procedimento",
-                "Monitoraggio tempi procedimentali",
-                "Dichiarazioni sostitutive  e acquisizione d'ufficio dei dati"
+            "Attività e procedimenti" => [
+                ['name' => "Dati aggregati attività amministrativa", 'url' => ''],
+                ['name' => "Tipologie di procedimento", 'url' => ''],
+                ['name' => "Monitoraggio tempi procedimentali", 'url' => ''],
+                ['name' => "Dichiarazioni sostitutive  e acquisizione d'ufficio dei dati", 'url' => '']
             ],
-            "Provvedimenti" =>[
-                "Provvedimenti organi indirizzo-politico",
-                "Provvedimenti dirigenti"
+            "Provvedimenti" => [
+                ['name' => "Provvedimenti organi indirizzo-politico", 'url' => ''],
+                ['name' => "Provvedimenti dirigenti", 'url' => '']
             ],
-            "Bandi di Gara e contratti"=>[
-               "Informazioni sulle singole procedure in formato tabellare",
-               "Atti delle amministrazioni aggiudicatrici e degli enti aggiudicatori distintamente per ogni procedura",
-               "Contratti Pubblici",
+            "Bandi di Gara e contratti" => [
+               ['name' => "Informazioni sulle singole procedure in formato tabellare", 'url' => ''],
+               ['name' => "Atti delle amministrazioni aggiudicatrici e degli enti aggiudicatori distintamente per ogni procedura", 'url' => ''],
+               ['name' => "Contratti Pubblici", 'url' => ''],
             ],
-            "Sovvenzioni , contributi sussidi, vantaggi economici"=>[
-                "Criteri e modalità",
-                "Atti di concessione",
-                "Elenchi"
+            "Sovvenzioni , contributi sussidi, vantaggi economici" => [
+                ['name' => "Criteri e modalità", 'url' => ''],
+                ['name' => "Atti di concessione", 'url' => 'edit.php?post_type=atto_concessione'],
+                ['name' => "Elenchi", 'url' => ''],
             ],
-            "Bilanci"=>[
-                "Bilancio preventivo e consuntivo",
-                "Piano degli indicatori e risultati attesi di bilancio"
+            "Bilanci" => [
+                ['name' => "Bilancio preventivo e consuntivo", 'url' => ''],
+                ['name' => "Piano degli indicatori e risultati attesi di bilancio", 'url' => '']
             ],
-            "Beni immobili e gestione patrimonio"=>[
-                "Patrimonio immobiliare",
-                "Canoni di locazione o affitto"
+            "Beni immobili e gestione patrimonio" => [
+                ['name' => "Patrimonio immobiliare", 'url' => ''],
+                ['name' => "Canoni di locazione o affitto", 'url' => '']
             ],
-            "Controlli e rilievi sull'amministrazione"=>[
-                "Organismi indipendenti di valutazione, nuclei di valutazione o altri organismi con funzioni analoghe",
-                "Organi di revisione amministrativa e contabile",
-                "Corte dei conti"
+            "Controlli e rilievi sull'amministrazione" => [
+                ['name' => "Organismi indipendenti di valutazione, nuclei di valutazione o altri organismi con funzioni analoghe", 'url' => ''],
+                ['name' => "Organi di revisione amministrativa e contabile", 'url' => ''],
+                ['name' => "Corte dei conti", 'url' => '']
             ],
-            "Servizi Erogati"=>[
-                "Carta dei servizi e standard di qualità",
-                "Costi contabilizzati",
-                "Tempi medi di erogazione dei servizi",
-                "Liste di attesa"
+            "Servizi Erogati" => [
+                ['name' => "Carta dei servizi e standard di qualità", 'url' => ''],
+                ['name' => "Costi contabilizzati", 'url' => ''],
+                ['name' => "Tempi medi di erogazione dei servizi", 'url' => ''],
+                ['name' => "Liste di attesa", 'url' => '']
             ],
             "Pagamenti dell'amministrazione" => [
-                    "Dati sui pagamenti",
-                    "Indicatore di tempestività dei pagamenti",
-                    "IBAN e pagamenti informatici",
-                    "Dati sui pagamenti del servizio sanitario nazionale"
+                ['name' => "Dati sui pagamenti", 'url' => ''],
+                ['name' => "Indicatore di tempestività dei pagamenti", 'url' => ''],
+                ['name' => "IBAN e pagamenti informatici", 'url' => ''],
+                ['name' => "Dati sui pagamenti del servizio sanitario nazionale", 'url' => '']
             ],
             "Opere pubbliche" => [
-                "Nuclei di valutazione e verifica degli investimenti pubblici",
-                "Atti di programmazione delle opere pubbliche",
-                "Tempi costi e indicatori di realizzazione delle opere pubbliche"
+                ['name' => "Nuclei di valutazione e verifica degli investimenti pubblici", 'url' => ''],
+                ['name' => "Atti di programmazione delle opere pubbliche", 'url' => ''],
+                ['name' => "Tempi costi e indicatori di realizzazione delle opere pubbliche", 'url' => '']
             ],
             "Pianificazione e governo del territorio" => [
-                "Pianificazione e governo del territorio"
+                ['name' => "Pianificazione e governo del territorio", 'url' => '']
             ],
             "Informazioni ambientali" => [
-                "Informazioni ambientali"
+                ['name' => "Informazioni ambientali", 'url' => '']
             ],
             "Strutture sanitarie private accreditate" => [
-                "Strutture sanitarie private accreditate"
+                ['name' => "Strutture sanitarie private accreditate", 'url' => '']
             ],
             "Interventi straordinari e di emergenza" => [
-                "Interventi straordinari e di emergenza"
+                ['name' => "Interventi straordinari e di emergenza", 'url' => '']
             ],
             "Altri contenuti" => [
-                "Prevenzione della corruzione",
-                "Accesso civico",
-                "Accessibilità e Catalogo di dati, metadati e banche dati",
-                "Dati ulteriori"
+                ['name' => "Prevenzione della corruzione", 'url' => ''],
+                ['name' => "Accesso civico", 'url' => ''],
+                ['name' => "Accessibilità e Catalogo di dati, metadati e banche dati", 'url' => ''],
+                ['name' => "Dati ulteriori", 'url' => '']
             ]
         ];
     }
 }
+
 
 
 if ( ! function_exists( 'dci_tipi_cat_amm_trasp_links' ) ) {
