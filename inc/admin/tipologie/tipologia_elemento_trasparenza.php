@@ -59,6 +59,9 @@ function dci_elemento_trasparenza_add_content_after_title($post)
         return;
     }
     
+    // Titolo sopra i pulsanti
+    echo '<h2 style="margin-top: 20px; margin-bottom: 10px;">Categorie personalizzate</h2>';
+    
     // Pulsanti con URL fittizi
     ?>
     <div style="margin-bottom: 15px;">
@@ -69,32 +72,9 @@ function dci_elemento_trasparenza_add_content_after_title($post)
             Pulsante 2
         </a>
     </div>
-
-    <!-- Tabella stilizzata -->
-    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-        <thead>
-            <tr style="background-color: #f5f5f5;">
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Colonna 1</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Colonna 2</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Colonna 3</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="border: 1px solid #ddd; padding: 8px;">Dato 1</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">Dato 2</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">Dato 3</td>
-            </tr>
-            <tr style="background-color: #f9f9f9;">
-                <td style="border: 1px solid #ddd; padding: 8px;">Dato 4</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">Dato 5</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">Dato 6</td>
-            </tr>
-        </tbody>
-    </table>
-
     <?php
 }
+
 
 
 // Aggiungi la nuova voce di sottomenu per la pagina "Multi-Post"
