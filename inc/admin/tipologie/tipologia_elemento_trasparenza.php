@@ -281,52 +281,50 @@ function dci_render_transparency_multipost_page() {
 
 
 
+// --- Funzioni CMB2 esistenti (rimangono invariate) ---
+add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
 
 
-// 1. ID dei termini da disabilitare
-function dci_get_locked_terms() {
-    return array( 1, 2, 3 );        // <‑‑ metti qui gli ID da bloccare
+
+
+/**
+ * ID dei term da disabilitare (figli compresi, se vuoi).
+ */
+function dci_locked_terms() {
+    return array( 123, 456 );   // <‑‑ SOSTITUISCI con i tuoi ID reali
 }
 
 /**
- * 2. Filtro: per taxonomy_radio_hierarchical
- *    hook corretto = cmb2_taxonomy_radio_hierarchical_attributes
+ * Applica l'attributo disabled ai radio di CMB2 taxonomy_radio(_hierarchical)
  */
-add_filter(
-    'cmb2_taxonomy_radio_hierarchical_attributes',
-    'dci_disable_some_tax_terms',
-    10,
-    4
-);
+add_filter( 'cmb2_taxonomy_radio_attributes', 'dci_lock_some_terms', 10, 4 );
 
-/**
- * 3. Callback: aggiunge disabled ai termini bloccati
- */
-function dci_disable_some_tax_terms( $atts, $field_args, $term, $field_object ) {
+function dci_lock_some_terms( $atts, $field_args, $term, $field ) {
 
-    // Applichiamo soltanto al nostro field
-    if ( $field_object->id() !== '_dci_elemento_trasparenza_tipo_cat_amm_trasp' ) {
+    // Solo per il nostro field:
+    if ( $field->id() !== '_dci_elemento_trasparenza_tipo_cat_amm_trasp' ) {
         return $atts;
     }
 
-    // Se il termine è tra quelli da bloccare → disabled
-    if ( in_array( $term->term_id, dci_get_locked_terms(), true ) ) {
-        $atts['disabled'] = 'disabled';
-        $atts['class']    = ( $atts['class'] ?? '' ) . ' dci-term-disabled';
+    // Se il termine è tra quelli bloccati
+    if ( in_array( $term->term_id, dci_locked_terms(), true ) ) {
+        $atts['disabled'] = 'disabled';               // disabilita il radio
+        $atts['class']  = ( $atts['class'] ?? '' ) . ' dci-term-disabled';
     }
 
     return $atts;
 }
+
+/* (opzionale) stile grigio per i label dei termini bloccati */
 add_action( 'admin_head', function () {
     echo '<style>
-        .dci-term-disabled + label { color:#aaa!important; font-style:italic; }
-    </style>';
+            .dci-term-disabled + label { color:#999!important; font-style:italic; }
+          </style>';
 } );
 
 
 
-// --- Funzioni CMB2 esistenti (rimangono invariate) ---
-add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
+
 function dci_add_elemento_trasparenza_metaboxes()
 {
     $prefix = '_dci_elemento_trasparenza_';
