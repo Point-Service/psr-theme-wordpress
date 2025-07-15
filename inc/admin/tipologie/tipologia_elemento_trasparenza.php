@@ -304,55 +304,35 @@ function dci_add_elemento_trasparenza_metaboxes()
 
 
 
-    
+  function dci_tipi_cat_amm_trasp_options_indentate() {
+    $items = dci_tipi_cat_amm_trasp_array();
+    $options = [];
 
-    $cmb_sezione->add_field(array(
-        'id'                => $prefix . 'tipo_cat_amm_trasp',
-        'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
-        'desc'              => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
-        'type'              => 'taxonomy_radio_hierarchical',
-        'taxonomy'          => 'tipi_cat_amm_trasp',
-        'show_option_none'  => false,
-        'remove_default'    => true,
-    ));
+    foreach ($items as $group => $subitems) {
+        // Gruppo principale, intestazione non selezionabile (opzionale)
+        $options[$group] = $group;
 
-add_filter('cmb2_render_taxonomy_radio_hierarchical', function($field, $escaped_value, $object_id, $object_type, $field_type_object){
-    $taxonomy = $field->args('taxonomy');
-
-    // Prendo tutti i termini della tassonomia, anche quelli senza post
-    $terms = get_terms(array(
-        'taxonomy' => $taxonomy,
-        'hide_empty' => false,
-    ));
-
-    if (is_wp_error($terms) || empty($terms)) {
-        echo 'Nessuna categoria disponibile.';
-        return true;
-    }
-
-    echo '<ul style="list-style:none; padding-left: 0;">';
-
-    foreach ($terms as $term) {
-        $url = get_term_link($term);
-        if (is_wp_error($url)) {
-            $url = '#';
+        foreach ($subitems as $item) {
+            $label = $item['name'];
+            if (!empty($item['url'])) {
+                $label .= " (link: " . $item['url'] . ")";
+            }
+            // Aggiungi indentazione con spazi per sottocategorie
+            $options['  ' . $label] = $item['name'];
         }
-
-        $checked = checked($escaped_value, $term->term_id, false);
-
-        echo '<li style="margin-bottom: 5px;">';
-        echo '<label>';
-        echo '<input type="radio" name="' . esc_attr($field->args('id')) . '" value="' . esc_attr($term->term_id) . '" ' . $checked . '> ';
-        echo esc_html($term->name);
-        echo ' <a href="' . esc_url($url) . '" target="_blank" style="font-size: 0.85em; color: #0073aa; margin-left: 5px; text-decoration: underline;">[link]</a>';
-        echo '</label>';
-        echo '</li>';
     }
-    echo '</ul>';
+    return $options;
+}
+  
 
-    // Torna true per dire a CMB2 che il campo è già stato renderizzato
-    return true;
-}, 10, 5);
+$cmb_sezione->add_field(array(
+    'id'      => $prefix . 'tipo_cat_amm_trasp',
+    'name'    => __('Categoria Trasparenza *', 'design_comuni_italia'),
+    'desc'    => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
+    'type'    => 'select',            // uso select semplice
+    'options' => dci_tipi_cat_amm_trasp_options_indentate(), // opzioni personalizzate con indentazione e url visibile
+));
+
 
 
     
