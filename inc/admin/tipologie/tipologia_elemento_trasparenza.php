@@ -53,10 +53,13 @@ function dci_register_post_type_elemento_trasparenza()
 }
 
 
+
+
 add_action('edit_form_after_title', 'dci_elemento_trasparenza_add_content_after_title');
 function dci_elemento_trasparenza_add_content_after_title($post)
 {
     if ($post->post_type !== 'elemento_trasparenza') {
+        echo "<span><i>Il <b>Titolo</b> è il <b>Nome del elemento dell'amministrazione trasparente</b>.</i></span><br><br>";
         return;
     }
     
@@ -78,6 +81,7 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     </div>
     <?php
 }
+
 
 // Aggiungi la nuova voce di sottomenu per la pagina "Multi-Post"
 add_action('admin_menu', 'dci_add_transparency_multipost_page', 20);
@@ -279,27 +283,6 @@ function dci_render_transparency_multipost_page() {
 }
 
 
-add_filter('cmb2_taxonomy_radio_hierarchical_terms', function($terms, $field) {
-    // Verifica che il campo sia quello che vuoi filtrare
-    if ($field->args('id') === '_dci_elemento_trasparenza_') {
-        $filtered_terms = array();
-
-        foreach ($terms as $term) {
-            // Recupera il meta campo del termine
-            $flag = get_term_meta($term->term_id, '_visualizza_elemento_lista', true);
-            if ($flag === '1') {
-                $filtered_terms[] = $term;
-            }
-        }
-
-        return $filtered_terms;
-    }
-
-    return $terms;
-}, 10, 2);
-
-
-
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
 function dci_add_elemento_trasparenza_metaboxes()
@@ -342,7 +325,6 @@ function dci_add_elemento_trasparenza_metaboxes()
         'priority'      => 'high',
     ));
 
-    
     $cmb_sezione->add_field(array(
         'id'                => $prefix . 'tipo_cat_amm_trasp',
         'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
@@ -351,19 +333,7 @@ function dci_add_elemento_trasparenza_metaboxes()
         'taxonomy'          => 'tipi_cat_amm_trasp',
         'show_option_none'  => false,
         'remove_default'    => true,
-        'query_args' => array(
-                'meta_query' => array(
-                    array(
-                        'key'   => '_visualizza_elemento_lista',
-                        'value' => '1',
-                        'compare' => '='
-                    )
-                )
-            )
     ));
-    
-  
-
 
         $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
