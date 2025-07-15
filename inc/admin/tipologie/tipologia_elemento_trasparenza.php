@@ -262,10 +262,6 @@ function dci_render_transparency_multipost_page() {
 
 
 
-
-
-
-
 function dci_render_sezioni_separate_banner( $object_id, $cmb ) {
 
 	// Agiamo solo sul box “Seleziona la sezione”
@@ -294,10 +290,7 @@ function dci_render_sezioni_separate_banner( $object_id, $cmb ) {
 	</div>
 	<?php
 }
-add_action( 'cmb2_before_box', 'dci_render_sezioni_separate_banner', 10, 2 );
-
-
-
+add_action( 'cmb2_init', 'dci_render_sezioni_separate_banner', 10, 2 );
 
 
 
@@ -306,6 +299,24 @@ add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
 function dci_add_elemento_trasparenza_metaboxes()
 {
     $prefix = '_dci_elemento_trasparenza_';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 
     $cmb_apertura = new_cmb2_box(array(
         'id'            => $prefix . 'box_apertura',
