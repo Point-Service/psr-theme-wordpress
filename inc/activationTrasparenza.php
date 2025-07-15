@@ -539,8 +539,7 @@ function dci_terms_to_hide() {
     return [
         'Incarichi dirigenziali, a qualsiasi titolo conferiti',
         'Contratti Pubblici',
-        'Atti di concessione',
-        'incarichi-dirigenziali-a-qualsiasi-titolo-conferiti',
+        'Atti di concessione1',
     ];
 }
 
