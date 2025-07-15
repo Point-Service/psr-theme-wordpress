@@ -280,6 +280,39 @@ function dci_render_transparency_multipost_page() {
 }
 
 
+
+
+
+
+// 1. ID dei termini da disabilitare
+function dci_get_locked_terms() {
+    return array( 1, 2, 3 ); // <-- sostituisci con i tuoi
+}
+
+// 2. Filtro per disabilitare radio
+add_filter(
+    'cmb2_taxonomy_radio_attributes',
+    'dci_disable_some_tax_terms',
+    10,
+    4
+);
+
+// 3. Funzione callback
+function dci_disable_some_tax_terms( $atts, $field_args, $term, $field_object ) {
+    if ( $field_object->id() !== '_dci_elemento_trasparenza_tipo_cat_amm_trasp' ) {
+        return $atts;
+    }
+
+    if ( in_array( $term->term_id, dci_get_locked_terms(), true ) ) {
+        $atts['disabled'] = 'disabled';
+        $atts['class']   .= ' dci-term-disabled';
+    }
+
+    return $atts;
+}
+
+
+
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
 function dci_add_elemento_trasparenza_metaboxes()
@@ -334,37 +367,6 @@ function dci_add_elemento_trasparenza_metaboxes()
         ),
     ) );
     
-    function dci_get_locked_terms() {
-    // Inserisci gli ID da bloccare
-    return array( 1, 2, 3 );
-    }
-
-add_filter(
-    'cmb2_taxonomy_radio_attributes',
-    'dci_disable_some_tax_terms',
-    10,
-    4
-);
-function dci_disable_some_tax_terms( $atts, $field_args, $term, $field_object ) {
-
-    // Applichiamo la logica SOLO al nostro field
-    if ( $field_object->id() !== '_dci_elemento_trasparenza_tipo_cat_amm_trasp' ) {
-        return $atts;
-    }
-
-    // Se l’ID è in quelli “bloccati”, aggiungiamo l’attributo disabled
-    if ( in_array( $term->term_id, dci_get_locked_terms(), true ) ) {
-        $atts['disabled'] = 'disabled';
-        // (Opzionale) aggiungi una classe CSS per stilizzare
-        $atts['class']   .= ' dci-term-disabled';
-    }
-
-    return $atts;
-}
-
-    
-
-
         $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
         'title'         => __('Corpo', 'design_comuni_italia'),
