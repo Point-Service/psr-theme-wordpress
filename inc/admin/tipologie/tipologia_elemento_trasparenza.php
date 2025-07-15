@@ -336,7 +336,7 @@ function dci_add_elemento_trasparenza_metaboxes()
     
     function dci_get_locked_terms() {
     // Inserisci gli ID da bloccare
-    return array( 123, 456, 789 );
+    return array( 1, 2, 3 );
     }
 
 add_filter(
