@@ -55,6 +55,17 @@ function dci_register_post_type_elemento_trasparenza()
 add_action('edit_form_after_title', 'dci_elemento_trasparenza_add_content_after_title');
 function dci_elemento_trasparenza_add_content_after_title($post)
 {
+    if ($post->post_type === 'elemento_trasparenza') {
+        echo "<span><i>Il <b>Titolo</b> è il <b>Nome del elemento dell'amministrazione trasparente</b>.</i></span><br><br>";
+    }
+}
+
+
+
+
+add_action('edit_form_after_title', 'dci_elemento_trasparenza_add_content_after_title');
+function dci_elemento_trasparenza_add_content_after_title($post)
+{
     if ($post->post_type !== 'elemento_trasparenza') {
         return;
     }
@@ -77,8 +88,6 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     </div>
     <?php
 }
-
-
 
 // Aggiungi la nuova voce di sottomenu per la pagina "Multi-Post"
 add_action('admin_menu', 'dci_add_transparency_multipost_page', 20);
@@ -279,31 +288,9 @@ function dci_render_transparency_multipost_page() {
     <?php
 }
 
-function dci_tax_radio_show_id( $field_html, $field_args, $field_obj, $term ) {
-
-	// per "— Nessuna —" lascia invariato
-	if ( empty( $term ) ) {
-		return $field_html;
-	}
-
-	// inserisce l’ID fra parentesi dopo il nome
-	$label      = sprintf( '%s <small style="opacity:.7;">(#%d)</small>', esc_html( $term->name ), $term->term_id );
-	$checked    = checked( $field_obj->escaped_value(), $term->term_id, false );
-	$disabled   = disabled( isset( $field_args['disable_terms'] ) && in_array( $term->term_id, $field_args['disable_terms'], true ), true, false );
-
-	return sprintf(
-		'<li><label><input type="radio" name="%1$s" value="%2$d" %3$s %4$s/> %5$s</label></li>',
-		esc_attr( $field_obj->_name() ),
-		$term->term_id,
-		$checked,
-		$disabled,
-		$label
-	);
-}
 
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
-
 function dci_add_elemento_trasparenza_metaboxes()
 {
     $prefix = '_dci_elemento_trasparenza_';
@@ -344,20 +331,16 @@ function dci_add_elemento_trasparenza_metaboxes()
         'priority'      => 'high',
     ));
 
-        $cmb_sezione->add_field( array(
-        	'id'               => $prefix . 'tipo_cat_amm_trasp',
-        	'name'             => __( 'Categoria Trasparenza *', 'design_comuni_italia' ),
-        	'type'             => 'taxonomy_radio_hierarchical',
-        	'taxonomy'         => 'tipi_cat_amm_trasp',
-        	'show_option_none' => false,
-        	'remove_default'   => true,
-        	'query_args'       => array(
-        		'hide_empty' => false,
-        	),
-        	// ↴ nuova callback
-        	'display_cb'       => 'dci_tax_radio_show_id',
-        ) );
-    
+    $cmb_sezione->add_field(array(
+        'id'                => $prefix . 'tipo_cat_amm_trasp',
+        'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
+        'desc'              => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
+        'type'              => 'taxonomy_radio_hierarchical',
+        'taxonomy'          => 'tipi_cat_amm_trasp',
+        'show_option_none'  => false,
+        'remove_default'    => true,
+    ));
+
         $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
         'title'         => __('Corpo', 'design_comuni_italia'),
