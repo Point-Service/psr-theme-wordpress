@@ -291,7 +291,7 @@ add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
  * ID dei term da disabilitare (figli compresi, se vuoi).
  */
 function dci_locked_terms() {
-    return array( 123, 456 );   // <‑‑ SOSTITUISCI con i tuoi ID reali
+    return array( 1, 4 );   // <‑‑ SOSTITUISCI con i tuoi ID reali
 }
 
 /**
