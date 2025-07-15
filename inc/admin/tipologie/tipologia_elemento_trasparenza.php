@@ -323,19 +323,46 @@ function dci_add_elemento_trasparenza_metaboxes()
     ));
 
     $cmb_sezione->add_field( array(
-        'id'                => $prefix . 'tipo_cat_amm_trasp',
-        'name'              => __( 'Categoria Trasparenza *', 'design_comuni_italia' ),
-        'desc'              => __( 'Selezionare la sezione …', 'design_comuni_italia' ),
-        'type'              => 'taxonomy_radio_hierarchical',
-        'taxonomy'          => 'tipi_cat_amm_trasp',
-        'show_option_none'  => false,
-        'remove_default'    => true,
-        'query_args'        => array(
-            'hide_empty' => false, 
-            'exclude'    => array( 123, 456, 789 ),
-
+        'id'               => $prefix . 'tipo_cat_amm_trasp',
+        'name'             => __( 'Categoria Trasparenza *', 'design_comuni_italia' ),
+        'type'             => 'taxonomy_radio_hierarchical',
+        'taxonomy'         => 'tipi_cat_amm_trasp',
+        'show_option_none' => false,
+        'remove_default'   => true,
+        'query_args'       => array(
+            'hide_empty' => false,   // mostri anche i termini senza post
         ),
     ) );
+    
+    function dci_get_locked_terms() {
+    // Inserisci gli ID da bloccare
+    return array( 123, 456, 789 );
+    }
+
+add_filter(
+    'cmb2_taxonomy_radio_attributes',
+    'dci_disable_some_tax_terms',
+    10,
+    4
+);
+function dci_disable_some_tax_terms( $atts, $field_args, $term, $field_object ) {
+
+    // Applichiamo la logica SOLO al nostro field
+    if ( $field_object->id() !== '_dci_elemento_trasparenza_tipo_cat_amm_trasp' ) {
+        return $atts;
+    }
+
+    // Se l’ID è in quelli “bloccati”, aggiungiamo l’attributo disabled
+    if ( in_array( $term->term_id, dci_get_locked_terms(), true ) ) {
+        $atts['disabled'] = 'disabled';
+        // (Opzionale) aggiungi una classe CSS per stilizzare
+        $atts['class']   .= ' dci-term-disabled';
+    }
+
+    return $atts;
+}
+
+    
 
 
         $cmb_corpo = new_cmb2_box(array(
