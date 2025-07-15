@@ -65,11 +65,11 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     // Pulsanti con URL fittizi
     ?>
     <div style="margin-bottom: 15px;">
-        <a href="https://esempio.it/pulsante1" class="button button-primary" style="margin-right: 10px;">
-            Pulsante 1
+        <a href="edit.php?post_type=incarichi_dip" class="button button-primary" style="margin-right: 10px;">
+            Personale / Incarichi dirigenziali, a qualsiasi titolo conferiti
         </a>
-        <a href="https://esempio.it/pulsante2" class="button button-secondary">
-            Pulsante 2
+        <a href="edit.php?post_type=bando" class="button button-secondary">
+            Bandi di Gara e contratti / Contratti Pubblici
         </a>
     </div>
     <?php
