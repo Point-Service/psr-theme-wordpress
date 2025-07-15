@@ -304,36 +304,15 @@ function dci_add_elemento_trasparenza_metaboxes()
 
 
 
-    
-
-function dci_tipi_cat_amm_trasp_options_indentate() {
-    $items = dci_tipi_cat_amm_trasp_array();
-    $options = [];
-    $urls = [];
-
-    foreach ($items as $group => $subitems) {
-        $options[$group] = $group; // intestazione gruppo (opzione disabilitata nel select sarebbe meglio ma dipende dal tema)
-        $urls[$group] = ''; // gruppo senza url
-
-        foreach ($subitems as $item) {
-            $label = '  ' . $item['name']; // indentazione con spazi normali
-            $options[$label] = $item['name'];
-            $urls[$item['name']] = $item['url']; // mappa nome => url
-        }
-    }
-    // Salva questa mappa globale (vedi passo 3)
-    return [$options, $urls];
-}
-
-list($options, $url_map) = dci_tipi_cat_amm_trasp_options_indentate();
-
-$cmb_sezione->add_field(array(
-    'id'      => $prefix . 'tipo_cat_amm_trasp',
-    'name'    => __('Categoria Trasparenza *', 'design_comuni_italia'),
-    'desc'    => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
-    'type'    => 'select',
-    'options' => $options,
-));
+       $cmb_sezione->add_field(array(
+        'id'                => $prefix . 'tipo_cat_amm_trasp',
+        'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
+        'desc'              => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
+        'type'              => 'taxonomy_radio_hierarchical',
+        'taxonomy'          => 'tipi_cat_amm_trasp',
+        'show_option_none'  => false,
+        'remove_default'    => true,
+      ));
 
 
 
