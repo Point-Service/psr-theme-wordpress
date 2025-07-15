@@ -478,18 +478,20 @@ function dci_update_term_description( $term_name, $taxonomy, $new_desc ) {
 
 
 
-
 /**
  * Inserisce / aggiorna i termini e IMPOSTA SEMPRE
  *   – meta 'ordinamento' progressivo
  *   – meta 'visualizza_elemento'  (0 = nascosto, 1 = visibile)
+ *   – aggiorna sempre lo slug in base al nome del termine
  */
+
 function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 ) {
 
-    $to_hide = dci_terms_to_hide();
+    $to_hide = dci_terms_to_hide();   // nomi da nascondere
 
     foreach ( $terms as $key => $children ) {
 
+        // Gestisci array numerici (['foo']) e associativi (['Foo'=>[...]]):
         if ( is_int( $key ) ) {
             $term_name = $children;
             $children  = [];
@@ -497,33 +499,38 @@ function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 
             $term_name = $key;
         }
 
+        /* --- Crea o recupera il termine --- */
         $result  = wp_insert_term( $term_name, $taxonomy, [ 'parent' => $parent ] );
         $term_id = ( is_wp_error( $result ) && 'term_exists' === $result->get_error_code() )
                  ? (int) $result->get_error_data()
                  : ( ! is_wp_error( $result ) ? (int) $result['term_id'] : 0 );
 
         if ( ! $term_id ) {
-            continue;
+            continue; // errore imprevisto
         }
 
+        /* --- Aggiorna lo slug (sempre sovrascritto) --- */
+        $slug = sanitize_title( $term_name );
+        wp_update_term( $term_id, $taxonomy, [ 'slug' => $slug ] );
+
+        /* --- METADATI (sempre sovrascritti) --- */
         update_term_meta( $term_id, 'ordinamento', $ordine );
 
-        $visible = '1';
-        foreach ($to_hide as $hide_term) {
-            if (strcasecmp(trim($term_name), trim($hide_term)) === 0) {
-                $visible = '0';
-                break;
-            }
-        }
-        update_term_meta( $term_id, 'visualizza_elemento', $visible );
+        $visible = in_array( $term_name, $to_hide, true ) ? '0' : '1';
+
+        // cancella eventuali valori precedenti e scrivi quello nuovo
+        delete_term_meta( $term_id, 'visualizza_elemento' );
+        add_term_meta   ( $term_id, 'visualizza_elemento', $visible, true );
 
         $ordine++;
 
+        /* --- ricorsione sui figli --- */
         if ( ! empty( $children ) && is_array( $children ) ) {
             recursionInsertTaxonomy1( $children, $taxonomy, $term_id, $ordine );
         }
     }
 }
+
 
 
 
