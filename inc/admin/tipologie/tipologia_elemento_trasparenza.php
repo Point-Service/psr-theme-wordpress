@@ -286,6 +286,9 @@ function dci_render_transparency_multipost_page() {
 }
 
 
+
+
+
 function dci_get_visible_amministrazione_terms() {
     $terms = get_terms([
         'taxonomy'   => 'tipi_cat_amm_trasp',
@@ -297,7 +300,9 @@ function dci_get_visible_amministrazione_terms() {
     if (!is_wp_error($terms) && !empty($terms)) {
         foreach ($terms as $term) {
             $visible = get_term_meta($term->term_id, 'visualizza_elemento', true);
-            if ($visible == '1') {
+
+            // Se il meta è '0' escludi (nascondi), altrimenti includi
+            if ($visible !== '0') {
                 $options[$term->term_id] = $term->name;
             }
         }
@@ -305,6 +310,7 @@ function dci_get_visible_amministrazione_terms() {
 
     return $options;
 }
+
 
 
 
