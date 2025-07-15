@@ -52,16 +52,6 @@ function dci_register_post_type_elemento_trasparenza()
     remove_post_type_support('elemento_trasparenza', 'editor');
 }
 
-add_action('edit_form_after_title', 'dci_elemento_trasparenza_add_content_after_title');
-function dci_elemento_trasparenza_add_content_after_title($post)
-{
-    if ($post->post_type === 'elemento_trasparenza') {
-        echo "<span><i>Il <b>Titolo</b> è il <b>Nome del elemento dell'amministrazione trasparente</b>.</i></span><br><br>";
-    }
-}
-
-
-
 
 add_action('edit_form_after_title', 'dci_elemento_trasparenza_add_content_after_title');
 function dci_elemento_trasparenza_add_content_after_title($post)
