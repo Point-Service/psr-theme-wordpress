@@ -80,78 +80,6 @@ function dci_add_transparency_multipost_page() {
 
 
 
-
-
-
-
-
-add_action('admin_head-post.php', 'dci_elemento_trasparenza_extra_buttons_metabox');
-add_action('admin_head-post-new.php', 'dci_elemento_trasparenza_extra_buttons_metabox');
-function dci_elemento_trasparenza_extra_buttons_metabox() {
-
-    $screen = get_current_screen();
-    if ( $screen->post_type !== 'elemento_trasparenza' ) {
-        return;
-    }
-
-    ?>
-    <style>
-        /* Stile margini pulsanti */
-        #dci-extra-btns-container a {
-            margin-right: 10px;
-            display: inline-block;
-            padding: 4px 12px;
-            background: #0073aa;
-            color: white;
-            text-decoration: none;
-            border-radius: 3px;
-        }
-        #dci-extra-btns-container a:hover {
-            background: #005177;
-        }
-    </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Trova il titolo del metabox di apertura (esempio: #_dci_elemento_trasparenza_box_apertura)
-            const metaboxTitle = document.querySelector('#_dci_elemento_trasparenza_box_apertura .hndle');
-            if (!metaboxTitle) return;
-
-            // Crea un contenitore pulsanti
-            const container = document.createElement('div');
-            container.id = 'dci-extra-btns-container';
-
-            // Crea i pulsanti
-            const buttons = [
-                {
-                    id: 'dci-extra-btn-azione1',
-                    href: 'https://esempio.it/azione-1',
-                    text: '<?php echo esc_js( __("Azione 1", "design_comuni_italia") ); ?>'
-                },
-                {
-                    id: 'dci-extra-btn-azione2',
-                    href: 'https://esempio.it/azione-2',
-                    text: '<?php echo esc_js( __("Azione 2", "design_comuni_italia") ); ?>'
-                }
-            ];
-
-            buttons.forEach(function(btn) {
-                const a = document.createElement('a');
-                a.id = btn.id;
-                a.href = btn.href;
-                a.target = '_blank';
-                a.textContent = btn.text;
-                container.appendChild(a);
-            });
-
-            // Inserisci il contenitore PRIMA del titolo del metabox
-            metaboxTitle.parentNode.insertBefore(container, metaboxTitle);
-        });
-    </script>
-    <?php
-}
-
-
-
 /**
  * Funzione di callback per renderizzare la pagina di amministrazione "Multi-Post Amministrazione Trasparente".
  */
@@ -332,15 +260,11 @@ function dci_render_transparency_multipost_page() {
 }
 
 
-
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
 function dci_add_elemento_trasparenza_metaboxes()
 {
     $prefix = '_dci_elemento_trasparenza_';
-
-
-	
 
     $cmb_apertura = new_cmb2_box(array(
         'id'            => $prefix . 'box_apertura',
@@ -351,9 +275,6 @@ function dci_add_elemento_trasparenza_metaboxes()
         'closed'        => false,
     ));
 
-
-
-	
     // $cmb_apertura->add_field(array(
     //     'id'            => $prefix . 'data_pubblicazione',
     //     'name'          => __('Data di pubblicazione', 'design_comuni_italia'),
@@ -381,9 +302,6 @@ function dci_add_elemento_trasparenza_metaboxes()
         'priority'      => 'high',
     ));
 
-
-
-
     $cmb_sezione->add_field(array(
         'id'                => $prefix . 'tipo_cat_amm_trasp',
         'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
@@ -393,11 +311,6 @@ function dci_add_elemento_trasparenza_metaboxes()
         'show_option_none'  => false,
         'remove_default'    => true,
     ));
-
-
-
-    
-    
 
         $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
@@ -579,5 +492,7 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
         // Sostituisci 'ID_DELLA_CATEGORIA_PREDEFINITA' con l'ID reale del tuo termine di tassonomia
         $value = 'ID_DELLA_CATEGORIA_PREDEFINITA'; // Ricorda di mettere l'ID effettivo qui!
     }
+    return $value;
+}
     return $value;
 }
