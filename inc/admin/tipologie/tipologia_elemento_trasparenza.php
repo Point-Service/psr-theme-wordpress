@@ -66,10 +66,10 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     ?>
     <div style="margin-bottom: 15px;">
         <a href="edit.php?post_type=incarichi_dip" class="button button-primary" style="margin-right: 10px;">
-            Personale / Incarichi dirigenziali, a qualsiasi titolo conferiti
+            Personale - <b>Incarichi dirigenziali, a qualsiasi titolo conferiti</b>
         </a>
         <a href="edit.php?post_type=bando" class="button button-secondary">
-            Bandi di Gara e contratti / Contratti Pubblici
+            Bandi di Gara e contratti - <b>Contratti Pubblici</b>
         </a>
     </div>
     <?php
