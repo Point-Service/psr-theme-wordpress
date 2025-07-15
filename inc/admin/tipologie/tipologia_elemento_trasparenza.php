@@ -237,6 +237,39 @@ function dci_render_transparency_multipost_page() {
 }
 
 
+     
+        /* ----------------------------------------------------------------
+         * DEBUG: elenco categorie, voci e URL letti da dci_tipi_cat_amm_trasp_array()
+         * Rimuovi o commenta questo blocco quando non ti serve più.
+         * ---------------------------------------------------------------- */
+        $menu = dci_tipi_cat_amm_trasp_array();   // nuova struttura con ['name'=>, 'url'=>]
+
+        echo '<hr><h2>Debug – Voci e link memorizzati</h2>';
+        echo '<ul style="list-style:none;padding-left:0;">';
+
+        foreach ( $menu as $categoria => $voci ) {
+            echo '<li><strong>' . esc_html( $categoria ) . '</strong>';
+            echo '<ul style="list-style:none;padding-left:20px;">';
+
+            foreach ( $voci as $voce ) {
+                $name = $voce['name'];
+                $url  = trim( $voce['url'] );
+
+                if ( $url !== '' ) {
+                    // stampo nome + link
+                    echo '<li>' . esc_html( $name ) . ' — <code>' . esc_html( $url ) . '</code></li>';
+                } else {
+                    // nessun link associato
+                    echo '<li>' . esc_html( $name ) . ' — <em>nessun URL</em></li>';
+                }
+            }
+
+            echo '</ul></li>';
+        }
+
+        echo '</ul>';
+        /* ---------------------------- FINE DEBUG ----------------------- */
+      
 
 
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
