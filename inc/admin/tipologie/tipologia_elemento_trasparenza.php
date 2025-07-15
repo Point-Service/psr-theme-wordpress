@@ -289,27 +289,29 @@ function dci_render_transparency_multipost_page() {
 
 
 
-function dci_get_visible_amministrazione_terms() {
-    $terms = get_terms([
-        'taxonomy'   => 'tipi_cat_amm_trasp',
-        'hide_empty' => false,
-    ]);
+/**
+ * Esclude i termini con visualizza_elemento = 0
+ */
+add_filter( 'terms_clauses', 'dci_hide_invisible_terms', 10, 3 );
+function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 
-    $options = [];
-
-    if (!is_wp_error($terms) && !empty($terms)) {
-        foreach ($terms as $term) {
-            $visible = get_term_meta($term->term_id, 'visualizza_elemento', true);
-
-            // Se il meta è vuoto o '1', consideriamo visibile
-            if ($visible === '' || $visible === '1') {
-                $options[$term->term_id] = $term->name;
-            }
-            // Se è '0', non aggiungiamo
-        }
+    // Applichiamo il filtro solo alla nostra tassonomia
+    if ( ! in_array( 'tipi_cat_amm_trasp', (array) $taxonomies, true ) ) {
+        return $clauses;
     }
 
-    return $options;
+    global $wpdb;
+
+    // Evita di aggiungere più JOIN nella stessa query
+    if ( false === strpos( $clauses['join'], 'termmeta' ) ) {
+        $clauses['join']  .= " LEFT JOIN {$wpdb->termmeta} tm_vis ON tm_vis.term_id = t.term_id
+                               AND tm_vis.meta_key = 'visualizza_elemento' ";
+    }
+
+    // WHERE: tieni solo meta NULL / '' / '1'
+    $clauses['where'] .= " AND ( tm_vis.meta_value IS NULL OR tm_vis.meta_value = '' OR tm_vis.meta_value = '1' ) ";
+
+    return $clauses;
 }
 
 
