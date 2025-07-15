@@ -80,10 +80,7 @@ function dci_add_transparency_multipost_page() {
 
 
 
-/**
- * Pulsanti extra nella schermata elenco Bandi di Gara:
- */
-add_action( 'post-new.php', 'dci_elemento_trasparenza_extra_buttons' );
+add_action( 'admin_head-post-new.php', 'dci_elemento_trasparenza_extra_buttons' );
 function dci_elemento_trasparenza_extra_buttons() {
 
     $screen = get_current_screen();
@@ -120,12 +117,11 @@ function dci_elemento_trasparenza_extra_buttons() {
             const stdBtn = document.querySelector('.wrap .page-title-action'); // bottone WP "Aggiungi"
             if (!stdBtn) return;
 
-
             <?php foreach ( $extra_buttons as $btn ) : ?>
                 (function() {
                     const link = document.createElement('a');
                     link.id        = '<?php echo esc_js( $btn['id'] ); ?>';
-                    link.className = 'page-title-action';
+                    link.className = 'page-title-action dci-extra-btn';
                     link.href      = '<?php echo esc_url( $btn['href'] ); ?>';
                     link.textContent = '<?php echo esc_js( $btn['text'] ); ?>';
                     stdBtn.after(link);
@@ -135,6 +131,7 @@ function dci_elemento_trasparenza_extra_buttons() {
     </script>
     <?php
 }
+
 
 
 
