@@ -287,41 +287,28 @@ function dci_render_transparency_multipost_page() {
 
 
 /**
- * Evidenzia in grassetto i termini di primo livello (depth 0)
- * nel radio‐button CMB2 della tassonomia tipi_cat_amm_trasp.
+ * Evidenzia in grassetto (e con colore) le categorie di primo livello
+ * nel metabox CMB2 "Seleziona la sezione".
  */
-add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2' );
-function dci_bold_parent_terms_cmb2( $hook ) {
+add_action( 'admin_enqueue_scripts', function ( $hook ) {
 
-    // Carica SOLO su "Aggiungi nuovo Elemento Trasparenza"
+    // applica solo su /wp-admin/post-new.php?post_type=elemento_trasparenza
     if ( $hook !== 'post-new.php' || empty( $_GET['post_type'] ) || $_GET['post_type'] !== 'elemento_trasparenza' ) {
         return;
     }
 
-    // 1) CSS: rende in grassetto i <label> cui aggiungeremo la classe .dci-parent-term
-    $css = '.cmb2 .dci-parent-term { font-weight: 700; }';
-    wp_add_inline_style( 'wp-admin', $css );
+    // CSS in‑line: i <label> dentro <li class="depth-0"> diventano bold
+    $css = '
+        /* metabox CMB2 radio gerarchico */
+        .cmb2-radio-list li.depth-0 > label,
+        .cmb2-checkbox-list li.depth-0 > label {
+            font-weight: 700;           /* grassetto */
+            color: #000;                /* colore testo (facoltativo) */
+        }
+    ';
+    wp_add_inline_style( 'wp-admin', $css ); // attacca il CSS alla stylesheet di WP‑admin
+} );
 
-    // 2) JS: quando il metabox è pronto, individua i <li> di depth 0 e aggiunge la classe al <label>
-    // (CMB2 genera <li id="cmb2-tax-...-0"><label> ...)
-    $js = <<<JS
-    (function($){
-        $(document).ready(function(){
-            $('.cmb2-checkbox-list, .cmb2-radio-list').each(function(){
-                $(this).children('li').each(function(){
-                    var \$li = $(this);
-                    // solo i termini senza &nbsp; nel testo del label = depth 0
-                    var \$label = \$li.find('> label');
-                    if ( \$label.length && \$label.text().trim().indexOf('  ') === -1 ) { // NB: c'è uno NBSP
-                        \$label.addClass('dci-parent-term');
-                    }
-                });
-            });
-        });
-    })(jQuery);
-    JS;
-    wp_add_inline_script( 'jquery-core', $js );
-}
 
 
 
