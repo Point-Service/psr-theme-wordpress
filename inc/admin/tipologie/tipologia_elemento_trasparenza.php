@@ -323,7 +323,16 @@ function dci_add_elemento_trasparenza_metaboxes()
     }
     return $options;
 }
-  
+
+
+    $items = dci_tipi_cat_amm_trasp_array();
+
+foreach ($items as $group => $subitems) {
+    foreach ($subitems as $item) {
+        echo 'Nome: ' . $item['name'] . ' - URL: ' . ($item['url'] ?: 'nessun url') . "<br>";
+    }
+}
+    
 
 $cmb_sezione->add_field(array(
     'id'      => $prefix . 'tipo_cat_amm_trasp',
