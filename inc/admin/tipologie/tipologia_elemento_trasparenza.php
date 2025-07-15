@@ -260,37 +260,34 @@ function dci_render_transparency_multipost_page() {
 }
 
 
-
-
+add_action( 'cmb2_before_box', 'dci_render_sezioni_separate_banner', 5, 2 );
 function dci_render_sezioni_separate_banner( $object_id, $cmb ) {
 
-	// Agiamo solo sul box “Seleziona la sezione”
-	if ( $cmb->cmb_id !== '_dci_elemento_trasparenza_box_sezione_post' ) {
-		return;
-	}
+    // Funziona con entrambe le varianti:
+    if ( $cmb->cmb_id !== 'cmb2-metabox-_dci_elemento_trasparenza_box_sezione_post'
+         && $cmb->cmb_id !== '_dci_elemento_trasparenza_box_sezione_post' ) {
+        return; // esci se non è il box giusto
+    }
 
-	?>
-	<div class="postbox" style="margin: 12px 0 20px 0; border-left:4px solid #2271b1;">
-		<div class="inside" style="padding:12px 16px;">
-			<p style="font-weight: 600; margin:0 0 10px;">
-				<?php esc_html_e( 'Sezioni separate', 'design_comuni_italia' ); ?>
-			</p>
+    ?>
+    <div class="postbox" style="margin:12px 0 20px;border-left:4px solid #2271b1;">
+        <div class="inside" style="padding:12px 16px;">
+            <p style="font-weight:600;margin:0 0 10px;">
+                <?php esc_html_e( 'Sezioni separate', 'design_comuni_italia' ); ?>
+            </p>
 
-			<a href="#link-fittizio-1"
-			   class="button button-primary"
-			   style="margin-right:8px;">
-				<?php esc_html_e( 'Pulsante 1', 'design_comuni_italia' ); ?>
-			</a>
+            <a href="#link-fittizio-1" class="button button-primary" style="margin-right:8px;">
+                <?php esc_html_e( 'Pulsante 1', 'design_comuni_italia' ); ?>
+            </a>
 
-			<a href="#link-fittizio-2"
-			   class="button">
-				<?php esc_html_e( 'Pulsante 2', 'design_comuni_italia' ); ?>
-			</a>
-		</div>
-	</div>
-	<?php
+            <a href="#link-fittizio-2" class="button">
+                <?php esc_html_e( 'Pulsante 2', 'design_comuni_italia' ); ?>
+            </a>
+        </div>
+    </div>
+    <?php
 }
-add_action( 'cmb2_init', 'dci_render_sezioni_separate_banner', 10, 2 );
+
 
 
 
@@ -299,21 +296,6 @@ add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
 function dci_add_elemento_trasparenza_metaboxes()
 {
     $prefix = '_dci_elemento_trasparenza_';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	
