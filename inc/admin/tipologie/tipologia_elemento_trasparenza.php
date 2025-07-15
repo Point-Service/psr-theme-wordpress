@@ -304,43 +304,26 @@ function dci_add_elemento_trasparenza_metaboxes()
 
 
 
-  function dci_tipi_cat_amm_trasp_options_indentate() {
+
+function dci_tipi_cat_amm_trasp_options_indentate() {
     $items = dci_tipi_cat_amm_trasp_array();
     $options = [];
 
     foreach ($items as $group => $subitems) {
-        // Gruppo principale, intestazione non selezionabile (opzionale)
-        $options[$group] = $group;
+        $options[$group] = $group; // intestazione gruppo
 
         foreach ($subitems as $item) {
-            $label = $item['name'];
+            $name = $item['name'];
             if (!empty($item['url'])) {
-                $label .= " (link: " . $item['url'] . ")";
+                // Aggiungo testo link nel nome (attenzione, in select HTML puro i tag non sono supportati)
+                $name .= " [vai]";
             }
-            // Aggiungi indentazione con spazi per sottocategorie
-            $options['  ' . $label] = $item['name'];
+            $options['  ' . $item['name']] = $name;
         }
     }
     return $options;
 }
 
-
-$items = dci_tipi_cat_amm_trasp_array();
-
-foreach ($items as $group => $subitems) {
-    echo "<h3>" . esc_html($group) . "</h3>";
-    echo "<ul>";
-    foreach ($subitems as $item) {
-        echo "<li>";
-        echo esc_html($item['name']);
-        if (!empty($item['url'])) {
-            // Pulsante/link accanto al nome
-            echo ' <a href="' . esc_url(admin_url($item['url'])) . '" class="button" target="_blank" style="margin-left:10px;">Vai</a>';
-        }
-        echo "</li>";
-    }
-    echo "</ul>";
-}
 
     
 
