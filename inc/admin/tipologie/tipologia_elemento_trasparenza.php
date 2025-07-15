@@ -286,29 +286,6 @@ function dci_render_transparency_multipost_page() {
 }
 
 
-/**
- * Evidenzia in grassetto (e con colore) le categorie di primo livello
- * nel metabox CMB2 "Seleziona la sezione".
- */
-add_action( 'admin_enqueue_scripts', function ( $hook ) {
-
-    // applica solo su /wp-admin/post-new.php?post_type=elemento_trasparenza
-    if ( $hook !== 'post-new.php' || empty( $_GET['post_type'] ) || $_GET['post_type'] !== 'elemento_trasparenza' ) {
-        return;
-    }
-
-    // CSS in‑line: i <label> dentro <li class="depth-0"> diventano bold
-    $css = '
-        /* metabox CMB2 radio gerarchico */
-        .cmb2-radio-list li.depth-0 > label,
-        .cmb2-checkbox-list li.depth-0 > label {
-            font-weight: 700;           /* grassetto */
-            color: #000;                /* colore testo (facoltativo) */
-        }
-    ';
-    wp_add_inline_style( 'wp-admin', $css ); // attacca il CSS alla stylesheet di WP‑admin
-} );
-
 
 
 
