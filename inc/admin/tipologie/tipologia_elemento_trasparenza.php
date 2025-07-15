@@ -149,7 +149,7 @@ function dci_render_transparency_multipost_page() {
             echo '<ul style="list-style:none;padding-left:0;">';
 
             foreach ($menu as $categoria => $voci) {
-                echo '<li><strong>' . esc_html($categoria) . '</strong>';
+                echo '<li>-------gggg.--------<strong>' . esc_html($categoria) . '</strong>';
                 echo '<ul style="list-style:none;padding-left:20px;">';
 
                 foreach ($voci as $voce) {
