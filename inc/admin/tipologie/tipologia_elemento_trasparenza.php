@@ -78,6 +78,21 @@ function dci_add_transparency_multipost_page() {
 
 
 
+function dci_debug_print_tipi_cat_amm_trasp_links() {
+    $links = dci_tipi_cat_amm_trasp_links();
+
+    echo '<pre style="background:#f0f0f0; padding:10px; border:1px solid #ccc;">';
+    echo '<strong>Debug: Array di link tipologie categoria amministrazione trasparente</strong>' . PHP_EOL;
+    print_r($links);
+    echo '</pre>';
+}
+
+
+
+add_action('admin_notices', 'dci_debug_print_tipi_cat_amm_trasp_links');
+
+
+
 
 
 /**
