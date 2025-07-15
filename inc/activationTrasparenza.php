@@ -226,7 +226,7 @@ function insertTaxonomyTrasparenzaTerms() {
     // Categorie Trasparenza
     $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
     recursionInsertTaxonomy( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
-    sistemaidordinamentoTaxonomy( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
+    recursionInsertTaxonomy1( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
 
     // Tipi di procedura contraente
     $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
@@ -478,29 +478,66 @@ function dci_update_term_description( $term_name, $taxonomy, $new_desc ) {
 
 
 
-function sistemaidordinamentoTaxonomy($terms, $taxonomy, $parent_id = 0, $ordine = 1) {
-    foreach ($terms as $term_name => $subterms) {
-        // Verifica se il termine esiste già nella tassonomia
-        $existing_term = term_exists($term_name, $taxonomy);
+/**
+ * Inserisce/aggiorna i termini (ricorsivo) e imposta:
+ *  - meta 'ordinamento' progressivo
+ *  - meta 'visualizza_elemento' (0 = nascosto, 1 = visibile)
+ */
+function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 ) {
 
-        if ($existing_term) {
-            // Se il termine esiste già, prendi il suo ID
-            $term_id = $existing_term['term_id'];
+    $to_hide = dci_terms_to_hide(); // array dei nomi da nascondere
 
-            // Aggiorna il metadato 'ordinamento' per il termine esistente
-            update_term_meta($term_id, 'ordinamento', $ordine);
+    foreach ( $terms as $key => $children ) {
+
+        // Se l’array è numerico ([0=>'foo']) sposta il valore
+        if ( is_int( $key ) ) {
+            $term_name = $children;
+            $children  = [];
+        } else {
+            $term_name = $key;
         }
 
-        // Incrementa l'ordine per il prossimo termine
-        $ordine++;
+        // Crea o recupera il termine
+        $result = wp_insert_term( $term_name, $taxonomy, [ 'parent' => $parent ] );
 
-        // Se ci sono sotto-termini, chiama ricorsivamente per aggiornarli
-        if (!empty($subterms)) {
-         //   sistemaidordinamentoTaxonomy($subterms, $taxonomy, $term_id, $ordine);
+        if ( is_wp_error( $result ) && 'term_exists' === $result->get_error_code() ) {
+            $term_id = (int) $result->get_error_data();
+        } elseif ( ! is_wp_error( $result ) ) {
+            $term_id = (int) $result['term_id'];
+        } else {
+            continue; // errore diverso
+        }
+
+        /* ----------  METADATI  ---------- */
+        // ordinamento progressivo
+        update_term_meta( $term_id, 'ordinamento', $ordine );
+
+        // visualizza_elemento → 0 se il termine è nella lista da nascondere, altrimenti 1
+        $visible = in_array( $term_name, $to_hide, true ) ? '0' : '1';
+        update_term_meta( $term_id, 'visualizza_elemento', $visible );
+
+        $ordine++; // incrementa per il prossimo termine
+
+        /* ----------  RICORSIONE SUI FIGLI  ---------- */
+        if ( ! empty( $children ) && is_array( $children ) ) {
+            recursionInsertTaxonomy( $children, $taxonomy, $term_id, $ordine );
         }
     }
 }
 
+
+
+/**
+ * Termini che NON devono comparire nei radio‑button di CMB2.
+ * Scrivi i nomi esattamente come compaiono nell’array principale.
+ */
+function dci_terms_to_hide() {
+    return [
+        'Incarichi dirigenziali, a qualsiasi titolo conferiti',
+        'Contratti Pubblici',
+        'Atti di concessione',
+    ];
+}
 
 
 ?>
