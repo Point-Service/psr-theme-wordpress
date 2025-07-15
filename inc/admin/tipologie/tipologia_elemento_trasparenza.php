@@ -306,36 +306,15 @@ function dci_add_elemento_trasparenza_metaboxes()
 
     
 
-
-function dci_get_categoria_options() {
-    $terms = get_terms([
-        'taxonomy' => 'tipi_cat_amm_trasp',
-        'hide_empty' => false,
-    ]);
-
-    $options = [];
-
-    foreach ($terms as $term) {
-        $url = get_term_meta($term->term_id, 'url_categoria', true);
-        $disabled = ($url && $url !== '') ? true : false;
-
-        // CMB2 non supporta disabilitazione opzioni in select, ma puoi 
-        // gestire la cosa con un campo radio personalizzato, o con optgroup.
-
-        // Quindi qui prepariamo solo l'array:
-        $options[$term->term_id] = $term->name . ($disabled ? ' (non selezionabile)' : '');
-    }
-
-    return $options;
-}
-
-$cmb_sezione->add_field(array(
-    'id'      => $prefix . 'tipo_cat_amm_trasp',
-    'name'    => __('Categoria Trasparenza *', 'design_comuni_italia'),
-    'desc'    => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
-    'type'    => 'radio',
-    'options' => dci_get_categoria_options(),
-));
+    $cmb_sezione->add_field(array(
+        'id'                => $prefix . 'tipo_cat_amm_trasp',
+        'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
+        'desc'              => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
+        'type'              => 'taxonomy_radio_hierarchical',
+        'taxonomy'          => 'tipi_cat_amm_trasp',
+        'show_option_none'  => false,
+        'remove_default'    => true,
+    ));
 
 
 
