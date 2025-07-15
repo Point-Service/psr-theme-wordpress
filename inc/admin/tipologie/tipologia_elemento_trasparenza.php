@@ -52,6 +52,25 @@ function dci_register_post_type_elemento_trasparenza()
     remove_post_type_support('elemento_trasparenza', 'editor');
 }
 
+
+
+add_action('edit_form_before_title', 'dci_elemento_trasparenza_button_before_title');
+function dci_elemento_trasparenza_button_before_title($post) {
+    if ($post->post_type !== 'elemento_trasparenza') {
+        return;
+    }
+    ?>
+    <a href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=tipologia&post_type=elemento_trasparenza')); ?>" class="button button-primary" style="margin-bottom: 10px; display: inline-block;">
+        Gestisci Tipologie
+    </a>
+    <?php
+}
+
+
+
+
+
+
 add_action('edit_form_after_title', 'dci_elemento_trasparenza_add_content_after_title');
 function dci_elemento_trasparenza_add_content_after_title($post)
 {
