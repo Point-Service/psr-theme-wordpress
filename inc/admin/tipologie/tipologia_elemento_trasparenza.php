@@ -238,6 +238,7 @@ function dci_render_transparency_multipost_page() {
 
 
 
+
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
 function dci_add_elemento_trasparenza_metaboxes()
