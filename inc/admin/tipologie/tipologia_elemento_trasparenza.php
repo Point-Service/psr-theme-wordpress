@@ -144,46 +144,44 @@ $override_links = dci_tipi_cat_amm_trasp_links();
 
 echo '<ul style="list-style:none; padding-left:0;">';
 
-foreach ($menu as $categoria => $voci) {
-    echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
+foreach ($voci as $index => $voce) {
+    $voce_name = is_object($voce) ? $voce->name : $voce;
 
-          foreach ($voci as $index => $voce) {
-            $voce_name = is_object($voce) ? $voce->name : $voce;
-        
-            // Normalizzo la voce per confronto
-            $voce_norm = strtolower(trim($voce_name));
-            $voce_norm = str_replace(' ', '-', $voce_norm);
-        
-            // Genera un id univoco per input
-            $id_safe = sanitize_title($voce_name);
-            $input_id = '_dci_elemento_trasparenza_tipo_cat_amm_trasp_' . $id_safe;
-        
-            // Valore per il radio
-            $value = $id_safe;
-        
-            // Normalizzo anche le chiavi di override_links per confronto
-            // Creo una versione normalizzata delle chiavi di $override_links:
-            $override_links_normalized = [];
-            foreach ($override_links as $key => $url) {
-                $key_norm = strtolower(trim($key));
-                $key_norm = str_replace(' ', '-', $key_norm);
-                $override_links_normalized[$key_norm] = $url;
-            }
-        
-            // Ora cerco l'url con chiave normalizzata
-            $custom_url = $override_links_normalized[$voce_norm] ?? '';
-        
-            echo '<li>';
-            echo '<input type="radio" class="cmb2-option" name="_dci_elemento_trasparenza_tipo_cat_amm_trasp" id="' . esc_attr($input_id) . '" value="' . esc_attr($value) . '">';
-            echo ' <label for="' . esc_attr($input_id) . '">' . esc_html($voce_name) . '</label>';
-        
-            if ($custom_url) {
-                echo ' — <a href="' . esc_url($custom_url) . '" target="_blank" rel="noopener noreferrer">Link</a>';
-            } else {
-                echo ' — <em>nessun URL associato</em>';
-            }
-            echo '</li>';
-        }
+    // Normalizzo la voce per confronto
+    $voce_norm = strtolower(trim($voce_name));
+    $voce_norm = str_replace(' ', '-', $voce_norm);
+
+    // Genera un id univoco per input
+    $id_safe = sanitize_title($voce_name);
+    $input_id = '_dci_elemento_trasparenza_tipo_cat_amm_trasp_' . $id_safe;
+
+    // Valore per il radio
+    $value = $id_safe;
+
+    // Normalizzo anche le chiavi di override_links per confronto
+    // Creo una versione normalizzata delle chiavi di $override_links:
+    $override_links_normalized = [];
+    foreach ($override_links as $key => $url) {
+        $key_norm = strtolower(trim($key));
+        $key_norm = str_replace(' ', '-', $key_norm);
+        $override_links_normalized[$key_norm] = $url;
+    }
+
+    // Ora cerco l'url con chiave normalizzata
+    $custom_url = $override_links_normalized[$voce_norm] ?? '';
+
+    echo '<li>';
+    echo '<input type="radio" class="cmb2-option" name="_dci_elemento_trasparenza_tipo_cat_amm_trasp" id="' . esc_attr($input_id) . '" value="' . esc_attr($value) . '">';
+    echo ' <label for="' . esc_attr($input_id) . '">' . esc_html($voce_name) . '</label>';
+
+    if ($custom_url) {
+        echo ' — <a href="' . esc_url($custom_url) . '" target="_blank" rel="noopener noreferrer">Link</a>';
+    } else {
+        echo ' — <em>nessun URL associato</em>';
+    }
+    echo '</li>';
+}
+
 
 
     echo '</ul></li>';
