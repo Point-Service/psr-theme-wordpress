@@ -78,23 +78,16 @@ function dci_add_transparency_multipost_page() {
 
 
 
-
-
-
-/**
- * Funzione di callback per renderizzare la pagina di amministrazione "Multi-Post Amministrazione Trasparente".
- */
 function dci_render_transparency_multipost_page() {
     ?>
     <div class="wrap">
         <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
         <p><?php _e('Questa pagina ti permette di creare rapidamente più Elementi di Amministrazione Trasparente.', 'design_comuni_italia'); ?></p>
 
+        <!-- Form di caricamento multiplo -->
         <h2><?php _e('Opzioni di Inserimento Multiplo', 'design_comuni_italia'); ?></h2>
-
         <form method="post" enctype="multipart/form-data">
             <?php wp_nonce_field('dci_multipost_transparency_action', 'dci_multipost_transparency_nonce'); ?>
-
             <table class="form-table">
                 <tbody>
                     <tr>
@@ -109,14 +102,14 @@ function dci_render_transparency_multipost_page() {
                         <td>
                             <?php
                             wp_dropdown_categories( array(
-                                'taxonomy'            => 'tipi_cat_amm_trasp',
-                                'name'                => 'dci_default_category',
-                                'id'                  => 'dci_default_category',
-                                'show_option_none'    => __('Seleziona una categoria', 'design_comuni_italia'),
-                                'hide_empty'          => 0,
-                                'orderby'             => 'name',
-                                'order'               => 'ASC',
-                                'value_field'         => 'term_id',
+                                'taxonomy'         => 'tipi_cat_amm_trasp',
+                                'name'             => 'dci_default_category',
+                                'id'               => 'dci_default_category',
+                                'show_option_none' => __('Seleziona una categoria', 'design_comuni_italia'),
+                                'hide_empty'       => 0,
+                                'orderby'          => 'name',
+                                'order'            => 'ASC',
+                                'value_field'      => 'term_id',
                             ) );
                             ?>
                             <p class="description"><?php _e('Questa categoria verrà assegnata a tutti i nuovi elementi creati da questa pagina.', 'design_comuni_italia'); ?></p>
@@ -142,38 +135,38 @@ function dci_render_transparency_multipost_page() {
             <?php submit_button(__('Crea Elementi Trasparenza', 'design_comuni_italia')); ?>
         </form>
 
+        <!-- Sezione lista categorie e voci con URL -->
         <h2><?php _e('Seleziona Voci con eventuali link personalizzati', 'design_comuni_italia'); ?></h2>
 
         <?php
-$menu = dci_tipi_cat_amm_trasp_array();
-$override_links = dci_tipi_cat_amm_trasp_links();
+        $menu = dci_tipi_cat_amm_trasp_array();
+        $override_links = dci_tipi_cat_amm_trasp_links();
 
-echo '<ul style="list-style:none; padding-left:0;">';
+        echo '<ul style="list-style:none; padding-left:0;">';
 
-foreach ($menu as $categoria => $voci) {
-    echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
+        foreach ($menu as $categoria => $voci) {
+            echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
 
-    foreach ($voci as $voce) {
-        $voce_name = is_object($voce) ? $voce->name : $voce;
+            foreach ($voci as $voce) {
+                $voce_name = is_object($voce) ? $voce->name : $voce;
 
-        // Cerca URL nel override usando il nome voce
-        $custom_url = $override_links[$voce_name] ?? '';
+                // Cerca URL personalizzato per la voce
+                $custom_url = $override_links[$voce_name] ?? '';
 
-        echo '<li>' . esc_html($voce_name);
-        if ($custom_url) {
-            echo ' — URL: <code>' . esc_html($custom_url) . '</code>';
-        } else {
-            echo ' — <em>nessun URL associato</em>';
+                echo '<li>' . esc_html($voce_name);
+                if ($custom_url) {
+                    echo ' — URL: <code>' . esc_html($custom_url) . '</code>';
+                } else {
+                    echo ' — <em>nessun URL associato</em>';
+                }
+                echo '</li>';
+            }
+
+            echo '</ul></li>';
         }
-        echo '</li>';
-    }
 
-    echo '</ul></li>';
-}
-
-echo '</ul>';
-?>
-
+        echo '</ul>';
+        ?>
 
     </div>
     <?php
