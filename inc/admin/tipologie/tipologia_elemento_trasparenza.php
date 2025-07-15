@@ -317,7 +317,11 @@ function dci_disable_some_tax_terms( $atts, $field_args, $term, $field_object ) 
 
     return $atts;
 }
-
+add_action( 'admin_head', function () {
+    echo '<style>
+        .dci-term-disabled + label { color:#aaa!important; font-style:italic; }
+    </style>';
+} );
 
 
 
