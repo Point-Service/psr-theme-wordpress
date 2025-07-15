@@ -78,6 +78,8 @@ function dci_add_transparency_multipost_page() {
 
 
 
+
+
 /**
  * Funzione di callback per renderizzare la pagina di amministrazione "Multi-Post Amministrazione Trasparente".
  */
@@ -490,7 +492,5 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
         // Sostituisci 'ID_DELLA_CATEGORIA_PREDEFINITA' con l'ID reale del tuo termine di tassonomia
         $value = 'ID_DELLA_CATEGORIA_PREDEFINITA'; // Ricorda di mettere l'ID effettivo qui!
     }
-    return $value;
-}
     return $value;
 }
