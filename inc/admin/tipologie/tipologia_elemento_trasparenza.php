@@ -112,15 +112,11 @@ function dci_render_transparency_multipost_page() {
                                 'taxonomy'            => 'tipi_cat_amm_trasp',
                                 'name'                => 'dci_default_category',
                                 'id'                  => 'dci_default_category',
-                                'show_option_none'    => false,
-                                'remove_default'      => true,
-                                'hide_empty'          => 0,
-                                'echo'                => 1,
-                                'selected'            => '', // Puoi pre-selezionare una categoria se vuoi
                                 'show_option_none'    => __('Seleziona una categoria', 'design_comuni_italia'),
-                                'value_field'         => 'term_id',
+                                'hide_empty'          => 0,
                                 'orderby'             => 'name',
                                 'order'               => 'ASC',
+                                'value_field'         => 'term_id',
                             ) );
                             ?>
                             <p class="description"><?php _e('Questa categoria verrà assegnata a tutti i nuovi elementi creati da questa pagina.', 'design_comuni_italia'); ?></p>
@@ -137,7 +133,7 @@ function dci_render_transparency_multipost_page() {
                         <th scope="row"><label for="dci_default_open_direct"><?php _e('Apri link in modo diretto:', 'design_comuni_italia'); ?></label></th>
                         <td>
                             <input type="checkbox" id="dci_default_open_direct" name="dci_default_open_direct" value="on">
-                            <p class="description"><?php _e('Spunta per impostare "Apri direttamente il file " per tutti i nuovi elementi.', 'design_comuni_italia'); ?></p>
+                            <p class="description"><?php _e('Spunta per impostare "Apri direttamente il file" per tutti i nuovi elementi.', 'design_comuni_italia'); ?></p>
                         </td>
                     </tr>
                 </tbody>
@@ -146,59 +142,53 @@ function dci_render_transparency_multipost_page() {
             <?php submit_button(__('Crea Elementi Trasparenza', 'design_comuni_italia')); ?>
         </form>
 
-        <!-- INIZIO BLOCCO LISTA VOCI CON CHECKBOX E PULSANTI -->
-
         <h2><?php _e('Seleziona Voci con eventuali link personalizzati', 'design_comuni_italia'); ?></h2>
 
         <?php
-        // Qui recuperi i dati come nel tuo esempio
-            $menu = dci_tipi_cat_amm_trasp_array();    
-            $override_links = dci_tipi_cat_amm_trasp_links();
-            
-            // Normalizza le chiavi in override_links per confronto robusto
-            $normalized_override_links = [];
-            foreach ($override_links as $key => $url) {
-                $normalized_override_links[trim(strtolower($key))] = $url;
-            }
-            
-            echo '<ul style="list-style:none; padding-left:0;">';
-            
-            foreach ($menu as $categoria => $voci) {
-                echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
-            
-                foreach ($voci as $voce) {
-                    $voce_name = is_object($voce) ? $voce->name : $voce;
-                    $key = trim(strtolower($voce_name));
-                    
-                    $custom_url = $normalized_override_links[$key] ?? '';
-            
-                    $disabled = $custom_url ? 'disabled' : '';
-                    $checkbox = '<input type="checkbox" name="dci_terms[]" value="' . esc_attr($voce_name) . '" ' . $disabled . '>';
-                    $button = $custom_url
-                        ? ' <a href="' . esc_url($custom_url) . '" class="button button-small" target="_blank">' . esc_html__('Vai', 'design_comuni_italia') . '</a>'
-                        : '';
-            
-                    echo '<li style="margin-bottom:6px;">' . $checkbox . ' ' . esc_html($voce_name) . $button . '</li>';
+        // Recupera array [categoria => [voci]] e override ['voce' => 'url']
+        $menu = dci_tipi_cat_amm_trasp_array();
+        $override_links = dci_tipi_cat_amm_trasp_links();
+
+        echo '<ul style="list-style:none; padding-left:0;">';
+
+        foreach ($menu as $categoria => $voci) {
+            echo '<li><strong>' . esc_html($categoria) . '</strong><ul style="list-style:none; padding-left:20px;">';
+
+            foreach ($voci as $voce) {
+                // Se oggetto, prendi ->name, altrimenti stringa
+                $voce_name = is_object($voce) ? $voce->name : $voce;
+
+                // Normalizza per confronto
+                $norm_voce = strtolower(trim($voce_name));
+                $found_url = '';
+
+                // Cerca corrispondenza nell'array override normalizzato
+                foreach ($override_links as $key => $url) {
+                    if ($norm_voce === strtolower(trim($key))) {
+                        $found_url = $url;
+                        break;
+                    }
                 }
-            
-                echo '</ul></li>';
+
+                $disabled = $found_url ? 'disabled' : '';
+                $checkbox = '<input type="checkbox" name="dci_terms[]" value="' . esc_attr($voce_name) . '" ' . $disabled . '>';
+                $button = $found_url
+                    ? ' <a href="' . esc_url($found_url) . '" class="button button-small" target="_blank">' . esc_html__('Vai', 'design_comuni_italia') . '</a>'
+                    : '';
+
+                echo '<li style="margin-bottom:6px;">' . $checkbox . ' ' . esc_html($voce_name) . $button . '</li>';
             }
-            
-            echo '</ul>';
-        ?>
 
-        <!-- FINE BLOCCO -->
-
-        <?php
-        // Resto del codice di elaborazione POST etc rimane invariato
-        if ( isset( $_POST['submit'] ) && check_admin_referer('dci_multipost_transparency_action', 'dci_multipost_transparency_nonce') ) {
-            //... (qui il tuo codice di elaborazione post)
+            echo '</ul></li>';
         }
+
+        echo '</ul>';
         ?>
 
     </div>
     <?php
 }
+
 
 
 
