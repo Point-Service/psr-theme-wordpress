@@ -281,7 +281,7 @@ function dci_render_transparency_multipost_page() {
 
 add_filter('cmb2_taxonomy_radio_hierarchical_terms', function($terms, $field) {
     // Verifica che il campo sia quello che vuoi filtrare
-    if ($field->args('id') === 'PREFIX_tipo_cat_amm_trasp') {
+    if ($field->args('id') === '_dci_elemento_trasparenza_') {
         $filtered_terms = array();
 
         foreach ($terms as $term) {
