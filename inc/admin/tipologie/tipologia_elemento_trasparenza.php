@@ -324,15 +324,23 @@ function dci_add_elemento_trasparenza_metaboxes()
         'priority'      => 'high',
     ));
 
-    $cmb_sezione->add_field(array(
-        'id'                => $prefix . 'tipo_cat_amm_trasp',
-        'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
-        'desc'              => __('Selezionare una categoria per determinare la sezione dell’Amministrazione Trasparente in cui verrà posizionato l’elemento o il link.', 'design_comuni_italia'),
-        'type'              => 'taxonomy_radio_hierarchical',
-        'taxonomy'          => 'tipi_cat_amm_trasp',
-        'show_option_none'  => false,
-        'remove_default'    => true,
-    ));
+        $cmb->add_field(array(
+            'name'       => 'Seleziona Elemento Trasparenza',
+            'id'         => $prefix . 'elemento_trasparenza',
+            'type'       => 'post_search_text', // o 'post_select' o 'post_object'
+            'post_type'  => 'elemento_trasparenza',
+            'select_all_button' => false,
+            'query_args' => array(
+                'meta_query' => array(
+                    array(
+                        'key'   => '_visualizza_elemento_lista',
+                        'value' => '1',
+                        'compare' => '='
+                    )
+                )
+            )
+        ));
+
 
         $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
