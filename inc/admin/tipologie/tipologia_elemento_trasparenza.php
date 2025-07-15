@@ -291,28 +291,46 @@ function dci_render_transparency_multipost_page() {
 
 /**
  * Esclude i termini con visualizza_elemento = 0
+ * → ma SOLO nella pagina di creazione di un Elemento Trasparenza
  */
 add_filter( 'terms_clauses', 'dci_hide_invisible_terms', 10, 3 );
 function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 
-    // Applichiamo il filtro solo alla nostra tassonomia
+    // Applichiamo solo alla nostra tassonomia
     if ( ! in_array( 'tipi_cat_amm_trasp', (array) $taxonomies, true ) ) {
         return $clauses;
     }
 
+    // Siamo in admin? Se no, esci.
+    if ( ! is_admin() ) {
+        return $clauses;
+    }
+
+    // Verifica la schermata corrente
+    $screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+    if ( ! $screen ||                     // sicurezza
+         $screen->base !== 'post' ||      // schermate post-new.php / post.php
+         $screen->action !== 'add' ||     // solo “aggiungi nuovo”, non “modifica”
+         $screen->post_type !== 'elemento_trasparenza' ) { // solo il CPT desiderato
+        return $clauses; // esci senza toccare la query
+    }
+
+    // Siamo nella pagina giusta: aggiungiamo la JOIN + condizione
     global $wpdb;
 
-    // Evita di aggiungere più JOIN nella stessa query
     if ( false === strpos( $clauses['join'], 'termmeta' ) ) {
-        $clauses['join']  .= " LEFT JOIN {$wpdb->termmeta} tm_vis ON tm_vis.term_id = t.term_id
+        $clauses['join']  .= " LEFT JOIN {$wpdb->termmeta} tm_vis
+                               ON tm_vis.term_id = t.term_id
                                AND tm_vis.meta_key = 'visualizza_elemento' ";
     }
 
-    // WHERE: tieni solo meta NULL / '' / '1'
-    $clauses['where'] .= " AND ( tm_vis.meta_value IS NULL OR tm_vis.meta_value = '' OR tm_vis.meta_value = '1' ) ";
+    $clauses['where'] .= " AND ( tm_vis.meta_value IS NULL
+                                 OR tm_vis.meta_value = ''
+                                 OR tm_vis.meta_value = '1' ) ";
 
     return $clauses;
 }
+
 
 
 
