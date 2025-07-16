@@ -2,73 +2,73 @@
 // Evita redirect automatici di WordPress che rovinano i parametri custom
 remove_filter('template_redirect', 'redirect_canonical');
 
-global $wpdb;
-
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
+
+// Gestione pagina per paginazione (usiamo ?page=)
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+
+// Gestione filtro anno (0 = tutti gli anni)
 $selected_year = isset($_GET['year']) ? intval($_GET['year']) : 0;
 
-// Prendo anni distinti dai post pubblicati di tipo incarichi_dip
-$years = $wpdb->get_col("
-    SELECT DISTINCT YEAR(post_date) 
-    FROM {$wpdb->posts} 
-    WHERE post_type = 'incarichi_dip' 
-    AND post_status = 'publish' 
-    ORDER BY post_date DESC
-");
-
-// Preparo argomenti query
-$args = [
+// Costruiamo argomenti per WP_Query
+$args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
     'orderby'        => 'date',
     'order'          => 'DESC',
     'paged'          => $paged,
-];
+);
 
+// Se c'è ricerca testo
 if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
+// Se filtro anno selezionato > 0 aggiungiamo filtro data pubblicazione
 if ($selected_year > 0) {
-    $args['date_query'] = [['year' => $selected_year]];
+    $args['date_query'] = array(
+        array(
+            'year' => $selected_year,
+        ),
+    );
 }
 
+// Query personalizzata
 $the_query = new WP_Query($args);
 
-// Costruisco URL base per paginazione mantenendo search e year (se presenti)
-$current_url = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" )
-    . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+// Per creare la select anno partiamo dall’anno attuale a un anno base, es 10 anni fa
+$current_year = date('Y');
+$first_year = $current_year - 10;
 
-// Rimuovo parametri 'page' per rigenerare paginazione pulita
-$current_url = remove_query_arg('page', $current_url);
+// Prendi permalink della pagina corrente senza query string per base URL paginazione
+$current_url = get_permalink();
 
-$base_url = add_query_arg([
-    'search' => $main_search_query ? $main_search_query : false,
-    'year'   => $selected_year > 0 ? $selected_year : false,
+// Costruiamo la base URL per la paginazione con filtro anno e ricerca (se presenti)
+$base_url = add_query_arg(array(
+    'year'   => ($selected_year > 0) ? $selected_year : 0,
+    'search' => $main_search_query ? $main_search_query : '',
     'page'   => '%#%',
-], $current_url);
-
+), $current_url);
 ?>
 
-<!-- FORM FILTRO ANNO E RICERCA -->
-<form method="get" class="mb-3 d-flex flex-wrap align-items-center gap-2">
-    <label for="search" class="form-label mb-0 me-2">Cerca:</label>
-    <input type="search" id="search" name="search" value="<?php echo esc_attr($main_search_query); ?>" placeholder="Cerca incarichi..." class="form-control w-auto">
-
+<!-- FORM FILTRO ANNO -->
+<form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2">
     <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
     <select id="filter-year" name="year" onchange="this.form.submit()" class="form-select w-auto">
         <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
-        <?php foreach ($years as $year_option): ?>
-            <option value="<?php echo esc_attr($year_option); ?>" <?php selected($selected_year, $year_option); ?>>
-                <?php echo esc_html($year_option); ?>
-            </option>
-        <?php endforeach; ?>
+        <?php for ($y = $current_year; $y >= $first_year; $y--) : ?>
+            <option value="<?php echo $y; ?>" <?php selected($selected_year, $y); ?>><?php echo $y; ?></option>
+        <?php endfor; ?>
     </select>
+
+    <?php if (!empty($main_search_query)) : ?>
+        <input type="hidden" name="search" value="<?php echo esc_attr($main_search_query); ?>">
+    <?php endif; ?>
 </form>
 
 <?php if ($the_query->have_posts()) : ?>
+
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
         <?php get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card'); ?>
     <?php endwhile; ?>
@@ -77,24 +77,21 @@ $base_url = add_query_arg([
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
-            $pagination_links = paginate_links([
+            $pagination_links = paginate_links(array(
                 'base'      => $base_url,
                 'format'    => '',
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
-                'type'      => 'array',
-                'add_args'  => [
-                    'search' => $main_search_query ? $main_search_query : false,
-                    'year'   => $selected_year > 0 ? $selected_year : false,
-                ],
-            ]);
+                'type'      => 'array', // array per personalizzare markup
+            ));
 
             if ($pagination_links) : ?>
                 <ul class="pagination justify-content-center">
                     <?php foreach ($pagination_links as $link) :
                         $active = strpos($link, 'current') !== false ? ' active' : '';
+                        // Aggiungiamo classi Bootstrap
                         $link = str_replace('<a ', '<a class="page-link" ', $link);
                         $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
                     ?>
@@ -151,14 +148,14 @@ form.mb-3 {
     gap: 0.5rem;
 }
 
-/* Form controlli */
+form select.form-select {
+    min-width: 120px;
+}
+
+/* Label allineata verticale */
 form label.form-label {
     margin-bottom: 0;
     font-weight: 600;
     color: var(--bs-secondary);
-}
-
-form input[type="search"], form select.form-select {
-    min-width: 120px;
 }
 </style>
