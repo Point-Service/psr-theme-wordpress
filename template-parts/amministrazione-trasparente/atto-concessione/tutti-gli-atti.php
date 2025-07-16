@@ -41,9 +41,12 @@ $the_query = new WP_Query($args);
 
 // URL base per la paginazione
 
-$base_url = get_pagenum_link(1); // URL pagina 1
-$base_url = remove_query_arg('paged', $base_url); // Rimuovi eventuale paginazione precedente
-$base_url = trailingslashit($base_url) . '%_%'; // Aggiungi spazio per il formato
+
+// URL base per la paginazione
+$current_url = get_permalink();
+$base_url = get_pagenum_link(1);
+$base_url = remove_query_arg('paged', $base_url);
+$base_url = trailingslashit($base_url) . '%_%';
 
 $pagination_links = paginate_links([
     'base'      => $base_url . (strpos($base_url, '?') === false ? '?paged=%#%' : '&paged=%#%'),
@@ -54,6 +57,8 @@ $pagination_links = paginate_links([
     'next_text' => __('Successivo &raquo;'),
     'type'      => 'array',
 ]);
+
+?>
 
 <!-- FORM FILTRI -->
 <form method="get" class="mb-3 d-flex align-items-center gap-2 incarichi-filtro-form">
