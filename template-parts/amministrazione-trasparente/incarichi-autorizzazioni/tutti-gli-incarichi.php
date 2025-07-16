@@ -134,6 +134,8 @@ form.incarichi-filtro-form {
     margin: 0 auto 2rem;
 }
 
+    
+
 form.incarichi-filtro-form label.form-label {
     margin-bottom: 0;
     font-weight: 600;
@@ -158,12 +160,19 @@ form.incarichi-filtro-form select.form-select:focus {
 }
 
 form.incarichi-filtro-form button.btn-primary {
-    padding: 0.45rem 1.5rem;
+    height: 38px; /* uguale all'input/select */
+    padding: 0 1.2rem;
     font-weight: 600;
     border-radius: 0.4rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+
+
+    
 form.incarichi-filtro-form button.btn-primary:hover {
     background-color: #0b5ed7;
     box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
