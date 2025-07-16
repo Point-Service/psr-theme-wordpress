@@ -28,7 +28,7 @@ function dci_register_post_type_icad() {
 		    'public'          => true,
 		    'show_in_menu'    => 'edit.php?post_type=elemento_trasparenza',
 		    'menu_icon'       => 'dashicons-media-interactive',
-		    'has_archive'     => false, 
+		    'has_archive'     => true, 
 		    'rewrite'         => array(
 		        'slug' => 'tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti',
 		        'with_front' => false,
