@@ -91,20 +91,9 @@ $pagination_base = add_query_arg(array(
 
     <!-- PAGINAZIONE -->
     <div class="row my-4">
-        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-            <?php
-            echo paginate_links(array(
-                'base'      => $pagination_base,
-                'format'    => '',
-                'current'   => $paged,
-                'total'     => $the_query->max_num_pages,
-                'prev_text' => __('&laquo; Precedente'),
-                'next_text' => __('Successivo &raquo;'),
-                'type'      => 'list',
-                'add_args'  => false,
-            ));
-            ?>
-        </nav>
+      <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+        <?php echo dci_bootstrap_pagination(); ?>
+    </nav>
     </div>
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
