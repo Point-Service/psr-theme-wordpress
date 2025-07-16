@@ -2,7 +2,7 @@
 global $post;
 
 // Recupero parametri da URL
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 100;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
 // Paginazione: prima prova con get_query_var(), poi fallback su $_GET['paged']
