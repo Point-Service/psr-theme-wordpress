@@ -1,19 +1,11 @@
 <?php
-// Disattiva il redirect canonico per far funzionare ?paged
+// Disattiva redirect canonico
 remove_filter('template_redirect', 'redirect_canonical');
 
-global $post;
-
-// Numero massimo di post per pagina
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
-
-// Testo ricerca
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 100;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
+$paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1; // <-- qui uso ?page=2
 
-// Paginazione
-$paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
-
-// Query args
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -22,14 +14,11 @@ $args = array(
     'paged'          => $paged,
 );
 
-// Se c'è ricerca
 if ($main_search_query) {
     $args['s'] = $main_search_query;
 }
 
-// La query
 $the_query = new WP_Query($args);
-$prefix = "_dci_icad_";
 ?>
 
 <?php if ($the_query->have_posts()) : ?>
@@ -43,13 +32,13 @@ $prefix = "_dci_icad_";
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
             echo paginate_links(array(
-                'base'    => add_query_arg('paged', '%#%'),
-                'format'  => '',
-                'current' => $paged,
-                'total'   => $the_query->max_num_pages,
+                'base'      => add_query_arg('page', '%#%'), // <-- page invece di paged
+                'format'    => '',
+                'current'   => $paged,
+                'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
-                'type'    => 'list',
+                'type'      => 'list',
             ));
             ?>
         </nav>
@@ -60,5 +49,4 @@ $prefix = "_dci_icad_";
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
-
 
