@@ -1,15 +1,13 @@
 <?php
-// Evita redirect automatici di WordPress che rovinano i parametri custom
-remove_filter('template_redirect', 'redirect_canonical');
-
 global $wpdb;
 
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
+// Lettura parametri da URL
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$paged = (get_query_var('paged')) ? get_query_var('paged') : (isset($_GET['paged']) ? intval($_GET['paged']) : 1);
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 
-// Prendi gli anni disponibili dai post pubblicati (per la combo)
+// Anni disponibili
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date)
     FROM {$wpdb->posts}
@@ -18,41 +16,40 @@ $years = $wpdb->get_col("
     ORDER BY post_date DESC
 ");
 
-// Costruisci gli argomenti per WP_Query
-$args = array(
+// Costruzione argomenti WP_Query
+$args = [
     'post_type'      => 'atto_concessione',
     'posts_per_page' => $max_posts,
-    'orderby'        => 'date',
+    'orderby'        => 'meta_value_num',
     'order'          => 'DESC',
     'paged'          => $paged,
-);
+];
 
 if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
 if ($selected_year > 0) {
-    $args['date_query'] = array(
-        array(
+    $args['date_query'] = [
+        [
             'year' => $selected_year,
-        ),
-    );
+        ]
+    ];
 }
 
-// Esegui la query
 $the_query = new WP_Query($args);
 
-// Costruisci base URL per paginazione mantenendo i parametri
+// URL base per la paginazione
 $current_url = get_permalink();
-$base_url = add_query_arg(array(
+$base_url = add_query_arg([
     'search'      => $main_search_query,
     'filter_year' => $selected_year,
     'max_posts'   => $max_posts,
-    'page'        => '%#%',
-), $current_url);
+    'paged'       => '%#%',
+], $current_url);
 ?>
 
-<!-- FORM FILTRO -->
+<!-- FORM FILTRI -->
 <form method="get" class="mb-3 d-flex align-items-center gap-2 incarichi-filtro-form">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
     <input
@@ -76,8 +73,8 @@ $base_url = add_query_arg(array(
 
     <label for="max-posts" class="form-label mb-0 me-2">Elementi per pagina:</label>
     <select id="max-posts" name="max_posts" class="form-select w-auto me-3">
-        <?php foreach ([5, 10, 20, 50, 100] as $n) : ?>
-            <option value="<?php echo $n; ?>" <?php selected($max_posts, $n); ?>><?php echo $n; ?></option>
+        <?php foreach ([5, 10, 20, 50, 100] as $num) : ?>
+            <option value="<?php echo $num; ?>" <?php selected($max_posts, $num); ?>><?php echo $num; ?></option>
         <?php endforeach; ?>
     </select>
 
@@ -89,22 +86,22 @@ $base_url = add_query_arg(array(
 <?php if ($the_query->have_posts()) : ?>
 
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
-        <?php get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card'); ?>
+        <?php get_template_part('template-parts/amministrazione-trasparente/atto-concessione/card'); ?>
     <?php endwhile; ?>
     <?php wp_reset_postdata(); ?>
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
-            $pagination_links = paginate_links(array(
-                'base'      => $base_url,
+            $pagination_links = paginate_links([
+                'base'      => esc_url_raw(remove_query_arg('paged')) . '&paged=%#%',
                 'format'    => '',
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
                 'type'      => 'array',
-            ));
+            ]);
 
             if ($pagination_links) : ?>
                 <ul class="pagination justify-content-center">
@@ -126,7 +123,7 @@ $base_url = add_query_arg(array(
     </div>
 <?php endif; ?>
 
-<!-- STILI PERSONALIZZATI -->
+<!-- STILE -->
 <style>
 form.incarichi-filtro-form {
     display: flex;
@@ -137,38 +134,30 @@ form.incarichi-filtro-form {
     background: #f8f9fa;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    margin: 0 0 2rem 0;
+    max-width: 100%;
+    margin-bottom: 2rem;
 }
-
-form.incarichi-filtro-form label.form-label {
+form.incarichi-filtro-form label {
     font-weight: 600;
     color: #495057;
     margin-bottom: 0;
-    align-self: center;
 }
-
 form.incarichi-filtro-form input[type="search"],
-form.incarichi-filtro-form select.form-select {
-    flex-grow: 1;
+form.incarichi-filtro-form select {
+    border: 1.5px solid #ced4da;
     min-width: 120px;
     max-width: 250px;
-    border: 1.5px solid #ced4da;
-    transition: border-color 0.3s ease;
 }
-
 form.incarichi-filtro-form input[type="search"]:focus,
-form.incarichi-filtro-form select.form-select:focus {
+form.incarichi-filtro-form select:focus {
     border-color: #0d6efd;
     box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
     outline: none;
 }
-
 .btn-wrapper {
-    flex-shrink: 0;
     margin-left: auto;
     align-self: flex-start;
 }
-
 form.incarichi-filtro-form button.btn-primary {
     padding: 0.45rem 1.5rem;
     font-weight: 600;
@@ -177,12 +166,12 @@ form.incarichi-filtro-form button.btn-primary {
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 form.incarichi-filtro-form button.btn-primary:hover {
     background-color: #0b5ed7;
     box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
 }
 
+/* PAGINAZIONE */
 .pagination-wrapper .pagination {
     display: flex;
     justify-content: center;
@@ -191,7 +180,6 @@ form.incarichi-filtro-form button.btn-primary:hover {
     margin-top: 1.5rem;
     gap: 0.5rem;
 }
-
 .pagination-wrapper .page-link {
     display: block;
     padding: 0.5rem 0.9rem;
@@ -204,48 +192,16 @@ form.incarichi-filtro-form button.btn-primary:hover {
     min-width: 40px;
     text-align: center;
 }
-
 .pagination-wrapper .page-link:hover {
     background-color: #0d6efd;
     color: white;
     box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
-    text-decoration: none;
 }
-
-.pagination-wrapper .page-item.active .page-link,
-.pagination-wrapper .page-link[aria-current="page"] {
+.pagination-wrapper .page-item.active .page-link {
     background-color: #0d6efd;
     border-color: #0d6efd;
     color: white;
     cursor: default;
     box-shadow: 0 0 12px rgba(13, 110, 253, 0.75);
-}
-
-.pagination-wrapper .page-item.disabled .page-link {
-    color: #6c757d;
-    pointer-events: none;
-    background-color: transparent;
-    border-color: transparent;
-    cursor: default;
-}
-
-@media (max-width: 576px) {
-    form.incarichi-filtro-form {
-        flex-direction: column;
-    }
-
-    .btn-wrapper {
-        margin-left: 0;
-        width: 100%;
-        margin-top: 0.5rem;
-        align-self: stretch;
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    form.incarichi-filtro-form button.btn-primary {
-        width: auto;
-        height: 38px;
-    }
 }
 </style>
