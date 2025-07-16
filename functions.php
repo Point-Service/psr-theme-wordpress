@@ -338,44 +338,41 @@ add_action('init', 'my_custom_one_time_function');
 add_action( 'admin_enqueue_scripts', 'dci_evidenzia_categorie_cmb2', 20 );
 function dci_evidenzia_categorie_cmb2( $hook ) {
 
-    // Applica solo sulle pagine di nuovo/modifica post di tipo 'elemento_trasparenza'
+    // Applica solo su pagine nuovo/modifica post tipo 'elemento_trasparenza'
     $tipo_post = $_GET['post_type'] ?? get_post_type( $_GET['post'] ?? 0 );
-    
+
     if ( ! in_array( $hook, ['post-new.php', 'post.php'] ) || $tipo_post !== 'elemento_trasparenza' ) {
         return;
     }
-    
-    /* ----------  CSS inline  ---------- */
+
+    // Aggiungo gli stili CSS inline
     wp_add_inline_style(
         'wp-admin',
-        '
-        .cmb2-categoria-principale { 
-            font-weight: 700; 
-            color: #000; /* nero */
+        "
+        .cmb2-categoria-principale {
+            font-weight: 700 !important;
+            color: #000000 !important;
         }
         .cmb2-sottocategoria {
-            color: #343a40; /* grigio scuro */
+            color: #343a40 !important;
         }
-        '
+        "
     );
 
-    /* ----------  JS inline  ---------- */
+    // Aggiungo lo script JS inline
     wp_add_inline_script(
         'jquery-core',
         <<<JS
         (function($){
-            $(document).ready(function(){
-                // cerca tutte le liste radio/checkbox di CMB2
+            $(function(){
                 $('.cmb2-radio-list, .cmb2-checkbox-list').each(function(){
                     $(this).children('li').each(function(){
-                        var etichetta = $(this).children('label').first();
-                        if ( etichetta.length ) {
-                            if ( etichetta.html().indexOf('&nbsp;') === -1 ) {
-                                // categoria principale senza spazi
-                                etichetta.addClass('cmb2-categoria-principale');
+                        var label = $(this).children('label').first();
+                        if(label.length){
+                            if(label.html().indexOf('&nbsp;') === -1){
+                                label.addClass('cmb2-categoria-principale');
                             } else {
-                                // solo le sottocategorie con spazi
-                                etichetta.addClass('cmb2-sottocategoria');
+                                label.addClass('cmb2-sottocategoria');
                             }
                         }
                     });
@@ -385,6 +382,7 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
 JS
     );
 }
+
 
 
 
