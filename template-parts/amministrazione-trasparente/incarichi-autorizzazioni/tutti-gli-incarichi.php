@@ -36,6 +36,24 @@ if (!empty($main_search_query)) {
 
 $the_query = new WP_Query($args);
 
+// Costruisci base URL per la paginazione mantenendo tutti i parametri tranne "page"
+$current_url = get_permalink();
+$query_args = [];
+if ($main_search_query !== '') {
+    $query_args['search'] = $main_search_query;
+}
+if ($year > 0) {
+    $query_args['year'] = $year;
+}
+// Base per paginate_links: URL con query args senza page
+$base_url = add_query_arg($query_args, $current_url);
+
+// Se l’URL base ha già query string, aggiungi correttamente il parametro page
+if (strpos($base_url, '?') === false) {
+    $base = $base_url . '?page=%#%';
+} else {
+    $base = $base_url . '&page=%#%';
+}
 ?>
 
 <!-- Form ricerca e filtro anno -->
@@ -58,16 +76,12 @@ $the_query = new WP_Query($args);
 
 <script>
 document.getElementById('year').addEventListener('change', function() {
-    // Al cambio anno resetta la pagina a 1
     const url = new URL(window.location.href);
     url.searchParams.set('year', this.value);
     url.searchParams.set('page', '1');
-    // Mantieni anche search se presente
-    // Ricarica pagina con query string aggiornata senza cambiare percorso
     window.location.href = url.toString();
 });
 </script>
-
 
 <?php if ($the_query->have_posts()) : ?>
 
@@ -79,29 +93,15 @@ document.getElementById('year').addEventListener('change', function() {
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
-            // Costruisco base e format per paginate_links con add_query_arg:
-            $base = add_query_arg('page','%#%');
-            $format = '';
-
-            // Se permalink non usa query string, togli eventuali trailing & o ? in $base
-            $base = preg_replace('/(\?|&)page=%#%/', '?page=%#%', $base);
-
-            // Assicuriamoci che gli altri parametri di ricerca/anno siano mantenuti:
-            $args_pagination = [
-                'base'      => $base,
-                'format'    => $format,
+            $pagination_links = paginate_links([
+                'base'      => esc_url($base),
+                'format'    => '',
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
                 'type'      => 'array',
-                'add_args'  => [
-                    'search' => $main_search_query ? $main_search_query : false,
-                    'year'   => ($year > 0) ? $year : false,
-                ],
-            ];
-
-            $pagination_links = paginate_links($args_pagination);
+            ]);
 
             if ($pagination_links) : ?>
                 <ul class="pagination justify-content-center">
@@ -169,3 +169,4 @@ document.getElementById('year').addEventListener('change', function() {
     border-color: transparent;
 }
 </style>
+
