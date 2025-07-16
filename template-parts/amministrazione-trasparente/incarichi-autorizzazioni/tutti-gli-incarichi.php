@@ -9,7 +9,7 @@ $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search'
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 
-// Prendi gli anni disponibili dai post pubblicati (per la combo)
+// Prendi gli anni disponibili dai post pubblicati
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date)
     FROM {$wpdb->posts}
@@ -18,7 +18,7 @@ $years = $wpdb->get_col("
     ORDER BY post_date DESC
 ");
 
-// Costruiamo argomenti per WP_Query
+// Argomenti WP_Query
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -33,62 +33,52 @@ if (!empty($main_search_query)) {
 
 if ($selected_year > 0) {
     $args['date_query'] = array(
-        array(
-            'year' => $selected_year,
-        ),
+        array('year' => $selected_year),
     );
 }
 
-// Query personalizzata
 $the_query = new WP_Query($args);
-
-// Prendi permalink pagina corrente (senza query string)
 $current_url = get_permalink();
-
-// Costruiamo la base URL per paginazione mantenendo parametri search e filter_year
-$base_url = add_query_arg(array(
-    'search'      => $main_search_query ? $main_search_query : '',
-    'filter_year' => $selected_year > 0 ? $selected_year : 0,
+$base_url = add_query_arg([
+    'search'      => $main_search_query ?: '',
+    'filter_year' => $selected_year ?: 0,
     'page'        => '%#%',
-), $current_url);
+], $current_url);
 ?>
 
-<!-- FORM FILTRO ANNO -->
-<form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2 incarichi-filtro-form">
-    <label for="search" class="form-label mb-0 me-2">Cerca:</label>
-    <input
-        type="search"
-        id="search"
-        name="search"
-        class="form-control me-3"
-        placeholder="Cerca..."
-        value="<?php echo esc_attr($main_search_query); ?>"
-    >
+<!-- FORM FILTRO -->
+<form method="get" class="incarichi-filtro-form">
+    <div class="form-group">
+        <label for="search" class="form-label">Cerca:</label>
+        <input type="search" id="search" name="search" class="form-control" placeholder="Cerca..." value="<?php echo esc_attr($main_search_query); ?>">
+    </div>
 
-    <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
-    <select id="filter-year" name="filter_year" class="form-select w-auto me-3">
-        <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
-        <?php foreach ($years as $y) : ?>
-            <option value="<?php echo esc_attr($y); ?>" <?php selected($selected_year, $y); ?>>
-                <?php echo esc_html($y); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+    <div class="form-group">
+        <label for="filter-year" class="form-label">Filtra per anno:</label>
+        <select id="filter-year" name="filter_year" class="form-select">
+            <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
+            <?php foreach ($years as $y) : ?>
+                <option value="<?php echo esc_attr($y); ?>" <?php selected($selected_year, $y); ?>>
+                    <?php echo esc_html($y); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
-    <button type="submit" class="btn btn-primary">Filtra</button>
+    <div class="form-group align-self-end">
+        <button type="submit" class="btn btn-primary">Filtra</button>
+    </div>
 </form>
 
 <?php if ($the_query->have_posts()) : ?>
-
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
         <?php get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card'); ?>
-    <?php endwhile; ?>
-    <?php wp_reset_postdata(); ?>
+    <?php endwhile; wp_reset_postdata(); ?>
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
-            $pagination_links = paginate_links(array(
+            $pagination_links = paginate_links([
                 'base'      => $base_url,
                 'format'    => '',
                 'current'   => $paged,
@@ -96,8 +86,7 @@ $base_url = add_query_arg(array(
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
                 'type'      => 'array',
-            ));
-
+            ]);
             if ($pagination_links) : ?>
                 <ul class="pagination justify-content-center">
                     <?php foreach ($pagination_links as $link) :
@@ -111,127 +100,79 @@ $base_url = add_query_arg(array(
             <?php endif; ?>
         </nav>
     </div>
-
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
 
-<!-- STILE MIGLIORATO PER FORM E PAGINAZIONE -->
+<!-- STILE MIGLIORATO -->
 <style>
-/* FORM STILIZZATO */
 form.incarichi-filtro-form {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     gap: 1rem;
+    justify-content: center;
+    align-items: flex-end;
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    max-width: 700px;
+    max-width: 750px;
     margin: 0 auto 2rem;
 }
 
-    
-
-form.incarichi-filtro-form label.form-label {
-    margin-bottom: 0;
-    font-weight: 600;
-    color: #495057;
-    min-width: 90px;
-}
-
-form.incarichi-filtro-form input[type="search"],
-form.incarichi-filtro-form select.form-select {
+form.incarichi-filtro-form .form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
     flex-grow: 1;
-    min-width: 150px;
-    max-width: 250px;
-    border: 1.5px solid #ced4da;
-    transition: border-color 0.3s ease;
+    max-width: 220px;
 }
 
-form.incarichi-filtro-form input[type="search"]:focus,
-form.incarichi-filtro-form select.form-select:focus {
+form.incarichi-filtro-form .form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.3rem;
+}
+
+form.incarichi-filtro-form .form-control,
+form.incarichi-filtro-form .form-select {
+    padding: 0.45rem 0.75rem;
+    border: 1.5px solid #ced4da;
+    border-radius: 0.4rem;
+    transition: border-color 0.3s;
+}
+
+form.incarichi-filtro-form .form-control:focus,
+form.incarichi-filtro-form .form-select:focus {
     border-color: #0d6efd;
-    box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
+    box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25);
     outline: none;
 }
 
 form.incarichi-filtro-form button.btn-primary {
-    height: 38px; /* uguale all'input/select */
-    padding: 0 1.2rem;
+    height: 38px;
+    padding: 0 1.5rem;
     font-weight: 600;
     border-radius: 0.4rem;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    white-space: nowrap;
 }
 
-
-
-    
 form.incarichi-filtro-form button.btn-primary:hover {
     background-color: #0b5ed7;
     box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
 }
 
-/* PAGINAZIONE */
-.pagination-wrapper .pagination {
-    justify-content: center;
-    margin-top: 1rem;
-}
-
-.pagination-wrapper .page-link {
-    color: #0d6efd;
-    border-radius: 0.3rem;
-    padding: 0.4rem 0.9rem;
-    font-weight: 500;
-    transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-.pagination-wrapper .page-link:hover {
-    background-color: #0d6efd;
-    color: #fff;
-    box-shadow: 0 0 8px rgba(13, 110, 253, 0.6);
-    text-decoration: none;
-}
-
-.pagination-wrapper .page-item.active .page-link {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    color: #fff;
-    cursor: default;
-    box-shadow: 0 0 12px rgba(13, 110, 253, 0.9);
-}
-
-.pagination-wrapper .page-item.disabled .page-link {
-    color: #6c757d;
-    pointer-events: none;
-    background-color: transparent;
-    border-color: transparent;
-}
-
-/* RESPONSIVE FORM */
+/* Responsive */
 @media (max-width: 576px) {
     form.incarichi-filtro-form {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.75rem;
-        padding: 0.75rem;
     }
-
-    form.incarichi-filtro-form label.form-label {
-        min-width: auto;
-    }
-
-    form.incarichi-filtro-form input[type="search"],
-    form.incarichi-filtro-form select.form-select,
-    form.incarichi-filtro-form button.btn-primary {
+    form.incarichi-filtro-form .form-group {
         max-width: 100%;
-        flex-grow: unset;
     }
 }
 </style>
+
