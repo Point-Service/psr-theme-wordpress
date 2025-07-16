@@ -126,24 +126,22 @@ $base_url = add_query_arg(array(
 /* FORM STILIZZATO */
 form.incarichi-filtro-form {
     display: flex;
-      flex-wrap: nowrap !important;
-    align-items: center;
+    flex-wrap: wrap; /* permette il wrap senza sovrapposizioni */
+    align-items: flex-start;
     gap: 1rem;
-    padding: 1.5rem 4.5rem 1rem 1rem; /* spazio a destra per bottone assoluto */
+    padding: 1rem;
     background: #f8f9fa;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     max-width: 700px;
-    margin: 0 0 2rem 0;
-    position: relative; /* per posizionare bottone assoluto */
+    margin: 0 auto 2rem;
 }
 
-
 form.incarichi-filtro-form label.form-label {
-    margin-bottom: 0;
+    min-width: 90px;
     font-weight: 600;
     color: #495057;
-    min-width: 90px;
+    margin-bottom: 0;
 }
 
 form.incarichi-filtro-form input[type="search"],
@@ -163,22 +161,17 @@ form.incarichi-filtro-form select.form-select:focus {
 }
 
 .btn-wrapper {
-    position: absolute;
-    top: 0.5rem;    /* bottone sopra agli input */
-    right: 1rem;    /* allineato a destra */
+    flex-shrink: 0;
+    margin-left: auto; /* spinge il bottone a destra */
 }
 
-
-
-    
 form.incarichi-filtro-form button.btn-primary {
     padding: 0.45rem 1.5rem;
     font-weight: 600;
     border-radius: 0.4rem;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
     height: 38px;
     cursor: pointer;
-    margin: 0;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 form.incarichi-filtro-form button.btn-primary:hover {
@@ -225,24 +218,13 @@ form.incarichi-filtro-form button.btn-primary:hover {
 /* RESPONSIVE FORM */
 @media (max-width: 576px) {
     form.incarichi-filtro-form {
-        flex-wrap: wrap; /* impila elementi */
-        padding: 1rem 1rem 1rem 1rem; /* padding normale senza spazio bottone */
-    }
-
-    form.incarichi-filtro-form label.form-label {
-        min-width: auto;
-    }
-
-    form.incarichi-filtro-form input[type="search"],
-    form.incarichi-filtro-form select.form-select {
-        max-width: 100%;
-        flex-grow: unset;
+        flex-wrap: wrap;
     }
 
     .btn-wrapper {
-        position: static;  /* posizione normale su mobile */
-        margin-top: 0.5rem;
+        margin-left: 0;
         width: 100%;
+        margin-top: 0.5rem;
         display: flex;
         justify-content: flex-start;
     }
@@ -252,7 +234,6 @@ form.incarichi-filtro-form button.btn-primary:hover {
         height: 38px;
     }
 }
-
 
 </style>
 
