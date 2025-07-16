@@ -4,8 +4,11 @@ global $post;
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 2;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
-// Qui prendi 'paged' SOLO da $_GET, così svincolato da rewrite e permalink
-$paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+// Prendi 'paged' solo da $_GET, fallback a 1 se non impostato o errato
+$paged = 1;
+if (isset($_GET['paged']) && is_numeric($_GET['paged']) && intval($_GET['paged']) > 0) {
+    $paged = intval($_GET['paged']);
+}
 
 $args = array(
     'post_type'      => 'incarichi_dip',
@@ -34,10 +37,9 @@ $the_query = new WP_Query($args);
         <nav class="my-4" aria-label="Paginazione">
             <ul class="pagination justify-content-center">
                 <?php
-                $base_url = strtok($_SERVER['REQUEST_URI'], '?'); // URL base senza query
+                $base_url = strtok($_SERVER['REQUEST_URI'], '?'); // base URL senza query
                 $query_args = $_GET;
                 
-                // Funzione helper per creare link paginati con ?paged=N
                 function custom_paginate_link($page_num, $base_url, $query_args, $current) {
                     $query_args['paged'] = $page_num;
                     $url = $base_url . '?' . http_build_query($query_args);
@@ -51,7 +53,7 @@ $the_query = new WP_Query($args);
                     echo custom_paginate_link($prev_page, $base_url, $query_args, 0);
                 }
 
-                // Link numerici (puoi limitarli a max 5 ad esempio)
+                // Link numerici limitati a 5
                 $max_links = 5;
                 $start = max(1, $paged - floor($max_links / 2));
                 $end = min($the_query->max_num_pages, $start + $max_links - 1);
@@ -73,4 +75,5 @@ $the_query = new WP_Query($args);
 <?php else : ?>
     <div class="alert alert-info text-center">Nessun incarico conferito trovato.</div>
 <?php endif; ?>
+
 
