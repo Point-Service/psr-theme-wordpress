@@ -335,24 +335,29 @@ add_action('init', 'my_custom_one_time_function');
 
 
 
-
 add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2', 20 );
 function dci_bold_parent_terms_cmb2( $hook ) {
 
-
-	// Applica solo su nuovo o modifica post di tipo 'elemento_trasparenza'
-	$post_type = $_GET['post_type'] ?? get_post_type( $_GET['post'] ?? 0 );
-	
-	if ( ! in_array( $hook, ['post-new.php', 'post.php'] ) || $post_type !== 'elemento_trasparenza' ) {
-	    return;
-	}
-	
-
+    // Applica solo su nuovo o modifica post di tipo 'elemento_trasparenza'
+    $post_type = $_GET['post_type'] ?? get_post_type( $_GET['post'] ?? 0 );
+    
+    if ( ! in_array( $hook, ['post-new.php', 'post.php'] ) || $post_type !== 'elemento_trasparenza' ) {
+        return;
+    }
+    
     /* ----------  CSS inline  ---------- */
     wp_add_inline_style(
         // usiamo un handle già presente, ad es. 'wp-admin'
         'wp-admin',
-        '.cmb2-parent-term { font-weight:700; color:#000; }'
+        '
+        .cmb2-parent-term { 
+            font-weight: 700; 
+            color: #000; /* nero */
+        }
+        .cmb2-sub-term {
+            color: #343a40; /* grigio scuro */
+        }
+        '
     );
 
     /* ----------  JS inline  ---------- */
@@ -366,9 +371,14 @@ function dci_bold_parent_terms_cmb2( $hook ) {
                 $('.cmb2-radio-list, .cmb2-checkbox-list').each(function(){
                     $(this).children('li').each(function(){
                         var \$label = $(this).children('label').first();
-                        // se il label NON contiene &nbsp; => livello 0 (categoria principale)
-                        if ( \$label.length && \$label.html().indexOf('&nbsp;') === -1 ) {
-                            \$label.addClass('cmb2-parent-term');
+                        if ( \$label.length ) {
+                            if ( \$label.html().indexOf('&nbsp;') === -1 ) {
+                                // categoria principale
+                                \$label.addClass('cmb2-parent-term');
+                            } else {
+                                // sottocategorie
+                                \$label.addClass('cmb2-sub-term');
+                            }
                         }
                     });
                 });
@@ -377,6 +387,7 @@ function dci_bold_parent_terms_cmb2( $hook ) {
 JS
     );
 }
+
 
 
 
