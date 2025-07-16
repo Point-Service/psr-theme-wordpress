@@ -93,7 +93,18 @@ $base_url = add_query_arg(array(
     $the_query->the_post();
     get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card');
 endwhile;
-wp_reset_postdata();?>
+wp_reset_postdata();
+    if ( $the_query->have_posts() ) {
+    echo 'Trovati ' . $the_query->found_posts . ' post.<br>';
+} else {
+    echo 'Nessun post trovato.';
+}
+    
+    
+    
+    
+    
+    ?>
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
