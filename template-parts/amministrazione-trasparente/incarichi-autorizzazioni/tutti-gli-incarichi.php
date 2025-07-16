@@ -54,8 +54,8 @@ $base_url = add_query_arg(array(
 
 ?>
 
-<!-- FORM FILTRO ANNO -->
-<form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2">
+<!-- FORM FILTRO ANNO E RICERCA -->
+<form method="get" class="mb-3">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
     <input
         type="search"
@@ -64,11 +64,11 @@ $base_url = add_query_arg(array(
         class="form-control me-3"
         placeholder="Cerca..."
         value="<?php echo esc_attr($main_search_query); ?>"
-        style="max-width: 200px;"
+        style="max-width: 250px; min-width: 180px; flex-grow: 1;"
     >
 
     <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
-    <select id="filter-year" name="year" class="form-select w-auto me-3">
+    <select id="filter-year" name="year" class="form-select me-3" style="min-width: 140px; max-width: 160px;">
         <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
         <?php foreach ($years as $y) : ?>
             <option value="<?php echo esc_attr($y); ?>" <?php selected($selected_year, $y); ?>>
@@ -156,19 +156,35 @@ $base_url = add_query_arg(array(
     border-color: transparent;
 }
 
-/* Responsive e spaziatura filtro */
+/* Miglior stile per il form filtro e ricerca */
 form.mb-3 {
-    gap: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
-form select.form-select {
-    min-width: 120px;
-}
-
-/* Label allineata verticale */
 form label.form-label {
     margin-bottom: 0;
     font-weight: 600;
     color: var(--bs-secondary);
+    white-space: nowrap;
+}
+
+form input[type="search"] {
+    max-width: 250px;
+    min-width: 180px;
+    flex-grow: 1;
+}
+
+form select.form-select {
+    min-width: 140px;
+    max-width: 160px;
+}
+
+form button.btn {
+    white-space: nowrap;
+    padding: 0.38rem 1rem;
 }
 </style>
