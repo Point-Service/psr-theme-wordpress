@@ -42,26 +42,19 @@ $the_query = new WP_Query($args);
 // URL base per la paginazione
 
 
+// Query personalizzata
+$the_query = new WP_Query($args);
+
+// Prendi permalink pagina corrente (senza query string)
 $current_url = get_permalink();
-$query_args = $_GET;
-unset($query_args['page']);
 
-$base_url = add_query_arg($query_args, $current_url);
-$base_url = $base_url . '%_%'; // senza trailing slash
-
-$pagination_links = paginate_links([
-    'base'      => $base_url . (strpos($base_url, '?') === false ? '?page=%#%' : '&page=%#%'),
-    'format'    => '',
-    'current'   => $paged,
-    'total'     => $the_query->max_num_pages,
-    'prev_text' => __('&laquo; Precedente'),
-    'next_text' => __('Successivo &raquo;'),
-    'type'      => 'array',
-    'end_size'  => 1,
-    'mid_size'  => 2,
-]);
-
-
+// Costruiamo la base URL per paginazione mantenendo tutti i parametri
+$base_url = add_query_arg(array(
+    'search'      => $main_search_query ? $main_search_query : '',
+    'filter_year' => $selected_year > 0 ? $selected_year : 0,
+    'max_posts'   => $max_posts,
+    'page'        => '%#%',
+), $current_url);
 
 
 ?>
