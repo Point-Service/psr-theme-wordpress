@@ -120,53 +120,110 @@ $base_url = add_query_arg(array(
 <?php endif; ?>
 
 <style>
-/* Stile paginazione Bootstrap custom */
+/* FORM FILTRO */
+form.mb-3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 700px;
+    margin: 0 auto 2rem;
+}
+
+form label.form-label {
+    margin-bottom: 0;
+    font-weight: 600;
+    color: #495057;
+    min-width: 90px;
+}
+
+form input[type="search"],
+form select.form-select {
+    flex-grow: 1;
+    min-width: 150px;
+    max-width: 250px;
+    border: 1.5px solid #ced4da;
+    transition: border-color 0.3s ease;
+}
+
+form input[type="search"]:focus,
+form select.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
+    outline: none;
+}
+
+form button.btn-primary {
+    padding: 0.45rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.4rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form button.btn-primary:hover {
+    background-color: #0b5ed7;
+    box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
+}
+
+/* PAGINAZIONE */
+.pagination {
+    justify-content: center;
+    margin-top: 1rem;
+}
+
 .pagination .page-link {
-    color: var(--bs-primary);
-    background-color: transparent;
-    border: 1px solid transparent;
-    padding: 0.375rem 0.75rem;
-    margin: 0 0.25rem;
-    border-radius: 0.25rem;
-    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    color: #0d6efd;
+    border-radius: 0.3rem;
+    padding: 0.4rem 0.9rem;
     font-weight: 500;
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .pagination .page-link:hover {
-    background-color: var(--bs-primary);
+    background-color: #0d6efd;
     color: #fff;
-    text-decoration: none;
     box-shadow: 0 0 8px rgba(13, 110, 253, 0.6);
+    text-decoration: none;
 }
 
 .pagination .page-item.active .page-link {
-    background-color: var(--bs-primary);
-    border-color: var(--bs-primary);
+    background-color: #0d6efd;
+    border-color: #0d6efd;
     color: #fff;
     cursor: default;
-    box-shadow: 0 0 10px rgba(13, 110, 253, 0.75);
+    box-shadow: 0 0 12px rgba(13, 110, 253, 0.9);
 }
 
 .pagination .page-item.disabled .page-link {
-    color: var(--bs-secondary);
+    color: #6c757d;
     pointer-events: none;
     background-color: transparent;
     border-color: transparent;
 }
 
-/* Responsive e spaziatura filtro */
-form.mb-3 {
-    gap: 0.5rem;
+/* RESPONSIVE */
+@media (max-width: 576px) {
+    form.mb-3 {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    form label.form-label {
+        min-width: auto;
+    }
+
+    form input[type="search"],
+    form select.form-select,
+    form button.btn-primary {
+        max-width: 100%;
+        flex-grow: unset;
+    }
 }
 
-form select.form-select {
-    min-width: 120px;
-}
-
-/* Label allineata verticale */
-form label.form-label {
-    margin-bottom: 0;
-    font-weight: 600;
-    color: var(--bs-secondary);
-}
 </style>
