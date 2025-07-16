@@ -91,7 +91,7 @@ $base_url = add_query_arg(array(
 
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
     
-        <?php echo'dddd';  get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card'); ?>
+        <?php get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card'); ?>
     <?php endwhile; ?>
     <?php wp_reset_postdata(); ?>
 
