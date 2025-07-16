@@ -339,26 +339,31 @@ add_action('init', 'my_custom_one_time_function');
 add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2', 20 );
 
 function dci_bold_parent_terms_cmb2( $hook ) {
+    // Limitare solo a schermate post.php e post-new.php
     if ( ! in_array( $hook, ['post-new.php', 'post.php'], true ) ) {
         return;
     }
 
-    $post_id   = $_GET['post'] ?? 0;
-    $post_type = $_GET['post_type'] ?? get_post_type( $post_id );
+    // Prendi ID post e tipo post
+    $post_id   = isset($_GET['post']) ? intval($_GET['post']) : 0;
+    $post_type = isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : get_post_type( $post_id );
 
+    // Controlla che sia il tipo personalizzato 'elemento_trasparenza'
     if ( $post_type !== 'elemento_trasparenza' ) {
         return;
     }
 
-    // Stili per ogni livello
+    // Aggiungi gli stili CSS inline
     wp_add_inline_style(
         'wp-admin',
-        '.cmb2-term-level-1 { color: #000; font-weight: 700; }      /* Nero */
-         .cmb2-term-level-2 { color: #343a40; font-weight: 600; }   /* Grigio scuro */
-         .cmb2-term-level-3 { color: #8B4513; font-style: italic; } /* Marrone */'
+        '
+        .cmb2-term-level-1 { color: #000; font-weight: 700; }      /* Nero */
+        .cmb2-term-level-2 { color: #343a40; font-weight: 600; }   /* Grigio scuro */
+        .cmb2-term-level-3 { color: #8B4513; font-style: italic; } /* Marrone */
+        '
     );
 
-    // Script: assegna classi in base al numero di &nbsp;
+    // Aggiungi script inline per assegnare le classi in base ai &nbsp;
     wp_add_inline_script(
         'jquery-core',
         <<<JS
