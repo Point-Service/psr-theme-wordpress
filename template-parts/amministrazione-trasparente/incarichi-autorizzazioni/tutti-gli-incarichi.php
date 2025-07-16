@@ -75,8 +75,12 @@ $base_url = add_query_arg(array(
         <?php endforeach; ?>
     </select>
 
-    <button type="submit" class="btn btn-primary">Filtra</button>
+    <!-- Inserisco bottone in un div flex -->
+    <div class="btn-wrapper">
+        <button type="submit" class="btn btn-primary">Filtra</button>
+    </div>
 </form>
+
 
 <?php if ($the_query->have_posts()) : ?>
 
@@ -123,7 +127,7 @@ $base_url = add_query_arg(array(
 /* FORM STILIZZATO */
 form.incarichi-filtro-form {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* forziamo riga unica per affiancare bottone */
     align-items: center;
     gap: 1rem;
     padding: 1rem;
@@ -156,18 +160,19 @@ form.incarichi-filtro-form select.form-select:focus {
     box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
     outline: none;
 }
-    
+
+.btn-wrapper {
+    flex-shrink: 0; /* evita che il bottone si restringa */
+}
+
 form.incarichi-filtro-form button.btn-primary {
     padding: 0.45rem 1.5rem;
     font-weight: 600;
     border-radius: 0.4rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     height: 38px; /* per allineamento verticale con input */
-    /* rimuovi queste due righe */
-    /* align-self: flex-end; */
-    /* margin-top: auto; */
+    /* align-self e margin-top rimossi per affiancamento */
 }
-
 
 form.incarichi-filtro-form button.btn-primary:hover {
     background-color: #0b5ed7;
@@ -213,7 +218,7 @@ form.incarichi-filtro-form button.btn-primary:hover {
 /* RESPONSIVE FORM */
 @media (max-width: 576px) {
     form.incarichi-filtro-form {
-        flex-direction: column;
+        flex-wrap: wrap; /* torna a wrap su mobile per impilare gli elementi */
         align-items: stretch;
         gap: 0.75rem;
         padding: 0.75rem;
@@ -229,6 +234,11 @@ form.incarichi-filtro-form button.btn-primary:hover {
         max-width: 100%;
         flex-grow: unset;
     }
+
+    .btn-wrapper {
+        flex-shrink: unset; /* su mobile lascia fluido */
+    }
 }
+
 </style>
 
