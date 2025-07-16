@@ -65,7 +65,7 @@ $base_url = add_query_arg(array(
         value="<?php echo esc_attr($main_search_query); ?>"
     >
 
-    <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
+    <label for="filter-year" class="form-label mb-0 me-2">anno:</label>
     <select id="filter-year" name="filter_year" class="form-select w-auto me-3">
         <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
         <?php foreach ($years as $y) : ?>
