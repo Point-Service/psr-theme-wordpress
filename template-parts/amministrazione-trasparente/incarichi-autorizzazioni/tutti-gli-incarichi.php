@@ -126,15 +126,16 @@ $base_url = add_query_arg(array(
 /* FORM STILIZZATO */
 form.incarichi-filtro-form {
     display: flex;
-    flex-wrap: nowrap; /* forziamo riga unica per affiancare bottone */
-    align-items: flex-start; /* allineo tutto in alto, a sinistra */
+    flex-wrap: nowrap; /* riga unica */
+    align-items: center; /* centra verticalmente label e input */
     gap: 1rem;
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     max-width: 700px;
-    margin: 0 0 2rem 0; /* allineo il form a sinistra */
+    margin: 0 0 2rem 0; /* allineato a sinistra */
+    position: relative;
 }
 
 form.incarichi-filtro-form label.form-label {
@@ -161,7 +162,10 @@ form.incarichi-filtro-form select.form-select:focus {
 }
 
 .btn-wrapper {
-    flex-shrink: 0; /* evita che il bottone si restringa */
+    flex-shrink: 0;          /* il bottone non si restringe */
+    margin-left: auto;       /* sposta il bottone tutto a destra */
+    display: flex;
+    align-items: flex-start; /* allinea bottone in alto */
 }
 
 form.incarichi-filtro-form button.btn-primary {
@@ -169,9 +173,9 @@ form.incarichi-filtro-form button.btn-primary {
     font-weight: 600;
     border-radius: 0.4rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    height: 38px; /* per allineamento verticale con input */
-    align-self: flex-start; /* bottone in alto */
-    margin-top: 0; /* rimuovo margin-top */
+    height: 38px;            /* allineamento verticale */
+    margin-top: -4px;        /* sale un po’ sopra rispetto agli input */
+    cursor: pointer;
 }
 
 form.incarichi-filtro-form button.btn-primary:hover {
@@ -218,7 +222,7 @@ form.incarichi-filtro-form button.btn-primary:hover {
 /* RESPONSIVE FORM */
 @media (max-width: 576px) {
     form.incarichi-filtro-form {
-        flex-wrap: wrap; /* torna a wrap su mobile per impilare gli elementi */
+        flex-wrap: wrap; /* impila elementi su mobile */
         align-items: stretch;
         gap: 0.75rem;
         padding: 0.75rem;
@@ -236,9 +240,12 @@ form.incarichi-filtro-form button.btn-primary:hover {
     }
 
     .btn-wrapper {
-        flex-shrink: unset; /* su mobile lascia fluido */
+        flex-shrink: unset; /* lascia fluido su mobile */
+        margin-left: 0;     /* reset margine */
+        align-items: center; /* centra bottone su mobile */
     }
 }
+
 </style>
 
 
