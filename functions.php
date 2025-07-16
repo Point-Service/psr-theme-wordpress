@@ -339,7 +339,6 @@ add_action('init', 'my_custom_one_time_function');
 add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2', 20 );
 
 function dci_bold_parent_terms_cmb2( $hook ) {
-    // Carica solo su post.php e post-new.php del tipo "elemento_trasparenza"
     if ( ! in_array( $hook, ['post-new.php', 'post.php'], true ) ) {
         return;
     }
@@ -351,34 +350,31 @@ function dci_bold_parent_terms_cmb2( $hook ) {
         return;
     }
 
-    // CSS per evidenziare i livelli
+    // Stili CSS per livelli
     wp_add_inline_style(
         'wp-admin',
-        '.cmb2-term-level-0 { font-weight:700; color:#000; }
+        '.cmb2-term-level-0 { font-weight:700; color:#343a40; } /* grigio scuro */
          .cmb2-term-level-1 { color:#0d6efd; font-weight:600; }
          .cmb2-term-level-2 { color:#6c757d; font-style:italic; }'
     );
 
-    // JS per classificare in base agli &nbsp;
+    // Script JS per analizzare il numero di &nbsp; in ogni label
     wp_add_inline_script(
         'jquery-core',
         <<<JS
         (function($){
             $(document).ready(function(){
                 $('.cmb2-radio-list, .cmb2-checkbox-list').each(function(){
-                    $(this).children('li').each(function(){
-                        var \$label = $(this).find('label').first();
-                        if (!\$label.length) return;
-
-                        var html = \$label.html();
+                    $(this).find('label').each(function(){
+                        var html = $(this).html();
                         var nbspCount = (html.match(/&nbsp;/g) || []).length;
 
                         if (nbspCount === 0) {
-                            \$label.addClass('cmb2-term-level-0');
+                            $(this).addClass('cmb2-term-level-0');
                         } else if (nbspCount <= 2) {
-                            \$label.addClass('cmb2-term-level-1');
+                            $(this).addClass('cmb2-term-level-1');
                         } else {
-                            \$label.addClass('cmb2-term-level-2');
+                            $(this).addClass('cmb2-term-level-2');
                         }
                     });
                 });
@@ -387,6 +383,7 @@ function dci_bold_parent_terms_cmb2( $hook ) {
 JS
     );
 }
+
 
 
 
