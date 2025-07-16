@@ -1,7 +1,6 @@
 <?php
 global $wpdb;
 
-// Evita redirect automatici di WordPress (utile per paginazione custom)
 remove_filter('template_redirect', 'redirect_canonical');
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
@@ -9,7 +8,7 @@ $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search'
 $year = isset($_GET['year']) ? intval($_GET['year']) : 0;
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
-// Recupera anni distinti dai post pubblicati di tipo incarichi_dip
+// Prendi gli anni disponibili
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date) 
     FROM {$wpdb->posts} 
@@ -18,21 +17,16 @@ $years = $wpdb->get_col("
     ORDER BY post_date DESC
 ");
 
-$args = array(
-    'post_type'      => 'incarichi_dip',
+$args = [
+    'post_type' => 'incarichi_dip',
     'posts_per_page' => $max_posts,
-    'orderby'        => 'date',
-    'order'          => 'DESC',
-    'paged'          => $paged,
-);
+    'orderby' => 'date',
+    'order' => 'DESC',
+    'paged' => $paged,
+];
 
-// Se è stato selezionato un anno specifico, aggiungi filtro meta_query
-if ($year && $year > 0) {
-    $args['date_query'] = array(
-        array(
-            'year' => $year,
-        ),
-    );
+if ($year > 0) {
+    $args['date_query'] = [['year' => $year]];
 }
 
 if (!empty($main_search_query)) {
@@ -42,11 +36,11 @@ if (!empty($main_search_query)) {
 $the_query = new WP_Query($args);
 ?>
 
-<form method="GET" action="<?php echo esc_url( get_permalink() ); ?>" id="filter-year-form" class="mb-4">
+<form method="GET" action="<?php echo esc_url(get_permalink()); ?>" id="filter-year-form" class="mb-4">
     <label for="year">Seleziona anno:</label>
     <select name="year" id="year" onchange="document.getElementById('filter-year-form').submit();">
         <option value="0"<?php selected(0, $year); ?>>Tutti gli anni</option>
-        <?php foreach ($years as $y) : ?>
+        <?php foreach ($years as $y): ?>
             <option value="<?php echo esc_attr($y); ?>" <?php selected($year, $y); ?>><?php echo esc_html($y); ?></option>
         <?php endforeach; ?>
     </select>
@@ -63,22 +57,25 @@ $the_query = new WP_Query($args);
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
-            $pagination_links = paginate_links(array(
-                'base'      => add_query_arg(
-                    array_filter([
-                        'page'  => '%#%',
-                        'year'  => $year > 0 ? $year : null,
-                        'search'=> !empty($main_search_query) ? $main_search_query : null,
-                    ]),
-                    esc_url(get_permalink())
-                ),
-                'format'    => '',
-                'current'   => $paged,
-                'total'     => $the_query->max_num_pages,
+            // Genera la base corretta per i link di paginazione
+            $base = esc_url(add_query_arg([
+                'page' => '%#%',
+                'year' => $year > 0 ? $year : null,
+                'search' => !empty($main_search_query) ? $main_search_query : null,
+            ], get_permalink()));
+
+            // Rimuove eventuali doppie ? o & in più
+            $base = preg_replace('/(\?|&)+$/', '', $base);
+
+            $pagination_links = paginate_links([
+                'base' => $base,
+                'format' => '',
+                'current' => $paged,
+                'total' => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
-                'type'      => 'array',
-            ));
+                'type' => 'array',
+            ]);
 
             if ($pagination_links) : ?>
                 <ul class="pagination justify-content-center">
@@ -100,35 +97,3 @@ $the_query = new WP_Query($args);
     </div>
 <?php endif; ?>
 
-<style>
-.pagination .page-link {
-    color: var(--bs-primary); /* usa il colore primario Bootstrap */
-    background-color: transparent;
-    border: 1px solid transparent;
-    padding: 0.375rem 0.75rem;
-    margin: 0 0.25rem;
-    border-radius: 0.25rem;
-    transition: background-color 0.15s ease-in-out;
-}
-
-.pagination .page-link:hover {
-    background-color: var(--bs-primary);
-    color: white;
-    text-decoration: none;
-}
-
-.pagination .page-item.active .page-link {
-    background-color: var(--bs-primary);
-    border-color: var(--bs-primary);
-    color: white;
-    cursor: default;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-.pagination .page-item.disabled .page-link {
-    color: var(--bs-secondary);
-    pointer-events: none;
-    background-color: transparent;
-    border-color: transparent;
-}
-</style>
