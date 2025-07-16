@@ -1,6 +1,6 @@
 <?php
 // Numero elementi per pagina (puoi impostare fisso o dinamico da URL)
-$posts_per_page = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
+$posts_per_page = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 3;
 
 // Recupera la pagina corrente da query var o da URL (parametro paged)
 $paged = max(1, get_query_var('paged') ? get_query_var('paged') : (isset($_GET['paged']) ? intval($_GET['paged']) : 1));
