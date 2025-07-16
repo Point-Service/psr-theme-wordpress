@@ -46,7 +46,7 @@ $the_query = new WP_Query($args);
     </div>
     <div>
         <label for="year">Anno:</label>
-        <select name="year" id="year" onchange="document.getElementById('filter-form').submit();">
+        <select name="year" id="year">
             <option value="0"<?php selected(0, $year); ?>>Tutti gli anni</option>
             <?php foreach ($years as $y): ?>
                 <option value="<?php echo esc_attr($y); ?>" <?php selected($year, $y); ?>><?php echo esc_html($y); ?></option>
@@ -55,6 +55,19 @@ $the_query = new WP_Query($args);
     </div>
     <button type="submit" class="btn btn-primary">Filtra</button>
 </form>
+
+<script>
+document.getElementById('year').addEventListener('change', function() {
+    // Al cambio anno resetta la pagina a 1
+    const url = new URL(window.location.href);
+    url.searchParams.set('year', this.value);
+    url.searchParams.set('page', '1');
+    // Mantieni anche search se presente
+    // Ricarica pagina con query string aggiornata senza cambiare percorso
+    window.location.href = url.toString();
+});
+</script>
+
 
 <?php if ($the_query->have_posts()) : ?>
 
