@@ -56,8 +56,19 @@ $base_url = add_query_arg(array(
 
 <!-- FORM FILTRO ANNO -->
 <form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2">
+    <label for="search" class="form-label mb-0 me-2">Cerca:</label>
+    <input
+        type="search"
+        id="search"
+        name="search"
+        class="form-control me-3"
+        placeholder="Cerca..."
+        value="<?php echo esc_attr($main_search_query); ?>"
+        style="max-width: 200px;"
+    >
+
     <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
-    <select id="filter-year" name="year" onchange="this.form.submit()" class="form-select w-auto">
+    <select id="filter-year" name="year" class="form-select w-auto me-3">
         <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
         <?php foreach ($years as $y) : ?>
             <option value="<?php echo esc_attr($y); ?>" <?php selected($selected_year, $y); ?>>
@@ -66,10 +77,9 @@ $base_url = add_query_arg(array(
         <?php endforeach; ?>
     </select>
 
-    <?php if (!empty($main_search_query)) : ?>
-        <input type="hidden" name="search" value="<?php echo esc_attr($main_search_query); ?>">
-    <?php endif; ?>
+    <button type="submit" class="btn btn-primary">Filtra</button>
 </form>
+
 
 <?php if ($the_query->have_posts()) : ?>
 
