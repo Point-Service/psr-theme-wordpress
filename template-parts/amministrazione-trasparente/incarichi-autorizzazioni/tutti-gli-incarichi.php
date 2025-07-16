@@ -127,15 +127,15 @@ $base_url = add_query_arg(array(
 form.incarichi-filtro-form {
     display: flex;
     flex-wrap: nowrap; /* riga unica */
-    align-items: center; /* centra verticalmente label e input */
+    align-items: center;
     gap: 1rem;
-    padding: 1rem;
+    padding: 1.5rem 4.5rem 1rem 1rem; /* spazio a destra per bottone assoluto */
     background: #f8f9fa;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     max-width: 700px;
-    margin: 0 0 2rem 0; /* allineato a sinistra */
-    position: relative;
+    margin: 0 0 2rem 0;
+    position: relative; /* per posizionare bottone assoluto */
 }
 
 form.incarichi-filtro-form label.form-label {
@@ -162,10 +162,9 @@ form.incarichi-filtro-form select.form-select:focus {
 }
 
 .btn-wrapper {
-    flex-shrink: 0;          /* il bottone non si restringe */
-    margin-left: auto;       /* sposta il bottone tutto a destra */
-    display: flex;
-    align-items: flex-start; /* allinea bottone in alto */
+    position: absolute;
+    top: 0.5rem;    /* bottone sopra agli input */
+    right: 1rem;    /* allineato a destra */
 }
 
 form.incarichi-filtro-form button.btn-primary {
@@ -173,9 +172,9 @@ form.incarichi-filtro-form button.btn-primary {
     font-weight: 600;
     border-radius: 0.4rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    height: 38px;            /* allineamento verticale */
-    margin-top: -4px;        /* sale un po’ sopra rispetto agli input */
+    height: 38px;
     cursor: pointer;
+    margin: 0;
 }
 
 form.incarichi-filtro-form button.btn-primary:hover {
@@ -222,10 +221,8 @@ form.incarichi-filtro-form button.btn-primary:hover {
 /* RESPONSIVE FORM */
 @media (max-width: 576px) {
     form.incarichi-filtro-form {
-        flex-wrap: wrap; /* impila elementi su mobile */
-        align-items: stretch;
-        gap: 0.75rem;
-        padding: 0.75rem;
+        flex-wrap: wrap; /* impila elementi */
+        padding: 1rem 1rem 1rem 1rem; /* padding normale senza spazio bottone */
     }
 
     form.incarichi-filtro-form label.form-label {
@@ -233,18 +230,25 @@ form.incarichi-filtro-form button.btn-primary:hover {
     }
 
     form.incarichi-filtro-form input[type="search"],
-    form.incarichi-filtro-form select.form-select,
-    form.incarichi-filtro-form button.btn-primary {
+    form.incarichi-filtro-form select.form-select {
         max-width: 100%;
         flex-grow: unset;
     }
 
     .btn-wrapper {
-        flex-shrink: unset; /* lascia fluido su mobile */
-        margin-left: 0;     /* reset margine */
-        align-items: center; /* centra bottone su mobile */
+        position: static;  /* posizione normale su mobile */
+        margin-top: 0.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    form.incarichi-filtro-form button.btn-primary {
+        width: auto;
+        height: 38px;
     }
 }
+
 
 </style>
 
