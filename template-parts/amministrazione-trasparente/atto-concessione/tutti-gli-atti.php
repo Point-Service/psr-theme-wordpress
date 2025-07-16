@@ -43,8 +43,11 @@ $the_query = new WP_Query($args);
 
 
 // URL base per la paginazione
-$base_url = get_permalink();
-$base_url = remove_query_arg('page', $base_url);
+$current_url = get_permalink();
+$query_args = $_GET;
+unset($query_args['page']); 
+
+$base_url = add_query_arg($query_args, $current_url);
 $base_url = trailingslashit($base_url) . '%_%';
 
 $pagination_links = paginate_links([
@@ -56,6 +59,7 @@ $pagination_links = paginate_links([
     'next_text' => __('Successivo &raquo;'),
     'type'      => 'array',
 ]);
+
 
 
 ?>
