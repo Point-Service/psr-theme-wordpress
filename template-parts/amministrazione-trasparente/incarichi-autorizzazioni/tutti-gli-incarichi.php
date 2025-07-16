@@ -110,37 +110,34 @@ $base_url = add_query_arg([
 
 <!-- STILE MIGLIORATO -->
 <style>
-/* Stile generale form */
+/* Solo per il form incarichi */
 form.incarichi-filtro-form {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) auto;
   gap: 1rem;
+  align-items: end;
   background: #f8f9fa;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   max-width: 900px;
   margin: 0 auto 2rem;
 }
 
-/* Ogni gruppo di input (campo + etichetta) */
+/* Spazi e label uniformi */
 form.incarichi-filtro-form .form-group {
   display: flex;
   flex-direction: column;
-  flex: 1 1 250px;
-  min-width: 220px;
 }
 
-/* Etichette */
 form.incarichi-filtro-form .form-label {
+  margin-bottom: 0.4rem;
   font-weight: 600;
   color: #333;
-  margin-bottom: 0.5rem;
   font-size: 0.95rem;
 }
 
-/* Input e select */
+/* Input/Select */
 form.incarichi-filtro-form .form-control,
 form.incarichi-filtro-form .form-select {
   padding: 0.5rem 0.75rem;
@@ -149,43 +146,26 @@ form.incarichi-filtro-form .form-select {
   font-size: 1rem;
 }
 
-/* Bottone */
-form.incarichi-filtro-form .btn {
+/* Bottone Filtra */
+form.incarichi-filtro-form button.btn-primary {
   height: 40px;
-  font-weight: 600;
+  padding: 0 1.5rem;
+  align-self: end;
   white-space: nowrap;
   border-radius: 0.4rem;
-  margin-top: auto;
 }
 
-/* Responsive (mobile) */
-@media (max-width: 576px) {
-  form.incarichi-filtro-form {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  form.incarichi-filtro-form .form-group {
-    max-width: 100%;
-  }
-}
-
-/* PAGINAZIONE */
+/* Paginazione coerente e centrata */
 .pagination-wrapper {
   text-align: center;
   margin-top: 2rem;
 }
 
 .pagination {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding-left: 0;
-  list-style: none;
+  display: inline-flex;
   gap: 0.4rem;
-}
-
-.page-item {
-  display: inline;
+  list-style: none;
+  padding: 0;
 }
 
 .page-item .page-link {
@@ -193,9 +173,8 @@ form.incarichi-filtro-form .btn {
   color: #007bff;
   border: 1px solid #dee2e6;
   border-radius: 0.3rem;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
   background-color: #fff;
+  transition: all 0.2s;
 }
 
 .page-item .page-link:hover {
@@ -210,6 +189,7 @@ form.incarichi-filtro-form .btn {
   border-color: #007bff;
   font-weight: bold;
 }
+
 
 
 </style>
