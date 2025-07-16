@@ -54,7 +54,7 @@ $base_url = add_query_arg(array(
 ?>
 
 <!-- FORM FILTRO ANNO -->
-<form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2 incarichi-filtro-form">
+<form method="get" class="mb-3 d-flex align-items-center gap-2 incarichi-filtro-form">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
     <input
         type="search"
@@ -126,7 +126,7 @@ $base_url = add_query_arg(array(
 /* FORM STILIZZATO */
 form.incarichi-filtro-form {
     display: flex;
-    flex-wrap: nowrap; /* riga unica */
+      flex-wrap: nowrap !important;
     align-items: center;
     gap: 1rem;
     padding: 1.5rem 4.5rem 1rem 1rem; /* spazio a destra per bottone assoluto */
@@ -137,6 +137,7 @@ form.incarichi-filtro-form {
     margin: 0 0 2rem 0;
     position: relative; /* per posizionare bottone assoluto */
 }
+
 
 form.incarichi-filtro-form label.form-label {
     margin-bottom: 0;
@@ -167,6 +168,9 @@ form.incarichi-filtro-form select.form-select:focus {
     right: 1rem;    /* allineato a destra */
 }
 
+
+
+    
 form.incarichi-filtro-form button.btn-primary {
     padding: 0.45rem 1.5rem;
     font-weight: 600;
