@@ -2,7 +2,7 @@
 global $post;
 
 // Numero di post per pagina, con un valore di fallback di 10
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 2;
 // Se è presente un termine di ricerca
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
