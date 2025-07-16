@@ -123,7 +123,65 @@ $base_url = add_query_arg(array(
 
 <!-- STILE MIGLIORATO PER FORM E PAGINAZIONE -->
 <style>
-/* PAGINAZIONE STILIZZATA */
+/* FORM STILIZZATO */
+form.incarichi-filtro-form {
+    display: flex;
+    flex-wrap: nowrap; /* tutto su una riga */
+    align-items: flex-start; /* allineamento verticale in alto */
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 700px;
+    margin: 0 0 2rem 0; /* allinea a sinistra senza margin auto */
+}
+
+form.incarichi-filtro-form label.form-label {
+    min-width: 90px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0;
+    align-self: center; /* etichette centrate verticalmente */
+}
+
+form.incarichi-filtro-form input[type="search"],
+form.incarichi-filtro-form select.form-select {
+    flex-grow: 1;
+    min-width: 150px;
+    max-width: 250px;
+    border: 1.5px solid #ced4da;
+    transition: border-color 0.3s ease;
+}
+
+form.incarichi-filtro-form input[type="search"]:focus,
+form.incarichi-filtro-form select.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
+    outline: none;
+}
+
+.btn-wrapper {
+    flex-shrink: 0;
+    margin-left: auto;       /* sposta a destra */
+    align-self: flex-start;  /* allinea in alto, quindi “sale” sopra */
+}
+
+form.incarichi-filtro-form button.btn-primary {
+    padding: 0.45rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.4rem;
+    height: 38px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form.incarichi-filtro-form button.btn-primary:hover {
+    background-color: #0b5ed7;
+    box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
+}
+
+/* PAGINAZIONE */
 .pagination-wrapper .pagination {
     display: flex;
     justify-content: center;
@@ -131,36 +189,29 @@ $base_url = add_query_arg(array(
     padding-left: 0;
     margin-top: 1.5rem;
     gap: 0.5rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .pagination-wrapper .page-item {
-    /* per mantenere lo spazio tra bottoni */
+    /* no extra styles needed, but keep for clarity */
 }
 
 .pagination-wrapper .page-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.45rem 0.85rem;
-    color: #0d6efd;
-    background-color: transparent;
-    border: 1.8px solid transparent;
-    border-radius: 0.375rem;
+    display: block;
+    padding: 0.5rem 0.9rem;
+    color: #0d6efd; /* blu primario */
+    border: 1.5px solid #0d6efd;
+    border-radius: 0.4rem;
     font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 38px;
-    box-shadow: none;
     text-decoration: none;
+    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    min-width: 40px;
+    text-align: center;
 }
 
-.pagination-wrapper .page-link:hover:not(.active) {
-    background-color: #e7f1ff;
-    border-color: #0d6efd;
-    color: #0a58ca;
-    box-shadow: 0 2px 6px rgba(13, 110, 253, 0.3);
+.pagination-wrapper .page-link:hover {
+    background-color: #0d6efd;
+    color: white;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
     text-decoration: none;
 }
 
@@ -170,16 +221,37 @@ $base_url = add_query_arg(array(
     border-color: #0d6efd;
     color: white;
     cursor: default;
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.6);
+    box-shadow: 0 0 12px rgba(13, 110, 253, 0.75);
 }
 
 .pagination-wrapper .page-item.disabled .page-link {
-    color: #adb5bd;
+    color: #6c757d;
     pointer-events: none;
     background-color: transparent;
     border-color: transparent;
     cursor: default;
-    box-shadow: none;
+}
+
+/* RESPONSIVE FORM */
+@media (max-width: 576px) {
+    form.incarichi-filtro-form {
+        flex-wrap: wrap;
+        align-items: stretch;
+    }
+
+    .btn-wrapper {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 0.5rem;
+        align-self: stretch;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    form.incarichi-filtro-form button.btn-primary {
+        width: auto;
+        height: 38px;
+    }
 }
 
 
