@@ -4,7 +4,7 @@ global $wpdb;
 // Lettura parametri da URL
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = (get_query_var('paged')) ? get_query_var('paged') : (isset($_GET['paged']) ? intval($_GET['paged']) : 1);
+$paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 
 // Anni disponibili
@@ -43,7 +43,6 @@ $the_query = new WP_Query($args);
 
 
 // URL base per la paginazione
-$current_url = get_permalink();
 $base_url = get_permalink();
 $base_url = remove_query_arg('page', $base_url);
 $base_url = trailingslashit($base_url) . '%_%';
