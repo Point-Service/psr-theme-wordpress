@@ -55,7 +55,7 @@ $base_url = add_query_arg(array(
 ?>
 
 <!-- FORM FILTRO ANNO E RICERCA -->
-<form method="get" class="mb-3">
+<form method="get" action="<?php echo esc_url( get_permalink() ); ?>" class="mb-3">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
     <input
         type="search"
