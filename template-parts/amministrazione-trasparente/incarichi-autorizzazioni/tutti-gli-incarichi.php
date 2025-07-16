@@ -4,10 +4,10 @@ remove_filter('template_redirect', 'redirect_canonical');
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-
-// Usa ?page=2 invece di ?paged=2
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$year_filter = isset($_GET['year']) ? intval($_GET['year']) : 0;
 
+// Prepara args query base
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -16,15 +16,57 @@ $args = array(
     'paged'          => $paged,
 );
 
+// Se c'è ricerca, aggiungila
 if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
+// Se filtro anno attivo, aggiungi meta query per l'anno
+if ($year_filter) {
+    $args['date_query'] = array(
+        array(
+            'year' => $year_filter,
+        ),
+    );
+}
 
 $the_query = new WP_Query($args);
+
+// Funzione per creare dropdown anni dinamico (dal primo al più recente)
+function dci_year_dropdown($selected_year = 0) {
+    global $wpdb;
+    // Prendi il primo anno pubblicato dei post incarichi_dip
+    $first_year = $wpdb->get_var("
+        SELECT YEAR(MIN(post_date))
+        FROM {$wpdb->posts}
+        WHERE post_type = 'incarichi_dip' AND post_status = 'publish'
+    ");
+
+    $current_year = date('Y');
+    echo '<form method="GET" class="mb-3">';
+    // Mantieni altri parametri GET tipo search, max_posts, page
+    if (!empty($_GET['search'])) {
+        echo '<input type="hidden" name="search" value="' . esc_attr($_GET['search']) . '">';
+    }
+    if (!empty($_GET['max_posts'])) {
+        echo '<input type="hidden" name="max_posts" value="' . intval($_GET['max_posts']) . '">';
+    }
+    // Non mantenere page per partire da 1 quando cambio anno
+    echo '<select name="year" onchange="this.form.submit()" class="form-select w-auto d-inline-block">';
+    echo '<option value="0"' . selected($selected_year, 0, false) . '>Tutti gli anni</option>';
+    for ($y = $current_year; $y >= $first_year; $y--) {
+        echo '<option value="' . $y . '"' . selected($selected_year, $y, false) . '>' . $y . '</option>';
+    }
+    echo '</select>';
+    echo '</form>';
+}
+
 ?>
 
 <?php if ($the_query->have_posts()) : ?>
+
+    <!-- Dropdown filtro anno -->
+    <?php dci_year_dropdown($year_filter); ?>
 
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
         <?php get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card'); ?>
@@ -32,36 +74,37 @@ $the_query = new WP_Query($args);
     <?php wp_reset_postdata(); ?>
 
     <div class="row my-4">
-      
+        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+            <?php
+            $pagination_links = paginate_links(array(
+                'base'      => add_query_arg('page', '%#%'),
+                'format'    => '',
+                'current'   => $paged,
+                'total'     => $the_query->max_num_pages,
+                'prev_text' => __('&laquo; Precedente'),
+                'next_text' => __('Successivo &raquo;'),
+                'type'      => 'array',
+            ));
 
+            if ($pagination_links) : ?>
+                <ul class="pagination justify-content-center">
+                    <?php foreach ($pagination_links as $link) :
+                        $active = strpos($link, 'current') !== false ? ' active' : '';
+                        $link = str_replace('<a ', '<a class="page-link" ', $link);
+                        $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
+                    ?>
+                        <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
 
- <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-    <?php
-    $pagination_links = paginate_links(array(
-        'base'      => add_query_arg('page', '%#%'),
-        'format'    => '',
-        'current'   => $paged,
-        'total'     => $the_query->max_num_pages,
-        'prev_text' => __('&laquo; Precedente'),
-        'next_text' => __('Successivo &raquo;'),
-        'type'      => 'array', // otteniamo array per personalizzare markup
-    ));
-
-    if ($pagination_links) : ?>
-        <ul class="pagination justify-content-center">
-            <?php foreach ($pagination_links as $link) :
-                $active = strpos($link, 'current') !== false ? ' active' : '';
-                // aggiungiamo classi Bootstrap 'page-link' e 'page-item'
-                $link = str_replace('<a ', '<a class="page-link" ', $link);
-                $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
-            ?>
-                <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-</nav>
-
-        
+            <p class="text-center mt-2 mb-0">
+                Pagina <?php echo $paged; ?> di <?php echo $the_query->max_num_pages; ?>
+                <?php if ($year_filter) : ?>
+                    - Anno <?php echo $year_filter; ?>
+                <?php endif; ?>
+            </p>
+        </nav>
     </div>
 
 <?php else : ?>
@@ -70,8 +113,9 @@ $the_query = new WP_Query($args);
     </div>
 <?php endif; ?>
 
-<style>.pagination .page-link {
-    color: var(--bs-primary); /* usa il colore primario del tema Bootstrap */
+<style>
+.pagination .page-link {
+    color: var(--bs-primary);
     background-color: transparent;
     border: 1px solid transparent;
     padding: 0.375rem 0.75rem;
@@ -101,3 +145,4 @@ $the_query = new WP_Query($args);
     border-color: transparent;
 }
 </style>
+
