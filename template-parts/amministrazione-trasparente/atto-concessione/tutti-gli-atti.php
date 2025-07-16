@@ -24,6 +24,7 @@ $args = array(
     'post_type'      => 'atto_concessione',
     'posts_per_page' => $max_posts,
     'order'          => 'DESC',
+    'orderby'        => 'date',  // <-- aggiungi questa riga
     'paged'          => $paged,
     'post_status'    => 'publish',
 );
