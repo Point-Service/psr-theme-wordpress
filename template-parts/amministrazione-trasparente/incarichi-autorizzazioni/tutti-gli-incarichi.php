@@ -2,7 +2,7 @@
 // Disattiva redirect canonico
 remove_filter('template_redirect', 'redirect_canonical');
 
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 100;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1; // <-- qui uso ?page=2
 
