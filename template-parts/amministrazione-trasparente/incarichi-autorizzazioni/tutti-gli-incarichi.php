@@ -36,23 +36,21 @@ $prefix = "_dci_icad_";
     endwhile;
     wp_reset_postdata(); ?>
 
-    <div class="row my-4">
-        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-            <?php 
-            // Verifica se ci sono più di una pagina
-            if ($the_query->max_num_pages > 1) {
-                // Usa la funzione standard di WordPress per la paginazione
-                the_posts_pagination(array(
-                    'mid_size' => 2,
-                    'prev_text' => '&laquo; Precedente',
-                    'next_text' => 'Successivo &raquo;',
-                ));
-            }
-            ?>
+<div class="row my-4">
+    <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+        <?php 
+        if ($the_query->max_num_pages > 1) {
+            echo paginate_links(array(
+                'total' => $the_query->max_num_pages,
+                'current' => $paged,
+                'prev_text' => '&laquo; Precedente',
+                'next_text' => 'Successivo &raquo;',
+            ));
+        }
+        ?>
+    </nav>
+</div>
 
-            kkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-        </nav>
-    </div>
 
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
