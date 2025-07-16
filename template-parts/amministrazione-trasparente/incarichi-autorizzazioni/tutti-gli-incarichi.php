@@ -1,16 +1,13 @@
 <?php
-// Evita redirect automatici di WordPress (utile per paginazione con parametri personalizzati)
 remove_filter('template_redirect', 'redirect_canonical');
 
 global $wpdb;
 
-// Parametri di input
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $selected_year = isset($_GET['year']) ? intval($_GET['year']) : 0;
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
-// Recupera anni unici presenti tra i post pubblicati incarichi_dip
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date)
     FROM {$wpdb->posts}
@@ -18,7 +15,6 @@ $years = $wpdb->get_col("
     ORDER BY post_date DESC
 ");
 
-// Costruisci query args base
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -27,7 +23,6 @@ $args = array(
     'paged'          => $paged,
 );
 
-// Se filtriamo per anno (diverso da 0), aggiungiamo meta query per il filtro anno
 if ($selected_year > 0) {
     $args['date_query'] = array(
         array(
@@ -36,15 +31,18 @@ if ($selected_year > 0) {
     );
 }
 
-// Se filtro ricerca attivo
 if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
 $the_query = new WP_Query($args);
+
+// Costruiamo URL base per paginazione e form
+// Rimuoviamo 'page' per evitare conflitti nella paginazione
+$base_url = remove_query_arg('page');
 ?>
 
-<form method="GET" action="" class="mb-4 d-flex flex-wrap gap-2 align-items-center">
+<form method="GET" action="<?php echo esc_url( $base_url ); ?>" class="mb-4 d-flex flex-wrap gap-2 align-items-center">
 
     <select name="year" onchange="this.form.submit()" class="form-select" style="width:auto;">
         <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
@@ -70,13 +68,12 @@ $the_query = new WP_Query($args);
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
         <?php get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card'); ?>
     <?php endwhile; ?>
-
     <?php wp_reset_postdata(); ?>
 
     <nav class="pagination-wrapper" aria-label="Navigazione pagine">
         <?php
         $pagination_links = paginate_links(array(
-            'base'      => add_query_arg('page', '%#%'),
+            'base'      => add_query_arg('page', '%#%', $base_url),
             'format'    => '',
             'current'   => $paged,
             'total'     => $the_query->max_num_pages,
