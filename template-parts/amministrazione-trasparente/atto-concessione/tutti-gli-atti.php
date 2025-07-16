@@ -1,15 +1,12 @@
 <?php
-// Evita redirect automatici di WordPress che possono rompere i parametri custom
-remove_filter('template_redirect', 'redirect_canonical');
-
 global $wpdb;
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 
-// Prendi gli anni disponibili dai meta _dci_atto_concessione_data
+// Prendi anni disponibili dai meta (adatta meta_key al tuo caso)
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(meta_value)
     FROM {$wpdb->postmeta} pm
@@ -20,41 +17,37 @@ $years = $wpdb->get_col("
     ORDER BY meta_value DESC
 ");
 
-// Costruiamo argomenti per WP_Query
 $args = array(
     'post_type'      => 'atto_concessione',
     'posts_per_page' => $max_posts,
     'paged'          => $paged,
-    'orderby'        => 'meta_value',
-    'order'          => 'DESC',
+    'orderby'        => 'meta_value_num',
     'meta_key'       => '_dci_atto_concessione_data',
+    'order'          => 'DESC',
 );
 
-// Aggiungiamo ricerca se presente
-if (!empty($main_search_query)) {
+if ($main_search_query !== '') {
     $args['s'] = $main_search_query;
 }
 
-// Filtro per anno nel meta date
 if ($selected_year > 0) {
     $args['meta_query'][] = array(
         'key'     => '_dci_atto_concessione_data',
-        'value'   => array("{$selected_year}-01-01", "{$selected_year}-12-31"),
+        'value'   => array("{$selected_year}0101", "{$selected_year}1231"),
         'compare' => 'BETWEEN',
-        'type'    => 'DATE',
+        'type'    => 'NUMERIC',
     );
 }
 
-// Query
 $the_query = new WP_Query($args);
 
-// Base url per paginazione (manteniamo tutti i parametri tranne page)
 $current_url = get_permalink();
+
 $base_url = add_query_arg(array(
     'search'      => $main_search_query ? $main_search_query : '',
     'filter_year' => $selected_year > 0 ? $selected_year : 0,
     'max_posts'   => $max_posts,
-    'page'        => '%#%',
+    'paged'       => '%#%',
 ), $current_url);
 ?>
 
@@ -96,8 +89,7 @@ $base_url = add_query_arg(array(
 
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
         <?php get_template_part('template-parts/amministrazione-trasparente/atto-concessione/card'); ?>
-    <?php endwhile; ?>
-    <?php wp_reset_postdata(); ?>
+    <?php endwhile; wp_reset_postdata(); ?>
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
