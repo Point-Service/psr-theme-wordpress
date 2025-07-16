@@ -87,23 +87,15 @@ $base_url = add_query_arg(array(
     </div>
 </form>
 
-<?php if ($the_query->have_posts()) : ?>
-
-    <?while ($the_query->have_posts()) : 
-    $the_query->the_post();
-    get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card');
-endwhile;
-wp_reset_postdata();
-    if ( $the_query->have_posts() ) {
+<?php if ($the_query->have_posts()) {
     echo 'Trovati ' . $the_query->found_posts . ' post.<br>';
-} else {
-    echo 'Nessun post trovato.';
+    while ($the_query->have_posts()) {
+        $the_query->the_post();  // <-- questo è OBBLIGATORIO per far funzionare the_title(), get_the_ID() ecc.
+        get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card');
+    }
+    wp_reset_postdata();
 }
-    
-    
-    
-    
-    
+
     ?>
 
     <div class="row my-4">
