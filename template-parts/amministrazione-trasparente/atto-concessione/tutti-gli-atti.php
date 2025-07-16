@@ -1,63 +1,20 @@
 <?php
-// Evita redirect automatici di WordPress che rovinano i parametri custom
-remove_filter('template_redirect', 'redirect_canonical');
-
-global $wpdb;
-
-// Parametri GET
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
+global $post;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
-// Recupera anni disponibili
-$years = $wpdb->get_col("
-    SELECT DISTINCT YEAR(post_date)
-    FROM {$wpdb->posts}
-    WHERE post_type = 'atto_concessione'
-      AND post_status = 'publish'
-    ORDER BY post_date DESC
-");
-
-// Query argomenti
 $args = array(
-    'post_type'      => 'atto_concessione',
-    'posts_per_page' => $max_posts,
-    'order'          => 'DESC',
-    'orderby'        => 'date',  // <-- aggiungi questa riga
-    'paged'          => $paged,
-    'post_status'    => 'publish',
+    'post_type'       => 'atto_concessione',
+    'posts_per_page'  => $max_posts,
+    'orderby'         => 'meta_value_num',
+    'order'           => 'DESC',
+    'paged'              => $paged,
 );
 
-if (!empty($main_search_query)) {
-    $args['s'] = $main_search_query;
-}
 
-if ($selected_year > 0) {
-    $args['date_query'] = array(
-        array(
-            'year' => $selected_year,
-        ),
-    );
-}
-
-// Esegui la query
 $the_query = new WP_Query($args);
-
-// Reindirizza se la pagina è troppo alta (es. page=999)
-if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
-    wp_redirect(add_query_arg('page', $the_query->max_num_pages));
-    exit;
-}
-
-// Costruzione base URL per la paginazione
-$current_url = get_permalink();
-$base_url = add_query_arg(array(
-    'search'      => $main_search_query,
-    'filter_year' => $selected_year,
-    'max_posts'   => $max_posts,
-    'page'        => '%#%',
-), $current_url);
+$prefix = "_dci_atto_concessione_";
 ?>
 
 <!-- FORM FILTRO -->
