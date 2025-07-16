@@ -5,7 +5,7 @@ remove_filter('template_redirect', 'redirect_canonical');
 global $post;
 
 // Numero massimo di post per pagina
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 100;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 
 // Testo ricerca
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
