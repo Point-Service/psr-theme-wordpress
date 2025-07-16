@@ -123,65 +123,6 @@ $base_url = add_query_arg(array(
 
 <!-- STILE MIGLIORATO PER FORM E PAGINAZIONE -->
 <style>
-/* FORM STILIZZATO */
-form.incarichi-filtro-form {
-    display: flex;
-    flex-wrap: nowrap; /* tutto su una riga */
-    align-items: flex-start; /* allineamento verticale in alto */
-    gap: 1rem;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    max-width: 700px;
-    margin: 0 0 2rem 0; /* allinea a sinistra senza margin auto */
-}
-
-form.incarichi-filtro-form label.form-label {
-    min-width: 90px;
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 0;
-    align-self: center; /* etichette centrate verticalmente */
-}
-
-form.incarichi-filtro-form input[type="search"],
-form.incarichi-filtro-form select.form-select {
-    flex-grow: 1;
-    min-width: 150px;
-    max-width: 250px;
-    border: 1.5px solid #ced4da;
-    transition: border-color 0.3s ease;
-}
-
-form.incarichi-filtro-form input[type="search"]:focus,
-form.incarichi-filtro-form select.form-select:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
-    outline: none;
-}
-
-.btn-wrapper {
-    flex-shrink: 0;
-    margin-left: auto;       /* sposta a destra */
-    align-self: flex-start;  /* allinea in alto, quindi “sale” sopra */
-}
-
-form.incarichi-filtro-form button.btn-primary {
-    padding: 0.45rem 1.5rem;
-    font-weight: 600;
-    border-radius: 0.4rem;
-    height: 38px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-form.incarichi-filtro-form button.btn-primary:hover {
-    background-color: #0b5ed7;
-    box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
-}
-
-/* PAGINAZIONE */
 /* PAGINAZIONE STILIZZATA */
 .pagination-wrapper .pagination {
     display: flex;
@@ -239,29 +180,6 @@ form.incarichi-filtro-form button.btn-primary:hover {
     border-color: transparent;
     cursor: default;
     box-shadow: none;
-}
-
-
-/* RESPONSIVE FORM */
-@media (max-width: 576px) {
-    form.incarichi-filtro-form {
-        flex-wrap: wrap;
-        align-items: stretch;
-    }
-
-    .btn-wrapper {
-        margin-left: 0;
-        width: 100%;
-        margin-top: 0.5rem;
-        align-self: stretch;
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    form.incarichi-filtro-form button.btn-primary {
-        width: auto;
-        height: 38px;
-    }
 }
 
 
