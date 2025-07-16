@@ -182,6 +182,7 @@ form.incarichi-filtro-form button.btn-primary:hover {
 }
 
 /* PAGINAZIONE */
+/* PAGINAZIONE STILIZZATA */
 .pagination-wrapper .pagination {
     display: flex;
     justify-content: center;
@@ -189,29 +190,36 @@ form.incarichi-filtro-form button.btn-primary:hover {
     padding-left: 0;
     margin-top: 1.5rem;
     gap: 0.5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .pagination-wrapper .page-item {
-    /* no extra styles needed, but keep for clarity */
+    /* per mantenere lo spazio tra bottoni */
 }
 
 .pagination-wrapper .page-link {
-    display: block;
-    padding: 0.5rem 0.9rem;
-    color: #0d6efd; /* blu primario */
-    border: 1.5px solid #0d6efd;
-    border-radius: 0.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.85rem;
+    color: #0d6efd;
+    background-color: transparent;
+    border: 1.8px solid transparent;
+    border-radius: 0.375rem;
     font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 38px;
+    box-shadow: none;
     text-decoration: none;
-    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-    min-width: 40px;
-    text-align: center;
 }
 
-.pagination-wrapper .page-link:hover {
-    background-color: #0d6efd;
-    color: white;
-    box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
+.pagination-wrapper .page-link:hover:not(.active) {
+    background-color: #e7f1ff;
+    border-color: #0d6efd;
+    color: #0a58ca;
+    box-shadow: 0 2px 6px rgba(13, 110, 253, 0.3);
     text-decoration: none;
 }
 
@@ -221,16 +229,18 @@ form.incarichi-filtro-form button.btn-primary:hover {
     border-color: #0d6efd;
     color: white;
     cursor: default;
-    box-shadow: 0 0 12px rgba(13, 110, 253, 0.75);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.6);
 }
 
 .pagination-wrapper .page-item.disabled .page-link {
-    color: #6c757d;
+    color: #adb5bd;
     pointer-events: none;
     background-color: transparent;
     border-color: transparent;
     cursor: default;
+    box-shadow: none;
 }
+
 
 /* RESPONSIVE FORM */
 @media (max-width: 576px) {
