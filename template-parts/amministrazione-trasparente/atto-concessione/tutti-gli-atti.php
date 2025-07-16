@@ -1,55 +1,53 @@
 <?php
-global $wpdb, $post;
+// Evita redirect automatici
+remove_filter('template_redirect', 'redirect_canonical');
+global $wpdb;
 
-// Parametri GET
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
 
-// Prendi gli anni disponibili per la select
+// Anni disponibili
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date)
     FROM {$wpdb->posts}
-    WHERE post_type = 'atto_concessione'
+    WHERE post_type = 'atto_concessione' 
       AND post_status = 'publish'
     ORDER BY post_date DESC
 ");
 
-// Query WP
-$args = array(
+$args = [
     'post_type'      => 'atto_concessione',
     'posts_per_page' => $max_posts,
     'paged'          => $paged,
     'orderby'        => 'meta_value_num',
     'order'          => 'DESC',
-);
-
-if (!empty($main_search_query)) {
-    $args['s'] = $main_search_query;
-}
+    's'              => $main_search_query,
+];
 
 if ($selected_year > 0) {
-    $args['date_query'] = array(
-        array('year' => $selected_year),
-    );
+    $args['date_query'] = [
+        [
+            'year' => $selected_year,
+        ]
+    ];
 }
 
 $the_query = new WP_Query($args);
-$prefix = "_dci_atto_concessione_";
 
-// Costruzione base URL per paginazione
+// Base URL per la paginazione
 $current_url = get_permalink();
-$pagination_base = add_query_arg(array(
+$base_url = add_query_arg([
     'search'      => $main_search_query,
-    'max_posts'   => $max_posts,
     'filter_year' => $selected_year,
+    'max_posts'   => $max_posts,
     'paged'       => '%#%',
-), $current_url);
+], $current_url);
 ?>
 
 <!-- FORM FILTRO -->
-<form method="get" class="mb-3 d-flex align-items-center gap-2 filtro-form">
+<form method="get" class="mb-3 d-flex align-items-center gap-2 incarichi-filtro-form">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
     <input
         type="search"
@@ -72,8 +70,8 @@ $pagination_base = add_query_arg(array(
 
     <label for="max-posts" class="form-label mb-0 me-2">Elementi:</label>
     <select id="max-posts" name="max_posts" class="form-select w-auto me-3">
-        <?php foreach ([5, 10, 20, 50, 100] as $n) : ?>
-            <option value="<?php echo $n; ?>" <?php selected($max_posts, $n); ?>><?php echo $n; ?></option>
+        <?php foreach ([5, 10, 20, 50, 100] as $val) : ?>
+            <option value="<?php echo $val; ?>" <?php selected($max_posts, $val); ?>><?php echo $val; ?></option>
         <?php endforeach; ?>
     </select>
 
@@ -82,30 +80,39 @@ $pagination_base = add_query_arg(array(
     </div>
 </form>
 
-<!-- RISULTATI -->
 <?php if ($the_query->have_posts()) : ?>
     <?php while ($the_query->have_posts()) : $the_query->the_post();
         get_template_part('template-parts/amministrazione-trasparente/atto-concessione/card');
     endwhile;
     wp_reset_postdata(); ?>
 
-    <!-- PAGINAZIONE -->
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
-            echo paginate_links(array(
-                'base'      => $pagination_base,
+            $pagination_links = paginate_links([
+                'base'      => $base_url,
                 'format'    => '',
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
-                'type'      => 'list',
-                'add_args'  => false,
-            ));
-            ?>
+                'type'      => 'array',
+            ]);
+
+            if ($pagination_links) : ?>
+                <ul class="pagination justify-content-center">
+                    <?php foreach ($pagination_links as $link) :
+                        $active = strpos($link, 'current') !== false ? ' active' : '';
+                        $link = str_replace('<a ', '<a class="page-link" ', $link);
+                        $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
+                    ?>
+                        <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
         </nav>
     </div>
+
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
         Nessun atto di concessione trovato.
@@ -114,37 +121,37 @@ $pagination_base = add_query_arg(array(
 
 <!-- STILE -->
 <style>
-form.filtro-form {
+form.incarichi-filtro-form {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: flex-start;
     gap: 1rem;
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 100%;
     margin-bottom: 2rem;
 }
 
-form.filtro-form label.form-label {
+form.incarichi-filtro-form label.form-label {
+    min-width: 80px;
     font-weight: 600;
     color: #495057;
     margin-bottom: 0;
     align-self: center;
 }
 
-form.filtro-form input[type="search"],
-form.filtro-form select.form-select {
-    flex-grow: 1;
+form.incarichi-filtro-form input[type="search"],
+form.incarichi-filtro-form select.form-select {
     min-width: 120px;
-    max-width: 250px;
     border: 1.5px solid #ced4da;
     transition: border-color 0.3s ease;
 }
 
-form.filtro-form input[type="search"]:focus,
-form.filtro-form select.form-select:focus {
-    border-color: #0d6efd;
+form.incarichi-filtro-form input[type="search"]:focus,
+form.incarichi-filtro-form select.form-select:focus {
+    border-color: var(--bs-primary);
     box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
     outline: none;
 }
@@ -155,7 +162,7 @@ form.filtro-form select.form-select:focus {
     align-self: flex-start;
 }
 
-form.filtro-form button.btn-primary {
+form.incarichi-filtro-form button.btn-primary {
     padding: 0.45rem 1.5rem;
     font-weight: 600;
     border-radius: 0.4rem;
@@ -164,51 +171,63 @@ form.filtro-form button.btn-primary {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-form.filtro-form button.btn-primary:hover {
-    background-color: #0b5ed7;
-    box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
+form.incarichi-filtro-form button.btn-primary:hover {
+    background-color: var(--bs-primary);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.4);
+    color: white;
 }
 
+/* PAGINAZIONE */
 .pagination-wrapper .pagination {
     display: flex;
     justify-content: center;
     list-style: none;
     padding-left: 0;
+    margin-top: 1.5rem;
     gap: 0.5rem;
-    flex-wrap: wrap;
 }
 
-.pagination-wrapper .page-numbers {
-    display: inline-block;
+.pagination-wrapper .page-link {
+    display: block;
     padding: 0.5rem 0.9rem;
-    color: #0d6efd;
-    border: 1.5px solid #0d6efd;
+    color: var(--bs-primary);
+    border: 1.5px solid var(--bs-primary);
     border-radius: 0.4rem;
     font-weight: 600;
     text-decoration: none;
-    transition: all 0.25s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
     min-width: 40px;
     text-align: center;
 }
 
-.pagination-wrapper .page-numbers:hover {
-    background-color: #0d6efd;
+.pagination-wrapper .page-link:hover {
+    background-color: var(--bs-primary);
     color: white;
     box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
-    text-decoration: none;
 }
 
-.pagination-wrapper .current {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+.pagination-wrapper .page-item.active .page-link,
+.pagination-wrapper .page-link[aria-current="page"] {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
     color: white;
+    cursor: default;
     box-shadow: 0 0 12px rgba(13, 110, 253, 0.75);
+}
+
+.pagination-wrapper .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: transparent;
+    border-color: transparent;
     cursor: default;
 }
 
+/* RESPONSIVE */
 @media (max-width: 576px) {
-    form.filtro-form {
-        flex-direction: column;
+    form.incarichi-filtro-form {
+        flex-wrap: wrap;
+        align-items: stretch;
     }
 
     .btn-wrapper {
@@ -220,10 +239,9 @@ form.filtro-form button.btn-primary:hover {
         justify-content: flex-start;
     }
 
-    form.filtro-form button.btn-primary {
+    form.incarichi-filtro-form button.btn-primary {
         width: auto;
         height: 38px;
     }
 }
 </style>
-
