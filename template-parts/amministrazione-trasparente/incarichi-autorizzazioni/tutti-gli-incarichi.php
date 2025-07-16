@@ -2,14 +2,21 @@
 // Evita redirect automatici di WordPress che rovinano i parametri custom
 remove_filter('template_redirect', 'redirect_canonical');
 
+global $wpdb;
+
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-
-// Gestione pagina per paginazione (usiamo ?page=)
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-
-// Gestione filtro anno (0 = tutti gli anni)
 $selected_year = isset($_GET['year']) ? intval($_GET['year']) : 0;
+
+// Prendi gli anni disponibili dai post pubblicati (per la combo)
+$years = $wpdb->get_col("
+    SELECT DISTINCT YEAR(post_date)
+    FROM {$wpdb->posts}
+    WHERE post_type = 'incarichi_dip' 
+      AND post_status = 'publish'
+    ORDER BY post_date DESC
+");
 
 // Costruiamo argomenti per WP_Query
 $args = array(
@@ -20,12 +27,10 @@ $args = array(
     'paged'          => $paged,
 );
 
-// Se c'è ricerca testo
 if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
-// Se filtro anno selezionato > 0 aggiungiamo filtro data pubblicazione
 if ($selected_year > 0) {
     $args['date_query'] = array(
         array(
@@ -37,19 +42,16 @@ if ($selected_year > 0) {
 // Query personalizzata
 $the_query = new WP_Query($args);
 
-// Per creare la select anno partiamo dall’anno attuale a un anno base, es 10 anni fa
-$current_year = date('Y');
-$first_year = $current_year - 10;
-
-// Prendi permalink della pagina corrente senza query string per base URL paginazione
+// Prendi permalink pagina corrente (senza query string)
 $current_url = get_permalink();
 
-// Costruiamo la base URL per la paginazione con filtro anno e ricerca (se presenti)
+// Costruiamo la base URL per paginazione mantenendo parametri search e year
 $base_url = add_query_arg(array(
-    'year'   => ($selected_year > 0) ? $selected_year : 0,
     'search' => $main_search_query ? $main_search_query : '',
+    'year'   => $selected_year > 0 ? $selected_year : 0,
     'page'   => '%#%',
 ), $current_url);
+
 ?>
 
 <!-- FORM FILTRO ANNO -->
@@ -57,9 +59,11 @@ $base_url = add_query_arg(array(
     <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
     <select id="filter-year" name="year" onchange="this.form.submit()" class="form-select w-auto">
         <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
-        <?php for ($y = $current_year; $y >= $first_year; $y--) : ?>
-            <option value="<?php echo $y; ?>" <?php selected($selected_year, $y); ?>><?php echo $y; ?></option>
-        <?php endfor; ?>
+        <?php foreach ($years as $y) : ?>
+            <option value="<?php echo esc_attr($y); ?>" <?php selected($selected_year, $y); ?>>
+                <?php echo esc_html($y); ?>
+            </option>
+        <?php endforeach; ?>
     </select>
 
     <?php if (!empty($main_search_query)) : ?>
@@ -84,14 +88,13 @@ $base_url = add_query_arg(array(
                 'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
-                'type'      => 'array', // array per personalizzare markup
+                'type'      => 'array',
             ));
 
             if ($pagination_links) : ?>
                 <ul class="pagination justify-content-center">
                     <?php foreach ($pagination_links as $link) :
                         $active = strpos($link, 'current') !== false ? ' active' : '';
-                        // Aggiungiamo classi Bootstrap
                         $link = str_replace('<a ', '<a class="page-link" ', $link);
                         $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
                     ?>
