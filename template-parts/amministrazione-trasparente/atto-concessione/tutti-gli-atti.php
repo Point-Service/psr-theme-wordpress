@@ -23,7 +23,6 @@ $years = $wpdb->get_col("
 $args = array(
     'post_type'      => 'atto_concessione',
     'posts_per_page' => $max_posts,
-    'orderby'        => 'date',
     'order'          => 'DESC',
     'paged'          => $paged,
     'post_status'    => 'publish',
@@ -87,16 +86,10 @@ $base_url = add_query_arg(array(
     </div>
 </form>
 
-<?php if ($the_query->have_posts()) {
-    echo 'Trovati ' . $the_query->found_posts . ' post.<br>';
-    while ($the_query->have_posts()) {
-        $the_query->the_post();  // <-- questo è OBBLIGATORIO per far funzionare the_title(), get_the_ID() ecc.
-        get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card');
-    }
-    wp_reset_postdata();
-}
-
-    ?>
+        <?php while ($the_query->have_posts()) : $the_query->the_post();
+            get_template_part('template-parts/amministrazione-trasparente/atto-concessione/card');
+        endwhile;
+        wp_reset_postdata();?>
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
