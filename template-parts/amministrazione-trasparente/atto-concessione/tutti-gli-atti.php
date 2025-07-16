@@ -1,26 +1,68 @@
 <?php
-global $post;
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
-$main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+// Evita redirect automatici di WordPress che rovinano i parametri custom
+remove_filter('template_redirect', 'redirect_canonical');
 
+global $wpdb;
+
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
+$main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
+$paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
+
+// Prendi gli anni disponibili dai post pubblicati (per la combo)
+$years = $wpdb->get_col("
+    SELECT DISTINCT YEAR(post_date)
+    FROM {$wpdb->posts}
+    WHERE post_type = 'atto_concessione'
+      AND post_status = 'publish'
+    ORDER BY post_date DESC
+");
+
+// Costruisci gli argomenti per WP_Query
 $args = array(
-    'post_type'       => 'atto_concessione',
-    'posts_per_page'  => $max_posts,
-    'orderby'         => 'meta_value_num',
-    'order'           => 'DESC',
-    'paged'              => $paged,
+    'post_type'      => 'atto_concessione',
+    'posts_per_page' => $max_posts,
+    'orderby'        => 'date',
+    'order'          => 'DESC',
+    'paged'          => $paged,
 );
 
+if (!empty($main_search_query)) {
+    $args['s'] = $main_search_query;
+}
 
+if ($selected_year > 0) {
+    $args['date_query'] = array(
+        array(
+            'year' => $selected_year,
+        ),
+    );
+}
+
+// Esegui la query
 $the_query = new WP_Query($args);
-$prefix = "_dci_atto_concessione_";
+
+// Costruisci base URL per paginazione mantenendo i parametri
+$current_url = get_permalink();
+$base_url = add_query_arg(array(
+    'search'      => $main_search_query,
+    'filter_year' => $selected_year,
+    'max_posts'   => $max_posts,
+    'page'        => '%#%',
+), $current_url);
 ?>
 
 <!-- FORM FILTRO -->
 <form method="get" class="mb-3 d-flex align-items-center gap-2 incarichi-filtro-form">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
-    <input type="search" id="search" name="search" class="form-control me-3" placeholder="Cerca..." value="<?php echo esc_attr($main_search_query); ?>">
+    <input
+        type="search"
+        id="search"
+        name="search"
+        class="form-control me-3"
+        placeholder="Cerca..."
+        value="<?php echo esc_attr($main_search_query); ?>"
+    >
 
     <label for="filter-year" class="form-label mb-0 me-2">Anno:</label>
     <select id="filter-year" name="filter_year" class="form-select w-auto me-3">
@@ -47,7 +89,6 @@ $prefix = "_dci_atto_concessione_";
 <?php if ($the_query->have_posts()) : ?>
 
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
-    
         <?php get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card'); ?>
     <?php endwhile; ?>
     <?php wp_reset_postdata(); ?>
@@ -84,7 +125,6 @@ $prefix = "_dci_atto_concessione_";
         Nessun atto di concessione trovato.
     </div>
 <?php endif; ?>
-
 
 <!-- STILI PERSONALIZZATI -->
 <style>
