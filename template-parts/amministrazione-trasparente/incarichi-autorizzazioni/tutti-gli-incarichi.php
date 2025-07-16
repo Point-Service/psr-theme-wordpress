@@ -156,15 +156,16 @@ form.incarichi-filtro-form select.form-select:focus {
     box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
     outline: none;
 }
-
+    
 form.incarichi-filtro-form button.btn-primary {
     padding: 0.45rem 1.5rem;
     font-weight: 600;
     border-radius: 0.4rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     height: 38px; /* per allineamento verticale con input */
-    align-self: flex-end; /* forza l’allineamento basso */
-    margin-top: auto;
+    /* rimuovi queste due righe */
+    /* align-self: flex-end; */
+    /* margin-top: auto; */
 }
 
 
