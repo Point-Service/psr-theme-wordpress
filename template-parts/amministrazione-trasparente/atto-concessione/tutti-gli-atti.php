@@ -89,11 +89,11 @@ $base_url = add_query_arg(array(
 
 <?php if ($the_query->have_posts()) : ?>
 
-    <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
-    
-        <?php get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card'); ?>
-    <?php endwhile; ?>
-    <?php wp_reset_postdata(); ?>
+    <?while ($the_query->have_posts()) : 
+    $the_query->the_post();
+    get_template_part('template-parts/amministrazione-trasparente/atti-concessione/card');
+endwhile;
+wp_reset_postdata();?>
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
