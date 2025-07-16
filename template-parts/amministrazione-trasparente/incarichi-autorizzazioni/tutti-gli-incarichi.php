@@ -123,11 +123,10 @@ $base_url = add_query_arg(array(
 
 <!-- STILE MIGLIORATO PER FORM E PAGINAZIONE -->
 <style>
-/* FORM STILIZZATO */
 form.incarichi-filtro-form {
     display: flex;
-    flex-wrap: wrap; /* permette il wrap senza sovrapposizioni */
-    align-items: flex-start;
+    flex-wrap: nowrap; /* tutto su una riga */
+    align-items: flex-start; /* allineamento verticale in alto */
     gap: 1rem;
     padding: 1rem;
     background: #f8f9fa;
@@ -142,6 +141,7 @@ form.incarichi-filtro-form label.form-label {
     font-weight: 600;
     color: #495057;
     margin-bottom: 0;
+    align-self: center; /* etichette centrate verticalmente */
 }
 
 form.incarichi-filtro-form input[type="search"],
@@ -162,7 +162,8 @@ form.incarichi-filtro-form select.form-select:focus {
 
 .btn-wrapper {
     flex-shrink: 0;
-    margin-left: auto; /* spinge il bottone a destra */
+    margin-left: auto;       /* sposta a destra */
+    align-self: flex-start;  /* allinea in alto, quindi “sale” sopra */
 }
 
 form.incarichi-filtro-form button.btn-primary {
@@ -179,52 +180,18 @@ form.incarichi-filtro-form button.btn-primary:hover {
     box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
 }
 
-/* PAGINAZIONE */
-.pagination-wrapper .pagination {
-    justify-content: center;
-    margin-top: 1rem;
-}
-
-.pagination-wrapper .page-link {
-    color: #0d6efd;
-    border-radius: 0.3rem;
-    padding: 0.4rem 0.9rem;
-    font-weight: 500;
-    transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-.pagination-wrapper .page-link:hover {
-    background-color: #0d6efd;
-    color: #fff;
-    box-shadow: 0 0 8px rgba(13, 110, 253, 0.6);
-    text-decoration: none;
-}
-
-.pagination-wrapper .page-item.active .page-link {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    color: #fff;
-    cursor: default;
-    box-shadow: 0 0 12px rgba(13, 110, 253, 0.9);
-}
-
-.pagination-wrapper .page-item.disabled .page-link {
-    color: #6c757d;
-    pointer-events: none;
-    background-color: transparent;
-    border-color: transparent;
-}
-
-/* RESPONSIVE FORM */
+/* Responsive */
 @media (max-width: 576px) {
     form.incarichi-filtro-form {
         flex-wrap: wrap;
+        align-items: stretch;
     }
 
     .btn-wrapper {
         margin-left: 0;
         width: 100%;
         margin-top: 0.5rem;
+        align-self: stretch;
         display: flex;
         justify-content: flex-start;
     }
