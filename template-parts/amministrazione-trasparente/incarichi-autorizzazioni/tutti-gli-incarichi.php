@@ -81,7 +81,6 @@ $base_url = add_query_arg(array(
     </div>
 </form>
 
-
 <?php if ($the_query->have_posts()) : ?>
 
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
@@ -128,14 +127,14 @@ $base_url = add_query_arg(array(
 form.incarichi-filtro-form {
     display: flex;
     flex-wrap: nowrap; /* forziamo riga unica per affiancare bottone */
-    align-items: left;
+    align-items: flex-start; /* allineo tutto in alto, a sinistra */
     gap: 1rem;
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     max-width: 700px;
-    margin: 0 auto 2rem;
+    margin: 0 0 2rem 0; /* allineo il form a sinistra */
 }
 
 form.incarichi-filtro-form label.form-label {
@@ -171,10 +170,9 @@ form.incarichi-filtro-form button.btn-primary {
     border-radius: 0.4rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     height: 38px; /* per allineamento verticale con input */
-    align-self: flex-start; /* cambia da flex-end a flex-start per allineare in alto */
-    margin-top: 0; /* rimuovi margin-top automatico */
+    align-self: flex-start; /* bottone in alto */
+    margin-top: 0; /* rimuovo margin-top */
 }
-
 
 form.incarichi-filtro-form button.btn-primary:hover {
     background-color: #0b5ed7;
@@ -241,6 +239,6 @@ form.incarichi-filtro-form button.btn-primary:hover {
         flex-shrink: unset; /* su mobile lascia fluido */
     }
 }
-
 </style>
+
 
