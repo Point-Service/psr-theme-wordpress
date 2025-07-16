@@ -116,7 +116,14 @@ $base_url = add_query_arg(array(
                         <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
                     <?php endforeach; ?>
                 </ul>
-            <?php endif; ?>
+            <?php
+            
+            echo '<pre style="background:#f8f9fa; padding:1rem; font-size:14px;">';
+echo "SQL Query:\n";
+print_r($the_query->request);
+echo "</pre>";
+            
+            endif; ?>
         </nav>
     </div>
 
