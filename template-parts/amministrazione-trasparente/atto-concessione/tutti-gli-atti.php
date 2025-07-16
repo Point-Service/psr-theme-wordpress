@@ -44,12 +44,12 @@ $the_query = new WP_Query($args);
 
 // URL base per la paginazione
 $current_url = get_permalink();
-$base_url = get_pagenum_link(1);
-$base_url = remove_query_arg('paged', $base_url);
+$base_url = get_permalink();
+$base_url = remove_query_arg('page', $base_url);
 $base_url = trailingslashit($base_url) . '%_%';
 
 $pagination_links = paginate_links([
-    'base'      => $base_url . (strpos($base_url, '?') === false ? '?paged=%#%' : '&paged=%#%'),
+    'base'      => $base_url . (strpos($base_url, '?') === false ? '?page=%#%' : '&page=%#%'),
     'format'    => '',
     'current'   => $paged,
     'total'     => $the_query->max_num_pages,
@@ -57,6 +57,7 @@ $pagination_links = paginate_links([
     'next_text' => __('Successivo &raquo;'),
     'type'      => 'array',
 ]);
+
 
 ?>
 
