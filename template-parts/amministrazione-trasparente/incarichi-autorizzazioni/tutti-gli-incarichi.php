@@ -54,7 +54,7 @@ $base_url = add_query_arg(array(
 ?>
 
 <!-- FORM FILTRO ANNO -->
-<form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2">
+<form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2 incarichi-filtro-form">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
     <input
         type="search"
@@ -63,7 +63,6 @@ $base_url = add_query_arg(array(
         class="form-control me-3"
         placeholder="Cerca..."
         value="<?php echo esc_attr($main_search_query); ?>"
-        style="max-width: 200px;"
     >
 
     <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
@@ -119,9 +118,10 @@ $base_url = add_query_arg(array(
     </div>
 <?php endif; ?>
 
+<!-- STILE MIGLIORATO PER FORM E PAGINAZIONE -->
 <style>
-/* FORM FILTRO */
-form.mb-3 {
+/* FORM STILIZZATO */
+form.incarichi-filtro-form {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -134,15 +134,15 @@ form.mb-3 {
     margin: 0 auto 2rem;
 }
 
-form label.form-label {
+form.incarichi-filtro-form label.form-label {
     margin-bottom: 0;
     font-weight: 600;
     color: #495057;
     min-width: 90px;
 }
 
-form input[type="search"],
-form select.form-select {
+form.incarichi-filtro-form input[type="search"],
+form.incarichi-filtro-form select.form-select {
     flex-grow: 1;
     min-width: 150px;
     max-width: 250px;
@@ -150,32 +150,32 @@ form select.form-select {
     transition: border-color 0.3s ease;
 }
 
-form input[type="search"]:focus,
-form select.form-select:focus {
+form.incarichi-filtro-form input[type="search"]:focus,
+form.incarichi-filtro-form select.form-select:focus {
     border-color: #0d6efd;
     box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
     outline: none;
 }
 
-form button.btn-primary {
+form.incarichi-filtro-form button.btn-primary {
     padding: 0.45rem 1.5rem;
     font-weight: 600;
     border-radius: 0.4rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-form button.btn-primary:hover {
+form.incarichi-filtro-form button.btn-primary:hover {
     background-color: #0b5ed7;
     box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
 }
 
 /* PAGINAZIONE */
-.pagination {
+.pagination-wrapper .pagination {
     justify-content: center;
     margin-top: 1rem;
 }
 
-.pagination .page-link {
+.pagination-wrapper .page-link {
     color: #0d6efd;
     border-radius: 0.3rem;
     padding: 0.4rem 0.9rem;
@@ -183,14 +183,14 @@ form button.btn-primary:hover {
     transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.pagination .page-link:hover {
+.pagination-wrapper .page-link:hover {
     background-color: #0d6efd;
     color: #fff;
     box-shadow: 0 0 8px rgba(13, 110, 253, 0.6);
     text-decoration: none;
 }
 
-.pagination .page-item.active .page-link {
+.pagination-wrapper .page-item.active .page-link {
     background-color: #0d6efd;
     border-color: #0d6efd;
     color: #fff;
@@ -198,32 +198,31 @@ form button.btn-primary:hover {
     box-shadow: 0 0 12px rgba(13, 110, 253, 0.9);
 }
 
-.pagination .page-item.disabled .page-link {
+.pagination-wrapper .page-item.disabled .page-link {
     color: #6c757d;
     pointer-events: none;
     background-color: transparent;
     border-color: transparent;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE FORM */
 @media (max-width: 576px) {
-    form.mb-3 {
+    form.incarichi-filtro-form {
         flex-direction: column;
         align-items: stretch;
         gap: 0.75rem;
         padding: 0.75rem;
     }
 
-    form label.form-label {
+    form.incarichi-filtro-form label.form-label {
         min-width: auto;
     }
 
-    form input[type="search"],
-    form select.form-select,
-    form button.btn-primary {
+    form.incarichi-filtro-form input[type="search"],
+    form.incarichi-filtro-form select.form-select,
+    form.incarichi-filtro-form button.btn-primary {
         max-width: 100%;
         flex-grow: unset;
     }
 }
-
 </style>
