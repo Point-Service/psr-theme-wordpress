@@ -1,7 +1,7 @@
 <?php
 global $post;
 
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 2;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 200;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
 // Prendi 'paged' solo da $_GET, fallback a 1 se non impostato o errato
