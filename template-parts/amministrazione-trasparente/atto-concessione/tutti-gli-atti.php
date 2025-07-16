@@ -1,33 +1,50 @@
 <?php
-global $post;
+global $wpdb, $post;
 
 // Parametri GET
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
+$paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
 
-// Costruzione della query
+// Prendi gli anni disponibili per la select
+$years = $wpdb->get_col("
+    SELECT DISTINCT YEAR(post_date)
+    FROM {$wpdb->posts}
+    WHERE post_type = 'atto_concessione'
+      AND post_status = 'publish'
+    ORDER BY post_date DESC
+");
+
+// Query WP
 $args = array(
     'post_type'      => 'atto_concessione',
     'posts_per_page' => $max_posts,
+    'paged'          => $paged,
     'orderby'        => 'meta_value_num',
     'order'          => 'DESC',
-    'paged'          => $paged,
 );
 
 if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
+if ($selected_year > 0) {
+    $args['date_query'] = array(
+        array('year' => $selected_year),
+    );
+}
+
 $the_query = new WP_Query($args);
 $prefix = "_dci_atto_concessione_";
 
-// Costruzione URL per mantenere i parametri nella paginazione
+// Costruzione base URL per paginazione
 $current_url = get_permalink();
-$pagination_base_url = add_query_arg(array(
-    'search' => $main_search_query,
-    'max_posts' => $max_posts,
-    'paged' => '%#%',
+$pagination_base = add_query_arg(array(
+    'search'      => $main_search_query,
+    'max_posts'   => $max_posts,
+    'filter_year' => $selected_year,
+    'paged'       => '%#%',
 ), $current_url);
 ?>
 
@@ -43,6 +60,16 @@ $pagination_base_url = add_query_arg(array(
         value="<?php echo esc_attr($main_search_query); ?>"
     >
 
+    <label for="filter-year" class="form-label mb-0 me-2">Anno:</label>
+    <select id="filter-year" name="filter_year" class="form-select w-auto me-3">
+        <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
+        <?php foreach ($years as $y) : ?>
+            <option value="<?php echo esc_attr($y); ?>" <?php selected($selected_year, $y); ?>>
+                <?php echo esc_html($y); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
     <label for="max-posts" class="form-label mb-0 me-2">Elementi:</label>
     <select id="max-posts" name="max_posts" class="form-select w-auto me-3">
         <?php foreach ([5, 10, 20, 50, 100] as $n) : ?>
@@ -55,30 +82,30 @@ $pagination_base_url = add_query_arg(array(
     </div>
 </form>
 
-<!-- LOOP -->
+<!-- RISULTATI -->
 <?php if ($the_query->have_posts()) : ?>
     <?php while ($the_query->have_posts()) : $the_query->the_post();
         get_template_part('template-parts/amministrazione-trasparente/atto-concessione/card');
     endwhile;
     wp_reset_postdata(); ?>
-    
+
     <!-- PAGINAZIONE -->
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
             echo paginate_links(array(
-                'base'      => $pagination_base_url,
+                'base'      => $pagination_base,
                 'format'    => '',
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
                 'type'      => 'list',
+                'add_args'  => false,
             ));
             ?>
         </nav>
     </div>
-
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
         Nessun atto di concessione trovato.
