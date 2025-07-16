@@ -1,17 +1,16 @@
 <?php
-// Evita redirect automatici di WordPress che rovinano i parametri custom
+// Evita redirect automatici di WordPress (utile per paginazioni custom)
 remove_filter('template_redirect', 'redirect_canonical');
 
+// Recupera parametri querystring
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
+$selected_year = isset($_GET['year']) ? intval($_GET['year']) : '';
 
-// Gestione pagina per paginazione (usiamo ?page=)
+// Usa ?page= invece di ?paged=
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
-// Gestione filtro anno (0 = tutti gli anni)
-$selected_year = isset($_GET['year']) ? intval($_GET['year']) : 0;
-
-// Costruiamo argomenti per WP_Query
+// Costruisci argomenti WP_Query
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -20,14 +19,13 @@ $args = array(
     'paged'          => $paged,
 );
 
-// Se c'è ricerca testo
+// Se c’è ricerca, aggiungi
 if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
-// Se filtro anno selezionato > 0 aggiungiamo filtro meta_query su meta data pubblicazione
-if ($selected_year > 0) {
-    // Filtra per anno della data di pubblicazione (post_date)
+// Se è stato selezionato un anno, filtriamo per anno (data di pubblicazione)
+if (!empty($selected_year)) {
     $args['date_query'] = array(
         array(
             'year' => $selected_year,
@@ -35,38 +33,45 @@ if ($selected_year > 0) {
     );
 }
 
-// Query personalizzata
 $the_query = new WP_Query($args);
 
-// Per creare la select anno partiamo dall’anno attuale a un anno base, es 10 anni fa
-$current_year = date('Y');
-$first_year = $current_year - 10;
+// Funzione per generare base URL paginazione senza parametri di pagina e mantenendo filtro/ricerca
+function get_pagination_base_url() {
+    // Prende URL corrente con tutti i parametri
+    $url = remove_query_arg(array('page', 'paged'), esc_url_raw(add_query_arg(NULL, NULL)));
 
-// Prendiamo URL corrente senza i parametri page e year per rigenerare correttamente i link
-$current_url = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-$current_url = remove_query_arg(array('page', 'year'), $current_url);
+    // Rimuove eventuali trailing ? o &
+    $url = rtrim($url, '?&');
 
-// Costruiamo la base URL per la paginazione con filtro anno e ricerca (se presenti)
-$base_url = add_query_arg(array(
-    'year'   => $selected_year && $selected_year > 0 ? $selected_year : 0,
-    'search' => $main_search_query ? $main_search_query : '',
-    'page'   => '%#%',
-), $current_url);
+    // Aggiunge la sintassi per pagina
+    if (strpos($url, '?') === false) {
+        $base = trailingslashit($url) . '?page=%#%';
+    } else {
+        $base = $url . '&page=%#%';
+    }
+
+    return $base;
+}
+
+$base = get_pagination_base_url();
 ?>
 
-<!-- FORM FILTRO ANNO -->
-<form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2">
-    <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
-    <select id="filter-year" name="year" onchange="this.form.submit()" class="form-select w-auto">
-        <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
-        <?php for ($y = $current_year; $y >= $first_year; $y--) : ?>
-            <option value="<?php echo $y; ?>" <?php selected($selected_year, $y); ?>><?php echo $y; ?></option>
-        <?php endfor; ?>
+<!-- FORM FILTRO ANNO E RICERCA -->
+<form method="get" class="mb-4 d-flex gap-2 align-items-center justify-content-center flex-wrap">
+    <input type="text" name="search" value="<?php echo esc_attr($main_search_query); ?>" placeholder="Cerca..." class="form-control" style="max-width: 200px;">
+
+    <select name="year" class="form-select" style="max-width: 150px;">
+        <option value="">Tutti gli anni</option>
+        <?php
+        $current_year = date('Y');
+        for ($y = $current_year; $y >= 2000; $y--) {
+            $selected = ($y == $selected_year) ? 'selected' : '';
+            echo "<option value=\"$y\" $selected>$y</option>";
+        }
+        ?>
     </select>
 
-    <?php if (!empty($main_search_query)) : ?>
-        <input type="hidden" name="search" value="<?php echo esc_attr($main_search_query); ?>">
-    <?php endif; ?>
+    <button type="submit" class="btn btn-primary">Filtra</button>
 </form>
 
 <?php if ($the_query->have_posts()) : ?>
@@ -80,20 +85,20 @@ $base_url = add_query_arg(array(
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
             $pagination_links = paginate_links(array(
-                'base'      => $base_url,
+                'base'      => $base,
                 'format'    => '',
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
-                'type'      => 'array', // array per personalizzare markup
+                'type'      => 'array',
             ));
 
             if ($pagination_links) : ?>
                 <ul class="pagination justify-content-center">
                     <?php foreach ($pagination_links as $link) :
                         $active = strpos($link, 'current') !== false ? ' active' : '';
-                        // Aggiungiamo classi Bootstrap
+                        // Aggiungiamo classi Bootstrap 'page-link' e 'page-item'
                         $link = str_replace('<a ', '<a class="page-link" ', $link);
                         $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
                     ?>
@@ -111,7 +116,6 @@ $base_url = add_query_arg(array(
 <?php endif; ?>
 
 <style>
-/* Stile paginazione Bootstrap custom */
 .pagination .page-link {
     color: var(--bs-primary);
     background-color: transparent;
@@ -119,23 +123,21 @@ $base_url = add_query_arg(array(
     padding: 0.375rem 0.75rem;
     margin: 0 0.25rem;
     border-radius: 0.25rem;
-    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
-    font-weight: 500;
+    transition: background-color 0.15s ease-in-out;
 }
 
 .pagination .page-link:hover {
     background-color: var(--bs-primary);
-    color: #fff;
+    color: white;
     text-decoration: none;
-    box-shadow: 0 0 8px rgba(13, 110, 253, 0.6);
 }
 
 .pagination .page-item.active .page-link {
     background-color: var(--bs-primary);
     border-color: var(--bs-primary);
-    color: #fff;
+    color: white;
     cursor: default;
-    box-shadow: 0 0 10px rgba(13, 110, 253, 0.75);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 .pagination .page-item.disabled .page-link {
@@ -145,20 +147,11 @@ $base_url = add_query_arg(array(
     border-color: transparent;
 }
 
-/* Responsive e spaziatura filtro */
-form.mb-3 {
-    gap: 0.5rem;
-}
-
-form select.form-select {
-    min-width: 120px;
-}
-
-/* Label allineata verticale */
-form label.form-label {
-    margin-bottom: 0;
-    font-weight: 600;
-    color: var(--bs-secondary);
+form.mb-4 {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>
+
 
