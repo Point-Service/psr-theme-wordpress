@@ -40,14 +40,20 @@ if ($selected_year > 0) {
 $the_query = new WP_Query($args);
 
 // URL base per la paginazione
-$current_url = get_permalink();
-$base_url = add_query_arg([
-    'search'      => $main_search_query,
-    'filter_year' => $selected_year,
-    'max_posts'   => $max_posts,
-    'paged'       => '%#%',
-], $current_url);
-?>
+
+$base_url = get_pagenum_link(1); // URL pagina 1
+$base_url = remove_query_arg('paged', $base_url); // Rimuovi eventuale paginazione precedente
+$base_url = trailingslashit($base_url) . '%_%'; // Aggiungi spazio per il formato
+
+$pagination_links = paginate_links([
+    'base'      => $base_url . (strpos($base_url, '?') === false ? '?paged=%#%' : '&paged=%#%'),
+    'format'    => '',
+    'current'   => $paged,
+    'total'     => $the_query->max_num_pages,
+    'prev_text' => __('&laquo; Precedente'),
+    'next_text' => __('Successivo &raquo;'),
+    'type'      => 'array',
+]);
 
 <!-- FORM FILTRI -->
 <form method="get" class="mb-3 d-flex align-items-center gap-2 incarichi-filtro-form">
