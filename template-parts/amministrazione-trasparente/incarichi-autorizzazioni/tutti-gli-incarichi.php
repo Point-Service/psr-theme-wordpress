@@ -25,9 +25,8 @@ if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
-// Se filtro anno selezionato > 0 aggiungiamo filtro meta_query su meta data pubblicazione
+// Se filtro anno selezionato > 0 aggiungiamo filtro data
 if ($selected_year > 0) {
-    // Filtra per anno della data di pubblicazione (post_date)
     $args['date_query'] = array(
         array(
             'year' => $selected_year,
@@ -54,8 +53,9 @@ $base_url = add_query_arg(array(
 ), $current_url);
 ?>
 
-<!-- FORM FILTRO ANNO -->
+<!-- FORM FILTRO ANNO E RICERCA -->
 <form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2">
+
     <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
     <select id="filter-year" name="year" onchange="this.form.submit()" class="form-select w-auto">
         <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
@@ -64,9 +64,11 @@ $base_url = add_query_arg(array(
         <?php endfor; ?>
     </select>
 
-    <?php if (!empty($main_search_query)) : ?>
-        <input type="hidden" name="search" value="<?php echo esc_attr($main_search_query); ?>">
-    <?php endif; ?>
+    <label for="search-input" class="form-label mb-0 me-2">Cerca:</label>
+    <input type="search" id="search-input" name="search" value="<?php echo esc_attr($main_search_query); ?>" placeholder="Cerca incarichi..." class="form-control w-auto" style="min-width:200px;">
+
+    <button type="submit" class="btn btn-primary">Filtra</button>
+
 </form>
 
 <?php if ($the_query->have_posts()) : ?>
@@ -150,7 +152,8 @@ form.mb-3 {
     gap: 0.5rem;
 }
 
-form select.form-select {
+form select.form-select,
+form input.form-control {
     min-width: 120px;
 }
 
@@ -161,5 +164,3 @@ form label.form-label {
     color: var(--bs-secondary);
 }
 </style>
-
-
