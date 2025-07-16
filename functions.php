@@ -336,52 +336,51 @@ add_action('init', 'my_custom_one_time_function');
 
 
 
-/**
- * Evidenzia in grassetto le categorie di primo livello
- * nel metabox CMB2 "Seleziona la sezione".
- */
 add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2', 20 );
 function dci_bold_parent_terms_cmb2( $hook ) {
 
-
-	// Applica solo su nuovo o modifica post di tipo 'elemento_trasparenza'
 	$post_type = $_GET['post_type'] ?? get_post_type( $_GET['post'] ?? 0 );
-	
 	if ( ! in_array( $hook, ['post-new.php', 'post.php'] ) || $post_type !== 'elemento_trasparenza' ) {
 	    return;
 	}
-	
 
-    /* ----------  CSS inline  ---------- */
-    wp_add_inline_style(
-        // usiamo un handle già presente, ad es. 'wp-admin'
-        'wp-admin',
-        '.cmb2-parent-term { font-weight:700; color:#000; }'
-    );
+	// CSS: stile per ogni livello
+	wp_add_inline_style(
+	    'wp-admin',
+	    '.cmb2-term-level-0 { font-weight:700; color:#000; }
+	     .cmb2-term-level-1 { color:#0d6efd; font-weight:600; }
+	     .cmb2-term-level-2 { color:#6c757d; font-style:italic; }
+	     '
+	);
 
-    /* ----------  JS inline  ---------- */
-    wp_add_inline_script(
-        // carichiamo dopo jQuery core
-        'jquery-core',
-        <<<JS
-        (function($){
-            $(document).ready(function(){
-                // trova tutte le liste radio/checkbox di CMB2
-                $('.cmb2-radio-list, .cmb2-checkbox-list').each(function(){
-                    $(this).children('li').each(function(){
-                        var \$label = $(this).children('label').first();
-                        // se il label NON contiene &nbsp; => livello 0 (categoria principale)
-                        if ( \$label.length && \$label.html().indexOf('&nbsp;') === -1 ) {
-                            \$label.addClass('cmb2-parent-term');
-                        }
-                    });
-                });
-            });
-        })(jQuery);
+	// JS: classifica in base agli &nbsp;
+	wp_add_inline_script(
+	    'jquery-core',
+	    <<<JS
+	    (function($){
+	        $(document).ready(function(){
+	            $('.cmb2-radio-list, .cmb2-checkbox-list').each(function(){
+	                $(this).children('li').each(function(){
+	                    var \$label = $(this).children('label').first();
+	                    if (!\$label.length) return;
+
+	                    var html = \$label.html();
+	                    var nbspCount = (html.match(/&nbsp;/g) || []).length;
+
+	                    if (nbspCount === 0) {
+	                        \$label.addClass('cmb2-term-level-0');
+	                    } else if (nbspCount <= 2) {
+	                        \$label.addClass('cmb2-term-level-1');
+	                    } else {
+	                        \$label.addClass('cmb2-term-level-2');
+	                    }
+	                });
+	            });
+	        });
+	    })(jQuery);
 JS
-    );
+	);
 }
-
 
 
 
