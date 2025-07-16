@@ -110,58 +110,107 @@ $base_url = add_query_arg([
 
 <!-- STILE MIGLIORATO -->
 <style>
+/* Stile generale form */
 form.incarichi-filtro-form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    background: #f8f9fa;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    max-width: 750px;
-    margin: 0 auto 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto 2rem;
 }
 
+/* Ogni gruppo di input (campo + etichetta) */
 form.incarichi-filtro-form .form-group {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 200px;
-    min-width: 200px;
-    max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 250px;
+  min-width: 220px;
 }
 
+/* Etichette */
 form.incarichi-filtro-form .form-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
 }
 
+/* Input e select */
 form.incarichi-filtro-form .form-control,
 form.incarichi-filtro-form .form-select {
-    padding: 0.45rem 0.75rem;
-    border: 1.5px solid #ced4da;
-    border-radius: 0.4rem;
-    font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid #ced4da;
+  border-radius: 0.4rem;
+  font-size: 1rem;
 }
 
+/* Bottone */
 form.incarichi-filtro-form .btn {
-    height: 40px;
-    font-weight: 600;
-    white-space: nowrap;
-    border-radius: 0.4rem;
-    margin-top: auto;
+  height: 40px;
+  font-weight: 600;
+  white-space: nowrap;
+  border-radius: 0.4rem;
+  margin-top: auto;
 }
 
+/* Responsive (mobile) */
 @media (max-width: 576px) {
-    form.incarichi-filtro-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    form.incarichi-filtro-form .form-group {
-        max-width: 100%;
-    }
+  form.incarichi-filtro-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  form.incarichi-filtro-form .form-group {
+    max-width: 100%;
+  }
 }
+
+/* PAGINAZIONE */
+.pagination-wrapper {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-left: 0;
+  list-style: none;
+  gap: 0.4rem;
+}
+
+.page-item {
+  display: inline;
+}
+
+.page-item .page-link {
+  padding: 0.5rem 0.75rem;
+  color: #007bff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.3rem;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  background-color: #fff;
+}
+
+.page-item .page-link:hover {
+  background-color: #e9ecef;
+  color: #0056b3;
+}
+
+.page-item.active .page-link,
+.page-link.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+  font-weight: bold;
+}
+
 
 </style>
 
