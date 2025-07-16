@@ -1,58 +1,61 @@
 <?php
+// Evita redirect automatici di WordPress che rovinano i parametri custom
+remove_filter('template_redirect', 'redirect_canonical');
+
 global $wpdb;
 
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 
-// Prendi anni disponibili dai meta (adatta meta_key al tuo caso)
+// Prendi gli anni disponibili dai post pubblicati (per la combo)
 $years = $wpdb->get_col("
-    SELECT DISTINCT YEAR(meta_value)
-    FROM {$wpdb->postmeta} pm
-    INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-    WHERE pm.meta_key = '_dci_atto_concessione_data'
-      AND p.post_type = 'atto_concessione'
-      AND p.post_status = 'publish'
-    ORDER BY meta_value DESC
+    SELECT DISTINCT YEAR(post_date)
+    FROM {$wpdb->posts}
+    WHERE post_type = 'incarichi_dip' 
+      AND post_status = 'publish'
+    ORDER BY post_date DESC
 ");
 
+// Costruiamo argomenti per WP_Query
 $args = array(
-    'post_type'      => 'atto_concessione',
+    'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
-    'paged'          => $paged,
-    'orderby'        => 'meta_value_num',
-    'meta_key'       => '_dci_atto_concessione_data',
+    'orderby'        => 'date',
     'order'          => 'DESC',
+    'paged'          => $paged,
 );
 
-if ($main_search_query !== '') {
+if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
 if ($selected_year > 0) {
-    $args['meta_query'][] = array(
-        'key'     => '_dci_atto_concessione_data',
-        'value'   => array("{$selected_year}0101", "{$selected_year}1231"),
-        'compare' => 'BETWEEN',
-        'type'    => 'NUMERIC',
+    $args['date_query'] = array(
+        array(
+            'year' => $selected_year,
+        ),
     );
 }
 
+// Query personalizzata
 $the_query = new WP_Query($args);
 
+// Prendi permalink pagina corrente (senza query string)
 $current_url = get_permalink();
 
+// Costruiamo la base URL per paginazione mantenendo tutti i parametri
 $base_url = add_query_arg(array(
     'search'      => $main_search_query ? $main_search_query : '',
     'filter_year' => $selected_year > 0 ? $selected_year : 0,
     'max_posts'   => $max_posts,
-    'paged'       => '%#%',
+    'page'        => '%#%',
 ), $current_url);
 ?>
 
 <!-- FORM FILTRO -->
-<form method="get" class="mb-3 d-flex align-items-center gap-2 atti-filtro-form">
+<form method="get" class="mb-3 d-flex align-items-center gap-2 incarichi-filtro-form">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
     <input
         type="search"
@@ -88,8 +91,9 @@ $base_url = add_query_arg(array(
 <?php if ($the_query->have_posts()) : ?>
 
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
-        <?php get_template_part('template-parts/amministrazione-trasparente/atto-concessione/card'); ?>
-    <?php endwhile; wp_reset_postdata(); ?>
+        <?php get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card'); ?>
+    <?php endwhile; ?>
+    <?php wp_reset_postdata(); ?>
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
@@ -120,13 +124,13 @@ $base_url = add_query_arg(array(
 
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
-        Nessun atto di concessione trovato.
+        Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
 
 <!-- STILE FORM E PAGINAZIONE -->
 <style>
-form.atti-filtro-form {
+form.incarichi-filtro-form {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -138,15 +142,15 @@ form.atti-filtro-form {
     margin: 0 0 2rem 0;
 }
 
-form.atti-filtro-form label.form-label {
+form.incarichi-filtro-form label.form-label {
     font-weight: 600;
     color: #495057;
     margin-bottom: 0;
     align-self: center;
 }
 
-form.atti-filtro-form input[type="search"],
-form.atti-filtro-form select.form-select {
+form.incarichi-filtro-form input[type="search"],
+form.incarichi-filtro-form select.form-select {
     flex-grow: 1;
     min-width: 120px;
     max-width: 250px;
@@ -154,8 +158,8 @@ form.atti-filtro-form select.form-select {
     transition: border-color 0.3s ease;
 }
 
-form.atti-filtro-form input[type="search"]:focus,
-form.atti-filtro-form select.form-select:focus {
+form.incarichi-filtro-form input[type="search"]:focus,
+form.incarichi-filtro-form select.form-select:focus {
     border-color: #0d6efd;
     box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
     outline: none;
@@ -167,7 +171,7 @@ form.atti-filtro-form select.form-select:focus {
     align-self: flex-start;
 }
 
-form.atti-filtro-form button.btn-primary {
+form.incarichi-filtro-form button.btn-primary {
     padding: 0.45rem 1.5rem;
     font-weight: 600;
     border-radius: 0.4rem;
@@ -176,7 +180,7 @@ form.atti-filtro-form button.btn-primary {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-form.atti-filtro-form button.btn-primary:hover {
+form.incarichi-filtro-form button.btn-primary:hover {
     background-color: #0b5ed7;
     box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
 }
@@ -228,7 +232,7 @@ form.atti-filtro-form button.btn-primary:hover {
 }
 
 @media (max-width: 576px) {
-    form.atti-filtro-form {
+    form.incarichi-filtro-form {
         flex-direction: column;
     }
 
@@ -241,10 +245,9 @@ form.atti-filtro-form button.btn-primary:hover {
         justify-content: flex-start;
     }
 
-    form.atti-filtro-form button.btn-primary {
+    form.incarichi-filtro-form button.btn-primary {
         width: auto;
         height: 38px;
     }
 }
 </style>
-
