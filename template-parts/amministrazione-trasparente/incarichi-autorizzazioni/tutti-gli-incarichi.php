@@ -7,7 +7,7 @@ global $wpdb;
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$selected_year = isset($_GET['year']) ? intval($_GET['year']) : 0;
+$selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 
 // Prendi gli anni disponibili dai post pubblicati (per la combo)
 $years = $wpdb->get_col("
@@ -45,17 +45,16 @@ $the_query = new WP_Query($args);
 // Prendi permalink pagina corrente (senza query string)
 $current_url = get_permalink();
 
-// Costruiamo la base URL per paginazione mantenendo parametri search e year
+// Costruiamo la base URL per paginazione mantenendo parametri search e filter_year
 $base_url = add_query_arg(array(
-    'search' => $main_search_query ? $main_search_query : '',
-    'year'   => $selected_year > 0 ? $selected_year : 0,
-    'page'   => '%#%',
+    'search'      => $main_search_query ? $main_search_query : '',
+    'filter_year' => $selected_year > 0 ? $selected_year : 0,
+    'page'        => '%#%',
 ), $current_url);
-
 ?>
 
-<!-- FORM FILTRO ANNO E RICERCA -->
-<form method="get" action="<?php echo esc_url( get_permalink() ); ?>" class="mb-3">
+<!-- FORM FILTRO ANNO -->
+<form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
     <input
         type="search"
@@ -64,11 +63,11 @@ $base_url = add_query_arg(array(
         class="form-control me-3"
         placeholder="Cerca..."
         value="<?php echo esc_attr($main_search_query); ?>"
-        style="max-width: 250px; min-width: 180px; flex-grow: 1;"
+        style="max-width: 200px;"
     >
 
     <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
-    <select id="filter-year" name="year" class="form-select me-3" style="min-width: 140px; max-width: 160px;">
+    <select id="filter-year" name="filter_year" class="form-select w-auto me-3">
         <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
         <?php foreach ($years as $y) : ?>
             <option value="<?php echo esc_attr($y); ?>" <?php selected($selected_year, $y); ?>>
@@ -79,7 +78,6 @@ $base_url = add_query_arg(array(
 
     <button type="submit" class="btn btn-primary">Filtra</button>
 </form>
-
 
 <?php if ($the_query->have_posts()) : ?>
 
@@ -156,35 +154,19 @@ $base_url = add_query_arg(array(
     border-color: transparent;
 }
 
-/* Miglior stile per il form filtro e ricerca */
+/* Responsive e spaziatura filtro */
 form.mb-3 {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 0.5rem;
 }
 
+form select.form-select {
+    min-width: 120px;
+}
+
+/* Label allineata verticale */
 form label.form-label {
     margin-bottom: 0;
     font-weight: 600;
     color: var(--bs-secondary);
-    white-space: nowrap;
-}
-
-form input[type="search"] {
-    max-width: 250px;
-    min-width: 180px;
-    flex-grow: 1;
-}
-
-form select.form-select {
-    min-width: 140px;
-    max-width: 160px;
-}
-
-form button.btn {
-    white-space: nowrap;
-    padding: 0.38rem 1rem;
 }
 </style>
