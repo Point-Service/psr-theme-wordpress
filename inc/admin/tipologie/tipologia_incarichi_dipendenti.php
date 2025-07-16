@@ -19,19 +19,24 @@ function dci_register_post_type_icad() {
 		'featured_image' => __( 'Immagine di riferimento incarico', 'design_comuni_italia' ),
 	);
 
-	$args = array(
-		'label'           => __( 'Incarico conferito', 'design_comuni_italia' ),
-		'labels'          => $labels,
-		'supports'        => array( 'title', 'author' ),
-		'hierarchical'    => true,
-		'public'          => true,
-		'show_in_menu'    => 'edit.php?post_type=elemento_trasparenza',
-		'menu_icon'       => 'dashicons-media-interactive',
-		'has_archive'     => false,
-		'map_meta_cap'    => true,
-		'capability_type' => 'post',
-		'description'     => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
-	);
+		    $args = array(
+		        'label'           => __( 'Incarico conferito', 'design_comuni_italia' ),
+		        'labels'          => $labels,
+		        'supports'        => array( 'title', 'author' ),
+		        'hierarchical'    => true,
+		        'public'          => true,
+		        'show_in_menu'    => 'edit.php?post_type=elemento_trasparenza',
+		        'menu_icon'       => 'dashicons-media-interactive',
+		        'has_archive'     => 'incarichi-dipendenti',  // Permette l'archivio per questo CPT
+		        'rewrite'         => array(
+		            'slug' => 'tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti',
+		            'with_front' => false,  // Non aggiungere "blog" o prefissi generici
+		            'pages' => true,        // Abilita la paginazione
+		        ),
+		        'map_meta_cap'    => true,
+		        'capability_type' => 'post',
+		        'description'     => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
+		    );
 
 	register_post_type( 'incarichi_dip', $args );
 	remove_post_type_support( 'incarichi_dip', 'editor' );
