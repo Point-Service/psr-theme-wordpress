@@ -123,6 +123,7 @@ $base_url = add_query_arg(array(
 
 <!-- STILE MIGLIORATO PER FORM E PAGINAZIONE -->
 <style>
+/* FORM STILIZZATO */
 form.incarichi-filtro-form {
     display: flex;
     flex-wrap: nowrap; /* tutto su una riga */
@@ -133,7 +134,7 @@ form.incarichi-filtro-form {
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     max-width: 700px;
-    margin: 0 auto 2rem;
+    margin: 0 0 2rem 0; /* allinea a sinistra senza margin auto */
 }
 
 form.incarichi-filtro-form label.form-label {
@@ -180,7 +181,58 @@ form.incarichi-filtro-form button.btn-primary:hover {
     box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
 }
 
-/* Responsive */
+/* PAGINAZIONE */
+.pagination-wrapper .pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+}
+
+.pagination-wrapper .page-item {
+    /* no extra styles needed, but keep for clarity */
+}
+
+.pagination-wrapper .page-link {
+    display: block;
+    padding: 0.5rem 0.9rem;
+    color: #0d6efd; /* blu primario */
+    border: 1.5px solid #0d6efd;
+    border-radius: 0.4rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    min-width: 40px;
+    text-align: center;
+}
+
+.pagination-wrapper .page-link:hover {
+    background-color: #0d6efd;
+    color: white;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
+    text-decoration: none;
+}
+
+.pagination-wrapper .page-item.active .page-link,
+.pagination-wrapper .page-link[aria-current="page"] {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+    cursor: default;
+    box-shadow: 0 0 12px rgba(13, 110, 253, 0.75);
+}
+
+.pagination-wrapper .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: transparent;
+    border-color: transparent;
+    cursor: default;
+}
+
+/* RESPONSIVE FORM */
 @media (max-width: 576px) {
     form.incarichi-filtro-form {
         flex-wrap: wrap;
@@ -201,6 +253,7 @@ form.incarichi-filtro-form button.btn-primary:hover {
         height: 38px;
     }
 }
+
 
 </style>
 
