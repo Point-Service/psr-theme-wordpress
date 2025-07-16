@@ -42,13 +42,12 @@ $the_query = new WP_Query($args);
 // URL base per la paginazione
 
 
-// URL base per la paginazione
 $current_url = get_permalink();
 $query_args = $_GET;
-unset($query_args['page']); 
+unset($query_args['page']);
 
 $base_url = add_query_arg($query_args, $current_url);
-$base_url = trailingslashit($base_url) . '%_%';
+$base_url = $base_url . '%_%'; // senza trailing slash
 
 $pagination_links = paginate_links([
     'base'      => $base_url . (strpos($base_url, '?') === false ? '?page=%#%' : '&page=%#%'),
@@ -58,7 +57,10 @@ $pagination_links = paginate_links([
     'prev_text' => __('&laquo; Precedente'),
     'next_text' => __('Successivo &raquo;'),
     'type'      => 'array',
+    'end_size'  => 1,
+    'mid_size'  => 2,
 ]);
+
 
 
 
