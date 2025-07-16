@@ -20,6 +20,7 @@ if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
+
 $the_query = new WP_Query($args);
 ?>
 
