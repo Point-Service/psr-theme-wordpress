@@ -335,26 +335,25 @@ add_action('init', 'my_custom_one_time_function');
 
 
 
-add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2', 20 );
-function dci_bold_parent_terms_cmb2( $hook ) {
+add_action( 'admin_enqueue_scripts', 'dci_evidenzia_categorie_cmb2', 20 );
+function dci_evidenzia_categorie_cmb2( $hook ) {
 
-    // Applica solo su nuovo o modifica post di tipo 'elemento_trasparenza'
-    $post_type = $_GET['post_type'] ?? get_post_type( $_GET['post'] ?? 0 );
+    // Applica solo sulle pagine di nuovo/modifica post di tipo 'elemento_trasparenza'
+    $tipo_post = $_GET['post_type'] ?? get_post_type( $_GET['post'] ?? 0 );
     
-    if ( ! in_array( $hook, ['post-new.php', 'post.php'] ) || $post_type !== 'elemento_trasparenza' ) {
+    if ( ! in_array( $hook, ['post-new.php', 'post.php'] ) || $tipo_post !== 'elemento_trasparenza' ) {
         return;
     }
     
     /* ----------  CSS inline  ---------- */
     wp_add_inline_style(
-        // usiamo un handle già presente, ad es. 'wp-admin'
         'wp-admin',
         '
-        .cmb2-parent-term { 
+        .cmb2-categoria-principale { 
             font-weight: 700; 
             color: #000; /* nero */
         }
-        .cmb2-sub-term {
+        .cmb2-sottocategoria {
             color: #343a40; /* grigio scuro */
         }
         '
@@ -362,22 +361,21 @@ function dci_bold_parent_terms_cmb2( $hook ) {
 
     /* ----------  JS inline  ---------- */
     wp_add_inline_script(
-        // carichiamo dopo jQuery core
         'jquery-core',
         <<<JS
         (function($){
             $(document).ready(function(){
-                // trova tutte le liste radio/checkbox di CMB2
+                // cerca tutte le liste radio/checkbox di CMB2
                 $('.cmb2-radio-list, .cmb2-checkbox-list').each(function(){
                     $(this).children('li').each(function(){
-                        var \$label = $(this).children('label').first();
-                        if ( \$label.length ) {
-                            if ( \$label.html().indexOf('&nbsp;') === -1 ) {
-                                // categoria principale
-                                \$label.addClass('cmb2-parent-term');
+                        var etichetta = $(this).children('label').first();
+                        if ( etichetta.length ) {
+                            if ( etichetta.html().indexOf('&nbsp;') === -1 ) {
+                                // categoria principale senza spazi
+                                etichetta.addClass('cmb2-categoria-principale');
                             } else {
-                                // sottocategorie
-                                \$label.addClass('cmb2-sub-term');
+                                // solo le sottocategorie con spazi
+                                etichetta.addClass('cmb2-sottocategoria');
                             }
                         }
                     });
@@ -387,6 +385,7 @@ function dci_bold_parent_terms_cmb2( $hook ) {
 JS
     );
 }
+
 
 
 
