@@ -113,11 +113,10 @@ $base_url = add_query_arg([
 form.incarichi-filtro-form {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
     justify-content: center;
-    align-items: flex-end;
-    padding: 1rem;
+    gap: 1rem;
     background: #f8f9fa;
+    padding: 1rem;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     max-width: 750px;
@@ -127,15 +126,15 @@ form.incarichi-filtro-form {
 form.incarichi-filtro-form .form-group {
     display: flex;
     flex-direction: column;
+    flex: 1 1 200px;
     min-width: 200px;
-    flex-grow: 1;
     max-width: 220px;
 }
 
 form.incarichi-filtro-form .form-label {
     font-weight: 600;
     color: #333;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.4rem;
 }
 
 form.incarichi-filtro-form .form-control,
@@ -143,30 +142,17 @@ form.incarichi-filtro-form .form-select {
     padding: 0.45rem 0.75rem;
     border: 1.5px solid #ced4da;
     border-radius: 0.4rem;
-    transition: border-color 0.3s;
+    font-size: 1rem;
 }
 
-form.incarichi-filtro-form .form-control:focus,
-form.incarichi-filtro-form .form-select:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25);
-    outline: none;
-}
-
-form.incarichi-filtro-form button.btn-primary {
-    height: 38px;
-    padding: 0 1.5rem;
+form.incarichi-filtro-form .btn {
+    height: 40px;
     font-weight: 600;
-    border-radius: 0.4rem;
     white-space: nowrap;
+    border-radius: 0.4rem;
+    margin-top: auto;
 }
 
-form.incarichi-filtro-form button.btn-primary:hover {
-    background-color: #0b5ed7;
-    box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
-}
-
-/* Responsive */
 @media (max-width: 576px) {
     form.incarichi-filtro-form {
         flex-direction: column;
@@ -176,5 +162,6 @@ form.incarichi-filtro-form button.btn-primary:hover {
         max-width: 100%;
     }
 }
+
 </style>
 
