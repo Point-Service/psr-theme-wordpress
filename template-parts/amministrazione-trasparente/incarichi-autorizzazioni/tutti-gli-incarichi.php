@@ -9,7 +9,7 @@ $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search'
 $year = isset($_GET['year']) ? intval($_GET['year']) : 0;
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
-// Prendi gli anni disponibili dai post
+// Prendi gli anni disponibili dai post pubblicati
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date) 
     FROM {$wpdb->posts} 
@@ -35,9 +35,10 @@ if (!empty($main_search_query)) {
 }
 
 $the_query = new WP_Query($args);
+
 ?>
 
-<!-- Form di ricerca e filtro anno -->
+<!-- Form ricerca e filtro anno -->
 <form method="GET" action="<?php echo esc_url(get_permalink()); ?>" id="filter-form" class="mb-4 d-flex flex-wrap align-items-center gap-3">
     <div>
         <label for="search">Cerca:</label>
@@ -65,25 +66,29 @@ $the_query = new WP_Query($args);
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
-            // Genera la base corretta per i link di paginazione con i parametri correnti
-            $base = esc_url(add_query_arg([
-                'page'   => '%#%',
-                'year'   => $year > 0 ? $year : null,
-                'search' => !empty($main_search_query) ? $main_search_query : null,
-            ], get_permalink()));
+            // Costruisco base e format per paginate_links con add_query_arg:
+            $base = add_query_arg('page','%#%');
+            $format = '';
 
-            // Pulizia URL
-            $base = preg_replace('/(\?|&)+$/', '', $base);
+            // Se permalink non usa query string, togli eventuali trailing & o ? in $base
+            $base = preg_replace('/(\?|&)page=%#%/', '?page=%#%', $base);
 
-            $pagination_links = paginate_links([
+            // Assicuriamoci che gli altri parametri di ricerca/anno siano mantenuti:
+            $args_pagination = [
                 'base'      => $base,
-                'format'    => '',
+                'format'    => $format,
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
                 'type'      => 'array',
-            ]);
+                'add_args'  => [
+                    'search' => $main_search_query ? $main_search_query : false,
+                    'year'   => ($year > 0) ? $year : false,
+                ],
+            ];
+
+            $pagination_links = paginate_links($args_pagination);
 
             if ($pagination_links) : ?>
                 <ul class="pagination justify-content-center">
@@ -106,7 +111,7 @@ $the_query = new WP_Query($args);
 <?php endif; ?>
 
 <style>
-/* Stile per il form filtro */
+/* Form filtri */
 #filter-form label {
     font-weight: 600;
     margin-right: 0.5rem;
@@ -119,7 +124,7 @@ $the_query = new WP_Query($args);
     border-radius: 0.25rem;
 }
 
-/* Stile paginazione */
+/* Paginazione */
 .pagination .page-link {
     color: var(--bs-primary);
     background-color: transparent;
@@ -151,4 +156,3 @@ $the_query = new WP_Query($args);
     border-color: transparent;
 }
 </style>
-
