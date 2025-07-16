@@ -1,16 +1,24 @@
 <?php
-// Evita redirect automatici di WordPress (utile per paginazioni custom)
+// Evita redirect automatici di WordPress (utile per paginazione con parametri personalizzati)
 remove_filter('template_redirect', 'redirect_canonical');
 
-// Recupera parametri querystring
+global $wpdb;
+
+// Parametri di input
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$selected_year = isset($_GET['year']) ? intval($_GET['year']) : '';
-
-// Usa ?page= invece di ?paged=
+$selected_year = isset($_GET['year']) ? intval($_GET['year']) : 0;
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
-// Costruisci argomenti WP_Query
+// Recupera anni unici presenti tra i post pubblicati incarichi_dip
+$years = $wpdb->get_col("
+    SELECT DISTINCT YEAR(post_date)
+    FROM {$wpdb->posts}
+    WHERE post_type = 'incarichi_dip' AND post_status = 'publish'
+    ORDER BY post_date DESC
+");
+
+// Costruisci query args base
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -19,13 +27,8 @@ $args = array(
     'paged'          => $paged,
 );
 
-// Se c’è ricerca, aggiungi
-if (!empty($main_search_query)) {
-    $args['s'] = $main_search_query;
-}
-
-// Se è stato selezionato un anno, filtriamo per anno (data di pubblicazione)
-if (!empty($selected_year)) {
+// Se filtriamo per anno (diverso da 0), aggiungiamo meta query per il filtro anno
+if ($selected_year > 0) {
     $args['date_query'] = array(
         array(
             'year' => $selected_year,
@@ -33,45 +36,33 @@ if (!empty($selected_year)) {
     );
 }
 
-$the_query = new WP_Query($args);
-
-// Funzione per generare base URL paginazione senza parametri di pagina e mantenendo filtro/ricerca
-function get_pagination_base_url() {
-    // Prende URL corrente con tutti i parametri
-    $url = remove_query_arg(array('page', 'paged'), esc_url_raw(add_query_arg(NULL, NULL)));
-
-    // Rimuove eventuali trailing ? o &
-    $url = rtrim($url, '?&');
-
-    // Aggiunge la sintassi per pagina
-    if (strpos($url, '?') === false) {
-        $base = trailingslashit($url) . '?page=%#%';
-    } else {
-        $base = $url . '&page=%#%';
-    }
-
-    return $base;
+// Se filtro ricerca attivo
+if (!empty($main_search_query)) {
+    $args['s'] = $main_search_query;
 }
 
-$base = get_pagination_base_url();
+$the_query = new WP_Query($args);
 ?>
 
-<!-- FORM FILTRO ANNO E RICERCA -->
-<form method="get" class="mb-4 d-flex gap-2 align-items-center justify-content-center flex-wrap">
-    <input type="text" name="search" value="<?php echo esc_attr($main_search_query); ?>" placeholder="Cerca..." class="form-control" style="max-width: 200px;">
+<form method="GET" action="" class="mb-4 d-flex flex-wrap gap-2 align-items-center">
 
-    <select name="year" class="form-select" style="max-width: 150px;">
-        <option value="">Tutti gli anni</option>
-        <?php
-        $current_year = date('Y');
-        for ($y = $current_year; $y >= 2000; $y--) {
-            $selected = ($y == $selected_year) ? 'selected' : '';
-            echo "<option value=\"$y\" $selected>$y</option>";
-        }
-        ?>
+    <select name="year" onchange="this.form.submit()" class="form-select" style="width:auto;">
+        <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
+        <?php foreach ($years as $year) : ?>
+            <option value="<?php echo esc_attr($year); ?>" <?php selected($selected_year, $year); ?>><?php echo esc_html($year); ?></option>
+        <?php endforeach; ?>
     </select>
 
-    <button type="submit" class="btn btn-primary">Filtra</button>
+    <input
+        type="text"
+        name="search"
+        placeholder="Cerca incarico..."
+        class="form-control"
+        style="max-width: 300px;"
+        value="<?php echo esc_attr($main_search_query); ?>"
+    />
+
+    <button type="submit" class="btn btn-primary">Cerca</button>
 </form>
 
 <?php if ($the_query->have_posts()) : ?>
@@ -79,35 +70,33 @@ $base = get_pagination_base_url();
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
         <?php get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card'); ?>
     <?php endwhile; ?>
+
     <?php wp_reset_postdata(); ?>
 
-    <div class="row my-4">
-        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-            <?php
-            $pagination_links = paginate_links(array(
-                'base'      => $base,
-                'format'    => '',
-                'current'   => $paged,
-                'total'     => $the_query->max_num_pages,
-                'prev_text' => __('&laquo; Precedente'),
-                'next_text' => __('Successivo &raquo;'),
-                'type'      => 'array',
-            ));
+    <nav class="pagination-wrapper" aria-label="Navigazione pagine">
+        <?php
+        $pagination_links = paginate_links(array(
+            'base'      => add_query_arg('page', '%#%'),
+            'format'    => '',
+            'current'   => $paged,
+            'total'     => $the_query->max_num_pages,
+            'prev_text' => __('&laquo; Precedente'),
+            'next_text' => __('Successivo &raquo;'),
+            'type'      => 'array',
+        ));
 
-            if ($pagination_links) : ?>
-                <ul class="pagination justify-content-center">
-                    <?php foreach ($pagination_links as $link) :
-                        $active = strpos($link, 'current') !== false ? ' active' : '';
-                        // Aggiungiamo classi Bootstrap 'page-link' e 'page-item'
-                        $link = str_replace('<a ', '<a class="page-link" ', $link);
-                        $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
-                    ?>
-                        <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
-        </nav>
-    </div>
+        if ($pagination_links) : ?>
+            <ul class="pagination justify-content-center">
+                <?php foreach ($pagination_links as $link) :
+                    $active = strpos($link, 'current') !== false ? ' active' : '';
+                    $link = str_replace('<a ', '<a class="page-link" ', $link);
+                    $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
+                ?>
+                    <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </nav>
 
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
@@ -146,12 +135,4 @@ $base = get_pagination_base_url();
     background-color: transparent;
     border-color: transparent;
 }
-
-form.mb-4 {
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
 </style>
-
-
