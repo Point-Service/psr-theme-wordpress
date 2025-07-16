@@ -337,49 +337,38 @@ add_action('init', 'my_custom_one_time_function');
 
 
 add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2', 20 );
-
 function dci_bold_parent_terms_cmb2( $hook ) {
-    // Limitare solo a schermate post.php e post-new.php
-    if ( ! in_array( $hook, ['post-new.php', 'post.php'], true ) ) {
-        return;
-    }
 
-    // Prendi ID post e tipo post
-    $post_id   = isset($_GET['post']) ? intval($_GET['post']) : 0;
-    $post_type = isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : get_post_type( $post_id );
 
-    // Controlla che sia il tipo personalizzato 'elemento_trasparenza'
-    if ( $post_type !== 'elemento_trasparenza' ) {
-        return;
-    }
+	// Applica solo su nuovo o modifica post di tipo 'elemento_trasparenza'
+	$post_type = $_GET['post_type'] ?? get_post_type( $_GET['post'] ?? 0 );
+	
+	if ( ! in_array( $hook, ['post-new.php', 'post.php'] ) || $post_type !== 'elemento_trasparenza' ) {
+	    return;
+	}
+	
 
-    // Aggiungi gli stili CSS inline
+    /* ----------  CSS inline  ---------- */
     wp_add_inline_style(
+        // usiamo un handle già presente, ad es. 'wp-admin'
         'wp-admin',
-        '
-        .cmb2-term-level-1 { color: #000; font-weight: 700; }      /* Nero */
-        .cmb2-term-level-2 { color: #343a40; font-weight: 600; }   /* Grigio scuro */
-        .cmb2-term-level-3 { color: #8B4513; font-style: italic; } /* Marrone */
-        '
+        '.cmb2-parent-term { font-weight:700; color:#000; }'
     );
 
-    // Aggiungi script inline per assegnare le classi in base ai &nbsp;
+    /* ----------  JS inline  ---------- */
     wp_add_inline_script(
+        // carichiamo dopo jQuery core
         'jquery-core',
         <<<JS
         (function($){
             $(document).ready(function(){
+                // trova tutte le liste radio/checkbox di CMB2
                 $('.cmb2-radio-list, .cmb2-checkbox-list').each(function(){
-                    $(this).find('label').each(function(){
-                        var html = $(this).html();
-                        var nbspCount = (html.match(/&nbsp;/g) || []).length;
-
-                        if (nbspCount === 0) {
-                            $(this).addClass('cmb2-term-level-1');
-                        } else if (nbspCount <= 2) {
-                            $(this).addClass('cmb2-term-level-2');
-                        } else {
-                            $(this).addClass('cmb2-term-level-3');
+                    $(this).children('li').each(function(){
+                        var \$label = $(this).children('label').first();
+                        // se il label NON contiene &nbsp; => livello 0 (categoria principale)
+                        if ( \$label.length && \$label.html().indexOf('&nbsp;') === -1 ) {
+                            \$label.addClass('cmb2-parent-term');
                         }
                     });
                 });
