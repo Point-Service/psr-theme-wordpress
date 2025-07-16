@@ -1,17 +1,17 @@
 <?php
-// Evita redirect automatici di WordPress
+// Evita redirect automatici di WordPress che rovinano i parametri custom
 remove_filter('template_redirect', 'redirect_canonical');
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
-// Paginazione su ?page=
+// Gestione pagina per paginazione (usiamo ?page=)
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
-// Filtro anno da GET, 0 = tutti
+// Gestione filtro anno (0 = tutti gli anni)
 $selected_year = isset($_GET['year']) ? intval($_GET['year']) : 0;
 
-// Setup base args query
+// Costruiamo argomenti per WP_Query
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -20,38 +20,50 @@ $args = array(
     'paged'          => $paged,
 );
 
-// Se c’è ricerca testo
+// Se c'è ricerca testo
 if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
-// Se filtro anno selezionato (diverso da 0) aggiungi date_query
-if ($selected_year && $selected_year > 0) {
+// Se filtro anno selezionato > 0 aggiungiamo filtro meta_query su meta data pubblicazione
+if ($selected_year > 0) {
+    // Filtra per anno della data di pubblicazione (post_date)
     $args['date_query'] = array(
         array(
             'year' => $selected_year,
-        )
+        ),
     );
 }
 
-// Query
+// Query personalizzata
 $the_query = new WP_Query($args);
 
-// Per la select anni
+// Per creare la select anno partiamo dall’anno attuale a un anno base, es 10 anni fa
 $current_year = date('Y');
-$first_year = 2018; // o dal primo anno presente, a piacere
+$first_year = $current_year - 10;
+
+// Prendiamo URL corrente senza i parametri page e year per rigenerare correttamente i link
+$current_url = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$current_url = remove_query_arg(array('page', 'year'), $current_url);
+
+// Costruiamo la base URL per la paginazione con filtro anno e ricerca (se presenti)
+$base_url = add_query_arg(array(
+    'year'   => $selected_year && $selected_year > 0 ? $selected_year : 0,
+    'search' => $main_search_query ? $main_search_query : '',
+    'page'   => '%#%',
+), $current_url);
 ?>
 
-<form method="get" class="mb-3">
-    <label for="filter-year" class="form-label me-2">Filtra per anno:</label>
-    <select id="filter-year" name="year" onchange="this.form.submit()" class="form-select w-auto d-inline-block">
+<!-- FORM FILTRO ANNO -->
+<form method="get" class="mb-3 d-flex align-items-center flex-wrap gap-2">
+    <label for="filter-year" class="form-label mb-0 me-2">Filtra per anno:</label>
+    <select id="filter-year" name="year" onchange="this.form.submit()" class="form-select w-auto">
         <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
         <?php for ($y = $current_year; $y >= $first_year; $y--) : ?>
             <option value="<?php echo $y; ?>" <?php selected($selected_year, $y); ?>><?php echo $y; ?></option>
         <?php endfor; ?>
     </select>
 
-    <!-- Mantieni gli altri parametri di ricerca nella GET -->
     <?php if (!empty($main_search_query)) : ?>
         <input type="hidden" name="search" value="<?php echo esc_attr($main_search_query); ?>">
     <?php endif; ?>
@@ -64,36 +76,33 @@ $first_year = 2018; // o dal primo anno presente, a piacere
     <?php endwhile; ?>
     <?php wp_reset_postdata(); ?>
 
-    <nav class="pagination-wrapper justify-content-center" aria-label="Navigazione pagine">
-        <?php
-        $base_url = add_query_arg(array(
-            'year' => $selected_year ? $selected_year : 0,
-            'search' => $main_search_query ? $main_search_query : '',
-            'page' => '%#%',
-        ), get_permalink());
+    <div class="row my-4">
+        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+            <?php
+            $pagination_links = paginate_links(array(
+                'base'      => $base_url,
+                'format'    => '',
+                'current'   => $paged,
+                'total'     => $the_query->max_num_pages,
+                'prev_text' => __('&laquo; Precedente'),
+                'next_text' => __('Successivo &raquo;'),
+                'type'      => 'array', // array per personalizzare markup
+            ));
 
-        $pagination_links = paginate_links(array(
-            'base'      => $base_url,
-            'format'    => '',
-            'current'   => $paged,
-            'total'     => $the_query->max_num_pages,
-            'prev_text' => __('&laquo; Precedente'),
-            'next_text' => __('Successivo &raquo;'),
-            'type'      => 'array',
-        ));
-
-        if ($pagination_links) : ?>
-            <ul class="pagination justify-content-center">
-                <?php foreach ($pagination_links as $link) :
-                    $active = strpos($link, 'current') !== false ? ' active' : '';
-                    $link = str_replace('<a ', '<a class="page-link" ', $link);
-                    $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
-                ?>
-                    <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-    </nav>
+            if ($pagination_links) : ?>
+                <ul class="pagination justify-content-center">
+                    <?php foreach ($pagination_links as $link) :
+                        $active = strpos($link, 'current') !== false ? ' active' : '';
+                        // Aggiungiamo classi Bootstrap
+                        $link = str_replace('<a ', '<a class="page-link" ', $link);
+                        $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
+                    ?>
+                        <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+        </nav>
+    </div>
 
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
@@ -102,6 +111,7 @@ $first_year = 2018; // o dal primo anno presente, a piacere
 <?php endif; ?>
 
 <style>
+/* Stile paginazione Bootstrap custom */
 .pagination .page-link {
     color: var(--bs-primary);
     background-color: transparent;
@@ -109,21 +119,23 @@ $first_year = 2018; // o dal primo anno presente, a piacere
     padding: 0.375rem 0.75rem;
     margin: 0 0.25rem;
     border-radius: 0.25rem;
-    transition: background-color 0.15s ease-in-out;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    font-weight: 500;
 }
 
 .pagination .page-link:hover {
     background-color: var(--bs-primary);
-    color: white;
+    color: #fff;
     text-decoration: none;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.6);
 }
 
 .pagination .page-item.active .page-link {
     background-color: var(--bs-primary);
     border-color: var(--bs-primary);
-    color: white;
+    color: #fff;
     cursor: default;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.75);
 }
 
 .pagination .page-item.disabled .page-link {
@@ -131,6 +143,22 @@ $first_year = 2018; // o dal primo anno presente, a piacere
     pointer-events: none;
     background-color: transparent;
     border-color: transparent;
+}
+
+/* Responsive e spaziatura filtro */
+form.mb-3 {
+    gap: 0.5rem;
+}
+
+form select.form-select {
+    min-width: 120px;
+}
+
+/* Label allineata verticale */
+form label.form-label {
+    margin-bottom: 0;
+    font-weight: 600;
+    color: var(--bs-secondary);
 }
 </style>
 
