@@ -70,3 +70,34 @@ $the_query = new WP_Query($args);
     </div>
 <?php endif; ?>
 
+<style>.pagination .page-link {
+    color: var(--bs-primary); /* usa il colore primario del tema Bootstrap */
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    margin: 0 0.25rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--bs-primary);
+    color: white;
+    text-decoration: none;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white;
+    cursor: default;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.pagination .page-item.disabled .page-link {
+    color: var(--bs-secondary);
+    pointer-events: none;
+    background-color: transparent;
+    border-color: transparent;
+}
+</style>
