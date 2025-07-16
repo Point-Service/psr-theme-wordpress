@@ -32,19 +32,36 @@ $the_query = new WP_Query($args);
     <?php wp_reset_postdata(); ?>
 
     <div class="row my-4">
-        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-            <?php
-            echo paginate_links(array(
-                'base'      => add_query_arg('page', '%#%'),
-                'format'    => '',
-                'current'   => $paged,
-                'total'     => $the_query->max_num_pages,
-                'prev_text' => __('&laquo; Precedente'),
-                'next_text' => __('Successivo &raquo;'),
-                'type'      => 'list',
-            ));
+      
+
+
+ <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+    <?php
+    $pagination_links = paginate_links(array(
+        'base'      => add_query_arg('page', '%#%'),
+        'format'    => '',
+        'current'   => $paged,
+        'total'     => $the_query->max_num_pages,
+        'prev_text' => __('&laquo; Precedente'),
+        'next_text' => __('Successivo &raquo;'),
+        'type'      => 'array', // otteniamo array per personalizzare markup
+    ));
+
+    if ($pagination_links) : ?>
+        <ul class="pagination justify-content-center">
+            <?php foreach ($pagination_links as $link) :
+                $active = strpos($link, 'current') !== false ? ' active' : '';
+                // aggiungiamo classi Bootstrap 'page-link' e 'page-item'
+                $link = str_replace('<a ', '<a class="page-link" ', $link);
+                $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
             ?>
-        </nav>
+                <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</nav>
+
+        
     </div>
 
 <?php else : ?>
