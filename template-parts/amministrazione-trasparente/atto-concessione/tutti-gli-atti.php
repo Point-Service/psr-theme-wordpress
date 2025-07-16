@@ -4,12 +4,13 @@ remove_filter('template_redirect', 'redirect_canonical');
 
 global $wpdb;
 
+// Parametri GET
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 
-// Prendi gli anni disponibili dai post pubblicati (per la combo)
+// Recupera anni disponibili
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date)
     FROM {$wpdb->posts}
@@ -18,13 +19,14 @@ $years = $wpdb->get_col("
     ORDER BY post_date DESC
 ");
 
-// Costruisci gli argomenti per WP_Query
+// Query argomenti
 $args = array(
     'post_type'      => 'atto_concessione',
     'posts_per_page' => $max_posts,
     'orderby'        => 'date',
     'order'          => 'DESC',
     'paged'          => $paged,
+    'post_status'    => 'publish',
 );
 
 if (!empty($main_search_query)) {
@@ -42,7 +44,13 @@ if ($selected_year > 0) {
 // Esegui la query
 $the_query = new WP_Query($args);
 
-// Costruisci base URL per paginazione mantenendo i parametri
+// Reindirizza se la pagina è troppo alta (es. page=999)
+if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
+    wp_redirect(add_query_arg('page', $the_query->max_num_pages));
+    exit;
+}
+
+// Costruzione base URL per la paginazione
 $current_url = get_permalink();
 $base_url = add_query_arg(array(
     'search'      => $main_search_query,
@@ -55,14 +63,7 @@ $base_url = add_query_arg(array(
 <!-- FORM FILTRO -->
 <form method="get" class="mb-3 d-flex align-items-center gap-2 incarichi-filtro-form">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
-    <input
-        type="search"
-        id="search"
-        name="search"
-        class="form-control me-3"
-        placeholder="Cerca..."
-        value="<?php echo esc_attr($main_search_query); ?>"
-    >
+    <input type="search" id="search" name="search" class="form-control me-3" placeholder="Cerca..." value="<?php echo esc_attr($main_search_query); ?>">
 
     <label for="filter-year" class="form-label mb-0 me-2">Anno:</label>
     <select id="filter-year" name="filter_year" class="form-select w-auto me-3">
@@ -116,14 +117,7 @@ $base_url = add_query_arg(array(
                         <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
                     <?php endforeach; ?>
                 </ul>
-            <?php
-            
-            echo '<pre style="background:#f8f9fa; padding:1rem; font-size:14px;">';
-echo "SQL Query:\n";
-print_r($the_query->request);
-echo "</pre>";
-            
-            endif; ?>
+            <?php endif; ?>
         </nav>
     </div>
 
@@ -132,6 +126,7 @@ echo "</pre>";
         Nessun atto di concessione trovato.
     </div>
 <?php endif; ?>
+
 
 <!-- STILI PERSONALIZZATI -->
 <style>
