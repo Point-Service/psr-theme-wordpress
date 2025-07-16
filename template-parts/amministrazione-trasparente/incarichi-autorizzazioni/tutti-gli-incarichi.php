@@ -128,7 +128,7 @@ $base_url = add_query_arg(array(
 form.incarichi-filtro-form {
     display: flex;
     flex-wrap: nowrap; /* forziamo riga unica per affiancare bottone */
-    align-items: center;
+    align-items: left;
     gap: 1rem;
     padding: 1rem;
     background: #f8f9fa;
