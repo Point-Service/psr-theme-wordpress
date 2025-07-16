@@ -1,10 +1,12 @@
 <?php
-// Disattiva redirect canonico
+// Evita redirect automatici di WordPress
 remove_filter('template_redirect', 'redirect_canonical');
 
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 5;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1; // <-- qui uso ?page=2
+
+// Usa ?page=2 invece di ?paged=2
+$paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
 $args = array(
     'post_type'      => 'incarichi_dip',
@@ -14,7 +16,7 @@ $args = array(
     'paged'          => $paged,
 );
 
-if ($main_search_query) {
+if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
@@ -32,7 +34,7 @@ $the_query = new WP_Query($args);
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
             echo paginate_links(array(
-                'base'      => add_query_arg('page', '%#%'), // <-- page invece di paged
+                'base'      => add_query_arg('page', '%#%'),
                 'format'    => '',
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
