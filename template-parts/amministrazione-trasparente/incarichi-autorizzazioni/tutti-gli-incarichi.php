@@ -45,15 +45,16 @@ $the_query = new WP_Query($args);
 // Prendi permalink pagina corrente (senza query string)
 $current_url = get_permalink();
 
-// Costruiamo la base URL per paginazione mantenendo parametri search e filter_year
+// Costruiamo la base URL per paginazione mantenendo tutti i parametri
 $base_url = add_query_arg(array(
     'search'      => $main_search_query ? $main_search_query : '',
     'filter_year' => $selected_year > 0 ? $selected_year : 0,
+    'max_posts'   => $max_posts,
     'page'        => '%#%',
 ), $current_url);
 ?>
 
-<!-- FORM FILTRO ANNO -->
+<!-- FORM FILTRO -->
 <form method="get" class="mb-3 d-flex align-items-center gap-2 incarichi-filtro-form">
     <label for="search" class="form-label mb-0 me-2">Cerca:</label>
     <input
@@ -75,7 +76,13 @@ $base_url = add_query_arg(array(
         <?php endforeach; ?>
     </select>
 
-    <!-- Inserisco bottone in un div flex -->
+    <label for="max-posts" class="form-label mb-0 me-2">Elementi:</label>
+    <select id="max-posts" name="max_posts" class="form-select w-auto me-3">
+        <?php foreach ([5, 10, 20, 50, 100] as $n) : ?>
+            <option value="<?php echo $n; ?>" <?php selected($max_posts, $n); ?>><?php echo $n; ?></option>
+        <?php endforeach; ?>
+    </select>
+
     <div class="btn-wrapper">
         <button type="submit" class="btn btn-primary">Filtra</button>
     </div>
@@ -121,34 +128,31 @@ $base_url = add_query_arg(array(
     </div>
 <?php endif; ?>
 
-<!-- STILE MIGLIORATO PER FORM E PAGINAZIONE -->
+<!-- STILE FORM E PAGINAZIONE -->
 <style>
-/* FORM STILIZZATO */
 form.incarichi-filtro-form {
     display: flex;
-    flex-wrap: nowrap; /* tutto su una riga */
-    align-items: flex-start; /* allineamento verticale in alto */
+    flex-wrap: wrap;
+    align-items: flex-start;
     gap: 1rem;
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    max-width: 700px;
-    margin: 0 0 2rem 0; /* allinea a sinistra senza margin auto */
+    margin: 0 0 2rem 0;
 }
 
 form.incarichi-filtro-form label.form-label {
-    min-width: 90px;
     font-weight: 600;
     color: #495057;
     margin-bottom: 0;
-    align-self: center; /* etichette centrate verticalmente */
+    align-self: center;
 }
 
 form.incarichi-filtro-form input[type="search"],
 form.incarichi-filtro-form select.form-select {
     flex-grow: 1;
-    min-width: 150px;
+    min-width: 120px;
     max-width: 250px;
     border: 1.5px solid #ced4da;
     transition: border-color 0.3s ease;
@@ -163,8 +167,8 @@ form.incarichi-filtro-form select.form-select:focus {
 
 .btn-wrapper {
     flex-shrink: 0;
-    margin-left: auto;       /* sposta a destra */
-    align-self: flex-start;  /* allinea in alto, quindi “sale” sopra */
+    margin-left: auto;
+    align-self: flex-start;
 }
 
 form.incarichi-filtro-form button.btn-primary {
@@ -181,7 +185,6 @@ form.incarichi-filtro-form button.btn-primary:hover {
     box-shadow: 0 4px 8px rgba(11, 94, 215, 0.4);
 }
 
-/* PAGINAZIONE */
 .pagination-wrapper .pagination {
     display: flex;
     justify-content: center;
@@ -191,14 +194,10 @@ form.incarichi-filtro-form button.btn-primary:hover {
     gap: 0.5rem;
 }
 
-.pagination-wrapper .page-item {
-    /* no extra styles needed, but keep for clarity */
-}
-
 .pagination-wrapper .page-link {
     display: block;
     padding: 0.5rem 0.9rem;
-    color: #0d6efd; /* blu primario */
+    color: #0d6efd;
     border: 1.5px solid #0d6efd;
     border-radius: 0.4rem;
     font-weight: 600;
@@ -232,11 +231,9 @@ form.incarichi-filtro-form button.btn-primary:hover {
     cursor: default;
 }
 
-/* RESPONSIVE FORM */
 @media (max-width: 576px) {
     form.incarichi-filtro-form {
-        flex-wrap: wrap;
-        align-items: stretch;
+        flex-direction: column;
     }
 
     .btn-wrapper {
@@ -253,8 +250,4 @@ form.incarichi-filtro-form button.btn-primary:hover {
         height: 38px;
     }
 }
-
-
 </style>
-
-
