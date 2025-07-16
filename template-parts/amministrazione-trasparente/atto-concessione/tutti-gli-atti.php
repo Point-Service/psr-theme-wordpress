@@ -1,5 +1,5 @@
 <?php
-// Evita redirect automatici di WordPress che rovinano i parametri custom
+// Evita redirect automatici di WordPress che possono rompere i parametri custom
 remove_filter('template_redirect', 'redirect_canonical');
 
 global $wpdb;
@@ -9,46 +9,47 @@ $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search'
 $paged = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 
-// Prendi gli anni disponibili dai post pubblicati (per la combo)
+// Prendi gli anni disponibili dai meta _dci_atto_concessione_data
 $years = $wpdb->get_col("
-    SELECT DISTINCT YEAR(post_date)
-    FROM {$wpdb->posts}
-    WHERE post_type = 'atto_concessione' 
-      AND post_status = 'publish'
-    ORDER BY post_date DESC
+    SELECT DISTINCT YEAR(meta_value)
+    FROM {$wpdb->postmeta} pm
+    INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+    WHERE pm.meta_key = '_dci_atto_concessione_data'
+      AND p.post_type = 'atto_concessione'
+      AND p.post_status = 'publish'
+    ORDER BY meta_value DESC
 ");
 
 // Costruiamo argomenti per WP_Query
 $args = array(
     'post_type'      => 'atto_concessione',
     'posts_per_page' => $max_posts,
-    'orderby'        => 'meta_value_num', // se vuoi ordinare per meta, assicurati che la meta key sia settata nel query args, altrimenti usa 'date'
-    'order'          => 'DESC',
     'paged'          => $paged,
+    'orderby'        => 'meta_value',
+    'order'          => 'DESC',
+    'meta_key'       => '_dci_atto_concessione_data',
 );
 
-// Se vuoi ordinare per meta_value_num devi indicare anche la meta_key:
-$args['meta_key'] = '_dci_atto_concessione_data'; // Modifica con la tua meta key corretta
-
+// Aggiungiamo ricerca se presente
 if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
+// Filtro per anno nel meta date
 if ($selected_year > 0) {
-    $args['date_query'] = array(
-        array(
-            'year' => $selected_year,
-        ),
+    $args['meta_query'][] = array(
+        'key'     => '_dci_atto_concessione_data',
+        'value'   => array("{$selected_year}-01-01", "{$selected_year}-12-31"),
+        'compare' => 'BETWEEN',
+        'type'    => 'DATE',
     );
 }
 
-// Query personalizzata
+// Query
 $the_query = new WP_Query($args);
 
-// Prendi permalink pagina corrente (senza query string)
+// Base url per paginazione (manteniamo tutti i parametri tranne page)
 $current_url = get_permalink();
-
-// Costruiamo la base URL per paginazione mantenendo tutti i parametri
 $base_url = add_query_arg(array(
     'search'      => $main_search_query ? $main_search_query : '',
     'filter_year' => $selected_year > 0 ? $selected_year : 0,
@@ -254,3 +255,4 @@ form.atti-filtro-form button.btn-primary:hover {
     }
 }
 </style>
+
