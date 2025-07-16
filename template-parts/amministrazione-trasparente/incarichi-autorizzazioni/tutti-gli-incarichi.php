@@ -40,6 +40,22 @@ $prefix = "_dci_icad_";
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <!-- Qui viene generata la paginazione -->
             <?php echo dci_bootstrap_pagination(); ?>
+
+
+<nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+    <?php 
+    if (function_exists('the_posts_pagination')) {
+        the_posts_pagination(array(
+            'mid_size' => 2,
+            'prev_text' => '&laquo; Precedente',
+            'next_text' => 'Successivo &raquo;',
+        ));
+    }
+    ?>
+</nav>
+
+
+            
         </nav>
     </div>
 
