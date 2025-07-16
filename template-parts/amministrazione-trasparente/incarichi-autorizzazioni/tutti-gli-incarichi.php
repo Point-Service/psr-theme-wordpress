@@ -2,7 +2,7 @@
 global $post;
 
 // Numero di post per pagina, con un valore di fallback di 10
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 2;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 // Se è presente un termine di ricerca
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
@@ -38,24 +38,17 @@ $prefix = "_dci_icad_";
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-            <!-- Qui viene generata la paginazione -->
-            <?php echo dci_bootstrap_pagination(); ?>
-
-
-<nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-    <?php 
-    if (function_exists('the_posts_pagination')) {
-        the_posts_pagination(array(
-            'mid_size' => 2,
-            'prev_text' => '&laquo; Precedente',
-            'next_text' => 'Successivo &raquo;',
-        ));
-    }
-    ?>
-</nav>
-
-
-            
+            <?php 
+            // Verifica se ci sono più di una pagina
+            if ($the_query->max_num_pages > 1) {
+                // Usa la funzione standard di WordPress per la paginazione
+                the_posts_pagination(array(
+                    'mid_size' => 2,
+                    'prev_text' => '&laquo; Precedente',
+                    'next_text' => 'Successivo &raquo;',
+                ));
+            }
+            ?>
         </nav>
     </div>
 
@@ -64,3 +57,4 @@ $prefix = "_dci_icad_";
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
+
