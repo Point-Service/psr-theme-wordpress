@@ -343,10 +343,14 @@ add_action('init', 'my_custom_one_time_function');
 add_action( 'admin_enqueue_scripts', 'dci_bold_parent_terms_cmb2', 20 );
 function dci_bold_parent_terms_cmb2( $hook ) {
 
-    // Applica solo su /wp-admin/post-new.php?post_type=elemento_trasparenza
-    if ( $hook !== 'post-new.php' || ( $_GET['post_type'] ?? '' ) !== 'elemento_trasparenza' ) {
-        return;
-    }
+
+	// Applica solo su nuovo o modifica post di tipo 'elemento_trasparenza'
+	$post_type = $_GET['post_type'] ?? get_post_type( $_GET['post'] ?? 0 );
+	
+	if ( ! in_array( $hook, ['post-new.php', 'post.php'] ) || $post_type !== 'elemento_trasparenza' ) {
+	    return;
+	}
+	
 
     /* ----------  CSS inline  ---------- */
     wp_add_inline_style(
