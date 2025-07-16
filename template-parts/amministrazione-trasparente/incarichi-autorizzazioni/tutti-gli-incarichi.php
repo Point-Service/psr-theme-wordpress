@@ -65,10 +65,12 @@ $base_url = add_query_arg([
         </select>
     </div>
 
-    <div class="form-group align-self-end">
-        <button type="submit" class="btn btn-primary">Filtra</button>
+    <div class="form-group">
+        <label class="form-label d-none d-md-block">&nbsp;</label>
+        <button type="submit" class="btn btn-primary w-100">Filtra</button>
     </div>
 </form>
+
 
 <?php if ($the_query->have_posts()) : ?>
     <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
