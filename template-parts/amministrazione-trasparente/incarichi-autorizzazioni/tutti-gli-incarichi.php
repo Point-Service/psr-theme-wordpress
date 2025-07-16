@@ -76,7 +76,7 @@ $base_url = add_query_arg(array(
         <?php endforeach; ?>
     </select>
 
-    <label for="max-posts" class="form-label mb-0 me-2">Elementi:</label>
+    <label for="max-posts" class="form-label mb-0 me-2">Elementi per pagina:</label>
     <select id="max-posts" name="max_posts" class="form-select w-auto me-3">
         <?php foreach ([5, 10, 20, 50, 100] as $n) : ?>
             <option value="<?php echo $n; ?>" <?php selected($max_posts, $n); ?>><?php echo $n; ?></option>
