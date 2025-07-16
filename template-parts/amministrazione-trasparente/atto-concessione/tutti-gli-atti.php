@@ -105,32 +105,43 @@ $pagination_links = paginate_links([
     <?php endwhile; ?>
     <?php wp_reset_postdata(); ?>
 
-    <div class="row my-4">
-        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-            <?php
-            $pagination_links = paginate_links([
-                'base'      => esc_url_raw(remove_query_arg('paged')) . '&paged=%#%',
-                'format'    => '',
-                'current'   => $paged,
-                'total'     => $the_query->max_num_pages,
-                'prev_text' => __('&laquo; Precedente'),
-                'next_text' => __('Successivo &raquo;'),
-                'type'      => 'array',
-            ]);
+   <div class="row my-4">
+    <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+        <?php
+        // Costruisco base URL per la paginazione mantenendo parametri GET tranne 'page'
+        $current_url = get_permalink();
+        $query_args = $_GET;
+        unset($query_args['page']);
 
-            if ($pagination_links) : ?>
-                <ul class="pagination justify-content-center">
-                    <?php foreach ($pagination_links as $link) :
-                        $active = strpos($link, 'current') !== false ? ' active' : '';
-                        $link = str_replace('<a ', '<a class="page-link" ', $link);
-                        $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
-                    ?>
-                        <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
-        </nav>
-    </div>
+        $base_url = add_query_arg($query_args, $current_url);
+        $base_url = trailingslashit($base_url) . '%_%';
+
+        $pagination_links = paginate_links([
+            'base'      => $base_url . (strpos($base_url, '?') === false ? '?page=%#%' : '&page=%#%'),
+            'format'    => '',
+            'current'   => $paged,
+            'total'     => $the_query->max_num_pages,
+            'prev_text' => __('&laquo; Precedente'),
+            'next_text' => __('Successivo &raquo;'),
+            'type'      => 'array',
+            'end_size'  => 1,  // numeri di pagine all'inizio e alla fine
+            'mid_size'  => 2,  // numeri di pagine attorno alla pagina corrente
+        ]);
+
+        if ($pagination_links) : ?>
+            <ul class="pagination justify-content-center">
+                <?php foreach ($pagination_links as $link) :
+                    $active = strpos($link, 'current') !== false ? ' active' : '';
+                    $link = str_replace('<a ', '<a class="page-link" ', $link);
+                    $link = str_replace('<span class="current">', '<span class="page-link active" aria-current="page">', $link);
+                ?>
+                    <li class="page-item<?php echo $active; ?>"><?php echo $link; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </nav>
+</div>
+
 
 <?php else : ?>
     <div class="alert alert-info text-center" role="alert">
