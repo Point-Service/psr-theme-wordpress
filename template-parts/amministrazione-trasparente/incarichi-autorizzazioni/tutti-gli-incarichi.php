@@ -1,9 +1,9 @@
 <?php
 global $post;
 
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 100;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = max(1, get_query_var('paged') ? get_query_var('paged') : (isset($_GET['paged']) ? intval($_GET['paged']) : 1));
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $args = array(
     'post_type'      => 'incarichi_dip',
@@ -13,9 +13,6 @@ $args = array(
     'paged'          => $paged,
 );
 
-if ($main_search_query) {
-    $args['s'] = $main_search_query;
-}
 
 $the_query = new WP_Query($args);
 $prefix = "_dci_icad_";
@@ -30,10 +27,7 @@ $prefix = "_dci_icad_";
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-            <?php 
-            // Usa la funzione già presente nel tema (evita di ridefinirla)
-            echo dci_bootstrap_pagination(); 
-            ?>
+            <?php echo dci_bootstrap_pagination(); ?>
         </nav>
     </div>
 
