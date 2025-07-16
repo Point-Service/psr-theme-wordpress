@@ -1,17 +1,20 @@
 <?php
 global $post;
 
-// Imposta quanti post mostrare per pagina (di default 100)
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
-if ($max_posts <= 0) $max_posts = 10;
-
-// Cerca termini
+// Recupero parametri da URL
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 100;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
-// Gestione paged (supporta sia /page/2 che ?paged=2)
-$paged = max(1, get_query_var('paged') ? get_query_var('paged') : (isset($_GET['paged']) ? intval($_GET['paged']) : 1));
+// Paginazione: prima prova con get_query_var(), poi fallback su $_GET['paged']
+$paged = get_query_var('paged');
+if (!$paged && isset($_GET['paged'])) {
+    $paged = intval($_GET['paged']);
+}
+if ($paged < 1) {
+    $paged = 1;
+}
 
-// Argomenti della query
+// Costruzione argomenti query
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -20,41 +23,38 @@ $args = array(
     'paged'          => $paged,
 );
 
-if (!empty($main_search_query)) {
+// Se presente ricerca, aggiungila alla query
+if ($main_search_query) {
     $args['s'] = $main_search_query;
 }
 
+// Esegui la query
 $the_query = new WP_Query($args);
 $prefix = "_dci_icad_";
 ?>
 
 <?php if ($the_query->have_posts()) : ?>
-    <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
-        <?php get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card'); ?>
-    <?php endwhile; ?>
-    <?php wp_reset_postdata(); ?>
+
+    <?php while ($the_query->have_posts()) : $the_query->the_post();
+        get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card');
+    endwhile;
+    wp_reset_postdata(); ?>
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
-            // Mantieni i parametri della query string nei link di paginazione
-            $query_args = [];
-            if (!empty($_GET['search'])) {
-                $query_args['search'] = sanitize_text_field($_GET['search']);
-            }
-            if (!empty($_GET['max_posts'])) {
-                $query_args['max_posts'] = intval($_GET['max_posts']);
-            }
+            // Costruisci base URL per mantenere i parametri attuali
+            $pagination_base = add_query_arg(null, null);
+            $pagination_base = remove_query_arg('paged', $pagination_base);
 
             echo paginate_links([
-                'base'      => get_pagenum_link(1) . '%_%',
-                'format'    => (strpos(get_pagenum_link(1), '?') !== false ? '&paged=%#%' : '?paged=%#%'),
+                'base'      => $pagination_base . '&paged=%#%',
+                'format'    => '',
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
                 'type'      => 'list',
-                'add_args'  => $query_args,
-                'prev_text' => '&laquo;',
-                'next_text' => '&raquo;',
+                'prev_text' => __('&laquo; Precedente'),
+                'next_text' => __('Successivo &raquo;'),
             ]);
             ?>
         </nav>
