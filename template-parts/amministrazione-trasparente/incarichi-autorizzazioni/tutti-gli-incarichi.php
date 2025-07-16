@@ -1,20 +1,16 @@
 <?php
 global $post;
 
-// Recupero parametri da URL
+// Imposta il numero massimo di post per pagina
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
+
+// Recupera la query di ricerca, se presente
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
-// Paginazione: prima prova con get_query_var(), poi fallback su $_GET['paged']
-$paged = get_query_var('paged');
-if (!$paged && isset($_GET['paged'])) {
-    $paged = intval($_GET['paged']);
-}
-if ($paged < 1) {
-    $paged = 1;
-}
+// Recupera il numero di pagina (paged), forzandolo da $_GET per pagine statiche/template personalizzati
+$paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
 
-// Costruzione argomenti query
+// Costruisci gli argomenti della query
 $args = array(
     'post_type'      => 'incarichi_dip',
     'posts_per_page' => $max_posts,
@@ -23,7 +19,7 @@ $args = array(
     'paged'          => $paged,
 );
 
-// Se presente ricerca, aggiungila alla query
+// Aggiungi ricerca se presente
 if ($main_search_query) {
     $args['s'] = $main_search_query;
 }
@@ -35,27 +31,25 @@ $prefix = "_dci_icad_";
 
 <?php if ($the_query->have_posts()) : ?>
 
-    <?php while ($the_query->have_posts()) : $the_query->the_post();
-        get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card');
-    endwhile;
-    wp_reset_postdata(); ?>
+    <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
+        <?php get_template_part('template-parts/amministrazione-trasparente/incarichi-autorizzazioni/card'); ?>
+    <?php endwhile; ?>
+    
+    <?php wp_reset_postdata(); ?>
 
     <div class="row my-4">
         <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
             <?php
-            // Costruisci base URL per mantenere i parametri attuali
-            $pagination_base = add_query_arg(null, null);
-            $pagination_base = remove_query_arg('paged', $pagination_base);
-
-            echo paginate_links([
-                'base'      => $pagination_base . '&paged=%#%',
-                'format'    => '',
-                'current'   => $paged,
-                'total'     => $the_query->max_num_pages,
-                'type'      => 'list',
+            // Esempio di paginazione con paginate_links
+            echo paginate_links(array(
+                'base' => add_query_arg('paged', '%#%'),
+                'format' => '',
+                'current' => $paged,
+                'total' => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
                 'next_text' => __('Successivo &raquo;'),
-            ]);
+                'type' => 'list',
+            ));
             ?>
         </nav>
     </div>
@@ -65,4 +59,5 @@ $prefix = "_dci_icad_";
         Nessun incarico conferito trovato.
     </div>
 <?php endif; ?>
+
 
