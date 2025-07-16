@@ -1,7 +1,7 @@
 <?php
 global $post;
 
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 100;
+$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 $paged = max(1, get_query_var('paged') ? get_query_var('paged') : (isset($_GET['paged']) ? intval($_GET['paged']) : 1));
 
@@ -29,12 +29,9 @@ $prefix = "_dci_icad_";
     wp_reset_postdata(); ?>
 
     <div class="row my-4">
-        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-            <?php 
-            // Usa la funzione già presente nel tema (evita di ridefinirla)
-            echo dci_bootstrap_pagination(); 
-            ?>
-        </nav>
+    <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+        <?php echo dci_bootstrap_pagination(); ?>
+    </nav>
     </div>
 
 <?php else : ?>
