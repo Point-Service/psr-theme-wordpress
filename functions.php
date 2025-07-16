@@ -350,15 +350,15 @@ function dci_bold_parent_terms_cmb2( $hook ) {
         return;
     }
 
-    // Stili CSS per livelli
+    // Stili per ogni livello
     wp_add_inline_style(
         'wp-admin',
-        '.cmb2-term-level-0 { font-weight:700; color:#343a40; } /* grigio scuro */
-         .cmb2-term-level-1 { color:#0d6efd; font-weight:600; }
-         .cmb2-term-level-2 { color:#6c757d; font-style:italic; }'
+        '.cmb2-term-level-1 { color: #000; font-weight: 700; }      /* Nero */
+         .cmb2-term-level-2 { color: #343a40; font-weight: 600; }   /* Grigio scuro */
+         .cmb2-term-level-3 { color: #8B4513; font-style: italic; } /* Marrone */'
     );
 
-    // Script JS per analizzare il numero di &nbsp; in ogni label
+    // Script: assegna classi in base al numero di &nbsp;
     wp_add_inline_script(
         'jquery-core',
         <<<JS
@@ -370,11 +370,11 @@ function dci_bold_parent_terms_cmb2( $hook ) {
                         var nbspCount = (html.match(/&nbsp;/g) || []).length;
 
                         if (nbspCount === 0) {
-                            $(this).addClass('cmb2-term-level-0');
-                        } else if (nbspCount <= 2) {
                             $(this).addClass('cmb2-term-level-1');
-                        } else {
+                        } else if (nbspCount <= 2) {
                             $(this).addClass('cmb2-term-level-2');
+                        } else {
+                            $(this).addClass('cmb2-term-level-3');
                         }
                     });
                 });
@@ -383,6 +383,7 @@ function dci_bold_parent_terms_cmb2( $hook ) {
 JS
     );
 }
+
 
 
 
