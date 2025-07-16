@@ -162,7 +162,11 @@ form.incarichi-filtro-form button.btn-primary {
     font-weight: 600;
     border-radius: 0.4rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    height: 38px; /* per allineamento verticale con input */
+    align-self: flex-end; /* forza l’allineamento basso */
+    margin-top: auto;
 }
+
 
 form.incarichi-filtro-form button.btn-primary:hover {
     background-color: #0b5ed7;
