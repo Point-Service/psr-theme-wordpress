@@ -22,21 +22,19 @@ while ( have_posts() ) :
 
 	
 
+
 	// Anno conferimento - gestione migliorata
 	$anno_conf_raw = get_post_meta( $id, $prefix . 'anno_conferimento', true );
 	
-	if ( ! empty( $anno_conf_raw ) ) {
-	    // Se è un anno valido (4 cifre)
-	    if ( preg_match( '/^\d{4}$/', $anno_conf_raw ) ) {
-	        // Verifica che l'anno sia un numero positivo
-	        $anno_conf = intval($anno_conf_raw) > 0 ? $anno_conf_raw : '-';
-	    } else {
-	        // In caso di formati non validi o conversioni fallite, restituire '-'
-	        $anno_conf = '-';
-	    }
+	// Verifica se il valore è valido (4 cifre)
+	if ( ! empty( $anno_conf_raw ) && preg_match( '/^\d{4}$/', $anno_conf_raw ) ) {
+	    // Se il valore è un anno valido (4 cifre), lo mostriamo
+	    $anno_conf = $anno_conf_raw;
 	} else {
-	    $anno_conf = '-'; // Se non c'è, ritorna '-'
+	    // Altrimenti ritorniamo "-"
+	    $anno_conf = '-';
 	}
+
 
 
 
