@@ -22,16 +22,15 @@ while ( have_posts() ) :
 
 
 	// Anno conferimento - gestione migliorata
-	$anno_conf_raw = get_post_meta($id, $prefix . 'anno_conferimento', true);
+	$anno_conferimento = get_post_meta(get_the_ID(), $prefix . 'anno_conferimento', true);
 	
-	// Verifica se il valore è valido e ha il formato corretto (4 cifre per l'anno)
-	if (!empty($anno_conf_raw) && preg_match('/^\d{4}$/', $anno_conf_raw)) {
-	    // Se è un anno valido (4 cifre), lo mostriamo
-	    $anno_conf = $anno_conf_raw;
+	// Verifica che l'anno di conferimento sia un numero valido a 4 cifre
+	if (!empty($anno_conferimento) && preg_match('/^\d{4}$/', $anno_conferimento)) {
+	    $anno_conferimento_formatted = $anno_conferimento;
 	} else {
-	    // Se il valore non è valido, visualizziamo un trattino "-"
-	    $anno_conf = '-';
+	    $anno_conferimento_formatted = '-';
 	}
+
 
 
 	// Compenso lordo - gestione numerica
@@ -92,7 +91,7 @@ while ( have_posts() ) :
 			</div>
 			<div class="col-6">
 				<small>Anno conferimento:</small>
-				<p class="fw-semibold font-monospace"><?php echo esc_html( $anno_conf ); ?></p>
+				<p class="fw-semibold font-monospace"><?php echo esc_html( $anno_conferimento_formatted ); ?></p>
 			</div>
 		</div>
 	</div>
