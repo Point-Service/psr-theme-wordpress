@@ -21,20 +21,23 @@ while ( have_posts() ) :
 	$data_pubbl        = get_the_date( 'j F Y', $id );
 
 	
+
 	// Anno conferimento - gestione migliorata
 	$anno_conf_raw = get_post_meta( $id, $prefix . 'anno_conferimento', true );
+	
 	if ( ! empty( $anno_conf_raw ) ) {
 	    // Se è un anno valido (4 cifre)
 	    if ( preg_match( '/^\d{4}$/', $anno_conf_raw ) ) {
-	        $anno_conf = $anno_conf_raw; // Direttamente l'anno
+	        // Verifica che l'anno sia un numero positivo
+	        $anno_conf = intval($anno_conf_raw) > 0 ? $anno_conf_raw : '-';
 	    } else {
-	        // Tentativo di estrarre l'anno da una data completa
-	        $timestamp = strtotime( $anno_conf_raw );
-	        $anno_conf = $timestamp ? date( 'Y', $timestamp ) : '-'; // Se non valido, torna '-'
+	        // In caso di formati non validi o conversioni fallite, restituire '-'
+	        $anno_conf = '-';
 	    }
 	} else {
 	    $anno_conf = '-'; // Se non c'è, ritorna '-'
 	}
+
 
 
 	// Compenso lordo - gestione numerica
