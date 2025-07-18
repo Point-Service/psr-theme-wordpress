@@ -263,14 +263,20 @@ function dci_show_custom_columns( $out, $column, $term_id ) {
 /* ------------------------------------------------------------------
  * 5. Aggiungi campi personalizzati nella "Modifica rapida" della tassonomia
  * ---------------------------------------------------------------- */
-add_action( 'tipi_cat_amm_trasp_edit_form', 'dci_add_quick_edit_fields', 10, 2 );
-function dci_add_quick_edit_fields( $term, $taxonomy ) {
+add_action( 'quick_edit_custom_box', 'dci_quick_edit_custom_box', 10, 2 );
+function dci_quick_edit_custom_box( $column_name, $term ) {
+    // Solo per la tassonomia 'tipi_cat_amm_trasp'
+    if ( 'tipi_cat_amm_trasp' !== $term->taxonomy ) {
+        return;
+    }
+
     // Recupera i metadati
     $ordinamento = get_term_meta( $term->term_id, 'ordinamento', true );
     $visualizza = get_term_meta( $term->term_id, 'visualizza_elemento', true );
     $term_url = get_term_meta( $term->term_id, 'term_url', true );
     $open_new_window = get_term_meta( $term->term_id, 'open_new_window', true );
 
+    // Aggiungi i campi personalizzati
     ?>
     <fieldset class="inline-edit-col-right">
         <div class="inline-edit-col">
@@ -308,17 +314,18 @@ function dci_add_quick_edit_fields( $term, $taxonomy ) {
 /* ------------------------------------------------------------------
  * 6. Salva i dati modificati tramite "Modifica rapida"
  * ---------------------------------------------------------------- */
-add_action( 'edited_tipi_cat_amm_trasp', 'dci_save_quick_edit_meta', 10, 2 );
+add_action( 'save_quick_edit', 'dci_save_quick_edit_meta', 10, 2 );
 function dci_save_quick_edit_meta( $term_id ) {
 
-    // Controlla se sono stati inviati i dati dei campi personalizzati
+    // Verifica se i campi personalizzati sono stati inviati e salva
     if ( isset( $_POST['ordinamento'] ) ) {
         update_term_meta( $term_id, 'ordinamento', intval( $_POST['ordinamento'] ) );
     }
 
     if ( isset( $_POST['visualizza_elemento'] ) ) {
-        $visualizza = $_POST['visualizza_elemento'] === '1' ? '1' : '0';
-        update_term_meta( $term_id, 'visualizza_elemento', $visualizza );
+        update_term_meta( $term_id, 'visualizza_elemento', '1' );
+    } else {
+        update_term_meta( $term_id, 'visualizza_elemento', '0' );
     }
 
     if ( isset( $_POST['term_url'] ) ) {
@@ -326,13 +333,11 @@ function dci_save_quick_edit_meta( $term_id ) {
     }
 
     if ( isset( $_POST['open_new_window'] ) ) {
-        $open_new_window = $_POST['open_new_window'] === '1' ? '1' : '0';
-        update_term_meta( $term_id, 'open_new_window', $open_new_window );
+        update_term_meta( $term_id, 'open_new_window', '1' );
+    } else {
+        update_term_meta( $term_id, 'open_new_window', '0' );
     }
 }
-
-
-
 
 
 
