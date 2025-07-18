@@ -44,14 +44,19 @@ while ( have_posts() ) :
 
 	$dirigente_flag   = get_post_meta( $id, $prefix . 'dirigente_non_dirigente', true );
 
-	// Data conferimento autorizzazione - gestione migliorata
-	$data_aut_raw = get_post_meta( $id, $prefix . 'data_conferimento_autorizzazione', true );
-	if ( ! empty( $data_aut_raw ) ) {
-	    // Assumiamo che sia un timestamp Unix (numero intero)
-	    $timestamp = intval( $data_aut_raw );
-	    $data_aut = $timestamp ? date_i18n( 'j F Y', $timestamp ) : '-';
+
+	
+	// Anno conferimento - gestione migliorata
+	$anno_conf_raw = get_post_meta( $id, $prefix . 'anno_conferimento', true );
+	if ( ! empty( $anno_conf_raw ) ) {
+	    if ( preg_match( '/^\d{4}$/', $anno_conf_raw ) ) {
+	        $anno_conf = $anno_conf_raw;
+	    } else {
+	        $timestamp = strtotime( $anno_conf_raw );
+	        $anno_conf = $timestamp ? date_i18n( 'Y', $timestamp ) : '-';
+	    }
 	} else {
-	    $data_aut = '-';
+	    $anno_conf = '-';
 	}
 
 	$oggetto      = get_post_meta( $id, $prefix . 'oggetto_incarico', true );
