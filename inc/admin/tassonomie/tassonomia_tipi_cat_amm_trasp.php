@@ -258,5 +258,86 @@ function dci_show_custom_columns( $out, $column, $term_id ) {
 
 	return $out;
 }
+
+
+/* ------------------------------------------------------------------
+ * 5. Aggiungi campi personalizzati nella "Modifica rapida" della tassonomia
+ * ---------------------------------------------------------------- */
+add_action( 'tipi_cat_amm_trasp_edit_form', 'dci_add_quick_edit_fields', 10, 2 );
+function dci_add_quick_edit_fields( $term, $taxonomy ) {
+    // Recupera i metadati
+    $ordinamento = get_term_meta( $term->term_id, 'ordinamento', true );
+    $visualizza = get_term_meta( $term->term_id, 'visualizza_elemento', true );
+    $term_url = get_term_meta( $term->term_id, 'term_url', true );
+    $open_new_window = get_term_meta( $term->term_id, 'open_new_window', true );
+
+    ?>
+    <fieldset class="inline-edit-col-right">
+        <div class="inline-edit-col">
+            <!-- Ordinamento -->
+            <label>
+                <span class="title"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></span>
+                <input type="number" name="ordinamento" class="input-text" value="<?php echo esc_attr( $ordinamento ); ?>" />
+            </label>
+            
+            <!-- Visualizza elemento -->
+            <label>
+                <span class="title"><?php _e( 'Visualizza elemento', 'design_comuni_italia' ); ?></span>
+                <input type="checkbox" name="visualizza_elemento" value="1" <?php checked( $visualizza, '1' ); ?> />
+                <span class="description"><?php _e( 'Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia' ); ?></span>
+            </label>
+            
+            <!-- URL personalizzato -->
+            <label>
+                <span class="title"><?php _e( 'URL personalizzato', 'design_comuni_italia' ); ?></span>
+                <input type="url" name="term_url" class="input-text" value="<?php echo esc_attr( $term_url ); ?>" placeholder="https://..." />
+                <span class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></span>
+            </label>
+            
+            <!-- Apri in una nuova finestra -->
+            <label>
+                <span class="title"><?php _e( 'Apri in una nuova finestra', 'design_comuni_italia' ); ?></span>
+                <input type="checkbox" name="open_new_window" value="1" <?php checked( $open_new_window, '1' ); ?> />
+                <span class="description"><?php _e( 'Apri il link in una nuova finestra', 'design_comuni_italia' ); ?></span>
+            </label>
+        </div>
+    </fieldset>
+    <?php
+}
+
+/* ------------------------------------------------------------------
+ * 6. Salva i dati modificati tramite "Modifica rapida"
+ * ---------------------------------------------------------------- */
+add_action( 'edited_tipi_cat_amm_trasp', 'dci_save_quick_edit_meta', 10, 2 );
+function dci_save_quick_edit_meta( $term_id ) {
+
+    // Controlla se sono stati inviati i dati dei campi personalizzati
+    if ( isset( $_POST['ordinamento'] ) ) {
+        update_term_meta( $term_id, 'ordinamento', intval( $_POST['ordinamento'] ) );
+    }
+
+    if ( isset( $_POST['visualizza_elemento'] ) ) {
+        $visualizza = $_POST['visualizza_elemento'] === '1' ? '1' : '0';
+        update_term_meta( $term_id, 'visualizza_elemento', $visualizza );
+    }
+
+    if ( isset( $_POST['term_url'] ) ) {
+        update_term_meta( $term_id, 'term_url', esc_url( $_POST['term_url'] ) );
+    }
+
+    if ( isset( $_POST['open_new_window'] ) ) {
+        $open_new_window = $_POST['open_new_window'] === '1' ? '1' : '0';
+        update_term_meta( $term_id, 'open_new_window', $open_new_window );
+    }
+}
+
+
+
+
+
+
+
+
+
 ?>
 
