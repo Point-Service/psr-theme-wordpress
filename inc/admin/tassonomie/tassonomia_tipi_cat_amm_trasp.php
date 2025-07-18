@@ -51,26 +51,7 @@ function dci_tassonomia_add_fields() {
 	// Ottieni il termine corrente (se esiste)
 	$parent_term_id = isset($_GET['parent']) ? $_GET['parent'] : 0;  // Per aggiungere, controlla se è una categoria principale
 
-	// Aggiungi il campo di selezione per la categoria genitore
-	?>
-	<div class="form-field term-parent-wrap">
-		<label for="parent"><?php _e( 'Categoria Padre', 'design_comuni_italia' ); ?></label>
-		<?php
-		wp_dropdown_categories( array(
-			'taxonomy'         => 'tipi_cat_amm_trasp',
-			'name'             => 'parent',
-			'id'               => 'parent',
-			'hide_empty'       => false,
-			'show_option_none' => __( 'Seleziona una categoria principale', 'design_comuni_italia' ),
-			'selected'         => $parent_term_id,
-			'orderby'          => 'name',
-			'option_none_value' => 0
-		) );
-		?>
-	</div>
-	<?php
-
-	// Ordina per categoria principale o secondaria
+	// Controlla se la categoria è principale
 	if ( $parent_term_id == 0 ) {
 		// Nascondi i campi URL e apri in una nuova finestra per le categorie principali
 		?>
@@ -124,7 +105,87 @@ function dci_tassonomia_add_fields() {
 		<?php
 	}
 }
- 
+
+/* ----- Modifica (pagina “Modifica termine”) */
+add_action( 'tipi_cat_amm_trasp_edit_form_fields', 'dci_tassonomia_edit_fields' );
+function dci_tassonomia_edit_fields( $term ) {
+
+	$ordinamento    = get_term_meta( $term->term_id, 'ordinamento', true );
+	$visualizza     = get_term_meta( $term->term_id, 'visualizza_elemento', true );
+	$term_url       = get_term_meta( $term->term_id, 'term_url', true ); // Prendi l'URL dal meta
+	$open_new_window = get_term_meta( $term->term_id, 'open_new_window', true ); // Prendi il flag per "Apri in nuova finestra"
+
+	// Ottieni il termine genitore
+	$parent_term_id = $term->parent ? $term->parent : 0;
+
+	// Se la categoria è principale (parent = 0), nascondi i campi URL e apri in una nuova finestra
+	if ( $parent_term_id == 0 ) {
+		?>
+		<!-- Ordinamento -->
+		<tr class="form-field term-ordinamento-wrap">
+			<th scope="row"><label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label></th>
+			<td>
+				<input name="ordinamento" id="ordinamento" type="number" min="0" step="1" value="<?php echo esc_attr( $ordinamento ?: 0 ); ?>" />
+				<p class="description"><?php _e( 'Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia' ); ?></p>
+			</td>
+		</tr>
+
+		<!-- Visualizza elemento -->
+		<tr class="form-field term-visualizza-elemento-wrap">
+			<th scope="row"><?php _e( 'Visualizza elemento', 'design_comuni_italia' ); ?></th>
+			<td>
+				<label for="visualizza_elemento">
+					<input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" <?php checked( $visualizza, '1' ); ?> />
+					<?php _e( 'Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia' ); ?>
+				</label>
+			</td>
+		</tr>
+		<?php
+	} else {
+		// Se è una categoria secondaria, mostra i campi URL
+		?>
+		<!-- URL personalizzato -->
+		<tr class="form-field term-url-wrap">
+			<th scope="row"><label for="term_url"><?php _e( 'URL personalizzato', 'design_comuni_italia' ); ?></label></th>
+			<td>
+				<input name="term_url" id="term_url" type="url" value="<?php echo esc_attr( $term_url ); ?>" placeholder="https://..." />
+				<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></p>
+			</td>
+		</tr>
+
+		<!-- Apri in una nuova finestra -->
+		<tr class="form-field term-open-new-window-wrap">
+			<th scope="row"><?php _e( 'Apri in una nuova finestra', 'design_comuni_italia' ); ?></th>
+			<td>
+				<label for="open_new_window">
+					<input name="open_new_window" id="open_new_window" type="checkbox" value="1" <?php checked( $open_new_window, '1' ); ?> />
+					<?php _e( 'Apri il link in una nuova finestra', 'design_comuni_italia' ); ?>
+				</label>
+			</td>
+		</tr>
+
+		<!-- Ordinamento -->
+		<tr class="form-field term-ordinamento-wrap">
+			<th scope="row"><label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label></th>
+			<td>
+				<input name="ordinamento" id="ordinamento" type="number" min="0" step="1" value="<?php echo esc_attr( $ordinamento ?: 0 ); ?>" />
+				<p class="description"><?php _e( 'Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia' ); ?></p>
+			</td>
+		</tr>
+
+		<!-- Visualizza elemento -->
+		<tr class="form-field term-visualizza-elemento-wrap">
+			<th scope="row"><?php _e( 'Visualizza elemento', 'design_comuni_italia' ); ?></th>
+			<td>
+				<label for="visualizza_elemento">
+					<input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" <?php checked( $visualizza, '1' ); ?> />
+					<?php _e( 'Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia' ); ?>
+				</label>
+			</td>
+		</tr>
+	<?php }
+}
+
 /* ------------------------------------------------------------------
  * 3. Salva i metadati
  * ---------------------------------------------------------------- */
@@ -156,67 +217,49 @@ add_filter('manage_edit-tipi_cat_amm_trasp_columns', 'dci_custom_column_order');
 function dci_custom_column_order($columns) {
     $new_columns = [];
 
-    // Riorganizza le colonne
-    $new_columns['cb'] = $columns['cb'];
-    $new_columns['name'] = $columns['name'];
-    $new_columns['ordinamento'] = __('Ordinamento', 'design_comuni_italia');
-    $new_columns['visualizza_elemento'] = __('Visualizza', 'design_comuni_italia');
-    $new_columns['term_url'] = __('URL', 'design_comuni_italia');
-    $new_columns['taxonomy'] = $columns['taxonomy'];
+    foreach ($columns as $key => $label) {
+        $new_columns[$key] = $label;
+
+        // Dopo "name" inserisci Ordinamento, Visualizza e URL
+        if ($key === 'name') {
+            $new_columns['ordinamento'] = __('Ordinamento', 'design_comuni_italia');
+            $new_columns['visualizza_item'] = __('Visualizza', 'design_comuni_italia');
+            $new_columns['term_url'] = __('URL', 'design_comuni_italia');
+        }
+    }
 
     return $new_columns;
 }
 
-/* 4.2 – Aggiungi il contenuto nelle colonne personalizzate */
-add_filter('manage_tipi_cat_amm_trasp_custom_column', 'dci_custom_column_content', 10, 3);
-function dci_custom_column_content($content, $column_name, $term_id) {
-    if ($column_name == 'ordinamento') {
-        $content = get_term_meta($term_id, 'ordinamento', true);
-    }
+/* 4.2 – Popola le colonne “Ordinamento”, “Visualizza” e “URL” */
+add_filter( 'manage_tipi_cat_amm_trasp_custom_column', 'dci_show_custom_columns', 10, 3 );
+function dci_show_custom_columns( $out, $column, $term_id ) {
 
-    if ($column_name == 'visualizza_elemento') {
-        $content = get_term_meta($term_id, 'visualizza_elemento', true) ? 'Sì' : 'No';
-    }
+	switch ( $column ) {
 
-    if ($column_name == 'term_url') {
-        $content = get_term_meta($term_id, 'term_url', true);
-    }
+		case 'ordinamento':
+			$val = get_term_meta( $term_id, 'ordinamento', true );
+			return $val !== '' ? esc_html( $val ) : '&mdash;';
 
-    return $content;
-}
+		case 'visualizza_item':
+			$show = get_term_meta( $term_id, 'visualizza_elemento', true );
+			$show = ( $show === '' ) ? '1' : $show; // default visibile
+			return $show === '1'
+				? __( 'Sì', 'design_comuni_italia' )
+				: __( 'No', 'design_comuni_italia' );
 
-/* ------------------------------------------------------------------
- * 5. Javascript per la gestione dinamica dei campi
- * ---------------------------------------------------------------- */
-add_action('admin_footer', 'dci_admin_footer_script');
-function dci_admin_footer_script() {
-	// Solo nella pagina di creazione di nuovi termini per la tassonomia tipi_cat_amm_trasp
-	if ( isset( $_GET['taxonomy'] ) && $_GET['taxonomy'] === 'tipi_cat_amm_trasp' ) :
-	?>
-	<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			// Nascondi o mostra i campi in base alla selezione della categoria padre
-			$('#parent').on('change', function() {
-				var parentTerm = $(this).val();
-				
-				// Se la categoria è principale (ID == 0)
-				if (parentTerm == 0) {
-					// Nascondi i campi URL e "Apri in una nuova finestra"
-					$('.term-url-wrap').hide();
-					$('.term-open-new-window-wrap').hide();
-				} else {
-					// Mostra i campi URL e "Apri in una nuova finestra"
-					$('.term-url-wrap').show();
-					$('.term-open-new-window-wrap').show();
-				}
-			});
+		case 'term_url':
+			$term_url = get_term_meta( $term_id, 'term_url', true );
+			$open_new_window = get_term_meta( $term_id, 'open_new_window', true );
+			if ( $term_url ) {
+				$target = $open_new_window ? ' target="_blank"' : '';
+				return '<a href="' . esc_url( $term_url ) . '"' . $target . '>' . esc_html( $term_url ) . '</a>';
+			}
+			return '&mdash;';
+	}
 
-			// Esegui il controllo anche all'inizio in caso di caricamento
-			$('#parent').trigger('change');
-		});
-	</script>
-	<?php
-	endif;
+	return $out;
 }
 ?>
+
 
