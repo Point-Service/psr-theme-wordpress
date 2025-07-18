@@ -138,9 +138,7 @@ function dci_tassonomia_edit_fields( $term ) {
 					<input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" <?php checked( $visualizza, '1' ); ?> />
 					<?php _e( 'Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia' ); ?>
 				</label>
-			</td>
-		</tr>
-		<?php
+				<?php
 	} else {
 		// Se è una categoria secondaria, mostra i campi URL
 		?>
@@ -261,5 +259,4 @@ function dci_show_custom_columns( $out, $column, $term_id ) {
 	return $out;
 }
 ?>
-
 
