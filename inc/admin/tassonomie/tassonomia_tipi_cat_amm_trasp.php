@@ -55,6 +55,14 @@ function dci_tassonomia_add_fields() { ?>
 		<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></p>
 	</div>
 
+	<!-- Apri in una nuova finestra -->
+	<div class="form-field term-open-new-window-wrap">
+		<label for="open_new_window">
+			<input name="open_new_window" id="open_new_window" type="checkbox" value="1" />
+			<?php _e( 'Apri il link in una nuova finestra', 'design_comuni_italia' ); ?>
+		</label>
+	</div>
+
 	<!-- Ordinamento -->
 	<div class="form-field term-ordinamento-wrap">
 		<label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label>
@@ -75,9 +83,10 @@ function dci_tassonomia_add_fields() { ?>
 add_action( 'tipi_cat_amm_trasp_edit_form_fields', 'dci_tassonomia_edit_fields' );
 function dci_tassonomia_edit_fields( $term ) {
 
-	$ordinamento = get_term_meta( $term->term_id, 'ordinamento', true );
-	$visualizza  = get_term_meta( $term->term_id, 'visualizza_elemento', true );
-	$term_url    = get_term_meta( $term->term_id, 'term_url', true ); // Prendi l'URL dal meta
+	$ordinamento    = get_term_meta( $term->term_id, 'ordinamento', true );
+	$visualizza     = get_term_meta( $term->term_id, 'visualizza_elemento', true );
+	$term_url       = get_term_meta( $term->term_id, 'term_url', true ); // Prendi l'URL dal meta
+	$open_new_window = get_term_meta( $term->term_id, 'open_new_window', true ); // Prendi il flag per "Apri in nuova finestra"
 
 	if ( $visualizza === '' ) {
 		$visualizza = '1'; // default: visibile
@@ -89,6 +98,17 @@ function dci_tassonomia_edit_fields( $term ) {
 		<td>
 			<input name="term_url" id="term_url" type="url" value="<?php echo esc_attr( $term_url ); ?>" placeholder="https://..." />
 			<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></p>
+		</td>
+	</tr>
+
+	<!-- Apri in una nuova finestra -->
+	<tr class="form-field term-open-new-window-wrap">
+		<th scope="row"><?php _e( 'Apri in una nuova finestra', 'design_comuni_italia' ); ?></th>
+		<td>
+			<label for="open_new_window">
+				<input name="open_new_window" id="open_new_window" type="checkbox" value="1" <?php checked( $open_new_window, '1' ); ?> />
+				<?php _e( 'Apri il link in una nuova finestra', 'design_comuni_italia' ); ?>
+			</label>
 		</td>
 	</tr>
 
@@ -124,19 +144,22 @@ function dci_save_term_meta( $term_id ) {
 		update_term_meta( $term_id, 'ordinamento', intval( $_POST['ordinamento'] ) );
 	}
 
-	if ( isset( $_POST['term_url'] ) ) {
-		update_term_meta( $term_id, 'term_url', esc_url_raw( $_POST['term_url'] ) );
-	}
-
 	$visualizza = isset( $_POST['visualizza_elemento'] ) ? '1' : '0';
 	update_term_meta( $term_id, 'visualizza_elemento', $visualizza );
+
+	if ( isset( $_POST['term_url'] ) ) {
+		update_term_meta( $term_id, 'term_url', esc_url( $_POST['term_url'] ) );
+	}
+
+	$open_new_window = isset( $_POST['open_new_window'] ) ? '1' : '0';
+	update_term_meta( $term_id, 'open_new_window', $open_new_window );
 }
 
 /* ------------------------------------------------------------------
  * 4. Colonne personalizzate nella tabella dei termini
  * ---------------------------------------------------------------- */
 
-/* 4.1 – Aggiunge “Ordinamento” e “Visualizza” */
+/* 4.1 – Aggiunge “Ordinamento”, “Visualizza” e “URL” */
 add_filter('manage_edit-tipi_cat_amm_trasp_columns', 'dci_custom_column_order');
 function dci_custom_column_order($columns) {
     $new_columns = [];
@@ -144,7 +167,7 @@ function dci_custom_column_order($columns) {
     foreach ($columns as $key => $label) {
         $new_columns[$key] = $label;
 
-        // Dopo "name" inserisci Ordinamento e Visualizza
+        // Dopo "name" inserisci Ordinamento, Visualizza e URL
         if ($key === 'name') {
             $new_columns['ordinamento'] = __('Ordinamento', 'design_comuni_italia');
             $new_columns['visualizza_item'] = __('Visualizza', 'design_comuni_italia');
@@ -174,9 +197,15 @@ function dci_show_custom_columns( $out, $column, $term_id ) {
 
 		case 'term_url':
 			$term_url = get_term_meta( $term_id, 'term_url', true );
-			return $term_url ? '<a href="' . esc_url( $term_url ) . '" target="_blank">' . esc_html( $term_url ) . '</a>' : '&mdash;';
+			$open_new_window = get_term_meta( $term_id, 'open_new_window', true );
+			if ( $term_url ) {
+				$target = $open_new_window ? ' target="_blank"' : '';
+				return '<a href="' . esc_url( $term_url ) . '"' . $target . '>' . esc_html( $term_url ) . '</a>';
+			}
+			return '&mdash;';
 	}
 
 	return $out;
 }
 ?>
+
