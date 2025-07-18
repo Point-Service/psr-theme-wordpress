@@ -20,22 +20,18 @@ while ( have_posts() ) :
 	$descrizione_breve = get_post_meta( $id, $prefix . 'descrizione_breve', true );
 	$data_pubbl        = get_the_date( 'j F Y', $id );
 
-	
-
 
 	// Anno conferimento - gestione migliorata
-	$anno_conf_raw = get_post_meta( $id, $prefix . 'anno_conferimento', true );
+	$anno_conf_raw = get_post_meta($id, $prefix . 'anno_conferimento', true);
 	
-	// Verifica se il valore è valido (4 cifre)
-	if ( ! empty( $anno_conf_raw ) && preg_match( '/^\d{4}$/', $anno_conf_raw ) ) {
-	    // Se il valore è un anno valido (4 cifre), lo mostriamo
+	// Verifica se il valore è valido e ha il formato corretto (4 cifre per l'anno)
+	if (!empty($anno_conf_raw) && preg_match('/^\d{4}$/', $anno_conf_raw)) {
+	    // Se è un anno valido (4 cifre), lo mostriamo
 	    $anno_conf = $anno_conf_raw;
 	} else {
-	    // Altrimenti ritorniamo "-"
+	    // Se il valore non è valido, visualizziamo un trattino "-"
 	    $anno_conf = '-';
 	}
-
-
 
 
 	// Compenso lordo - gestione numerica
@@ -49,19 +45,14 @@ while ( have_posts() ) :
 
 	$dirigente_flag   = get_post_meta( $id, $prefix . 'dirigente_non_dirigente', true );
 
-
-	
-	// Anno conferimento - gestione migliorata
-	$anno_conf_raw = get_post_meta( $id, $prefix . 'anno_conferimento', true );
-	if ( ! empty( $anno_conf_raw ) ) {
-	    if ( preg_match( '/^\d{4}$/', $anno_conf_raw ) ) {
-	        $anno_conf = $anno_conf_raw;
-	    } else {
-	        $timestamp = strtotime( $anno_conf_raw );
-	        $anno_conf = $timestamp ? date_i18n( 'Y', $timestamp ) : '-';
-	    }
+	// Data conferimento autorizzazione - gestione migliorata
+	$data_aut_raw = get_post_meta( $id, $prefix . 'data_conferimento_autorizzazione', true );
+	if ( ! empty( $data_aut_raw ) ) {
+	    // Assumiamo che sia un timestamp Unix (numero intero)
+	    $timestamp = intval( $data_aut_raw );
+	    $data_aut = $timestamp ? date_i18n( 'j F Y', $timestamp ) : '-';
 	} else {
-	    $anno_conf = '-';
+	    $data_aut = '-';
 	}
 
 	$oggetto      = get_post_meta( $id, $prefix . 'oggetto_incarico', true );
