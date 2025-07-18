@@ -48,6 +48,13 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 /* ----- Aggiungi (pagina “Aggiungi nuovo”) */
 add_action( 'tipi_cat_amm_trasp_add_form_fields', 'dci_tassonomia_add_fields' );
 function dci_tassonomia_add_fields() { ?>
+	<!-- URL personalizzato -->
+	<div class="form-field term-url-wrap">
+		<label for="term_url"><?php _e( 'URL personalizzato', 'design_comuni_italia' ); ?></label>
+		<input name="term_url" id="term_url" type="url" value="" placeholder="https://..." />
+		<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></p>
+	</div>
+
 	<!-- Ordinamento -->
 	<div class="form-field term-ordinamento-wrap">
 		<label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label>
@@ -70,10 +77,21 @@ function dci_tassonomia_edit_fields( $term ) {
 
 	$ordinamento = get_term_meta( $term->term_id, 'ordinamento', true );
 	$visualizza  = get_term_meta( $term->term_id, 'visualizza_elemento', true );
+	$term_url    = get_term_meta( $term->term_id, 'term_url', true ); // Prendi l'URL dal meta
+
 	if ( $visualizza === '' ) {
 		$visualizza = '1'; // default: visibile
 	}
 	?>
+	<!-- URL personalizzato -->
+	<tr class="form-field term-url-wrap">
+		<th scope="row"><label for="term_url"><?php _e( 'URL personalizzato', 'design_comuni_italia' ); ?></label></th>
+		<td>
+			<input name="term_url" id="term_url" type="url" value="<?php echo esc_attr( $term_url ); ?>" placeholder="https://..." />
+			<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></p>
+		</td>
+	</tr>
+
 	<!-- Ordinamento -->
 	<tr class="form-field term-ordinamento-wrap">
 		<th scope="row"><label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label></th>
@@ -106,6 +124,10 @@ function dci_save_term_meta( $term_id ) {
 		update_term_meta( $term_id, 'ordinamento', intval( $_POST['ordinamento'] ) );
 	}
 
+	if ( isset( $_POST['term_url'] ) ) {
+		update_term_meta( $term_id, 'term_url', esc_url_raw( $_POST['term_url'] ) );
+	}
+
 	$visualizza = isset( $_POST['visualizza_elemento'] ) ? '1' : '0';
 	update_term_meta( $term_id, 'visualizza_elemento', $visualizza );
 }
@@ -126,28 +148,14 @@ function dci_custom_column_order($columns) {
         if ($key === 'name') {
             $new_columns['ordinamento'] = __('Ordinamento', 'design_comuni_italia');
             $new_columns['visualizza_item'] = __('Visualizza', 'design_comuni_italia');
+            $new_columns['term_url'] = __('URL', 'design_comuni_italia');
         }
-
-        // Dopo "visualizza_item" sposta il Conteggio
-        if ($key === 'visualizza_item' || $key === 'ordinamento') {
-            if (isset($columns['posts'])) {
-                $new_columns['posts'] = $columns['posts'];
-                unset($columns['posts']); // evitiamo duplicati
-            }
-        }
-    }
-
-    // Se per qualche motivo non è stato inserito prima
-    if (isset($columns['posts']) && !isset($new_columns['posts'])) {
-        $new_columns['posts'] = $columns['posts'];
     }
 
     return $new_columns;
 }
 
-
-
-/* 4.2 – Popola le colonne */
+/* 4.2 – Popola le colonne “Ordinamento”, “Visualizza” e “URL” */
 add_filter( 'manage_tipi_cat_amm_trasp_custom_column', 'dci_show_custom_columns', 10, 3 );
 function dci_show_custom_columns( $out, $column, $term_id ) {
 
@@ -163,7 +171,12 @@ function dci_show_custom_columns( $out, $column, $term_id ) {
 			return $show === '1'
 				? __( 'Sì', 'design_comuni_italia' )
 				: __( 'No', 'design_comuni_italia' );
+
+		case 'term_url':
+			$term_url = get_term_meta( $term_id, 'term_url', true );
+			return $term_url ? '<a href="' . esc_url( $term_url ) . '" target="_blank">' . esc_html( $term_url ) . '</a>' : '&mdash;';
 	}
 
 	return $out;
 }
+?>
