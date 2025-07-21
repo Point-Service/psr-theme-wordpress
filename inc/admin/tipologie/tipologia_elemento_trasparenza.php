@@ -380,9 +380,6 @@ function dci_add_elemento_trasparenza_metaboxes()
             'desc'              => __( 'Selezionare una categoria …', 'design_comuni_italia' ),
             'type'              => 'taxonomy_radio_hierarchical',
             'taxonomy'          => 'tipi_cat_amm_trasp',
-            'orderby'    => 'meta_value_num', // Ordina per meta_value numerico
-            'order'      => 'ASC',            // Ordinamento ascendente
-            'meta_key'   => 'ordinamento',   // Il campo su cui ordinare
             'show_option_none'  => false,
             'remove_default'    => true,
         ) );
