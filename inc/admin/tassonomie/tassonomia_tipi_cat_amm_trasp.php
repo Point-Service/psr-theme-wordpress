@@ -1,11 +1,9 @@
 <?php
-/* -------------------------------------------------------------
- *  TASSONOMIA: tipi_cat_amm_trasp
- * ----------------------------------------------------------- */
-
 /**
- * 1. Registrazione tassonomia
+ * Tassonomia: tipi_cat_amm_trasp
  */
+
+// 1. REGISTRAZIONE TASSONOMIA
 add_action( 'init', 'dci_register_taxonomy_tipi_cat_amm_trasp', -10 );
 function dci_register_taxonomy_tipi_cat_amm_trasp() {
 	$labels = array(
@@ -40,16 +38,20 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 	register_taxonomy( 'tipi_cat_amm_trasp', array( 'elemento_trasparenza' ), $args );
 }
 
-/* ----- Aggiungi (pagina “Aggiungi nuovo”) */
+
+// 2. Aggiunta campi personalizzati
 add_action( 'tipi_cat_amm_trasp_add_form_fields', 'dci_tassonomia_add_fields' );
 function dci_tassonomia_add_fields() {
-	$parent_term_id = isset($_GET['parent']) ? $_GET['parent'] : 0;
-
-	// Campi standard (ordinamento, visualizza, ecc.) come già presenti...
-	// ...
-
-	// 🔸 Ruoli da escludere (modificato)
 	?>
+
+	<!-- URL -->
+	<div class="form-field term-url-wrap">
+		<label for="url"><?php _e( 'URL personalizzato (facoltativo)', 'design_comuni_italia' ); ?></label>
+		<input type="text" name="url" id="url" value="" />
+		<p class="description"><?php _e( 'Se inserito, questo URL sarà usato al posto del link alla categoria.', 'design_comuni_italia' ); ?></p>
+	</div>
+
+	<!-- Ruoli da escludere -->
 	<div class="form-field term-excluded_roles-wrap">
 		<label for="excluded_roles"><?php _e( 'Ruoli da escludere', 'design_comuni_italia' ); ?></label>
 		<?php
@@ -58,22 +60,30 @@ function dci_tassonomia_add_fields() {
 			echo '<label><input type="checkbox" name="excluded_roles[]" value="' . esc_attr( $role_key ) . '"> ' . esc_html( $role_info['name'] ) . '</label><br>';
 		}
 		?>
-		<p class="description"><?php _e( 'Se non selezioni nessun ruolo, la categoria sarà accessibile a tutti.', 'design_comuni_italia' ); ?></p>
+		<p class="description"><?php _e( 'Se selezioni uno o più ruoli, questi NON potranno visualizzare la categoria.', 'design_comuni_italia' ); ?></p>
 	</div>
+
 	<?php
 }
 
-/* ----- Modifica (pagina “Modifica termine”) */
+// 3. Modifica campi personalizzati
 add_action( 'tipi_cat_amm_trasp_edit_form_fields', 'dci_tassonomia_edit_fields' );
 function dci_tassonomia_edit_fields( $term ) {
-	// Campi standard già presenti...
-	// ...
-
+	$url = get_term_meta( $term->term_id, 'url', true );
 	$saved_roles = get_term_meta( $term->term_id, 'excluded_roles', true );
 	$saved_roles = is_array($saved_roles) ? $saved_roles : [];
-
-	// 🔸 Ruoli da escludere (modificato)
 	?>
+
+	<!-- URL -->
+	<tr class="form-field term-url-wrap">
+		<th scope="row"><label for="url"><?php _e( 'URL personalizzato (facoltativo)', 'design_comuni_italia' ); ?></label></th>
+		<td>
+			<input type="text" name="url" id="url" value="<?php echo esc_attr( $url ); ?>" />
+			<p class="description"><?php _e( 'Se inserito, questo URL sarà usato al posto del link alla categoria.', 'design_comuni_italia' ); ?></p>
+		</td>
+	</tr>
+
+	<!-- Ruoli da escludere -->
 	<tr class="form-field term-excluded_roles-wrap">
 		<th scope="row"><label for="excluded_roles"><?php _e( 'Ruoli da escludere', 'design_comuni_italia' ); ?></label></th>
 		<td>
@@ -87,43 +97,22 @@ function dci_tassonomia_edit_fields( $term ) {
 			<p class="description"><?php _e( 'Gli utenti con i ruoli selezionati non potranno accedere a questa categoria.', 'design_comuni_italia' ); ?></p>
 		</td>
 	</tr>
+
 	<?php
 }
 
-/* 3. Salva i metadati */
+// 4. Salvataggio dei metadati
 add_action( 'created_tipi_cat_amm_trasp', 'dci_save_term_meta', 10, 2 );
 add_action( 'edited_tipi_cat_amm_trasp',  'dci_save_term_meta', 10, 2 );
 function dci_save_term_meta( $term_id ) {
-	// Altri campi già presenti...
+	if ( isset( $_POST['url'] ) ) {
+		update_term_meta( $term_id, 'url', sanitize_text_field( $_POST['url'] ) );
+	}
 
 	if ( isset( $_POST['excluded_roles'] ) && is_array( $_POST['excluded_roles'] ) ) {
 		update_term_meta( $term_id, 'excluded_roles', array_map( 'sanitize_text_field', $_POST['excluded_roles'] ) );
 	} else {
 		delete_term_meta( $term_id, 'excluded_roles' );
 	}
-}
-
-/* Colonne personalizzate (nessuna modifica richiesta qui) */
-// Rimangono intatte come nel tuo codice
-
-/* -----------------------------------------------
- * 5. Blocco accesso ai ruoli esclusi (da usare nel template)
- * ---------------------------------------------------------- */
-function dci_user_has_access_to_term( $term_id ) {
-	if ( is_admin() ) return true; // Sempre accesso in admin
-
-	$excluded_roles = get_term_meta( $term_id, 'excluded_roles', true );
-	if ( empty( $excluded_roles ) || ! is_array( $excluded_roles ) ) return true;
-
-	$current_user = wp_get_current_user();
-	if ( empty( $current_user->roles ) ) return true;
-
-	foreach ( $current_user->roles as $role ) {
-		if ( in_array( $role, $excluded_roles ) ) {
-			return false;
-		}
-	}
-
-	return true;
 }
 ?>
