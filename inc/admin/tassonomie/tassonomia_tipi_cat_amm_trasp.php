@@ -53,53 +53,8 @@ function dci_get_role_boxes_html( $selected_roles = [] ) {
 			margin-top: 10px;
 		}
 		.dci-dual-select select {
-			width: 220px;
-			height: 160px;
-			padding: 5px;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-			font-size: 14px;
-		}
-
-		/* Miglioriamo i campi generali del form */
-		.form-field {
-			display: flex;
-			align-items: center;
-			margin-bottom: 15px;
-			gap: 10px;
-		}
-		.form-field label {
-			flex: 0 0 180px;
-			font-weight: 600;
-			font-size: 14px;
-			color: #333;
-		}
-		.form-field input[type="url"],
-		.form-field input[type="number"],
-		.form-field select {
-			flex: 1;
-			padding: 6px 8px;
-			font-size: 14px;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-		}
-
-		.form-field input[type="checkbox"] {
-			margin-left: 0;
-			margin-right: 6px;
-			transform: scale(1.1);
-		}
-
-		/* Checkbox label più compatto */
-		.form-field label input[type="checkbox"] {
-			vertical-align: middle;
-		}
-
-		.form-field p.description {
-			margin-top: 4px;
-			font-size: 12px;
-			color: #666;
-			flex-basis: 100%;
+			width: 200px;
+			height: 150px;
 		}
 	</style>
 	<div class="form-field term-excluded_roles-wrap">
@@ -151,26 +106,10 @@ function dci_get_role_boxes_html( $selected_roles = [] ) {
 function dci_tassonomia_add_fields() {
 	echo dci_get_role_boxes_html();
 	?>
-	<div class="form-field">
-		<label for="term_url"><?php _e('URL personalizzato', 'design_comuni_italia'); ?></label>
-		<input id="term_url" name="term_url" type="url" placeholder="https://..." />
-	</div>
-	<div class="form-field">
-		<label>
-			<input type="checkbox" name="open_new_window" value="1" />
-			<?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?>
-		</label>
-	</div>
-	<div class="form-field">
-		<label for="ordinamento"><?php _e('Ordinamento', 'design_comuni_italia'); ?></label>
-		<input id="ordinamento" type="number" name="ordinamento" value="0" />
-	</div>
-	<div class="form-field">
-		<label>
-			<input type="checkbox" name="visualizza_elemento" value="1" checked />
-			<?php _e('Visualizza elemento', 'design_comuni_italia'); ?>
-		</label>
-	</div>
+	<div class="form-field"><label><?php _e('URL personalizzato', 'design_comuni_italia'); ?></label><input name="term_url" type="url" placeholder="https://..." /></div>
+	<div class="form-field"><label><input type="checkbox" name="open_new_window" value="1" /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></div>
+	<div class="form-field"><label><?php _e('Ordinamento', 'design_comuni_italia'); ?></label><input type="number" name="ordinamento" value="0" /></div>
+	<div class="form-field"><label><input type="checkbox" name="visualizza_elemento" value="1" checked /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></div>
 	<?php
 }
 
@@ -178,24 +117,12 @@ function dci_tassonomia_edit_fields( $term ) {
 	$excluded_roles = get_term_meta( $term->term_id, 'excluded_roles', true );
 	$excluded_roles = is_array( $excluded_roles ) ? $excluded_roles : [];
 
-	echo '<tr class="form-field" style="vertical-align: top;"><th colspan="2">' . dci_get_role_boxes_html($excluded_roles) . '</th></tr>';
+	echo '<tr class="form-field"><th colspan="2">' . dci_get_role_boxes_html($excluded_roles) . '</th></tr>';
 	?>
-	<tr class="form-field">
-		<th><label for="term_url_edit"><?php _e('URL', 'design_comuni_italia'); ?></label></th>
-		<td><input id="term_url_edit" type="url" name="term_url" value="<?php echo esc_attr(get_term_meta($term->term_id, 'term_url', true)); ?>" style="width: 100%; max-width: 400px;" /></td>
-	</tr>
-	<tr class="form-field">
-		<th><?php _e('Nuova finestra', 'design_comuni_italia'); ?></th>
-		<td><label><input type="checkbox" name="open_new_window" value="1" <?php checked(get_term_meta($term->term_id, 'open_new_window', true), '1'); ?> /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></td>
-	</tr>
-	<tr class="form-field">
-		<th><label for="ordinamento_edit"><?php _e('Ordinamento', 'design_comuni_italia'); ?></label></th>
-		<td><input id="ordinamento_edit" name="ordinamento" type="number" value="<?php echo esc_attr(get_term_meta($term->term_id, 'ordinamento', true)); ?>" style="width: 100px;" /></td>
-	</tr>
-	<tr class="form-field">
-		<th><?php _e('Visualizza', 'design_comuni_italia'); ?></th>
-		<td><label><input name="visualizza_elemento" type="checkbox" value="1" <?php checked(get_term_meta($term->term_id, 'visualizza_elemento', true), '1'); ?> /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></td>
-	</tr>
+	<tr class="form-field"><th><?php _e('URL', 'design_comuni_italia'); ?></th><td><input type="url" name="term_url" value="<?php echo esc_attr(get_term_meta($term->term_id, 'term_url', true)); ?>" /></td></tr>
+	<tr class="form-field"><th><?php _e('Nuova finestra', 'design_comuni_italia'); ?></th><td><label><input type="checkbox" name="open_new_window" value="1" <?php checked(get_term_meta($term->term_id, 'open_new_window', true), '1'); ?> /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></td></tr>
+	<tr class="form-field"><th><?php _e('Ordinamento', 'design_comuni_italia'); ?></th><td><input name="ordinamento" type="number" value="<?php echo esc_attr(get_term_meta($term->term_id, 'ordinamento', true)); ?>" /></td></tr>
+	<tr class="form-field"><th><?php _e('Visualizza', 'design_comuni_italia'); ?></th><td><label><input name="visualizza_elemento" type="checkbox" value="1" <?php checked(get_term_meta($term->term_id, 'visualizza_elemento', true), '1'); ?> /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></td></tr>
 	<?php
 }
 
@@ -236,21 +163,78 @@ function dci_custom_column_order($columns) {
     return $new_columns;
 }
 
-add_filter( 'manage_tipi_cat_amm_trasp_custom_column', 'dci_custom_column_content', 10, 3 );
-function dci_custom_column_content( $content, $column_name, $term_id ) {
-    switch ( $column_name ) {
-        case 'ordinamento':
-            $content = get_term_meta( $term_id, 'ordinamento', true );
-            break;
-        case 'visualizza_item':
-            $content = get_term_meta( $term_id, 'visualizza_elemento', true ) === '1' ? __('Sì', 'design_comuni_italia') : __('No', 'design_comuni_italia');
-            break;
-        case 'term_url':
-            $url = get_term_meta( $term_id, 'term_url', true );
-            $content = $url ? '<a href="'.esc_url($url).'" target="_blank">'.esc_html($url).'</a>' : '';
-            break;
-    }
-    return $content;
+add_filter( 'manage_tipi_cat_amm_trasp_custom_column', 'dci_show_custom_columns', 10, 3 );
+function dci_show_custom_columns( $out, $column, $term_id ) {
+	switch ( $column ) {
+		case 'ordinamento':
+			$val = get_term_meta( $term_id, 'ordinamento', true );
+			return $val !== '' ? esc_html( $val ) : '&mdash;';
+		case 'visualizza_item':
+			$show = get_term_meta( $term_id, 'visualizza_elemento', true );
+			$show = ( $show === '' ) ? '1' : $show;
+			return $show === '1' ? __( 'Sì', 'design_comuni_italia' ) : __( 'No', 'design_comuni_italia' );
+		case 'term_url':
+			$term_url = get_term_meta( $term_id, 'term_url', true );
+			$open_new_window = get_term_meta( $term_id, 'open_new_window', true );
+			if ( $term_url ) {
+				$target = $open_new_window ? ' target="_blank"' : '';
+				return '<a href="' . esc_url( $term_url ) . '"' . $target . '>' . esc_html( $term_url ) . '</a>';
+			}
+			return '&mdash;';
+	}
+	return $out;
 }
-?>
+
+/**
+ * 5. Esclude i termini invisibili o non accessibili per ruolo corrente (solo nuova creazione elemento)
+ */
+add_filter( 'terms_clauses', 'dci_hide_invisible_or_restricted_terms', 10, 3 );
+function dci_hide_invisible_or_restricted_terms( $clauses, $taxonomies, $args ) {
+	if ( ! in_array( 'tipi_cat_amm_trasp', (array) $taxonomies, true ) ) {
+		return $clauses;
+	}
+
+	if ( ! is_admin() ) {
+		return $clauses;
+	}
+
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || $screen->base !== 'post' || $screen->action !== 'add' || $screen->post_type !== 'elemento_trasparenza' ) {
+		return $clauses;
+	}
+
+	global $wpdb;
+
+	if ( false === strpos( $clauses['join'], 'termmeta' ) ) {
+		$clauses['join'] .= "
+			LEFT JOIN {$wpdb->termmeta} tm_vis
+				ON tm_vis.term_id = t.term_id
+				AND tm_vis.meta_key = 'visualizza_elemento'
+			LEFT JOIN {$wpdb->termmeta} tm_roles
+				ON tm_roles.term_id = t.term_id
+				AND tm_roles.meta_key = 'excluded_roles'
+		";
+	}
+
+	$current_user = wp_get_current_user();
+	$user_roles = (array) $current_user->roles;
+
+	$role_checks = [];
+	foreach ( $user_roles as $role ) {
+		$role_checks[] = $wpdb->prepare( "tm_roles.meta_value NOT LIKE %s", '%' . $wpdb->esc_like( $role ) . '%' );
+	}
+	$roles_condition = ! empty( $role_checks ) ? ' AND ( tm_roles.meta_value IS NULL OR (' . implode( ' AND ', $role_checks ) . ') )' : '';
+
+	$clauses['where'] .= "
+		AND (
+			tm_vis.meta_value IS NULL
+			OR tm_vis.meta_value = ''
+			OR tm_vis.meta_value = '1'
+		)
+		$roles_condition
+	";
+
+	return $clauses;
+}
+?> 
 
