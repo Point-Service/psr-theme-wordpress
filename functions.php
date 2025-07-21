@@ -332,7 +332,6 @@ add_action('init', 'my_custom_one_time_function');
 
 
 
-
 add_action( 'admin_enqueue_scripts', 'dci_evidenzia_categorie_cmb2', 20 );
 function dci_evidenzia_categorie_cmb2( $hook ) {
 
@@ -367,7 +366,7 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
         "
     );
 
-    // Aggiungo lo script JS inline per nascondere e disabilitare la checkbox nella categoria principale
+    // Aggiungo lo script JS inline per disabilitare la checkbox nella categoria principale
     wp_add_inline_script(
         'jquery-core',
         <<<JS
@@ -383,9 +382,12 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
                             if(label.html().indexOf('&nbsp;') === -1){
                                 label.addClass('cmb2-categoria-principale');
                                 
-                                // Disabilito la checkbox
-                                checkbox.prop('disabled', true);
-                                checkbox.addClass('disabled-checkbox'); // Aggiungo una classe per nascondere la checkbox
+                                // Disabilito la checkbox e aggiungo la classe per nasconderla
+                                checkbox.prop('disabled', true);  // Disabilita la checkbox
+                                checkbox.addClass('disabled-checkbox');  // Nasconde la checkbox
+
+                                // Se vuoi rimuovere la checkbox dal DOM, puoi farlo con il seguente codice:
+                                // checkbox.closest('li').remove(); 
                             } else {
                                 label.addClass('cmb2-sottocategoria');
                             }
@@ -397,8 +399,6 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
 JS
     );
 }
-
-
 
 
 
