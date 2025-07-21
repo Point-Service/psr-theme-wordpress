@@ -73,7 +73,7 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     ?>
     <div style="margin-bottom: 15px;">
         <a href="edit.php?post_type=incarichi_dip" class="button button" style="margin-right: 10px;">
-            Personale - <b>Incarichi conferiti e autorizzati ai dipendenti</b>
+            Personale - <b>Incarichi dirigenziali, a qualsiasi titolo conferiti</b>
         </a>
         <a href="edit.php?post_type=bando" class="button button-secondary" style="margin-right: 10px;">
             Bandi di Gara e contratti - <b>Contratti Pubblici</b>
@@ -286,6 +286,9 @@ function dci_render_transparency_multipost_page() {
 }
 
 
+
+
+
 /**
  * Esclude i termini con visualizza_elemento = 0
  * → ma SOLO nella pagina di creazione di un Elemento Trasparenza
@@ -305,11 +308,14 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 
     // Verifica la schermata corrente
     $screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
-    if ( ! $screen || $screen->base !== 'post' || $screen->action !== 'add' || $screen->post_type !== 'elemento_trasparenza' ) {
-        return $clauses;
+    if ( ! $screen ||                     // sicurezza
+         $screen->base !== 'post' ||      // schermate post-new.php / post.php
+         $screen->action !== 'add' ||     // solo “aggiungi nuovo”, non “modifica”
+         $screen->post_type !== 'elemento_trasparenza' ) { // solo il CPT desiderato
+        return $clauses; // esci senza toccare la query
     }
 
-    // Aggiungi la condizione per escludere i termini di primo livello
+    // Siamo nella pagina giusta: aggiungiamo la JOIN + condizione
     global $wpdb;
 
     if ( false === strpos( $clauses['join'], 'termmeta' ) ) {
@@ -318,17 +324,12 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
                                AND tm_vis.meta_key = 'visualizza_elemento' ";
     }
 
-    // Non rimuovere del tutto i termini di primo livello, ma solo quelli invisibili (dove visualizza_elemento = 0)
-    $clauses['where'] .= " AND ( t.parent != 0
-                                 AND ( tm_vis.meta_value IS NULL
-                                        OR tm_vis.meta_value = ''
-                                        OR tm_vis.meta_value = '1' ) ) ";
+    $clauses['where'] .= " AND ( tm_vis.meta_value IS NULL
+                                 OR tm_vis.meta_value = ''
+                                 OR tm_vis.meta_value = '1' ) ";
 
     return $clauses;
 }
-
-
-
 
 
 
@@ -383,6 +384,8 @@ function dci_add_elemento_trasparenza_metaboxes()
             'taxonomy'          => 'tipi_cat_amm_trasp',
             'show_option_none'  => false,
             'remove_default'    => true,
+            /* ↓↓↓ usa la callback che restituisce SOLO i termini “visibili” ↓↓↓ */
+            'options_cb'        => 'dci_get_visible_amministrazione_terms',
         ) );
 
         $cmb_corpo = new_cmb2_box(array(
