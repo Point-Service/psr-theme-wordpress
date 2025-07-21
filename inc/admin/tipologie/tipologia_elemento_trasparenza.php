@@ -334,44 +334,17 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 
 
 
-add_filter( 'cmb2_taxonomy_terms_args', 'ordina_termini_per_ordinamento', 10, 2 );
-function ordina_termini_per_ordinamento( $args, $field ) {
-    // Debug: stampa l'ID per vedere se è quello giusto
-    var_dump($field->args['id']);
-    
-    // Verifica se stiamo cercando il campo giusto
-    if ( isset( $field->args['id'] ) && $field->args['id'] === 'tipo_cat_amm_trasp' ) {
-        // Ottieni i termini senza applicare l'ordinamento predefinito
-        $terms = get_terms( array(
-            'taxonomy'   => 'tipi_cat_amm_trasp',
-            'hide_empty' => false,
-            'parent'     => 0,
-        ) );
 
-        // Ordina i termini per 'ordinamento' usando usort
-        usort( $terms, function( $a, $b ) {
-            // Ottieni i valori del campo meta 'ordinamento' o usa un fallback
-            $ordinamento_a = get_term_meta( $a->term_id, 'ordinamento', true );
-            $ordinamento_b = get_term_meta( $b->term_id, 'ordinamento', true );
 
-            // Se uno dei termini non ha un valore di 'ordinamento', usa un valore di fallback
-            if ( empty( $ordinamento_a ) ) {
-                $ordinamento_a = PHP_INT_MAX; // Usa un valore molto grande per mandarlo alla fine
-            }
-            if ( empty( $ordinamento_b ) ) {
-                $ordinamento_b = PHP_INT_MAX; // Lo stesso per il secondo termine
-            }
 
-            // Confronta i valori di ordinamento
-            return $ordinamento_a - $ordinamento_b;
-        });
 
-        // Aggiungi i termini ordinati ai parametri di ritorno
-        $args['terms'] = $terms;
-    }
 
-    return $args;
-}
+
+
+
+
+
+
 
 
 
