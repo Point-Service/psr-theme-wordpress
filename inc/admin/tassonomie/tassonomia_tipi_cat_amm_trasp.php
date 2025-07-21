@@ -8,7 +8,6 @@
  */
 add_action( 'init', 'dci_register_taxonomy_tipi_cat_amm_trasp', -10 );
 function dci_register_taxonomy_tipi_cat_amm_trasp() {
-
 	$labels = array(
 		'name'              => _x( 'Tipi categoria Amministrazione Trasparente', 'taxonomy general name', 'design_comuni_italia' ),
 		'singular_name'     => _x( 'Tipo di categoria Amministrazione Trasparente', 'taxonomy singular name', 'design_comuni_italia' ),
@@ -48,12 +47,9 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 /* ----- Aggiungi (pagina “Aggiungi nuovo”) */
 add_action( 'tipi_cat_amm_trasp_add_form_fields', 'dci_tassonomia_add_fields' );
 function dci_tassonomia_add_fields() {
-	// Ottieni il termine corrente (se esiste)
-	$parent_term_id = isset($_GET['parent']) ? $_GET['parent'] : 0;  // Per aggiungere, controlla se è una categoria principale
+	$parent_term_id = isset($_GET['parent']) ? $_GET['parent'] : 0;
 
-	// Controlla se la categoria è principale
 	if ( $parent_term_id == 0 ) {
-		// Nascondi i campi URL e apri in una nuova finestra per le categorie principali
 		?>
 		<!-- Ordinamento -->
 		<div class="form-field term-ordinamento-wrap">
@@ -71,7 +67,6 @@ function dci_tassonomia_add_fields() {
 		</div>
 		<?php
 	} else {
-		// Se è una categoria secondaria, mostra i campi URL
 		?>
 		<!-- URL personalizzato -->
 		<div class="form-field term-url-wrap">
@@ -104,21 +99,34 @@ function dci_tassonomia_add_fields() {
 		</div>
 		<?php
 	}
+
+	// 🔸 Ruoli abilitati (aggiunto)
+	?>
+	<div class="form-field term-allowed_roles-wrap">
+		<label for="allowed_roles"><?php _e( 'Ruoli abilitati', 'design_comuni_italia' ); ?></label>
+		<?php
+		$editable_roles = wp_roles()->roles;
+		foreach ( $editable_roles as $role_key => $role_info ) {
+			echo '<label><input type="checkbox" name="allowed_roles[]" value="' . esc_attr( $role_key ) . '"> ' . esc_html( $role_info['name'] ) . '</label><br>';
+		}
+		?>
+		<p class="description"><?php _e( 'Se non selezioni nessun ruolo, la categoria sarà accessibile a tutti.', 'design_comuni_italia' ); ?></p>
+	</div>
+	<?php
 }
 
 /* ----- Modifica (pagina “Modifica termine”) */
 add_action( 'tipi_cat_amm_trasp_edit_form_fields', 'dci_tassonomia_edit_fields' );
 function dci_tassonomia_edit_fields( $term ) {
-
 	$ordinamento    = get_term_meta( $term->term_id, 'ordinamento', true );
 	$visualizza     = get_term_meta( $term->term_id, 'visualizza_elemento', true );
-	$term_url       = get_term_meta( $term->term_id, 'term_url', true ); // Prendi l'URL dal meta
-	$open_new_window = get_term_meta( $term->term_id, 'open_new_window', true ); // Prendi il flag per "Apri in nuova finestra"
+	$term_url       = get_term_meta( $term->term_id, 'term_url', true );
+	$open_new_window = get_term_meta( $term->term_id, 'open_new_window', true );
+	$saved_roles = get_term_meta( $term->term_id, 'allowed_roles', true );
+	$saved_roles = is_array($saved_roles) ? $saved_roles : [];
 
-	// Ottieni il termine genitore
 	$parent_term_id = $term->parent ? $term->parent : 0;
 
-	// Se la categoria è principale (parent = 0), nascondi i campi URL e apri in una nuova finestra
 	if ( $parent_term_id == 0 ) {
 		?>
 		<!-- Ordinamento -->
@@ -138,16 +146,17 @@ function dci_tassonomia_edit_fields( $term ) {
 					<input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" <?php checked( $visualizza, '1' ); ?> />
 					<?php _e( 'Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia' ); ?>
 				</label>
-				<?php
+			</td>
+		</tr>
+		<?php
 	} else {
-		// Se è una categoria secondaria, mostra i campi URL
 		?>
 		<!-- URL personalizzato -->
 		<tr class="form-field term-url-wrap">
 			<th scope="row"><label for="term_url"><?php _e( 'URL personalizzato', 'design_comuni_italia' ); ?></label></th>
 			<td>
 				<input name="term_url" id="term_url" type="url" value="<?php echo esc_attr( $term_url ); ?>" placeholder="https://..." />
-				<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></p>
+				<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina.', 'design_comuni_italia' ); ?></p>
 			</td>
 		</tr>
 
@@ -181,7 +190,25 @@ function dci_tassonomia_edit_fields( $term ) {
 				</label>
 			</td>
 		</tr>
-	<?php }
+		<?php
+	}
+
+	// 🔸 Ruoli abilitati (aggiunto)
+	?>
+	<tr class="form-field term-allowed_roles-wrap">
+		<th scope="row"><label for="allowed_roles"><?php _e( 'Ruoli abilitati', 'design_comuni_italia' ); ?></label></th>
+		<td>
+			<?php
+			$editable_roles = wp_roles()->roles;
+			foreach ( $editable_roles as $role_key => $role_info ) {
+				$checked = in_array( $role_key, $saved_roles ) ? 'checked' : '';
+				echo '<label><input type="checkbox" name="allowed_roles[]" value="' . esc_attr( $role_key ) . '" ' . $checked . '> ' . esc_html( $role_info['name'] ) . '</label><br>';
+			}
+			?>
+			<p class="description"><?php _e( 'Se non selezioni nessun ruolo, la categoria sarà accessibile a tutti.', 'design_comuni_italia' ); ?></p>
+		</td>
+	</tr>
+	<?php
 }
 
 /* ------------------------------------------------------------------
@@ -190,7 +217,6 @@ function dci_tassonomia_edit_fields( $term ) {
 add_action( 'created_tipi_cat_amm_trasp', 'dci_save_term_meta', 10, 2 );
 add_action( 'edited_tipi_cat_amm_trasp',  'dci_save_term_meta', 10, 2 );
 function dci_save_term_meta( $term_id ) {
-
 	if ( isset( $_POST['ordinamento'] ) ) {
 		update_term_meta( $term_id, 'ordinamento', intval( $_POST['ordinamento'] ) );
 	}
@@ -204,6 +230,13 @@ function dci_save_term_meta( $term_id ) {
 
 	$open_new_window = isset( $_POST['open_new_window'] ) ? '1' : '0';
 	update_term_meta( $term_id, 'open_new_window', $open_new_window );
+
+	// 🔸 Salva ruoli abilitati
+	if ( isset( $_POST['allowed_roles'] ) && is_array( $_POST['allowed_roles'] ) ) {
+		update_term_meta( $term_id, 'allowed_roles', array_map( 'sanitize_text_field', $_POST['allowed_roles'] ) );
+	} else {
+		delete_term_meta( $term_id, 'allowed_roles' );
+	}
 }
 
 /* ------------------------------------------------------------------
@@ -218,7 +251,6 @@ function dci_custom_column_order($columns) {
     foreach ($columns as $key => $label) {
         $new_columns[$key] = $label;
 
-        // Dopo "name" inserisci Ordinamento, Visualizza e URL
         if ($key === 'name') {
             $new_columns['ordinamento'] = __('Ordinamento', 'design_comuni_italia');
             $new_columns['visualizza_item'] = __('Visualizza', 'design_comuni_italia');
@@ -232,19 +264,15 @@ function dci_custom_column_order($columns) {
 /* 4.2 – Popola le colonne “Ordinamento”, “Visualizza” e “URL” */
 add_filter( 'manage_tipi_cat_amm_trasp_custom_column', 'dci_show_custom_columns', 10, 3 );
 function dci_show_custom_columns( $out, $column, $term_id ) {
-
 	switch ( $column ) {
-
 		case 'ordinamento':
 			$val = get_term_meta( $term_id, 'ordinamento', true );
 			return $val !== '' ? esc_html( $val ) : '&mdash;';
 
 		case 'visualizza_item':
 			$show = get_term_meta( $term_id, 'visualizza_elemento', true );
-			$show = ( $show === '' ) ? '1' : $show; // default visibile
-			return $show === '1'
-				? __( 'Sì', 'design_comuni_italia' )
-				: __( 'No', 'design_comuni_italia' );
+			$show = ( $show === '' ) ? '1' : $show;
+			return $show === '1' ? __( 'Sì', 'design_comuni_italia' ) : __( 'No', 'design_comuni_italia' );
 
 		case 'term_url':
 			$term_url = get_term_meta( $term_id, 'term_url', true );
@@ -255,9 +283,6 @@ function dci_show_custom_columns( $out, $column, $term_id ) {
 			}
 			return '&mdash;';
 	}
-
 	return $out;
 }
-
 ?>
-
