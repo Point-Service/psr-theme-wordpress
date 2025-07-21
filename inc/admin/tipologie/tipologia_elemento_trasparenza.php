@@ -309,24 +309,24 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
         return $clauses;
     }
 
-    // Aggiungi la condizione per escludere i termini di primo livello (parent = 0)
+    // Aggiungi la condizione per escludere i termini di primo livello
     global $wpdb;
+
     if ( false === strpos( $clauses['join'], 'termmeta' ) ) {
         $clauses['join']  .= " LEFT JOIN {$wpdb->termmeta} tm_vis
                                ON tm_vis.term_id = t.term_id
                                AND tm_vis.meta_key = 'visualizza_elemento' ";
     }
 
-    // Escludi i termini di primo livello (parent = 0)
-    $clauses['where'] .= " AND t.parent != 0 "; 
-
-    // Includi solo i termini con 'visualizza_elemento' == 1 (o null / vuoto)
-    $clauses['where'] .= " AND ( tm_vis.meta_value IS NULL
-                                 OR tm_vis.meta_value = ''
-                                 OR tm_vis.meta_value = '1' ) ";
+    // Non rimuovere del tutto i termini di primo livello, ma solo quelli invisibili (dove visualizza_elemento = 0)
+    $clauses['where'] .= " AND ( t.parent != 0
+                                 AND ( tm_vis.meta_value IS NULL
+                                        OR tm_vis.meta_value = ''
+                                        OR tm_vis.meta_value = '1' ) ) ";
 
     return $clauses;
 }
+
 
 
 
