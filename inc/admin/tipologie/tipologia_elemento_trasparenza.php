@@ -341,10 +341,12 @@ function ordina_termini_per_ordinamento( $args, $field ) {
         $args['orderby'] = 'meta_value_num';  // Ordina per valore numerico
         $args['order'] = 'ASC';                // Ordina in ordine ascendente
         $args['meta_key'] = 'ordinamento';     // Imposta il campo 'ordinamento' come chiave
+        $args['meta_type'] = 'NUMERIC';        // Assicurati che il valore sia trattato come numerico
     }
 
     return $args;
 }
+
 
 
 
