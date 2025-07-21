@@ -334,7 +334,6 @@ add_action('init', 'my_custom_one_time_function');
 
 
 
-
 add_action( 'admin_enqueue_scripts', 'dci_evidenzia_categorie_cmb2', 20 );
 function dci_evidenzia_categorie_cmb2( $hook ) {
 
@@ -352,14 +351,18 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
         .cmb2-categoria-principale {
             font-weight: 700 !important;
             color: #000000 !important;
+            text-transform: uppercase !important; /* Maiuscolo */
         }
         .cmb2-sottocategoria {
             color: #343a40 !important;
         }
+        .cmb2-radio-list input[type='checkbox'] {
+            display: none; /* Nascondi la checkbox */
+        }
         "
     );
 
-    // Aggiungo lo script JS inline
+    // Aggiungo lo script JS inline per nascondere la checkbox nella categoria principale
     wp_add_inline_script(
         'jquery-core',
         <<<JS
@@ -371,6 +374,7 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
                         if(label.length){
                             if(label.html().indexOf('&nbsp;') === -1){
                                 label.addClass('cmb2-categoria-principale');
+                                $(this).children('input[type="checkbox"]').hide(); // Nascondi la checkbox
                             } else {
                                 label.addClass('cmb2-sottocategoria');
                             }
