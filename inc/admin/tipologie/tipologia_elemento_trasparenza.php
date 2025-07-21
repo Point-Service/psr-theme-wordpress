@@ -333,21 +333,40 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 
 
 
-// Aggiungi il filtro per ordinare i termini
-add_filter( 'cmb2_taxonomy_terms_args', 'ordina_termini_per_ordinamento', 10, 2 );
+// Funzione di callback personalizzata per ordinare i termini
+function dci_get_visible_amministrazione_terms( $field ) {
+    // Recupera i termini per la tassonomia 'tipi_cat_amm_trasp'
+    $categorie_genitori = get_terms( 'tipi_cat_amm_trasp', array(
+        'hide_empty' => false,
+        'parent' => 0,
+        'orderby' => 'ID',
+        'order' => 'ASC'
+    ) );
 
-function ordina_termini_per_ordinamento( $args, $field ) {
-    // Verifica se il campo è quello giusto
-    if ( isset( $field->args['id'] ) && $field->args['id'] === 'tipo_cat_amm_trasp' ) {
-        // Modifica la query per ordinare per il campo 'ordinamento' (campo personalizzato)
-        $args['orderby'] = 'meta_value_num';  // Ordina per valore numerico
-        $args['order'] = 'ASC';                // Ordina in ordine ascendente
-        $args['meta_key'] = 'ordinamento';     // Imposta il campo 'ordinamento' come chiave
+    // Ordina i termini in base al campo 'ordinamento'
+    usort( $categorie_genitori, function( $a, $b ) {
+        $ordinamento_a = get_term_meta( $a->term_id, 'ordinamento', true );
+        $ordinamento_b = get_term_meta( $b->term_id, 'ordinamento', true );
+
+        // Se uno dei termini non ha un valore di 'ordinamento', usa un valore di fallback
+        if ( empty( $ordinamento_a ) ) {
+            $ordinamento_a = PHP_INT_MAX; // Usa un valore molto grande per mandarlo alla fine
+        }
+        if ( empty( $ordinamento_b ) ) {
+            $ordinamento_b = PHP_INT_MAX; // Lo stesso per il secondo termine
+        }
+
+        return $ordinamento_a - $ordinamento_b;
+    } );
+
+    // Ora restituisci i termini ordinati per essere usati nel campo CMB2
+    $terms = [];
+    foreach ( $categorie_genitori as $term ) {
+        $terms[ $term->term_id ] = $term->name; // Aggiungi il termine all'array
     }
 
-    return $args;
+    return $terms;
 }
-
 
 
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
@@ -400,6 +419,7 @@ function dci_add_elemento_trasparenza_metaboxes()
             'taxonomy'          => 'tipi_cat_amm_trasp',
             'show_option_none'  => false,
             'remove_default'    => true,
+            'options_cb'        => 'dci_get_visible_amministrazione_terms',
         ) );
 
     
