@@ -8,7 +8,6 @@
  */
 add_action( 'init', 'dci_register_taxonomy_tipi_cat_amm_trasp', -10 );
 function dci_register_taxonomy_tipi_cat_amm_trasp() {
-
 	$labels = array(
 		'name'              => _x( 'Tipi categoria Amministrazione Trasparente', 'taxonomy general name', 'design_comuni_italia' ),
 		'singular_name'     => _x( 'Tipo di categoria Amministrazione Trasparente', 'taxonomy singular name', 'design_comuni_italia' ),
@@ -84,10 +83,10 @@ function dci_tassonomia_add_fields() {
 			</label>
 		</div>
 
-		<!-- ➕ AGGIUNTO: Ruoli esclusi -->
-		<div class="form-field term-excluded-roles-wrap">
+		<!-- 📌 Ruoli da escludere -->
+		<div class="form-field term-excluded_roles-wrap">
 			<label for="excluded_roles"><?php _e( 'Ruoli da escludere', 'design_comuni_italia' ); ?></label>
-			<select name="excluded_roles[]" id="excluded_roles" multiple style="min-width: 200px;">
+			<select name="excluded_roles[]" id="excluded_roles" multiple style="min-width:200px;">
 				<?php
 				global $wp_roles;
 				foreach ( $wp_roles->roles as $key => $role ) {
@@ -119,17 +118,17 @@ function dci_tassonomia_add_fields() {
 /* ----- Modifica (pagina “Modifica termine”) */
 add_action( 'tipi_cat_amm_trasp_edit_form_fields', 'dci_tassonomia_edit_fields' );
 function dci_tassonomia_edit_fields( $term ) {
-	$ordinamento        = get_term_meta( $term->term_id, 'ordinamento', true );
-	$visualizza         = get_term_meta( $term->term_id, 'visualizza_elemento', true );
-	$term_url           = get_term_meta( $term->term_id, 'term_url', true );
-	$open_new_window    = get_term_meta( $term->term_id, 'open_new_window', true );
-	$excluded_roles     = get_term_meta( $term->term_id, 'excluded_roles', true ); // ➕ AGGIUNTO
+	$ordinamento     = get_term_meta( $term->term_id, 'ordinamento', true );
+	$visualizza      = get_term_meta( $term->term_id, 'visualizza_elemento', true );
+	$term_url        = get_term_meta( $term->term_id, 'term_url', true );
+	$open_new_window = get_term_meta( $term->term_id, 'open_new_window', true );
+	$excluded_roles  = get_term_meta( $term->term_id, 'excluded_roles', true );
+	$excluded_roles  = is_array( $excluded_roles ) ? $excluded_roles : [];
 
-	$parent_term_id = $term->parent ? $term->parent : 0;
+	$parent_term_id = $term->parent ?: 0;
 
 	if ( $parent_term_id == 0 ) {
 		?>
-		<!-- Ordinamento -->
 		<tr class="form-field term-ordinamento-wrap">
 			<th scope="row"><label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label></th>
 			<td>
@@ -137,8 +136,6 @@ function dci_tassonomia_edit_fields( $term ) {
 				<p class="description"><?php _e( 'Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia' ); ?></p>
 			</td>
 		</tr>
-
-		<!-- Visualizza elemento -->
 		<tr class="form-field term-visualizza-elemento-wrap">
 			<th scope="row"><?php _e( 'Visualizza elemento', 'design_comuni_italia' ); ?></th>
 			<td>
@@ -148,8 +145,9 @@ function dci_tassonomia_edit_fields( $term ) {
 				</label>
 			</td>
 		</tr>
-	<?php } else { ?>
-		<!-- URL personalizzato -->
+		<?php
+	} else {
+		?>
 		<tr class="form-field term-url-wrap">
 			<th scope="row"><label for="term_url"><?php _e( 'URL personalizzato', 'design_comuni_italia' ); ?></label></th>
 			<td>
@@ -157,10 +155,8 @@ function dci_tassonomia_edit_fields( $term ) {
 				<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></p>
 			</td>
 		</tr>
-
-		<!-- Apri in una nuova finestra -->
 		<tr class="form-field term-open-new-window-wrap">
-			<th scope="row"><?php _e( 'Apri in una nuova finestra', 'design_comuni_italia' ); ?></th>
+			<th scope="row"><?php _e( 'Apri in nuova finestra', 'design_comuni_italia' ); ?></th>
 			<td>
 				<label for="open_new_window">
 					<input name="open_new_window" id="open_new_window" type="checkbox" value="1" <?php checked( $open_new_window, '1' ); ?> />
@@ -168,25 +164,21 @@ function dci_tassonomia_edit_fields( $term ) {
 				</label>
 			</td>
 		</tr>
-
-		<!-- ➕ AGGIUNTO: Ruoli esclusi -->
-		<tr class="form-field term-excluded-roles-wrap">
+		<tr class="form-field term-excluded_roles-wrap">
 			<th scope="row"><label for="excluded_roles"><?php _e( 'Ruoli da escludere', 'design_comuni_italia' ); ?></label></th>
 			<td>
-				<select name="excluded_roles[]" id="excluded_roles" multiple style="min-width: 200px;">
+				<select name="excluded_roles[]" id="excluded_roles" multiple style="min-width:200px;">
 					<?php
 					global $wp_roles;
 					foreach ( $wp_roles->roles as $key => $role ) {
-						$selected = is_array( $excluded_roles ) && in_array( $key, $excluded_roles, true ) ? 'selected' : '';
-						echo '<option value="' . esc_attr( $key ) . '" ' . $selected . '>' . esc_html( translate_user_role( $role['name'] ) ) . '</option>';
+						$sel = in_array( $key, $excluded_roles, true ) ? 'selected' : '';
+						echo '<option value="' . esc_attr( $key ) . '" ' . $sel . '>' . esc_html( translate_user_role( $role['name'] ) ) . '</option>';
 					}
 					?>
 				</select>
-				<p class="description"><?php _e( 'Seleziona i ruoli che NON devono vedere questo elemento.', 'design_comuni_italia' ); ?></p>
+				<p class="description"><?php _e( 'I ruoli selezionati NON vedranno questa categoria.', 'design_comuni_italia' ); ?></p>
 			</td>
 		</tr>
-
-		<!-- Ordinamento -->
 		<tr class="form-field term-ordinamento-wrap">
 			<th scope="row"><label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label></th>
 			<td>
@@ -194,10 +186,8 @@ function dci_tassonomia_edit_fields( $term ) {
 				<p class="description"><?php _e( 'Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia' ); ?></p>
 			</td>
 		</tr>
-
-		<!-- Visualizza elemento -->
 		<tr class="form-field term-visualizza-elemento-wrap">
-			<th scope="row"><?php _e( 'Visualizza elemento', 'design_comuni_italia' ); ?></th>
+			<th scope="row"><label for="visualizza_elemento"><?php _e( 'Visualizza elemento', 'design_comuni_italia' ); ?></label></th>
 			<td>
 				<label for="visualizza_elemento">
 					<input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" <?php checked( $visualizza, '1' ); ?> />
@@ -205,8 +195,10 @@ function dci_tassonomia_edit_fields( $term ) {
 				</label>
 			</td>
 		</tr>
-	<?php }
+		<?php
+	}
 }
+
 
 /* ------------------------------------------------------------------
  * 3. Salva i metadati
@@ -214,28 +206,26 @@ function dci_tassonomia_edit_fields( $term ) {
 add_action( 'created_tipi_cat_amm_trasp', 'dci_save_term_meta', 10, 2 );
 add_action( 'edited_tipi_cat_amm_trasp',  'dci_save_term_meta', 10, 2 );
 function dci_save_term_meta( $term_id ) {
-
 	if ( isset( $_POST['ordinamento'] ) ) {
 		update_term_meta( $term_id, 'ordinamento', intval( $_POST['ordinamento'] ) );
 	}
-
 	$visualizza = isset( $_POST['visualizza_elemento'] ) ? '1' : '0';
 	update_term_meta( $term_id, 'visualizza_elemento', $visualizza );
 
 	if ( isset( $_POST['term_url'] ) ) {
 		update_term_meta( $term_id, 'term_url', esc_url( $_POST['term_url'] ) );
 	}
-
 	$open_new_window = isset( $_POST['open_new_window'] ) ? '1' : '0';
 	update_term_meta( $term_id, 'open_new_window', $open_new_window );
 
-	// ➕ AGGIUNTO: Salva i ruoli esclusi
+	// 📌 Salvataggio ruoli esclusi
 	if ( isset( $_POST['excluded_roles'] ) && is_array( $_POST['excluded_roles'] ) ) {
 		update_term_meta( $term_id, 'excluded_roles', array_map( 'sanitize_text_field', $_POST['excluded_roles'] ) );
 	} else {
 		delete_term_meta( $term_id, 'excluded_roles' );
 	}
 }
+
 
 
 /* ------------------------------------------------------------------
