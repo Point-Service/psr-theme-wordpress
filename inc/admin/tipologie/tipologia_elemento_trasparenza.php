@@ -346,6 +346,12 @@ function ordina_termini_per_ordinamento( $args, $field ) {
             'parent'     => 0
         ));
 
+        // Debug: Stampa i termini e i loro meta valori
+        foreach ( $terms as $term ) {
+            $ordinamento = get_term_meta( $term->term_id, 'ordinamento', true );
+            echo 'Term ID: ' . $term->term_id . ' - Ordinamento: ' . $ordinamento . '<br>';
+        }
+
         // Ordina i termini per il campo 'ordinamento' (campo meta) se presente
         usort( $terms, function( $a, $b ) {
             // Ottieni i valori del campo meta 'ordinamento' o usa un fallback
