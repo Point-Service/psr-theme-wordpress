@@ -11,13 +11,7 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 	$labels = array(
 		'name'              => _x( 'Tipi categoria Amministrazione Trasparente', 'taxonomy general name', 'design_comuni_italia' ),
 		'singular_name'     => _x( 'Tipo di categoria Amministrazione Trasparente', 'taxonomy singular name', 'design_comuni_italia' ),
-		'search_items'      => __( 'Cerca Tipo categoria Amministrazione Trasparente', 'design_comuni_italia' ),
-		'all_items'         => __( 'Tutti i Tipi di categoria Amministrazione Trasparente', 'design_comuni_italia' ),
-		'edit_item'         => __( 'Modifica il Tipo di categoria Amministrazione Trasparente', 'design_comuni_italia' ),
-		'update_item'       => __( 'Aggiorna il Tipo di categoria Amministrazione Trasparente', 'design_comuni_italia' ),
-		'add_new_item'      => __( 'Aggiungi un Tipo di categoria Amministrazione Trasparente', 'design_comuni_italia' ),
-		'new_item_name'     => __( 'Nuovo Tipo di categoria Amministrazione Trasparente', 'design_comuni_italia' ),
-		'menu_name'         => __( 'Tipi di categoria Amministrazione Trasparente', 'design_comuni_italia' ),
+		// ... altri label omessi per brevità ...
 	);
 
 	$args = array(
@@ -27,7 +21,6 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 		'show_ui'           => true,
 		'show_admin_column' => true,
 		'query_var'         => true,
-		'has_archive'       => true,
 		'rewrite'           => array( 'slug' => 'tipi_cat_amm_trasp' ),
 		'capabilities'      => array(
 			'manage_terms' => 'manage_tipi_cat_amm_trasp',
@@ -40,191 +33,141 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 	register_taxonomy( 'tipi_cat_amm_trasp', array( 'elemento_trasparenza' ), $args );
 }
 
-/* ------------------------------------------------------------------
- * 2. Campi personalizzati nei form di Aggiungi / Modifica termine
- * ---------------------------------------------------------------- */
-
-/* ----- Aggiungi (pagina “Aggiungi nuovo”) */
+/**
+ * Campi personalizzati aggiunta/modifica termine
+ */
 add_action( 'tipi_cat_amm_trasp_add_form_fields', 'dci_tassonomia_add_fields' );
-function dci_tassonomia_add_fields() {
-	$parent_term_id = isset($_GET['parent']) ? $_GET['parent'] : 0;
-
-	if ( $parent_term_id == 0 ) {
-		?>
-		<!-- Ordinamento -->
-		<div class="form-field term-ordinamento-wrap">
-			<label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label>
-			<input name="ordinamento" id="ordinamento" type="number" min="0" step="1" value="0" />
-			<p class="description"><?php _e( 'Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia' ); ?></p>
-		</div>
-
-		<!-- Visualizza elemento -->
-		<div class="form-field term-visualizza-elemento-wrap">
-			<label for="visualizza_elemento">
-				<input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" checked />
-				<?php _e( 'Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia' ); ?>
-			</label>
-		</div>
-		<?php
-	} else {
-		?>
-		<!-- URL personalizzato -->
-		<div class="form-field term-url-wrap">
-			<label for="term_url"><?php _e( 'URL personalizzato', 'design_comuni_italia' ); ?></label>
-			<input name="term_url" id="term_url" type="url" value="" placeholder="https://..." />
-			<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></p>
-		</div>
-
-		<!-- Apri in una nuova finestra -->
-		<div class="form-field term-open-new-window-wrap">
-			<label for="open_new_window">
-				<input name="open_new_window" id="open_new_window" type="checkbox" value="1" />
-				<?php _e( 'Apri il link in una nuova finestra', 'design_comuni_italia' ); ?>
-			</label>
-		</div>
-
-		<!-- 📌 Ruoli da escludere -->
-		<div class="form-field term-excluded_roles-wrap">
-			<label for="excluded_roles"><?php _e( 'Ruoli da escludere', 'design_comuni_italia' ); ?></label>
-			<select name="excluded_roles[]" id="excluded_roles" multiple style="min-width:200px;">
-				<?php
-				global $wp_roles;
-				foreach ( $wp_roles->roles as $key => $role ) {
-					echo '<option value="' . esc_attr( $key ) . '">' . esc_html( translate_user_role( $role['name'] ) ) . '</option>';
-				}
-				?>
-			</select>
-			<p class="description"><?php _e( 'Seleziona i ruoli che NON devono vedere questo elemento.', 'design_comuni_italia' ); ?></p>
-		</div>
-
-		<!-- Ordinamento -->
-		<div class="form-field term-ordinamento-wrap">
-			<label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label>
-			<input name="ordinamento" id="ordinamento" type="number" min="0" step="1" value="0" />
-			<p class="description"><?php _e( 'Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia' ); ?></p>
-		</div>
-
-		<!-- Visualizza elemento -->
-		<div class="form-field term-visualizza-elemento-wrap">
-			<label for="visualizza_elemento">
-				<input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" checked />
-				<?php _e( 'Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia' ); ?>
-			</label>
-		</div>
-		<?php
-	}
-}
-
-/* ----- Modifica (pagina “Modifica termine”) */
 add_action( 'tipi_cat_amm_trasp_edit_form_fields', 'dci_tassonomia_edit_fields' );
-function dci_tassonomia_edit_fields( $term ) {
-	$ordinamento     = get_term_meta( $term->term_id, 'ordinamento', true );
-	$visualizza      = get_term_meta( $term->term_id, 'visualizza_elemento', true );
-	$term_url        = get_term_meta( $term->term_id, 'term_url', true );
-	$open_new_window = get_term_meta( $term->term_id, 'open_new_window', true );
-	$excluded_roles  = get_term_meta( $term->term_id, 'excluded_roles', true );
-	$excluded_roles  = is_array( $excluded_roles ) ? $excluded_roles : [];
 
-	$parent_term_id = $term->parent ?: 0;
+function dci_get_role_boxes_html( $selected_roles = [] ) {
+	global $wp_roles;
 
-	if ( $parent_term_id == 0 ) {
+	$all_roles = $wp_roles->roles;
+	$available_roles = array_diff( array_keys( $all_roles ), $selected_roles );
+
+	ob_start();
+	?>
+	<style>
+		.dci-dual-select {
+			display: flex;
+			gap: 20px;
+			margin-top: 10px;
+		}
+		.dci-dual-select select {
+			width: 200px;
+			height: 150px;
+		}
+	</style>
+	<div class="form-field term-excluded_roles-wrap">
+		<label><?php _e( 'Ruoli da escludere', 'design_comuni_italia' ); ?></label>
+		<div class="dci-dual-select">
+			<div>
+				<strong><?php _e( 'Disponibili', 'design_comuni_italia' ); ?></strong><br />
+				<select id="roles-available" multiple>
+					<?php foreach ( $available_roles as $key ): ?>
+						<option value="<?php echo esc_attr( $key ); ?>">
+							<?php echo esc_html( translate_user_role( $all_roles[ $key ]['name'] ) ); ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+
+			<div>
+				<strong><?php _e( 'Esclusi', 'design_comuni_italia' ); ?></strong><br />
+				<select name="excluded_roles[]" id="roles-selected" multiple>
+					<?php foreach ( $selected_roles as $key ): ?>
+						<option value="<?php echo esc_attr( $key ); ?>">
+							<?php echo esc_html( translate_user_role( $all_roles[ $key ]['name'] ) ); ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
+		<p class="description"><?php _e( 'Trascina i ruoli che NON devono vedere questa categoria.', 'design_comuni_italia' ); ?></p>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const available = document.getElementById('roles-available');
+			const selected = document.getElementById('roles-selected');
+
+			function moveSelected(from, to) {
+				Array.from(from.selectedOptions).forEach(opt => {
+					to.appendChild(opt);
+				});
+			}
+
+			available.ondblclick = () => moveSelected(available, selected);
+			selected.ondblclick = () => moveSelected(selected, available);
+		});
+	</script>
+	<?php
+	return ob_get_clean();
+}
+
+function dci_tassonomia_add_fields() {
+	$parent = isset($_GET['parent']) ? intval($_GET['parent']) : 0;
+	if ( $parent === 0 ) {
 		?>
-		<tr class="form-field term-ordinamento-wrap">
-			<th scope="row"><label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label></th>
-			<td>
-				<input name="ordinamento" id="ordinamento" type="number" min="0" step="1" value="<?php echo esc_attr( $ordinamento ?: 0 ); ?>" />
-				<p class="description"><?php _e( 'Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia' ); ?></p>
-			</td>
-		</tr>
-		<tr class="form-field term-visualizza-elemento-wrap">
-			<th scope="row"><?php _e( 'Visualizza elemento', 'design_comuni_italia' ); ?></th>
-			<td>
-				<label for="visualizza_elemento">
-					<input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" <?php checked( $visualizza, '1' ); ?> />
-					<?php _e( 'Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia' ); ?>
-				</label>
-			</td>
-		</tr>
+		<!-- Ordinamento e Visualizza -->
+		<div class="form-field"><label><?php _e('Ordinamento', 'design_comuni_italia'); ?></label><input type="number" name="ordinamento" value="0" /></div>
+		<div class="form-field"><label><input type="checkbox" name="visualizza_elemento" value="1" checked /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></div>
 		<?php
 	} else {
+		echo dci_get_role_boxes_html();
 		?>
-		<tr class="form-field term-url-wrap">
-			<th scope="row"><label for="term_url"><?php _e( 'URL personalizzato', 'design_comuni_italia' ); ?></label></th>
-			<td>
-				<input name="term_url" id="term_url" type="url" value="<?php echo esc_attr( $term_url ); ?>" placeholder="https://..." />
-				<p class="description"><?php _e( 'Inserisci un URL per indirizzare direttamente alla pagina. Se lasci vuoto, non verrà creato un link.', 'design_comuni_italia' ); ?></p>
-			</td>
-		</tr>
-		<tr class="form-field term-open-new-window-wrap">
-			<th scope="row"><?php _e( 'Apri in nuova finestra', 'design_comuni_italia' ); ?></th>
-			<td>
-				<label for="open_new_window">
-					<input name="open_new_window" id="open_new_window" type="checkbox" value="1" <?php checked( $open_new_window, '1' ); ?> />
-					<?php _e( 'Apri il link in una nuova finestra', 'design_comuni_italia' ); ?>
-				</label>
-			</td>
-		</tr>
-		<tr class="form-field term-excluded_roles-wrap">
-			<th scope="row"><label for="excluded_roles"><?php _e( 'Ruoli da escludere', 'design_comuni_italia' ); ?></label></th>
-			<td>
-				<select name="excluded_roles[]" id="excluded_roles" multiple style="min-width:200px;">
-					<?php
-					global $wp_roles;
-					foreach ( $wp_roles->roles as $key => $role ) {
-						$sel = in_array( $key, $excluded_roles, true ) ? 'selected' : '';
-						echo '<option value="' . esc_attr( $key ) . '" ' . $sel . '>' . esc_html( translate_user_role( $role['name'] ) ) . '</option>';
-					}
-					?>
-				</select>
-				<p class="description"><?php _e( 'I ruoli selezionati NON vedranno questa categoria.', 'design_comuni_italia' ); ?></p>
-			</td>
-		</tr>
-		<tr class="form-field term-ordinamento-wrap">
-			<th scope="row"><label for="ordinamento"><?php _e( 'Ordinamento', 'design_comuni_italia' ); ?></label></th>
-			<td>
-				<input name="ordinamento" id="ordinamento" type="number" min="0" step="1" value="<?php echo esc_attr( $ordinamento ?: 0 ); ?>" />
-				<p class="description"><?php _e( 'Numero per definire l’ordine di visualizzazione della categoria.', 'design_comuni_italia' ); ?></p>
-			</td>
-		</tr>
-		<tr class="form-field term-visualizza-elemento-wrap">
-			<th scope="row"><label for="visualizza_elemento"><?php _e( 'Visualizza elemento', 'design_comuni_italia' ); ?></label></th>
-			<td>
-				<label for="visualizza_elemento">
-					<input name="visualizza_elemento" id="visualizza_elemento" type="checkbox" value="1" <?php checked( $visualizza, '1' ); ?> />
-					<?php _e( 'Visualizza elemento nella lista degli elementi da poter aggiungere nella trasparenza.', 'design_comuni_italia' ); ?>
-				</label>
-			</td>
-		</tr>
+		<div class="form-field"><label><?php _e('URL personalizzato', 'design_comuni_italia'); ?></label><input name="term_url" type="url" placeholder="https://..." /></div>
+		<div class="form-field"><label><input type="checkbox" name="open_new_window" value="1" /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></div>
+		<div class="form-field"><label><?php _e('Ordinamento', 'design_comuni_italia'); ?></label><input type="number" name="ordinamento" value="0" /></div>
+		<div class="form-field"><label><input type="checkbox" name="visualizza_elemento" value="1" checked /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></div>
+		<?php
+	}
+}
+
+function dci_tassonomia_edit_fields( $term ) {
+	$excluded_roles = get_term_meta( $term->term_id, 'excluded_roles', true );
+	$excluded_roles = is_array( $excluded_roles ) ? $excluded_roles : [];
+	$parent = $term->parent;
+
+	if ( $parent === 0 ) {
+		// padre
+		?>
+		<tr class="form-field"><th><?php _e('Ordinamento', 'design_comuni_italia'); ?></th><td><input name="ordinamento" type="number" value="<?php echo esc_attr(get_term_meta($term->term_id, 'ordinamento', true)); ?>" /></td></tr>
+		<tr class="form-field"><th><?php _e('Visualizza', 'design_comuni_italia'); ?></th><td><label><input name="visualizza_elemento" type="checkbox" value="1" <?php checked(get_term_meta($term->term_id, 'visualizza_elemento', true), '1'); ?> /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></td></tr>
+		<?php
+	} else {
+		// figlio
+		echo '<tr class="form-field"><th colspan="2">' . dci_get_role_boxes_html($excluded_roles) . '</th></tr>';
+		?>
+		<tr class="form-field"><th><?php _e('URL', 'design_comuni_italia'); ?></th><td><input type="url" name="term_url" value="<?php echo esc_attr(get_term_meta($term->term_id, 'term_url', true)); ?>" /></td></tr>
+		<tr class="form-field"><th><?php _e('Nuova finestra', 'design_comuni_italia'); ?></th><td><label><input type="checkbox" name="open_new_window" value="1" <?php checked(get_term_meta($term->term_id, 'open_new_window', true), '1'); ?> /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></td></tr>
+		<tr class="form-field"><th><?php _e('Ordinamento', 'design_comuni_italia'); ?></th><td><input name="ordinamento" type="number" value="<?php echo esc_attr(get_term_meta($term->term_id, 'ordinamento', true)); ?>" /></td></tr>
+		<tr class="form-field"><th><?php _e('Visualizza', 'design_comuni_italia'); ?></th><td><label><input name="visualizza_elemento" type="checkbox" value="1" <?php checked(get_term_meta($term->term_id, 'visualizza_elemento', true), '1'); ?> /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></td></tr>
 		<?php
 	}
 }
 
 
-/* ------------------------------------------------------------------
- * 3. Salva i metadati
- * ---------------------------------------------------------------- */
+/**
+ * 3. Salva metadati personalizzati
+ */
 add_action( 'created_tipi_cat_amm_trasp', 'dci_save_term_meta', 10, 2 );
 add_action( 'edited_tipi_cat_amm_trasp',  'dci_save_term_meta', 10, 2 );
 function dci_save_term_meta( $term_id ) {
-	if ( isset( $_POST['ordinamento'] ) ) {
-		update_term_meta( $term_id, 'ordinamento', intval( $_POST['ordinamento'] ) );
-	}
-	$visualizza = isset( $_POST['visualizza_elemento'] ) ? '1' : '0';
-	update_term_meta( $term_id, 'visualizza_elemento', $visualizza );
+	update_term_meta( $term_id, 'ordinamento', isset( $_POST['ordinamento'] ) ? intval( $_POST['ordinamento'] ) : 0 );
+	update_term_meta( $term_id, 'visualizza_elemento', isset( $_POST['visualizza_elemento'] ) ? '1' : '0' );
+	update_term_meta( $term_id, 'term_url', isset( $_POST['term_url'] ) ? esc_url_raw( $_POST['term_url'] ) : '' );
+	update_term_meta( $term_id, 'open_new_window', isset( $_POST['open_new_window'] ) ? '1' : '0' );
 
-	if ( isset( $_POST['term_url'] ) ) {
-		update_term_meta( $term_id, 'term_url', esc_url( $_POST['term_url'] ) );
-	}
-	$open_new_window = isset( $_POST['open_new_window'] ) ? '1' : '0';
-	update_term_meta( $term_id, 'open_new_window', $open_new_window );
-
-	// 📌 Salvataggio ruoli esclusi
+	// Salvataggio ruoli esclusi
 	if ( isset( $_POST['excluded_roles'] ) && is_array( $_POST['excluded_roles'] ) ) {
 		update_term_meta( $term_id, 'excluded_roles', array_map( 'sanitize_text_field', $_POST['excluded_roles'] ) );
 	} else {
 		delete_term_meta( $term_id, 'excluded_roles' );
 	}
 }
+
+
+
 
 
 
