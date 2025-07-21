@@ -333,7 +333,6 @@ add_action('init', 'my_custom_one_time_function');
 
 
 
-
 add_action( 'admin_enqueue_scripts', 'dci_evidenzia_categorie_cmb2', 20 );
 function dci_evidenzia_categorie_cmb2( $hook ) {
 
@@ -356,11 +355,14 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
         .cmb2-sottocategoria {
             color: #343a40 !important;
         }
-        .cmb2-radio-list input[type='checkbox'] {
-            display: none; /* Nascondi la checkbox */
-        }
         .cmb2-radio-list input[type='checkbox']:disabled {
             cursor: not-allowed; /* Cambia il cursore per la checkbox disabilitata */
+        }
+        .cmb2-radio-list input[type='checkbox'] {
+            display: inline-block;
+        }
+        .cmb2-radio-list input[type='checkbox'].disabled-checkbox {
+            display: none;
         }
         "
     );
@@ -374,12 +376,16 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
                 $('.cmb2-radio-list, .cmb2-checkbox-list').each(function(){
                     $(this).children('li').each(function(){
                         var label = $(this).children('label').first();
+                        var checkbox = $(this).children('input[type="checkbox"]');
+                        
                         if(label.length){
+                            // Se è la categoria principale
                             if(label.html().indexOf('&nbsp;') === -1){
                                 label.addClass('cmb2-categoria-principale');
-                                var checkbox = $(this).children('input[type="checkbox"]');
-                                checkbox.prop('disabled', true); // Disabilita la checkbox
-                                checkbox.hide(); // Nascondi la checkbox visivamente
+                                
+                                // Disabilito la checkbox
+                                checkbox.prop('disabled', true);
+                                checkbox.addClass('disabled-checkbox'); // Aggiungo una classe per nascondere la checkbox
                             } else {
                                 label.addClass('cmb2-sottocategoria');
                             }
@@ -391,7 +397,6 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
 JS
     );
 }
-
 
 
 
