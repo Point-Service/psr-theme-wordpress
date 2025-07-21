@@ -118,17 +118,21 @@ function dci_tassonomia_add_fields() {
 
 
 function dci_tassonomia_edit_fields( $term ) {
-	$excluded_roles = get_term_meta( $term->term_id, 'excluded_roles', true );
-	$excluded_roles = is_array( $excluded_roles ) ? $excluded_roles : [];
+    $excluded_roles = get_term_meta( $term->term_id, 'excluded_roles', true );
+    $excluded_roles = is_array( $excluded_roles ) ? $excluded_roles : [];
 
-	echo '<tr class="form-field"><th colspan="2">' . dci_get_role_boxes_html($excluded_roles) . '</th></tr>';
-	?>
-	<tr class="form-field"><th><?php _e('URL', 'design_comuni_italia'); ?></th><td><input type="url" name="term_url" value="<?php echo esc_attr(get_term_meta($term->term_id, 'term_url', true)); ?>" /></td></tr>
-	<tr class="form-field"><th><?php _e('Nuova finestra', 'design_comuni_italia'); ?></th><td><label><input type="checkbox" name="open_new_window" value="1" <?php checked(get_term_meta($term->term_id, 'open_new_window', true), '1'); ?> /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></td></tr>
-	<tr class="form-field"><th><?php _e('Ordinamento', 'design_comuni_italia'); ?></th><td><input name="ordinamento" type="number" value="<?php echo esc_attr(get_term_meta($term->term_id, 'ordinamento', true)); ?>" /></td></tr>
-	<tr class="form-field"><th><?php _e('Visualizza', 'design_comuni_italia'); ?></th><td><label><input name="visualizza_elemento" type="checkbox" value="1" <?php checked(get_term_meta($term->term_id, 'visualizza_elemento', true), '1'); ?> /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></td></tr>
-	<?php
+    ?>
+    <tr class="form-field">
+        <th scope="row" valign="top"><?php _e('Ruoli da escludere', 'design_comuni_italia'); ?></th>
+        <td><?php echo dci_get_role_boxes_html($excluded_roles); ?></td>
+    </tr>
+    <tr class="form-field"><th><?php _e('URL', 'design_comuni_italia'); ?></th><td><input type="url" name="term_url" value="<?php echo esc_attr(get_term_meta($term->term_id, 'term_url', true)); ?>" /></td></tr>
+    <tr class="form-field"><th><?php _e('Nuova finestra', 'design_comuni_italia'); ?></th><td><label><input type="checkbox" name="open_new_window" value="1" <?php checked(get_term_meta($term->term_id, 'open_new_window', true), '1'); ?> /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></td></tr>
+    <tr class="form-field"><th><?php _e('Ordinamento', 'design_comuni_italia'); ?></th><td><input name="ordinamento" type="number" value="<?php echo esc_attr(get_term_meta($term->term_id, 'ordinamento', true)); ?>" /></td></tr>
+    <tr class="form-field"><th><?php _e('Visualizza', 'design_comuni_italia'); ?></th><td><label><input name="visualizza_elemento" type="checkbox" value="1" <?php checked(get_term_meta($term->term_id, 'visualizza_elemento', true), '1'); ?> /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></td></tr>
+    <?php
 }
+
 
 /**
  * 3. Salva metadati personalizzati
