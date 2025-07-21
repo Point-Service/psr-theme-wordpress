@@ -286,33 +286,6 @@ function dci_render_transparency_multipost_page() {
 }
 
 
-function dci_get_visible_amministrazione_terms($args, $field) {
-    // Definisci i parametri per la query dei termini
-    $args = array(
-        'taxonomy'   => 'tipi_cat_amm_trasp',
-        'hide_empty' => false, // Mostra anche i termini senza post
-        'orderby'    => 'meta_value_num', // Ordina per meta_value numerico (assicurati di usare un campo numerico per ordinamento)
-        'order'      => 'ASC', // Ordinamento crescente (puoi cambiarlo in DESC se necessario)
-        'meta_key'   => 'ordinamento', // Il nome del campo personalizzato per l'ordinamento
-    );
-
-    // Recupera i termini
-    $terms = get_terms($args);
-
-    $options = array();
-
-    // Verifica che ci siano dei termini
-    if (!is_wp_error($terms) && !empty($terms)) {
-        foreach ($terms as $term) {
-            // Aggiungi solo i termini visibili (se hai definito un campo personalizzato 'visualizza_elemento' o altro)
-            if (get_term_meta($term->term_id, 'visualizza_elemento', true) != '0') {
-                $options[$term->term_id] = $term->name;
-            }
-        }
-    }
-
-    return $options;
-}
 
 
 
@@ -403,16 +376,17 @@ function dci_add_elemento_trasparenza_metaboxes()
         'priority'      => 'high',
     ));
 
-        $cmb_sezione->add_field(array(
+        $cmb_sezione->add_field( array(
             'id'                => $prefix . 'tipo_cat_amm_trasp',
-            'name'              => __('Categoria Trasparenza *', 'design_comuni_italia'),
-            'desc'              => __('Selezionare una categoria …', 'design_comuni_italia'),
+            'name'              => __( 'Categoria Trasparenza *', 'design_comuni_italia' ),
+            'desc'              => __( 'Selezionare una categoria …', 'design_comuni_italia' ),
             'type'              => 'taxonomy_radio_hierarchical',
             'taxonomy'          => 'tipi_cat_amm_trasp',
             'show_option_none'  => false,
             'remove_default'    => true,
-            'options_cb'        => 'dci_get_visible_amministrazione_terms', // Usa la callback con ordinamento
-        ));
+            /* ↓↓↓ usa la callback che restituisce SOLO i termini “visibili” ↓↓↓ */
+            'options_cb'        => 'dci_get_visible_amministrazione_terms',
+        ) );
 
         $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
