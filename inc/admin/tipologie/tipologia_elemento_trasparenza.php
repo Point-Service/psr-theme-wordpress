@@ -333,41 +333,6 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 
 
 
-// Funzione di callback personalizzata per ordinare i termini
-function dci_get_visible_amministrazione_terms( $field ) {
-    // Recupera i termini per la tassonomia 'tipi_cat_amm_trasp'
-    $categorie_genitori = get_terms( 'tipi_cat_amm_trasp', array(
-        'hide_empty' => false,
-        'parent' => 0,
-        'orderby' => 'ID',
-        'order' => 'ASC'
-    ) );
-
-    // Ordina i termini in base al campo 'ordinamento'
-    usort( $categorie_genitori, function( $a, $b ) {
-        $ordinamento_a = get_term_meta( $a->term_id, 'ordinamento', true );
-        $ordinamento_b = get_term_meta( $b->term_id, 'ordinamento', true );
-
-        // Se uno dei termini non ha un valore di 'ordinamento', usa un valore di fallback
-        if ( empty( $ordinamento_a ) ) {
-            $ordinamento_a = PHP_INT_MAX; // Usa un valore molto grande per mandarlo alla fine
-        }
-        if ( empty( $ordinamento_b ) ) {
-            $ordinamento_b = PHP_INT_MAX; // Lo stesso per il secondo termine
-        }
-
-        return $ordinamento_a - $ordinamento_b;
-    } );
-
-    // Ora restituisci i termini ordinati per essere usati nel campo CMB2
-    $terms = [];
-    foreach ( $categorie_genitori as $term ) {
-        $terms[ $term->term_id ] = $term->name; // Aggiungi il termine all'array
-    }
-
-    return $terms;
-}
-
 
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
 add_action('cmb2_init', 'dci_add_elemento_trasparenza_metaboxes');
@@ -419,12 +384,11 @@ function dci_add_elemento_trasparenza_metaboxes()
             'taxonomy'          => 'tipi_cat_amm_trasp',
             'show_option_none'  => false,
             'remove_default'    => true,
+            /* ↓↓↓ usa la callback che restituisce SOLO i termini “visibili” ↓↓↓ */
             'options_cb'        => 'dci_get_visible_amministrazione_terms',
         ) );
 
-    
-
-    $cmb_corpo = new_cmb2_box(array(
+        $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
         'title'         => __('Corpo', 'design_comuni_italia'),
         'object_types'  => array('elemento_trasparenza'),
