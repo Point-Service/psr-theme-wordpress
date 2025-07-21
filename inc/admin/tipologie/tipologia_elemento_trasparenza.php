@@ -168,7 +168,13 @@ function dci_render_transparency_multipost_page() {
                 </tbody>
             </table>
 
-            <?php submit_button(__('Crea Elementi Trasparenza', 'design_comuni_italia')); ?>
+            <?php submit_button( 
+                        __('Crea Elementi Trasparenza', 'design_comuni_italia'), // Etichetta
+                        'primary',                                                 // Classe (es: 'primary', 'secondary')
+                        'Aggiungi Elemento',                                        // Name dell'input submit
+                        false                                                      // Se true, genera anche un div <p> di wrapper
+                    );
+                     ?>
         </form>
 
         <?php
