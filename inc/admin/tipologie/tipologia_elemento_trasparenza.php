@@ -376,6 +376,10 @@ function dci_add_elemento_trasparenza_metaboxes()
         'priority'      => 'high',
     ));
 
+
+
+
+    
         $cmb_sezione->add_field( array(
             'id'                => $prefix . 'tipo_cat_amm_trasp',
             'name'              => __( 'Categoria Trasparenza *', 'design_comuni_italia' ),
@@ -384,9 +388,12 @@ function dci_add_elemento_trasparenza_metaboxes()
             'taxonomy'          => 'tipi_cat_amm_trasp',
             'show_option_none'  => false,
             'remove_default'    => true,
-            /* ↓↓↓ usa la callback che restituisce SOLO i termini “visibili” ↓↓↓ */
-            'options_cb'        => 'dci_get_visible_amministrazione_terms',
         ) );
+
+
+
+
+    
 
         $cmb_corpo = new_cmb2_box(array(
         'id'            => $prefix . 'box_corpo',
