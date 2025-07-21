@@ -332,6 +332,20 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 }
 
 
+// Aggiungi il filtro per ordinare i termini
+add_filter( 'cmb2_taxonomy_terms_args', 'ordina_termini_per_ordinamento', 10, 2 );
+function ordina_termini_per_ordinamento( $args, $field ) {
+    // Verifica se il campo è quello giusto
+    if ( isset( $field->args['id'] ) && $field->args['id'] === 'tipo_cat_amm_trasp' ) {
+        // Modifica la query per ordinare per il campo 'ordinamento' (campo personalizzato)
+        $args['orderby'] = 'meta_value_num';  // Ordina per valore numerico
+        $args['order'] = 'ASC';                // Ordina in ordine ascendente
+        $args['meta_key'] = 'ordinamento';     // Imposta il campo 'ordinamento' come chiave
+    }
+
+    return $args;
+}
+
 
 
 // --- Funzioni CMB2 esistenti (rimangono invariate) ---
