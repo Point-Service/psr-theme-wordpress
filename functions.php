@@ -359,10 +359,13 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
         .cmb2-radio-list input[type='checkbox'] {
             display: none; /* Nascondi la checkbox */
         }
+        .cmb2-radio-list input[type='checkbox']:disabled {
+            cursor: not-allowed; /* Cambia il cursore per la checkbox disabilitata */
+        }
         "
     );
 
-    // Aggiungo lo script JS inline per nascondere la checkbox nella categoria principale
+    // Aggiungo lo script JS inline per nascondere e disabilitare la checkbox nella categoria principale
     wp_add_inline_script(
         'jquery-core',
         <<<JS
@@ -374,7 +377,9 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
                         if(label.length){
                             if(label.html().indexOf('&nbsp;') === -1){
                                 label.addClass('cmb2-categoria-principale');
-                                $(this).children('input[type="checkbox"]').hide(); // Nascondi la checkbox
+                                var checkbox = $(this).children('input[type="checkbox"]');
+                                checkbox.prop('disabled', true); // Disabilita la checkbox
+                                checkbox.hide(); // Nascondi la checkbox visivamente
                             } else {
                                 label.addClass('cmb2-sottocategoria');
                             }
@@ -386,7 +391,6 @@ function dci_evidenzia_categorie_cmb2( $hook ) {
 JS
     );
 }
-
 
 
 
