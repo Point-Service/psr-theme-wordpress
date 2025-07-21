@@ -104,14 +104,18 @@ function dci_get_role_boxes_html( $selected_roles = [] ) {
 }
 
 function dci_tassonomia_add_fields() {
-	echo dci_get_role_boxes_html();
-	?>
-	<div class="form-field"><label><?php _e('URL personalizzato', 'design_comuni_italia'); ?></label><input name="term_url" type="url" placeholder="https://..." /></div>
-	<div class="form-field"><label><input type="checkbox" name="open_new_window" value="1" /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></div>
-	<div class="form-field"><label><?php _e('Ordinamento', 'design_comuni_italia'); ?></label><input type="number" name="ordinamento" value="0" /></div>
-	<div class="form-field"><label><input type="checkbox" name="visualizza_elemento" value="1" checked /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></div>
-	<?php
+    ?>
+    <div class="form-field">
+        <label><?php _e('Ruoli da escludere', 'design_comuni_italia'); ?></label>
+        <?php echo dci_get_role_boxes_html(); ?>
+    </div>
+    <div class="form-field"><label><?php _e('URL personalizzato', 'design_comuni_italia'); ?></label><input name="term_url" type="url" placeholder="https://..." /></div>
+    <div class="form-field"><label><input type="checkbox" name="open_new_window" value="1" /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></div>
+    <div class="form-field"><label><?php _e('Ordinamento', 'design_comuni_italia'); ?></label><input type="number" name="ordinamento" value="0" /></div>
+    <div class="form-field"><label><input type="checkbox" name="visualizza_elemento" value="1" checked /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></div>
+    <?php
 }
+
 
 function dci_tassonomia_edit_fields( $term ) {
 	$excluded_roles = get_term_meta( $term->term_id, 'excluded_roles', true );
