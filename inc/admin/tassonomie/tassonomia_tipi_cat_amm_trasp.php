@@ -106,7 +106,6 @@ function dci_get_role_boxes_html( $selected_roles = [] ) {
 function dci_tassonomia_add_fields() {
 	?>
 	<div class="form-field">
-		<label><?php _e('Ruoli da escludere', 'design_comuni_italia'); ?></label>
 		<?php echo dci_get_role_boxes_html(); ?>
 	</div>
 
