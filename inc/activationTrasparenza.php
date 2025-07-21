@@ -542,7 +542,7 @@ function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 
  */
 function dci_terms_to_hide() {
     return [
-        'Incarichi dirigenziali, a qualsiasi titolo conferiti',
+        'Incarichi conferiti e autorizzati ai dipendenti',
         'Contratti Pubblici',
         'Atti di concessione',
     ];
