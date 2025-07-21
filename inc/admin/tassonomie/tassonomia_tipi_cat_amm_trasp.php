@@ -281,4 +281,64 @@ function dci_show_custom_columns( $out, $column, $term_id ) {
 	return $out;
 }
 
+
+/**
+ * Esclude i termini con visualizza_elemento = 0 e/o esclusi per il ruolo corrente
+ * SOLO nella pagina di creazione di un Elemento Trasparenza
+ */
+add_filter( 'terms_clauses', 'dci_hide_invisible_or_restricted_terms', 10, 3 );
+function dci_hide_invisible_or_restricted_terms( $clauses, $taxonomies, $args ) {
+	if ( ! in_array( 'tipi_cat_amm_trasp', (array) $taxonomies, true ) ) {
+		return $clauses;
+	}
+
+	if ( ! is_admin() ) {
+		return $clauses;
+	}
+
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || $screen->base !== 'post' || $screen->action !== 'add' || $screen->post_type !== 'elemento_trasparenza' ) {
+		return $clauses;
+	}
+
+	global $wpdb;
+
+	if ( false === strpos( $clauses['join'], 'termmeta' ) ) {
+		$clauses['join'] .= "
+			LEFT JOIN {$wpdb->termmeta} tm_vis
+				ON tm_vis.term_id = t.term_id
+				AND tm_vis.meta_key = 'visualizza_elemento'
+			LEFT JOIN {$wpdb->termmeta} tm_roles
+				ON tm_roles.term_id = t.term_id
+				AND tm_roles.meta_key = 'excluded_roles'
+		";
+	}
+
+	$current_user = wp_get_current_user();
+	$user_roles = (array) $current_user->roles;
+
+	// Costruisce la clausola di esclusione per i ruoli
+	$role_checks = [];
+	foreach ( $user_roles as $role ) {
+		$role = esc_sql( $role );
+		$role_checks[] = $wpdb->prepare( "tm_roles.meta_value NOT LIKE %s", '%' . $wpdb->esc_like( $role ) . '%' );
+	}
+	$roles_condition = ! empty( $role_checks ) ? ' AND ( tm_roles.meta_value IS NULL OR (' . implode( ' AND ', $role_checks ) . ') )' : '';
+
+	// Visualizza = 1 o NULL (default)
+	$clauses['where'] .= "
+		AND (
+			tm_vis.meta_value IS NULL
+			OR tm_vis.meta_value = ''
+			OR tm_vis.meta_value = '1'
+		)
+		$roles_condition
+	";
+
+	return $clauses;
+}
+
+
+
+
 ?>
