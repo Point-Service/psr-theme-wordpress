@@ -288,8 +288,7 @@ function dci_render_transparency_multipost_page() {
 
 /**
  * Esclude i termini con visualizza_elemento = 0
- * e li ordina per il campo 'ordinamento' (numerico)
- * → solo nella pagina di creazione di un Elemento Trasparenza
+ * → ma SOLO nella pagina di creazione di un Elemento Trasparenza
  */
 add_filter( 'terms_clauses', 'dci_hide_invisible_terms', 10, 3 );
 function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
@@ -316,29 +315,15 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
     // Siamo nella pagina giusta: aggiungiamo la JOIN + condizione
     global $wpdb;
 
-    // Aggiungi JOIN per visualizza_elemento e ordinamento
     if ( false === strpos( $clauses['join'], 'termmeta' ) ) {
         $clauses['join']  .= " LEFT JOIN {$wpdb->termmeta} tm_vis
                                ON tm_vis.term_id = t.term_id
                                AND tm_vis.meta_key = 'visualizza_elemento' ";
-
-        // Aggiungi JOIN per ordinamento (campo meta)
-        $clauses['join']  .= " LEFT JOIN {$wpdb->termmeta} tm_ord
-                               ON tm_ord.term_id = t.term_id
-                               AND tm_ord.meta_key = 'ordinamento' ";
     }
 
-    // Modifica la clausola WHERE per escludere i termini invisibili
     $clauses['where'] .= " AND ( tm_vis.meta_value IS NULL
                                  OR tm_vis.meta_value = ''
                                  OR tm_vis.meta_value = '1' ) ";
-
-    // Aggiungi ordinamento per il campo 'ordinamento' (campo numerico)
-    $clauses['orderby'] = "ORDER BY CAST(tm_ord.meta_value AS UNSIGNED) ASC";
-
-    // DEBUG: Stampa la query per vedere cosa sta succedendo
-    // Aggiungi questo per capire cosa viene generato nella query
-    error_log( print_r( $clauses, true ) );
 
     return $clauses;
 }
@@ -395,6 +380,9 @@ function dci_add_elemento_trasparenza_metaboxes()
             'desc'              => __( 'Selezionare una categoria …', 'design_comuni_italia' ),
             'type'              => 'taxonomy_radio_hierarchical',
             'taxonomy'          => 'tipi_cat_amm_trasp',
+            'orderby'    => 'meta_value_num', // Ordina per meta_value numerico
+            'order'      => 'ASC',            // Ordinamento ascendente
+            'meta_key'   => 'ordinamento',   // Il campo su cui ordinare
             'show_option_none'  => false,
             'remove_default'    => true,
         ) );
