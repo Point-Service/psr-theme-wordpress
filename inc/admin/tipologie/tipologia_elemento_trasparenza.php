@@ -287,11 +287,9 @@ function dci_render_transparency_multipost_page() {
 
 
 
-
-
-/**
  * Esclude i termini con visualizza_elemento = 0
- * → ma SOLO nella pagina di creazione di un Elemento Trasparenza
+ * e li ordina per il campo 'ordinamento' (numerico)
+ * → solo nella pagina di creazione di un Elemento Trasparenza
  */
 add_filter( 'terms_clauses', 'dci_hide_invisible_terms', 10, 3 );
 function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
@@ -318,7 +316,7 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
     // Siamo nella pagina giusta: aggiungiamo la JOIN + condizione
     global $wpdb;
 
-   // Aggiungi JOIN per visualizza_elemento e ordinamento
+    // Aggiungi JOIN per visualizza_elemento e ordinamento
     if ( false === strpos( $clauses['join'], 'termmeta' ) ) {
         $clauses['join']  .= " LEFT JOIN {$wpdb->termmeta} tm_vis
                                ON tm_vis.term_id = t.term_id
@@ -338,6 +336,11 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
     // Aggiungi ordinamento per il campo 'ordinamento' (campo numerico)
     $clauses['orderby'] = "ORDER BY CAST(tm_ord.meta_value AS UNSIGNED) ASC";
 
+    // DEBUG: Stampa la query per vedere cosa sta succedendo
+    // Aggiungi questo per capire cosa viene generato nella query
+    error_log( print_r( $clauses, true ) );
+
+    return $clauses;
 }
 
 
