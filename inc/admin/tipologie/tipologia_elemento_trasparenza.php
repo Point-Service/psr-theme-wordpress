@@ -334,26 +334,29 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 
 add_filter( 'get_terms_args', 'ordina_termini_per_ordinamento', 10, 2 );
 function ordina_termini_per_ordinamento( $args, $taxonomies ) {
-
-
-    // Verifica se stiamo cercando la tassonomia giusta
+    
     if ( in_array( 'tipi_cat_amm_trasp', $taxonomies ) ) {
 
-        // Modifica la query per ordinare per il campo 'ordinamento' se presente
+        // Aggiungi la possibilità di ordinare per 'ordinamento'
         $args['orderby'] = 'meta_value_num';
         $args['order'] = 'ASC';
         $args['meta_key'] = 'ordinamento'; // Usa il campo 'ordinamento'
 
-        // Usa un valore di fallback se non esiste un valore 'ordinamento' per i termini
-        $args['meta_query'] = array(
-            array(
-                'key'     => 'ordinamento',
-                'compare' => 'EXISTS',
-            )
-        );
+        // Recupera i termini senza escludere quelli senza il campo 'ordinamento'
+        $args['hide_empty'] = false; // Assicurati che i termini vuoti non vengano esclusi
     }
 
     return $args;
+}
+
+add_filter( 'terms_clauses', 'ordina_per_ordinamento', 10, 3 );
+function ordina_per_ordinamento( $clauses, $taxonomies, $args ) {
+    if ( in_array( 'tipi_cat_amm_trasp', $taxonomies ) && !empty($args['meta_key']) ) {
+        // Ordina anche i termini senza ordinamento come se avessero un valore elevato
+        $clauses['orderby'] = "COALESCE( (SELECT meta_value FROM {$wpdb->prefix}termmeta WHERE term_id = {$wpdb->terms}.term_id AND meta_key = 'ordinamento'), 9999 ) ASC";
+    }
+
+    return $clauses;
 }
 
 
