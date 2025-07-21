@@ -335,6 +335,8 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 // Aggiungi il filtro per ordinare i termini
 add_filter( 'cmb2_taxonomy_terms_args', 'ordina_termini_per_ordinamento', 10, 2 );
 function ordina_termini_per_ordinamento( $args, $field ) {
+
+        echo'test';
     // Verifica se il campo è quello giusto
     if ( isset( $field->args['id'] ) && $field->args['id'] === 'tipo_cat_amm_trasp' ) {
         // Ottieni i termini della tassonomia
@@ -346,6 +348,9 @@ function ordina_termini_per_ordinamento( $args, $field ) {
             'parent'     => 0
         ));
 
+
+    echo'test1';
+        
         // Debug: Stampa i termini e i loro meta valori
         foreach ( $terms as $term ) {
             $ordinamento = get_term_meta( $term->term_id, 'ordinamento', true );
