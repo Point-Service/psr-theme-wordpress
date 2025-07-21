@@ -318,17 +318,26 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
     // Siamo nella pagina giusta: aggiungiamo la JOIN + condizione
     global $wpdb;
 
+   // Aggiungi JOIN per visualizza_elemento e ordinamento
     if ( false === strpos( $clauses['join'], 'termmeta' ) ) {
         $clauses['join']  .= " LEFT JOIN {$wpdb->termmeta} tm_vis
                                ON tm_vis.term_id = t.term_id
                                AND tm_vis.meta_key = 'visualizza_elemento' ";
+
+        // Aggiungi JOIN per ordinamento (campo meta)
+        $clauses['join']  .= " LEFT JOIN {$wpdb->termmeta} tm_ord
+                               ON tm_ord.term_id = t.term_id
+                               AND tm_ord.meta_key = 'ordinamento' ";
     }
 
+    // Modifica la clausola WHERE per escludere i termini invisibili
     $clauses['where'] .= " AND ( tm_vis.meta_value IS NULL
                                  OR tm_vis.meta_value = ''
                                  OR tm_vis.meta_value = '1' ) ";
 
-    return $clauses;
+    // Aggiungi ordinamento per il campo 'ordinamento' (campo numerico)
+    $clauses['orderby'] = "ORDER BY CAST(tm_ord.meta_value AS UNSIGNED) ASC";
+
 }
 
 
