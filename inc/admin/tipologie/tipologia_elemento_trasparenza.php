@@ -334,11 +334,10 @@ function dci_hide_invisible_terms( $clauses, $taxonomies, $args ) {
 
 add_filter( 'get_terms_args', 'ordina_termini_per_ordinamento', 10, 2 );
 function ordina_termini_per_ordinamento( $args, $taxonomies ) {
-    echo 'test';
+
 
     // Verifica se stiamo cercando la tassonomia giusta
     if ( in_array( 'tipi_cat_amm_trasp', $taxonomies ) ) {
-        echo 'test1';
 
         // Modifica la query per ordinare per il campo 'ordinamento' se presente
         $args['orderby'] = 'meta_value_num';
