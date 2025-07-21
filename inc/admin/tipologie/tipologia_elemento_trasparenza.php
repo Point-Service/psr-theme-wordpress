@@ -286,7 +286,7 @@ function dci_render_transparency_multipost_page() {
 }
 
 
-
+/**
  * Esclude i termini con visualizza_elemento = 0
  * e li ordina per il campo 'ordinamento' (numerico)
  * → solo nella pagina di creazione di un Elemento Trasparenza
