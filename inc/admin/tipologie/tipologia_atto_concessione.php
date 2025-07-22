@@ -52,6 +52,40 @@ function dci_register_post_type_atto_concessione()
     remove_post_type_support('atto_concessione', 'editor');
 }
 
+add_action('admin_init', function() {
+    // Prendi il ruolo amministratore
+    $role = get_role('administrator');
+
+    if ($role) {
+        $caps = [
+            'edit_atto_concessione',
+            'read_atto_concessione',
+            'delete_atto_concessione',
+            'edit_atto_concessione',
+            'edit_others_atto_concessione',
+            'publish_atto_concessione',
+            'read_private_atto_concessione',
+            'delete_atto_concessione',
+            'delete_private_atto_concessione',
+            'delete_published_atto_concessione',
+            'delete_others_atto_concessione',
+            'edit_private_atto_concessione',
+            'edit_published_atto_concessione',
+            'create_atto_concessione',
+        ];
+
+        foreach ($caps as $cap) {
+            $role->add_cap($cap);
+        }
+    }
+});
+
+
+
+
+
+
+
 /**
  * Messaggio informativo sotto il titolo nel backend
  */
