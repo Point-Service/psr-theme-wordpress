@@ -408,12 +408,3 @@ add_filter('ure_capabilities_groups_tree', function($groups) {
     $groups[$group_name]['gestione_permessi_trasparenza'] = 'Gestione Permessi Trasparenza';
     return $groups;
 });
-
-add_filter('ure_capabilities_groups_tree', function($groups) {
-    error_log("Gruppi URE:");
-    foreach ($groups as $group_name => $caps) {
-        error_log($group_name);
-    }
-    return $groups;
-});
-
