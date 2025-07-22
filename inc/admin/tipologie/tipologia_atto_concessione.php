@@ -1,4 +1,4 @@
-?php
+<?php
 
 /**
  * Registra il custom post type "atto_concessione"
