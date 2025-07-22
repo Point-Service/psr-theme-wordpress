@@ -32,6 +32,30 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 	register_taxonomy( 'tipi_cat_amm_trasp', array( 'elemento_trasparenza' ), $args );
 }
 
+
+
+
+add_action('init', function() {
+    register_taxonomy('dummy_tax', ['elemento_trasparenza'], [
+        'labels' => ['name' => 'Dummy Tax'],
+        'show_ui' => false,
+        'public' => false,
+        'capabilities' => [
+            'assign_terms' => 'gestione_permessi_trasparenza',
+            'edit_terms'   => 'gestione_permessi_trasparenza',
+            'manage_terms' => 'gestione_permessi_trasparenza',
+            'delete_terms' => 'gestione_permessi_trasparenza',
+        ],
+    ]);
+});
+
+
+
+
+
+
+
+
 /**
  * Campi personalizzati aggiunta/modifica termine
  */
