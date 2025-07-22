@@ -5,43 +5,46 @@
  */
 
 /* -------------------------------------------------
-   Registrazione CPT
+   Registrazione CPT con controllo permesso
 --------------------------------------------------*/
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
 
-	$labels = array(
-		'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
-		'singular_name'  => _x( 'Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia' ),
-		'add_new'        => _x( 'Aggiungi un Incarico conferito', 'Post Type', 'design_comuni_italia' ),
-		'add_new_item'   => __( 'Aggiungi un nuovo Incarico conferito', 'design_comuni_italia' ),
-		'edit_item'      => __( 'Modifica Incarico conferito', 'design_comuni_italia' ),
-		'featured_image' => __( 'Immagine di riferimento incarico', 'design_comuni_italia' ),
-	);
+    // Verifica se l'utente ha il permesso per vedere il menu
+    $show_in_menu = current_user_can('gestione_permessi_trasparenza') 
+        ? 'edit.php?post_type=elemento_trasparenza' 
+        : false;
 
-		// Correzione completa nel register_post_type
-		$args = array(
-		    'label'           => __( 'Incarico conferito', 'design_comuni_italia' ),
-		    'labels'          => $labels,
-		    'supports'        => array( 'title', 'author' ),
-		    'hierarchical'    => true,
-		    'public'          => true,
-		    'show_in_menu'    => 'edit.php?post_type=elemento_trasparenza',
-		    'menu_icon'       => 'dashicons-media-interactive',
-		    'has_archive'     => false, 
-		    'rewrite'         => array(
-		    //    'slug' => 'tipi_cat_amm_trasp/incarichi-conferiti-e-autorizzati-ai-dipendenti',
-		        'with_front' => false,
-		        'pages' => true,
-		    ),
-		    'map_meta_cap'    => true,
-		    'capability_type' => 'post',
-		    'description'     => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
-		);
+    $labels = array(
+        'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
+        'singular_name'  => _x( 'Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'add_new'        => _x( 'Aggiungi un Incarico conferito', 'Post Type', 'design_comuni_italia' ),
+        'add_new_item'   => __( 'Aggiungi un nuovo Incarico conferito', 'design_comuni_italia' ),
+        'edit_item'      => __( 'Modifica Incarico conferito', 'design_comuni_italia' ),
+        'featured_image' => __( 'Immagine di riferimento incarico', 'design_comuni_italia' ),
+    );
 
+    $args = array(
+        'label'           => __( 'Incarico conferito', 'design_comuni_italia' ),
+        'labels'          => $labels,
+        'supports'        => array( 'title', 'author' ),
+        'hierarchical'    => true,
+        'public'          => true,
+        'show_in_menu'    => $show_in_menu,
+        'menu_icon'       => 'dashicons-media-interactive',
+        'has_archive'     => false, 
+        'rewrite'         => array(
+            'with_front' => false,
+            'pages' => true,
+        ),
+        'map_meta_cap'    => true,
+        'capability_type' => 'post',
+        'description'     => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
+    );
 
-	register_post_type( 'incarichi_dip', $args );
-	remove_post_type_support( 'incarichi_dip', 'editor' );
+    register_post_type( 'incarichi_dip', $args );
+    // Rimuove l'editor standard
+    remove_post_type_support( 'incarichi_dip', 'editor' );
 }
 
 /* -------------------------------------------------
