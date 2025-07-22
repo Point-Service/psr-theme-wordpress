@@ -58,7 +58,6 @@ function dci_render_permessi_ruoli_page() {
                     <form method="post">
                         <?php wp_nonce_field('salva_permessi_ruoli', 'permessi_ruoli_nonce'); ?>
                         <input type="hidden" name="ruolo" value="<?php echo esc_attr($ruolo_selezionato); ?>">
-
                     <p>
                         <button type="button" class="button" id="seleziona-tutti"><?php _e('Seleziona tutto', 'design_comuni_italia'); ?></button>
                         <button type="button" class="button" id="deseleziona-tutti"><?php _e('Deseleziona tutto', 'design_comuni_italia'); ?></button>
@@ -121,7 +120,6 @@ function stampa_gerarchia_categorie($termini, $ruolo_selezionato, $parent_id = 0
 stampa_gerarchia_categorie($categorie, $ruolo_selezionato);
 ?>
 </tbody>
-
 
 
                         </table>
