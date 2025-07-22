@@ -59,10 +59,11 @@ function dci_render_permessi_ruoli_page() {
                         <?php wp_nonce_field('salva_permessi_ruoli', 'permessi_ruoli_nonce'); ?>
                         <input type="hidden" name="ruolo" value="<?php echo esc_attr($ruolo_selezionato); ?>">
 
-                        <p>
-                            <button type="button" class="button" id="seleziona-tutti"><?php _e('Seleziona tutto', 'design_comuni_italia'); ?></button>
-                            <button type="button" class="button" id="deseleziona-tutti"><?php _e('Deseleziona tutto', 'design_comuni_italia'); ?></button>
-                        </p>
+                    <p>
+                        <button type="button" class="button" id="seleziona-tutti"><?php _e('Seleziona tutto', 'design_comuni_italia'); ?></button>
+                        <button type="button" class="button" id="deseleziona-tutti"><?php _e('Deseleziona tutto', 'design_comuni_italia'); ?></button>
+                        <button type="button" class="button button-secondary" id="proponi-contabilita" style="margin-left: 2rem;"><?php _e('Proponi abilitazioni Contabilità', 'design_comuni_italia'); ?></button>
+                    </p>
 
                         <table class="widefat fixed striped">
                             <thead>
@@ -130,11 +131,7 @@ stampa_gerarchia_categorie($categorie, $ruolo_selezionato);
                         </p>
                     </form>
 
-<p>
-    <button type="button" class="button" id="seleziona-tutti"><?php _e('Seleziona tutto', 'design_comuni_italia'); ?></button>
-    <button type="button" class="button" id="deseleziona-tutti"><?php _e('Deseleziona tutto', 'design_comuni_italia'); ?></button>
-    <button type="button" class="button button-secondary" id="proponi-contabilita" style="margin-left: 2rem;"><?php _e('Proponi abilitazioni Contabilità', 'design_comuni_italia'); ?></button>
-</p>
+
 
 <script>
 document.getElementById('seleziona-tutti').addEventListener('click', function () {
