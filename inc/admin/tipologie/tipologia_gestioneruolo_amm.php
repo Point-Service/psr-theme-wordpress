@@ -42,7 +42,7 @@ function dci_stampa_termini_gerarchici($terms_by_parent, $parent_id = 0, $ruolo_
 
         // Definisci simbolo da mostrare in base al livello
         if ($level === 0) {
-            $symbol = '&nbsp;●'; // nessun simbolo per livello 0
+            $symbol = '&nbsp;● '; // nessun simbolo per livello 0
         } elseif ($level === 1) {
             $symbol = '➤ ';
         } elseif ($level === 2) {
