@@ -25,6 +25,7 @@ function dci_register_post_type_atto_concessione()
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
         //'rewrite'             => array('slug' => 'atto-concessione', 'with_front' => false),
+        'capability_type' => array('atto_concessione', 'atti_concessione'),
         'map_meta_cap'        => true,
         'capabilities' => array(
             'edit_post'             => 'edit_atto_concessione',
