@@ -21,27 +21,28 @@ function dci_register_post_type_bando()
         'supports'            => array('title', 'author'),
         'hierarchical'        => false,
         'public'              => true,
-        'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza', // <‑‑ cambio qui
-       // 'menu_position'       => 5,
+        'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza',
+        //'menu_position'       => 5,
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
         'rewrite'             => array('slug' => 'bandi', 'with_front' => false),
         'map_meta_cap'        => true,
-        'capabilities' => array(
+        'capability_type'     => array('bando', 'bandi'), // CAPABILITY TYPE come array singolare/plurale
+        'capabilities'        => array(
             'edit_post'             => 'edit_bando',
             'read_post'             => 'read_bando',
             'delete_post'           => 'delete_bando',
-            'edit_posts'            => 'edit_bandi',
-            'edit_others_posts'     => 'edit_others_bandi',
-            'publish_posts'         => 'publish_bandi',
-            'read_private_posts'    => 'read_private_bandi',
-            'delete_posts'          => 'delete_bandi',
-            'delete_private_posts'  => 'delete_private_bandi',
-            'delete_published_posts' => 'delete_published_bandi',
-            'delete_others_posts' => 'delete_others_bandi',
-            'edit_private_posts' => 'edit_private_bandi',
-            'edit_published_posts' => 'edit_published_bandi',
-            'create_posts'          => 'create_bandi'
+            'edit_posts'            => 'edit_bando',
+            'edit_others_posts'     => 'edit_others_bando',
+            'publish_posts'         => 'publish_bando',
+            'read_private_posts'    => 'read_private_bando',
+            'delete_posts'          => 'delete_bando',
+            'delete_private_posts'  => 'delete_private_bando',
+            'delete_published_posts'=> 'delete_published_bando',
+            'delete_others_posts'   => 'delete_others_bando',
+            'edit_private_posts'    => 'edit_private_bando',
+            'edit_published_posts'  => 'edit_published_bando',
+            'create_posts'          => 'create_bando',
         ),
         'description'         => __("Tipologia personalizzata per la pubblicazione dei bandi di gara del Comune.", 'design_comuni_italia'),
     );
@@ -51,6 +52,7 @@ function dci_register_post_type_bando()
     // Rimuove il supporto all'editor
     remove_post_type_support('bando', 'editor');
 }
+
 
 
 
