@@ -83,7 +83,7 @@ function dci_render_permessi_ruoli_page() {
     ?>
 
     <div class="wrap">
-        <h1><?php _e('Permessi per Ruolo - Trasparenza', 'design_comuni_italia'); ?></h1>
+        <h1> <?php _e('Permessi per Ruolo - Trasparenza', 'design_comuni_italia'); ?></h1>
 
         <div style="display: flex; gap: 2rem; align-items: flex-start;">
 
