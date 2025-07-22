@@ -58,20 +58,20 @@ add_action('admin_init', function() {
 
     if ($role) {
         $caps = [
-            'edit_atto_concessione',
-            'read_atto_concessione',
-            'delete_atto_concessione',
-            'edit_atto_concessione',
-            'edit_others_atto_concessione',
-            'publish_atto_concessione',
-            'read_private_atto_concessione',
-            'delete_atto_concessione',
-            'delete_private_atto_concessione',
-            'delete_published_atto_concessione',
-            'delete_others_atto_concessione',
-            'edit_private_atto_concessione',
-            'edit_published_atto_concessione',
-            'create_atto_concessione',
+            'edit_attoconcessione',
+            'read_attoconcessione',
+            'delete_attoconcessione',
+            'edit_attoconcessione',
+            'edit_others_attoconcessione',
+            'publish_attoconcessione',
+            'read_private_attoconcessione',
+            'delete_attoconcessione',
+            'delete_private_attoconcessione',
+            'delete_published_attoconcessione',
+            'delete_others_att_concessione',
+            'edit_private_attoconcessione',
+            'edit_published_attoconcessione',
+            'create_attoconcessione',
         ];
 
         foreach ($caps as $cap) {
