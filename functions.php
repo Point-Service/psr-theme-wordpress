@@ -404,17 +404,8 @@ JS
 
 
 add_action('init', function () {
-    $role = get_role('amministrazione_trasparente'); // <-- Slug del ruolo
+    $role = get_role('Amministrazione trasparente'); // <-- Slug del ruolo
     if ($role && !$role->has_cap('gestione_permessi_trasparenza')) {
         $role->add_cap('gestione_permessi_trasparenza');
-    }
-});
-
-add_action('init', function () {
-    if (current_user_can('administrator')) {
-        echo '<pre>';
-        print_r(wp_roles()->roles);
-        echo '</pre>';
-        exit;
     }
 });
