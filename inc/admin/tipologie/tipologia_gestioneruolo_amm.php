@@ -6,15 +6,17 @@
 
 // Aggiungi voce al menu admin
 add_action('admin_menu', 'dci_add_permessi_ruoli_submenu');
-if ( current_user_can('gestione_permessi_trasparenza') ) {
-    add_submenu_page(
-        'edit.php?post_type=elemento_trasparenza',
-        __('Gestione Permessi Ruoli', 'design_comuni_italia'),
-        __('Permessi Trasparenza', 'design_comuni_italia'),
-        'gestione_permessi_trasparenza',
-        'gestione_permessi_ruoli',
-        'dci_render_permessi_ruoli_page'
-    );
+function dci_add_permessi_ruoli_submenu() {
+    if ( current_user_can('gestione_permessi_trasparenza') ) {
+        add_submenu_page(
+            'edit.php?post_type=elemento_trasparenza',
+            __('Gestione Permessi Ruoli', 'design_comuni_italia'),
+            __('Permessi Trasparenza', 'design_comuni_italia'),
+            'gestione_permessi_trasparenza',
+            'gestione_permessi_ruoli',
+            'dci_render_permessi_ruoli_page'
+        );
+    }
 }
 
 // Render pagina
