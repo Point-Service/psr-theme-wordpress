@@ -404,4 +404,9 @@ JS
 
 
 
-
+add_action('admin_init', function () {
+    $role = get_role('administrator');
+    if ($role && !$role->has_cap('gestione_permessi_trasparenza')) {
+        $role->add_cap('gestione_permessi_trasparenza');
+    }
+});
