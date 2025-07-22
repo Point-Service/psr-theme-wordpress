@@ -24,8 +24,8 @@ function dci_register_post_type_atto_concessione()
         'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza',
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
-        'map_meta_cap'        => true,
-        'capability_type'     => 'atto_concessione', // 🔁 AGGIUNTA IMPORTANTE
+        'capability_type'       => array('atto_concessione', 'atto_concessione'),
+        'map_meta_cap'          => true,
         'capabilities'        => array(
             'edit_post'             => 'edit_attoconcessione',
             'read_post'             => 'read_attoconcessione',
