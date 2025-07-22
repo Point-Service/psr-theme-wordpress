@@ -403,11 +403,9 @@ JS
 
 
 
-add_action('init', function() {
-    $role = get_role('amministrazione_trasparente'); // Usa lo slug corretto
-    if ($role && !$role->has_cap('gestione_permessi_trasparenza')) {
-        $role->add_cap('gestione_permessi_trasparenza');
-    }
+add_filter('ure_capabilities_groups_tree', function($groups) {
+    $group_name = 'Tipi categoria Amministrazione Trasparente'; // nome trovato nei log
+    $groups[$group_name]['gestione_permessi_trasparenza'] = 'Gestione Permessi Trasparenza';
+    return $groups;
 });
-
 
