@@ -403,10 +403,18 @@ JS
 
 
 
-add_action('init', function () {
-    $role = get_role('Amministrazione trasparente'); // <-- Slug del ruolo
-    if ($role && !$role->has_cap('gestione_permessi_trasparenza')) {
-        $role->add_cap('gestione_permessi_trasparenza');
+add_filter('ure_capabilities_groups_tree', function($groups) {
+    // Controlla se esiste già il gruppo 'Amministrazione trasparente'
+    if (isset($groups['Amministrazione trasparente'])) {
+        // Aggiungi la tua capability con etichetta personalizzata
+        $groups['Amministrazione trasparente']['gestione_permessi_trasparenza'] = 'Gestione Permessi Trasparenza';
+    } else {
+        // Se per qualche motivo non esiste, crea il gruppo e aggiungi la capability
+        $groups['Amministrazione trasparente'] = [
+            'gestione_permessi_trasparenza' => 'Gestione Permessi Trasparenza'
+        ];
     }
+    return $groups;
 });
+;
 
