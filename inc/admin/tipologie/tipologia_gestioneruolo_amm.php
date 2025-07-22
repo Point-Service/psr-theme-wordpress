@@ -6,22 +6,19 @@
 
 // Aggiungi voce al menu admin
 add_action('admin_menu', 'dci_add_permessi_ruoli_submenu');
-function dci_add_permessi_ruoli_submenu() {
+if ( current_user_can('gestione_permessi_trasparenza') ) {
     add_submenu_page(
-        'edit.php?post_type=elemento_trasparenza',   // slug menu padre
-        __('Gestione Permessi Ruoli', 'design_comuni_italia'), // titolo pagina
-        __('Permessi Trasparenza', 'design_comuni_italia'),   // titolo menu
+        'edit.php?post_type=elemento_trasparenza',
+        __('Gestione Permessi Ruoli', 'design_comuni_italia'),
+        __('Permessi Trasparenza', 'design_comuni_italia'),
         'gestione_permessi_trasparenza',
-        'gestione_permessi_ruoli',   // slug pagina
-        'dci_render_permessi_ruoli_page'  // callback funzione
+        'gestione_permessi_ruoli',
+        'dci_render_permessi_ruoli_page'
     );
 }
 
 // Render pagina
 function dci_render_permessi_ruoli_page() {
-    if ( ! current_user_can('gestione_permessi_trasparenza') ) {
-        wp_die(__('Non hai i permessi per accedere a questa pagina.', 'design_comuni_italia'));
-    }
     
     $ruoli = wp_roles()->roles;
     $ruolo_selezionato = isset($_GET['ruolo']) ? sanitize_text_field($_GET['ruolo']) : '';
