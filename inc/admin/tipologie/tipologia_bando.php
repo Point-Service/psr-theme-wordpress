@@ -26,8 +26,8 @@ function dci_register_post_type_bando()
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
         'rewrite'             => array('slug' => 'bandi', 'with_front' => false),
-        'map_meta_cap'        => true,
         'capability_type'     => array('bando', 'bandi'), // CAPABILITY TYPE come array singolare/plurale
+        'map_meta_cap'        => true,
         'capabilities'        => array(
             'edit_post'             => 'edit_bando',
             'read_post'             => 'read_bando',
