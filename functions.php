@@ -404,17 +404,9 @@ JS
 
 
 add_filter('ure_capabilities_groups_tree', function($groups) {
-    // Controlla se esiste già il gruppo 'Amministrazione trasparente'
-    if (isset($groups['Amministrazione trasparente'])) {
-        // Aggiungi la tua capability con etichetta personalizzata
-        $groups['Amministrazione trasparente']['gestione_permessi_trasparenza'] = 'Gestione Permessi Trasparenza';
-    } else {
-        // Se per qualche motivo non esiste, crea il gruppo e aggiungi la capability
-        $groups['Amministrazione trasparente'] = [
-            'gestione_permessi_trasparenza' => 'Gestione Permessi Trasparenza'
-        ];
-    }
+    // Aggiunge la capability al gruppo esistente "Amministrazione trasparente"
+    $groups['Amministrazione trasparente']['gestione_permessi_trasparenza'] = 'Gestione Permessi Trasparenza';
     return $groups;
 });
-;
+
 
