@@ -19,6 +19,10 @@ function dci_add_permessi_ruoli_submenu() {
 
 // Render pagina
 function dci_render_permessi_ruoli_page() {
+    if ( ! current_user_can('gestione_permessi_trasparenza') ) {
+        wp_die(__('Non hai i permessi per accedere a questa pagina.', 'design_comuni_italia'));
+    }
+    
     $ruoli = wp_roles()->roles;
     $ruolo_selezionato = isset($_GET['ruolo']) ? sanitize_text_field($_GET['ruolo']) : '';
     $categorie = get_terms(array(
