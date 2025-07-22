@@ -69,55 +69,50 @@ function dci_render_permessi_ruoli_page() {
                                 </tr>
                             </thead>
 <tbody>
-    <?php foreach ($categorie as $term):
-        $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
+<?php
+// Ricorsiva per stampare le categorie in ordine gerarchico
+function stampa_gerarchia_categorie($termini, $ruolo_selezionato, $parent_id = 0, $livello = 0) {
+    foreach ($termini as $term) {
+        if ($term->parent != $parent_id) continue;
 
+        $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
         if (is_string($excluded_roles)) {
             $excluded_roles = maybe_unserialize($excluded_roles);
         }
-
         if (!is_array($excluded_roles)) {
             $excluded_roles = [];
         }
 
         $checked = !in_array($ruolo_selezionato, $excluded_roles);
 
-        // Calcola livello gerarchico
-        $level = 0;
-        $parent = $term->parent;
-        while ($parent != 0) {
-            $level++;
-            $parent_term = get_term($parent, 'tipi_cat_amm_trasp');
-            if (!$parent_term || is_wp_error($parent_term)) break;
-            $parent = $parent_term->parent;
-        }
-
-        // Definisci simbolo
-        if ($level === 0) {
-            $symbol = '●';  // livello 0: punto pieno
-        } elseif ($level === 1) {
+        // Simboli personalizzati
+        if ($livello === 0) {
+            $symbol = '●';
+        } elseif ($livello === 1) {
             $symbol = '➤';
-        } elseif ($level === 2) {
+        } elseif ($livello === 2) {
             $symbol = '➔';
         } else {
-            $symbol = '·';
+            $symbol = str_repeat('·', $livello - 2);
         }
 
-        // Indentazione in px (ad esempio 20px per livello)
-        $indent_px = $level * 20;
-    ?>
-        <tr>
-            <td>
-                <span style="padding-left: <?php echo esc_attr($indent_px); ?>px;">
-                    <?php echo $symbol . ' ' . esc_html($term->name); ?>
-                </span>
-            </td>
-            <td>
-                <input type="checkbox" name="permessi_ruolo[]" value="<?php echo esc_attr($term->term_id); ?>" <?php checked($checked); ?>>
-            </td>
-        </tr>
-    <?php endforeach; ?>
+        $indent_px = $livello * 20;
+
+        echo '<tr>';
+        echo '<td><span style="padding-left: ' . esc_attr($indent_px) . 'px;">' . esc_html($symbol) . ' ' . esc_html($term->name) . '</span></td>';
+        echo '<td><input type="checkbox" name="permessi_ruolo[]" value="' . esc_attr($term->term_id) . '" ' . checked($checked, true, false) . '></td>';
+        echo '</tr>';
+
+        // Chiamata ricorsiva per i figli
+        stampa_gerarchia_categorie($termini, $ruolo_selezionato, $term->term_id, $livello + 1);
+    }
+}
+
+// Avvio stampa gerarchica
+stampa_gerarchia_categorie($categorie, $ruolo_selezionato);
+?>
 </tbody>
+
 
 
                         </table>
