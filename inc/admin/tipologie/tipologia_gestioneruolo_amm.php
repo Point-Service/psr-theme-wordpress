@@ -130,19 +130,68 @@ stampa_gerarchia_categorie($categorie, $ruolo_selezionato);
                         </p>
                     </form>
 
-                    <script>
-                    document.getElementById('seleziona-tutti').addEventListener('click', function () {
-                        document.querySelectorAll('input[type="checkbox"][name="permessi_ruolo[]"]').forEach(function (checkbox) {
-                            checkbox.checked = true;
-                        });
-                    });
+<p>
+    <button type="button" class="button" id="seleziona-tutti"><?php _e('Seleziona tutto', 'design_comuni_italia'); ?></button>
+    <button type="button" class="button" id="deseleziona-tutti"><?php _e('Deseleziona tutto', 'design_comuni_italia'); ?></button>
+    <button type="button" class="button button-secondary" id="proponi-contabilita" style="margin-left: 2rem;"><?php _e('Proponi abilitazioni Contabilità', 'design_comuni_italia'); ?></button>
+</p>
 
-                    document.getElementById('deseleziona-tutti').addEventListener('click', function () {
-                        document.querySelectorAll('input[type="checkbox"][name="permessi_ruolo[]"]').forEach(function (checkbox) {
-                            checkbox.checked = false;
-                        });
-                    });
-                    </script>
+<script>
+document.getElementById('seleziona-tutti').addEventListener('click', function () {
+    document.querySelectorAll('input[type="checkbox"][name="permessi_ruolo[]"]').forEach(function (checkbox) {
+        checkbox.checked = true;
+    });
+});
+
+document.getElementById('deseleziona-tutti').addEventListener('click', function () {
+    document.querySelectorAll('input[type="checkbox"][name="permessi_ruolo[]"]').forEach(function (checkbox) {
+        checkbox.checked = false;
+    });
+});
+
+document.getElementById('proponi-contabilita').addEventListener('click', function () {
+    const rows = document.querySelectorAll('table tbody tr');
+    let bilanciFound = false;
+    let startSelecting = false;
+
+    // Deseleziona tutto prima
+    document.querySelectorAll('input[type="checkbox"][name="permessi_ruolo[]"]').forEach(cb => cb.checked = false);
+
+    rows.forEach(row => {
+        const label = row.querySelector('td span');
+        const checkbox = row.querySelector('input[type="checkbox"]');
+
+        if (!label || !checkbox) return;
+
+        const text = label.textContent.trim().toLowerCase();
+
+        // Se trovi "Bilanci" come nome di categoria, inizia a selezionare
+        if (text.includes('bilanci')) {
+            checkbox.checked = true;
+            startSelecting = true;
+            bilanciFound = true;
+            return;
+        }
+
+        // Se siamo già nella sezione Bilanci (cioè sotto-categorie), continuiamo a selezionare
+        if (startSelecting) {
+            // Se la riga non è più indentata → fermiamo
+            const style = window.getComputedStyle(label);
+            const paddingLeft = parseInt(style.paddingLeft);
+            if (paddingLeft <= 20) {
+                startSelecting = false;
+            } else {
+                checkbox.checked = true;
+            }
+        }
+    });
+
+    if (!bilanciFound) {
+        alert("⚠️ Nessuna voce 'Bilanci' trovata.");
+    }
+});
+</script>
+
                 <?php else: ?>
                     <p><?php _e('Seleziona un ruolo a sinistra per gestire i permessi.', 'design_comuni_italia'); ?></p>
                 <?php endif; ?>
