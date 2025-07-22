@@ -68,29 +68,50 @@ function dci_render_permessi_ruoli_page() {
                                     <th><?php _e('Accesso consentito?', 'design_comuni_italia'); ?></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php foreach ($categorie as $term):
-                                    $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
+                           <tbody>
+    <?php foreach ($categorie as $term):
+        $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
 
-                                    // Forza unserialize se necessario
-                                    if (is_string($excluded_roles)) {
-                                        $excluded_roles = maybe_unserialize($excluded_roles);
-                                    }
+        if (is_string($excluded_roles)) {
+            $excluded_roles = maybe_unserialize($excluded_roles);
+        }
 
-                                    if (!is_array($excluded_roles)) {
-                                        $excluded_roles = [];
-                                    }
+        if (!is_array($excluded_roles)) {
+            $excluded_roles = [];
+        }
 
-                                    $checked = !in_array($ruolo_selezionato, $excluded_roles);
-                                ?>
-                                    <tr>
-                                        <td><?php echo esc_html($term->name); ?></td>
-                                        <td>
-                                            <input type="checkbox" name="permessi_ruolo[]" value="<?php echo esc_attr($term->term_id); ?>" <?php checked($checked); ?>>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
+        $checked = !in_array($ruolo_selezionato, $excluded_roles);
+
+        // Calcola livello gerarchico (0 se nessun parent)
+        $level = 0;
+        $parent = $term->parent;
+        while ($parent != 0) {
+            $level++;
+            $parent_term = get_term($parent, 'tipi_cat_amm_trasp');
+            if (!$parent_term) break;
+            $parent = $parent_term->parent;
+        }
+
+        // Definisci simbolo in base al livello
+        if ($level === 0) {
+            $symbol = '&nbsp;● ';  // livello 0: punto pieno senza spazio davanti
+        } elseif ($level === 1) {
+            $symbol = '&nbsp;&nbsp&nbsp;;➤ ';  // livello 1: 2 spazi + freccia
+        } elseif ($level === 2) {
+            $symbol = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;➔ ';  // livello 2: 4 spazi + freccia
+        } else {
+            $symbol = str_repeat('&nbsp;&nbsp;&nbsp;', $level * 2) . '· '; // livelli successivi: puntini con spazi
+        }
+    ?>
+        <tr>
+            <td><?php echo $symbol . esc_html($term->name); ?></td>
+            <td>
+                <input type="checkbox" name="permessi_ruolo[]" value="<?php echo esc_attr($term->term_id); ?>" <?php checked($checked); ?>>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
+
                         </table>
 
                         <p>
