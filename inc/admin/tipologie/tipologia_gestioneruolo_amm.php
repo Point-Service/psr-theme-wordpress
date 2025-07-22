@@ -16,6 +16,7 @@ function dci_add_permessi_ruoli_submenu() {
         'dci_render_permessi_ruoli_page'  // callback funzione
     );
 }
+
 // Render pagina
 function dci_render_permessi_ruoli_page() {
     $ruoli = wp_roles()->roles;
@@ -70,9 +71,16 @@ function dci_render_permessi_ruoli_page() {
                             <tbody>
                                 <?php foreach ($categorie as $term):
                                     $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
+
+                                    // Forza unserialize se necessario
+                                    if (is_string($excluded_roles)) {
+                                        $excluded_roles = maybe_unserialize($excluded_roles);
+                                    }
+
                                     if (!is_array($excluded_roles)) {
                                         $excluded_roles = [];
                                     }
+
                                     $checked = !in_array($ruolo_selezionato, $excluded_roles);
                                 ?>
                                     <tr>
@@ -136,7 +144,12 @@ function dci_salva_permessi_ruoli() {
                 // Rimuovo ruolo se presente
                 if (in_array($ruolo, $excluded)) {
                     $excluded = array_diff($excluded, [$ruolo]);
-                    update_term_meta($term->term_id, 'excluded_roles', array_values($excluded));
+                    $excluded = array_values($excluded);
+                    if (empty($excluded)) {
+                        delete_term_meta($term->term_id, 'excluded_roles');
+                    } else {
+                        update_term_meta($term->term_id, 'excluded_roles', $excluded);
+                    }
                 }
             } else {
                 // Aggiungo ruolo se non presente
