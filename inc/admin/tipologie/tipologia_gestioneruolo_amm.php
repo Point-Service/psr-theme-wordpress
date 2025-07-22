@@ -68,7 +68,7 @@ function dci_render_permessi_ruoli_page() {
                                     <th><?php _e('Accesso consentito?', 'design_comuni_italia'); ?></th>
                                 </tr>
                             </thead>
-                           <tbody>
+<tbody>
     <?php foreach ($categorie as $term):
         $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
 
@@ -82,35 +82,43 @@ function dci_render_permessi_ruoli_page() {
 
         $checked = !in_array($ruolo_selezionato, $excluded_roles);
 
-        // Calcola livello gerarchico (0 se nessun parent)
+        // Calcola livello gerarchico
         $level = 0;
         $parent = $term->parent;
         while ($parent != 0) {
             $level++;
             $parent_term = get_term($parent, 'tipi_cat_amm_trasp');
-            if (!$parent_term) break;
+            if (!$parent_term || is_wp_error($parent_term)) break;
             $parent = $parent_term->parent;
         }
 
-        // Definisci simbolo in base al livello
+        // Definisci simbolo
         if ($level === 0) {
-            $symbol = '&nbsp;● ';  // livello 0: punto pieno senza spazio davanti
+            $symbol = '●';  // livello 0: punto pieno
         } elseif ($level === 1) {
-            $symbol = '&nbsp;&nbsp&nbsp;;➤ ';  // livello 1: 2 spazi + freccia
+            $symbol = '➤';
         } elseif ($level === 2) {
-            $symbol = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;➔ ';  // livello 2: 4 spazi + freccia
+            $symbol = '➔';
         } else {
-            $symbol = str_repeat('&nbsp;&nbsp;&nbsp;', $level * 2) . '· '; // livelli successivi: puntini con spazi
+            $symbol = '·';
         }
+
+        // Indentazione in px (ad esempio 20px per livello)
+        $indent_px = $level * 20;
     ?>
         <tr>
-            <td><?php echo $symbol . esc_html($term->name); ?></td>
+            <td>
+                <span style="padding-left: <?php echo esc_attr($indent_px); ?>px;">
+                    <?php echo $symbol . ' ' . esc_html($term->name); ?>
+                </span>
+            </td>
             <td>
                 <input type="checkbox" name="permessi_ruolo[]" value="<?php echo esc_attr($term->term_id); ?>" <?php checked($checked); ?>>
             </td>
         </tr>
     <?php endforeach; ?>
 </tbody>
+
 
                         </table>
 
