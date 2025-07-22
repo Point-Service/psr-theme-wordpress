@@ -403,8 +403,8 @@ JS
 
 
 
-add_action('admin_init', function () {
-    $role = get_role('administrator');
+add_action('init', function () {
+    $role = get_role('amministrazione_trasparente'); // <-- Slug del ruolo
     if ($role && !$role->has_cap('gestione_permessi_trasparenza')) {
         $role->add_cap('gestione_permessi_trasparenza');
     }
