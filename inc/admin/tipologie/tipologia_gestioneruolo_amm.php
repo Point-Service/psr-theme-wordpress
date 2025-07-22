@@ -11,7 +11,7 @@ function dci_add_permessi_ruoli_submenu() {
         'edit.php?post_type=elemento_trasparenza',   // slug menu padre
         __('Gestione Permessi Ruoli', 'design_comuni_italia'), // titolo pagina
         __('Permessi Trasparenza', 'design_comuni_italia'),   // titolo menu
-        'gestione_permessi_trasparenza'
+        'gestione_permessi_trasparenza',
         'gestione_permessi_ruoli',   // slug pagina
         'dci_render_permessi_ruoli_page'  // callback funzione
     );
