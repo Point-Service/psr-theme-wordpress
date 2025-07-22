@@ -57,6 +57,11 @@ function dci_render_permessi_ruoli_page() {
                         <?php wp_nonce_field('salva_permessi_ruoli', 'permessi_ruoli_nonce'); ?>
                         <input type="hidden" name="ruolo" value="<?php echo esc_attr($ruolo_selezionato); ?>">
 
+                        <p>
+                            <button type="button" class="button" id="seleziona-tutti"><?php _e('Seleziona tutto', 'design_comuni_italia'); ?></button>
+                            <button type="button" class="button" id="deseleziona-tutti"><?php _e('Deseleziona tutto', 'design_comuni_italia'); ?></button>
+                        </p>
+
                         <table class="widefat fixed striped">
                             <thead>
                                 <tr>
@@ -66,8 +71,17 @@ function dci_render_permessi_ruoli_page() {
                             </thead>
                             <tbody>
                                 <?php foreach ($categorie as $term):
-                                    $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
-                                    $excluded_roles = is_array($excluded_roles) ? $excluded_roles : array();
+                                    $excluded_roles_raw = get_term_meta($term->term_id, 'excluded_roles');
+                                    $excluded_roles = [];
+                                    
+                                    foreach ($excluded_roles_raw as $val) {
+                                        if (is_array($val)) {
+                                            $excluded_roles = array_merge($excluded_roles, $val);
+                                        } else {
+                                            $excluded_roles[] = $val;
+                                        }
+                                    }
+                                    $excluded_roles = array_unique($excluded_roles);
                                     $checked = !in_array($ruolo_selezionato, $excluded_roles);
                                 ?>
                                     <tr>
@@ -84,6 +98,20 @@ function dci_render_permessi_ruoli_page() {
                             <?php submit_button(__('Salva Permessi', 'design_comuni_italia'), 'primary', 'salva_permessi_ruolo', false); ?>
                         </p>
                     </form>
+
+                    <script>
+                    document.getElementById('seleziona-tutti').addEventListener('click', function () {
+                        document.querySelectorAll('input[type="checkbox"][name="permessi_ruolo[]"]').forEach(function (checkbox) {
+                            checkbox.checked = true;
+                        });
+                    });
+
+                    document.getElementById('deseleziona-tutti').addEventListener('click', function () {
+                        document.querySelectorAll('input[type="checkbox"][name="permessi_ruolo[]"]').forEach(function (checkbox) {
+                            checkbox.checked = false;
+                        });
+                    });
+                    </script>
                 <?php else: ?>
                     <p><?php _e('Seleziona un ruolo a sinistra per gestire i permessi.', 'design_comuni_italia'); ?></p>
                 <?php endif; ?>
