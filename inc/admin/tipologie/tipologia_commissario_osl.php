@@ -53,57 +53,6 @@ function dci_register_post_type_commissario() {
 }
 
 
-
-
-
-
-
-
-
-add_action('init', 'dci_add_custom_caps_to_role');
-
-function dci_add_custom_caps_to_role() {
-    // Cambia 'editor' con il ruolo che vuoi modificare
-    $role = get_role('editor'); 
-    if(!$role) return;
-
-    $caps_cpt = array(
-        'edit_elemento_osl',
-        'read_elemento_osl',
-        'delete_elemento_osl',
-        'edit_elementi_osl',
-        'edit_others_elementi_osl',
-        'publish_elementi_osl',
-        'read_private_elementi_osl',
-        'delete_elementi_osl',
-        'delete_private_elementi_osl',
-        'delete_published_elementi_osl',
-        'delete_others_elementi_osl',
-        'edit_private_elementi_osl',
-        'edit_published_elementi_osl',
-        'create_elementi_osl',
-    );
-
-    $caps_tax = array(
-        'manage_tipi_commissario',
-        'edit_tipi_commissario',
-        'delete_tipi_commissario',
-        'assign_tipi_commissario',
-    );
-
-    foreach (array_merge($caps_cpt, $caps_tax) as $cap) {
-        $role->add_cap($cap);
-    }
-}
-
-
-
-
-
-
-
-
-
 /**
  * Aggiungo label sotto il titolo
  */
