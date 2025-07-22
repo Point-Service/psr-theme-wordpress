@@ -99,7 +99,12 @@ function stampa_gerarchia_categorie($termini, $ruolo_selezionato, $parent_id = 0
         $indent_px = $livello * 20;
 
         echo '<tr>';
-        echo '<td><span style="padding-left: ' . esc_attr($indent_px) . 'px;">' . esc_html($symbol) . ' ' . esc_html($term->name) . '</span></td>';
+       $style = 'padding-left: ' . esc_attr($indent_px) . 'px;';
+        if ($livello === 0) {
+            $style .= ' font-weight: bold;';
+        }
+        echo '<td><span style="' . esc_attr($style) . '">' . esc_html($symbol) . ' ' . esc_html($term->name) . '</span></td>';
+
         echo '<td><input type="checkbox" name="permessi_ruolo[]" value="' . esc_attr($term->term_id) . '" ' . checked($checked, true, false) . '></td>';
         echo '</tr>';
 
