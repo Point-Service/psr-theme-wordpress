@@ -7,9 +7,11 @@
 /* -------------------------------------------------
    Registrazione CPT
 --------------------------------------------------*/
+
+
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
-
+    if ( current_user_can('gestione_permessi_trasparenza') ) {
 	$labels = array(
 		'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
 		'singular_name'  => _x( 'Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia' ),
@@ -42,6 +44,7 @@ function dci_register_post_type_icad() {
 
 	register_post_type( 'incarichi_dip', $args );
 	remove_post_type_support( 'incarichi_dip', 'editor' );
+   );
 }
 
 /* -------------------------------------------------
