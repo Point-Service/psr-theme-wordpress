@@ -409,3 +409,12 @@ add_action('init', function () {
         $role->add_cap('gestione_permessi_trasparenza');
     }
 });
+
+	add_action('init', function () {
+    if (current_user_can('administrator')) {
+        echo '<pre>';
+        print_r(wp_roles()->roles);
+        echo '</pre>';
+        exit;
+    }
+});
