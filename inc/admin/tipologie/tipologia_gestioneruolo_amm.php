@@ -4,7 +4,7 @@
  * File: tipologia_gestioneruolo_amm.php
  */
 
-// Aggiungi voce al menu admin (solo se non usi hook altrove)
+// Aggiungi voce al menu admin
 add_action('admin_menu', 'dci_add_permessi_ruoli_menu');
 function dci_add_permessi_ruoli_menu() {
     add_menu_page(
@@ -71,17 +71,10 @@ function dci_render_permessi_ruoli_page() {
                             </thead>
                             <tbody>
                                 <?php foreach ($categorie as $term):
-                                    $excluded_roles_raw = get_term_meta($term->term_id, 'excluded_roles');
-                                    $excluded_roles = [];
-                                    
-                                    foreach ($excluded_roles_raw as $val) {
-                                        if (is_array($val)) {
-                                            $excluded_roles = array_merge($excluded_roles, $val);
-                                        } else {
-                                            $excluded_roles[] = $val;
-                                        }
+                                    $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
+                                    if (!is_array($excluded_roles)) {
+                                        $excluded_roles = [];
                                     }
-                                    $excluded_roles = array_unique($excluded_roles);
                                     $checked = !in_array($ruolo_selezionato, $excluded_roles);
                                 ?>
                                     <tr>
@@ -139,19 +132,20 @@ function dci_salva_permessi_ruoli() {
 
         foreach ($tutti_termini as $term) {
             $excluded = get_term_meta($term->term_id, 'excluded_roles', true);
-            $excluded = is_array($excluded) ? $excluded : array();
+            $excluded = is_array($excluded) ? $excluded : [];
 
             if (in_array($term->term_id, $permessi_consentiti)) {
                 // Rimuovi ruolo se presente
                 if (in_array($ruolo, $excluded)) {
-                    $excluded = array_diff($excluded, array($ruolo));
+                    $excluded = array_diff($excluded, [$ruolo]);
                     update_term_meta($term->term_id, 'excluded_roles', array_values($excluded));
                 }
             } else {
                 // Aggiungi ruolo se non presente
                 if (!in_array($ruolo, $excluded)) {
                     $excluded[] = $ruolo;
-                    update_term_meta($term->term_id, 'excluded_roles', array_unique($excluded));
+                    $excluded = array_unique($excluded);
+                    update_term_meta($term->term_id, 'excluded_roles', array_values($excluded));
                 }
             }
         }
@@ -160,3 +154,4 @@ function dci_salva_permessi_ruoli() {
         exit;
     }
 }
+
