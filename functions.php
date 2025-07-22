@@ -403,10 +403,11 @@ JS
 
 
 
-add_filter('ure_capabilities_groups_tree', function($groups) {
-    // Aggiunge la capability al gruppo esistente "Amministrazione trasparente"
-    $groups['Amministrazione trasparente']['gestione_permessi_trasparenza'] = 'Gestione Permessi Trasparenza';
-    return $groups;
+add_action('init', function() {
+    $role = get_role('amministrazione_trasparente'); // Usa lo slug corretto
+    if ($role && !$role->has_cap('gestione_permessi_trasparenza')) {
+        $role->add_cap('gestione_permessi_trasparenza');
+    }
 });
 
 
