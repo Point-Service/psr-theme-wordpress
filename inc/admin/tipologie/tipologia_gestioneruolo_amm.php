@@ -21,69 +21,14 @@ function dci_add_permessi_ruoli_submenu() {
 function dci_render_permessi_ruoli_page() {
     $ruoli = wp_roles()->roles;
     $ruolo_selezionato = isset($_GET['ruolo']) ? sanitize_text_field($_GET['ruolo']) : '';
-
-    // Recupera tutti i termini
-    $categorie = get_terms([
+    $categorie = get_terms(array(
         'taxonomy' => 'tipi_cat_amm_trasp',
         'hide_empty' => false,
-        'orderby' => 'name',
-        'order' => 'ASC',
-    ]);
-
-    // Organizza termini per parent
-    $terms_by_parent = [];
-    foreach ($categorie as $term) {
-        $terms_by_parent[$term->parent][] = $term;
-    }
-
-    // Crea array id->term per supporto al calcolo livello
-    global $terms_by_id;
-    $terms_by_id = [];
-    foreach ($categorie as $term) {
-        $terms_by_id[$term->term_id] = $term;
-    }
-
-    // Funzione ricorsiva per stampare i termini gerarchici
-    function stampa_termini_gerarchici($parent_id, $terms_by_parent, $ruolo_selezionato) {
-        global $terms_by_id;
-
-        if (!isset($terms_by_parent[$parent_id])) return;
-
-        foreach ($terms_by_parent[$parent_id] as $term) {
-            $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
-            if (is_string($excluded_roles)) {
-                $excluded_roles = maybe_unserialize($excluded_roles);
-            }
-            if (!is_array($excluded_roles)) $excluded_roles = [];
-            $checked = !in_array($ruolo_selezionato, $excluded_roles);
-
-            // Calcolo livello profondità
-            $level = 0;
-            $p = $term->parent;
-            while ($p != 0) {
-                $level++;
-                $p = isset($terms_by_id[$p]) ? $terms_by_id[$p]->parent : 0;
-            }
-
-            // Stile indentazione e grassetto per livello 0 (genitore)
-            $style = 'padding-left: ' . (20 * $level) . 'px;';
-            if ($level === 0) {
-                $style .= ' font-weight: bold;';
-            }
-
-            echo '<tr>';
-            echo '<td style="' . esc_attr($style) . '">' . esc_html($term->name) . '</td>';
-            echo '<td><input type="checkbox" name="permessi_ruolo[]" value="' . esc_attr($term->term_id) . '" ' . checked($checked, true, false) . '></td>';
-            echo '</tr>';
-
-            // Ricorsione per figli
-            stampa_termini_gerarchici($term->term_id, $terms_by_parent, $ruolo_selezionato);
-        }
-    }
+    ));
     ?>
 
     <div class="wrap">
-        <h1> <?php _e('Permessi per Ruolo - Trasparenza', 'design_comuni_italia'); ?></h1>
+        <h1><?php _e('Permessi per Ruolo - Trasparenza', 'design_comuni_italia'); ?></h1>
 
         <div style="display: flex; gap: 2rem; align-items: flex-start;">
 
@@ -124,7 +69,27 @@ function dci_render_permessi_ruoli_page() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php stampa_termini_gerarchici(0, $terms_by_parent, $ruolo_selezionato); ?>
+                                <?php foreach ($categorie as $term):
+                                    $excluded_roles = get_term_meta($term->term_id, 'excluded_roles', true);
+
+                                    // Forza unserialize se necessario
+                                    if (is_string($excluded_roles)) {
+                                        $excluded_roles = maybe_unserialize($excluded_roles);
+                                    }
+
+                                    if (!is_array($excluded_roles)) {
+                                        $excluded_roles = [];
+                                    }
+
+                                    $checked = !in_array($ruolo_selezionato, $excluded_roles);
+                                ?>
+                                    <tr>
+                                        <td><?php echo esc_html($term->name); ?></td>
+                                        <td>
+                                            <input type="checkbox" name="permessi_ruolo[]" value="<?php echo esc_attr($term->term_id); ?>" <?php checked($checked); ?>>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
 
@@ -152,7 +117,6 @@ function dci_render_permessi_ruoli_page() {
             </div>
         </div>
     </div>
-
     <?php
 }
 
@@ -165,12 +129,12 @@ function dci_salva_permessi_ruoli() {
         wp_verify_nonce($_POST['permessi_ruoli_nonce'], 'salva_permessi_ruoli')
     ) {
         $ruolo = sanitize_text_field($_POST['ruolo']);
-        $tutti_termini = get_terms([
+        $tutti_termini = get_terms(array(
             'taxonomy' => 'tipi_cat_amm_trasp',
             'hide_empty' => false,
-        ]);
+        ));
 
-        $permessi_consentiti = isset($_POST['permessi_ruolo']) ? array_map('intval', $_POST['permessi_ruolo']) : [];
+        $permessi_consentiti = isset($_POST['permessi_ruolo']) ? array_map('intval', $_POST['permessi_ruolo']) : array();
 
         foreach ($tutti_termini as $term) {
             $excluded = get_term_meta($term->term_id, 'excluded_roles', true);
@@ -180,7 +144,12 @@ function dci_salva_permessi_ruoli() {
                 // Rimuovo ruolo se presente
                 if (in_array($ruolo, $excluded)) {
                     $excluded = array_diff($excluded, [$ruolo]);
-                    update_term_meta($term->term_id, 'excluded_roles', array_values($excluded));
+                    $excluded = array_values($excluded);
+                    if (empty($excluded)) {
+                        delete_term_meta($term->term_id, 'excluded_roles');
+                    } else {
+                        update_term_meta($term->term_id, 'excluded_roles', $excluded);
+                    }
                 }
             } else {
                 // Aggiungo ruolo se non presente
