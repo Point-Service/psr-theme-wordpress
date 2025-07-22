@@ -400,11 +400,3 @@ JS
     );
 }
 
-
-
-
-add_filter('ure_capabilities_groups_tree', function($groups) {
-    $group_name = 'Tipi categoria Amministrazione Trasparente'; // nome trovato nei log
-    $groups[$group_name]['gestione_permessi_trasparenza'] = 'Gestione Permessi Trasparenza';
-    return $groups;
-});
