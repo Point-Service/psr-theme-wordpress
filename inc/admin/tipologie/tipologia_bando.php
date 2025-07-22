@@ -44,7 +44,6 @@ function dci_register_post_type_bando()
             'edit_published_posts'  => 'edit_published_bandi',
             'create_posts'          => 'create_bandi',
         ),
-        ),
         'description'         => __("Tipologia personalizzata per la pubblicazione dei bandi di gara del Comune.", 'design_comuni_italia'),
     );
 
