@@ -302,6 +302,7 @@ function updateToggleAllButton() {
                                                 $term_url = get_term_meta($sotto->term_id, 'term_url', true);
                                         
 echo $term_url;
+echo 'g';
                                         
                                         
                                                 $open_new_window = get_term_meta($sotto->term_id, 'open_new_window', true);
