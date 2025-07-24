@@ -300,6 +300,10 @@ function updateToggleAllButton() {
                                             
                                                 // Recupero i metadati dell'URL personalizzato e del flag per aprire in una nuova finestra
                                                 $term_url = get_term_meta($sotto->term_id, 'term_url', true);
+                                        
+echo $term_url;
+                                        
+                                        
                                                 $open_new_window = get_term_meta($sotto->term_id, 'open_new_window', true);
                                             
                                                 // Se c'è un URL personalizzato, sostituisco il link con l'URL fornito
