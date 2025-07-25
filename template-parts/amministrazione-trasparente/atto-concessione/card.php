@@ -71,7 +71,7 @@ if ( ! isset( $prefix ) ) {
         <div class="row mt-3 pt-3 border-top border-light-subtle">
             <div class="col-md-6">
                 <h6 class="text-uppercase text-muted small">Allegati</h6>
-                <p class="mb-0">sssssssssssssssssssssssssss
+                <p class="mb-0">
                     <?php
                     $allegati = get_post_meta(get_the_ID(), $prefix . 'allegati', true);
 
