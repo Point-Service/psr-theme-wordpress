@@ -61,9 +61,8 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
         
       <?php 
-        // Verifica se la tassonomia è "Contratti Pubblici" e se ck_bandidigaratemplatepersonalizzato non è 'false' (può essere vuoto o 'true')
-        if ($obj->name == "Contratti Pubblici" && (get_option('ck_bandidigaratemplatepersonalizzato') !== 'false' && get_option('ck_bandidigaratemplatepersonalizzato') !== '')) {
-
+        $ck_bandi_template = get_option('ck_bandidigaratemplatepersonalizzato', '');
+        if ($obj->name == "Contratti Pubblici" && $ck_bandi_template !== 'false' && $ck_bandi_template !== '')
 
 
             var_dump(get_option('ck_bandidigaratemplatepersonalizzato'));
