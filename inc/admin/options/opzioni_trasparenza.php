@@ -138,7 +138,7 @@ function dci_update_visualizza_elemento_based_on_ck_incarichieautorizzazioniaidi
     if (is_array($tipi_cat_amm_trasp)) {
         foreach ($tipi_cat_amm_trasp as &$item) {
             // Trova l'elemento con il nome "Incarichi dirigenziali" e aggiorna il valore di "visualizza_elemento"
-            if ($item['name'] == 'Incarichi dirigenziali, a qualsiasi titolo conferiti') {
+            if ($item['name'] == 'Incarichi conferiti e autorizzati ai dipendenti') {
                 $item['visualizza_elemento'] = ($ck_value === 'true') ? 'false' : 'true';
             }
         }
