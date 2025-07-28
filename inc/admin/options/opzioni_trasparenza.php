@@ -117,37 +117,6 @@ function dci_register_pagina_trasparenza_options()
         ),
     ));
 
-
-
-// Hook per modificare il valore di "visualizza_elemento" in base alla selezione di "ck_incarichieautorizzazioniaidipendenti"
-add_action('save_post', 'dci_update_visualizza_elemento_based_on_ck_incarichieautorizzazioniaidipendenti', 10, 3);
-function dci_update_visualizza_elemento_based_on_ck_incarichieautorizzazioniaidipendenti($post_id, $post, $update)
-{
-    // Verifica che sia il post di tipo giusto e che non sia una revisione
-    if ($post->post_type !== 'elemento_trasparenza' || defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-
-    // Recupera il valore del campo "ck_incarichieautorizzazioniaidipendenti"
-    $ck_value = get_post_meta($post_id, 'ck_incarichieautorizzazioniaidipendenti', true);
-
-    // Recupera i tipi di categorie amministrative
-    $tipi_cat_amm_trasp = get_post_meta($post_id, 'tipi_cat_amm_trasp', true);
-
-    // Seckiamo che "tipi_cat_amm_trasp" contenga "Incarichi dirigenziali"
-    if (is_array($tipi_cat_amm_trasp)) {
-        foreach ($tipi_cat_amm_trasp as &$item) {
-            // Trova l'elemento con il nome "Incarichi dirigenziali" e aggiorna il valore di "visualizza_elemento"
-            if ($item['name'] == 'Incarichi conferiti e autorizzati ai dipendenti') {
-                $item['visualizza_elemento'] = ($ck_value === 'true') ? 'false' : 'true';
-            }
-        }
-
-        // Salva i dati aggiornati
-        update_post_meta($post_id, 'tipi_cat_amm_trasp', $tipi_cat_amm_trasp);
-    }
-}
-
     
     
 }?>
