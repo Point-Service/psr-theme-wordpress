@@ -11,9 +11,11 @@ add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
 
     // Verifica se l'utente ha il permesso per vedere il menu
-    $show_in_menu = current_user_can('gestione_permessi_trasparenza') 
+    $show_in_menu = (current_user_can('gestione_permessi_trasparenza') && 
+                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== 'false' && 
+                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== '') 
         ? 'edit.php?post_type=elemento_trasparenza' 
-        : false;
+        : false; // Nasconde il menu se la condizione non è soddisfatta o permessi insufficienti
 
     $labels = array(
         'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
@@ -30,7 +32,7 @@ function dci_register_post_type_icad() {
         'supports'        => array( 'title', 'author' ),
         'hierarchical'    => true,
         'public'          => true,
-        'show_in_menu'    => 'edit.php?post_type=elemento_trasparenza',
+        'show_in_menu'    => $show_in_menu,  // Mostra il menu solo se la condizione è soddisfatta
         'menu_icon'       => 'dashicons-media-interactive',
         'has_archive'     => false, 
         'rewrite'         => array(
@@ -59,11 +61,9 @@ function dci_register_post_type_icad() {
     );
 
 	
-  	if (dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== 'false' && dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== '') 
-               { 
-          	 register_post_type( 'incarichi_dip', $args );
-	       }
-	
+
+     register_post_type( 'incarichi_dip', $args );
+
 	
     // Rimuove l'editor standard
     remove_post_type_support( 'incarichi_dip', 'editor' );
@@ -73,6 +73,8 @@ function dci_register_post_type_icad() {
    Messaggio informativo nel backend
 --------------------------------------------------*/
 add_action( 'edit_form_after_title', 'dci_icad_notice_after_title' );
+
+
 function dci_icad_notice_after_title( $post ) {
 	if ( $post->post_type === 'incarichi_dip' ) {
 		echo '<span><i>Il <strong>titolo/norma</strong> corrisponde al <strong>titolo dell\'incarico conferito</strong>.</i></span><br><br>';
