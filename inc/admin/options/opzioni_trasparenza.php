@@ -86,8 +86,7 @@ function dci_register_pagina_trasparenza_options()
         ),
     ));
 
-
-        $trasparenza_options->add_field(array(
+    $trasparenza_options->add_field(array(
         'id'      => $prefix . 'ck_attidiconcessione',
         'name'    => __('Atti di concessione con template personalizzato da noi.', 'design_comuni_italia'),
         'desc'    => __('Questa spunta consente di visualizzare gli elementi di Atti di concessione con una grafica personalizzata.', 'design_comuni_italia'),
