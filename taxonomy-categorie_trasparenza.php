@@ -44,7 +44,7 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 
 
 
-$ck_bandidigaratemplatepersonalizzato = dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza");
+
 
 
 
@@ -67,10 +67,8 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     <div class="bg-grey-card">
         
       <?php 
-
-          if ($obj->name == "Contratti Pubblici" && get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== 'false' && get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== '')
-          
-          {
+          if ($obj->name == "Contratti Pubblici" && dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== 'false' && dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== '') 
+               { 
         ?>
 
         
