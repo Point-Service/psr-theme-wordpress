@@ -77,7 +77,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
             </div>
         </div>
     
-    <?php }else if ($obj->name == "Atti di concessione") { ?>
+    <?php }else if ($obj->name == "Atti di concessione" && dci_get_option("ck_attidiconcessione", "Trasparenza") !== 'false' && dci_get_option("ck_attidiconcessione", "Trasparenza") !== '') { ?>
             <div class="container my-5">
                 <div class="row">
                     <h2 class="visually-hidden">Esplora tutti gli Atti di Concessione</h2>
@@ -89,7 +89,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 </div>
             </div>
         </div>
-     <?php }else if ($obj->name == "Incarichi conferiti e autorizzati ai dipendenti") { ?>
+     <?php }else if ($obj->name == "Incarichi conferiti e autorizzati ai dipendenti"  && dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== 'false' && dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== '') { ?>
             <div class="container my-5">
                 <div class="row">
                     <h2 class="visually-hidden">Esplora tutti gli Incarichi conferiti e autorizzati ai dipendenti</h2>
