@@ -62,7 +62,15 @@ function dci_register_pagina_trasparenza_options()
         ),
     ));
 
+    
+    $trasparenza_options->add_field(array(
+        'id'    => $prefix . 'trasparente_options1',
+        'name'  => __('Amministrazione Trasparente', 'design_comuni_italia'),
+        'desc'  => __('Configurazione della pagina Amministrazione Trasparente (se interna).', 'design_comuni_italia'),
+        'type'  => 'title',
+    ));
 
+    
     $trasparenza_options->add_field(array(
         'id'      => $prefix . 'ck_bandidigaratemplatepersonalizzato',
         'name'    => __('Visualizza la sezione Contratti Pubblici con template personalizzato da noi.', 'design_comuni_italia'),
