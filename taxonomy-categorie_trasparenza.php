@@ -62,6 +62,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
         
       <?php 
         $ck_bandi_template = get_option('ck_bandidigaratemplatepersonalizzato', '');
+echo $ck_bandi_template;
         if ($obj->name == "Contratti Pubblici" && $ck_bandi_template !== 'false' && $ck_bandi_template !== ''){
 
         ?>
@@ -72,7 +73,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     <h2 class="visually-hidden">Esplora tutti i bandi di gara</h2>
                     <div class="col-12 col-lg-8 pt-20 pt-lg-20 pb-lg-20"></div>
                     <div class="row g-3" id="load-more">
-                        <?php  get_template_part("template-parts/bandi-di-gara/tutti-bandi"); ?>
+                        <?php // get_template_part("template-parts/bandi-di-gara/tutti-bandi"); ?>
                     </div>
                     <!-- <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?> -->
                 </div>
