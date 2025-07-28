@@ -58,7 +58,12 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     <div class="bg-grey-card">
 
         
-        <?php if ($obj->name == "Contratti Pubblici") { ?>
+      <?php 
+        // Verifica se la tassonomia è "Contratti Pubblici" e se ck_bandidigaratemplatepersonalizzato non è 'false' (può essere vuoto o 'true')
+        if ($obj->name == "Contratti Pubblici" && (get_option($prefix . 'ck_bandidigaratemplatepersonalizzato') !== 'false' && get_option($prefix . 'ck_bandidigaratemplatepersonalizzato') !== '')) {
+        ?>
+
+        
             <div class="container my-5">
                 <div class="row">
                     <h2 class="visually-hidden">Esplora tutti i bandi di gara</h2>
@@ -70,6 +75,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 </div>
             </div>
         </div>
+    
     <?php }else if ($obj->name == "Atti di concessione") { ?>
             <div class="container my-5">
                 <div class="row">
