@@ -6,6 +6,16 @@
 add_action('init', 'dci_register_post_type_atto_concessione');
 function dci_register_post_type_atto_concessione()
 {
+
+
+
+    // Controlla se l'opzione "ck_attidiconcessione" è impostata su 'false' o vuota
+    if (dci_get_option("ck_attidiconcessione", "Trasparenza") === 'false' || dci_get_option("ck_attidiconcessione", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+
+
+    
     $labels = array(
         'name'               => _x('Atti di Concessione', 'Post Type General Name', 'design_comuni_italia'),
         'singular_name'      => _x('Atto di Concessione', 'Post Type Singular Name', 'design_comuni_italia'),
