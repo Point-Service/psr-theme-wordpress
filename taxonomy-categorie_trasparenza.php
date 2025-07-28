@@ -64,8 +64,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
             $prefix = '';  // Aggiorna questo se il tuo prefisso è diverso
             
-            if ($obj->name == "Contratti Pubblici" && get_option('ck_bandidigaratemplatepersonalizzato') !== 'false' && get_option('ck_bandidigaratemplatepersonalizzato') !== '') {
-
+            if ($obj->name == "Contratti Pubblici" && dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== 'false' && dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== '') {
 
     
 // var_dump(get_option('ck_bandidigaratemplatepersonalizzato'));
