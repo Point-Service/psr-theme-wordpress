@@ -43,6 +43,14 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 
 $the_query = new WP_Query($args);
 
+
+
+
+
+var_dump(get_option('ck_bandidigaratemplatepersonalizzato'));
+
+
+
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
 
