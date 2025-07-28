@@ -61,10 +61,9 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
         
       <?php 
-        $ck_bandi_template = get_option('ck_bandidigaratemplatepersonalizzato', '');
-echo $ck_bandi_template;
-        if ($obj->name == "Contratti Pubblici" && $ck_bandi_template !== 'false' && $ck_bandi_template !== ''){
 
+        if ($obj->name == "Contratti Pubblici" && get_option('ck_bandidigaratemplatepersonalizzato') !== 'false' && get_option('ck_bandidigaratemplatepersonalizzato') !== '') {
+echo $ck_bandi_template;
         ?>
 
         
