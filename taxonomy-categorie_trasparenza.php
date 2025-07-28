@@ -62,7 +62,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
         
       <?php 
 
-            $prefix = '_dci_elemento_trasparenza_';  // Aggiorna questo se il tuo prefisso è diverso
+            $prefix = '';  // Aggiorna questo se il tuo prefisso è diverso
             $ck_bandi_template = get_option($prefix . 'ck_bandidigaratemplatepersonalizzato', ''); // Aggiungi il prefisso alla chiave
             
             if ($obj->name == "Contratti Pubblici" && $ck_bandi_template !== 'false' && $ck_bandi_template !== '') {
