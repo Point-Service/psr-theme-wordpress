@@ -65,8 +65,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
           if ($obj->name == "Contratti Pubblici" && dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== 'false' && dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== '') 
                { 
         ?>
-
-        
             <div class="container my-5">
                 <div class="row">
                     <h2 class="visually-hidden">Esplora tutti i bandi di gara</h2>
