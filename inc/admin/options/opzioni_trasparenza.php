@@ -65,8 +65,8 @@ function dci_register_pagina_trasparenza_options()
     
     $trasparenza_options->add_field(array(
         'id'    => $prefix . 'trasparente_options1',
-        'name'  => __('Amministrazione Trasparente', 'design_comuni_italia'),
-        'desc'  => __('Configurazione della pagina Amministrazione Trasparente (se interna).', 'design_comuni_italia'),
+        'name'  => __('OPZIONI - Amministrazione Trasparente', 'design_comuni_italia'),
+        'desc'  => __('Visualizza le sezioni personalizzate dell amministrazione Trasparente', 'design_comuni_italia'),
         'type'  => 'title',
     ));
 
