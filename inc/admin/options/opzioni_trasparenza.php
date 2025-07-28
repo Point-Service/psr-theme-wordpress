@@ -68,7 +68,7 @@ function dci_register_pagina_trasparenza_options()
         'name'    => __('Visualizza la sezione Contratti Pubblici con template personalizzato da noi.', 'design_comuni_italia'),
         'desc'    => __('Questa spunta consente di visualizzare gli elementi di Contratti Pubblici con una grafica personalizzata.', 'design_comuni_italia'),
         'type'    => 'radio_inline',
-        'default' => 'false',
+        'default' => 'true',
         'options' => array(
             'true'  => __('Sì', 'design_comuni_italia'),
             'false' => __('No', 'design_comuni_italia'),
