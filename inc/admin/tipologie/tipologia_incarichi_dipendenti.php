@@ -58,7 +58,13 @@ function dci_register_post_type_icad() {
         'description'     => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
     );
 
-    register_post_type( 'incarichi_dip', $args );
+	
+  	if (dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== 'false' && dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== '') 
+               { 
+          	 register_post_type( 'incarichi_dip', $args );
+	       }
+	
+	
     // Rimuove l'editor standard
     remove_post_type_support( 'incarichi_dip', 'editor' );
 }
