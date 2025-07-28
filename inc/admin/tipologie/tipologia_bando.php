@@ -6,6 +6,17 @@
 add_action('init', 'dci_register_post_type_bando');
 function dci_register_post_type_bando()
 {
+
+
+    // Controlla se l'opzione "ck_bandidigaratemplatepersonalizzato" è impostata su 'false' o vuota
+    if (dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") === 'false' || dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+
+
+
+
+    
     $labels = array(
         'name'               => _x('Bandi di Gara', 'Post Type General Name', 'design_comuni_italia'),
         'singular_name'      => _x('Bando di Gara', 'Post Type Singular Name', 'design_comuni_italia'),
