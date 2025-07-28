@@ -43,11 +43,6 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 
 
 
-
-
-
-
-
 $the_query = new WP_Query($args);
 
 
