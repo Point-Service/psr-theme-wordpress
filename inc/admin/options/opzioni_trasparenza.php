@@ -100,5 +100,22 @@ function dci_register_pagina_trasparenza_options()
             'data-conditional-value' => 'true',
         ),
     ));
+
+
+    $trasparenza_options->add_field(array(
+        'id'      => $prefix . 'ck_incarichieautorizzazioniaidipendenti',
+        'name'    => __('Incarichi conferiti e autorizzati ai dipendenti con template personalizzato da noi.', 'design_comuni_italia'),
+        'desc'    => __('Questa spunta consente di visualizzare gli elementi di Incarichi conferiti e autorizzati ai dipendenti con una grafica personalizzata.', 'design_comuni_italia'),
+        'type'    => 'radio_inline',
+        'default' => 'true',
+        'options' => array(
+            'true'  => __('Sì', 'design_comuni_italia'),
+            'false' => __('No', 'design_comuni_italia'),
+        ),
+        'attributes' => array(
+            'data-conditional-value' => 'true',
+        ),
+    ));
+    
     
 }?>
