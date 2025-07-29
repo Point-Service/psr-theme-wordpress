@@ -291,6 +291,15 @@ endif;
         padding-left: 0.5rem; /* regola questo valore a piacere */
     }
 }
+
+    .carousel-img {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
 </style>
 
 
