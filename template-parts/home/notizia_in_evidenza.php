@@ -25,20 +25,11 @@ if (is_array($post_ids) && count($post_ids) > 1):
                 $tipo = ($tipo_terms && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
         ?>
         <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
-            <div class="row align-items-stretch g-0">
-                <!-- Immagine -->
-                <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                    <?php if ($img): ?>
-                        <div class="carousel-img-wrapper">
-                            <?php dci_get_img($img, 'img-responsive-carousel'); ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-
+            <div class="row g-0 align-items-center">
                 <!-- Testo -->
-                <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
-                    <div class="card w-100 border-0 rounded-0">
-                        <div class="card-body py-4 px-3 px-lg-4">
+                <div class="col-lg-5 order-2 order-lg-1 px-3 px-lg-4">
+                    <div class="card mb-0 border-0">
+                        <div class="card-body pb-2">
                             <div class="category-top d-flex align-items-center mb-2">
                                 <svg class="icon icon-sm me-2" aria-hidden="true">
                                     <use xlink:href="#it-calendar"></use>
@@ -50,11 +41,9 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                 <?php endif; ?>
                             </div>
                             <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                <h3 class="card-title mb-3">
-                                    <?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?>
-                                </h3>
+                                <h3 class="card-title"><?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?></h3>
                             </a>
-                            <p class="mb-3 font-serif">
+                            <p class="mb-2 font-serif">
                                 <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>
                             </p>
 
@@ -76,7 +65,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                             <?php endif; ?>
 
                             <!-- Data -->
-                            <div class="row mt-2 mb-3">
+                            <div class="row mt-2 mb-1">
                                 <div class="col-6">
                                     <small>Data:</small>
                                     <p class="fw-semibold font-monospace"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></p>
@@ -97,11 +86,18 @@ if (is_array($post_ids) && count($post_ids) > 1):
                         </div>
                     </div>
                 </div>
+
+                <!-- Immagine -->
+                <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                    <?php if ($img): ?>
+                        <?php dci_get_img($img, 'img-fluid full-carousel-img'); ?>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
         <?php
-            $first = false;
-            endif;
+        $first = false;
+        endif;
         endforeach;
         ?>
     </div>
@@ -118,7 +114,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
 </div>
 
 <?php
-// CASO SINGOLO POST
+// CASO SINGOLO
 elseif (!empty($post_ids)):
     $post_id = is_array($post_ids) ? $post_ids[0] : $post_ids;
     $post = get_post($post_id);
@@ -136,11 +132,62 @@ elseif (!empty($post_ids)):
 <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
 <div class="row">
     <!-- Testo -->
-    <div class="col-lg-5 order-2 order-lg-1">
-        <div class="card mb-0">
+    <div class="col-lg-5 order-2 order-lg-1 px-3 px-lg-4">
+        <div class="card mb-0 border-0">
             <div class="card-body pb-2">
-                <!-- (contenuto identico al carosello) -->
-                <!-- ... stesso codice come sopra per tipo, titolo, data, ecc ... -->
+                <div class="category-top d-flex align-items-center mb-2">
+                    <svg class="icon icon-sm me-2" aria-hidden="true">
+                        <use xlink:href="#it-calendar"></use>
+                    </svg>
+                    <?php if ($tipo): ?>
+                        <span class="title-xsmall-semi-bold fw-semibold">
+                            <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></a>
+                        </span>
+                    <?php endif; ?>
+                </div>
+                <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
+                    <h3 class="card-title"><?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?></h3>
+                </a>
+                <p class="mb-2 font-serif">
+                    <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>
+                </p>
+
+                <!-- Luoghi -->
+                <?php if (is_array($luogo_notizia) && count($luogo_notizia)): ?>
+                    <span class="data fw-normal d-block mb-2">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        <?php foreach ($luogo_notizia as $luogo_id):
+                            $luogo_post = get_post($luogo_id);
+                            if ($luogo_post && !is_wp_error($luogo_post)): ?>
+                                <a href="<?php echo esc_url(get_permalink($luogo_post->ID)); ?>" class="card-text text-secondary text-uppercase pb-1"><?php echo esc_html($luogo_post->post_title); ?></a>
+                            <?php endif;
+                        endforeach; ?>
+                    </span>
+                <?php elseif (!empty($luogo_notizia)): ?>
+                    <span class="data fw-normal d-block mb-2">
+                        <i class="fas fa-map-marker-alt me-1"></i><?php echo esc_html($luogo_notizia); ?>
+                    </span>
+                <?php endif; ?>
+
+                <!-- Data -->
+                <div class="row mt-2 mb-1">
+                    <div class="col-6">
+                        <small>Data:</small>
+                        <p class="fw-semibold font-monospace"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></p>
+                    </div>
+                </div>
+
+                <!-- Argomenti -->
+                <small>Argomenti: </small>
+                <?php get_template_part("template-parts/common/badges-argomenti"); ?>
+
+                <!-- Pulsante -->
+                <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>">
+                    <span class="text">Vai alla pagina</span>
+                    <svg class="icon ms-1">
+                        <use xlink:href="#it-arrow-right"></use>
+                    </svg>
+                </a>
             </div>
         </div>
     </div>
@@ -148,47 +195,51 @@ elseif (!empty($post_ids)):
     <!-- Immagine -->
     <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
         <?php if ($img): ?>
-            <div class="carousel-img-wrapper">
-                <?php dci_get_img($img, 'img-responsive-carousel'); ?>
-            </div>
+            <?php dci_get_img($img, 'img-fluid full-carousel-img'); ?>
         <?php endif; ?>
     </div>
 </div>
 
-<?php endif; endif; ?>
+<?php
+    endif;
+endif;
+?>
 
-
-<!-- STILI -->
+<!-- ✅ CSS STILI IDENTICI PER CAROSELLO E SINGOLO -->
 <style>
 .carousel-item {
     min-height: 400px;
 }
+
 .carousel-inner {
-    border-radius: 0;
     overflow: hidden;
+    border-radius: 0;
 }
 
-.img-responsive-carousel {
+.img-fluid.full-carousel-img {
     width: 100%;
     height: auto;
+    display: block;
     max-height: 400px;
     object-fit: contain;
-    display: block;
     margin: 0 auto;
 }
 
-.carousel-img-wrapper {
-    width: 100%;
-    height: 100%;
-    min-height: 300px;
-    max-height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f5f5f5;
-    padding: 1rem;
-}
+@media (min-width: 992px) {
+    .img-fluid.full-carousel-img {
+        max-height: 100%;
+        height: auto;
+    }
 
+    .carousel-item .col-lg-6,
+    .row .col-lg-6 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f8f9fa;
+        overflow: hidden;
+    }
+}
 </style>
 
 
