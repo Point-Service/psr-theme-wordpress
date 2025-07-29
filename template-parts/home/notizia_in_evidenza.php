@@ -1,7 +1,9 @@
 <?php
 global $count, $scheda;
 
+// Ottieni gli ID dei post evidenziati
 $post_ids = dci_get_option('notizia_evidenziata', 'homepage', true);
+
 $prefix = '_dci_notizia_';
 
 if ($post_ids && count($post_ids) > 1): ?>
@@ -25,16 +27,23 @@ if ($post_ids && count($post_ids) > 1): ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                     <div class="row align-items-stretch g-0">
                         <!-- Immagine -->
-                        <div class="col-lg-6 order-1 order-lg-2 px-0 px-lg-2">
-                            <?php if ($img): ?>
-                                <?php dci_get_img($img, 'img-fluid'); ?>
-                            <?php endif; ?>
+                        <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center">
+                            <div class="w-100 h-100">
+                                <?php if ($img): ?>
+                                    <div class="d-none d-lg-block h-100 overflow-hidden">
+                                        <?php dci_get_img($img, 'w-100 h-100 object-fit-cover'); ?>
+                                    </div>
+                                    <div class="d-lg-none">
+                                        <?php dci_get_img($img, 'img-fluid'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
 
-                        <!-- Contenuto -->
-                        <div class="col-lg-6 order-2 order-lg-1 ps-lg-2 pe-lg-4">
-                            <div class="card w-100 border-0 rounded-0 mb-0">
-                                <div class="card-body pb-2">
+                        <!-- Testo -->
+                        <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
+                            <div class="card w-100 border-0 rounded-0">
+                                <div class="card-body py-4 px-3 px-lg-5">
                                     <div class="category-top d-flex align-items-center mb-2">
                                         <svg class="icon icon-sm me-2" aria-hidden="true">
                                             <use xlink:href="#it-calendar"></use>
