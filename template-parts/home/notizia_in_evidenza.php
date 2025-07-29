@@ -261,14 +261,16 @@ endif;
 @media (min-width: 992px) {
     /* Sposta il testo più a sinistra */
     .single-text-col {
-        padding-left: 1rem !important; /* diminuisci padding sinistro */
-        margin-left: -1rem !important; /* sposta a sinistra */
+        padding-left: 1rem !important;
+        margin-left: -1rem !important;
     }
 
-    /* Sposta l'immagine più a sinistra */
+    /* Sposta l'immagine un po' più verso sinistra ma resta a destra */
     .single-img-col {
-        padding-left: 0 !important;
-        margin-left: -1rem !important; /* sposta a sinistra */
+        padding-left: 0 !important;     /* zero padding sinistro */
+        padding-right: 0.5rem !important; /* aggiungo un po' di padding a destra per non avvicinarla troppo al bordo */
+        margin-left: 0 !important;      /* nessun margine sinistro per non spostarla troppo a sinistra */
+        margin-right: -0.5rem !important; /* margine negativo a destra per avvicinarla un po' al testo */
     }
 }
 </style>
