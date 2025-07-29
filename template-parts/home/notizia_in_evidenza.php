@@ -304,6 +304,22 @@ endif;
     #carosello-notizie .col-lg-6 {
     outline: 2px dashed red;
 }
+
+    .carousel-img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+#carosello-notizie .col-lg-6.order-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
 </style>
 
 
