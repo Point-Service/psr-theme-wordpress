@@ -25,7 +25,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                     $tipo = ($tipo_terms && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
             ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
-                    <div class="row align-items-stretch g-0">
+                    <div class="row">
 
                                 <!-- Immagine -->
                             <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
