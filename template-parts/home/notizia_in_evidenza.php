@@ -26,20 +26,17 @@ if (is_array($post_ids) && count($post_ids) > 1):
             ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                     <div class="row align-items-stretch g-0">
+                    
                         <!-- Immagine -->
-                        <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center">
-                            <div class="w-100 h-100">
-                                <?php if ($img): ?>
-                                    <div class="d-none d-lg-block h-100 overflow-hidden">
-                                        <?php dci_get_img($img, 'img-fluid w-100 h-100 object-fit-cover'); ?>
-                                    </div>
-                                    <div class="d-lg-none">
-                                        <?php dci_get_img($img, 'img-fluid'); ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
+                        <div class="col-lg-6 order-1 order-lg-2 px-0 px-lg-2">
+                            <?php if ($img) {
+                                dci_get_img($img, 'img-fluid');
+                            } ?>
                         </div>
 
+
+
+                        
                         <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
                             <div class="card w-100 border-0 rounded-0">
