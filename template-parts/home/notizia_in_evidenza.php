@@ -30,7 +30,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                 <!-- Immagine -->
                             <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                                 <?php if ($img) {
-                                    dci_get_img($img, 'img-fluid');
+                                     dci_get_img($img, 'rounded img-fluid img-responsive foto-soft-style'); 
                                 } ?>
                             </div>
   
@@ -291,5 +291,16 @@ endif;
         padding-left: 0.5rem; /* regola questo valore a piacere */
     }
 }
+
+/* Stile più leggero per la foto */
+.foto-soft-style {
+    border: 1px solid #ddd;              /* Bordo molto leggero */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Ombra quasi impercettibile */
+    padding: 2px;
+    background-color: #fff;              /* Sfondo bianco per risalto se su sfondo grigio */
+    border-radius: 6px;                  /* Angoli leggermente arrotondati */
+}
+
+    
 </style>
 
