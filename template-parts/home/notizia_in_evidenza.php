@@ -29,7 +29,7 @@ if ($post_ids && count($post_ids) > 1) {
                     $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');
                     $tipo = $tipo_terms && !is_wp_error($tipo_terms) ? $tipo_terms[0] : null;
 
-                    ?>
+                    ?>dddddddddddd
                     <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                         <div class="row">
                             <!-- Colonna con i dettagli della notizia -->
