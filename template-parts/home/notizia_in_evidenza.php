@@ -25,7 +25,7 @@ if ($post_id) {
 
 
 ?>
-
+jjjjjjjjjjjjjjjjjjj
             <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>     
                 <div class="row">
                     <!-- Colonna con i dettagli della notizia -->
