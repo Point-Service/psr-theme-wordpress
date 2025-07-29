@@ -211,7 +211,51 @@ endif;
 <!-- STILI -->
 <style>
 
+.carousel-item {
+    min-height: 400px;
+}
+.carousel-inner {
+    border-radius: 0;
+    overflow: hidden;
+}
 
+
+@media (min-width: 992px) {
+    #carosello-notizie .carousel-item .col-lg-6.order-1 {
+        max-height: 100%;
+    }
+
+    #carosello-notizie .carousel-item .d-none.d-lg-block {
+        height: 100%;
+    }
+
+
+
+    #carosello-notizie .card-body {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
+
+#carosello-notizie .card-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+
+
+@media (min-width: 992px) {
+    #carosello-notizie .col-lg-6.order-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-height: 100%;
+        overflow: hidden;
+        background-color: #f8f9fa; /* opzionale: colore di sfondo */
+    }
+
+
+    
 /* Sposta a sinistra il testo nel singolo elemento */
 @media (min-width: 992px) {
     .row > .col-lg-5.order-2.order-lg-1 {
