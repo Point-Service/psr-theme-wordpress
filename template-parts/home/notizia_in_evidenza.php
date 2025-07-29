@@ -88,7 +88,8 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                         </svg>
                                     </a>
                                 </div>
-                            </div>
+
+
                                  
                                 <!-- Immagine -->
                             <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
@@ -99,6 +100,9 @@ if (is_array($post_ids) && count($post_ids) > 1):
                         
 
                             
+
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
