@@ -18,7 +18,7 @@ $args = array(
 );
 $query = new WP_Query($args);
 ?>
-
+ddddddddddddddddd
 <?php if ($query->have_posts()) : ?>
     <div id="postCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
