@@ -286,9 +286,6 @@ endif;
 }
 
 @media (min-width: 992px) {
-   .row > .col-lg-5.order-2.order-lg-1 {
-        padding-left: 0.5rem; /* regola questo valore a piacere */
-    }
     
     /* Sposta il testo più a sinistra */
     .single-text-col {
