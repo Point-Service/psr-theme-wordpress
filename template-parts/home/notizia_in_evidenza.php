@@ -30,11 +30,11 @@ if (is_array($post_ids) && count($post_ids) > 1):
 
 
                         <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2 d-flex align-items-center justify-content-center">
-                            <div class="carousel-img-wrapper">
-                                <img src="<?php if ($img) {
-                                  dci_get_img($img, 'carousel-img');
-                                } ?>" class="carousel-img" alt="..." />
-                            </div>
+    <div class="carousel-img-wrapper">
+    <?php if ($img): ?>
+        <img src="<?php echo wp_get_attachment_image_url($img, 'large'); ?>" class="carousel-img" alt="..." />
+    <?php endif; ?>
+</div>
                         </div>
 
   
