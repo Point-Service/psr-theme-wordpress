@@ -1,18 +1,17 @@
 <?php
 global $count, $scheda;
 
-// Ottieni l'ID dei post in evidenza (può essere più di un elemento)
+// Ottieni gli ID dei post (potrebbero essere più di un elemento)
 $post_ids = dci_get_option('notizia_evidenziata', 'homepage', true);
 
-// Prefix delle metadati
 $prefix = '_dci_notizia_';
 
 // Verifica se ci sono più di un elemento (per il carosello)
 if ($post_ids && count($post_ids) > 1) {
-    // Multi-elemento: carosello
+    // Carosello per più di un elemento
     ?>
-    <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
-    <div id="carosello-notizie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000"> <!-- Timer di 5 secondi per il ciclo automatico -->
+    <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>     
+    <div id="carosello-notizie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000"> <!-- Ciclazione ogni 5 secondi -->
         <div class="carousel-inner">
             <?php
             $first = true;
@@ -28,8 +27,7 @@ if ($post_ids && count($post_ids) > 1) {
 
                     $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');
                     $tipo = $tipo_terms && !is_wp_error($tipo_terms) ? $tipo_terms[0] : null;
-
-                    ?>dddddddddddd
+                    ?>
                     <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                         <div class="row">
                             <!-- Colonna con i dettagli della notizia -->
@@ -47,9 +45,27 @@ if ($post_ids && count($post_ids) > 1) {
                                             <?php endif; ?>
                                         </div>
                                         <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                            <h3 class="card-title"><?php echo $post->post_title; ?></h3>
+                                            <h3 class="card-title">
+                                                <?php 
+                                                // Controllo per maiuscole consecutive
+                                                if (preg_match('/[A-Z]{5,}/', $post->post_title)) {
+                                                    $titolo = ucfirst(strtolower($post->post_title));
+                                                } else {
+                                                    $titolo = $post->post_title;
+                                                }
+                                                echo $titolo; 
+                                                ?>
+                                            </h3>
                                         </a>
-                                        <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
+                                        
+                                        <?php 
+                                        // Descrizione breve
+                                        if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
+                                            echo '<p class="mb-2 font-serif">' . ucfirst(strtolower($descrizione_breve)) . '</p>';
+                                        } else {
+                                            echo '<p class="mb-2 font-serif">' . $descrizione_breve . '</p>';
+                                        }
+                                        ?>
 
                                         <!-- Luoghi -->
                                         <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
@@ -100,7 +116,7 @@ if ($post_ids && count($post_ids) > 1) {
                             <!-- Colonna con l'immagine -->
                             <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                                 <?php if ($img) {
-                                    dci_get_img($img, 'img-fluid d-block w-100'); // Aggiunto d-block w-100 per rendere l'immagine adattabile
+                                    dci_get_img($img, 'img-fluid');
                                 } ?>
                             </div>
                         </div>
@@ -111,7 +127,8 @@ if ($post_ids && count($post_ids) > 1) {
             }
             ?>
         </div>
-        <!-- Controlli per il carosello -->
+
+        <!-- Controlli del carosello -->
         <button class="carousel-control-prev" type="button" data-bs-target="#carosello-notizie" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Precedente</span>
@@ -121,9 +138,10 @@ if ($post_ids && count($post_ids) > 1) {
             <span class="visually-hidden">Successivo</span>
         </button>
     </div>
+
     <?php
 } else {
-    // Singolo elemento
+    // Singolo elemento (caso fallback)
     $post_id = $post_ids[0] ?? null;
     if ($post_id) {
         $post = get_post($post_id);
@@ -157,6 +175,7 @@ if ($post_ids && count($post_ids) > 1) {
                         <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                             <h3 class="card-title"><?php echo $post->post_title; ?></h3>
                         </a>
+
                         <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
 
                         <!-- Luoghi -->
@@ -200,7 +219,6 @@ if ($post_ids && count($post_ids) > 1) {
                                 <use xlink:href="#it-arrow-right"></use>
                             </svg>
                         </a>
-
                     </div>
                 </div>
             </div>
@@ -208,7 +226,7 @@ if ($post_ids && count($post_ids) > 1) {
             <!-- Colonna con l'immagine -->
             <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                 <?php if ($img) {
-                    dci_get_img($img, 'img-fluid d-block w-100'); // Aggiunto d-block w-100 per rendere l'immagine adattabile
+                    dci_get_img($img, 'img-fluid');
                 } ?>
             </div>
         </div>
@@ -216,4 +234,3 @@ if ($post_ids && count($post_ids) > 1) {
     }
 }
 ?>
-
