@@ -30,7 +30,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                 <!-- Immagine -->
                         <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                             <?php if ($img) {
-                                dci_get_img($img, 'img-fluid');
+                                dci_get_img($img, 'rounded-top img-fluid');
                             } ?>
                         </div>
   
