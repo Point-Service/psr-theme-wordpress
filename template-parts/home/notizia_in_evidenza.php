@@ -26,18 +26,12 @@ if (is_array($post_ids) && count($post_ids) > 1):
             ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                     <div class="row align-items-stretch g-0">
-                    
                         <!-- Immagine -->
-<!-- Immagine -->
-<div class="col-lg-6 order-1 order-lg-2 px-0 px-lg-2">
-    <?php if (!empty($img) && isset($img['url'])): ?>
-        <div class="carousel-img-wrapper"
-             style="background-image: url('<?php echo esc_url($img['url']); ?>');"
-             role="img"
-             aria-label="<?php echo isset($img['alt']) ? esc_attr($img['alt']) : 'Immagine della notizia'; ?>">
-        </div>
-    <?php endif; ?>
-</div>
+                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                            <?php if ($img) {
+                                dci_get_img($img, 'img-fluid');
+                            } ?>
+                        </div>
                         
                         <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
@@ -201,11 +195,11 @@ elseif (!empty($post_ids)):
         </div>
 
         <!-- Immagine -->
-        <div class="col-lg-6 order-1 order-lg-2 px-0 px-lg-2">
-            <?php if ($img) {
-                dci_get_img($img, 'img-fluid');
-            } ?>
-        </div>
+                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                        <?php if ($img) {
+                            dci_get_img($img, 'img-fluid');
+                        } ?>
+                    </div>
     </div>
 
 <?php
