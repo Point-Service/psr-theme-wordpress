@@ -87,8 +87,6 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                             <use xlink:href="#it-arrow-right"></use>
                                         </svg>
                                     </a>
-                                </div>
-
 
                                  
                                 <!-- Immagine -->
@@ -101,7 +99,8 @@ if (is_array($post_ids) && count($post_ids) > 1):
 
                             
 
-                                
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
