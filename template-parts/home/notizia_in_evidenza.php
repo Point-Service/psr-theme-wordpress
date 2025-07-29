@@ -1,12 +1,13 @@
 <?php
 global $count, $scheda;
 
-// Ottieni l'ID dei post in evidenza (multi-elemento possibile)
+// Ottieni l'ID dei post in evidenza (può essere più di un elemento)
 $post_ids = dci_get_option('notizia_evidenziata', 'homepage', true);
 
+// Prefix delle metadati
 $prefix = '_dci_notizia_';
 
-// Verifica se ci sono più di un elemento
+// Verifica se ci sono più di un elemento (per il carosello)
 if ($post_ids && count($post_ids) > 1) {
     // Multi-elemento: carosello
     ?>
@@ -31,7 +32,8 @@ if ($post_ids && count($post_ids) > 1) {
                     ?>
                     <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                         <div class="row">
-                            <div class="col-lg-5">
+                            <!-- Colonna con i dettagli della notizia -->
+                            <div class="col-lg-5 order-2 order-lg-1">
                                 <div class="card mb-0">
                                     <div class="card-body pb-2">
                                         <div class="category-top d-flex align-items-center">
@@ -48,9 +50,26 @@ if ($post_ids && count($post_ids) > 1) {
                                             <h3 class="card-title"><?php echo $post->post_title; ?></h3>
                                         </a>
                                         <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
-                                        <?php if ($luogo_notizia) { ?>
-                                            <span class="data fw-normal"><i class="fas fa-map-marker-alt"></i> <?php echo esc_html($luogo_notizia); ?></span>
+
+                                        <!-- Luoghi -->
+                                        <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                                            <span class="data fw-normal"><i class="fas fa-map-marker-alt"></i>
+                                                <?php
+                                                foreach ($luogo_notizia as $luogo_id) {
+                                                    $luogo_post = get_post($luogo_id);
+                                                    if ($luogo_post && !is_wp_error($luogo_post)) {
+                                                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-1">' . esc_html($luogo_post->post_title) . '</a> ';
+                                                    }
+                                                }
+                                                ?>
+                                            </span>
+                                        <?php } elseif (!empty($luogo_notizia)) { ?>
+                                            <span class="data fw-normal"><i class="fas fa-map-marker-alt"></i>
+                                                <?php echo esc_html($luogo_notizia); ?>
+                                            </span>
                                         <?php } ?>
+
+                                        <!-- Data pubblicazione -->
                                         <div class="row mt-2 mb-1">
                                             <div class="col-6">
                                                 <small>Data:</small>
@@ -59,18 +78,27 @@ if ($post_ids && count($post_ids) > 1) {
                                                 </p>
                                             </div>
                                         </div>
+
+                                        <!-- Argomenti -->
                                         <small>Argomenti: </small>
                                         <?php get_template_part("template-parts/common/badges-argomenti"); ?>
-                                        <a class="read-more" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" style="display: inline-flex; align-items: center; margin-top: 30px;">
+
+                                        <a class="read-more" href="<?php echo get_permalink($post->ID); ?>"
+                                            aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
+                                            title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
+                                            style="display: inline-flex; align-items: center; margin-top: 30px;">
                                             <span class="text">Vai alla pagina</span>
                                             <svg class="icon">
                                                 <use xlink:href="#it-arrow-right"></use>
                                             </svg>
                                         </a>
+
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 offset-lg-1 px-0 px-lg-2">
+
+                            <!-- Colonna con l'immagine -->
+                            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                                 <?php if ($img) {
                                     dci_get_img($img, 'img-fluid');
                                 } ?>
@@ -83,6 +111,7 @@ if ($post_ids && count($post_ids) > 1) {
             }
             ?>
         </div>
+        <!-- Controlli per il carosello -->
         <button class="carousel-control-prev" type="button" data-bs-target="#carosello-notizie" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Precedente</span>
@@ -94,7 +123,7 @@ if ($post_ids && count($post_ids) > 1) {
     </div>
     <?php
 } else {
-    // Singolo elemento: visualizza normalmente
+    // Singolo elemento
     $post_id = $post_ids[0] ?? null;
     if ($post_id) {
         $post = get_post($post_id);
@@ -111,6 +140,7 @@ if ($post_ids && count($post_ids) > 1) {
         ?>
         <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>     
         <div class="row">
+            <!-- Colonna con i dettagli della notizia -->
             <div class="col-lg-5 order-2 order-lg-1">
                 <div class="card mb-0">
                     <div class="card-body pb-2">
@@ -128,9 +158,26 @@ if ($post_ids && count($post_ids) > 1) {
                             <h3 class="card-title"><?php echo $post->post_title; ?></h3>
                         </a>
                         <p class="mb-2 font-serif"><?php echo $descrizione_breve; ?></p>
-                        <?php if ($luogo_notizia) { ?>
-                            <span class="data fw-normal"><i class="fas fa-map-marker-alt"></i> <?php echo esc_html($luogo_notizia); ?></span>
+
+                        <!-- Luoghi -->
+                        <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?>
+                            <span class="data fw-normal"><i class="fas fa-map-marker-alt"></i>
+                                <?php
+                                foreach ($luogo_notizia as $luogo_id) {
+                                    $luogo_post = get_post($luogo_id);
+                                    if ($luogo_post && !is_wp_error($luogo_post)) {
+                                        echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" title="' . esc_attr($luogo_post->post_title) . '" class="card-text text-secondary text-uppercase pb-1">' . esc_html($luogo_post->post_title) . '</a> ';
+                                    }
+                                }
+                                ?>
+                            </span>
+                        <?php } elseif (!empty($luogo_notizia)) { ?>
+                            <span class="data fw-normal"><i class="fas fa-map-marker-alt"></i>
+                                <?php echo esc_html($luogo_notizia); ?>
+                            </span>
                         <?php } ?>
+
+                        <!-- Data pubblicazione -->
                         <div class="row mt-2 mb-1">
                             <div class="col-6">
                                 <small>Data:</small>
@@ -139,18 +186,26 @@ if ($post_ids && count($post_ids) > 1) {
                                 </p>
                             </div>
                         </div>
+
+                        <!-- Argomenti -->
                         <small>Argomenti: </small>
                         <?php get_template_part("template-parts/common/badges-argomenti"); ?>
-                        <a class="read-more" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" style="display: inline-flex; align-items: center; margin-top: 30px;">
+
+                        <a class="read-more" href="<?php echo get_permalink($post->ID); ?>"
+                            aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
+                            title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
+                            style="display: inline-flex; align-items: center; margin-top: 30px;">
                             <span class="text">Vai alla pagina</span>
                             <svg class="icon">
                                 <use xlink:href="#it-arrow-right"></use>
                             </svg>
                         </a>
+
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 offset-lg-1 px-0 px-lg-2">
+            <!-- Colonna con l'immagine -->
+            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                 <?php if ($img) {
                     dci_get_img($img, 'img-fluid');
                 } ?>
