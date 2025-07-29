@@ -29,11 +29,9 @@ if (is_array($post_ids) && count($post_ids) > 1):
 
                                 <!-- Immagine -->
                             <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                                <div class="bg-image">
                                 <?php if ($img) {
-                                    dci_get_img($img, '');
+                                    dci_get_img($img, 'img-fluid');
                                 } ?>
-                                </div>
                             </div>
   
                         <!-- Testo -->
@@ -273,7 +271,9 @@ endif;
     #carosello-notizie .img-responsive-carousel {
         max-width: 100%;
         max-height: 400px;
-        height: auto;
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
     }
 }
 #carosello-notizie .carousel-img-wrapper {
@@ -290,14 +290,7 @@ endif;
 /* Sposta a sinistra il testo nel singolo elemento */
 @media (min-width: 992px) {
     .row > .col-lg-5.order-2.order-lg-1 {
-        padding-left: 1.0 rem; /* regola questo valore a piacere */
+        padding-left: 0.5rem; /* regola questo valore a piacere */
     }
 }
-
-    .bg-image img {
-        width: 100%;
-        height: 450px;
-        object-fit: cover;
-        object-position: center;
-    }
 </style>
