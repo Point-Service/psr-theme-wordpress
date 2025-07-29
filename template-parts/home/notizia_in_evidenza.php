@@ -25,13 +25,14 @@ if (is_array($post_ids) && count($post_ids) > 1):
                     $tipo = ($tipo_terms && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
             ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
-                    <div class="row">
+                    <div class="row align-items-stretch g-0">
 
-                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                        <?php if ($img) {
-                            dci_get_img($img, 'card-image card-image-rounded pb-5');
-                        } ?>
-                    </div>>
+                                <!-- Immagine -->
+                            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                                <?php if ($img) {
+                                    dci_get_img($img, 'img-fluid');
+                                } ?>
+                            </div>
   
                         <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
@@ -290,7 +291,4 @@ endif;
         padding-left: 0.7rem; /* regola questo valore a piacere */
     }
 }
-
-    
 </style>
-
