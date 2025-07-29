@@ -31,7 +31,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                             <div class="w-100 h-100">
                                 <?php if ($img): ?>
                                     <div class="d-none d-lg-block h-100 overflow-hidden">
-                                        <?php dci_get_img($img, 'w-100 h-100 object-fit-cover'); ?>
+                                        <?php dci_get_img($img, 'img-fluid w-100 h-100 object-fit-cover'); ?>
                                     </div>
                                     <div class="d-lg-none">
                                         <?php dci_get_img($img, 'img-fluid'); ?>
@@ -43,7 +43,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                         <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
                             <div class="card w-100 border-0 rounded-0">
-                                <div class="card-body py-4 px-3 px-lg-5">
+                                <div class="card-body py-4 px-3 px-lg-4">
                                     <div class="category-top d-flex align-items-center mb-2">
                                         <svg class="icon icon-sm me-2" aria-hidden="true">
                                             <use xlink:href="#it-calendar"></use>
@@ -92,6 +92,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                     <small>Argomenti: </small>
                                     <?php get_template_part("template-parts/common/badges-argomenti"); ?>
 
+                                    <!-- Pulsante -->
                                     <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
                                         <span class="text">Vai alla pagina</span>
                                         <svg class="icon ms-1">
@@ -201,7 +202,7 @@ elseif (!empty($post_ids)):
         </div>
 
         <!-- Immagine -->
-        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+        <div class="col-lg-6 order-1 order-lg-2 px-0 px-lg-2">
             <?php if ($img) {
                 dci_get_img($img, 'img-fluid');
             } ?>
@@ -213,7 +214,7 @@ elseif (!empty($post_ids)):
 endif;
 ?>
 
-
+<!-- STILI -->
 <style>
 .carousel-item {
     min-height: 400px;
@@ -233,8 +234,9 @@ endif;
 }
 @media (min-width: 992px) {
     #carosello-notizie .card-body {
-        padding-left: 3rem;
-        padding-right: 3rem;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
     }
 }
 </style>
+
