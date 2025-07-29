@@ -135,7 +135,7 @@ elseif (!empty($post_ids)):
     <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
     <div class="row">
         <!-- Testo -->
-        <div class="col-lg-5 order-2 order-lg-1">
+        <div class="col-lg-5 order-2 order-lg-1 single-text-col">
             <div class="card mb-0">
                 <div class="card-body pb-2">
                     <div class="category-top d-flex align-items-center mb-2">
@@ -196,7 +196,7 @@ elseif (!empty($post_ids)):
         </div>
 
                  <!-- Immagine -->
-                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2 single-img-col">
                         <?php if ($img) {
                             dci_get_img($img, 'img-fluid');
                         } ?>
@@ -250,7 +250,7 @@ endif;
     padding-right: 1rem;
 }
 
-    #carosello-notizie .img-responsive-carousel {
+#carosello-notizie .img-responsive-carousel {
     width: 100%;
     max-height: 100%;
     object-fit: contain;
@@ -259,37 +259,18 @@ endif;
 }
 
 @media (min-width: 992px) {
-    #carosello-notizie .col-lg-6.order-1 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        max-height: 100%;
-        overflow: hidden;
-        background-color: #f8f9fa; /* opzionale: colore di sfondo */
+    /* Sposta il testo più a sinistra */
+    .single-text-col {
+        padding-left: 1rem !important; /* diminuisci padding sinistro */
+        margin-left: -1rem !important; /* sposta a sinistra */
     }
 
-    #carosello-notizie .img-responsive-carousel {
-        max-width: 100%;
-        max-height: 400px;
-        height: auto;
-    }
-}
-#carosello-notizie .carousel-img-wrapper {
-    width: 100%;
-    height: 100%;
-    min-height: 300px;
-    max-height: 400px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-    background-color: #f5f5f5;
-}
-
-/* Sposta a sinistra il testo nel singolo elemento */
-@media (min-width: 992px) {
-    .row > .col-lg-5.order-2.order-lg-1 {
-        padding-left: 0.5rem; /* regola questo valore a piacere */
+    /* Sposta l'immagine più a sinistra */
+    .single-img-col {
+        padding-left: 0 !important;
+        margin-left: -1rem !important; /* sposta a sinistra */
     }
 }
 </style>
+
 
