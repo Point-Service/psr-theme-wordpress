@@ -6,9 +6,9 @@ $post_ids = dci_get_option('notizia_evidenziata', 'homepage', true);
 
 $prefix = '_dci_notizia_';
 
-if ($post_ids && count($post_ids) > 0): ?>
+if ($post_ids && count($post_ids) > 1): ?>
     <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>     
-    <div id="carosello-notizie" class="carousel slide <?php echo count($post_ids) === 1 ? 'carousel-single' : ''; ?>" data-bs-ride="carousel" data-bs-interval="5000">
+    <div id="carosello-notizie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
             <?php
             $first = true;
@@ -41,7 +41,7 @@ if ($post_ids && count($post_ids) > 0): ?>
                         </div>
 
                         <!-- Testo -->
-                        <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center ps-lg-4">
+                        <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
                             <div class="card w-100 border-0 rounded-0">
                                 <div class="card-body py-4 px-3 px-lg-5">
                                     <div class="category-top d-flex align-items-center mb-2">
@@ -121,7 +121,6 @@ if ($post_ids && count($post_ids) > 0): ?>
             ?>
         </div>
 
-        <?php if (count($post_ids) > 1): ?>
         <!-- Controlli carosello -->
         <button class="carousel-control-prev" type="button" data-bs-target="#carosello-notizie" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -131,31 +130,23 @@ if ($post_ids && count($post_ids) > 0): ?>
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Successivo</span>
         </button>
-        <?php endif; ?>
     </div>
 <?php endif; ?>
-
 <style>
+
 .carousel-item {
     min-height: 400px;
 }
+
+.carousel-item .object-fit-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
 .carousel-inner {
     border-radius: 0;
     overflow: hidden;
 }
-#carosello-notizie img.img-fluid {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-#carosello-notizie .card-body {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-@media (min-width: 992px) {
-    #carosello-notizie .card-body {
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-}
+    
 </style>
