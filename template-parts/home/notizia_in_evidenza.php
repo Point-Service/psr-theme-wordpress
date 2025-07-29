@@ -213,32 +213,31 @@ endif;
 .carousel-item {
     min-height: 400px;
 }
+
 .carousel-inner {
     border-radius: 0;
     overflow: hidden;
 }
+
+/* Immagine carosello - dimensione fissa in altezza, larghezza adattabile */
 #carosello-notizie .carousel-item img.img-fluid {
-    width: 100%;
-    height: 400px;       /* imposta altezza fissa o max-height */
-    object-fit: contain; /* per vedere tutta l'immagine senza taglio */
+    width: auto;           /* larghezza automatica per mantenere proporzioni */
+    max-width: 100%;       /* non oltre la larghezza del contenitore */
+    height: 400px;         /* altezza fissa coerente con il carosello */
+    object-fit: contain;   /* mantiene tutta l’immagine visibile senza taglio */
     display: block;
     margin: 0 auto;
 }
-    
 
+/* Wrapper immagine colonna sinistra, per centrare contenuto */
 @media (min-width: 992px) {
     #carosello-notizie .carousel-item .col-lg-6.order-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         max-height: 100%;
-    }
-
-    #carosello-notizie .carousel-item .d-none.d-lg-block {
-        height: 100%;
-    }
-
-    #carosello-notizie .carousel-item .d-none.d-lg-block img.cover-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        overflow: hidden;
+        background-color: #f8f9fa; /* sfondo neutro */
     }
 
     #carosello-notizie .card-body {
@@ -247,12 +246,14 @@ endif;
     }
 }
 
+/* Card body padding per schermi piccoli */
 #carosello-notizie .card-body {
     padding-left: 1rem;
     padding-right: 1rem;
 }
 
-    #carosello-notizie .img-responsive-carousel {
+/* Classe ausiliaria per immagini responsive nel carosello */
+#carosello-notizie .img-responsive-carousel {
     width: 100%;
     max-height: 100%;
     object-fit: contain;
@@ -261,21 +262,14 @@ endif;
 }
 
 @media (min-width: 992px) {
-    #carosello-notizie .col-lg-6.order-1 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        max-height: 100%;
-        overflow: hidden;
-        background-color: #f8f9fa; /* opzionale: colore di sfondo */
-    }
-
     #carosello-notizie .img-responsive-carousel {
         max-width: 100%;
         max-height: 400px;
         height: auto;
     }
 }
+
+/* Wrapper con sfondo neutro e dimensioni per immagini */
 #carosello-notizie .carousel-img-wrapper {
     width: 100%;
     height: 100%;
@@ -286,4 +280,12 @@ endif;
     background-size: contain;
     background-color: #f5f5f5;
 }
+
+/* Rimuoviamo il cropping: evitiamo object-fit: cover su immagini */
+#carosello-notizie .carousel-item .d-none.d-lg-block img.cover-img {
+    width: auto !important;
+    height: 400px !important;
+    object-fit: contain !important;
+}
+
 </style>
