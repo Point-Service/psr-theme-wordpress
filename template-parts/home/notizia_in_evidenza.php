@@ -29,9 +29,9 @@ if (is_array($post_ids) && count($post_ids) > 1):
                     
                         <!-- Immagine -->
                         <div class="col-lg-6 order-1 order-lg-2 px-0 px-lg-2">
-                            <?php if ($img) {
-                                dci_get_img($img, 'img-responsive-carousel');
-                            } ?>
+                         <?php if ($img): ?>
+                            <div class="carousel-img-wrapper" style="background-image: url('<?php echo esc_url($img['url']); ?>');" role="img" aria-label="<?php echo esc_attr($img['alt']); ?>"></div>
+                        <?php endif; ?>
                         </div>
                         
                         <!-- Testo -->
@@ -274,7 +274,16 @@ endif;
         height: auto;
     }
 }
-
+#carosello-notizie .carousel-img-wrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    max-height: 400px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-color: #f5f5f5;
+}
 </style>
 
 
