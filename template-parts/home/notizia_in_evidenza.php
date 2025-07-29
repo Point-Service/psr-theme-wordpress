@@ -100,7 +100,7 @@ if ($post_ids && count($post_ids) > 1) {
                             <!-- Colonna con l'immagine -->
                             <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                                 <?php if ($img) {
-                                    dci_get_img($img, 'img-fluid');
+                                    dci_get_img($img, 'img-fluid d-block w-100'); // Aggiunto d-block w-100 per rendere l'immagine adattabile
                                 } ?>
                             </div>
                         </div>
@@ -204,10 +204,11 @@ if ($post_ids && count($post_ids) > 1) {
                     </div>
                 </div>
             </div>
+
             <!-- Colonna con l'immagine -->
             <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                 <?php if ($img) {
-                    dci_get_img($img, 'img-fluid');
+                    dci_get_img($img, 'img-fluid d-block w-100'); // Aggiunto d-block w-100 per rendere l'immagine adattabile
                 } ?>
             </div>
         </div>
@@ -215,3 +216,4 @@ if ($post_ids && count($post_ids) > 1) {
     }
 }
 ?>
+
