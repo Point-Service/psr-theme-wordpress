@@ -235,7 +235,7 @@ endif;
     #carosello-notizie .carousel-item .d-none.d-lg-block img.cover-img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
     }
 
     #carosello-notizie .card-body {
