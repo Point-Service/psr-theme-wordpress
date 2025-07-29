@@ -195,7 +195,7 @@ elseif (!empty($post_ids)):
             </div>
         </div>
 
-        <!-- Immagine -->
+                 <!-- Immagine -->
                     <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                         <?php if ($img) {
                             dci_get_img($img, 'img-fluid');
@@ -240,13 +240,7 @@ endif;
     padding-right: 1rem;
 }
 
-    #carosello-notizie .img-responsive-carousel {
-    width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-}
+
 
 @media (min-width: 992px) {
     #carosello-notizie .col-lg-6.order-1 {
@@ -257,4 +251,5 @@ endif;
         overflow: hidden;
         background-color: #f8f9fa; /* opzionale: colore di sfondo */
     }
+    
 </style>
