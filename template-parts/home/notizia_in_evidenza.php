@@ -27,12 +27,12 @@ if (is_array($post_ids) && count($post_ids) > 1):
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                     <div class="row align-items-stretch g-0">
 
-                        <!-- Immagine -->
-                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                            <?php if ($img) {
-                                dci_get_img($img, 'rounded-top img-fluid');
-                            } ?>
-                        </div>
+                                <!-- Immagine -->
+                            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                                <?php if ($img) {
+                                    dci_get_img($img, 'img-fluid');
+                                } ?>
+                            </div>
   
                         <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
@@ -210,7 +210,6 @@ endif;
 
 <!-- STILI -->
 <style>
-
 .carousel-item {
     min-height: 400px;
 }
@@ -218,7 +217,12 @@ endif;
     border-radius: 0;
     overflow: hidden;
 }
-
+#carosello-notizie img.img-fluid,
+#carosello-notizie img.cover-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
 @media (min-width: 992px) {
     #carosello-notizie .carousel-item .col-lg-6.order-1 {
@@ -229,7 +233,11 @@ endif;
         height: 100%;
     }
 
-
+    #carosello-notizie .carousel-item .d-none.d-lg-block img.cover-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
     #carosello-notizie .card-body {
         padding-left: 3rem;
@@ -242,7 +250,13 @@ endif;
     padding-right: 1rem;
 }
 
-
+    #carosello-notizie .img-responsive-carousel {
+    width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
 
 @media (min-width: 992px) {
     #carosello-notizie .col-lg-6.order-1 {
@@ -254,8 +268,23 @@ endif;
         background-color: #f8f9fa; /* opzionale: colore di sfondo */
     }
 
+    #carosello-notizie .img-responsive-carousel {
+        max-width: 100%;
+        max-height: 400px;
+        height: auto;
+    }
+}
+#carosello-notizie .carousel-img-wrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    max-height: 400px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-color: #f5f5f5;
+}
 
-    
 /* Sposta a sinistra il testo nel singolo elemento */
 @media (min-width: 992px) {
     .row > .col-lg-5.order-2.order-lg-1 {
