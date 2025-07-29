@@ -217,12 +217,14 @@ endif;
     border-radius: 0;
     overflow: hidden;
 }
-#carosello-notizie img.img-fluid,
-#carosello-notizie img.cover-img {
+#carosello-notizie .carousel-item img.img-fluid {
     width: 100%;
-    height: auto;
+    height: 400px;       /* imposta altezza fissa o max-height */
+    object-fit: contain; /* per vedere tutta l'immagine senza taglio */
     display: block;
+    margin: 0 auto;
 }
+    
 
 @media (min-width: 992px) {
     #carosello-notizie .carousel-item .col-lg-6.order-1 {
