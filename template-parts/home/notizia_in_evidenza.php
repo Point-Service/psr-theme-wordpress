@@ -30,10 +30,9 @@ if (is_array($post_ids) && count($post_ids) > 1):
                         <!-- Immagine -->
                         <div class="col-lg-6 order-1 order-lg-2 px-0 px-lg-2">
                             <?php if ($img) {
-                                dci_get_img($img, 'cover-img');
+                                dci_get_img($img, 'img-responsive-carousel');
                             } ?>
                         </div>
-
                         
                         <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
@@ -250,6 +249,32 @@ endif;
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+    #carosello-notizie .img-responsive-carousel {
+    width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+@media (min-width: 992px) {
+    #carosello-notizie .col-lg-6.order-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-height: 100%;
+        overflow: hidden;
+        background-color: #f8f9fa; /* opzionale: colore di sfondo */
+    }
+
+    #carosello-notizie .img-responsive-carousel {
+        max-width: 100%;
+        max-height: 400px;
+        height: auto;
+    }
+}
+
 </style>
 
 
