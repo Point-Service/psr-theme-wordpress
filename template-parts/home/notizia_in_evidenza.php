@@ -288,7 +288,7 @@ endif;
 /* Sposta a sinistra il testo nel singolo elemento */
 @media (min-width: 992px) {
     .row > .col-lg-5.order-2.order-lg-1 {
-        padding-left: 0.7rem; /* regola questo valore a piacere */
+        padding-left: 1.0 rem; /* regola questo valore a piacere */
     }
 }
 </style>
