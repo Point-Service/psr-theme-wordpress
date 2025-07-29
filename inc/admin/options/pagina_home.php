@@ -55,7 +55,7 @@ function dci_register_pagina_home_options(){
                 ), // override the get_posts args
             ),
             'attributes' => array(
-                'data-max-items' => 3, //change the value here to how many posts may be attached.
+                'data-max-items' => 5, //change the value here to how many posts may be attached.
             ),
         )
     );
