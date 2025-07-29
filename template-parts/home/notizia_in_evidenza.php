@@ -274,16 +274,7 @@ endif;
         height: auto;
     }
 }
-#carosello-notizie .carousel-img-wrapper {
-    width: 100%;
-    height: 100%;
-    min-height: 300px;
-    max-height: 400px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-    background-color: #f5f5f5;
-}
+
 </style>
 
 
