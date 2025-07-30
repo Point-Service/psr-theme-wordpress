@@ -28,11 +28,13 @@ if (is_array($post_ids) && count($post_ids) > 1):
                     <div class="row align-items-stretch g-0">
 
                         <!-- Immagine -->
-                            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                                <?php if ($img) {
-                                    dci_get_img($img, 'img-fluid');
-                                } ?>
-                            </div>
+                                <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                                    <div class="col-img">
+                                        <?php if ($img) {
+                                            dci_get_img($img, 'img-evidenza');
+                                        } ?>
+                                    </div>
+                                </div>
            
                         <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
@@ -249,6 +251,28 @@ endif;
             padding-left: 1rem;
             padding-right: 1rem;
         }
+
+        /* Contenitore immagine carosello */
+#carosello-evidenza .col-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    min-height: 300px;
+}
+
+/* Immagine carosello */
+#carosello-evidenza img.img-evidenza {
+    max-width: 90%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
         
         /* Responsive layout per carosello */
         @media (min-width: 992px) {
