@@ -25,11 +25,19 @@ if (is_array($post_ids) && count($post_ids) > 1):
                     $tipo = ($tipo_terms && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
             ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
-                    <div class="row align-items-center g-0">
+                    <div class="row align-items-stretch g-0">
+
+                        <!-- Immagine -->
+                            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                                <?php if ($img) {
+                                    dci_get_img($img, 'img-fluid');
+                                } ?>
+                            </div>
+           
                         <!-- Testo -->
-                        <div class="col-lg-5 order-2 order-lg-1">
-                            <div class="card mb-0 border-0 rounded-0">
-                                <div class="card-body pb-2 px-3 px-lg-4">
+                        <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
+                            <div class="card w-100 border-0 rounded-0">
+                                <div class="card-body py-4 px-3 px-lg-4">
                                     <div class="category-top d-flex align-items-center mb-2">
                                         <svg class="icon icon-sm me-2" aria-hidden="true">
                                             <use xlink:href="#it-calendar"></use>
@@ -40,42 +48,46 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                             </span>
                                         <?php endif; ?>
                                     </div>
-
                                     <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                        <h3 class="card-title">
+                                        <h3 class="card-title mb-3">
                                             <?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?>
                                         </h3>
                                     </a>
-
-                                    <p class="mb-2 font-serif">
+                                    <p class="mb-3 font-serif">
                                         <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>
                                     </p>
 
+                                    <!-- Luoghi -->
                                     <?php if (is_array($luogo_notizia) && count($luogo_notizia)): ?>
-                                        <span class="data fw-normal">
+                                        <span class="data fw-normal d-block mb-2">
                                             <i class="fas fa-map-marker-alt me-1"></i>
                                             <?php foreach ($luogo_notizia as $luogo_id):
                                                 $luogo_post = get_post($luogo_id);
-                                                if ($luogo_post && !is_wp_error($luogo_post)) {
-                                                    echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" class="card-text text-secondary text-uppercase pb-1">' . esc_html($luogo_post->post_title) . '</a> ';
-                                                }
+                                                if ($luogo_post && !is_wp_error($luogo_post)): ?>
+                                                    <a href="<?php echo esc_url(get_permalink($luogo_post->ID)); ?>" class="card-text text-secondary text-uppercase pb-1"><?php echo esc_html($luogo_post->post_title); ?></a>
+                                                <?php endif;
                                             endforeach; ?>
                                         </span>
                                     <?php elseif (!empty($luogo_notizia)): ?>
-                                        <span class="data fw-normal"><i class="fas fa-map-marker-alt me-1"></i><?php echo esc_html($luogo_notizia); ?></span>
+                                        <span class="data fw-normal d-block mb-2">
+                                            <i class="fas fa-map-marker-alt me-1"></i><?php echo esc_html($luogo_notizia); ?>
+                                        </span>
                                     <?php endif; ?>
 
-                                    <div class="row mt-2 mb-1">
+                                    <!-- Data -->
+                                    <div class="row mt-2 mb-3">
                                         <div class="col-6">
                                             <small>Data:</small>
                                             <p class="fw-semibold font-monospace"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></p>
                                         </div>
                                     </div>
 
+                                    <!-- Argomenti -->
                                     <small>Argomenti: </small>
                                     <?php get_template_part("template-parts/common/badges-argomenti"); ?>
 
-                                    <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>">
+                                    <!-- Pulsante -->
+                                    <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
                                         <span class="text">Vai alla pagina</span>
                                         <svg class="icon ms-1">
                                             <use xlink:href="#it-arrow-right"></use>
@@ -83,13 +95,6 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                     </a>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Immagine -->
-                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                            <?php if ($img): ?>
-                                <img src="<?php echo esc_url($img); ?>" alt="" class="img-fluid" style="max-height: 400px; object-fit: contain; display: block; margin: 0 auto;" />
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -203,126 +208,89 @@ elseif (!empty($post_ids)):
 endif;
 ?>
 
-   <!-- STILI AGGIORNATI -->
-<style>
-/* --------------------------------------------- */
-/* CAROSELLO - STILI GENERALI */
-#carosello-evidenza {
-    position: relative;
-    overflow: visible !important;
-}
-
-#carosello-evidenza .carousel-inner {
-    overflow: visible !important;
-    display: flex !important;
-    flex-wrap: nowrap !important;
-}
-
-#carosello-evidenza .carousel-item {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: stretch !important;
-    overflow: visible !important;
-    min-height: 400px;
-    width: 100% !important;
-    padding: 1rem;
-}
-
-#carosello-evidenza .carousel-item > .row {
-    flex: 1 1 auto !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: stretch !important;
-    gap: 1rem;
-}
-
-.col-img {
-    flex: 1 1 50% !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    background-color: #f5f5f5;
-    padding: 2rem !important;
-    overflow: visible !important;
-}
-
-img.img-evidenza {
-    max-width: 100% !important;
-    max-height: 350px !important;
-    object-fit: contain !important;
-    display: block !important;
-    margin: 0 auto !important;
-}
-
-#carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
-    flex: 1 1 50% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    padding: 1rem !important;
-    overflow: visible !important;
-}
-
-#carosello-evidenza .carousel-item .card-body {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    overflow: visible !important;
-    padding-bottom: 0 !important;
-    flex-grow: 1 !important;
-}
-
-.read-more {
-    margin-top: auto !important;
-    padding-top: 1rem !important;
-    flex-shrink: 0 !important;
-    align-self: flex-start !important;
-    white-space: nowrap !important;
-    z-index: 10 !important;
-}
-
-#carosello-evidenza .carousel-control-prev,
-#carosello-evidenza .carousel-control-next {
-    z-index: 15 !important;
-}
-
-/* --------------------------------------------- */
-/* SINGOLO ELEMENTO - STILI */
-.row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    padding: 1rem !important;
-    min-height: 400px !important;
-    overflow: visible !important;
-}
-
-.row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-    max-width: 90% !important;
-    max-height: 400px !important;
-    padding-right: 7px !important;
-    width: auto !important;
-    height: auto !important;
-    object-fit: contain !important;
-    display: block !important;
-    margin: 0 auto !important;
-}
-
-@media (min-width: 992px) {
-    .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-        padding: 3rem !important;
-    }
-
-    .col-img {
-        padding: 3rem !important;
-    }
-
-    #carosello-evidenza .card-body {
-        padding-left: 3rem !important;
-        padding-right: 3rem !important;
-    }
-}
-
-
-</style>
-
+    <style>
+         #carosello-evidenza {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #carosello-evidenza .carousel-item {
+            min-height: 400px;
+        }
+        
+        #carosello-evidenza .carousel-inner {
+            border-radius: 0;
+            overflow: hidden;
+        }
+        
+        /* Contenitore immagine carosello */
+        #carosello-evidenza .col-img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+            padding: 1rem;
+            min-height: 300px;
+        }
+        
+        /* Immagine carosello */
+        #carosello-evidenza img.img-evidenza {
+            max-width: 90%;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* Testo card carosello */
+        #carosello-evidenza .card-body {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        /* Responsive layout per carosello */
+        @media (min-width: 992px) {
+            #carosello-evidenza .card-body {
+                padding-left: 3rem;
+                padding-right: 3rem;
+            }
+        
+            #carosello-evidenza .col-img {
+                padding: 2rem;
+            }
+        
+            .row > .col-lg-5.order-2.order-lg-1 {
+                padding-left: 0.5rem;
+            }
+        }
+        
+        /* --------------------------------------------- */
+        /* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
+        
+        .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 1rem 1rem 1rem 1rem; /* padding destro più ampio */
+            min-height: 400px;
+        }
+        
+        .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+            max-width: 90%;
+            max-height: 400px;
+            padding-right: 7px; /* o 1rem, 10rem, ecc. */
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        
+        @media (min-width: 992px) {
+            .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+                padding: 3rem;
+            }
+        }
+    
+    </style>
