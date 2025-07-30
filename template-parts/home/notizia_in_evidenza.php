@@ -254,8 +254,9 @@ endif;
 #carosello-notizie .img-responsive-carousel {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* o contain, a seconda di cosa vuoi */
+    object-fit: contain; /* mostra tutta l’immagine senza zoom */
     display: block;
+    background-color: #f8f9fa; /* per vedere lo sfondo nei “vuoti” */
 }
 
 @media (min-width: 992px) {
