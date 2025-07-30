@@ -71,12 +71,32 @@
     });
 </script>
 <style>
-#gallery-carousel {
+/* Azzera margini e padding del contenitore carosello e parent */
+.carosello-section,
+#gallery-carousel,
+.it-carousel-wrapper,
+.it-full-carousel,
+.it-standard-image,
+.splide,
+.splide__track {
     margin-top: 0 !important;
     padding-top: 0 !important;
 }
-.it-carousel-wrapper {
+
+/* Previene margini collassati */
+.carosello-section {
+    overflow: hidden;
+    border-top: 1px solid transparent; /* forza il contenitore ad avere “dimensione” */
+}
+
+/* Sezione precedente che potrebbe avere margine inferiore */
+.carosello-section + * {
     margin-top: 0 !important;
-    padding-top: 0 !important;
-}    
+}
+
+/* Body o main wrapper (per sicurezza) */
+body, main {
+    margin: 0;
+    padding: 0;
+}
 </style>
