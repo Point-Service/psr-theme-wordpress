@@ -208,89 +208,89 @@ elseif (!empty($post_ids)):
 endif;
 ?>
 
-<style>
- #carosello-evidenza {
-    position: relative;
-    overflow: hidden;
-}
-
-#carosello-evidenza .carousel-item {
-    min-height: 400px;
-}
-
-#carosello-evidenza .carousel-inner {
-    border-radius: 0;
-    overflow: hidden;
-}
-
-/* Contenitore immagine carosello */
-#carosello-evidenza .col-img {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f5f5f5;
-    padding: 1rem;
-    min-height: 300px;
-}
-
-/* Immagine carosello */
-#carosello-evidenza img.img-evidenza {
-    max-width: 90%;
-    max-height: 300px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-}
-
-/* Testo card carosello */
-#carosello-evidenza .card-body {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-/* Responsive layout per carosello */
-@media (min-width: 992px) {
-    #carosello-evidenza .card-body {
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-
-    #carosello-evidenza .col-img {
-        padding: 2rem;
-    }
-
-    .row > .col-lg-5.order-2.order-lg-1 {
-        padding-left: 0.5rem;
-    }
-}
-
-/* --------------------------------------------- */
-/* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
-
-.row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 1rem 1rem 1rem 1rem; /* padding destro più ampio */
-    min-height: 400px;
-}
-
-.row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-    max-width: 90%;
-    max-height: 400px;
-    padding-right: 7px; /* o 1rem, 10rem, ecc. */
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
-
-@media (min-width: 992px) {
-    .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-        padding: 3rem;
-    }
-}
-
-</style>
+    <style>
+         #carosello-evidenza {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #carosello-evidenza .carousel-item {
+            min-height: 400px;
+        }
+        
+        #carosello-evidenza .carousel-inner {
+            border-radius: 0;
+            overflow: hidden;
+        }
+        
+        /* Contenitore immagine carosello */
+        #carosello-evidenza .col-img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+            padding: 1rem;
+            min-height: 300px;
+        }
+        
+        /* Immagine carosello */
+        #carosello-evidenza img.img-evidenza {
+            max-width: 90%;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* Testo card carosello */
+        #carosello-evidenza .card-body {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        /* Responsive layout per carosello */
+        @media (min-width: 992px) {
+            #carosello-evidenza .card-body {
+                padding-left: 3rem;
+                padding-right: 3rem;
+            }
+        
+            #carosello-evidenza .col-img {
+                padding: 2rem;
+            }
+        
+            .row > .col-lg-5.order-2.order-lg-1 {
+                padding-left: 0.5rem;
+            }
+        }
+        
+        /* --------------------------------------------- */
+        /* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
+        
+        .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 1rem 1rem 1rem 1rem; /* padding destro più ampio */
+            min-height: 400px;
+        }
+        
+        .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+            max-width: 90%;
+            max-height: 400px;
+            padding-right: 7px; /* o 1rem, 10rem, ecc. */
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        
+        @media (min-width: 992px) {
+            .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+                padding: 3rem;
+            }
+        }
+    
+    </style>
