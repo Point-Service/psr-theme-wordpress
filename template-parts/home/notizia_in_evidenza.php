@@ -280,7 +280,7 @@ endif;
 .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
     max-width: 90%;
     max-height: 400px;
-    padding-right: 10px; /* o 1rem, 10rem, ecc. */
+    padding-right: 9px; /* o 1rem, 10rem, ecc. */
     width: auto;
     height: auto;
     object-fit: contain;
