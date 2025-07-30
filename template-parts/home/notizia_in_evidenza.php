@@ -291,28 +291,35 @@ endif;
     }
 
     /* --------------------------------------------- */
-    /* FIX PER PULSANTE NASCOSTO: ESTENSIONE COMPLETA */
+    /* FIX PER VEDERE TUTTO IL CONTENUTO NEL CAROSELLO */
 
     #carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
     }
 
     #carosello-evidenza .carousel-item .card {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    #carosello-evidenza .carousel-item .card-body {
-        flex-grow: 1;
+        border: none;
+        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 
+    #carosello-evidenza .carousel-item .card-body {
+        padding-bottom: 0;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Mantieni margine sopra il pulsante e assicurati che sia sempre visibile */
     .read-more {
         margin-top: auto;
         padding-top: 1rem;
+        flex-shrink: 0;
     }
 </style>
+
