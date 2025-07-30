@@ -107,11 +107,6 @@ switch ($post_type_label) {
                 <?php }?>
                 <span class="data"><?php echo esc_html($arrdata[0] . ' ' . strtoupper($monthName) . ' ' . $arrdata[2]); ?></span>
             </div>
-            <?php if ($img) { ?>
-                <div class="d-flex flex-column">
-                    <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
-                </div>
-            <?php } ?>
             <h3 class="h5 card-title text-justify u-grey-light">
                 <?php
                 $title = get_the_title();
@@ -124,6 +119,12 @@ switch ($post_type_label) {
                 echo esc_html($title);
                 ?>
             </h3>
+            <?php if ($img) { ?>
+                <div class="d-flex flex-column">
+                    <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
+                </div>
+            <?php } ?>
+
             <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
                 echo  '<p class="text-paragraph-card u-grey-light m-0 text-justify">' . ucfirst(strtolower($descrizione_breve)) . '</p>';
             } else {
