@@ -8,7 +8,7 @@ $prefix = '_dci_notizia_';
 if (is_array($post_ids) && count($post_ids) > 1):
 ?>
     <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
-    <div id="carosello-notizie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+    <div id="carosello-evidenza" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
             <?php
             $first = true;
@@ -27,13 +27,13 @@ if (is_array($post_ids) && count($post_ids) > 1):
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                     <div class="row align-items-stretch g-0">
 
-                                <!-- Immagine -->
-                            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                                <?php if ($img) {
-                                    dci_get_img($img, 'img-fluid');
-                                } ?>
-                            </div>
-  
+                        <!-- Immagine -->
+                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 col-img px-0 px-lg-2">
+                            <?php if ($img) {
+                                dci_get_img($img, 'img-evidenza');
+                            } ?>
+                        </div>
+
                         <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
                             <div class="card w-100 border-0 rounded-0">
@@ -106,11 +106,11 @@ if (is_array($post_ids) && count($post_ids) > 1):
         </div>
 
         <!-- Controlli carosello -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#carosello-notizie" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#carosello-evidenza" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Precedente</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carosello-notizie" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#carosello-evidenza" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Successivo</span>
         </button>
@@ -208,102 +208,60 @@ elseif (!empty($post_ids)):
 endif;
 ?>
 
-<!-- STILI -->
 <style>
-.carousel-item {
-    min-height: 400px;
-}
-.carousel-inner {
-    border-radius: 0;
-    overflow: hidden;
-}
-#carosello-notizie img.img-fluid,
-#carosello-notizie img.cover-img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-@media (min-width: 992px) {
-    #carosello-notizie .carousel-item .col-lg-6.order-1 {
-        max-height: 100%;
-    }
-
-    #carosello-notizie .carousel-item .d-none.d-lg-block {
-        height: 100%;
-    }
-
-    #carosello-notizie .carousel-item .d-none.d-lg-block img.cover-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    #carosello-notizie .card-body {
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-}
-
-#carosello-notizie .card-body {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-    #carosello-notizie .img-responsive-carousel {
-    width: 100%;
-    max-height: 100%;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto;
-}
-
-@media (min-width: 992px) {
-    #carosello-notizie .col-lg-6.order-1 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        max-height: 100%;
+    #carosello-evidenza {
+        position: relative;
         overflow: hidden;
-        background-color: #f8f9fa; /* opzionale: colore di sfondo */
     }
 
-#carosello-notizie .col-lg-6.order-1,
-#carosello-notizie .col-lg-6.order-1.order-lg-2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f8f9fa; /* Colore grigio contenitore */
-    padding: 1rem;
-    min-height: 300px;
-}    
-
-#carosello-notizie .img-responsive-carousel,
-#carosello-notizie img.img-fluid {
-    max-width: 90%;      /* Restringe la larghezza dell'immagine */
-    max-height: 300px;   /* Evita che sia troppo alta */
-    height: auto;
-    width: auto;
-    object-fit: contain; /* Nessun taglio né zoom */
-    display: block;
-    margin: 0 auto;      /* Centra l'immagine */
-}
-
-    
-#carosello-notizie .carousel-img-wrapper {
-    width: 100%;
-    min-height: 300px;
-    max-height: 400px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-    background-color: #f5f5f5;
-}
-
-/* Sposta a sinistra il testo nel singolo elemento */
-@media (min-width: 992px) {
-    .row > .col-lg-5.order-2.order-lg-1 {
-        padding-left: 0.5rem; /* regola questo valore a piacere */
+    #carosello-evidenza .carousel-item {
+        min-height: 400px;
     }
-}
+
+    #carosello-evidenza .carousel-inner {
+        border-radius: 0;
+        overflow: hidden;
+    }
+
+    #carosello-evidenza .col-img {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f5f5f5;
+        padding: 1rem;
+        min-height: 300px;
+    }
+
+    #carosello-evidenza img.img-evidenza {
+        max-width: 90%;
+        max-height: 300px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+    }
+
+    #carosello-evidenza .card-body {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    @media (min-width: 992px) {
+        #carosello-evidenza .card-body {
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }
+
+        #carosello-evidenza .col-img {
+            padding: 2rem;
+        }
+
+        .row > .col-lg-5.order-2.order-lg-1 {
+            padding-left: 0.5rem;
+        }
+    }
+
+
+
 </style>
