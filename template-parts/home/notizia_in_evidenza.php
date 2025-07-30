@@ -290,7 +290,7 @@ endif;
 
 @media (min-width: 992px) {
     .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-        padding: 2rem;
+        padding: 3rem;
     }
 }
 
