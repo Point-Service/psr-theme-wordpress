@@ -64,7 +64,7 @@
         new Splide('#gallery-carousel', {
             type: 'loop',
             autoplay: true,
-            interval: 2000, // 2 secondi
+            interval: 5000, // 5 secondi
             pauseOnHover: false,
             pauseOnFocus: false,
         }).mount();
