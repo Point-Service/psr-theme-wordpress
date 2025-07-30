@@ -206,120 +206,135 @@ endif;
 
    <!-- STILI AGGIORNATI -->
 <style>
-    #carosello-evidenza {
-        position: relative;
-        overflow: hidden;
-    }
+#carosello-evidenza {
+    position: relative;
+    overflow: visible !important; /* Modificato da hidden a visible */
+}
 
-    #carosello-evidenza .carousel-inner {
-        border-radius: 0;
-        overflow: hidden;
-    }
+#carosello-evidenza .carousel-inner {
+    border-radius: 0;
+    overflow: visible !important; /* Modificato da hidden a visible */
+}
 
-    #carosello-evidenza .carousel-item {
-        min-height: 400px;
-        overflow: visible;
-    }
+#carosello-evidenza .carousel-item {
+    min-height: 400px;
+    overflow: visible !important;
+}
 
-    #carosello-evidenza .carousel-item .row {
-        min-height: 400px;
-    }
+#carosello-evidenza .carousel-item .row {
+    min-height: 400px;
+    align-items: stretch !important; /* Forza allungamento verticale delle colonne */
+}
 
-    #carosello-evidenza .carousel-item .row > div {
-        display: flex;
-        flex-direction: column;
-    }
+#carosello-evidenza .carousel-item .row > div {
+    display: flex;
+    flex-direction: column;
+}
 
+.col-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    padding: 1rem;
+}
+
+img.img-evidenza {
+    max-width: 90%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+@media (min-width: 992px) {
     .col-img {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f5f5f5;
-        padding: 1rem;
+        padding: 2rem;
     }
 
-    img.img-evidenza {
-        max-width: 90%;
-        max-height: 300px;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        display: block;
-        margin: 0 auto;
+    .row > .col-lg-5.order-2.order-lg-1 {
+        padding-left: 0.5rem;
     }
 
-    @media (min-width: 992px) {
-        .col-img {
-            padding: 2rem;
-        }
-
-        .row > .col-lg-5.order-2.order-lg-1 {
-            padding-left: 0.5rem;
-        }
-
-        #carosello-evidenza .card-body {
-            padding-left: 3rem;
-            padding-right: 3rem;
-        }
+    #carosello-evidenza .card-body {
+        padding-left: 3rem;
+        padding-right: 3rem;
     }
+}
 
-    /* --------------------------------------------- */
-    /* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
+/* --------------------------------------------- */
+/* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
 
+.row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    min-height: 400px;
+}
+
+.row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+    max-width: 90%;
+    max-height: 400px;
+    padding-right: 7px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+@media (min-width: 992px) {
     .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 1rem;
-        min-height: 400px;
+        padding: 3rem;
     }
+}
 
-    .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-        max-width: 90%;
-        max-height: 400px;
-        padding-right: 7px;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        display: block;
-    }
+/* --------------------------------------------- */
+/* FIX PER VEDERE TUTTO IL CONTENUTO NEL CAROSELLO */
 
-    @media (min-width: 992px) {
-        .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-            padding: 3rem;
-        }
-    }
+#carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important; /* Da space-between a flex-start */
+    height: 100% !important;
+    padding: 1rem !important;
+    overflow: visible !important;
+    align-items: stretch !important;
+}
 
-    /* --------------------------------------------- */
-    /* FIX PER VEDERE TUTTO IL CONTENUTO NEL CAROSELLO */
+#carosello-evidenza .carousel-item .card {
+    border: none;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+}
 
-    #carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-    }
+#carosello-evidenza .carousel-item .card-body {
+    padding-bottom: 0 !important;
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+}
 
-    #carosello-evidenza .carousel-item .card {
-        border: none;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+/* Mantieni margine sopra il pulsante e assicurati che sia sempre visibile */
+.read-more {
+    margin-top: auto !important;
+    padding-top: 1rem !important;
+    flex-shrink: 0 !important;
+    align-self: flex-start !important;
+    white-space: nowrap;
+}
 
-    #carosello-evidenza .carousel-item .card-body {
-        padding-bottom: 0;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
+/* Assicura che la lista argomenti non tagli il contenuto */
+#carosello-evidenza .carousel-item .card-body ul {
+    max-height: none !important;
+    overflow: visible !important;
+}
 
-    /* Mantieni margine sopra il pulsante e assicurati che sia sempre visibile */
-    .read-more {
-        margin-top: auto;
-        padding-top: 1rem;
-        flex-shrink: 0;
-    }
 </style>
 
