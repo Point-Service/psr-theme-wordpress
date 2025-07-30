@@ -270,6 +270,18 @@ endif;
 
     
 
+#carosello-notizie .carousel-img-wrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    max-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
 #carosello-notizie .carousel-img-wrapper img {
     width: 100%;
     height: 100%;
