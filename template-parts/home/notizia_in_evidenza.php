@@ -283,16 +283,22 @@ endif;
     overflow: visible;
 }
 
-    
-#carosello-notizie .col-lg-6.order-1 {
-    display: flex;               /* attiva flexbox */
-    justify-content: center;     /* centra orizzontalmente */
-    align-items: center;         /* centra verticalmente */
-    background-color: #f8f9fa;   /* sfondo grigio */
-    overflow: hidden;            /* taglia eventuali eccedenze */
+
+
+@media (min-width: 992px) {
+    #carosello-notizie .col-lg-6.order-1 {
+        height: 400px; /* imposta un’altezza fissa */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background-color: #f8f9fa;
+    }
+    #carosello-notizie .col-lg-6.order-2.order-lg-1 {
+        overflow: visible !important;
+        max-height: none !important;
+    }
 }
-
-
 
 
 #carosello-notizie .col-lg-6.order-2.order-lg-1 {
