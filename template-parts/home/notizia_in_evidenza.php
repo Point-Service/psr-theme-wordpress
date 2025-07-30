@@ -271,12 +271,11 @@ endif;
 
 .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
     display: flex;
-    align-items: center; /* meglio center che left per vertical alignment */
-    justify-content: flex-end; /* spinge l'immagine a destra */
+    align-items: center;
+    justify-content: flex-end;
     background-color: #FFFFFF;
-    padding: 1rem;
+    padding: 1rem 2rem 1rem 1rem; /* padding destro più ampio */
     min-height: 400px;
-    margin-right: 2rem; /* o qualsiasi valore adatto al layout */
 }
 
 .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
@@ -286,7 +285,6 @@ endif;
     height: auto;
     object-fit: contain;
     display: block;
-    margin: 0 auto;
 }
 
 @media (min-width: 992px) {
