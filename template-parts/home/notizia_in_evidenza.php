@@ -1,4 +1,4 @@
-?php
+<?php
 global $count, $scheda;
 
 // Recupera l'opzione evidenziata
