@@ -95,9 +95,9 @@ switch ($post_type_label) {
 <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr h-100">
     <div class="card no-after rounded h-100 d-flex flex-column">
         <?php if ($img) { ?>
-            <div class="d-flex justify-content-center">
-                <div style="max-width: 300px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden;">
-                    <?php dci_get_img($img, 'img-fluid img-responsive'); ?>
+            <div class="d-flex flex-column">
+                <div style="max-width: 420px;">
+                  <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
                 </div>
             </div>
         <?php } ?>
