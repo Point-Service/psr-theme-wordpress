@@ -270,11 +270,11 @@ endif;
     }
 
 
+
     #carosello-notizie .img-responsive-carousel {
-        max-width: 100%;
-        max-height: 400px;
-        height: auto;
-    }
+    max-width: 100%;             /* larghezza massima 100% */
+    max-height: 100%;            /* altezza massima 100% */
+    object-fit: contain;         /* mostra tutta l’immagine */
 }
 
     #carosello-notizie .card-body {
@@ -282,14 +282,18 @@ endif;
     padding-right: 1.5rem;
     overflow: visible;
 }
+
+    
 #carosello-notizie .col-lg-6.order-1 {
-    height: 400px; /* imposta un’altezza fissa */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background-color: #f8f9fa;
+    display: flex;               /* attiva flexbox */
+    justify-content: center;     /* centra orizzontalmente */
+    align-items: center;         /* centra verticalmente */
+    background-color: #f8f9fa;   /* sfondo grigio */
+    overflow: hidden;            /* taglia eventuali eccedenze */
 }
+
+
+
 
 #carosello-notizie .col-lg-6.order-2.order-lg-1 {
     overflow: visible !important;
