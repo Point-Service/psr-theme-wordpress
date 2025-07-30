@@ -213,69 +213,22 @@ endif;
 
 <!-- STILI -->
 <style>
-.carousel-item {
+#carosello-notizie .carousel-item {
     min-height: 400px;
+    display: flex;
+    align-items: center;
 }
-.carousel-inner {
-    border-radius: 0;
+
+#carosello-notizie .carousel-inner {
     overflow: hidden;
+    border-radius: 0;
 }
-#carosello-notizie img.img-fluid,
-#carosello-notizie img.cover-img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-@media (min-width: 992px) {
-    #carosello-notizie .carousel-item .col-lg-6.order-1 {
-        max-height: 100%;
-    }
-
-    #carosello-notizie .carousel-item .d-none.d-lg-block {
-        height: 100%;
-    }
-
-    #carosello-notizie .carousel-item .d-none.d-lg-block img.cover-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    #carosello-notizie .card-body {
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-}
-
-#carosello-notizie .card-body {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-    #carosello-notizie .img-responsive-carousel {
-    width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-}
-
-@media (min-width: 992px) {
-    #carosello-notizie .img-responsive-carousel {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-}
-
-    
 
 #carosello-notizie .carousel-img-wrapper {
     width: 100%;
     height: 100%;
-    min-height: 300px;
     max-height: 400px;
+    min-height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -290,10 +243,36 @@ endif;
     display: block;
 }
 
-/* Sposta a sinistra il testo nel singolo elemento */
+#carosello-notizie .img-responsive-carousel {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 @media (min-width: 992px) {
-    .row > .col-lg-5.order-2.order-lg-1 {
-        padding-left: 0.5rem; /* regola questo valore a piacere */
+    #carosello-notizie .col-lg-6.order-1,
+    #carosello-notizie .col-lg-6.order-2 {
+        display: flex;
+        align-items: center;
+    }
+
+    #carosello-notizie .card-body {
+        padding-left: 3rem;
+        padding-right: 3rem;
     }
 }
+
+#carosello-notizie .card-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Padding aggiuntivo per il testo nel singolo elemento */
+@media (min-width: 992px) {
+    .row > .col-lg-5.order-2.order-lg-1 {
+        padding-left: 0.5rem;
+    }
+}
+
 </style>
