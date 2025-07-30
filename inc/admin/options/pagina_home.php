@@ -22,7 +22,7 @@ function dci_register_pagina_home_options(){
 	$home_options->add_field( array(
 	    'id' => $prefix . 'home_image',
 	    'name' => __( 'Sezione Immagine Pagina Home', 'design_comuni_italia' ),
-	    'desc' => __( '<b>Possibilità di poter impostare una o più immagini sotto il logo nella Home del sito.<br>Per una proporzione adeguata si consigliano foto in 16:9, esempio: 800×450 px o 1920×1080 px</b>', 'design_comuni_italia' ),
+	    'desc' => __( '<b><font color="#006400">Possibilità di poter impostare una o più immagini sotto il logo nella Home del sito.<br>Per una proporzione adeguata si consigliano foto in 16:9, esempio: 800×450 px o 1920×1080 px</font></b>', 'design_comuni_italia' ),
 	    'type' => 'title',
 	) );
 
