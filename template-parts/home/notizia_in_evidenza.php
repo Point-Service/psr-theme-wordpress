@@ -6,7 +6,8 @@ $prefix = '_dci_notizia_';
 
 if (is_array($post_ids) && count($post_ids) > 1): ?>
     <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
-    <div id="carosello-notizie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+    <div id="carosello-notizie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000"  data-bs-pause="hover>
+
         <div class="carousel-inner">
             <?php
             $first = true;
