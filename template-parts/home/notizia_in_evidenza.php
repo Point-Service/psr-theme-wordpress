@@ -275,4 +275,30 @@ endif;
     }
 }
 
+    #carosello-notizie .card-body {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    overflow: visible;
+}
+
+#carosello-notizie .col-lg-6.order-2.order-lg-1 {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.read-more {
+    white-space: nowrap;
+    overflow: visible;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+    
+/* Sposta a sinistra il testo nel singolo elemento */
+@media (min-width: 992px) {
+    .row > .col-lg-5.order-2.order-lg-1 {
+        padding-left: 0.5rem; /* regola questo valore a piacere */
+    }
+}
 </style>
