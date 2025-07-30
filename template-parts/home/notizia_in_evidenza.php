@@ -28,11 +28,13 @@ if (is_array($post_ids) && count($post_ids) > 1):
                     <div class="row align-items-stretch g-0">
 
                                 <!-- Immagine -->
-                            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2 d-flex align-items-center justify-content-center">
+                            <div class="carousel-img-wrapper">
                                 <?php if ($img) {
-                                    dci_get_img($img, 'img-fluid');
+                                    dci_get_img($img, 'img-fluid img-responsive-carousel');
                                 } ?>
                             </div>
+                        </div>
   
                         <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
