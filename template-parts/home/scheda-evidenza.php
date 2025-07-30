@@ -97,7 +97,7 @@ switch ($post_type_label) {
         <?php if ($img) { ?>
             <div class="d-flex flex-column">
                 <div style="max-width: 420px;">
-                  <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
+                  <center><?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?></center>
                 </div>
             </div>
         <?php } ?>
