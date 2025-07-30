@@ -209,7 +209,7 @@ endif;
 ?>
 
 <style>
- #carosello-evidenza {
+#carosello-evidenza {
     position: relative;
     overflow: hidden;
 }
@@ -223,25 +223,25 @@ endif;
     overflow: hidden;
 }
 
-/* Contenitore immagine carosello */
+/* Contenitore immagine carosello - allineato come singolo elemento */
 #carosello-evidenza .col-img {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end; /* immagine a destra */
     background-color: #f5f5f5;
     padding: 1rem;
-    min-height: 300px;
+    min-height: 400px;
 }
 
-/* Immagine carosello */
+/* Immagine carosello - dimensioni e adattamento come singolo */
 #carosello-evidenza img.img-evidenza {
     max-width: 90%;
-    max-height: 300px;
+    max-height: 400px;
+    padding-right: 9px; /* distanza dal bordo destro */
     width: auto;
     height: auto;
     object-fit: contain;
     display: block;
-    margin: 0 auto;
 }
 
 /* Testo card carosello */
@@ -258,7 +258,7 @@ endif;
     }
 
     #carosello-evidenza .col-img {
-        padding: 2rem;
+        padding: 3rem;
     }
 
     .row > .col-lg-5.order-2.order-lg-1 {
@@ -273,14 +273,14 @@ endif;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 1rem 1rem 1rem 1rem; /* padding destro più ampio */
+    padding: 1rem;
     min-height: 400px;
 }
 
 .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
     max-width: 90%;
     max-height: 400px;
-    padding-right: 7px; /* o 1rem, 10rem, ecc. */
+    padding-right: 9px;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -292,5 +292,4 @@ endif;
         padding: 3rem;
     }
 }
-
 </style>
