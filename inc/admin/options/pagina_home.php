@@ -26,25 +26,12 @@ function dci_register_pagina_home_options(){
         'type' => 'title',
     ) );
 
-	
     $home_options->add_field( array(
         'id' => $prefix . 'immagine',
         'name'=> __( 'Immagine', 'design_comuni_italia' ),
         'desc' => __( 'Immagine/ banner (in alto nella pagina)' , 'design_comuni_italia' ),
         'type' => 'file_list',
         'preview_size' => array( 100, 100 ),
-        'query_args' => array( 'type' => 'image' ),
-    ) );
-
-
-
-
-	
-    $home_options->add_field( array(
-        'id' => $prefix . 'immagine',
-        'name'=> __( 'Immagine', 'design_comuni_italia' ),
-        'desc' => __( 'Immagine/ banner (in alto nella pagina)' , 'design_comuni_italia' ),
-        'type' => 'file',
         'query_args' => array( 'type' => 'image' ),
     ) );
 
@@ -147,7 +134,7 @@ $home_options->add_field( array(
     'type' => 'title',
 ) );
 
-$num_argomenti = 9; // Numero di argomenti
+$num_argomenti = 3; // Numero di argomenti
 
 for ($i = 1; $i <= $num_argomenti; $i++) {
     $argomenti_group_id = $home_options->add_field( array(
@@ -205,10 +192,7 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
     ) );
 
 
-
-
-
-   $home_options->add_field( array(
+    $home_options->add_field( array(
     'id'   => $prefix . 'check_notizie',
     'name' => __( 'Sezione Check', 'design_comuni_italia' ),
     'desc' => __( 'Gestione stile home page.', 'design_comuni_italia' ),
