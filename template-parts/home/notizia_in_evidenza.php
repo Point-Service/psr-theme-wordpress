@@ -235,5 +235,13 @@ endif;
     align-items: center;
 }
 
-    
+#carosello-notizie .carousel-item {
+    min-height: 300px;
+}
+
+@media (min-width: 992px) {
+    #carosello-notizie .carousel-item {
+        min-height: 450px;
+    }
+}
 </style>
