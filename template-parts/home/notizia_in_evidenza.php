@@ -271,11 +271,12 @@ endif;
 
 .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
     display: flex;
-    align-items: left;
-    justify-content: center;
+    align-items: center; /* meglio center che left per vertical alignment */
+    justify-content: flex-end; /* spinge l'immagine a destra */
     background-color: #FFFFFF;
     padding: 1rem;
     min-height: 400px;
+    margin-right: 2rem; /* o qualsiasi valore adatto al layout */
 }
 
 .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
