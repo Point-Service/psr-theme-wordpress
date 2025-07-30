@@ -1,7 +1,6 @@
 <?php
 global $count, $scheda;
 
-// Recupera l'opzione evidenziata
 $post_ids = dci_get_option('notizia_evidenziata', 'homepage', true);
 $prefix = '_dci_notizia_';
 
@@ -26,16 +25,15 @@ if (is_array($post_ids) && count($post_ids) > 1):
             ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                     <div class="row align-items-stretch g-0">
-
                         <!-- Immagine -->
-                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 col-img px-0 px-lg-2">
+                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 d-flex justify-content-end align-items-center carosello-img-wrapper">
                             <?php if ($img) {
                                 dci_get_img($img, 'img-evidenza');
                             } ?>
                         </div>
 
                         <!-- Testo -->
-                        <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
+                        <div class="col-lg-5 order-2 order-lg-1 d-flex align-items-center">
                             <div class="card w-100 border-0 rounded-0">
                                 <div class="card-body py-4 px-3 px-lg-4">
                                     <div class="category-top d-flex align-items-center mb-2">
@@ -115,6 +113,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
             <span class="visually-hidden">Successivo</span>
         </button>
     </div>
+
 
 <?php
 // CASO SINGOLO POST
@@ -223,41 +222,37 @@ endif;
     overflow: hidden;
 }
 
-/* Contenitore immagine carosello - allineato come singolo elemento */
-#carosello-evidenza .col-img {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; /* immagine a destra */
+/* Contenitore immagine */
+.carosello-img-wrapper {
     background-color: #f5f5f5;
     padding: 1rem;
     min-height: 400px;
 }
 
-/* Immagine carosello - dimensioni e adattamento come singolo */
+/* Immagine interna */
 #carosello-evidenza img.img-evidenza {
     max-width: 90%;
     max-height: 400px;
-    padding-right: 9px; /* distanza dal bordo destro */
     width: auto;
     height: auto;
     object-fit: contain;
     display: block;
+    padding-right: 9px;
 }
 
-/* Testo card carosello */
+/* Testo card */
 #carosello-evidenza .card-body {
     padding-left: 1rem;
     padding-right: 1rem;
 }
 
-/* Responsive layout per carosello */
 @media (min-width: 992px) {
     #carosello-evidenza .card-body {
         padding-left: 3rem;
         padding-right: 3rem;
     }
 
-    #carosello-evidenza .col-img {
+    .carosello-img-wrapper {
         padding: 3rem;
     }
 
@@ -265,6 +260,7 @@ endif;
         padding-left: 0.5rem;
     }
 }
+
 
 /* --------------------------------------------- */
 /* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
