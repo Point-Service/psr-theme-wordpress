@@ -153,7 +153,7 @@ switch ($post_type_label) {
 
             <?php if (has_term('', 'argomenti', $post)) { ?>
                 <hr style="margin-bottom: 20px; width: 100%; height: 1px; background-color: grey; border: none;">
-                <div class="card-body p-0" style="text-align: left; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600;">
+               <div class="card-body p-0" style="text-align: left; font-weight: 600;">
                     Argomenti:
                     <?php get_template_part("template-parts/common/badges-argomenti"); ?>
                 </div>
