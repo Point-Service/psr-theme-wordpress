@@ -8,7 +8,7 @@ $prefix = '_dci_notizia_';
 if (is_array($post_ids) && count($post_ids) > 1):
 ?>
     <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
-    <div id="carosello-evidenza" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+    <div id="carosello-notizie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
             <?php
             $first = true;
@@ -26,13 +26,15 @@ if (is_array($post_ids) && count($post_ids) > 1):
             ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                     <div class="row align-items-stretch g-0">
-                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                            <div class="col-img">
+
+                                <!-- Immagine -->
+                            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
                                 <?php if ($img) {
-                                    dci_get_img($img, 'img-evidenza');
+                                    dci_get_img($img, 'img-fluid');
                                 } ?>
                             </div>
-                        </div>
+  
+                        <!-- Testo -->
                         <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
                             <div class="card w-100 border-0 rounded-0">
                                 <div class="card-body py-4 px-3 px-lg-4">
@@ -54,6 +56,8 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                     <p class="mb-3 font-serif">
                                         <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>
                                     </p>
+
+                                    <!-- Luoghi -->
                                     <?php if (is_array($luogo_notizia) && count($luogo_notizia)): ?>
                                         <span class="data fw-normal d-block mb-2">
                                             <i class="fas fa-map-marker-alt me-1"></i>
@@ -69,14 +73,20 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                             <i class="fas fa-map-marker-alt me-1"></i><?php echo esc_html($luogo_notizia); ?>
                                         </span>
                                     <?php endif; ?>
+
+                                    <!-- Data -->
                                     <div class="row mt-2 mb-3">
                                         <div class="col-6">
                                             <small>Data:</small>
                                             <p class="fw-semibold font-monospace"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></p>
                                         </div>
                                     </div>
+
+                                    <!-- Argomenti -->
                                     <small>Argomenti: </small>
                                     <?php get_template_part("template-parts/common/badges-argomenti"); ?>
+
+                                    <!-- Pulsante -->
                                     <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
                                         <span class="text">Vai alla pagina</span>
                                         <svg class="icon ms-1">
@@ -94,15 +104,18 @@ if (is_array($post_ids) && count($post_ids) > 1):
             endforeach;
             ?>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carosello-evidenza" data-bs-slide="prev">
+
+        <!-- Controlli carosello -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carosello-notizie" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Precedente</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carosello-evidenza" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#carosello-notizie" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Successivo</span>
         </button>
     </div>
+
 <?php
 elseif (!empty($post_ids)):
     $post_id = is_array($post_ids) ? $post_ids[0] : $post_ids;
