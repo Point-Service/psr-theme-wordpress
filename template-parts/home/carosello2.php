@@ -2,6 +2,7 @@
 // Galleria impostata in Configurazione > Vivere l'ente
 global $gallery;
 $gallery = dci_get_option('immagine', 'homepage') ?: [];
+echo count($gallery);
 ?>
 
 <?php if (count($gallery) > 0) : ?>
