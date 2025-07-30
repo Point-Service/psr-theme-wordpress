@@ -96,7 +96,7 @@ switch ($post_type_label) {
     <div class="card no-after rounded h-100 d-flex flex-column">
         <?php if ($img) { ?>
             <div class="d-flex flex-column">
-                <div style="max-width: 300px;">
+                <div style="max-width: 400px;">
                   <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
                 </div>
             </div>
