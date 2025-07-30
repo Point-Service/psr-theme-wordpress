@@ -1,51 +1,47 @@
 <?php
-global $count, $scheda;
+global $count, $scheda, $post;
 
 $post_id = dci_get_option('notizia_evidenziata', 'homepage', true)[0] ?? null;
-$prefix = '_dci_notizia_';
+$hide_notizie_old = dci_get_option("ck_hide_notizie_old", "homepage");
+$notizie_automatiche = dci_get_option("ck_notizie_automatico", "homepage");
+$notizie_home= dci_get_option("numero_notizie_home", "homepage");
 
 if ($post_id) {
     $post = get_post($post_id);
+    $typePost = $post->post_type;
+    $prefix = '_dci_' . $typePost . '_';  // Prefix per le funzioni di recupero dei metadati
+
     $img = dci_get_meta("immagine", $prefix, $post->ID);
     $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
     $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
     $luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
-    
 
-    $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');    
+    $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');
     if ($tipo_terms && !is_wp_error($tipo_terms)) {
         $tipo = $tipo_terms[0];  // Prendi il primo termine trovato
     } else {
         $tipo = null;  // Nessun termine trovato
     }
-
 }
 
 $schede = [];
-for ($i = 1; $i <= 20; $i++) {
+for ($i = 1; $i <= 12; $i++) {
     $schede[] = dci_get_option("schede_evidenziate_$i", 'homepage', true)[0] ?? null;
 }
 ?>
-
-
-
 
 <style>
     /* CSS mirato alla sezione delle schede evidenziate */
     #notizie .card-teaser-wrapper {
         max-width: 98%;
-        /* Riduce la larghezza della sezione delle schede evidenziate */
         margin: 0 auto;
-        /* Centra la sezione orizzontalmente */
     }
 
-    /* Rendi le schede responsabili (più piccole su schermi piccoli) */
     @media (max-width: 768px) {
         #notizie .card-teaser-wrapper .card {
             max-width: 100%;
-            /* Su schermi piccoli, ogni scheda occupa l'intera larghezza */
             flex: 0 0 100%;
         }
     }
@@ -54,33 +50,84 @@ for ($i = 1; $i <= 20; $i++) {
 <section id="notizie" aria-describedby="novita-in-evidenza">
     <div class="section-content">
         <div class="container">
-            <!-- Richiamo la prima notizia in Evidenza -->
-                      <?php  if ($post_id) {                                    
-                              get_template_part("template-parts/home/notizia_in_evidenza");                  
-                          }
-                            ?>
-            
+            <?php if ($post_id) {
+                get_template_part("template-parts/home/notizia_in_evidenza");
+            } ?>
+
             <?php if (!empty(array_filter($schede))) { ?>
                 <div class="py-4">
-                    <!-- Sezione delle schede -->
-                    <div class="row mb-1">
-                        <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                            <?php
-                            $count = 1;
-                            foreach ($schede as $scheda) {
-                                if ($scheda) {
-                                      get_template_part("template-parts/home/scheda-evidenza");
+                    <div class="row g-4">
+                        <?php
+                        $count = 1;
+                        foreach ($schede as $scheda) {
+                            if ($scheda) {
+
+                                $post = get_post($scheda['scheda_' . $count . '_contenuto'][0]);
+                                $post_id = $post->ID;
+                                $typePost = $post->post_type;
+                                $prefix = '_dci_' . $typePost . '_';
+
+                                // Salvo le date per la pubblicazione e scadenza
+
+                                $date = dci_get_meta("data_pubblicazione", $prefix, $post->ID);
+
+                                $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
+                                $dayPubblicazione = $arrdata[0];
+                                $monthPubblicazione = $arrdata[1];
+                                $yearPubblicazione = $arrdata[2];
+
+                                if (strlen($yearPubblicazione) == 2) {
+                                    $yearPubblicazione = '20' . $yearPubblicazione;
                                 }
-                                ++$count;
+                                $dataPubblicazione = DateTime::createFromFormat('d/m/Y', "$dayPubblicazione/$monthPubblicazione/$yearPubblicazione");
+
+                                $arrdataFine = dci_get_data_pubblicazione_arr("data_scadenza", $prefix, $post->ID);
+                                $dayScadenza = $arrdataFine[0];
+                                $monthScadenza = $arrdataFine[1];
+                                $yearScadenza = $arrdataFine[2];
+
+                                if (strlen($yearScadenza) == 2) {
+                                    $yearScadenza = '20' . $yearScadenza;
+                                }
+                                $dataScadenza = DateTime::createFromFormat('d/m/Y', "$dayScadenza/$monthScadenza/$yearScadenza");
+                                // Controllo se la data di pubblicazione è uguale alla data di scadenza
+                                if ($dataPubblicazione == $dataScadenza && $date != null) {
+                                    $dataScadenza = null;
+                                }
+
+                                // recupero la data odierna e effettuo il controllo per mostrare la scheda
+
+                                $oggi = new DateTime();
+                                $mostra_scheda = false;
+                                if ($typePost === 'notizia') {
+                                    if ($hide_notizie_old === 'true') {
+                                        if (empty($dataScadenza) || ($dataScadenza >= $oggi && $dataScadenza != null)) {
+                                            $mostra_scheda = true;
+                                        }
+                                    } else {
+                                        $mostra_scheda = true;
+                                    }
+                                } else {
+                                    $mostra_scheda = true;
+                                }
+
+                                // Se la scheda è da mostrare, procedo a visualizzarla
+                                if ($mostra_scheda) { ?>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <?php get_template_part("template-parts/home/scheda-evidenza"); ?>
+                                    </div>
+                        <?php
+                                }
                             }
-                            ?>
-                        </div>                        
+                            ++$count;
+                        }
+                        ?>
                     </div>
-            
-                    <!-- Mostra il pulsante solo se ci sono schede -->
+
                     <div class="row my-4 justify-content-md-center">
                         <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
-                            <button type="button" class="btn btn-outline-primary">Tutte le novità
+                            <button type="button" class="btn btn-outline-primary">
+                                Tutte le novità
                                 <svg class="icon">
                                     <use xlink:href="#it-arrow-right"></use>
                                 </svg>
@@ -88,9 +135,14 @@ for ($i = 1; $i <= 20; $i++) {
                         </a>
                     </div>
                 </div>
-            <?php } ?>
-
-    
+            <?php } else if($notizie_automatiche ==='true' && $notizie_home >0){ ?>
+                    <div class="py-4">
+                        <div class="row g-4">
+                        <?php get_template_part("template-parts/home/notizie-auto"); ?>
+                        </div>
+                    </div>
+            <?php }
+            ?>
         </div>
     </div>
 </section>
