@@ -253,7 +253,7 @@ endif;
     #carosello-notizie .img-responsive-carousel {
     width: 100%;
     max-height: 100%;
-    object-fit: contain;
+
     display: block;
     margin: 0 auto;
 }
@@ -278,7 +278,6 @@ endif;
 }
 #carosello-notizie .carousel-img-wrapper {
     width: 100%;
- 
     min-height: 300px;
     max-height: 400px;
     background-repeat: no-repeat;
