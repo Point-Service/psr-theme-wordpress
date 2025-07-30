@@ -275,4 +275,28 @@ endif;
     }
 }
 
+
+    /* Assicura che l'item attivo sia in primo piano */
+#carosello-notizie .carousel-item {
+    position: relative;
+    z-index: 1;
+}
+
+/* Imposta z-index maggiore per l'item visibile */
+#carosello-notizie .carousel-item.active {
+    z-index: 2;
+}
+
+/* Garantisci che il contenuto testuale sia sopra l'immagine */
+#carosello-notizie .carousel-item .card {
+    position: relative;
+    z-index: 3;
+}
+
+/* Inoltre, se vuoi che il pulsante sia sempre visibile davanti a tutto */
+#carosello-notizie .carousel-item .read-more {
+    position: relative;
+    z-index: 4;
+}
+
 </style>
