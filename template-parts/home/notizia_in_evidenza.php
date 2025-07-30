@@ -268,14 +268,28 @@ endif;
         background-color: #f8f9fa; /* opzionale: colore di sfondo */
     }
 
-    #carosello-notizie .img-responsive-carousel {
-        max-width: 100%;
-        max-height: 400px;
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-    }
+#carosello-notizie .col-lg-6.order-1,
+#carosello-notizie .col-lg-6.order-1.order-lg-2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa; /* Colore grigio contenitore */
+    padding: 1rem;
+    min-height: 300px;
+}    
+
+#carosello-notizie .img-responsive-carousel,
+#carosello-notizie img.img-fluid {
+    max-width: 90%;      /* Restringe la larghezza dell'immagine */
+    max-height: 300px;   /* Evita che sia troppo alta */
+    height: auto;
+    width: auto;
+    object-fit: contain; /* Nessun taglio né zoom */
+    display: block;
+    margin: 0 auto;      /* Centra l'immagine */
 }
+
+    
 #carosello-notizie .carousel-img-wrapper {
     width: 100%;
     min-height: 300px;
