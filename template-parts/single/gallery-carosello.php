@@ -86,7 +86,7 @@
 /* Previene margini collassati */
 .carosello-section {
     overflow: hidden;
-    border-top: 1px solid transparent; /* forza il contenitore ad avere “dimensione” */
+    border-top: 0px solid transparent; /* forza il contenitore ad avere “dimensione” */
 }
 
 /* Sezione precedente che potrebbe avere margine inferiore */
