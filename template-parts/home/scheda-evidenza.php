@@ -94,13 +94,13 @@ switch ($post_type_label) {
 
 <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr h-100">
     <div class="card no-after rounded h-100 d-flex flex-column">
+        <?php if ($img) { ?>
+            <div class="d-flex flex-column">
+                <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
+            </div>
+        <?php } ?>
         <div class="card-body d-flex flex-column">
             <div class="category-top cmp-list-card-img__body mb-1">
-            <?php if ($img) { ?>
-                <div class="d-flex flex-column">
-                    <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
-                </div>
-            <?php } ?>
                 <?php if (isset($tipo)) { ?>
                     <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                         <?php echo strtoupper($tipo->name); ?>
@@ -112,6 +112,7 @@ switch ($post_type_label) {
                 <?php }?>
                 <span class="data"><?php echo esc_html($arrdata[0] . ' ' . strtoupper($monthName) . ' ' . $arrdata[2]); ?></span>
             </div>
+
             <h3 class="h5 card-title text-justify u-grey-light">
                 <?php
                 $title = get_the_title();
@@ -124,7 +125,6 @@ switch ($post_type_label) {
                 echo esc_html($title);
                 ?>
             </h3>
-                
             <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
                 echo  '<p class="text-paragraph-card u-grey-light m-0 text-justify">' . ucfirst(strtolower($descrizione_breve)) . '</p>';
             } else {
