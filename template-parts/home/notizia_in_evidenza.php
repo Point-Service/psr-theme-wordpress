@@ -274,7 +274,7 @@ endif;
     align-items: center;
     justify-content: flex-end;
     background-color: #FFFFFF;
-    padding: 1rem 5rem 1rem 1rem; /* padding destro più ampio */
+    padding: 1rem 6rem 1rem 1rem; /* padding destro più ampio */
     min-height: 400px;
 }
 
