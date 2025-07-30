@@ -316,5 +316,14 @@ endif;
                 padding: 3rem;
             }
         }
-    
+    @media (min-width: 992px) {
+    #carosello-evidenza .col-img {
+        min-height: 400px;
+        padding: 2rem;
+    }
+
+    #carosello-evidenza img.img-evidenza {
+        max-height: 400px;
+    }
+}
     </style>
