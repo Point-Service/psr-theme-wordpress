@@ -275,12 +275,12 @@ endif;
     justify-content: center;
     background-color: #f5f5f5;
     padding: 1rem;
-    min-height: 300px;
+    min-height: 400px;
 }
 
 .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
     max-width: 90%;
-    max-height: 300px;
+    max-height: 400px;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -293,7 +293,5 @@ endif;
         padding: 2rem;
     }
 }
-
-
 
 </style>
