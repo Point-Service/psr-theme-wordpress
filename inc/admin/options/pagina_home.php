@@ -26,6 +26,20 @@ function dci_register_pagina_home_options(){
         'type' => 'title',
     ) );
 
+	
+    $home_options->add_field( array(
+        'id' => $prefix . 'immagine',
+        'name'=> __( 'Immagine', 'design_comuni_italia' ),
+        'desc' => __( 'Immagine/ banner (in alto nella pagina)' , 'design_comuni_italia' ),
+        'type' => 'file_list',
+        'preview_size' => array( 100, 100 ),
+        'query_args' => array( 'type' => 'image' ),
+    ) );
+
+
+
+
+	
     $home_options->add_field( array(
         'id' => $prefix . 'immagine',
         'name'=> __( 'Immagine', 'design_comuni_italia' ),
@@ -193,3 +207,57 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
 
     }
 
+
+
+   $home_options->add_field( array(
+    'id'   => $prefix . 'check_notizie',
+    'name' => __( 'Sezione Check', 'design_comuni_italia' ),
+    'desc' => __( 'Gestione stile home page.', 'design_comuni_italia' ),
+    'type' => 'title',
+) );
+
+
+   $home_options->add_field(array(
+    'id' => $prefix . 'ck_hide_notizie_old',
+    'name' => __('Nascondi notizie scadute', 'design_comuni_italia'),
+    'desc' => __('Se abilitata, questa opzione nasconderà automaticamente le notizie con data di scadenza antecedente a oggi.', 'design_comuni_italia'),
+    'type' => 'radio_inline',
+    'default' => 'false',
+    'options' => array(
+        'true' => __('Sì', 'design_comuni_italia'),
+        'false' => __('No', 'design_comuni_italia'),
+    ),
+    // 'attributes' => array(
+    //     'data-conditional-value' => "false",
+    // ),
+));
+
+    $home_options->add_field(array(
+        'id' => $prefix . 'ck_notizie_automatico',
+        'name' => __('Mostra le ultime notizie nella home', 'design_comuni_italia'),
+        'desc' => __('Se abilitata, questa opzione mostrera automaticamente le ultime notizie.', 'design_comuni_italia'),
+        'type' => 'radio_inline',
+        'default' => 'false',
+        'options' => array(
+            'true' => __('Sì', 'design_comuni_italia'),
+            'false' => __('No', 'design_comuni_italia'),
+        ),
+        // 'attributes' => array(
+        //     'data-conditional-value' => "false",
+        // ),
+    ));
+
+    $home_options->add_field(array(
+        'id' => $prefix . 'numero_notizie_home',
+        'name' => __('Numero di notizie', 'design_comuni_italia'),
+        'desc' => __('Seleziona il numero di notizie che vuoi vissualizzare nella home', 'design_comuni_italia'),
+        'type' => 'radio_inline',
+        'default' => 0,
+        'options' => array(
+            0 => __(0, 'design_comuni_italia'),
+            3 => __(3, 'design_comuni_italia'),
+            6 => __(6, 'design_comuni_italia'),
+            12=> __(12, 'design_comuni_italia'),
+        ),
+    ));
+}
