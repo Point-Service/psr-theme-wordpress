@@ -28,12 +28,14 @@
     .bg-image {
         position: relative;
         width: 100%;
-		padding-bottom: 10%;
+	padding-bottom: 10%;
         padding-top: 30%; /* 16:9 ratio */
+	height: 450px;
         overflow: hidden;
         margin-bottom: 0px; /* Assicurati che non ci siano margini */
     }
 
+	
     .bg-image img.img-gallery-custom {
         position: absolute;
         top: 0px;
