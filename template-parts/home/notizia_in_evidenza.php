@@ -1,6 +1,7 @@
 <?php
 global $count, $scheda;
 
+// Recupera l'opzione evidenziata
 $post_ids = dci_get_option('notizia_evidenziata', 'homepage', true);
 $prefix = '_dci_notizia_';
 
@@ -23,53 +24,88 @@ if (is_array($post_ids) && count($post_ids) > 1):
                     $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');
                     $tipo = ($tipo_terms && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
             ?>
-     <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
-          <div class="row g-0 align-items-stretch">
-            <!-- Immagine -->
-            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2">
-              <?php if ($img) {
-                dci_get_img($img, 'img-fluid');
-              } ?>
-            </div>
-            <!-- Testo -->
-            <div class="col-lg-5 order-2 order-lg-1 d-flex align-items-center">
-              <div class="card w-100 border-0 rounded-0">
-                <div class="card-body">
-                  <div class="category-top d-flex align-items-center mb-2">
-                    <svg class="icon icon-sm me-2" aria-hidden="true">
-                      <use xlink:href="#it-calendar"></use>
-                    </svg>
-                    <?php if ($tipo): ?>
-                      <span class="title-xsmall-semi-bold fw-semibold">
-                        <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></a>
-                      </span>
-                    <?php endif; ?>
-                  </div>
-                  <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                    <h3 class="card-title mb-3">
-                      <?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?>
-                    </h3>
-                  </a>
-                  <p class="mb-3 font-serif">
-                    <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>
-                  </p>
-                  <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>">
-                    <span class="text">Vai alla pagina</span>
-                    <svg class="icon ms-1">
-                      <use xlink:href="#it-arrow-right"></use>
-                    </svg>
-                  </a>
+                <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
+                    <div class="row align-items-stretch g-0">
+
+                        <!-- Immagine -->
+                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 col-img px-0 px-lg-2">
+                            <?php if ($img) {
+                                dci_get_img($img, 'img-evidenza');
+                            } ?>
+                        </div>
+
+                        <!-- Testo -->
+                        <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
+                            <div class="card w-100 border-0 rounded-0">
+                                <div class="card-body py-4 px-3 px-lg-4">
+                                    <div class="category-top d-flex align-items-center mb-2">
+                                        <svg class="icon icon-sm me-2" aria-hidden="true">
+                                            <use xlink:href="#it-calendar"></use>
+                                        </svg>
+                                        <?php if ($tipo): ?>
+                                            <span class="title-xsmall-semi-bold fw-semibold">
+                                                <a href="<?php echo site_url('tipi_notizia/' . sanitize_title($tipo->name)); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper($tipo->name); ?></a>
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
+                                        <h3 class="card-title mb-3">
+                                            <?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?>
+                                        </h3>
+                                    </a>
+                                    <p class="mb-3 font-serif">
+                                        <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>
+                                    </p>
+
+                                    <!-- Luoghi -->
+                                    <?php if (is_array($luogo_notizia) && count($luogo_notizia)): ?>
+                                        <span class="data fw-normal d-block mb-2">
+                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                            <?php foreach ($luogo_notizia as $luogo_id):
+                                                $luogo_post = get_post($luogo_id);
+                                                if ($luogo_post && !is_wp_error($luogo_post)): ?>
+                                                    <a href="<?php echo esc_url(get_permalink($luogo_post->ID)); ?>" class="card-text text-secondary text-uppercase pb-1"><?php echo esc_html($luogo_post->post_title); ?></a>
+                                                <?php endif;
+                                            endforeach; ?>
+                                        </span>
+                                    <?php elseif (!empty($luogo_notizia)): ?>
+                                        <span class="data fw-normal d-block mb-2">
+                                            <i class="fas fa-map-marker-alt me-1"></i><?php echo esc_html($luogo_notizia); ?>
+                                        </span>
+                                    <?php endif; ?>
+
+                                    <!-- Data -->
+                                    <div class="row mt-2 mb-3">
+                                        <div class="col-6">
+                                            <small>Data:</small>
+                                            <p class="fw-semibold font-monospace"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Argomenti -->
+                                    <small>Argomenti: </small>
+                                    <?php get_template_part("template-parts/common/badges-argomenti"); ?>
+
+                                    <!-- Pulsante -->
+                                    <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
+                                        <span class="text">Vai alla pagina</span>
+                                        <svg class="icon ms-1">
+                                            <use xlink:href="#it-arrow-right"></use>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
             <?php
                 $first = false;
                 endif;
             endforeach;
             ?>
         </div>
+
+        <!-- Controlli carosello -->
         <button class="carousel-control-prev" type="button" data-bs-target="#carosello-evidenza" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Precedente</span>
@@ -81,6 +117,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
     </div>
 
 <?php
+// CASO SINGOLO POST
 elseif (!empty($post_ids)):
     $post_id = is_array($post_ids) ? $post_ids[0] : $post_ids;
     $post = get_post($post_id);
@@ -94,8 +131,10 @@ elseif (!empty($post_ids)):
         $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');
         $tipo = ($tipo_terms && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
 ?>
+
     <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
     <div class="row">
+        <!-- Testo -->
         <div class="col-lg-5 order-2 order-lg-1">
             <div class="card mb-0">
                 <div class="card-body pb-2">
@@ -109,14 +148,18 @@ elseif (!empty($post_ids)):
                             </span>
                         <?php endif; ?>
                     </div>
+
                     <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                         <h3 class="card-title">
                             <?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?>
                         </h3>
                     </a>
+
                     <p class="mb-2 font-serif">
                         <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>
                     </p>
+
+                    <!-- Luoghi -->
                     <?php if (is_array($luogo_notizia) && count($luogo_notizia)): ?>
                         <span class="data fw-normal"><i class="fas fa-map-marker-alt me-1"></i>
                             <?php foreach ($luogo_notizia as $luogo_id):
@@ -129,14 +172,19 @@ elseif (!empty($post_ids)):
                     <?php elseif (!empty($luogo_notizia)): ?>
                         <span class="data fw-normal"><i class="fas fa-map-marker-alt me-1"></i><?php echo esc_html($luogo_notizia); ?></span>
                     <?php endif; ?>
+
+                    <!-- Data -->
                     <div class="row mt-2 mb-1">
                         <div class="col-6">
                             <small>Data:</small>
                             <p class="fw-semibold font-monospace"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></p>
                         </div>
                     </div>
+
+                    <!-- Argomenti -->
                     <small>Argomenti: </small>
                     <?php get_template_part("template-parts/common/badges-argomenti"); ?>
+
                     <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>">
                         <span class="text">Vai alla pagina</span>
                         <svg class="icon ms-1">
@@ -146,80 +194,78 @@ elseif (!empty($post_ids)):
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2">
-            <?php if ($img) {
-                dci_get_img($img, 'img-fluid');
-            } ?>
-        </div>
+
+                 <!-- Immagine -->
+                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                        <?php if ($img) {
+                            dci_get_img($img, 'img-fluid');
+                        } ?>
+                    </div>
     </div>
+
 <?php
     endif;
 endif;
 ?>
+
 <style>
-.row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    background-color: #f5f5f5;
-    padding: 2rem;
+#carosello-evidenza {
+    position: relative;
+    overflow: hidden;
+}
+
+#carosello-evidenza .carousel-item {
     min-height: 400px;
 }
 
-.row .col-lg-6.offset-lg-1.order-1.order-lg-2 img {
+#carosello-evidenza .carousel-inner {
+    border-radius: 0;
+    overflow: hidden;
+}
+
+/* Contenitore immagine carosello - allineato come singolo elemento */
+#carosello-evidenza .col-img {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* immagine a destra */
+    background-color: #f5f5f5;
+    padding: 1rem;
+    min-height: 400px;
+}
+
+/* Immagine carosello - dimensioni e adattamento come singolo */
+#carosello-evidenza img.img-evidenza {
     max-width: 90%;
     max-height: 400px;
+    padding-right: 9px; /* distanza dal bordo destro */
     width: auto;
     height: auto;
     object-fit: contain;
     display: block;
-    margin-right: 10px;
 }
 
+/* Testo card carosello */
+#carosello-evidenza .card-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Responsive layout per carosello */
 @media (min-width: 992px) {
-    .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+    #carosello-evidenza .card-body {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+
+    #carosello-evidenza .col-img {
         padding: 3rem;
+    }
+
+    .row > .col-lg-5.order-2.order-lg-1 {
+        padding-left: 0.5rem;
     }
 }
 
-#carosello-evidenza {
-  position: relative;
-  overflow: hidden;
-}
-
-#carosello-evidenza .carousel-inner {
-  border-radius: 0;
-  overflow: hidden;
-}
-
-#carosello-evidenza .carousel-item {
-  min-height: 100%;
-  padding: 2rem 0;
-}
-
-#carosello-evidenza .card-body {
-  padding: 2rem;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-@media (max-width: 991.98px) {
-  #carosello-evidenza .card-body {
-    padding: 1rem;
-  }
-
-  .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-    justify-content: center;
-    padding: 1rem;
-  }
-
-  .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img {
-    margin-right: 0;
-  }
-}
-    
 /* --------------------------------------------- */
 /* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
 
