@@ -98,7 +98,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                         </div>
                     </div>
                 </div>
-           </div>
+       
             <?php
                 $first = false;
                 endif;
