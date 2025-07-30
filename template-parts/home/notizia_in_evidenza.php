@@ -1,13 +1,11 @@
 <?php
 global $count, $scheda;
 
-// Recupera l'opzione evidenziata
 $post_ids = dci_get_option('notizia_evidenziata', 'homepage', true);
 $prefix = '_dci_notizia_';
 
 if (is_array($post_ids) && count($post_ids) > 1):
 ?>
-
     <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
     <div id="carosello-notizie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
@@ -26,21 +24,11 @@ if (is_array($post_ids) && count($post_ids) > 1):
                     $tipo = ($tipo_terms && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
             ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
-                    <div class="row align-items-stretch g-0">
-
-                        <!-- Immagine -->
-                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2 d-flex align-items-center justify-content-center">
-                            <div class="carousel-img-wrapper">
-                                <?php if ($img) {
-                                    dci_get_img($img, 'img-fluid img-responsive-carousel');
-                                } ?>
-                            </div>
-                        </div>
-
+                    <div class="row">
                         <!-- Testo -->
-                        <div class="col-lg-6 order-2 order-lg-1 d-flex align-items-center">
-                            <div class="card w-100 border-0 rounded-0">
-                                <div class="card-body py-4 px-3 px-lg-4">
+                        <div class="col-lg-5 order-2 order-lg-1">
+                            <div class="card mb-0">
+                                <div class="card-body pb-2">
                                     <div class="category-top d-flex align-items-center mb-2">
                                         <svg class="icon icon-sm me-2" aria-hidden="true">
                                             <use xlink:href="#it-calendar"></use>
@@ -51,34 +39,33 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                             </span>
                                         <?php endif; ?>
                                     </div>
+
                                     <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
-                                        <h3 class="card-title mb-3">
+                                        <h3 class="card-title">
                                             <?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?>
                                         </h3>
                                     </a>
-                                    <p class="mb-3 font-serif">
+
+                                    <p class="mb-2 font-serif">
                                         <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>
                                     </p>
 
                                     <!-- Luoghi -->
                                     <?php if (is_array($luogo_notizia) && count($luogo_notizia)): ?>
-                                        <span class="data fw-normal d-block mb-2">
-                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                        <span class="data fw-normal"><i class="fas fa-map-marker-alt me-1"></i>
                                             <?php foreach ($luogo_notizia as $luogo_id):
                                                 $luogo_post = get_post($luogo_id);
-                                                if ($luogo_post && !is_wp_error($luogo_post)): ?>
-                                                    <a href="<?php echo esc_url(get_permalink($luogo_post->ID)); ?>" class="card-text text-secondary text-uppercase pb-1"><?php echo esc_html($luogo_post->post_title); ?></a>
-                                                <?php endif;
+                                                if ($luogo_post && !is_wp_error($luogo_post)) {
+                                                    echo '<a href="' . esc_url(get_permalink($luogo_post->ID)) . '" class="card-text text-secondary text-uppercase pb-1">' . esc_html($luogo_post->post_title) . '</a> ';
+                                                }
                                             endforeach; ?>
                                         </span>
                                     <?php elseif (!empty($luogo_notizia)): ?>
-                                        <span class="data fw-normal d-block mb-2">
-                                            <i class="fas fa-map-marker-alt me-1"></i><?php echo esc_html($luogo_notizia); ?>
-                                        </span>
+                                        <span class="data fw-normal"><i class="fas fa-map-marker-alt me-1"></i><?php echo esc_html($luogo_notizia); ?></span>
                                     <?php endif; ?>
 
                                     <!-- Data -->
-                                    <div class="row mt-2 mb-3">
+                                    <div class="row mt-2 mb-1">
                                         <div class="col-6">
                                             <small>Data:</small>
                                             <p class="fw-semibold font-monospace"><?php echo $arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]; ?></p>
@@ -89,8 +76,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                     <small>Argomenti: </small>
                                     <?php get_template_part("template-parts/common/badges-argomenti"); ?>
 
-                                    <!-- Pulsante -->
-                                    <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>" title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
+                                    <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>" aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>">
                                         <span class="text">Vai alla pagina</span>
                                         <svg class="icon ms-1">
                                             <use xlink:href="#it-arrow-right"></use>
@@ -98,6 +84,13 @@ if (is_array($post_ids) && count($post_ids) > 1):
                                     </a>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Immagine -->
+                        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                            <?php if ($img) {
+                                dci_get_img($img, 'img-fluid');
+                            } ?>
                         </div>
                     </div>
                 </div>
@@ -120,7 +113,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
     </div>
 
 <?php
-// CASO SINGOLO POST
+// SINGOLO ELEMENTO RESTA INVARIATO
 elseif (!empty($post_ids)):
     $post_id = is_array($post_ids) ? $post_ids[0] : $post_ids;
     $post = get_post($post_id);
@@ -198,105 +191,15 @@ elseif (!empty($post_ids)):
             </div>
         </div>
 
-                 <!-- Immagine -->
-                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                        <?php if ($img) {
-                            dci_get_img($img, 'img-fluid');
-                        } ?>
-                    </div>
+        <!-- Immagine -->
+        <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+            <?php if ($img) {
+                dci_get_img($img, 'img-fluid');
+            } ?>
+        </div>
     </div>
 
 <?php
     endif;
 endif;
 ?>
-
-<!-- STILI -->
-<style>
-#carosello-notizie .carousel-item {
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-}
-
-#carosello-notizie .carousel-inner {
-    overflow: hidden;
-    border-radius: 0;
-}
-
-#carosello-notizie .carousel-img-wrapper {
-    width: 100%;
-    height: 100%;
-    max-height: 400px;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background-color: #f5f5f5;
-}
-
-#carosello-notizie .carousel-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-#carosello-notizie .img-responsive-carousel {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-@media (min-width: 992px) {
-    #carosello-notizie .col-lg-6.order-1,
-    #carosello-notizie .col-lg-6.order-2 {
-        display: flex;
-        align-items: center;
-    }
-
-    #carosello-notizie .card-body {
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-}
-
-#carosello-notizie .card-body {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-/* Padding aggiuntivo per il testo nel singolo elemento */
-@media (min-width: 992px) {
-    .row > .col-lg-5.order-2.order-lg-1 {
-        padding-left: 0.5rem;
-    }
-}
-
-
-    /* Assicura che l'item attivo sia in primo piano */
-#carosello-notizie .carousel-item {
-    position: relative;
-    z-index: 1;
-}
-
-/* Imposta z-index maggiore per l'item visibile */
-#carosello-notizie .carousel-item.active {
-    z-index: 2;
-}
-
-/* Garantisci che il contenuto testuale sia sopra l'immagine */
-#carosello-notizie .carousel-item .card {
-    position: relative;
-    z-index: 3;
-}
-
-/* Inoltre, se vuoi che il pulsante sia sempre visibile davanti a tutto */
-#carosello-notizie .carousel-item .read-more {
-    position: relative;
-    z-index: 4;
-}
-
-</style>
