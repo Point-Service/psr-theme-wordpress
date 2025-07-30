@@ -94,11 +94,6 @@ switch ($post_type_label) {
 
 <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr h-100">
     <div class="card no-after rounded h-100 d-flex flex-column">
-        <?php if ($img) { ?>
-            <div class="d-flex flex-column">
-                <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
-            </div>
-        <?php } ?>
         <div class="card-body d-flex flex-column">
             <div class="category-top cmp-list-card-img__body mb-1">
                 <?php if (isset($tipo)) { ?>
@@ -112,7 +107,11 @@ switch ($post_type_label) {
                 <?php }?>
                 <span class="data"><?php echo esc_html($arrdata[0] . ' ' . strtoupper($monthName) . ' ' . $arrdata[2]); ?></span>
             </div>
-
+            <?php if ($img) { ?>
+                <div class="d-flex flex-column">
+                    <?php dci_get_img($img, 'rounded-top img-fluid img-responsive'); ?>
+                </div>
+            <?php } ?>
             <h3 class="h5 card-title text-justify u-grey-light">
                 <?php
                 $title = get_the_title();
