@@ -70,3 +70,13 @@
         }).mount();
     });
 </script>
+<style>
+#gallery-carousel {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+.it-carousel-wrapper {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}    
+</style>
