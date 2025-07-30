@@ -213,12 +213,10 @@ endif;
 .carousel-item {
     min-height: 400px;
 }
-
 .carousel-inner {
     border-radius: 0;
     overflow: hidden;
 }
-
 #carosello-notizie img.img-fluid,
 #carosello-notizie img.cover-img {
     width: 100%;
@@ -227,38 +225,66 @@ endif;
 }
 
 @media (min-width: 992px) {
-    /* Contenitore immagine */
     #carosello-notizie .carousel-item .col-lg-6.order-1 {
-        height: 400px; /* altezza fissa */
-        display: flex;
-        justify-content: center; /* centra orizzontalmente */
-        align-items: center;     /* centra verticalmente */
-        overflow: hidden;
-        background-color: #f8f9fa; /* sfondo grigio */
+        height: 400px; /* altezza fissa del contenitore immagine */
+        display: flex;               /* attiva flexbox */
+        justify-content: center;     /* centra orizzontalmente */
+        align-items: center;         /* centra verticalmente */
+        overflow: hidden;            /* taglia l’eccedenza */
+        background-color: #f8f9fa;   /* sfondo grigio */
+        max-height: 100%;
     }
 
-    /* Immagine centrata e visibile senza zoom */
-    #carosello-notizie .img-responsive-carousel {
-        max-width: 100%;
+    #carosello-notizie .carousel-item img {
+        object-fit: contain;         /* mostra tutta l’immagine senza zoom */
+        object-position: center;     /* centra l’immagine */
+        width: auto;                 /* larghezza auto per mantenere proporzioni */
+        max-width: 100%;             /* non supera il contenitore */
+        height: 100%;                /* altezza piena del contenitore */
         max-height: 100%;
-        object-fit: contain;
         display: block;
     }
 
-    /* Padding testo */
+    #carosello-notizie .carousel-item .d-none.d-lg-block {
+        height: 100%;
+    }
+
+    #carosello-notizie .carousel-item .d-none.d-lg-block img.cover-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
     #carosello-notizie .card-body {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
         overflow: visible;
     }
 
-    /* Spostamento testo nel singolo elemento */
+    /* Sposta a sinistra il testo nel singolo elemento */
     .row > .col-lg-5.order-2.order-lg-1 {
-        padding-left: 0.5rem; /* regola se serve */
+        padding-left: 0.5rem; /* regola questo valore a piacere */
     }
 }
 
-/* Pulsante Vai alla pagina */
+#carosello-notizie .card-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+#carosello-notizie .img-responsive-carousel {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* mostra tutta l’immagine senza zoom */
+    display: block;
+    background-color: #f8f9fa; /* per vedere lo sfondo nei “vuoti” */
+}
+
+#carosello-notizie .col-lg-6.order-2.order-lg-1 {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
 .read-more {
     white-space: nowrap;
     overflow: visible;
@@ -266,5 +292,6 @@ endif;
     align-items: center;
     gap: 0.5rem;
 }
+
 
 </style>
