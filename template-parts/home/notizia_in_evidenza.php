@@ -273,8 +273,8 @@ endif;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    background-color: #FFFFFF;
-    padding: 1rem 6rem 1rem 1rem; /* padding destro più ampio */
+    background-color: #f5f5f5;
+    padding: 1rem 8rem 1rem 1rem; /* padding destro più ampio */
     min-height: 400px;
 }
 
