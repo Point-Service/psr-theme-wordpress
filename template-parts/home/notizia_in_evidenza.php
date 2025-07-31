@@ -299,7 +299,7 @@ endif;
 }
 
 .single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
-  padding-left: 1rem; /* spostato più a sinistra */
+  padding-left: 0rem; /* spostato più a sinistra */
   padding-right: 0.5rem;
 }
 
