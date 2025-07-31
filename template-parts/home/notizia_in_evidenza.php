@@ -254,8 +254,14 @@ endif;
     flex-direction: column;
     justify-content: flex-start; /* Allinea contenuto in alto */
     min-height: 320px;
+    padding: 0 1rem;
   }
 
+  /* Versione desktop (da 992px in su) */
+  @media (min-width: 992px) {
+    #carosello-evidenza .card-body {
+      padding: 0 3rem;
+    }
 
     /* Box immagine */
     #carosello-evidenza .col-img {
@@ -298,4 +304,3 @@ endif;
 
   
 </style>
-
