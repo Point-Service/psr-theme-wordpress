@@ -208,88 +208,103 @@ endif;
 ?>
 
     <style>
-/* === STILI CAROSELLO EVIDENZA - UNIFICATI E RESPONSIVE === */
-
+/* === Stili generali per il carosello evidenza === */
 #carosello-evidenza {
   position: relative;
   overflow: hidden;
 }
 
 #carosello-evidenza .carousel-inner {
+  position: relative;
+  width: 100%;
   overflow: hidden;
 }
 
 #carosello-evidenza .carousel-item {
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-}
-
-#carosello-evidenza .row {
+  transition: transform 0.6s ease-in-out;
+  display: block;
   width: 100%;
-  margin: 0;
+  min-height: 400px;
 }
 
-#carosello-evidenza .carousel-item .col-lg-6,
-#carosello-evidenza .carousel-item .col-lg-5,
-#carosello-evidenza .carousel-item .col-lg-6.offset-lg-1 {
+/* Struttura flessibile per riga interna al carosello */
+#carosello-evidenza .carousel-item .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Immagine nel carosello */
+#carosello-evidenza .carousel-item .col-lg-6.offset-lg-1.order-1.order-lg-2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
-  min-height: 100%;
+  background-color: #f5f5f5;
+  padding: 1rem;
+  min-height: 300px;
+  text-align: center;
 }
 
-#carosello-evidenza .carousel-item img.img-fluid {
-  max-width: 100%;
+#carosello-evidenza img.img-fluid {
+  max-width: 90%;
   max-height: 300px;
+  width: auto;
+  height: auto;
   object-fit: contain;
   display: block;
   margin: 0 auto;
 }
 
-/* === Card contenente testo === */
-#carosello-evidenza .card {
-  border: none;
-  border-radius: 0;
-  width: 100%;
-  height: 100%;
+/* Testo nel carosello */
+#carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
 
-#carosello-evidenza .card-body {
-  padding: 1rem 1.25rem;
+#carosello-evidenza .carousel-item .card {
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  min-height: 100%;
+}
+
+#carosello-evidenza .carousel-item .card-body {
+  padding: 1rem;
 }
 
 @media (min-width: 992px) {
-  #carosello-evidenza .carousel-item {
-    min-height: 420px;
+  #carosello-evidenza .carousel-item .card-body {
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 
-  #carosello-evidenza .card-body {
-    padding: 2rem 2.5rem;
-  }
-
-  #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1 {
-    padding-left: 2rem;
+  #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+    padding: 3rem;
   }
 }
 
-/* === VERSIONE MOBILE === */
+/* Mobile layout: immagine sopra, testo sotto */
 @media (max-width: 991.98px) {
   #carosello-evidenza .carousel-item .row {
     flex-direction: column;
   }
 
-  #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1 {
+  #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1.order-1.order-lg-2 {
     order: -1;
-    padding: 1rem 1rem;
+    padding: 1.5rem 1rem !important;
+    min-height: auto;
+    justify-content: center !important;
+    text-align: center;
   }
 
-  #carosello-evidenza .carousel-item img.img-fluid {
+  #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1.order-1.order-lg-2 img {
+    max-width: 100%;
     max-height: 250px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
   }
 
   #carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
@@ -297,10 +312,40 @@ endif;
   }
 }
 
-/* === NAVIGAZIONE CAROSELLO === */
-.carousel-control-prev,
-.carousel-control-next {
-  filter: invert(100%);
+/* Uniformità nei controlli carosello */
+#carosello-evidenza .carousel-control-prev,
+#carosello-evidenza .carousel-control-next {
+  width: 5%;
+}
+
+#carosello-evidenza .carousel-control-prev-icon,
+#carosello-evidenza .carousel-control-next-icon {
+  background-size: 100% 100%;
+}
+
+/* Aggiustamenti generali */
+.carousel-item .card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.carousel-item .read-more {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.carousel-item .font-serif {
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+}
+
+.carousel-item .data {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.carousel-item .card-body small {
+  font-weight: 500;
 }
 
 
