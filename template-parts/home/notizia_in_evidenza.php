@@ -309,7 +309,7 @@ endif;
   align-items: center;
   justify-content: flex-end;
   min-height: 400px;
-  padding-right: 3rem;
+  padding-right: 7rem;
 }
 
 .single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
