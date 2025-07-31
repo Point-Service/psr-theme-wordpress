@@ -207,29 +207,61 @@ elseif (!empty($post_ids)):
 endif;
 ?>
 
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const carosello = document.getElementById('carosello-evidenza');
+    if (!carosello) return;
+
+    function updateCarouselHeight() {
+      const activeItem = carosello.querySelector('.carousel-item.active');
+      if (activeItem) {
+        const inner = carosello.querySelector('.carousel-inner');
+        inner.style.height = activeItem.scrollHeight + 'px';
+      }
+    }
+
+    // Primo calcolo altezza
+    updateCarouselHeight();
+
+    // Al cambio slide
+    carosello.addEventListener('slid.bs.carousel', updateCarouselHeight);
+
+    // Ricalcola su resize (mobile -> desktop ecc.)
+    window.addEventListener('resize', updateCarouselHeight);
+  });
+</script>
+
+
+
     <style>
-/* === Stili generali per il carosello evidenza === */
+
+
 #carosello-evidenza {
   position: relative;
   overflow: hidden;
 }
 
-/* Impedisce tagli del contenuto */
 #carosello-evidenza .carousel-inner {
   width: 100%;
   overflow: visible;
+  height: auto !important;
 }
 
-/* Adatta automaticamente l’altezza del carosello */
 #carosello-evidenza .carousel-item {
-  display: block;
   width: 100%;
-  height: auto;
-  transition: transform 0.6s ease-in-out;
+  height: auto !important;
   padding: 1rem 0;
+  transition: transform 0.6s ease-in-out;
 }
 
-/* Struttura flessibile */
+#carosello-evidenza .carousel-item.active {
+  height: auto !important;
+  overflow: visible;
+}
+
+/* Colonne responsive */
 #carosello-evidenza .carousel-item .row {
   display: flex;
   flex-wrap: wrap;
@@ -244,15 +276,12 @@ endif;
   justify-content: center;
   background-color: #f5f5f5;
   padding: 1rem;
-  min-height: auto;
   text-align: center;
 }
 
 #carosello-evidenza img.img-fluid {
-  max-width: 90%;
+  max-width: 100%;
   max-height: 300px;
-  width: auto;
-  height: auto;
   object-fit: contain;
   display: block;
   margin: 0 auto;
@@ -267,15 +296,17 @@ endif;
 
 #carosello-evidenza .carousel-item .card {
   width: 100%;
-  border: 0;
+  border: none;
   border-radius: 0;
+  height: auto;
 }
 
 #carosello-evidenza .carousel-item .card-body {
   padding: 1rem;
+  overflow: visible;
 }
 
-/* Layout per schermi grandi */
+/* Layout per desktop */
 @media (min-width: 992px) {
   #carosello-evidenza .carousel-item .card-body {
     padding-left: 3rem;
@@ -287,7 +318,7 @@ endif;
   }
 }
 
-/* Layout per mobile */
+/* Mobile */
 @media (max-width: 991.98px) {
   #carosello-evidenza .carousel-item .row {
     flex-direction: column;
@@ -296,21 +327,15 @@ endif;
   #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1.order-1.order-lg-2 {
     order: -1;
     padding: 1.5rem 1rem !important;
-    min-height: auto;
     justify-content: center !important;
-    text-align: center;
-  }
-
-  #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1.order-1.order-lg-2 img {
-    max-width: 100%;
-    max-height: 250px;
-    height: auto;
-    display: block;
-    margin: 0 auto;
   }
 
   #carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
     padding: 1rem 1rem 2rem 1rem;
+  }
+
+  #carosello-evidenza img.img-fluid {
+    max-height: 250px;
   }
 }
 
@@ -325,7 +350,7 @@ endif;
   background-size: 100% 100%;
 }
 
-/* Typography / Spaziature */
+/* Tipografia */
 .carousel-item .card-title {
   font-size: 1.25rem;
   font-weight: 600;
@@ -349,19 +374,5 @@ endif;
 .carousel-item .card-body small {
   font-weight: 500;
 }
+</style>
 
-/* Aggiunta per evitare overflow da tabelle o contenuti grandi */
-#carosello-evidenza .carousel-item .card-body {
-  overflow: visible;
-}
-
-#carosello-evidenza .carousel-item .card {
-  height: auto;
-}
-
-#carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
-  height: auto;
-}
-
-
-    </style>
