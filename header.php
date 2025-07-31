@@ -161,63 +161,63 @@ $current_group = dci_get_current_group();
 
 
 	<?php if (wp_is_mobile()) : ?>
-  <ul class="navbar-nav mt-3 mobile-extra-menu bg-dark p-3 rounded">
-    <?php if (dci_get_option('url_sito_regione') && dci_get_option('nome_regione')) : ?>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white"
-           href="<?php echo esc_url(dci_get_option('url_sito_regione')); ?>"
-           target="_blank"
-           rel="noopener"
-           aria-label="Vai al portale <?php echo esc_attr(dci_get_option('nome_regione')); ?>">
-          <font color="white"><?php echo esc_html(dci_get_option('nome_regione')); ?></font>
-        </a>
-      </li>
-    <?php endif; ?>
-
-    <?php if (dci_get_option('link_ammtrasparente')) : ?>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white"
-           href="<?php echo esc_url(dci_get_option('link_ammtrasparente')); ?>"
-           target="_blank"
-           rel="noopener"
-           aria-label="Amministrazione trasparente">
-         <font color="white"> Amministrazione trasparente</font>
-        </a>
-      </li>
-    <?php endif; ?>
-
-    <?php if (dci_get_option('link_albopretorio')) : ?>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white"
-           href="<?php echo esc_url(dci_get_option('link_albopretorio')); ?>"
-           target="_blank"
-           rel="noopener"
-           aria-label="Albo pretorio">
-         <font color="white"> Albo pretorio</font>
-        </a>
-      </li>
-    <?php endif; ?>
-
-    <?php
-    $shortcode_output = do_shortcode('[google-translator]');
-    if (trim($shortcode_output) !== '[google-translator]') :
-    ?>
-      <li class="nav-item mb-2 text-white">
-        <?php echo $shortcode_output; ?>
-      </li>
-    <?php endif; ?>
-
-    <li class="nav-item mt-3">
-      <?php
-      if (!is_user_logged_in()) {
-        get_template_part("template-parts/header/header-anon");
-      } else {
-        get_template_part("template-parts/header/header-logged");
-      }
-      ?>
-    </li>
-  </ul>
-<?php endif; ?>
+		  <ul class="navbar-nav mt-3 mobile-extra-menu bg-dark p-3 rounded">
+		    <?php if (dci_get_option('url_sito_regione') && dci_get_option('nome_regione')) : ?>
+		      <li class="nav-item mb-2">
+		        <a class="nav-link text-white"
+		           href="<?php echo esc_url(dci_get_option('url_sito_regione')); ?>"
+		           target="_blank"
+		           rel="noopener"
+		           aria-label="Vai al portale <?php echo esc_attr(dci_get_option('nome_regione')); ?>">
+		          <font color="white"><?php echo esc_html(dci_get_option('nome_regione')); ?></font>
+		        </a>
+		      </li>
+		    <?php endif; ?>
+		
+		    <?php if (dci_get_option('link_ammtrasparente')) : ?>
+		      <li class="nav-item mb-2">
+		        <a class="nav-link text-white"
+		           href="<?php echo esc_url(dci_get_option('link_ammtrasparente')); ?>"
+		           target="_blank"
+		           rel="noopener"
+		           aria-label="Amministrazione trasparente">
+		         <font color="white"> Amministrazione trasparente</font>
+		        </a>
+		      </li>
+		    <?php endif; ?>
+		
+		    <?php if (dci_get_option('link_albopretorio')) : ?>
+		      <li class="nav-item mb-2">
+		        <a class="nav-link text-white"
+		           href="<?php echo esc_url(dci_get_option('link_albopretorio')); ?>"
+		           target="_blank"
+		           rel="noopener"
+		           aria-label="Albo pretorio">
+		         <font color="white"> Albo pretorio</font>
+		        </a>
+		      </li>
+		    <?php endif; ?>
+		
+		    <?php
+		    $shortcode_output = do_shortcode('[google-translator]');
+		    if (trim($shortcode_output) !== '[google-translator]') :
+		    ?>
+		      <li class="nav-item mb-2 text-white">
+		        <?php echo $shortcode_output; ?>
+		      </li>
+		    <?php endif; ?>
+		
+		    <li class="nav-item mt-3">
+		      <?php
+		      if (!is_user_logged_in()) {
+		        get_template_part("template-parts/header/header-anon");
+		      } else {
+		        get_template_part("template-parts/header/header-logged");
+		      }
+		      ?>
+		    </li>
+		  </ul>
+		<?php endif; ?>
 
 
 			
