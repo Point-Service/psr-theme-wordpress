@@ -23,7 +23,7 @@
                    target="_blank"
                    rel="noopener"
                    aria-label="Amministrazione trasparente">
-                 Amministrazione trasparente
+                <font color="black">Amministrazione trasparente</font>
                 </a>
               </div>
             <?php endif; ?>
