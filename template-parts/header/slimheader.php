@@ -2,50 +2,56 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <div class="it-header-slim-wrapper-content d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-2">
+        <div class="it-header-slim-wrapper-content d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-3 py-2">
 
           <!-- Nome Regione -->
-          <a class="navbar-brand text-decoration-none" target="_blank"
-             href="<?php echo dci_get_option("url_sito_regione"); ?>"
-             aria-label="Vai al portale <?php echo dci_get_option("nome_regione"); ?> - link esterno - apertura nuova scheda"
-             title="Vai al portale <?php echo dci_get_option("nome_regione"); ?>">
-            <?php echo dci_get_option("nome_regione"); ?>
+          <a class="navbar-brand text-decoration-none"
+             href="<?php echo esc_url(dci_get_option('url_sito_regione')); ?>"
+             target="_blank"
+             rel="noopener"
+             aria-label="Vai al portale <?php echo esc_attr(dci_get_option('nome_regione')); ?> - link esterno - apertura nuova scheda"
+             title="Vai al portale <?php echo esc_attr(dci_get_option('nome_regione')); ?>">
+            <?php echo esc_html(dci_get_option('nome_regione')); ?>
           </a>
 
           <!-- Right Zone -->
-          <div class="it-header-slim-right-zone d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2" role="navigation">
+          <div class="it-header-slim-right-zone d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-3" role="navigation">
 
-            <!-- Amministrazione Trasparente -->
-            <?php if (dci_get_option("link_ammtrasparente")) { ?>
+            <!-- Amministrazione trasparente -->
+            <?php if (dci_get_option("link_ammtrasparente")) : ?>
               <div class="it-user-wrapper nav-item">
-                <a class="navbar-brand text-decoration-none" target="_blank"
-                   href="<?php echo dci_get_option("link_ammtrasparente"); ?>"
-                   aria-label="Amministrazione trasparente">
+                <a class="navbar-brand text-decoration-none"
+                   href="<?php echo esc_url(dci_get_option("link_ammtrasparente")); ?>"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Amministrazione trasparente - link esterno">
                   Amministrazione trasparente
                 </a>
               </div>
-            <?php } ?>
+            <?php endif; ?>
 
             <!-- Albo Pretorio -->
-            <?php if (dci_get_option("link_albopretorio")) { ?>
+            <?php if (dci_get_option("link_albopretorio")) : ?>
               <div class="it-user-wrapper nav-item">
-                <a class="navbar-brand text-decoration-none" target="_blank"
-                   href="<?php echo dci_get_option("link_albopretorio"); ?>"
-                   aria-label="Albo pretorio">
+                <a class="navbar-brand text-decoration-none"
+                   href="<?php echo esc_url(dci_get_option("link_albopretorio")); ?>"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Albo pretorio - link esterno">
                   Albo pretorio
                 </a>
               </div>
-            <?php } ?>
+            <?php endif; ?>
 
             <!-- Google Translator -->
             <?php
-              $shortcode_output = do_shortcode('[google-translator]');
-              if ($shortcode_output !== '[google-translator]') {
-                echo '<div class="nav-item">' . $shortcode_output . '</div>';
-              }
+            $shortcode_output = do_shortcode('[google-translator]');
+            if (trim($shortcode_output) !== '[google-translator]') :
+              echo '<div class="nav-item">' . $shortcode_output . '</div>';
+            endif;
             ?>
 
-            <!-- Login / User -->
+            <!-- Login/Utente -->
             <div class="nav-item">
               <?php
               if (!is_user_logged_in()) {
@@ -56,11 +62,12 @@
               ?>
             </div>
 
-          </div><!-- end slim-right-zone -->
+          </div><!-- /right-zone -->
 
-        </div><!-- end wrapper-content -->
+        </div><!-- /wrapper-content -->
       </div>
     </div>
   </div>
 </div>
+
 
