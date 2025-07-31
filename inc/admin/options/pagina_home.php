@@ -64,24 +64,7 @@ function dci_register_pagina_home_options(){
 
 
 
-function add_scheda_group($home_options, $prefix, $index) {
-    // Recupera il contenuto corrente della scheda
-    $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
-    $is_active = is_array($scheda_contenuto) && count($scheda_contenuto) > 0;
-    $schede_group_id = $home_options->add_field(array(
-        'id'           => $prefix . 'schede_evidenziate_' . $index,
-        'type'         => 'group',
-        'repeatable'   => false,
-        'options'      => array(
-            'group_title'   => 'Scheda ' . $index . ':',
-            'closed'        => !$is_active, // Chiudi il gruppo se non c'è contenuto attivo
-        )
-    ));
 
-
-
-
-	
 $home_options->add_field( array(
     'id'   => $prefix . 'notizie_auto',
     'name' => __( 'Notizie automatiche sull Home Page', 'design_comuni_italia' ),
@@ -122,6 +105,27 @@ $home_options->add_field( array(
 	));
 
 
+
+
+
+
+
+
+	
+
+function add_scheda_group($home_options, $prefix, $index) {
+    // Recupera il contenuto corrente della scheda
+    $scheda_contenuto = get_option($prefix . 'scheda_' . $index . '_contenuto');
+    $is_active = is_array($scheda_contenuto) && count($scheda_contenuto) > 0;
+    $schede_group_id = $home_options->add_field(array(
+        'id'           => $prefix . 'schede_evidenziate_' . $index,
+        'type'         => 'group',
+        'repeatable'   => false,
+        'options'      => array(
+            'group_title'   => 'Scheda ' . $index . ':',
+            'closed'        => !$is_active, // Chiudi il gruppo se non c'è contenuto attivo
+        )
+    ));
 
 
 
