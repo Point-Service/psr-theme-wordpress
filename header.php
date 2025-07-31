@@ -117,31 +117,19 @@ $current_group = dci_get_current_group();
                     </svg>
                   </button>
                 </div>
-                <div class="menu-wrapper">
-                <a href="<?php echo home_url(); ?>" aria-label="Vai alla homepage" class="logo-hamburger">
-                    <?php get_template_part("template-parts/common/logo-mobile"); ?>
-                  <div class="it-brand-text">
-                    <div class="it-brand-title"><?php echo dci_get_option("nome_comune"); ?></div>
-                  </div>
-                </a>
+
+		      
+	                <div class="menu-wrapper">
+	                <a href="<?php echo home_url(); ?>" aria-label="Vai alla homepage" class="logo-hamburger">
+	                    <?php get_template_part("template-parts/common/logo-mobile"); ?>
+	                  <div class="it-brand-text">
+	                    <div class="it-brand-title"><?php echo dci_get_option("nome_comune"); ?></div>
+	                  </div>
+	                </a>
 
 
-
-
-          <?php if (wp_is_mobile()) : ?>
-		  <ul class="navbar-nav mt-3 mobile-extra-menu bg-dark p-3 rounded">
-		    <?php if (dci_get_option('url_sito_regione') && dci_get_option('nome_regione')) : ?>
-		      <li class="nav-item mb-2">
-		        <a class="nav-link text-white"
-		           href="<?php echo esc_url(dci_get_option('url_sito_regione')); ?>"
-		           target="_blank"
-		           rel="noopener"
-		           aria-label="Vai al portale <?php echo esc_attr(dci_get_option('nome_regione')); ?>">
-		          <font color="white"><?php echo esc_html(dci_get_option('nome_regione')); ?></font>
-		        </a>
-		      </li>
-		    <?php endif; ?>
-
+            <?php if (wp_is_mobile()) : ?>
+		  <ul class="navbar-nav mt-3 mobile-extra-menu p-3 rounded">
 
 		    <?php
 		    $shortcode_output = do_shortcode('[google-translator]');
@@ -162,8 +150,19 @@ $current_group = dci_get_current_group();
 		      ?>
 		    </li>
 
+		    <?php if (dci_get_option('url_sito_regione') && dci_get_option('nome_regione')) : ?>
+		      <li class="nav-item mb-2">
+		        <a class="nav-link text-white"
+		           href="<?php echo esc_url(dci_get_option('url_sito_regione')); ?>"
+		           target="_blank"
+		           rel="noopener"
+		           aria-label="Vai al portale <?php echo esc_attr(dci_get_option('nome_regione')); ?>">
+		          <font color="white"><?php echo esc_html(dci_get_option('nome_regione')); ?></font>
+		        </a>
+		      </li>
+		    <?php endif; ?>
 
-			  
+				
 		    <?php if (dci_get_option('link_ammtrasparente')) : ?>
 		      <li class="nav-item mb-2">
 		        <a class="nav-link text-white"
