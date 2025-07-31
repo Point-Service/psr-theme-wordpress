@@ -49,9 +49,16 @@ if (is_array($post_ids) && count($post_ids) > 1):
                     </h3>
                   </a>
 
-                  <p class="mb-2 font-serif">
-                    <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>
-                  </p>
+                    <p class="mb-2 font-serif">
+                      <?php
+                        if(mb_strlen($descrizione_breve) > 200){
+                          $descrizione_limitata = mb_substr($descrizione_breve, 0, 200) . '...';
+                        } else {
+                          $descrizione_limitata = $descrizione_breve;
+                        }
+                        echo preg_match('/[A-Z]{5,}/', $descrizione_limitata) ? ucfirst(strtolower($descrizione_limitata)) : $descrizione_limitata;
+                      ?>
+                    </p>
 
                   <?php if (is_array($luogo_notizia) && count($luogo_notizia)): ?>
                     <span class="data fw-normal"><i class="fas fa-map-marker-alt me-1"></i>
