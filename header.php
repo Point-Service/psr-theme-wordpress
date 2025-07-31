@@ -157,7 +157,7 @@ $current_group = dci_get_current_group();
 		           target="_blank"
 		           rel="noopener"
 		           aria-label="Vai al portale <?php echo esc_attr(dci_get_option('nome_regione')); ?>">
-		          <font color="white"><?php echo esc_html(dci_get_option('nome_regione')); ?></font>
+		         <?php echo esc_html(dci_get_option('nome_regione')); ?>
 		        </a>
 		      </li>
 		    <?php endif; ?>
@@ -170,7 +170,7 @@ $current_group = dci_get_current_group();
 		           target="_blank"
 		           rel="noopener"
 		           aria-label="Amministrazione trasparente">
-		         <font color="white"> Amministrazione trasparente</font>
+		        Amministrazione trasparente
 		        </a>
 		      </li>
 		    <?php endif; ?>
@@ -182,7 +182,7 @@ $current_group = dci_get_current_group();
 		           target="_blank"
 		           rel="noopener"
 		           aria-label="Albo pretorio">
-		         <font color="white"> Albo pretorio</font>
+		         Albo pretorio
 		        </a>
 		      </li>
 		    <?php endif; ?>
@@ -191,9 +191,6 @@ $current_group = dci_get_current_group();
 		  </ul>
 		<?php endif; ?>
 
-
-
-			
                 <nav aria-label="Principale">
                   <?php
                       $location = "menu-header-main";
