@@ -27,12 +27,6 @@ if (is_array($post_ids) && count($post_ids) > 1):
             <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
                 <div class="row g-0">
 
-                    <?php if ($img): ?>
-                    <div class="col-12 col-lg-6 image-column ms-auto">
-                        <?php dci_get_img($img, 'img-fluid'); ?>
-                    </div>
-                    <?php endif; ?>
-
                     <div class="col-12 col-lg-6 text-column">
                         <div class="card w-100 border-0 rounded-0">
                             <div class="card-body">
@@ -98,6 +92,12 @@ if (is_array($post_ids) && count($post_ids) > 1):
                             </div> <!-- card-body -->
                         </div> <!-- card -->
                     </div> <!-- col text-column -->
+
+                    <?php if ($img): ?>
+                    <div class="col-12 col-lg-6 image-column">
+                        <?php dci_get_img($img, 'img-fluid'); ?>
+                    </div>
+                    <?php endif; ?>
 
                 </div> <!-- row -->
             </div> <!-- carousel-item -->
@@ -199,20 +199,18 @@ elseif (!empty($post_ids)):
             </div>
         </div>
 
-                 <?php if ($img): ?>
-                    <!-- Immagine -->
-                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                        <?php dci_get_img($img, 'img-fluid'); ?>
-                    </div>
-                <?php endif; ?>
+        <?php if ($img): ?>
+            <!-- Immagine -->
+            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                <?php dci_get_img($img, 'img-fluid'); ?>
+            </div>
+        <?php endif; ?>
     </div>
 
 <?php
     endif;
 endif;
 ?>
-
-
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -238,9 +236,7 @@ endif;
   });
 </script>
 
-
-
-    <style>
+<style>
 /* === Carosello Evidenza (Mobile First) === */
 #carosello-evidenza {
   position: relative;
@@ -248,111 +244,63 @@ endif;
 }
 
 #carosello-evidenza .carousel-inner {
-  width: 100%;
-  overflow: visible;
+  transition: height 0.3s ease;
 }
 
-#carosello-evidenza .carousel-item {
-  width: 100%;
-  height: auto;
-  padding: 1rem 0;
-}
-
+/* Colonne stacking mobile */
 #carosello-evidenza .carousel-item .row {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  margin: 0;
 }
 
-/* Immagine sopra (mobile) */
-#carosello-evidenza .carousel-item .image-column {
-  order: -1;
-  text-align: center;
-  background-color: #f5f5f5;
-  padding: 1rem;
-}
-
-#carosello-evidenza .carousel-item img.img-fluid {
-  max-width: 100%;
-  max-height: 250px;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-}
-
-/* Testo sotto immagine (mobile) */
+#carosello-evidenza .carousel-item .image-column,
 #carosello-evidenza .carousel-item .text-column {
-  padding: 1rem;
+  padding: 1rem 0;
 }
 
-#carosello-evidenza .carousel-item .card {
-  border: none;
-  border-radius: 0;
-  width: 100%;
+/* Immagine mobile: sopra */
+#carosello-evidenza .carousel-item .image-column {
+  order: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#carosello-evidenza .carousel-item .card-body {
-  padding: 1rem;
-  overflow: visible;
+/* Testo mobile: sotto */
+#carosello-evidenza .carousel-item .text-column {
+  order: 2;
+  padding: 0 1rem;
 }
 
-/* Controlli carosello */
-#carosello-evidenza .carousel-control-prev,
-#carosello-evidenza .carousel-control-next {
-  width: 5%;
-}
-
-/* Titoli, descrizioni, testo */
-.carousel-item .card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.carousel-item .read-more {
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.carousel-item .font-serif {
-  font-family: Georgia, serif;
-  font-size: 0.95rem;
-}
-
-.carousel-item .data {
-  font-size: 0.85rem;
-  color: #666;
-}
-
-.carousel-item .card-body small {
-  font-weight: 500;
-}
-
-/* === Layout Desktop === */
+/* === Desktop (min-width 992px) === */
 @media (min-width: 992px) {
   #carosello-evidenza .carousel-item .row {
     flex-direction: row;
   }
 
-  .image-column {
-    order: 2;
-    padding: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .text-column {
+  /* Testo a sinistra */
+  #carosello-evidenza .carousel-item .text-column {
     order: 1;
     padding: 3rem;
     display: flex;
     align-items: center;
   }
 
-  #carosello-evidenza .carousel-item img.img-fluid {
-    max-height: 300px;
+  /* Immagine a destra */
+  #carosello-evidenza .carousel-item .image-column {
+    order: 2;
+    padding: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #carosello-evidenza .carousel-item .image-column img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 }
-
 </style>
+
 
