@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <div class="it-header-slim-wrapper-content d-flex justify-content-between align-items-center py-2">
+        <div class="nav-item it-header-slim-wrapper-content d-flex justify-content-between align-items-center py-2">
 
           <!-- Nome Regione -->
           <a class="navbar-brand text-decoration-none"
@@ -15,7 +15,7 @@
           </a>
 
           <!-- Link desktop -->
-          <div class="it-header-slim-right-zone d-flex align-items-center" role="navigation">
+          <div class="nav-item it-header-slim-right-zone d-flex align-items-center" role="navigation">
             <?php if (dci_get_option("link_ammtrasparente")) : ?>
               <div class="nav-item me-3">
                 <a class="navbar-brand text-decoration-none"
