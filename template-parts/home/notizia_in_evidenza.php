@@ -283,7 +283,7 @@ endif;
 
 .single-news .col-lg-6.offset-lg-1.order-1.order-lg-2 {
     display: flex;
-    align-items: left;
+    align-items: right;
     justify-content: flex-end;
     min-height: 400px;
 }
