@@ -102,7 +102,7 @@ switch ($post_type_label) {
             </div>
         <?php } ?>
         <div class="card-body d-flex flex-column">
-           
+           <div class="category-top">
             <span class="category title-xsmall-semi-bold fw-semibold">
                     <a href="<?php echo esc_url($url_tipo); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper(esc_html($tipo_name)); ?></a>
                 </span>
