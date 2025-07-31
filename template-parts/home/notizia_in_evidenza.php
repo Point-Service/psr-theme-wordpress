@@ -281,27 +281,28 @@ endif;
 
 
 
-.single-news .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    min-height: 400px;
-    padding-right: 3rem; /* Spinge più a destra */
+.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 400px;
+  padding-right: 3rem;
 }
 
-.single-news .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-    max-width: 90%;
-    max-height: 400px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    margin-left: auto; /* Spinge ancora a destra */
+.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+  max-width: 90%;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
 }
 
-.single-news .col-lg-5.order-2.order-lg-1 {
-    padding-left: 1.5rem;
-    padding-right: 1rem;
+.single-news .row .col-lg-5.order-2.order-lg-1 {
+  padding-left: 1.5rem;
+  padding-right: 1rem;
 }
+
   
 </style>
