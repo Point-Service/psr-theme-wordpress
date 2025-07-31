@@ -11,44 +11,17 @@ if (is_array($post_ids) && count($post_ids) > 1):
 <div id="carosello-evidenza" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
 
-    <!-- SLIDE 1 -->
+    <!-- SLIDE -->
     <div class="carousel-item active">
       <div class="container">
-        <div class="row g-0 flex-column flex-lg-row">
+        <div class="row flex-column flex-lg-row align-items-center g-0">
 
-          <!-- Testo -->
+          <!-- Testo (sinistra desktop, sotto mobile) -->
           <div class="col-12 col-lg-6 order-2 order-lg-1 d-flex align-items-center">
             <div class="card-body">
-              <h3 class="card-title">Titolo Slide 1</h3>
-              <p class="card-text">Questa è una descrizione della prima notizia evidenziata. È un testo breve che attira l'attenzione.</p>
+              <h3 class="card-title">Titolo Slide</h3>
+              <p class="card-text">Testo descrittivo della notizia, con contenuti coinvolgenti per l'utente.</p>
               <p class="text-muted mb-2"><small><i class="fas fa-calendar-alt me-1"></i>31 Luglio 2025</small></p>
-              <a href="#" class="btn btn-primary">
-                Leggi di più
-                <svg class="icon ms-1"><use xlink:href="#it-arrow-right"></use></svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Immagine -->
-          <div class="col-12 col-lg-6 offset-lg-1 order-1 order-lg-2 col-img">
-            <img src="https://via.placeholder.com/600x400" class="img-fluid img-evidenza" alt="Immagine slide 1">
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 2 -->
-    <div class="carousel-item">
-      <div class="container">
-        <div class="row g-0 flex-column flex-lg-row">
-
-          <!-- Testo -->
-          <div class="col-12 col-lg-6 order-2 order-lg-1 d-flex align-items-center">
-            <div class="card-body">
-              <h3 class="card-title">Titolo Slide 2</h3>
-              <p class="card-text">Seconda notizia, con altra descrizione di esempio per riempire lo spazio e testare il layout.</p>
-              <p class="text-muted mb-2"><small><i class="fas fa-calendar-alt me-1"></i>30 Luglio 2025</small></p>
               <a href="#" class="btn btn-primary">
                 Scopri di più
                 <svg class="icon ms-1"><use xlink:href="#it-arrow-right"></use></svg>
@@ -56,9 +29,9 @@ if (is_array($post_ids) && count($post_ids) > 1):
             </div>
           </div>
 
-          <!-- Immagine -->
-          <div class="col-12 col-lg-6 offset-lg-1 order-1 order-lg-2 col-img">
-            <img src="https://via.placeholder.com/600x400" class="img-fluid img-evidenza" alt="Immagine slide 2">
+          <!-- Immagine (destra desktop, sopra mobile) -->
+          <div class="col-12 col-lg-6 order-1 order-lg-2 col-img">
+            <img src="https://via.placeholder.com/600x400" class="img-fluid img-evidenza" alt="Immagine slide">
           </div>
 
         </div>
@@ -67,7 +40,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
 
   </div>
 
-  <!-- Controlli carosello -->
+  <!-- Controlli -->
   <button class="carousel-control-prev" type="button" data-bs-target="#carosello-evidenza" data-bs-slide="prev">
     <span class="carousel-control-prev-icon"></span>
     <span class="visually-hidden">Precedente</span>
@@ -170,7 +143,7 @@ elseif (!empty($post_ids)):
 endif;
 ?>
 
-  <!-- STILE CSS PERSONALIZZATO -->
+<!-- STILI -->
 <style>
   #carosello-evidenza {
     position: relative;
@@ -186,7 +159,7 @@ endif;
     overflow: hidden;
   }
 
-  /* Contenitore immagine carosello */
+  /* Immagine container */
   #carosello-evidenza .col-img {
     display: flex;
     align-items: center;
@@ -196,7 +169,6 @@ endif;
     min-height: 300px;
   }
 
-  /* Immagine carosello */
   #carosello-evidenza img.img-evidenza {
     max-width: 90%;
     max-height: 300px;
@@ -207,41 +179,22 @@ endif;
     margin: 0 auto;
   }
 
-  /* Testo card carosello */
   #carosello-evidenza .card-body {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 1rem;
   }
 
-  /* Responsive layout */
   @media (min-width: 992px) {
     #carosello-evidenza .card-body {
-      padding-left: 3rem;
-      padding-right: 3rem;
+      padding: 3rem;
     }
 
     #carosello-evidenza .col-img {
-      padding: 2rem;
-    }
-
-    .row > .col-lg-5.order-2.order-lg-1 {
-      padding-left: 0.5rem;
-    }
-
-    .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
       padding: 3rem;
       min-height: 400px;
     }
 
-    .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-      max-width: 90%;
+    #carosello-evidenza img.img-evidenza {
       max-height: 400px;
-      padding-right: 7px;
-      object-fit: contain;
-      display: block;
     }
   }
 </style>
