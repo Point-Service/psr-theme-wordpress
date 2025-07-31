@@ -124,43 +124,11 @@ $current_group = dci_get_current_group();
                     <div class="it-brand-title"><?php echo dci_get_option("nome_comune"); ?></div>
                   </div>
                 </a>
-                <nav aria-label="Principale">
-                  <?php
-                      $location = "menu-header-main";
-                      if ( has_nav_menu( $location ) ) {
-                          wp_nav_menu(array(
-                            "theme_location" => $location, 
-                            "depth" => 0,  
-                            "menu_class" => "navbar-nav", 
-                            'items_wrap' => '<ul class="%2$s" id="%1$s" data-element="main-navigation">%3$s</ul>',
-                            "container" => "",
-                            'list_item_class'  => 'nav-item',
-                            'link_class'   => 'nav-link',
-                            'current_group' => $current_group,
-                            'walker' => new Main_Menu_Walker()
-                          ));
-                      }
-                    ?>
-                </nav>
-                <nav aria-label="Secondaria">
-                  <?php
-                    $location = "menu-header-right";
-                    if ( has_nav_menu( $location ) ) {
-                        wp_nav_menu(array(
-                          "theme_location" => $location, 
-                          "depth" => 0,  
-                          "menu_class" => "navbar-nav navbar-secondary", 
-                          "container" => "",
-                          'list_item_class'  => 'nav-item',
-                          'link_class'   => 'nav-link',
-                          'walker' => new Menu_Header_Right_Walker()
-                        ));
-                    }
-                    ?>
-                </nav>
 
 
-	<?php if (wp_is_mobile()) : ?>
+
+
+<?php if (wp_is_mobile()) : ?>
 		  <ul class="navbar-nav mt-3 mobile-extra-menu bg-dark p-3 rounded">
 		    <?php if (dci_get_option('url_sito_regione') && dci_get_option('nome_regione')) : ?>
 		      <li class="nav-item mb-2">
@@ -220,6 +188,45 @@ $current_group = dci_get_current_group();
 		<?php endif; ?>
 
 
+
+			
+                <nav aria-label="Principale">
+                  <?php
+                      $location = "menu-header-main";
+                      if ( has_nav_menu( $location ) ) {
+                          wp_nav_menu(array(
+                            "theme_location" => $location, 
+                            "depth" => 0,  
+                            "menu_class" => "navbar-nav", 
+                            'items_wrap' => '<ul class="%2$s" id="%1$s" data-element="main-navigation">%3$s</ul>',
+                            "container" => "",
+                            'list_item_class'  => 'nav-item',
+                            'link_class'   => 'nav-link',
+                            'current_group' => $current_group,
+                            'walker' => new Main_Menu_Walker()
+                          ));
+                      }
+                    ?>
+                </nav>
+                <nav aria-label="Secondaria">
+                  <?php
+                    $location = "menu-header-right";
+                    if ( has_nav_menu( $location ) ) {
+                        wp_nav_menu(array(
+                          "theme_location" => $location, 
+                          "depth" => 0,  
+                          "menu_class" => "navbar-nav navbar-secondary", 
+                          "container" => "",
+                          'list_item_class'  => 'nav-item',
+                          'link_class'   => 'nav-link',
+                          'walker' => new Menu_Header_Right_Walker()
+                        ));
+                    }
+                    ?>
+                </nav>
+
+
+	
 			
                   <?php
                     $show_socials = dci_get_option( "show_socials", "socials" );
