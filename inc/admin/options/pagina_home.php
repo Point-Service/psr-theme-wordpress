@@ -77,6 +77,56 @@ function add_scheda_group($home_options, $prefix, $index) {
             'closed'        => !$is_active, // Chiudi il gruppo se non c'è contenuto attivo
         )
     ));
+
+
+
+
+	
+$home_options->add_field( array(
+    'id'   => $prefix . 'notizie_auto',
+    'name' => __( 'Notizie automatiche sull Home Page', 'design_comuni_italia' ),
+    'desc' => __( 'Con queste impostazioni è possibile attivare la pubblicazione delle notizie automatiche sull Home Page.', 'design_comuni_italia' ),
+    'type' => 'title',
+    ));	
+
+    $home_options->add_field(array(
+        'id' => $prefix . 'ck_notizie_automatico',
+        'name' => __('Mostra le ultime notizie nella home', 'design_comuni_italia'),
+        'desc' => __('Se abilitata, questa opzione mostrera automaticamente le ultime notizie.', 'design_comuni_italia'),
+        'type' => 'radio_inline',
+        'default' => 'false',
+        'options' => array(
+            'true' => __('Sì', 'design_comuni_italia'),
+            'false' => __('No', 'design_comuni_italia'),
+        ),
+        // 'attributes' => array(
+        //     'data-conditional-value' => "false",
+        // ),
+    ));
+
+	$home_options->add_field(array(
+	    'id' => $prefix . 'numero_notizie_home',
+	    'name' => __('Numero di notizie', 'design_comuni_italia'),
+	    'desc' => __(
+	        'Seleziona il numero di notizie da visualizzare in homepage.<br><strong>Nota:</strong> se il campo "Selezione notizia in evidenza" è compilato, avrà la priorità su questa impostazione.',
+	        'design_comuni_italia'
+	    ),
+	    'type' => 'radio_inline',
+	    'default' => 0,
+	    'options' => array(
+	        0 => __('0', 'design_comuni_italia'),
+	        3 => __('3', 'design_comuni_italia'),
+	        6 => __('6', 'design_comuni_italia'),
+	        12 => __('12', 'design_comuni_italia'),
+	    ),
+	));
+
+
+
+
+
+	
+	
     $home_options->add_group_field($schede_group_id, array(
         'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
         'desc'       => __('Seleziona il contenuto da mostrare nella Scheda.', 'design_comuni_italia'),
@@ -215,36 +265,7 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
     // ),
 ));
 
-    $home_options->add_field(array(
-        'id' => $prefix . 'ck_notizie_automatico',
-        'name' => __('Mostra le ultime notizie nella home', 'design_comuni_italia'),
-        'desc' => __('Se abilitata, questa opzione mostrera automaticamente le ultime notizie.', 'design_comuni_italia'),
-        'type' => 'radio_inline',
-        'default' => 'false',
-        'options' => array(
-            'true' => __('Sì', 'design_comuni_italia'),
-            'false' => __('No', 'design_comuni_italia'),
-        ),
-        // 'attributes' => array(
-        //     'data-conditional-value' => "false",
-        // ),
-    ));
 
-	$home_options->add_field(array(
-	    'id' => $prefix . 'numero_notizie_home',
-	    'name' => __('Numero di notizie', 'design_comuni_italia'),
-	    'desc' => __(
-	        'Seleziona il numero di notizie da visualizzare in homepage.<br><strong>Nota:</strong> se il campo "Selezione notizia in evidenza" è compilato, avrà la priorità su questa impostazione.',
-	        'design_comuni_italia'
-	    ),
-	    'type' => 'radio_inline',
-	    'default' => 0,
-	    'options' => array(
-	        0 => __('0', 'design_comuni_italia'),
-	        3 => __('3', 'design_comuni_italia'),
-	        6 => __('6', 'design_comuni_italia'),
-	        12 => __('12', 'design_comuni_italia'),
-	    ),
-	));
+    
 
 }
