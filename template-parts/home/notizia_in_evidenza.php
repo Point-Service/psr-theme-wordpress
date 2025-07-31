@@ -95,11 +95,12 @@ if (is_array($post_ids) && count($post_ids) > 1):
               </div>
 
               <!-- Immagine -->
-              <div class="col-12 col-lg-6 order-1 order-lg-2 col-img">
+              <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 col-img-single">
                 <?php if ($img) {
                   dci_get_img($img, 'img-fluid img-evidenza');
                 } ?>
               </div>
+
 
             </div>
           </div>
@@ -281,15 +282,17 @@ endif;
 
 
 
-.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+/* Singola notizia – contenitore immagine */
+.single-news .col-img-single {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  padding: 0 2rem 0 1rem; /* margine destro controllato */
   min-height: 400px;
-  padding-right: 3rem;
 }
 
-.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+/* Immagine – singola notizia */
+.single-news .col-img-single img.img-evidenza {
   max-width: 90%;
   max-height: 400px;
   width: auto;
@@ -299,10 +302,19 @@ endif;
   margin-left: auto;
 }
 
-.single-news .row .col-lg-5.order-2.order-lg-1 {
-  padding-left: 1.5rem;
-  padding-right: 1rem;
+/* Mobile */
+@media (max-width: 991.98px) {
+  .single-news .col-img-single {
+    justify-content: center;
+    padding: 1rem;
+    min-height: 250px;
+  }
+
+  .single-news .col-img-single img.img-evidenza {
+    margin: 0 auto;
+  }
 }
+
 
   
 </style>
