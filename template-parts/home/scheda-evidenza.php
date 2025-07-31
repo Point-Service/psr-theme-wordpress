@@ -102,7 +102,8 @@ switch ($post_type_label) {
             </div>
         <?php } ?>
         <div class="card-body d-flex flex-column">
-            <div class="category-top cmp-list-card-img__body mb-1">
+           
+            <div class="category title-xsmall-semi-bold fw-semibold">
                 <?php if (isset($tipo)) { ?>
                     <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
                         <?php echo strtoupper($tipo->name); ?>
@@ -115,7 +116,7 @@ switch ($post_type_label) {
                 <span class="data"><?php echo esc_html($arrdata[0] . ' ' . strtoupper($monthName) . ' ' . $arrdata[2]); ?></span>
             </div>
 
-            <h3 class="h4 card-title text-justify u-grey-light">
+            <h3 class="h5 card-title text-justify u-grey-light">
                 <?php
                 $title = get_the_title();
                 if (strlen($title) > 100) {
