@@ -33,7 +33,7 @@
         	$shortcode_output = do_shortcode('[google-translator]');
         				
         	if ($shortcode_output !== '[google-translator]') {
-        	  echo $shortcode_output;
+        	 // echo $shortcode_output;
         	   }
 	       ?>
 
