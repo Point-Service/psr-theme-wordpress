@@ -271,18 +271,6 @@ endif;
       margin-right: 0;
     }
   }
-
-
-  /* --------------------------------------------- */
-        /* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
-        
-        
-        @media (min-width: 992px) {
-            .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-                padding: 3rem;
-            }
-        }
-
   
 </style>
 
