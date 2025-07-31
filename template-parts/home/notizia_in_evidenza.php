@@ -133,7 +133,7 @@ elseif (!empty($post_ids)):
     $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');
     $tipo = ($tipo_terms && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
 ?>
-<div class="row single-news">
+<div class="row single-news single-news-custom">
   <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
   <div class="row">
     <!-- Testo -->
@@ -197,12 +197,12 @@ elseif (!empty($post_ids)):
       </div>
     </div>
 
-                 <!-- Immagine -->
-                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
-                        <?php if ($img) {
-                            dci_get_img($img, 'img-fluid');
-                        } ?>
-                    </div>  
+    <!-- Immagine -->
+    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+      <?php if ($img) {
+        dci_get_img($img, 'img-fluid');
+      } ?>
+    </div>  
   </div>
 </div>
 <?php
@@ -303,7 +303,28 @@ endif;
   padding-left: 1.5rem;
   padding-right: 1rem;
 }
+.single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 400px;
+  padding-right: 5rem; /* margine più ampio a destra immagine */
+}
 
+.single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+  max-width: 90%;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+}
+
+.single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
+  padding-left: 3rem; /* spostato più a sinistra */
+  padding-right: 0.5rem;
+}
 
   
 </style>
