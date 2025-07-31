@@ -199,7 +199,6 @@ endif;
     #carosello-evidenza .col-img {
       justify-content: flex-end; /* 👉 spinge immagine a destra */
       align-items: center;
-      background-color: #f5f5f5;
       padding: 2rem;
       min-height: 400px;
     }
