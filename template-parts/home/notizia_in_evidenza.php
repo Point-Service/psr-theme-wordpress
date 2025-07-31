@@ -143,32 +143,35 @@ elseif (!empty($post_ids)):
 endif;
 ?>
 
-<!-- STILI -->
 <style>
+  /* Contenitore del carosello */
   #carosello-evidenza {
     position: relative;
     overflow: hidden;
   }
 
+  /* Altezza minima slide */
   #carosello-evidenza .carousel-item {
     min-height: 400px;
   }
 
+  /* Evita overflow visivo */
   #carosello-evidenza .carousel-inner {
     border-radius: 0;
     overflow: hidden;
   }
 
-  /* Immagine container */
+  /* Immagine: container grigio */
   #carosello-evidenza .col-img {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* centrato per mobile */
     background-color: #f5f5f5;
     padding: 1rem;
     min-height: 300px;
   }
 
+  /* Immagine: stile base */
   #carosello-evidenza img.img-evidenza {
     max-width: 90%;
     max-height: 300px;
@@ -176,32 +179,40 @@ endif;
     height: auto;
     object-fit: contain;
     display: block;
-    margin: 0 auto;
+    margin: 0 auto; /* centrato per mobile */
   }
 
+  /* Testo della card */
   #carosello-evidenza .card-body {
     padding: 1rem;
   }
 
+  /* Versione desktop (da 992px in su) */
   @media (min-width: 992px) {
+    /* Maggiore padding per il testo */
     #carosello-evidenza .card-body {
-      padding: 3rem;
+      padding-left: 3rem;
+      padding-right: 3rem;
     }
 
-#carosello-evidenza .col-img {
-  display: flex;
-  justify-content: center; /* oppure 'flex-end' per spingere a destra */
-  align-items: center;
-  background-color: #f5f5f5;
-  padding: 0;
-  min-height: 400px;
-}
+    /* Box immagine */
+    #carosello-evidenza .col-img {
+      justify-content: flex-end; /* 👉 spinge immagine a destra */
+      align-items: center;
+      background-color: #f5f5f5;
+      padding: 2rem;
+      min-height: 400px;
+    }
 
-#carosello-evidenza img.img-evidenza {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  display: block;
-}
+    /* Immagine in desktop */
+    #carosello-evidenza img.img-evidenza {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      margin-left: auto;
+      margin-right: 0;
+    }
   }
 </style>
+
