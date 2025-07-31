@@ -90,7 +90,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
               <!-- Immagine -->
               <div class="col-12 col-lg-6 order-1 order-lg-2 col-img">
                 <?php if ($img) {
-                  dci_get_img($img, 'img-fluid img-evidenza');
+                  dci_get_img($img, 'img-fluid');
                 } ?>
               </div>
 
@@ -271,5 +271,35 @@ endif;
       margin-right: 0;
     }
   }
+
+
+  /* --------------------------------------------- */
+        /* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
+        
+        .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 1rem 1rem 1rem 1rem; /* padding destro più ampio */
+            min-height: 400px;
+        }
+        
+        .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+            max-width: 90%;
+            max-height: 400px;
+            padding-right: 7px; /* o 1rem, 10rem, ecc. */
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        
+        @media (min-width: 992px) {
+            .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+                padding: 3rem;
+            }
+        }
+
+  
 </style>
 
