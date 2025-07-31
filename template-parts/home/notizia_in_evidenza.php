@@ -31,7 +31,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
 
           <!-- Immagine (destra desktop, sopra mobile) -->
           <div class="col-12 col-lg-6 order-1 order-lg-2 col-img">
-            <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjQwMCIgd2lkdGg9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2U2ZTZlNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjY2NjIj5UZXN0PC90ZXh0Pjwvc3ZnPg==" class="img-fluid img-evidenza" alt="Test">
+            <img src="https://comune.termevigliatore.me.it/wp-content/uploads/2024/05/sala_consiglio.jpg" class="img-fluid img-evidenza" alt="Test">
           </div>
 
         </div>
