@@ -220,12 +220,20 @@ endif;
 /* Altezza minima slide - tolto min-height fisso per mobile */
 #carosello-evidenza .carousel-item {
   min-height: auto;
-  display: flex !important;
+  display: none; /* Nascondi tutti di default */
   align-items: center;
   justify-content: center;
   padding: 1rem 0;
+  width: 100%; /* assicurati che occupi tutta la larghezza */
 }
 
+#carosello-evidenza .carousel-item.active {
+  display: flex !important; /* Solo attivo è flex e visibile */
+  flex-wrap: wrap;
+}
+
+
+  
 /* Row all'interno del carosello: permette wrap */
 #carosello-evidenza .row {
   flex-wrap: wrap;
