@@ -288,7 +288,6 @@ endif;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 1rem 1rem 1rem 1rem;
     min-height: 400px;
 }
 
@@ -302,11 +301,6 @@ endif;
     display: block;
 }
 
-@media (min-width: 992px) {
-    .single-news .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-        padding: 3rem;
-    }
-}
 
   
 </style>
