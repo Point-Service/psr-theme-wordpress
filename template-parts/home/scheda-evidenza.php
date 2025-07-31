@@ -115,7 +115,7 @@ switch ($post_type_label) {
                 <span class="data"><?php echo esc_html($arrdata[0] . ' ' . strtoupper($monthName) . ' ' . $arrdata[2]); ?></span>
             </div>
 
-            <h3 class="h5 card-title text-justify u-grey-light">
+            <h3 class="h4 card-title text-justify u-grey-light">
                 <?php
                 $title = get_the_title();
                 if (strlen($title) > 100) {
