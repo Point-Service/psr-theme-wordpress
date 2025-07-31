@@ -256,3 +256,31 @@ $current_group = dci_get_current_group();
 if(!is_user_logged_in())
     get_template_part("template-parts/common/access-modal");
 ?>
+<style>
+
+@media (max-width: 767.98px) {
+  /* Riduce margine e padding tra voci menu mobile */
+  .navbar-nav > li.nav-item {
+    margin-bottom: 4px !important;
+  }
+
+  .navbar-nav > li.nav-item > a.nav-link {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Extra menu mobile */
+  .mobile-extra-menu .nav-item {
+    margin-bottom: 4px !important;
+  }
+
+  .mobile-extra-menu .nav-link {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    line-height: 1.2 !important;
+  }
+}
+
+	
+</style>
