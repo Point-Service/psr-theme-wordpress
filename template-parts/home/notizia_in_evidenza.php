@@ -245,6 +245,10 @@ endif;
 
 /* Testo della card */
 #carosello-evidenza .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Allinea contenuto in alto */
+  min-height: 320px; /* Regola a seconda dell'altezza che vuoi */
   padding-top: 0;
   padding-bottom: 0;
   padding-left: 1rem;
@@ -253,13 +257,14 @@ endif;
 
 /* Versione desktop (da 992px in su) */
 @media (min-width: 992px) {
-  /* Maggiore padding per il testo */
   #carosello-evidenza .card-body {
+    min-height: 320px;
     padding-top: 0;
     padding-bottom: 0;
     padding-left: 3rem;
     padding-right: 3rem;
   }
+}
 
   /* Box immagine */
   #carosello-evidenza .col-img {
