@@ -299,8 +299,8 @@ endif;
 }
 
 .single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
-  padding-left: 0rem; /* spostato più a sinistra */
-  padding-right: 3rem;
+  padding-left: -1rem; /* spostato più a sinistra */
+  padding-right: 0rem;
 }
 
 /* Stili originali singolo post senza classe custom (per sicurezza) */
