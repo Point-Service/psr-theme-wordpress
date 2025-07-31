@@ -319,7 +319,6 @@ endif;
   height: auto;
   object-fit: contain;
   display: block;
-  margin-left: auto;
   padding-right: 1rem;
 }
 
