@@ -11,7 +11,7 @@
              rel="noopener"
              aria-label="Vai al portale <?php echo esc_attr(dci_get_option("nome_regione")); ?> - link esterno"
              title="Vai al portale <?php echo esc_attr(dci_get_option("nome_regione")); ?>">
-             <?php echo esc_html(dci_get_option("nome_regione")); ?>
+              <font color="white"><?php echo esc_html(dci_get_option("nome_regione")); ?></font>
           </a>
 
           <!-- Link desktop -->
@@ -23,7 +23,7 @@
                    target="_blank"
                    rel="noopener"
                    aria-label="Amministrazione trasparente">
-                <font color="black">Amministrazione trasparente</font>
+                <font color="white">Amministrazione trasparente</font>
                 </a>
               </div>
             <?php endif; ?>
@@ -35,7 +35,7 @@
                    target="_blank"
                    rel="noopener"
                    aria-label="Albo pretorio">
-                 Albo pretorio
+                 <font color="white"> Albo pretorio</font>
                 </a>
               </div>
             <?php endif; ?>
