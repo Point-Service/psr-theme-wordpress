@@ -8,31 +8,32 @@ $prefix = '_dci_notizia_';
 if (is_array($post_ids) && count($post_ids) > 1):
 ?>
     <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
- <div id="carosello-evidenza" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+<div id="carosello-evidenza" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
 
     <!-- SLIDE 1 -->
     <div class="carousel-item active">
       <div class="container">
-        <div class="row align-items-center flex-column flex-lg-row">
+        <div class="row g-0 flex-column flex-lg-row">
 
           <!-- Testo -->
-          <div class="col-12 col-lg-6 text-start mb-4 mb-lg-0">
-            <h3>Titolo Notizia 1</h3>
-            <p class="mb-2">Breve descrizione della notizia evidenziata. Testo introduttivo interessante e accattivante.</p>
-            <p class="text-muted"><small><i class="fas fa-calendar-alt me-1"></i>31 Luglio 2025</small></p>
-            <a href="#" class="btn btn-primary mt-2">
-              Vai alla pagina
-              <svg class="icon ms-1">
-                <use xlink:href="#it-arrow-right"></use>
-              </svg>
-            </a>
+          <div class="col-12 col-lg-6 order-2 order-lg-1 d-flex align-items-center">
+            <div class="card-body">
+              <h3 class="card-title">Titolo Slide 1</h3>
+              <p class="card-text">Questa è una descrizione della prima notizia evidenziata. È un testo breve che attira l'attenzione.</p>
+              <p class="text-muted mb-2"><small><i class="fas fa-calendar-alt me-1"></i>31 Luglio 2025</small></p>
+              <a href="#" class="btn btn-primary">
+                Leggi di più
+                <svg class="icon ms-1"><use xlink:href="#it-arrow-right"></use></svg>
+              </a>
+            </div>
           </div>
 
           <!-- Immagine -->
-          <div class="col-12 col-lg-6 d-flex justify-content-center">
-            <img src="https://via.placeholder.com/600x400" class="img-fluid rounded" alt="Immagine Notizia 1">
+          <div class="col-12 col-lg-6 offset-lg-1 order-1 order-lg-2 col-img">
+            <img src="https://via.placeholder.com/600x400" class="img-fluid img-evidenza" alt="Immagine slide 1">
           </div>
+
         </div>
       </div>
     </div>
@@ -40,42 +41,42 @@ if (is_array($post_ids) && count($post_ids) > 1):
     <!-- SLIDE 2 -->
     <div class="carousel-item">
       <div class="container">
-        <div class="row align-items-center flex-column flex-lg-row">
+        <div class="row g-0 flex-column flex-lg-row">
 
           <!-- Testo -->
-          <div class="col-12 col-lg-6 text-start mb-4 mb-lg-0">
-            <h3>Titolo Notizia 2</h3>
-            <p class="mb-2">Altra notizia in evidenza, con descrizione breve e invito all’azione.</p>
-            <p class="text-muted"><small><i class="fas fa-calendar-alt me-1"></i>28 Luglio 2025</small></p>
-            <a href="#" class="btn btn-primary mt-2">
-              Scopri di più
-              <svg class="icon ms-1">
-                <use xlink:href="#it-arrow-right"></use>
-              </svg>
-            </a>
+          <div class="col-12 col-lg-6 order-2 order-lg-1 d-flex align-items-center">
+            <div class="card-body">
+              <h3 class="card-title">Titolo Slide 2</h3>
+              <p class="card-text">Seconda notizia, con altra descrizione di esempio per riempire lo spazio e testare il layout.</p>
+              <p class="text-muted mb-2"><small><i class="fas fa-calendar-alt me-1"></i>30 Luglio 2025</small></p>
+              <a href="#" class="btn btn-primary">
+                Scopri di più
+                <svg class="icon ms-1"><use xlink:href="#it-arrow-right"></use></svg>
+              </a>
+            </div>
           </div>
 
           <!-- Immagine -->
-          <div class="col-12 col-lg-6 d-flex justify-content-center">
-            <img src="https://via.placeholder.com/600x400" class="img-fluid rounded" alt="Immagine Notizia 2">
+          <div class="col-12 col-lg-6 offset-lg-1 order-1 order-lg-2 col-img">
+            <img src="https://via.placeholder.com/600x400" class="img-fluid img-evidenza" alt="Immagine slide 2">
           </div>
+
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- Controlli -->
+  <!-- Controlli carosello -->
   <button class="carousel-control-prev" type="button" data-bs-target="#carosello-evidenza" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="carousel-control-prev-icon"></span>
     <span class="visually-hidden">Precedente</span>
   </button>
   <button class="carousel-control-next" type="button" data-bs-target="#carosello-evidenza" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="carousel-control-next-icon"></span>
     <span class="visually-hidden">Successivo</span>
   </button>
 </div>
-
 
 <?php
 // CASO SINGOLO POST
@@ -169,89 +170,78 @@ elseif (!empty($post_ids)):
 endif;
 ?>
 
-    <style>
-         #carosello-evidenza {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        #carosello-evidenza .carousel-item {
-            min-height: 400px;
-        }
-        
-        #carosello-evidenza .carousel-inner {
-            border-radius: 0;
-            overflow: hidden;
-        }
-        
-        /* Contenitore immagine carosello */
-        #carosello-evidenza .col-img {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f5f5f5;
-            padding: 1rem;
-            min-height: 300px;
-        }
-        
-        /* Immagine carosello */
-        #carosello-evidenza img.img-evidenza {
-            max-width: 90%;
-            max-height: 300px;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto;
-        }
-        
-        /* Testo card carosello */
-        #carosello-evidenza .card-body {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-        
-        /* Responsive layout per carosello */
-        @media (min-width: 992px) {
-            #carosello-evidenza .card-body {
-                padding-left: 3rem;
-                padding-right: 3rem;
-            }
-        
-            #carosello-evidenza .col-img {
-                padding: 2rem;
-            }
-        
-            .row > .col-lg-5.order-2.order-lg-1 {
-                padding-left: 0.5rem;
-            }
-        }
-        
-        /* --------------------------------------------- */
-        /* STILI AGGIUNTIVI PER IL BLOCCO "SINGOLO ELEMENTO" */
-        
-        .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 1rem 1rem 1rem 1rem; /* padding destro più ampio */
-            min-height: 400px;
-        }
-        
-        .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-            max-width: 90%;
-            max-height: 400px;
-            padding-right: 7px; /* o 1rem, 10rem, ecc. */
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            display: block;
-        }
-        
-        @media (min-width: 992px) {
-            .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-                padding: 3rem;
-            }
-        }
-    
-    </style>
+  <!-- STILE CSS PERSONALIZZATO -->
+<style>
+  #carosello-evidenza {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #carosello-evidenza .carousel-item {
+    min-height: 400px;
+  }
+
+  #carosello-evidenza .carousel-inner {
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  /* Contenitore immagine carosello */
+  #carosello-evidenza .col-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    min-height: 300px;
+  }
+
+  /* Immagine carosello */
+  #carosello-evidenza img.img-evidenza {
+    max-width: 90%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* Testo card carosello */
+  #carosello-evidenza .card-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Responsive layout */
+  @media (min-width: 992px) {
+    #carosello-evidenza .card-body {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+
+    #carosello-evidenza .col-img {
+      padding: 2rem;
+    }
+
+    .row > .col-lg-5.order-2.order-lg-1 {
+      padding-left: 0.5rem;
+    }
+
+    .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 3rem;
+      min-height: 400px;
+    }
+
+    .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+      max-width: 90%;
+      max-height: 400px;
+      padding-right: 7px;
+      object-fit: contain;
+      display: block;
+    }
+  }
+</style>
