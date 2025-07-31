@@ -124,7 +124,15 @@ $current_group = dci_get_current_group();
 	      <?php echo esc_html(dci_get_option("nome_comune")); ?>
 	    </div>
 	
-	    <div class="d-flex justify-content-between align-items-center gap-3 mb-3">	
+	    <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+	     <div class="language-selector">
+	        <?php
+	          $shortcode_output = do_shortcode('[google-translator]');
+	          if (trim($shortcode_output) !== '[google-translator]') {
+	              echo $shortcode_output;
+	          }
+	        ?>
+	      </div>	
 	      <div class="login-area ms-auto">
 	        <?php
 	          if (!is_user_logged_in()) {
@@ -133,15 +141,7 @@ $current_group = dci_get_current_group();
 	            get_template_part("template-parts/header/header-logged");
 	          }
 	        ?>
-	      </div>
-	      <div class="language-selector">
-	        <?php
-	          $shortcode_output = do_shortcode('[google-translator]');
-	          if (trim($shortcode_output) !== '[google-translator]') {
-	              echo $shortcode_output;
-	          }
-	        ?>
-	      </div>		    
+	      </div>	    
 	    </div>
 	  </div>
 	
