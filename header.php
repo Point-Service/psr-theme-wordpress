@@ -128,7 +128,7 @@ $current_group = dci_get_current_group();
 
 
 
-<?php if (wp_is_mobile()) : ?>
+          <?php if (wp_is_mobile()) : ?>
 		  <ul class="navbar-nav mt-3 mobile-extra-menu bg-dark p-3 rounded">
 		    <?php if (dci_get_option('url_sito_regione') && dci_get_option('nome_regione')) : ?>
 		      <li class="nav-item mb-2">
@@ -141,7 +141,29 @@ $current_group = dci_get_current_group();
 		        </a>
 		      </li>
 		    <?php endif; ?>
+
+
+		    <?php
+		    $shortcode_output = do_shortcode('[google-translator]');
+		    if (trim($shortcode_output) !== '[google-translator]') :
+		    ?>
+		      <li class="nav-item mb-2 text-white">
+		        <?php echo $shortcode_output; ?>
+		      </li>
+		    <?php endif; ?>
 		
+		    <li class="nav-item mt-3">
+		      <?php
+		      if (!is_user_logged_in()) {
+		        get_template_part("template-parts/header/header-anon");
+		      } else {
+		        get_template_part("template-parts/header/header-logged");
+		      }
+		      ?>
+		    </li>
+
+
+			  
 		    <?php if (dci_get_option('link_ammtrasparente')) : ?>
 		      <li class="nav-item mb-2">
 		        <a class="nav-link text-white"
@@ -166,24 +188,7 @@ $current_group = dci_get_current_group();
 		      </li>
 		    <?php endif; ?>
 		
-		    <?php
-		    $shortcode_output = do_shortcode('[google-translator]');
-		    if (trim($shortcode_output) !== '[google-translator]') :
-		    ?>
-		      <li class="nav-item mb-2 text-white">
-		        <?php echo $shortcode_output; ?>
-		      </li>
-		    <?php endif; ?>
-		
-		    <li class="nav-item mt-3">
-		      <?php
-		      if (!is_user_logged_in()) {
-		        get_template_part("template-parts/header/header-anon");
-		      } else {
-		        get_template_part("template-parts/header/header-logged");
-		      }
-		      ?>
-		    </li>
+
 		  </ul>
 		<?php endif; ?>
 
