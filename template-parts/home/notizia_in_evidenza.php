@@ -197,11 +197,12 @@ elseif (!empty($post_ids)):
       </div>
     </div>
 
-    <!-- Immagine -->
-    <?php if ($img) {
-      dci_get_img($img, 'img-fluid img-singola-evidenza');
-    } ?>
-  
+                 <!-- Immagine -->
+                    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+                        <?php if ($img) {
+                            dci_get_img($img, 'img-fluid');
+                        } ?>
+                    </div>  
   </div>
 </div>
 <?php
