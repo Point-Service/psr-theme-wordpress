@@ -156,6 +156,28 @@ for ($i = 1; $i <= 12; $i++) {
 }
 
 
+$home_options->add_field( array(
+    'id'   => $prefix . 'opzione_avanzata',
+    'name' => __( 'Opzioni avanzate per le Notizie', 'design_comuni_italia' ),
+    'desc' => __( 'Lista delle opzioni avanzate per la gestione delle Notizie.', 'design_comuni_italia' ),
+    'type' => 'title',
+) );
+
+
+   $home_options->add_field(array(
+    'id' => $prefix . 'ck_hide_notizie_old',
+    'name' => __('Nascondi notizie scadute', 'design_comuni_italia'),
+    'desc' => __('Se abilitata, questa opzione nasconderà automaticamente le notizie con data di scadenza antecedente a oggi se questa risulta inserita sulla singola Notizia.', 'design_comuni_italia'),
+    'type' => 'radio_inline',
+    'default' => 'false',
+    'options' => array(
+        'true' => __('Sì', 'design_comuni_italia'),
+        'false' => __('No', 'design_comuni_italia'),
+    ),
+    // 'attributes' => array(
+    //     'data-conditional-value' => "false",
+    // ),
+   ));
 
 
 	
@@ -246,28 +268,6 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
     ) );
 
 
-    $home_options->add_field( array(
-    'id'   => $prefix . 'check_notizie',
-    'name' => __( 'Sezione Check', 'design_comuni_italia' ),
-    'desc' => __( 'Gestione stile home page.', 'design_comuni_italia' ),
-    'type' => 'title',
-) );
-
-
-   $home_options->add_field(array(
-    'id' => $prefix . 'ck_hide_notizie_old',
-    'name' => __('Nascondi notizie scadute', 'design_comuni_italia'),
-    'desc' => __('Se abilitata, questa opzione nasconderà automaticamente le notizie con data di scadenza antecedente a oggi.', 'design_comuni_italia'),
-    'type' => 'radio_inline',
-    'default' => 'false',
-    'options' => array(
-        'true' => __('Sì', 'design_comuni_italia'),
-        'false' => __('No', 'design_comuni_italia'),
-    ),
-    // 'attributes' => array(
-    //     'data-conditional-value' => "false",
-    // ),
-));
 
 
     
