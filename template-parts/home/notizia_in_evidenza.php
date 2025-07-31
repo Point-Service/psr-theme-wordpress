@@ -8,7 +8,7 @@ $prefix = '_dci_notizia_';
 if (is_array($post_ids) && count($post_ids) > 1):
 ?>
   <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
-  <div id="carosello-evidenza" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+  <div id="carosello-evidenza" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
 
       <?php foreach ($post_ids as $index => $post_id):
@@ -204,150 +204,72 @@ endif;
 ?>
 
 <style>
- /* Contenitore del carosello */
-#carosello-evidenza {
-  position: relative;
-  overflow: visible; /* Permette contenuto visibile */
-  padding: 1rem 0;
-}
+  /* Contenitore del carosello */
+  #carosello-evidenza {
+    position: relative;
+    overflow: hidden;
+  }
 
-/* Carousel inner */
-#carosello-evidenza .carousel-inner {
-  border-radius: 0;
-  overflow: visible !important; /* evita contenuti nascosti */
-}
-
-/* Altezza minima slide e visibilità */
-#carosello-evidenza .carousel-item {
-  display: none; /* Nascondi tutti di default */
-  align-items: stretch; /* Stretch per altezza uniforme */
-  justify-content: center;
-  padding: 1rem 0;
-  width: 100%;
-  min-height: auto; /* altezza automatica */
-  overflow: visible !important; /* nessun overflow nascosto */
-}
-
-#carosello-evidenza .carousel-item.active {
-  display: flex !important; /* Solo attivo è flex e visibile */
-  flex-wrap: wrap;
-  align-items: stretch;
-  overflow: visible !important;
-}
-
-/* Row all'interno del carosello: permette wrap */
-#carosello-evidenza .row {
-  flex-wrap: wrap;
-  margin-left: 0;
-  margin-right: 0;
-}
-
-/* Colonna immagine */
-#carosello-evidenza .col-img {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; /* immagine a destra */
-  padding: 0 2rem;
-  min-height: 300px;
-  flex: 1 1 50%;
-}
-
-/* Immagine nel carosello */
-#carosello-evidenza img.img-evidenza {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  display: block;
-  margin-left: auto;
-  margin-right: 0;
-}
-
-/* Colonna testo */
-#carosello-evidenza .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Spaziatura verticale tra testo e tasto */
-  padding-left: 3rem; /* margine sinistro aumentato */
-  padding-right: 1rem;
-  flex: 1 1 50%;
-  min-height: auto;
-  height: 100%;
-}
-
-/* Titolo e descrizione in singolo elemento (non carousel) */
-.row > .col-lg-5 {
-  padding-left: 3rem !important; /* margine sinistro testo più ampio */
-  padding-right: 1rem !important;
-}
-
-/* Immagine singolo elemento */
-.row > .col-lg-6.offset-lg-1 {
-  padding-left: 1rem !important;
-  padding-right: 2rem !important;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-/* Immagine singolo */
-.row > .col-lg-6.offset-lg-1 img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Pulsante “Vai alla pagina” sempre in fondo */
-#carosello-evidenza .read-more {
-  margin-top: auto;
-}
-
-/* --- MOBILE --- */
-@media (max-width: 991px) {
+  /* Altezza minima slide */
   #carosello-evidenza .carousel-item {
-    flex-direction: column !important;
-    padding: 1rem;
-    min-height: auto;
+    min-height: 400px;
   }
 
+  /* Evita overflow visivo */
+  #carosello-evidenza .carousel-inner {
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  /* Immagine: container grigio */
   #carosello-evidenza .col-img {
-    justify-content: center !important;
-    padding: 0 1rem 1rem;
-    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* centrato per mobile */
+    padding: 0 1rem;
+    min-height: 300px;
   }
 
+  /* Immagine: stile base */
   #carosello-evidenza img.img-evidenza {
     max-width: 90%;
     max-height: 300px;
-    margin: 0 auto;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto; /* centrato per mobile */
   }
 
+  /* Testo della card */
   #carosello-evidenza .card-body {
-    padding-left: 1rem !important; /* margine sinistro ridotto per mobile */
-    padding-right: 1rem !important;
-    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Allinea contenuto in alto */
+    min-height: 320px;
+    padding: 0 1rem;
   }
 
-  /* Ordine testo sopra immagine nel carousel */
-  #carosello-evidenza .col-12.col-lg-6.order-2.order-lg-1 {
-    order: 1 !important;
+  /* Versione desktop (da 992px in su) */
+  @media (min-width: 992px) {
+    #carosello-evidenza .card-body {
+      padding: 0 3rem;
+    }
+
+    /* Box immagine */
+    #carosello-evidenza .col-img {
+      justify-content: flex-end; /* spinge immagine a destra */
+      padding: 0 2rem;
+      min-height: 400px;
+    }
+
+    /* Immagine in desktop */
+    #carosello-evidenza img.img-evidenza {
+      max-width: 100%;
+      max-height: 100%;
+      margin-left: auto;
+      margin-right: 0;
+    }
   }
-
-  #carosello-evidenza .col-12.col-lg-6.order-1.order-lg-2 {
-    order: 2 !important;
-  }
-
-  /* Singolo elemento testo margini ridotti */
-  .row > .col-lg-5 {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-  }
-
-  .row > .col-lg-6.offset-lg-1 {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-  }
-}
-
-
 </style>
 
