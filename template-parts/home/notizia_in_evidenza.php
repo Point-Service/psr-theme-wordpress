@@ -319,7 +319,6 @@ endif;
   height: auto;
   object-fit: contain;
   display: block;
-  padding-right: 1rem;
 }
 
 .single-news .row .col-lg-5.order-2.order-lg-1 {
