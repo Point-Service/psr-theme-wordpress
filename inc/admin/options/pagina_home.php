@@ -91,7 +91,7 @@ $home_options->add_field( array(
 	    'id' => $prefix . 'numero_notizie_home',
 	    'name' => __('Numero di notizie', 'design_comuni_italia'),
 	    'desc' => __(
-	        'Seleziona il numero di notizie da visualizzare in homepage.<br><strong>Nota:</strong> se il campo "Selezione notizia in evidenza" è compilato, avrà la priorità su questa impostazione.',
+	        'Seleziona il numero di notizie da visualizzare in homepage.<br><strong>Nota:</strong> se è presente almeno un elemento compilato nelle schede "Scheda Notizie", questo avrà la priorità su questa impostazione.<br>Per attivare questa opzione, assicurati che tutte le schede sottostanti siano vuote.',
 	        'design_comuni_italia'
 	    ),
 	    'type' => 'radio_inline',
