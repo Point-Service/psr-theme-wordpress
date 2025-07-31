@@ -299,5 +299,9 @@ endif;
     margin-left: auto; /* Spinge ancora a destra */
 }
 
-
+.single-news .col-lg-5.order-2.order-lg-1 {
+    padding-left: 1.5rem;
+    padding-right: 1rem;
+}
+  
 </style>
