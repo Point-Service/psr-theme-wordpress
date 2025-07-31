@@ -291,5 +291,21 @@ endif;
                 padding: 3rem;
             }
         }
+
+
+@media (max-width: 991.98px) {
+  .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+    justify-content: center !important;
+    text-align: center;
+    padding: 1.5rem 1rem !important;
+  }
+
+  .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+    margin: 0 auto;
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}
     
     </style>
