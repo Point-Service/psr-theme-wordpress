@@ -137,7 +137,7 @@ elseif (!empty($post_ids)):
   <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
   <div class="row">
     <!-- Testo -->
-    <div class="col-lg-6 order-1 order-lg-2 pe-lg-6 d-flex align-items-center justify-content-end">
+    <div class="col-lg-5 order-2 order-lg-1">
       <div class="card mb-0">
         <div class="card-body pb-2">
           <div class="category-top d-flex align-items-center mb-2">
@@ -286,25 +286,23 @@ endif;
   align-items: center;
   justify-content: flex-end;
   min-height: 400px;
-  padding-right: 3rem; /* fallback */
-  padding-right: var(--bs-gutter-x, 3rem); /* usa p-6 effettivo */
+  padding-right: 3rem;
 }
 
 .single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-  max-width: 100%;
+  max-width: 90%;
   max-height: 400px;
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
-  margin: 0; /* nessun auto margin */
+  margin-left: auto;
 }
 
 .single-news .row .col-lg-5.order-2.order-lg-1 {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  padding-left: 1.5rem;
+  padding-right: 1rem;
 }
-
 
   
 </style>
