@@ -253,7 +253,6 @@ endif;
 @media (min-width: 992px) {
   #carosello-evidenza .col-img {
     justify-content: flex-end;
-    padding: 0 3rem;
     min-height: 400px;
   }
   #carosello-evidenza img.img-evidenza {
