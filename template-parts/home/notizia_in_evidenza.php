@@ -300,7 +300,7 @@ endif;
 
 .single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
   padding-left: 0rem; /* spostato più a sinistra */
-  padding-right: 1.0rem;
+  padding-right: 3rem;
 }
 
 /* Stili originali singolo post senza classe custom (per sicurezza) */
