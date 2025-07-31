@@ -159,68 +159,38 @@ $current_group = dci_get_current_group();
                     ?>
                 </nav>
 
+                <?php if (wp_is_mobile()) : ?>
+                  <div class="mobile-login-language-wrapper mt-3 bg-dark p-3 rounded d-flex flex-column gap-3">
 
-	<?php if (wp_is_mobile()) : ?>
-  <ul class="navbar-nav mt-3 mobile-extra-menu bg-dark p-3 rounded">
-    <?php if (dci_get_option('url_sito_regione') && dci_get_option('nome_regione')) : ?>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white"
-           href="<?php echo esc_url(dci_get_option('url_sito_regione')); ?>"
-           target="_blank"
-           rel="noopener"
-           aria-label="Vai al portale <?php echo esc_attr(dci_get_option('nome_regione')); ?>">
-          <font color="white"><?php echo esc_html(dci_get_option('nome_regione')); ?></font>
-        </a>
-      </li>
-    <?php endif; ?>
+                    <div class="ente-name text-white mb-2" style="font-weight:600; font-size:1.1rem;">
+                      <?php echo esc_html(dci_get_option("nome_comune")); ?>
+                    </div>
 
-    <?php if (dci_get_option('link_ammtrasparente')) : ?>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white"
-           href="<?php echo esc_url(dci_get_option('link_ammtrasparente')); ?>"
-           target="_blank"
-           rel="noopener"
-           aria-label="Amministrazione trasparente">
-         <font color="white"> Amministrazione trasparente</font>
-        </a>
-      </li>
-    <?php endif; ?>
+                    <div class="d-flex justify-content-start align-items-center gap-3">
+                      <div class="language-selector text-white">
+                        <?php
+                          $shortcode_output = do_shortcode('[google-translator]');
+                          if (trim($shortcode_output) !== '[google-translator]') {
+                              echo $shortcode_output;
+                          }
+                        ?>
+                      </div>
 
-    <?php if (dci_get_option('link_albopretorio')) : ?>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white"
-           href="<?php echo esc_url(dci_get_option('link_albopretorio')); ?>"
-           target="_blank"
-           rel="noopener"
-           aria-label="Albo pretorio">
-         <font color="white"> Albo pretorio</font>
-        </a>
-      </li>
-    <?php endif; ?>
+                      <div class="login-area ms-auto">
+                        <?php
+                          if (!is_user_logged_in()) {
+                            get_template_part("template-parts/header/header-anon");
+                          } else {
+                            get_template_part("template-parts/header/header-logged");
+                          }
+                        ?>
+                      </div>
+                    </div>
 
-    <?php
-    $shortcode_output = do_shortcode('[google-translator]');
-    if (trim($shortcode_output) !== '[google-translator]') :
-    ?>
-      <li class="nav-item mb-2 text-white">
-        <?php echo $shortcode_output; ?>
-      </li>
-    <?php endif; ?>
-
-    <li class="nav-item mt-3">
-      <?php
-      if (!is_user_logged_in()) {
-        get_template_part("template-parts/header/header-anon");
-      } else {
-        get_template_part("template-parts/header/header-logged");
-      }
-      ?>
-    </li>
-  </ul>
-<?php endif; ?>
+                  </div>
+                <?php endif; ?>
 
 
-			
                   <?php
                     $show_socials = dci_get_option( "show_socials", "socials" );
                     if($show_socials == "true") : 
@@ -280,7 +250,28 @@ if(!is_user_logged_in())
     padding-bottom: 6px !important;
     line-height: 1.2 !important;
   }
+
+  /* Stile per il nuovo wrapper login+lingua */
+  .mobile-login-language-wrapper {
+    color: white;
+  }
+
+  .mobile-login-language-wrapper .ente-name {
+    /* Puoi aggiungere styling extra qui se vuoi */
+  }
+
+  .mobile-login-language-wrapper .language-selector {
+    /* Se vuoi personalizzare la lingua */
+  }
+
+  .mobile-login-language-wrapper .login-area {
+    /* Eventuali padding o margini */
+  }
+
+  /* Allinea lingua e login verticalmente */
+  .mobile-login-language-wrapper > div.d-flex {
+    align-items: center;
+  }
 }
 
-	
 </style>
