@@ -230,17 +230,21 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
         // ),
     ));
 
-    $home_options->add_field(array(
-        'id' => $prefix . 'numero_notizie_home',
-        'name' => __('Numero di notizie', 'design_comuni_italia'),
-        'desc' => __('Seleziona il numero di notizie che vuoi vissualizzare nella home', 'design_comuni_italia'),
-        'type' => 'radio_inline',
-        'default' => 0,
-        'options' => array(
-            0 => __(0, 'design_comuni_italia'),
-            3 => __(3, 'design_comuni_italia'),
-            6 => __(6, 'design_comuni_italia'),
-            12=> __(12, 'design_comuni_italia'),
-        ),
-    ));
+	$home_options->add_field(array(
+	    'id' => $prefix . 'numero_notizie_home',
+	    'name' => __('Numero di notizie', 'design_comuni_italia'),
+	    'desc' => __(
+	        'Seleziona il numero di notizie da visualizzare in homepage.<br><strong>Nota:</strong> se il campo "Selezione notizia in evidenza" è compilato, avrà la priorità su questa impostazione.',
+	        'design_comuni_italia'
+	    ),
+	    'type' => 'radio_inline',
+	    'default' => 0,
+	    'options' => array(
+	        0 => __('0', 'design_comuni_italia'),
+	        3 => __('3', 'design_comuni_italia'),
+	        6 => __('6', 'design_comuni_italia'),
+	        12 => __('12', 'design_comuni_italia'),
+	    ),
+	));
+
 }
