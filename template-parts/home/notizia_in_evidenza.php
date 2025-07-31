@@ -166,7 +166,6 @@ endif;
     display: flex;
     align-items: center;
     justify-content: center; /* centrato per mobile */
-    background-color: #f5f5f5;
     padding: 1rem;
     min-height: 300px;
   }
