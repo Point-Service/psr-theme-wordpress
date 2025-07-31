@@ -28,7 +28,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                 <div class="row g-0">
 
                     <?php if ($img): ?>
-                    <div class="col-12 col-lg-6 offset-lg-1 image-column">
+                    <div class="col-12 col-lg-6 image-column ms-auto">
                         <?php dci_get_img($img, 'img-fluid'); ?>
                     </div>
                     <?php endif; ?>
