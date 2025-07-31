@@ -103,18 +103,15 @@ switch ($post_type_label) {
         <?php } ?>
         <div class="card-body d-flex flex-column">
            
-            <div class="category title-xsmall-semi-bold fw-semibold">
-                <?php if (isset($tipo)) { ?>
-                    <a class="category text-decoration-none" href="<?php echo get_term_link($tipo->term_id); ?>">
-                        <?php echo strtoupper($tipo->name); ?>
-                    </a>
-                <?php } else { ?>
-                     <a class="category text-decoration-none" href="<?php echo $url_tipo; ?>">
-                        <?php echo strtoupper($tipo_name); ?>
-                    </a>
-                <?php }?>
-                <span class="data"><?php echo esc_html($arrdata[0] . ' ' . strtoupper($monthName) . ' ' . $arrdata[2]); ?></span>
-            </div>
+            <span class="category title-xsmall-semi-bold fw-semibold">
+                    <a href="<?php echo esc_url($url_tipo); ?>" class="category title-xsmall-semi-bold fw-semibold"><?php echo strtoupper(esc_html($tipo_name)); ?></a>
+                </span>
+                <?php if (is_array($arrdata) && count($arrdata)) { ?>
+                    <span class="data fw-normal">
+                        <?php echo esc_html($arrdata[0] . ' ' . $monthName . ' ' . $arrdata[2]); ?>
+                    </span>          
+                <?php } ?>
+              </div>
 
             <h3 class="h5 card-title text-justify u-grey-light">
                 <?php
