@@ -51,8 +51,8 @@ if (is_array($post_ids) && count($post_ids) > 1):
 
                     <p class="mb-2 font-serif">
                       <?php
-                        if(mb_strlen($descrizione_breve) > 200){
-                          $descrizione_limitata = mb_substr($descrizione_breve, 0, 200) . '...';
+                        if(mb_strlen($descrizione_breve) > 150){
+                          $descrizione_limitata = mb_substr($descrizione_breve, 0, 150) . '...';
                         } else {
                           $descrizione_limitata = $descrizione_breve;
                         }
