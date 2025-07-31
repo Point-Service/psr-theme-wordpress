@@ -211,98 +211,75 @@ endif;
 ?>
 
 <style>
-  /* Contenitore del carosello */
-  #carosello-evidenza {
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Altezza minima slide */
-  #carosello-evidenza .carousel-item {
-    min-height: 400px;
-  }
-
-  /* Evita overflow visivo */
-  #carosello-evidenza .carousel-inner {
-    border-radius: 0;
-    overflow: hidden;
-  }
-
-  /* Immagine: container grigio */
-  #carosello-evidenza .col-img {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* centrato per mobile */
-    padding: 0 1rem;
-    min-height: 300px;
-  }
-
-  /* Immagine: stile base */
-  #carosello-evidenza img.img-evidenza {
-    max-width: 90%;
-    max-height: 300px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto; /* centrato per mobile */
-  }
-
-  /* Testo della card */
-  #carosello-evidenza .card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Allinea contenuto in alto */
-    min-height: 320px;
-    padding: 0 1rem;
-  }
-
-  /* Versione desktop (da 992px in su) */
-  @media (min-width: 992px) {
-    #carosello-evidenza .card-body {
-      padding: 0 1rem;
-    }
-
-    /* Box immagine */
-    #carosello-evidenza .col-img {
-      justify-content: flex-end; /* spinge immagine a destra */
-      padding: 0 2rem;
-      min-height: 400px;
-    }
-
-    /* Immagine in desktop */
-    #carosello-evidenza img.img-evidenza {
-      max-width: 100%;
-      max-height: 100%;
-      margin-left: auto;
-      margin-right: 0;
-    }
-  }
-
-
-  
-.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-height: 400px;
-  padding-right: 3rem;
+/* Contenitore del carosello */
+#carosello-evidenza {
+  position: relative;
+  overflow: hidden;
 }
 
-.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+/* Altezza minima slide */
+#carosello-evidenza .carousel-item {
+  min-height: 400px;
+}
+
+/* Evita overflow visivo */
+#carosello-evidenza .carousel-inner {
+  border-radius: 0;
+  overflow: hidden;
+}
+
+/* Immagine: container grigio */
+#carosello-evidenza .col-img {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centrato per mobile */
+  padding: 0 1rem;
+  min-height: 300px;
+}
+
+/* Immagine: stile base */
+#carosello-evidenza img.img-evidenza {
   max-width: 90%;
-  max-height: 400px;
+  max-height: 300px;
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
-  margin-left: auto;
+  margin: 0 auto; /* centrato per mobile */
 }
 
-.single-news .row .col-lg-5.order-2.order-lg-1 {
-  padding-left: 1.5rem;
-  padding-right: 1rem;
+/* Testo della card */
+#carosello-evidenza .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Allinea contenuto in alto */
+  min-height: 320px;
+  padding: 0 1rem;
 }
+
+/* Versione desktop (da 992px in su) */
+@media (min-width: 992px) {
+  #carosello-evidenza .card-body {
+    padding: 0 1rem;
+  }
+
+  /* Box immagine */
+  #carosello-evidenza .col-img {
+    justify-content: flex-end; /* spinge immagine a destra */
+    padding: 0 2rem;
+    min-height: 400px;
+  }
+
+  /* Immagine in desktop */
+  #carosello-evidenza img.img-evidenza {
+    max-width: 100%;
+    max-height: 100%;
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
+/* Stili singolo post con classe personalizzata */
 .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
   display: flex;
   align-items: center;
@@ -324,6 +301,30 @@ endif;
 .single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
   padding-left: 3rem; /* spostato più a sinistra */
   padding-right: 0.5rem;
+}
+
+/* Stili originali singolo post senza classe custom (per sicurezza) */
+.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 400px;
+  padding-right: 3rem;
+}
+
+.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+  max-width: 90%;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+}
+
+.single-news .row .col-lg-5.order-2.order-lg-1 {
+  padding-left: 1.5rem;
+  padding-right: 1rem;
 }
 
   
