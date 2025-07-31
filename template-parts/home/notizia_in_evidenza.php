@@ -26,7 +26,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
         <div class="container">
           <div class="row align-items-center">
             <!-- Testo a sinistra -->
-            <div class="col-12 col-lg-6 order-2 order-lg-1">
+            <div class="col-12 col-lg-5 order-2 order-lg-1">
               <div class="card border-0">
                 <div class="card-body">
                   <div class="category-top d-flex align-items-center mb-2">
@@ -51,7 +51,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                   </p>
 
                   <?php if (is_array($luogo_notizia) && count($luogo_notizia)): ?>
-                    <p class="mb-2"><i class="fas fa-map-marker-alt me-1"></i>
+                    <p><i class="fas fa-map-marker-alt me-1"></i>
                       <?php foreach ($luogo_notizia as $luogo_id):
                         $luogo_post = get_post($luogo_id);
                         if ($luogo_post && !is_wp_error($luogo_post)):
@@ -82,7 +82,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
 
             <!-- Immagine a destra -->
             <?php if ($img): ?>
-            <div class="col-12 col-lg-6 order-1 order-lg-2 d-flex justify-content-center">
+            <div class="col-12 col-lg-6 offset-lg-1 order-1 order-lg-2 d-flex justify-content-center">
               <?php dci_get_img($img, 'img-fluid'); ?>
             </div>
             <?php endif; ?>
@@ -124,7 +124,7 @@ elseif (!empty($post_ids)):
   <div class="container">
     <div class="row align-items-center">
       <!-- Testo -->
-      <div class="col-12 col-lg-5 order-2 order-lg-1">
+      <div class="col-12 col-lg-5">
         <div class="card border-0">
           <div class="card-body">
             <div class="category-top d-flex align-items-center mb-2">
@@ -180,7 +180,7 @@ elseif (!empty($post_ids)):
 
       <!-- Immagine -->
       <?php if ($img): ?>
-      <div class="col-12 col-lg-6 offset-lg-1 order-1 order-lg-2 d-flex justify-content-center">
+      <div class="col-12 col-lg-6 offset-lg-1 d-flex justify-content-center">
         <?php dci_get_img($img, 'img-fluid'); ?>
       </div>
       <?php endif; ?>
@@ -192,59 +192,31 @@ elseif (!empty($post_ids)):
 endif;
 ?>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const carosello = document.getElementById('carosello-evidenza');
-    if (!carosello) return;
-
-    function updateCarouselHeight() {
-      const activeItem = carosello.querySelector('.carousel-item.active');
-      if (activeItem) {
-        const inner = carosello.querySelector('.carousel-inner');
-        inner.style.height = activeItem.scrollHeight + 'px';
-      }
-    }
-
-    updateCarouselHeight();
-
-    carosello.addEventListener('slid.bs.carousel', updateCarouselHeight);
-    window.addEventListener('resize', updateCarouselHeight);
-  });
-</script>
-
 <style>
-  /* Mobile first */
+  /* Mobile first: immagine sopra testo */
   #carosello-evidenza .carousel-item .row {
     flex-direction: column;
   }
-
   #carosello-evidenza .carousel-item .order-1 {
     order: 1;
   }
-
   #carosello-evidenza .carousel-item .order-2 {
     order: 2;
   }
-
-  /* Immagine sopra testo in mobile */
   #carosello-evidenza .carousel-item .order-1 {
     margin-bottom: 1rem;
   }
 
-  /* Desktop */
+  /* Desktop: testo sinistra, immagine destra */
   @media(min-width: 992px) {
     #carosello-evidenza .carousel-item .row {
       flex-direction: row;
     }
-    /* testo a sinistra */
     #carosello-evidenza .carousel-item .order-lg-1 {
       order: 1;
     }
-    /* immagine a destra */
     #carosello-evidenza .carousel-item .order-lg-2 {
       order: 2;
     }
   }
 </style>
-
-
