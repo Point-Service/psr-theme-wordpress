@@ -24,23 +24,17 @@ $current_group = dci_get_current_group();
 <?php get_template_part("template-parts/common/sprites"); ?>
 <?php get_template_part("template-parts/common/skiplink"); ?>
 
-<header
-    class="it-header-wrapper"
-    data-bs-target="#header-nav-wrapper"
-    style=""
->
+<header class="it-header-wrapper" data-bs-target="#header-nav-wrapper">
     <?php get_template_part("template-parts/header/slimheader"); ?> 
 
     <div class="it-nav-wrapper">
-    <div class="it-header-center-wrapper">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <div class="it-header-center-content-wrapper">
-              <div class="it-brand-wrapper">
-                <a 
-                href="<?php echo home_url(); ?>" 
-                <?php if(!is_front_page()) echo 'title="Vai alla Homepage"'; ?>>
+      <div class="it-header-center-wrapper">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="it-header-center-content-wrapper">
+                <div class="it-brand-wrapper">
+                  <a href="<?php echo home_url(); ?>" <?php if(!is_front_page()) echo 'title="Vai alla Homepage"'; ?>>
                     <div class="it-brand-text d-flex align-items-center">
                       <?php get_template_part("template-parts/common/logo"); ?>
                       <div>
@@ -50,84 +44,69 @@ $current_group = dci_get_current_group();
                         </div>
                       </div>
                     </div>
-                </a>
-              </div>
-              <div class="it-right-zone">
-              <?php
-                    $show_socials = dci_get_option( "show_socials", "socials" );
-                    if($show_socials == "true") : 
-                    $socials = dci_get_option('link_social', 'socials');
-                    ?>
-                    <div class="it-socials d-none d-lg-flex">
-                        <span>Seguici su:</span>
-                        <ul>
-                            <?php foreach ($socials as $social) { ?>
-                              <li>
-                                <a href="<?php echo $social['url_social'] ?>" target="_blank">
-                                    <svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#<?php echo $social['icona_social'] ?>"></use>
-                                  </svg>
-                                  <span class="visually-hidden"><?php echo $social['nome_social']; ?></span>
-                                </a>
-                            </li>
-                            <?php } ?>                            
-                        </ul><!-- /header-social-wrapper -->
-                    </div><!-- /it-socials -->
-                    <?php endif ?>
-                <div class="it-search-wrapper">
-                  <span class="d-none d-md-block">Cerca</span>
-                  <button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito"  id="search-home">
-                      <svg class="icon">
-                        <use href="#it-search"></use>
-                      </svg>
-                  </button>
+                  </a>
+                </div>
+                <div class="it-right-zone">
+                  <?php
+                    $show_socials = dci_get_option("show_socials", "socials");
+                    if($show_socials == "true"):
+                      $socials = dci_get_option('link_social', 'socials');
+                  ?>
+                  <div class="it-socials d-none d-lg-flex">
+                    <span>Seguici su:</span>
+                    <ul>
+                      <?php foreach ($socials as $social) { ?>
+                        <li>
+                          <a href="<?php echo $social['url_social'] ?>" target="_blank">
+                            <svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#<?php echo $social['icona_social'] ?>"></use></svg>
+                            <span class="visually-hidden"><?php echo $social['nome_social']; ?></span>
+                          </a>
+                        </li>
+                      <?php } ?>
+                    </ul>
+                  </div>
+                  <?php endif; ?>
+                  <div class="it-search-wrapper">
+                    <span class="d-none d-md-block">Cerca</span>
+                    <button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito" id="search-home">
+                      <svg class="icon"><use href="#it-search"></use></svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="it-header-navbar-wrapper" id="header-nav-wrapper">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <div
-              class="navbar navbar-expand-lg has-megamenu"
-            >
-              <button
-                class="custom-navbar-toggler"
-                type="button"
-                aria-controls="nav4"
-                aria-expanded="false"
-                aria-label="Mostra/Nascondi la navigazione"
-                data-bs-target="#nav4"
-                data-bs-toggle="navbarcollapsible"
-              >
-                <svg class="icon">
-                  <use href="#it-burger"></use>
-                </svg>
-              </button>
-              <div class="navbar-collapsable" id="nav4">
-                <div class="overlay" style="display: none"></div>
-                <div class="close-div">
-                  <button class="btn close-menu" type="button">
-                    <span class="visually-hidden">Nascondi la navigazione</span>
-                    <svg class="icon">
-                      <use href="#it-close-big"></use>
-                    </svg>
-                  </button>
-                </div>
-                <div class="menu-wrapper">
-                <a href="<?php echo home_url(); ?>" aria-label="Vai alla homepage" class="logo-hamburger">
-                    <?php get_template_part("template-parts/common/logo-mobile"); ?>
-                  <div class="it-brand-text">
-                    <div class="it-brand-title"><?php echo dci_get_option("nome_comune"); ?></div>
+
+      <div class="it-header-navbar-wrapper" id="header-nav-wrapper">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="navbar navbar-expand-lg has-megamenu">
+                <button class="custom-navbar-toggler" type="button" aria-controls="nav4" aria-expanded="false" aria-label="Mostra/Nascondi la navigazione" data-bs-target="#nav4" data-bs-toggle="navbarcollapsible">
+                  <svg class="icon"><use href="#it-burger"></use></svg>
+                </button>
+                <div class="navbar-collapsable" id="nav4">
+                  <div class="overlay" style="display: none"></div>
+                  <div class="close-div">
+                    <button class="btn close-menu" type="button">
+                      <span class="visually-hidden">Nascondi la navigazione</span>
+                      <svg class="icon"><use href="#it-close-big"></use></svg>
+                    </button>
                   </div>
-                </a>
-                <nav aria-label="Principale">
-                  <?php
-                      $location = "menu-header-main";
-                      if ( has_nav_menu( $location ) ) {
+                  <div class="menu-wrapper">
+                    <a href="<?php echo home_url(); ?>" aria-label="Vai alla homepage" class="logo-hamburger">
+                      <?php get_template_part("template-parts/common/logo-mobile"); ?>
+                      <div class="it-brand-text">
+                        <div class="it-brand-title"><?php echo dci_get_option("nome_comune"); ?></div>
+                      </div>
+                    </a>
+
+                    <nav aria-label="Principale">
+                      <?php
+                        $location = "menu-header-main";
+                        if ( has_nav_menu( $location ) ) {
                           wp_nav_menu(array(
                             "theme_location" => $location, 
                             "depth" => 0,  
@@ -139,97 +118,93 @@ $current_group = dci_get_current_group();
                             'current_group' => $current_group,
                             'walker' => new Main_Menu_Walker()
                           ));
-                      }
-                    ?>
-                </nav>
-                <nav aria-label="Secondaria">
-                  <?php
-                    $location = "menu-header-right";
-                    if ( has_nav_menu( $location ) ) {
-                        wp_nav_menu(array(
-                          "theme_location" => $location, 
-                          "depth" => 0,  
-                          "menu_class" => "navbar-nav navbar-secondary", 
-                          "container" => "",
-                          'list_item_class'  => 'nav-item',
-                          'link_class'   => 'nav-link',
-                          'walker' => new Menu_Header_Right_Walker()
-                        ));
-                    }
-                    ?>
-                </nav>
+                        }
+                      ?>
+                    </nav>
 
-                <?php if (wp_is_mobile()) : ?>
-                  <div class="mobile-login-language-wrapper mt-3 bg-dark p-3 rounded d-flex flex-column gap-3">
+                    <nav aria-label="Secondaria">
+                      <?php
+                        $location = "menu-header-right";
+                        if ( has_nav_menu( $location ) ) {
+                          wp_nav_menu(array(
+                            "theme_location" => $location, 
+                            "depth" => 0,  
+                            "menu_class" => "navbar-nav navbar-secondary", 
+                            "container" => "",
+                            'list_item_class'  => 'nav-item',
+                            'link_class'   => 'nav-link',
+                            'walker' => new Menu_Header_Right_Walker()
+                          ));
+                        }
+                      ?>
+                    </nav>
 
-                    <div class="ente-name text-white mb-2" style="font-weight:600; font-size:1.1rem;">
-                      <?php echo esc_html(dci_get_option("nome_comune")); ?>
-                    </div>
+                    <?php if (wp_is_mobile()) : ?>
+                      <div class="mobile-login-language-wrapper mt-3 p-2 d-flex flex-column gap-2 d-md-none">
 
-                    <div class="d-flex justify-content-start align-items-center gap-3">
-                      <div class="language-selector text-white">
-                        <?php
-                          $shortcode_output = do_shortcode('[google-translator]');
-                          if (trim($shortcode_output) !== '[google-translator]') {
-                              echo $shortcode_output;
-                          }
-                        ?>
+                        <div class="ente-name mb-2">
+                          <?php echo esc_html(dci_get_option("nome_comune")); ?>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div class="language-selector">
+                            <?php
+                              $shortcode_output = do_shortcode('[google-translator]');
+                              if (trim($shortcode_output) !== '[google-translator]') {
+                                  echo $shortcode_output;
+                              }
+                            ?>
+                          </div>
+
+                          <div class="login-area">
+                            <?php
+                              if (!is_user_logged_in()) {
+                                get_template_part("template-parts/header/header-anon");
+                              } else {
+                                get_template_part("template-parts/header/header-logged");
+                              }
+                            ?>
+                          </div>
+                        </div>
+
                       </div>
+                    <?php endif; ?>
 
-                      <div class="login-area ms-auto">
-                        <?php
-                          if (!is_user_logged_in()) {
-                            get_template_part("template-parts/header/header-anon");
-                          } else {
-                            get_template_part("template-parts/header/header-logged");
-                          }
-                        ?>
-                      </div>
-                    </div>
-
-                  </div>
-                <?php endif; ?>
-
-
-                  <?php
-                    $show_socials = dci_get_option( "show_socials", "socials" );
-                    if($show_socials == "true") : 
-                    $socials = dci_get_option('link_social', 'socials');
+                    <?php
+                      $show_socials = dci_get_option("show_socials", "socials");
+                      if($show_socials == "true"):
+                        $socials = dci_get_option('link_social', 'socials');
                     ?>
                     <div class="it-socials">
-                        <span>Seguici su:</span>
-                        <ul>
-                            <?php foreach ($socials as $social) { ?>
-                              <li>
-                                <a href="<?php echo $social['url_social'] ?>" target="_blank">
-                                    <svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#<?php echo $social['icona_social'] ?>"></use>
-                                  </svg>
-                                  <span class="visually-hidden"><?php echo $social['nome_social']; ?></span>
-                                </a>
-                            </li>
-                            <?php } ?>                            
-                        </ul><!-- /header-social-wrapper -->
-                    </div><!-- /it-socials -->
-                    <?php endif ?>
-                </div>
-              </div>
+                      <span>Seguici su:</span>
+                      <ul>
+                        <?php foreach ($socials as $social) { ?>
+                          <li>
+                            <a href="<?php echo $social['url_social'] ?>" target="_blank">
+                              <svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#<?php echo $social['icona_social'] ?>"></use></svg>
+                              <span class="visually-hidden"><?php echo $social['nome_social']; ?></span>
+                            </a>
+                          </li>
+                        <?php } ?>
+                      </ul>
+                    </div>
+                    <?php endif; ?>
+
+                  </div> <!-- end .menu-wrapper -->
+                </div> <!-- end .navbar-collapsable -->
+              </div> <!-- end .navbar -->
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </header>
 
 <?php get_template_part("template-parts/common/search-modal"); ?>
-<?php
-if(!is_user_logged_in())
-    get_template_part("template-parts/common/access-modal");
-?>
-<style>
+<?php if(!is_user_logged_in()) get_template_part("template-parts/common/access-modal"); ?>
 
+<style>
 @media (max-width: 767.98px) {
-  /* Riduce margine e padding tra voci menu mobile */
   .navbar-nav > li.nav-item {
     margin-bottom: 4px !important;
   }
@@ -240,7 +215,6 @@ if(!is_user_logged_in())
     line-height: 1.2 !important;
   }
 
-  /* Extra menu mobile */
   .mobile-extra-menu .nav-item {
     margin-bottom: 4px !important;
   }
@@ -251,27 +225,26 @@ if(!is_user_logged_in())
     line-height: 1.2 !important;
   }
 
-  /* Stile per il nuovo wrapper login+lingua */
   .mobile-login-language-wrapper {
-    color: white;
+    background-color: transparent !important;
+    color: inherit;
+    padding: 1rem;
   }
 
   .mobile-login-language-wrapper .ente-name {
-    /* Puoi aggiungere styling extra qui se vuoi */
+    font-weight: 600;
+    font-size: 1.1rem;
   }
 
-  .mobile-login-language-wrapper .language-selector {
-    /* Se vuoi personalizzare la lingua */
-  }
-
+  .mobile-login-language-wrapper .language-selector,
   .mobile-login-language-wrapper .login-area {
-    /* Eventuali padding o margini */
-  }
-
-  /* Allinea lingua e login verticalmente */
-  .mobile-login-language-wrapper > div.d-flex {
+    display: flex;
     align-items: center;
   }
-}
 
+  .mobile-login-language-wrapper .language-selector select {
+    max-width: 100px;
+  }
+}
 </style>
+
