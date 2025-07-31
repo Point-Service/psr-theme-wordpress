@@ -127,9 +127,9 @@ switch ($post_type_label) {
             </h3>
             
             <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
-                echo  '<br><p class="text-paragraph-card u-grey-light m-0 text-justify">' . ucfirst(strtolower($descrizione_breve)) . '</p>';
+                echo  '<p class="text-paragraph-card u-grey-light m-0 text-justify">' . ucfirst(strtolower($descrizione_breve)) . '</p>';
             } else {
-                echo '<br><p class="text-paragraph-card u-grey-light m-0 text-justify">' . $descrizione_breve . '</p>';
+                echo '<p class="text-paragraph-card u-grey-light m-0 text-justify">' . $descrizione_breve . '</p>';
             } ?>
 
             <?php if (is_array($luogo_notizia) && count($luogo_notizia)) { ?><br><br>
