@@ -208,133 +208,100 @@ endif;
 ?>
 
     <style>
-  /* === Stili generali per il carosello evidenza === */
+/* === STILI CAROSELLO EVIDENZA - UNIFICATI E RESPONSIVE === */
+
 #carosello-evidenza {
   position: relative;
   overflow: hidden;
 }
 
-#carosello-evidenza .carousel-item {
-  min-height: 400px;
-}
-
 #carosello-evidenza .carousel-inner {
-  border-radius: 0;
   overflow: hidden;
 }
 
-/* === Immagine nel carosello === */
-#carosello-evidenza .col-img {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5f5f5;
-  padding: 1rem;
-  min-height: 300px;
-}
-
-#carosello-evidenza img.img-evidenza {
-  max-width: 90%;
-  max-height: 300px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-}
-
-/* === Testo del carosello === */
-#carosello-evidenza .card-body {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-@media (min-width: 992px) {
-  #carosello-evidenza .card-body {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
-
-  #carosello-evidenza .col-img {
-    padding: 2rem;
-  }
-
-  .row > .col-lg-5.order-2.order-lg-1 {
-    padding-left: 0.5rem;
-  }
-}
-
-/* === Layout coerente tra carosello e blocco singolo === */
-.row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
+#carosello-evidenza .carousel-item {
   min-height: 400px;
-  text-align: center;
+  display: flex;
+  align-items: center;
 }
 
-.row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-  max-width: 90%;
+#carosello-evidenza .row {
+  width: 100%;
+  margin: 0;
+}
+
+#carosello-evidenza .carousel-item .col-lg-6,
+#carosello-evidenza .carousel-item .col-lg-5,
+#carosello-evidenza .carousel-item .col-lg-6.offset-lg-1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  min-height: 100%;
+}
+
+#carosello-evidenza .carousel-item img.img-fluid {
+  max-width: 100%;
   max-height: 300px;
-  width: auto;
-  height: auto;
   object-fit: contain;
   display: block;
   margin: 0 auto;
 }
 
-/* Desktop: forzatura altezza e allineamento */
+/* === Card contenente testo === */
+#carosello-evidenza .card {
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#carosello-evidenza .card-body {
+  padding: 1rem 1.25rem;
+}
+
 @media (min-width: 992px) {
-  .carousel-item .row {
-    min-height: 400px;
+  #carosello-evidenza .carousel-item {
+    min-height: 420px;
   }
 
-  .carousel-item .card-body {
+  #carosello-evidenza .card-body {
+    padding: 2rem 2.5rem;
+  }
+
+  #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1 {
     padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  .carousel-item .col-lg-6.order-2.order-lg-1 {
-    display: flex;
-    align-items: center;
-  }
-
-  .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-    padding: 3rem;
   }
 }
 
-/* Mobile: immagine sopra, testo sotto */
+/* === VERSIONE MOBILE === */
 @media (max-width: 991.98px) {
-  .carousel-item .row {
+  #carosello-evidenza .carousel-item .row {
     flex-direction: column;
   }
 
-  .carousel-item .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+  #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1 {
     order: -1;
-    padding: 1.5rem 1rem !important;
-    min-height: auto;
-    justify-content: center !important;
-    text-align: center;
+    padding: 1rem 1rem;
   }
 
-  .carousel-item .col-lg-6.offset-lg-1.order-1.order-lg-2 img {
-    max-width: 100%;
+  #carosello-evidenza .carousel-item img.img-fluid {
     max-height: 250px;
-    height: auto;
-    display: block;
-    margin: 0 auto;
   }
 
-  .carousel-item .col-lg-6.order-2.order-lg-1 {
+  #carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
     padding: 1rem 1rem 2rem 1rem;
   }
 }
 
-/* Per uniformare altezza minima delle card (se serve) */
-.carousel-item .card {
-  min-height: 100%;
+/* === NAVIGAZIONE CAROSELLO === */
+.carousel-control-prev,
+.carousel-control-next {
+  filter: invert(100%);
 }
+
 
     </style>
