@@ -117,83 +117,13 @@ $current_group = dci_get_current_group();
                     </svg>
                   </button>
                 </div>
-
-		      
-	                <div class="menu-wrapper">
-	                <a href="<?php echo home_url(); ?>" aria-label="Vai alla homepage" class="logo-hamburger">
-	                    <?php get_template_part("template-parts/common/logo-mobile"); ?>
-	                  <div class="it-brand-text">
-	                    <div class="it-brand-title"><?php echo dci_get_option("nome_comune"); ?></div>
-	                  </div>
-	                </a>
-
-
-            <?php if (wp_is_mobile()) : ?>
-		  <ul class="navbar-nav mt-3 mobile-extra-menu p-3 rounded">
-
-		    <?php
-		    $shortcode_output = do_shortcode('[google-translator]');
-		    if (trim($shortcode_output) !== '[google-translator]') :
-		    ?>
-		      <li class="nav-item mb-2 text-white">
-		        <?php echo $shortcode_output; ?>
-		      </li>
-		    <?php endif; ?>
-		
-		    <li class="nav-item mt-3">
-		      <?php
-		      if (!is_user_logged_in()) {
-		        get_template_part("template-parts/header/header-anon");
-		      } else {
-		        get_template_part("template-parts/header/header-logged");
-		      }
-		      ?>
-		    </li>
-
-		    <?php if (dci_get_option('url_sito_regione') && dci_get_option('nome_regione')) : ?>
-		      <li class="nav-item mb-2">
-		        <a class="nav-link text-white"
-		           href="<?php echo esc_url(dci_get_option('url_sito_regione')); ?>"
-		           target="_blank"
-		           rel="noopener"
-		           aria-label="Vai al portale <?php echo esc_attr(dci_get_option('nome_regione')); ?>">
-		          <font color="white"><?php echo esc_html(dci_get_option('nome_regione')); ?></font>
-		        </a>
-		      </li>
-		    <?php endif; ?>
-
-				
-		    <?php if (dci_get_option('link_ammtrasparente')) : ?>
-		      <li class="nav-item mb-2">
-		        <a class="nav-link text-white"
-		           href="<?php echo esc_url(dci_get_option('link_ammtrasparente')); ?>"
-		           target="_blank"
-		           rel="noopener"
-		           aria-label="Amministrazione trasparente">
-		         <font color="white"> Amministrazione trasparente</font>
-		        </a>
-		      </li>
-		    <?php endif; ?>
-		
-		    <?php if (dci_get_option('link_albopretorio')) : ?>
-		      <li class="nav-item mb-2">
-		        <a class="nav-link text-white"
-		           href="<?php echo esc_url(dci_get_option('link_albopretorio')); ?>"
-		           target="_blank"
-		           rel="noopener"
-		           aria-label="Albo pretorio">
-		         <font color="white"> Albo pretorio</font>
-		        </a>
-		      </li>
-		    <?php endif; ?>
-		
-
-		  </ul>
-		<?php endif; ?>
-
-
-
-			
+                <div class="menu-wrapper">
+                <a href="<?php echo home_url(); ?>" aria-label="Vai alla homepage" class="logo-hamburger">
+                    <?php get_template_part("template-parts/common/logo-mobile"); ?>
+                  <div class="it-brand-text">
+                    <div class="it-brand-title"><?php echo dci_get_option("nome_comune"); ?></div>
+                  </div>
+                </a>
                 <nav aria-label="Principale">
                   <?php
                       $location = "menu-header-main";
@@ -228,10 +158,6 @@ $current_group = dci_get_current_group();
                     }
                     ?>
                 </nav>
-
-
-	
-			
                   <?php
                     $show_socials = dci_get_option( "show_socials", "socials" );
                     if($show_socials == "true") : 
@@ -267,31 +193,3 @@ $current_group = dci_get_current_group();
 if(!is_user_logged_in())
     get_template_part("template-parts/common/access-modal");
 ?>
-<style>
-
-@media (max-width: 767.98px) {
-  /* Riduce margine e padding tra voci menu mobile */
-  .navbar-nav > li.nav-item {
-    margin-bottom: 4px !important;
-  }
-
-  .navbar-nav > li.nav-item > a.nav-link {
-    padding-top: 6px !important;
-    padding-bottom: 6px !important;
-    line-height: 1.2 !important;
-  }
-
-  /* Extra menu mobile */
-  .mobile-extra-menu .nav-item {
-    margin-bottom: 4px !important;
-  }
-
-  .mobile-extra-menu .nav-link {
-    padding-top: 6px !important;
-    padding-bottom: 6px !important;
-    line-height: 1.2 !important;
-  }
-}
-
-	
-</style>
