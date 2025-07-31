@@ -8,7 +8,7 @@ $prefix = '_dci_notizia_';
 if (is_array($post_ids) && count($post_ids) > 1):
 ?>
   <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
-  <div id="carosello-evidenza" class="carousel slide" data-bs-ride="carousel">
+  <div id="carosello-evidenza" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
     <div class="carousel-inner">
 
       <?php foreach ($post_ids as $index => $post_id):
@@ -217,23 +217,24 @@ endif;
   overflow: visible !important; /* evita contenuti nascosti */
 }
 
-/* Altezza minima slide - tolto min-height fisso per mobile */
+/* Altezza minima slide e visibilità */
 #carosello-evidenza .carousel-item {
-  min-height: auto;
   display: none; /* Nascondi tutti di default */
-  align-items: center;
+  align-items: stretch; /* Stretch per altezza uniforme */
   justify-content: center;
   padding: 1rem 0;
-  width: 100%; /* assicurati che occupi tutta la larghezza */
+  width: 100%;
+  min-height: auto; /* altezza automatica */
+  overflow: visible !important; /* nessun overflow nascosto */
 }
 
 #carosello-evidenza .carousel-item.active {
   display: flex !important; /* Solo attivo è flex e visibile */
   flex-wrap: wrap;
+  align-items: stretch;
+  overflow: visible !important;
 }
 
-
-  
 /* Row all'interno del carosello: permette wrap */
 #carosello-evidenza .row {
   flex-wrap: wrap;
@@ -265,11 +266,12 @@ endif;
 #carosello-evidenza .card-body {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between; /* Spaziatura verticale tra testo e tasto */
   padding-left: 3rem; /* margine sinistro aumentato */
   padding-right: 1rem;
   flex: 1 1 50%;
   min-height: auto;
+  height: 100%;
 }
 
 /* Titolo e descrizione in singolo elemento (non carousel) */
@@ -292,6 +294,11 @@ endif;
   max-width: 100%;
   height: auto;
   object-fit: contain;
+}
+
+/* Pulsante “Vai alla pagina” sempre in fondo */
+#carosello-evidenza .read-more {
+  margin-top: auto;
 }
 
 /* --- MOBILE --- */
@@ -340,6 +347,7 @@ endif;
     padding-right: 1rem !important;
   }
 }
+
 
 </style>
 
