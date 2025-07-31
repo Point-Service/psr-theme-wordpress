@@ -1,49 +1,45 @@
-<div class="it-header-slim-wrapper">
+<div class="it-header-slim-wrapper d-none d-lg-block"> <!-- visibile solo da LG in su -->
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <div class="it-header-slim-wrapper-content d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-2">
+        <div class="it-header-slim-wrapper-content d-flex justify-content-between align-items-center py-2">
 
           <!-- Nome Regione -->
-          <a class="d-lg-block navbar-brand text-decoration-none"
+          <a class="navbar-brand text-decoration-none"
              href="<?php echo esc_url(dci_get_option("url_sito_regione")); ?>"
              target="_blank"
              rel="noopener"
-             aria-label="Vai al portale <?php echo esc_attr(dci_get_option("nome_regione")); ?> - link esterno - apertura nuova scheda"
+             aria-label="Vai al portale <?php echo esc_attr(dci_get_option("nome_regione")); ?> - link esterno"
              title="Vai al portale <?php echo esc_attr(dci_get_option("nome_regione")); ?>">
             <?php echo esc_html(dci_get_option("nome_regione")); ?>
           </a>
 
-          <!-- Right Zone -->
-          <div class="it-header-slim-right-zone d-flex flex-column flex-lg-row align-items-start align-items-lg-center" role="navigation">
-
-            <!-- Amministrazione trasparente -->
+          <!-- Link desktop -->
+          <div class="it-header-slim-right-zone d-flex align-items-center" role="navigation">
             <?php if (dci_get_option("link_ammtrasparente")) : ?>
-              <div class="it-user-wrapper nav-item dropdown me-3">
-                <a class="d-lg-block navbar-brand text-decoration-none"
+              <div class="nav-item me-3">
+                <a class="navbar-brand text-decoration-none"
                    href="<?php echo esc_url(dci_get_option("link_ammtrasparente")); ?>"
                    target="_blank"
                    rel="noopener"
-                   aria-label="Amministrazione trasparente - link esterno">
+                   aria-label="Amministrazione trasparente">
                   Amministrazione trasparente
                 </a>
               </div>
             <?php endif; ?>
 
-            <!-- Albo Pretorio -->
             <?php if (dci_get_option("link_albopretorio")) : ?>
-              <div class="it-user-wrapper nav-item dropdown me-3">
-                <a class="d-lg-block navbar-brand text-decoration-none"
+              <div class="nav-item me-3">
+                <a class="navbar-brand text-decoration-none"
                    href="<?php echo esc_url(dci_get_option("link_albopretorio")); ?>"
                    target="_blank"
                    rel="noopener"
-                   aria-label="Albo pretorio - link esterno">
+                   aria-label="Albo pretorio">
                   Albo pretorio
                 </a>
               </div>
             <?php endif; ?>
 
-            <!-- Google Translator -->
             <?php
             $shortcode_output = do_shortcode('[google-translator]');
             if (trim($shortcode_output) !== '[google-translator]') {
@@ -51,7 +47,6 @@
             }
             ?>
 
-            <!-- Login/Utente -->
             <div class="nav-item">
               <?php
               if (!is_user_logged_in()) {
@@ -61,10 +56,9 @@
               }
               ?>
             </div>
+          </div>
 
-          </div><!-- /it-header-slim-right-zone -->
-
-        </div><!-- /it-header-slim-wrapper-content -->
+        </div>
       </div>
     </div>
   </div>
