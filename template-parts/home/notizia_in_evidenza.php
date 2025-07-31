@@ -198,7 +198,7 @@ elseif (!empty($post_ids)):
     </div>
 
     <!-- Immagine -->
-    <div class="col-lg-6 offset-lg-1 order-1 order-lg-2 px-0 px-lg-2">
+    <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-end pe-lg-6">
       <?php if ($img) {
         dci_get_img($img, 'img-fluid');
       } ?>
@@ -281,22 +281,22 @@ endif;
 
 
 
-.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+.single-news .col-lg-6.order-1.order-lg-2 {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   min-height: 400px;
-  padding-right: 3rem;
+  padding-right: 3rem; /* fallback se pe-lg-6 non applica */
 }
 
-.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-  max-width: 90%;
+.single-news .col-lg-6.order-1.order-lg-2 img.img-fluid {
+  max-width: 100%;
   max-height: 400px;
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
-  margin-left: auto;
+  margin: 0;
 }
 
 .single-news .row .col-lg-5.order-2.order-lg-1 {
