@@ -198,11 +198,10 @@ elseif (!empty($post_ids)):
     </div>
 
     <!-- Immagine -->
-    <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-end pe-lg-6">
-      <?php if ($img) {
-        dci_get_img($img, 'img-fluid');
-      } ?>
-    </div>
+    <?php if ($img) {
+      dci_get_img($img, 'img-fluid img-singola-evidenza');
+    } ?>
+  
   </div>
 </div>
 <?php
@@ -301,6 +300,15 @@ endif;
 .single-news .row .col-lg-5.order-2.order-lg-1 {
   padding-left: 1.5rem;
   padding-right: 1rem;
+}
+
+  .single-news .col-lg-6.order-1.order-lg-2 img.img-singola-evidenza {
+  margin-left: auto;
+  margin-right: 0;
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
   
