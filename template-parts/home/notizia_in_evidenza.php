@@ -260,7 +260,7 @@ endif;
   /* Versione desktop (da 992px in su) */
   @media (min-width: 992px) {
     #carosello-evidenza .card-body {
-      padding: 0 3rem;
+      padding: 0 1rem;
     }
 
     /* Box immagine */
@@ -281,9 +281,6 @@ endif;
 
 
 
-
-
-
 .single-news .col-lg-6.offset-lg-1.order-1.order-lg-2 {
     display: flex;
     align-items: center;
@@ -301,6 +298,4 @@ endif;
     display: block;
 }
 
-
-  
 </style>
