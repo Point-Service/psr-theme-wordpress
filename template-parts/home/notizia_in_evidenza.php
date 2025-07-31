@@ -292,11 +292,10 @@ endif;
 .single-news .col-lg-6.order-1.order-lg-2 img.img-fluid {
   max-width: 100%;
   max-height: 400px;
-  width: auto;
-  height: auto;
   object-fit: contain;
   display: block;
-  margin: 0;
+  margin-left: auto;  /* Spinge l'immagine a destra */
+  margin-right: 0;    /* Evita spostamenti a sinistra */
 }
 
 .single-news .row .col-lg-5.order-2.order-lg-1 {
