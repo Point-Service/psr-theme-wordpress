@@ -203,72 +203,83 @@ endif;
 ?>
 
 <style>
-  /* Contenitore del carosello */
-  #carosello-evidenza {
-    position: relative;
-    overflow: hidden;
+ /* Contenitore del carosello */
+#carosello-evidenza {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Altezza minima slide */
+#carosello-evidenza .carousel-item {
+  min-height: 400px;
+}
+
+/* Evita overflow visivo */
+#carosello-evidenza .carousel-inner {
+  border-radius: 0;
+  overflow: hidden;
+}
+
+/* Immagine: container grigio */
+#carosello-evidenza .col-img {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centrato per mobile */
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  min-height: 300px;
+}
+
+/* Immagine: stile base */
+#carosello-evidenza img.img-evidenza {
+  max-width: 90%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto; /* centrato per mobile */
+}
+
+/* Testo della card */
+#carosello-evidenza .card-body {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Versione desktop (da 992px in su) */
+@media (min-width: 992px) {
+  /* Maggiore padding per il testo */
+  #carosello-evidenza .card-body {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 
-  /* Altezza minima slide */
-  #carosello-evidenza .carousel-item {
+  /* Box immagine */
+  #carosello-evidenza .col-img {
+    justify-content: flex-end; /* 👉 spinge immagine a destra */
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
     min-height: 400px;
   }
 
-  /* Evita overflow visivo */
-  #carosello-evidenza .carousel-inner {
-    border-radius: 0;
-    overflow: hidden;
-  }
-
-  /* Immagine: container grigio */
-  #carosello-evidenza .col-img {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* centrato per mobile */
-    padding: 1rem;
-    min-height: 300px;
-  }
-
-  /* Immagine: stile base */
+  /* Immagine in desktop */
   #carosello-evidenza img.img-evidenza {
-    max-width: 90%;
-    max-height: 300px;
-    width: auto;
-    height: auto;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     display: block;
-    margin: 0 auto; /* centrato per mobile */
+    margin-left: auto;
+    margin-right: 0;
   }
-
-  /* Testo della card */
-  #carosello-evidenza .card-body {
-    padding: 1rem;
-  }
-
-  /* Versione desktop (da 992px in su) */
-  @media (min-width: 992px) {
-    /* Maggiore padding per il testo */
-    #carosello-evidenza .card-body {
-      padding-left: 3rem;
-      padding-right: 3rem;
-    }
-
-    /* Box immagine */
-    #carosello-evidenza .col-img {
-      justify-content: flex-end; /* 👉 spinge immagine a destra */
-      align-items: center;
-      padding: 2rem;
-      min-height: 400px;
-    }
-
-    /* Immagine in desktop */
-    #carosello-evidenza img.img-evidenza {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      display: block;
-      margin-left: auto;
-      margin-right: 0;
-    }
-  }
+}
 </style>
