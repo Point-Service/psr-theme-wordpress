@@ -214,20 +214,22 @@ endif;
   overflow: hidden;
 }
 
+/* Impedisce tagli del contenuto */
 #carosello-evidenza .carousel-inner {
-  position: relative;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
+/* Adatta automaticamente l’altezza del carosello */
 #carosello-evidenza .carousel-item {
-  transition: transform 0.6s ease-in-out;
   display: block;
   width: 100%;
-  min-height: 400px;
+  height: auto;
+  transition: transform 0.6s ease-in-out;
+  padding: 1rem 0;
 }
 
-/* Struttura flessibile per riga interna al carosello */
+/* Struttura flessibile */
 #carosello-evidenza .carousel-item .row {
   display: flex;
   flex-wrap: wrap;
@@ -235,14 +237,14 @@ endif;
   width: 100%;
 }
 
-/* Immagine nel carosello */
+/* Immagine */
 #carosello-evidenza .carousel-item .col-lg-6.offset-lg-1.order-1.order-lg-2 {
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f5f5f5;
   padding: 1rem;
-  min-height: 300px;
+  min-height: auto;
   text-align: center;
 }
 
@@ -256,7 +258,7 @@ endif;
   margin: 0 auto;
 }
 
-/* Testo nel carosello */
+/* Testo */
 #carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
   display: flex;
   align-items: center;
@@ -267,13 +269,13 @@ endif;
   width: 100%;
   border: 0;
   border-radius: 0;
-  min-height: 100%;
 }
 
 #carosello-evidenza .carousel-item .card-body {
   padding: 1rem;
 }
 
+/* Layout per schermi grandi */
 @media (min-width: 992px) {
   #carosello-evidenza .carousel-item .card-body {
     padding-left: 3rem;
@@ -285,7 +287,7 @@ endif;
   }
 }
 
-/* Mobile layout: immagine sopra, testo sotto */
+/* Layout per mobile */
 @media (max-width: 991.98px) {
   #carosello-evidenza .carousel-item .row {
     flex-direction: column;
@@ -312,7 +314,7 @@ endif;
   }
 }
 
-/* Uniformità nei controlli carosello */
+/* Controlli */
 #carosello-evidenza .carousel-control-prev,
 #carosello-evidenza .carousel-control-next {
   width: 5%;
@@ -323,7 +325,7 @@ endif;
   background-size: 100% 100%;
 }
 
-/* Aggiustamenti generali */
+/* Typography / Spaziature */
 .carousel-item .card-title {
   font-size: 1.25rem;
   font-weight: 600;
@@ -346,6 +348,19 @@ endif;
 
 .carousel-item .card-body small {
   font-weight: 500;
+}
+
+/* Aggiunta per evitare overflow da tabelle o contenuti grandi */
+#carosello-evidenza .carousel-item .card-body {
+  overflow: visible;
+}
+
+#carosello-evidenza .carousel-item .card {
+  height: auto;
+}
+
+#carosello-evidenza .carousel-item .col-lg-6.order-2.order-lg-1 {
+  height: auto;
 }
 
 
