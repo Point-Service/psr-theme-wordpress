@@ -118,24 +118,13 @@ $current_group = dci_get_current_group();
 		      
 	                <div class="menu-wrapper">
 
-
-
    <?php if (wp_is_mobile()) : ?>
 	  <div class="mobile-login-language-wrapper mt-3 mb-2 px-3">
 	    <div class="ente-name mb-2 fw-semibold">
 	      <?php echo esc_html(dci_get_option("nome_comune")); ?>
 	    </div>
 	
-	    <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-	      <div class="language-selector">
-	        <?php
-	          $shortcode_output = do_shortcode('[google-translator]');
-	          if (trim($shortcode_output) !== '[google-translator]') {
-	              echo $shortcode_output;
-	          }
-	        ?>
-	      </div>
-	
+	    <div class="d-flex justify-content-between align-items-center gap-3 mb-3">	
 	      <div class="login-area ms-auto">
 	        <?php
 	          if (!is_user_logged_in()) {
@@ -145,6 +134,14 @@ $current_group = dci_get_current_group();
 	          }
 	        ?>
 	      </div>
+	      <div class="language-selector">
+	        <?php
+	          $shortcode_output = do_shortcode('[google-translator]');
+	          if (trim($shortcode_output) !== '[google-translator]') {
+	              echo $shortcode_output;
+	          }
+	        ?>
+	      </div>		    
 	    </div>
 	  </div>
 	
