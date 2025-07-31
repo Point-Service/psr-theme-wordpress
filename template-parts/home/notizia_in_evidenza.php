@@ -188,13 +188,20 @@ endif;
       padding: 3rem;
     }
 
-    #carosello-evidenza .col-img {
-      padding: 3rem;
-      min-height: 400px;
-    }
+#carosello-evidenza .col-img {
+  display: flex;
+  justify-content: center; /* oppure 'flex-end' per spingere a destra */
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 0;
+  min-height: 400px;
+}
 
-    #carosello-evidenza img.img-evidenza {
-      max-height: 400px;
-    }
+#carosello-evidenza img.img-evidenza {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
   }
 </style>
