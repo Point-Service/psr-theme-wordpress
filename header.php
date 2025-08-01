@@ -45,6 +45,9 @@ $current_group = dci_get_current_group();
                       <?php get_template_part("template-parts/common/logo"); ?>
                       <div>
                         <div class="it-brand-title"><?php echo dci_get_option("nome_comune"); ?></div>
+                       <div class="it-brand-tagline d-none d-md-block">
+                          <?php echo dci_get_option("motto_comune"); ?>
+                        </div>
                       </div>
                     </div>
                 </a>
