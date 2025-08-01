@@ -401,33 +401,32 @@ JS
 }
 
 
-// CREA AUTOMATICAMENTE LA PAGINA MAPPA DEL SITO RICHIAMANDO IL TEMPLATE
 function crea_pagina_sitemap_personalizzata() {
     $slug = 'page-sitemap';
     $pagina = get_page_by_path($slug);
 
     if (!$pagina) {
-        // Pagina non esiste ⇒ creala
         $pagina_id = wp_insert_post(array(
             'post_title'    => 'Mappa del Sito',
             'post_name'     => $slug,
             'post_content'  => '',
             'post_status'   => 'publish',
             'post_type'     => 'page',
-            'page_template' => 'page-sitemap.php', // ✅ Corretto con .php
+            'page_template' => 'page-templates/page-sitemap.php', // ✅ Con cartella
         ));
 
         if (!is_wp_error($pagina_id)) {
             error_log('Pagina "Mappa del Sito" creata automaticamente.');
         }
     } else {
-        // Se esiste, aggiorna solo il template se necessario
-        if (get_page_template_slug($pagina->ID) !== 'page-sitemap.php') { // ✅ Anche qui
+        // Se esiste già, aggiorna il template se non è corretto
+        if (get_page_template_slug($pagina->ID) !== 'page-templates/page-sitemap.php') {
             wp_update_post(array(
                 'ID'            => $pagina->ID,
-                'page_template' => 'page-sitemap.php',
+                'page_template' => 'page-templates/page-sitemap.php',
             ));
         }
     }
 }
 add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
+
