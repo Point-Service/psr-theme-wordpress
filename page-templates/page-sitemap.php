@@ -47,89 +47,61 @@ function sitemap_comune_style($parent_id = 0) {
 ?>
 
 <style>
-    /* Font e palette colori istituzionali PA */
-    .sitemap-list {
-        list-style: none;
-        margin-left: 0;
-        padding-left: 0;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        color: #1a1a1a;
-    }
+ /* Esempio con classi Bootstrap */
+.sitemap-section {
+    margin-bottom: 2rem;
+    border-left: 5px solid var(--bs-primary); /* usa colore primario di Bootstrap */
+    padding-left: 1rem;
+}
 
-    /* Sezione principale */
-    .sitemap-section {
-        margin-bottom: 2rem;
-        border-left: 5px solid #005aa7; /* blu istituzionale PA */
-        padding-left: 1rem;
-    }
+.sitemap-section > h3 {
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    color: var(--bs-primary);
+    border-bottom: 2px solid var(--bs-primary);
+    padding-bottom: 0.3rem;
+}
 
-    /* Titolo sezione */
-    .sitemap-section > h3 {
-        font-weight: 700;
-        font-size: 1.6rem;
-        margin-bottom: 0.5rem;
-        color: #005aa7;
-        border-bottom: 2px solid #005aa7;
-        padding-bottom: 0.3rem;
-    }
+.sitemap-section > h3 a {
+    color: var(--bs-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
 
-    .sitemap-section > h3 a {
-        color: #005aa7;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
+.sitemap-section > h3 a:hover,
+.sitemap-section > h3 a:focus {
+    color: var(--bs-secondary);
+    text-decoration: underline;
+    outline-offset: 3px;
+    outline: 2px solid var(--bs-secondary);
+    outline-radius: 4px;
+}
 
-    .sitemap-section > h3 a:hover,
-    .sitemap-section > h3 a:focus {
-        color: #007acc;
-        text-decoration: underline;
-        outline-offset: 3px;
-        outline: 2px solid #007acc;
-        outline-radius: 4px;
-    }
+.sitemap-list ul {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--bs-gray-300);
+}
 
-    /* Lista annidata */
-    .sitemap-list ul {
-        margin-left: 1.5rem;
-        margin-top: 0.5rem;
-        padding-left: 1rem;
-        border-left: 2px solid #d0d7de;
-    }
+.sitemap-list li > a {
+    font-weight: 600;
+    color: var(--bs-dark);
+    text-decoration: none;
+    display: inline-block;
+    margin: 0.25rem 0;
+    transition: color 0.3s ease;
+}
 
-    /* Link pagine secondarie e successive */
-    .sitemap-list li > a {
-        font-weight: 600;
-        color: #003c70;
-        text-decoration: none;
-        display: inline-block;
-        margin: 0.25rem 0;
-        transition: color 0.3s ease;
-    }
-
-    .sitemap-list li > a:hover,
-    .sitemap-list li > a:focus {
-        color: #005aa7;
-        text-decoration: underline;
-        outline-offset: 3px;
-        outline: 2px solid #005aa7;
-        outline-radius: 4px;
-    }
-
-    /* Spaziatura tra items */
-    .sitemap-list li {
-        margin-bottom: 0.4rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-        .sitemap-section > h3 {
-            font-size: 1.3rem;
-        }
-
-        .sitemap-list li > a {
-            font-size: 0.95rem;
-        }
-    }
+.sitemap-list li > a:hover,
+.sitemap-list li > a:focus {
+    color: var(--bs-primary);
+    text-decoration: underline;
+    outline-offset: 3px;
+    outline: 2px solid var(--bs-primary);
+    outline-radius: 4px;
+}
 </style>
 
 
