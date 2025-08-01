@@ -47,98 +47,83 @@ function sitemap_comune_style($parent_id = 0) {
 ?>
 
 <style>
-    /* Definisci queste variabili nel tuo tema o nel file style.css globale */
-    :root {
-        --pa-blue: #005aa7;        /* blu istituzionale PA */
-        --pa-blue-light: #007acc;  /* blu chiaro */
-        --pa-blue-dark: #003c70;   /* blu scuro */
-        --pa-border-light: #d0d7de; /* bordo chiaro */
-        --pa-text: #1a1a1a;        /* testo principale */
-        --font-family-pa: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
+ .sitemap-list {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    font-family: var(--pa-font-family);
+    color: var(--pa-text-color);
+}
 
-    .sitemap-list {
-        list-style: none;
-        margin-left: 0;
-        padding-left: 0;
-        font-family: var(--font-family-pa);
-        color: var(--pa-text);
-    }
+.sitemap-section {
+    margin-bottom: 2rem;
+    border-left: 5px solid var(--pa-blue);
+    padding-left: 1rem;
+}
 
-    /* Sezione principale */
-    .sitemap-section {
-        margin-bottom: 2rem;
-        border-left: 5px solid var(--pa-blue);
-        padding-left: 1rem;
-    }
+.sitemap-section > h3 {
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    color: var(--pa-blue);
+    border-bottom: 2px solid var(--pa-blue);
+    padding-bottom: 0.3rem;
+}
 
-    /* Titolo sezione */
+.sitemap-section > h3 a {
+    color: var(--pa-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.sitemap-section > h3 a:hover,
+.sitemap-section > h3 a:focus {
+    color: var(--pa-blue-light);
+    text-decoration: underline;
+    outline-offset: 3px;
+    outline: 2px solid var(--pa-blue-light);
+    outline-radius: 4px;
+}
+
+.sitemap-list ul {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--pa-border-color);
+}
+
+.sitemap-list li > a {
+    font-weight: 600;
+    color: var(--pa-blue-dark);
+    text-decoration: none;
+    display: inline-block;
+    margin: 0.25rem 0;
+    transition: color 0.3s ease;
+}
+
+.sitemap-list li > a:hover,
+.sitemap-list li > a:focus {
+    color: var(--pa-blue-light);
+    text-decoration: underline;
+    outline-offset: 3px;
+    outline: 2px solid var(--pa-blue-light);
+    outline-radius: 4px;
+}
+
+.sitemap-list li {
+    margin-bottom: 0.4rem;
+}
+
+@media (max-width: 600px) {
     .sitemap-section > h3 {
-        font-weight: 700;
-        font-size: 1.6rem;
-        margin-bottom: 0.5rem;
-        color: var(--pa-blue);
-        border-bottom: 2px solid var(--pa-blue);
-        padding-bottom: 0.3rem;
+        font-size: 1.3rem;
     }
 
-    .sitemap-section > h3 a {
-        color: var(--pa-blue);
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    .sitemap-section > h3 a:hover,
-    .sitemap-section > h3 a:focus {
-        color: var(--pa-blue-light);
-        text-decoration: underline;
-        outline-offset: 3px;
-        outline: 2px solid var(--pa-blue-light);
-        outline-radius: 4px;
-    }
-
-    /* Lista annidata */
-    .sitemap-list ul {
-        margin-left: 1.5rem;
-        margin-top: 0.5rem;
-        padding-left: 1rem;
-        border-left: 2px solid var(--pa-border-light);
-    }
-
-    /* Link pagine secondarie e successive */
     .sitemap-list li > a {
-        font-weight: 600;
-        color: var(--pa-blue-dark);
-        text-decoration: none;
-        display: inline-block;
-        margin: 0.25rem 0;
-        transition: color 0.3s ease;
+        font-size: 0.95rem;
     }
+}
 
-    .sitemap-list li > a:hover,
-    .sitemap-list li > a:focus {
-        color: var(--pa-blue);
-        text-decoration: underline;
-        outline-offset: 3px;
-        outline: 2px solid var(--pa-blue);
-        outline-radius: 4px;
-    }
-
-    /* Spaziatura tra items */
-    .sitemap-list li {
-        margin-bottom: 0.4rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-        .sitemap-section > h3 {
-            font-size: 1.3rem;
-        }
-
-        .sitemap-list li > a {
-            font-size: 0.95rem;
-        }
-    }
 </style>
 
 
