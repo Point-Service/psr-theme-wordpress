@@ -47,13 +47,11 @@ function sitemap_comune_style($parent_id = 0) {
 ?>
 
 <style>
-.it-header-slim-wrapper {
-    background-color: var(--main-header-bg) !important;
-}
+/* Sitemap con testi neri e linee verticali grigie */
 
 .sitemap-section {
     margin-bottom: 2rem;
-    border-left: 5px solid var(--main-header-bg);
+    border-left: 5px solid #ccc; /* linea verticale grigia */
     padding-left: 1rem;
 }
 
@@ -61,23 +59,23 @@ function sitemap_comune_style($parent_id = 0) {
     font-weight: 700;
     font-size: 1.6rem;
     margin-bottom: 0.5rem;
-    color: var(--main-header-bg);
-    border-bottom: 2px solid var(--main-header-bg);
+    color: #000; /* testo nero */
+    border-bottom: 2px solid #ccc; /* linea sotto grigia */
     padding-bottom: 0.3rem;
 }
 
 .sitemap-section > h3 a {
-    color: var(--main-header-bg);
+    color: #000; /* link nero */
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .sitemap-section > h3 a:hover,
 .sitemap-section > h3 a:focus {
-    color: var(--main-header-bg-light);
+    color: #333; /* nero scuro hover/focus */
     text-decoration: underline;
     outline-offset: 3px;
-    outline: 2px solid var(--main-header-bg-light);
+    outline: 2px solid #333;
     outline-radius: 4px;
 }
 
@@ -85,12 +83,12 @@ function sitemap_comune_style($parent_id = 0) {
     margin-left: 1.5rem;
     margin-top: 0.5rem;
     padding-left: 1rem;
-    border-left: 2px solid #d0d7de;
+    border-left: 2px solid #ccc; /* linea verticale grigia */
 }
 
 .sitemap-list li > a {
     font-weight: 600;
-    color: var(--main-header-bg);
+    color: #000; /* testo nero */
     text-decoration: none;
     display: inline-block;
     margin: 0.25rem 0;
@@ -99,23 +97,14 @@ function sitemap_comune_style($parent_id = 0) {
 
 .sitemap-list li > a:hover,
 .sitemap-list li > a:focus {
-    color: var(--main-header-bg-light);
+    color: #333; /* nero scuro hover/focus */
     text-decoration: underline;
     outline-offset: 3px;
-    outline: 2px solid var(--main-header-bg-light);
+    outline: 2px solid #333;
     outline-radius: 4px;
 }
-
-@media (max-width: 600px) {
-    .sitemap-section > h3 {
-        font-size: 1.3rem;
-    }
-
-    .sitemap-list li > a {
-        font-size: 0.95rem;
-    }
-}
 </style>
+
 
 
 <div class="container my-5">
