@@ -320,7 +320,7 @@ endif;
   object-fit: contain;
   display: block;
   margin-left: auto;
-  transform: translateX(14px); /* <-- AGGIUNTO */
+  transform: translateX(16px); /* <-- AGGIUNTO */
 }
 
 .single-news .row .col-lg-5.order-2.order-lg-1 {
