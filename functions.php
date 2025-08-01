@@ -400,3 +400,13 @@ JS
     );
 }
 
+
+// AGGIUNGI I FORMATI PER UPLOAD
+add_filter('upload_mimes', 'abilita_file_office');
+function abilita_file_office($mimes) {
+    $mimes['doc']  = 'application/msword';
+    $mimes['docx'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    $mimes['xls']  = 'application/vnd.ms-excel';
+    $mimes['xlsx'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    return $mimes;
+}
