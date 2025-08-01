@@ -1,11 +1,11 @@
 <?php
 /**
- * Template Name: Sitemap Personalizzata PA
+ * Template Name: Sitemap Modern PA
  */
 
 get_header();
 
-function sitemap_gerarchica($parent_id = 0) {
+function sitemap_comune_style($parent_id = 0) {
     $args = array(
         'parent' => $parent_id,
         'sort_column' => 'post_title',
@@ -17,11 +17,25 @@ function sitemap_gerarchica($parent_id = 0) {
     $pages = get_pages($args);
 
     if ($pages) {
-        echo '<ul class="pa-sitemap-list">';
+        echo '<ul class="sitemap-list">';
         foreach ($pages as $page) {
-            echo '<li>';
-            echo '<a href="' . get_permalink($page->ID) . '">' . esc_html($page->post_title) . '</a>';
-            sitemap_gerarchica($page->ID);
+            // Se ha figli, mostriamo il titolo come <h3> o <h4> in base al livello
+            $children = get_pages(array('parent' => $page->ID, 'post_status' => 'publish'));
+
+            if ($parent_id == 0) {
+                // Livello principale
+                echo '<li class="sitemap-section">';
+                echo '<h3><a href="' . get_permalink($page->ID) . '">' . esc_html($page->post_title) . '</a></h3>';
+            } else {
+                // Sottosezioni o pagine figlie
+                echo '<li>';
+                echo '<a href="' . get_permalink($page->ID) . '">' . esc_html($page->post_title) . '</a>';
+            }
+
+            if (!empty($children)) {
+                sitemap_comune_style($page->ID);
+            }
+
             echo '</li>';
         }
         echo '</ul>';
@@ -30,81 +44,94 @@ function sitemap_gerarchica($parent_id = 0) {
 ?>
 
 <style>
-    /* Font e colori istituzionali */
-    .pa-sitemap-list {
+    /* Font e palette colori istituzionali PA */
+    .sitemap-list {
         list-style: none;
-        padding-left: 1.25rem;
+        margin-left: 0;
+        padding-left: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: #1a1a1a;
+    }
+
+    /* Sezione principale */
+    .sitemap-section {
         margin-bottom: 2rem;
-        border-left: 3px solid #004a99; /* blu istituzionale */
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-            Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-        font-size: 1rem;
-        color: #333;
+        border-left: 5px solid #005aa7; /* blu istituzionale PA */
+        padding-left: 1rem;
     }
 
-    .pa-sitemap-list li {
-        margin: 0.75rem 0;
-        position: relative;
-        padding-left: 1.25rem;
-        transition: background-color 0.3s ease;
+    /* Titolo sezione */
+    .sitemap-section > h3 {
+        font-weight: 700;
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+        color: #005aa7;
+        border-bottom: 2px solid #005aa7;
+        padding-bottom: 0.3rem;
     }
 
-    .pa-sitemap-list li::before {
-        content: "›"; /* simbolo elegante */
-        position: absolute;
-        left: -1.25rem;
-        color: #004a99;
-        font-weight: bold;
-        font-size: 1.25rem;
-        line-height: 1;
-        top: 0.1rem;
-        transition: color 0.3s ease;
-    }
-
-    .pa-sitemap-list li:hover::before {
-        color: #0073e6; /* colore hover più chiaro */
-    }
-
-    .pa-sitemap-list li a {
+    .sitemap-section > h3 a {
+        color: #005aa7;
         text-decoration: none;
-        color: #004a99;
-        font-weight: 600;
         transition: color 0.3s ease;
     }
 
-    .pa-sitemap-list li a:hover,
-    .pa-sitemap-list li a:focus {
-        color: #0073e6;
+    .sitemap-section > h3 a:hover,
+    .sitemap-section > h3 a:focus {
+        color: #007acc;
         text-decoration: underline;
-        outline-offset: 2px;
-        outline: 2px solid #0073e6;
+        outline-offset: 3px;
+        outline: 2px solid #007acc;
         outline-radius: 4px;
     }
 
-    /* Gestione indentazione e spazi per i livelli successivi */
-    .pa-sitemap-list ul {
+    /* Lista annidata */
+    .sitemap-list ul {
+        margin-left: 1.5rem;
         margin-top: 0.5rem;
-        margin-left: 1rem;
-        border-left: 2px solid #cbd5e1; /* linea più chiara per sotto-livelli */
         padding-left: 1rem;
+        border-left: 2px solid #d0d7de;
+    }
+
+    /* Link pagine secondarie e successive */
+    .sitemap-list li > a {
+        font-weight: 600;
+        color: #003c70;
+        text-decoration: none;
+        display: inline-block;
+        margin: 0.25rem 0;
+        transition: color 0.3s ease;
+    }
+
+    .sitemap-list li > a:hover,
+    .sitemap-list li > a:focus {
+        color: #005aa7;
+        text-decoration: underline;
+        outline-offset: 3px;
+        outline: 2px solid #005aa7;
+        outline-radius: 4px;
+    }
+
+    /* Spaziatura tra items */
+    .sitemap-list li {
+        margin-bottom: 0.4rem;
     }
 
     /* Responsive */
     @media (max-width: 600px) {
-        .pa-sitemap-list {
-            font-size: 0.9rem;
+        .sitemap-section > h3 {
+            font-size: 1.3rem;
         }
-        .pa-sitemap-list li::before {
-            font-size: 1rem;
-            left: -1rem;
-            top: 0.15rem;
+
+        .sitemap-list li > a {
+            font-size: 0.95rem;
         }
     }
 </style>
 
 <div class="container my-5">
     <h1>Mappa del sito</h1>
-    <?php sitemap_gerarchica(); ?>
+    <?php sitemap_comune_style(); ?>
 </div>
 
 <?php get_footer(); ?>
