@@ -313,6 +313,8 @@ endif;
 }
 
 .single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+  position: relative;         /* necessario per usare "right" */
+  right: 6rem;                /* sposta verso sinistra di 6rem */
   max-width: 90%;
   max-height: 400px;
   width: auto;
@@ -320,7 +322,6 @@ endif;
   object-fit: contain;
   display: block;
   margin-left: auto;
-  transform: translateX(16px); /* <-- AGGIUNTO */
 }
 
 .single-news .row .col-lg-5.order-2.order-lg-1 {
