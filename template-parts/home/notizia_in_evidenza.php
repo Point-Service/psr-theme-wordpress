@@ -312,7 +312,7 @@ endif;
   padding-right: 7rem;
 }
 
-.single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
   max-width: 90%;
   max-height: 400px;
   width: auto;
@@ -320,7 +320,7 @@ endif;
   object-fit: contain;
   display: block;
   margin-left: auto;
-  margin-right: 6rem; /* <-- aggiunto per spostare immagine più verso sinistra, ma mantenendola allineata a destra */
+  transform: translateX(16px); /* <-- AGGIUNTO */
 }
   
 
