@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Sitemap Modern PA
+ * Template Name: Sitemap Modern PA con Sottolivelli
  */
 
 get_header();
@@ -19,22 +19,17 @@ function sitemap_comune_style($parent_id = 0) {
     if ($pages) {
         echo '<ul class="sitemap-list">';
         foreach ($pages as $page) {
-            // Se ha figli, mostriamo il titolo come <h3> o <h4> in base al livello
-            $children = get_pages(array('parent' => $page->ID, 'post_status' => 'publish'));
-
+            // Se livello top (parent = 0) mettiamo il titolo come h3 e classe sitemap-section
             if ($parent_id == 0) {
-                // Livello principale
                 echo '<li class="sitemap-section">';
                 echo '<h3><a href="' . get_permalink($page->ID) . '">' . esc_html($page->post_title) . '</a></h3>';
             } else {
-                // Sottosezioni o pagine figlie
                 echo '<li>';
                 echo '<a href="' . get_permalink($page->ID) . '">' . esc_html($page->post_title) . '</a>';
             }
 
-            if (!empty($children)) {
-                sitemap_comune_style($page->ID);
-            }
+            // Ricorsione per i figli
+            sitemap_comune_style($page->ID);
 
             echo '</li>';
         }
@@ -135,4 +130,3 @@ function sitemap_comune_style($parent_id = 0) {
 </div>
 
 <?php get_footer(); ?>
-
