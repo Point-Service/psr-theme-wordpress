@@ -7,11 +7,11 @@ get_header();
 
 function sitemap_comune_style($parent_id = 0) {
     $args = array(
-        'parent' => $parent_id,
-        'sort_column' => 'post_title',
-        'sort_order' => 'asc',
-        'post_type' => 'page',
-        'post_status' => 'publish',
+        'post_type'    => 'page',
+        'post_status'  => 'publish',
+        'sort_column'  => 'menu_order, post_title',
+        'sort_order'   => 'asc',
+        'parent'       => $parent_id,
     );
 
     $pages = get_pages($args);
@@ -19,7 +19,14 @@ function sitemap_comune_style($parent_id = 0) {
     if ($pages) {
         echo '<ul class="sitemap-list">';
         foreach ($pages as $page) {
-            // Se livello top (parent = 0) mettiamo il titolo come h3 e classe sitemap-section
+            $children = get_pages(array(
+                'post_type'    => 'page',
+                'post_status'  => 'publish',
+                'sort_column'  => 'menu_order, post_title',
+                'sort_order'   => 'asc',
+                'parent'       => $page->ID,
+            ));
+
             if ($parent_id == 0) {
                 echo '<li class="sitemap-section">';
                 echo '<h3><a href="' . get_permalink($page->ID) . '">' . esc_html($page->post_title) . '</a></h3>';
@@ -28,8 +35,9 @@ function sitemap_comune_style($parent_id = 0) {
                 echo '<a href="' . get_permalink($page->ID) . '">' . esc_html($page->post_title) . '</a>';
             }
 
-            // Ricorsione per i figli
-            sitemap_comune_style($page->ID);
+            if (!empty($children)) {
+                sitemap_comune_style($page->ID);
+            }
 
             echo '</li>';
         }
