@@ -414,7 +414,7 @@ function crea_pagina_sitemap_personalizzata() {
             'post_content'  => '',
             'post_status'   => 'publish',
             'post_type'     => 'page',
-            'page_template' => 'page-sitemap',
+            'page_template' => 'page-sitemap.php', // ✅ Corretto con .php
         ));
 
         if (!is_wp_error($pagina_id)) {
@@ -422,10 +422,10 @@ function crea_pagina_sitemap_personalizzata() {
         }
     } else {
         // Se esiste, aggiorna solo il template se necessario
-        if (get_page_template_slug($pagina->ID) !== 'page-sitemap') {
+        if (get_page_template_slug($pagina->ID) !== 'page-sitemap.php') { // ✅ Anche qui
             wp_update_post(array(
                 'ID'            => $pagina->ID,
-                'page_template' => 'page-sitemap',
+                'page_template' => 'page-sitemap.php',
             ));
         }
     }
