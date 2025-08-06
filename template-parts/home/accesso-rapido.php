@@ -61,7 +61,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 160px; /* Ridotto l'altezza minima delle card */
+    min-height: 120px; /* Ridotto l'altezza minima delle card */
 }
 
 .custom-styles .card:hover {
@@ -73,7 +73,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     align-items: center;
     justify-content: space-between; /* Aggiunto per un migliore allineamento del contenuto */
-    padding: 15px; /* Ridotto il padding per una card più compatta */
+    padding: 10px; /* Ridotto il padding per una card più compatta */
     flex-grow: 1; /* Consente al contenitore di crescere per riempire lo spazio disponibile */
 }
 
@@ -153,7 +153,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 160px; /* Altezza minima uniforme per tutti i pulsanti */
+    min-height: 120px; /* Altezza minima uniforme per tutti i pulsanti */
 }
 
 .custom-styles .card-body {
@@ -163,5 +163,6 @@ $box_accesso_rapido = $boxes;
     padding: 10px;
     flex-grow: 1;
 }
+
 
 </style>
