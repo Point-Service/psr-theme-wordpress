@@ -29,7 +29,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 </a>
 
 <style>
-/* Stile di base per le card */
+/* Aggiunta dell'effetto hover */
 .sito-tematico-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
@@ -91,4 +91,5 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
     line-height: 1.5;
     margin-top: 10px;
 }
+
 </style>
