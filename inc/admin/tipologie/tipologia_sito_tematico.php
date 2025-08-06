@@ -93,39 +93,5 @@ function dci_add_sito_tematico_metaboxes() {
         )
     );
 
-
-    // Selezione colore con picker e campo testo
-    $cmb_dati->add_field( array(
-        'name'    => 'Colore del messaggio',
-        'id'      => $prefix . 'colore_message',
-        'type'    => 'text',
-        'desc'    => 'Seleziona un colore per il messaggio o inserisci manualmente il codice colore.',
-        'attributes' => array(
-            'class' => 'cmb2-color-picker',
-            'placeholder' => '#000000', // Imposta il valore predefinito
-        ),
-    ) );
-
-
-add_action( 'admin_enqueue_scripts', 'dci_color_picker_admin_scripts' );
-function dci_color_picker_admin_scripts() {
-    wp_enqueue_script( 'wp-color-picker' ); // Carica il color picker di WordPress
-    wp_enqueue_style( 'wp-color-picker' );  // Carica lo stile per il color picker
-
-    // Aggiungi lo script personalizzato per attivare il color picker
-    ?>
-    <script type="text/javascript">
-        jQuery(document).ready(function($){
-            $('.cmb2-color-picker').wpColorPicker(); // Inizializza il color picker
-        });
-    </script>
-    <?php
 }
-
-
-    
-}
-
-
-    
 
