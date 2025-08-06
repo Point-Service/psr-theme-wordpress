@@ -49,7 +49,6 @@ $box_accesso_rapido = $boxes;
 
 
     
-<style>
 /* Stile per la lista dei pulsanti accesso rapido */
 .custom-styles .row {
     display: grid;
@@ -65,7 +64,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 200px; /* Altezza minima per ogni card */
+    min-height: 140px; /* Ridotto l'altezza minima delle card */
 }
 
 .custom-styles .card:hover {
@@ -77,28 +76,28 @@ $box_accesso_rapido = $boxes;
     display: flex;
     align-items: center;
     justify-content: space-between; /* Aggiunto per un migliore allineamento del contenuto */
-    padding: 20px; /* Padding generoso per dare respiro ai contenuti */
+    padding: 15px; /* Ridotto il padding per rendere la card più compatta */
     flex-grow: 1; /* Consente al contenitore di crescere per riempire lo spazio disponibile */
 }
 
 .custom-styles .card-title {
-    margin-bottom: 8px; /* Margine inferiore per un aspetto compatto */
+    margin-bottom: 6px; /* Ridotto il margine inferiore per un aspetto più compatto */
     font-size: 1.2rem;
     color: #333333; /* Colore scuro per il titolo */
     flex-grow: 1; /* Consente al titolo di crescere e occupare spazio disponibile */
 }
 
 .custom-styles .description {
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 0.9rem; /* Ridotto la dimensione del testo per la descrizione */
+    line-height: 1.4;
     color: #777777; /* Grigio chiaro per la descrizione */
-    margin-top: 10px; /* Margine tra titolo e descrizione */
+    margin-top: 8px; /* Ridotto il margine tra titolo e descrizione */
 }
 
 /* Icona - Circolare e centrale con background chiaro */
 .custom-styles .avatar i {
     color: #555555; /* Colore neutro per l'icona */
-    font-size: 24px; /* Dimensione dell'icona */
+    font-size: 22px; /* Ridotto un po' la dimensione dell'icona */
 }
 
 /* Per i pulsanti con sfondo neutro */
@@ -121,7 +120,7 @@ $box_accesso_rapido = $boxes;
 .custom-styles .avatar {
     background-color: #f0f0f0; /* Colore di sfondo grigio chiaro per l'avatar */
     border-radius: 50%; /* Forma circolare per l'icona */
-    padding: 12px; /* Un po' di padding per l'icona */
+    padding: 10px; /* Un po' di padding per l'icona */
 }
 
 /* Card spacing and layout */
@@ -133,13 +132,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 20px;
-}
-
-.custom-styles .card-title {
-    font-size: 1.2rem; /* Font size più grande per i titoli */
-    color: #333; /* Colore scuro per il titolo */
-    font-weight: 600;
+    padding: 10px; /* Ridotto il padding per compattezza */
 }
 
 /* Separazione tra pulsanti per dispositivi mobili */
@@ -163,7 +156,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 150px; /* Altezza minima uniforme per tutti i pulsanti */
+    min-height: 140px; /* Altezza minima uniforme per tutti i pulsanti */
 }
 
 .custom-styles .card-body {
@@ -173,6 +166,4 @@ $box_accesso_rapido = $boxes;
     padding: 10px;
     flex-grow: 1;
 }
-
-
 </style>
