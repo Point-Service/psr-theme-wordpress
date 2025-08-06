@@ -62,6 +62,10 @@ $box_accesso_rapido = $boxes;
     border: 1px solid #e0e0e0; /* Bordo grigio chiaro per i pulsanti */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Leggera ombra per dare profondità */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transizione per effetto hover */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 200px; /* Altezza minima per ogni card */
 }
 
 .custom-styles .card:hover {
@@ -72,13 +76,16 @@ $box_accesso_rapido = $boxes;
 .custom-styles .card-body {
     display: flex;
     align-items: center;
+    justify-content: space-between; /* Aggiunto per un migliore allineamento del contenuto */
     padding: 20px; /* Padding generoso per dare respiro ai contenuti */
+    flex-grow: 1; /* Consente al contenitore di crescere per riempire lo spazio disponibile */
 }
 
 .custom-styles .card-title {
     margin-bottom: 8px; /* Margine inferiore per un aspetto compatto */
     font-size: 1.2rem;
     color: #333333; /* Colore scuro per il titolo */
+    flex-grow: 1; /* Consente al titolo di crescere e occupare spazio disponibile */
 }
 
 .custom-styles .description {
@@ -144,6 +151,27 @@ $box_accesso_rapido = $boxes;
     .custom-styles .card-title {
         font-size: 1.1rem; /* Font size ridotto sui dispositivi piccoli */
     }
+}
+
+/* Uniformità per altezza e larghezza dei pulsanti nella stessa riga */
+.custom-styles .col-md-6, .custom-styles .col-xl-4 {
+    display: flex;
+    align-items: stretch; /* Allinea i contenuti in modo che tutti i pulsanti siano della stessa altezza */
+}
+
+.custom-styles .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 150px; /* Altezza minima uniforme per tutti i pulsanti */
+}
+
+.custom-styles .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    flex-grow: 1;
 }
 
 
