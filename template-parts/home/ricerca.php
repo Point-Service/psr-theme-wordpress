@@ -8,7 +8,7 @@ $links = dci_get_option('link', 'link_utili');
       <div class="col-12 col-lg-10">
 
         <!-- Titolo sezione -->
-        <h2 class="mb-4 text-black text-uppercase border-bottom border-2 pb-2">Link utili</h2>
+        <h2 class="title-xxlarge mb-4">Link utili</h2>
 
         <!-- Form ricerca -->
         <form role="search" method="get" class="search-form mb-4" action="<?php echo esc_url(home_url('/')); ?>">
