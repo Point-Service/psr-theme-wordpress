@@ -2,7 +2,7 @@
 $links = dci_get_option('link', 'link_utili');
 ?>
 
-<section id="link-utili" class="useful-links-section bg-light py-5">
+<section id="link-utili" class="useful-links-section bg-grey-card py-5">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10">
