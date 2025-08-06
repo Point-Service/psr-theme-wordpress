@@ -50,130 +50,109 @@ $box_accesso_rapido = $boxes;
 
     
 <style>
-/* Stile per la lista dei pulsanti accesso rapido */
-.custom-styles .row {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.custom-styles .card {
-    background-color: #f9f9f9; /* Sfondo neutro chiaro per i pulsanti */
-    border: 1px solid #e0e0e0; /* Bordo grigio chiaro per i pulsanti */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Leggera ombra per dare profondità */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transizione per effetto hover */
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 200px; /* Altezza minima per ogni card */
-}
-
-.custom-styles .card:hover {
-    transform: translateY(-5px); /* Sollevamento al passaggio del mouse */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra più forte durante hover */
-}
-
-.custom-styles .card-body {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Aggiunto per un migliore allineamento del contenuto */
-    padding: 20px; /* Padding generoso per dare respiro ai contenuti */
-    flex-grow: 1; /* Consente al contenitore di crescere per riempire lo spazio disponibile */
-}
-
-.custom-styles .card-title {
-    margin-bottom: 8px; /* Margine inferiore per un aspetto compatto */
-    font-size: 1.2rem;
-    color: #333333; /* Colore scuro per il titolo */
-    flex-grow: 1; /* Consente al titolo di crescere e occupare spazio disponibile */
-}
-
-.custom-styles .description {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #777777; /* Grigio chiaro per la descrizione */
-    margin-top: 10px; /* Margine tra titolo e descrizione */
-}
-
-/* Icona - Circolare e centrale con background chiaro */
-.custom-styles .avatar i {
-    color: #555555; /* Colore neutro per l'icona */
-    font-size: 24px; /* Dimensione dell'icona */
-}
-
-/* Per i pulsanti con sfondo neutro */
-.custom-styles .card.bg-neutral {
-    background-color: #fafafa; /* Colore neutro chiaro */
-    color: #333; /* Colore scuro per il testo */
-}
-
-/* Effetto hover per il pulsante */
-.custom-styles .card.bg-neutral:hover {
-    background-color: #e0e0e0; /* Cambio sfondo su hover per effetto interattivo */
-}
-
-/* Colori del testo in caso di hover */
-.custom-styles .card.bg-neutral:hover .card-title {
-    color: #0056b3; /* Colore blu scuro per il titolo quando hover */
-}
-
-/* Icone per i pulsanti */
-.custom-styles .avatar {
-    background-color: #f0f0f0; /* Colore di sfondo grigio chiaro per l'avatar */
-    border-radius: 50%; /* Forma circolare per l'icona */
-    padding: 12px; /* Un po' di padding per l'icona */
-}
-
-/* Card spacing and layout */
-.custom-styles .card-wrapper {
-    width: 100%;
-}
-
-.custom-styles .card-body {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 20px;
-}
-
-.custom-styles .card-title {
-    font-size: 1.2rem; /* Font size più grande per i titoli */
-    color: #333; /* Colore scuro per il titolo */
-    font-weight: 600;
-}
-
-/* Separazione tra pulsanti per dispositivi mobili */
-@media (max-width: 768px) {
-    .custom-styles .card-body {
-        flex-direction: column; /* Colonne per schermi piccoli */
-        text-align: center;
+    /* Stile per la sezione dei siti tematici */
+    .siti-tematici-section .card-wrapper {
+        display: flex;
+        align-items: stretch; /* Allineamento verticale per tutte le card */
+        height: 100%;
     }
-    .custom-styles .card-title {
-        font-size: 1.1rem; /* Font size ridotto sui dispositivi piccoli */
+
+    /* Stile di base per le card */
+    .siti-tematici-section .card {
+        background-color: #f9f9f9; /* Sfondo neutro chiaro */
+        border: 1px solid #e0e0e0; /* Bordo grigio chiaro */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 200px; /* Altezza minima */
+        border-radius: 10px; /* Bordo arrotondato */
     }
-}
 
-/* Uniformità per altezza e larghezza dei pulsanti nella stessa riga */
-.custom-styles .col-md-6, .custom-styles .col-xl-4 {
-    display: flex;
-    align-items: stretch; /* Allinea i contenuti in modo che tutti i pulsanti siano della stessa altezza */
-}
+    /* Effetto hover per sollevare la card */
+    .siti-tematici-section .card:hover {
+        transform: translateY(-5px); /* Sollevamento della card */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra più intensa */
+    }
 
-.custom-styles .card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 150px; /* Altezza minima uniforme per tutti i pulsanti */
-}
+    /* Colore e effetto hover sul titolo */
+    .siti-tematici-section .card-title {
+        font-size: 1.2rem;
+        color: #333333; /* Colore scuro per il titolo */
+        margin-bottom: 8px;
+        transition: color 0.3s ease;
+    }
 
-.custom-styles .card-body {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 10px;
-    flex-grow: 1;
-}
+    /* Colore del titolo su hover */
+    .siti-tematici-section .card:hover .card-title {
+        color: #0056b3; /* Blu scuro per il titolo quando si passa sopra */
+    }
 
+    /* Stile per la descrizione */
+    .siti-tematici-section .description {
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #777777; /* Grigio per la descrizione */
+        margin-top: 10px;
+    }
 
+    /* Icona: circolare, centrata e con sfondo chiaro */
+    .siti-tematici-section .avatar {
+        background-color: #f0f0f0;
+        border-radius: 50%;
+        padding: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .siti-tematici-section .avatar i {
+        color: #555555; /* Colore scuro per l'icona */
+        font-size: 24px;
+    }
+
+    /* Hover per il background della card */
+    .siti-tematici-section .card.bg-neutral:hover {
+        background-color: #e0e0e0; /* Cambia colore su hover */
+    }
+
+    /* Layout e spaziatura */
+    .siti-tematici-section .card-wrapper {
+        width: 100%;
+    }
+
+    /* Layout responsive per schermi più piccoli */
+    @media (max-width: 768px) {
+        .siti-tematici-section .card-body {
+            flex-direction: column;
+            text-align: center;
+        }
+        .siti-tematici-section .card-title {
+            font-size: 1.1rem;
+        }
+    }
+
+    /* Colonna e card uniforme per altezza */
+    .siti-tematici-section .col-md-6, .siti-tematici-section .col-lg-4 {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .siti-tematici-section .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 200px; /* Altezza minima */
+    }
+
+    .siti-tematici-section .card-body {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 20px;
+        flex-grow: 1;
+    }
 </style>
+
 
