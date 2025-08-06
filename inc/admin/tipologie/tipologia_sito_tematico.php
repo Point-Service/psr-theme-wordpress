@@ -94,19 +94,18 @@ function dci_add_sito_tematico_metaboxes() {
     );
 
 
+    // Selezione colore con picker e campo testo
     $cmb_dati->add_field( array(
-        'name'    => 'Selezione colore del messaggio',
-        'id'      => 'colore_message',
-        'type'    => 'radio_inline',
-        'options' => array(
-            'red'   => __( '<span class="radio-color red"></span>Rosso', 'design_comuni_italia' ),
-            'yellow' => __( '<span class="radio-color yellow"></span>Giallo', 'design_comuni_italia' ),
-            'green'     => __( '<span class="radio-color green"></span>Verde', 'design_comuni_italia' ),
-            'blue'     => __( '<span class="radio-color blue"></span>Blu', 'design_comuni_italia' ),
-            'purple'     => __( '<span class="radio-color purple"></span>Viola', 'design_comuni_italia' ),
+        'name'    => 'Colore del messaggio',
+        'id'      => $prefix . 'colore_message',
+        'type'    => 'text',
+        'desc'    => 'Seleziona un colore per il messaggio o inserisci manualmente il codice colore.',
+        'attributes' => array(
+            'class' => 'cmb2-color-picker',
+            'placeholder' => '#000000', // Imposta il valore predefinito
         ),
-        'default' => 'blue',
     ) );
+}
 
 
     
