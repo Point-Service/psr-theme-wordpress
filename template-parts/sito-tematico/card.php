@@ -12,9 +12,9 @@ $colore_sfondo = dci_get_meta('colore',$prefix, $sito_tematico->ID) ?: false;
 $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 ?>
 
-<a href="<?php echo $st_link ?>" style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3 shadow-sm border border-light" target="_blank">
+<a href="<?php echo $st_link ?>" style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3 shadow-sm border border-light sito-tematico-card" target="_blank">
     <?php if($st_img) { ?>
-           <div class="avatar size-lg me-3">
+        <div class="avatar size-lg me-3">
             <?php dci_get_img($st_img); ?>
         </div>
     <?php } ?>
@@ -27,3 +27,68 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
         </p>
     </div>
 </a>
+
+<style>
+/* Stile di base per le card */
+.sito-tematico-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover: sollevamento della card */
+.sito-tematico-card:hover {
+    transform: translateY(-5px); /* Leggero sollevamento */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra più intensa */
+}
+
+/* Hover: Cambia colore del titolo */
+.sito-tematico-card:hover .card-title {
+    color: #0056b3; /* Colore blu scuro per il titolo quando hover */
+}
+
+/* Hover: Cambia colore di sfondo per card */
+.sito-tematico-card:hover {
+    background-color: <?= isset($colore_sfondo) ? darken($colore_sfondo, 0.1) : '#e0e0e0'; ?>;
+}
+
+/* Personalizzazione per il colore del titolo e descrizione */
+.sito-tematico-card .card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Colori del titolo e descrizione basati sul colore di sfondo */
+.sito-tematico-card .text-dark {
+    color: #333333; /* Colore scuro per il testo */
+}
+
+.sito-tematico-card .text-white {
+    color: #ffffff; /* Colore chiaro per il testo su sfondo scuro */
+}
+
+/* Hover per sfondo chiaro con il colore definito */
+.sito-tematico-card.bg-primary:hover {
+    background-color: #0056b3; /* Colore di hover per background chiaro */
+}
+
+/* Stile dell'immagine (se presente) */
+.sito-tematico-card .avatar {
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sito-tematico-card .avatar img {
+    max-width: 100%; /* Per fare in modo che l'immagine si adatti correttamente */
+}
+
+/* Stile per la descrizione */
+.sito-tematico-card .card-text {
+    font-size: 1rem;
+    color: #777777;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+</style>
