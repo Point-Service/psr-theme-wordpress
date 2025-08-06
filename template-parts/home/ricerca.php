@@ -14,9 +14,10 @@ $links = dci_get_option('link', 'link_utili');
           <div class="input-group shadow-sm">
             <input type="search" class="form-control" placeholder="Cerca una parola chiave" name="s" value="<?php echo get_search_query(); ?>" aria-label="Cerca una parola chiave">
             <button class="btn btn-primary" type="submit">
-              <svg class="icon icon-sm me-1 text-white" aria-hidden="true">
+              <font color="white"><svg class="icon icon-sm me-1 text-white" aria-hidden="true">
                 <use href="#it-search"></use>
               </svg>
+              </font>
               Cerca
             </button>
           </div>
