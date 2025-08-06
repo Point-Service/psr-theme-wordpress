@@ -166,7 +166,7 @@ switch ($post_type_label) {
             <?php } ?>
             <hr style="margin-bottom: 20px; width: 200px; height: 0px; background-color: grey; border: none;">
 
-            <a class="read-more ps-3"
+            <a class="read-more ps-3 style="margin-left: 0 !important; padding-left: 0 !important;"
                 href="<?php echo esc_url(get_permalink($post->ID)); ?>"
                 aria-label="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
                 title="Vai alla pagina <?php echo esc_attr($post->post_title); ?>"
@@ -176,6 +176,8 @@ switch ($post_type_label) {
                     <use xlink:href="#it-arrow-right"></use>
                 </svg>
             </a>
+
+            
         </div>
     </div>
 </div>
