@@ -4,54 +4,52 @@ $box_accesso_rapido = $boxes;
 ?>
 
 <?php if (!empty($boxes)) { ?>
-<div class="container py-4 accesso-rapido-section">
-    <h2 class="title-large mb-3 text-uppercase border-bottom pb-2">Accesso rapido</h2>
+<div class="container py-5">
 
-    <div class="row g-3">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
+
+    <div class="row g-4 custom-styles">
         <?php foreach ($boxes as $box) {
             $colore_sfondo = $box['colore'] ?? false;
             $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 
-            // Titolo con trim e limite caratteri
+            // ✂️ Titolo e descrizione con trim + taglio
             $titolo = trim($box['titolo_message']);
             if (strlen($titolo) > 50) {
                 $titolo = substr($titolo, 0, 47) . '...';
             }
 
-            // Descrizione con limite opzionale
             $descrizione = trim($box['desc_message']);
             if (strlen($descrizione) > 100) {
                 $descrizione = substr($descrizione, 0, 97) . '...';
             }
         ?>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <a href="<?php echo esc_url($box['link_message']); ?>" target="_blank"
-                   class="card accesso-box border-0 shadow-sm text-decoration-none h-100 p-3 <?php echo $sfondo_scuro ? 'text-white' : 'text-dark'; ?>"
-                   style="background-color: <?php echo $colore_sfondo ?: '#f8f9fa'; ?>;">
-
-                    <div class="d-flex align-items-center mb-2">
-                        <?php if (!empty($box['icon'])) { ?>
-                            <div class="accesso-icon me-2 flex-shrink-0">
-                                <i class="fas fa-<?php echo esc_attr($box['icon']); ?>"></i>
+            <div class="col-md-6 col-xl-4">
+                <a href="<?php echo esc_url($box['link_message']); ?>" style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3" target="_blank">
+                    <div class="cmp-card-simple card-wrapper pb-0 rounded">
+                        <div style="border: none;">
+                            <div class="card-body d-flex align-items-center">
+                                <?php if (isset($box['icona_message']) && $box['icona_message'] && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
+                                    <div class="avatar size-lg me-3" style="min-width: 50px; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%;">
+                                        <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>" style="color: #007bff; font-size: 24px;"></i>
+                                    </div>
+                                <?php } ?>
+                                <div class="flex-grow-1">
+                                    <h3 class="card-title t-primary title-xlarge text-white <?= $sfondo_scuro ? 'text-white' : 'text-dark' ?>" style="font-size: 1.5rem; line-height: 1.2;">
+                                        <?php echo esc_html($titolo); ?>
+                                    </h3>
+                                    <?php if (!empty($descrizione)) { ?>
+                                        <p class="card-text text-sans-serif mb-0 description text-white <?= $sfondo_scuro ? 'text-white' : '' ?>" style="font-size: 1rem; line-height: 1.5;">
+                                            <?php echo esc_html($descrizione); ?>
+                                        </p>
+                                    <?php } ?>
+                                </div>
                             </div>
-                        <?php } ?>
-                        <h3 class="h6 mb-0 flex-grow-1">
-                            <?php echo esc_html($titolo); ?>
-                        </h3>
+                        </div>
                     </div>
-
-                    <?php if (!empty($descrizione)) { ?>
-                        <p class="small mb-2 lh-sm"><?php echo esc_html($descrizione); ?></p>
-                    <?php } ?>
-
-                    <div class="text-end mt-auto">
-                        <span class="small">Scopri</span>
-                        <svg class="icon icon-xs ms-1">
-                            <use href="#it-arrow-right"></use>
-                        </svg>
-                    </div>
-
                 </a>
+                <!-- Rimosso il tasto "Scopri" -->
             </div>
         <?php } ?>
     </div>
@@ -59,29 +57,50 @@ $box_accesso_rapido = $boxes;
 <?php } ?>
 
 
+
     
 <style>
- .accesso-rapido-section .accesso-box {
-    border-radius: 0.5rem;
-    min-height: 160px;
-    transition: all 0.2s ease-in-out;
+.custom-styles .card {
+    background-color: #fff !important; /* Sfondo bianco */
+    border: 1px solid #ddd; /* Leggera bordatura per separare */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Leggero ombreggiamento */
+}
+
+.custom-styles .card-body {
+    padding: 15px; /* Ridotto padding per stringere il contenuto */
+}
+
+.custom-styles .card-text {
     font-size: 0.95rem;
+    line-height: 1.4;
+    margin-top: 0.5rem;
 }
 
-.accesso-rapido-section .accesso-box:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.custom-styles .card-title {
+    margin-bottom: 0;
+    font-size: 1.2rem; /* Titolo leggermente più compatto */
 }
 
-.accesso-rapido-section .accesso-icon {
-    width: 36px;
-    height: 36px;
-    background-color: rgba(255,255,255,0.15);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
+/* Stile per tasto (se ne avessi ancora uno) */
+.custom-styles .btn {
+    width: 120px; /* Ridotto il bottone */
+    padding: 8px 16px; /* Più stretto */
+    background-color: #007bff; /* Colore blu */
+    color: white;
+    border: none;
+    border-radius: 30px; /* Tasto arrotondato */
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.custom-styles .btn:hover {
+    background-color: #0056b3; /* Colore hover più scuro */
+}
+
+.custom-styles .btn:focus {
+    outline: none;
+}
+
 </style>
 
