@@ -45,7 +45,7 @@ $box_accesso_rapido = $boxes;
 </div>
 <?php } ?>
 
-
+<style>
 
 
     
