@@ -15,21 +15,21 @@ $box_accesso_rapido = $boxes;
             $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true; // Controlla se il colore è scuro
         ?>
             <div class="col-md-6 col-xl-4">
-                <a href="<?php echo $box['link_message']; ?>" style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3" target="_blank">
+                <a href="<?php echo $box['link_message']; ?>" style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>" class="card card-teaser <?= $colore_sfondo ? '' : 'bg-neutral' ?> rounded mt-0 p-3" target="_blank">
                     <div class="cmp-card-simple card-wrapper pb-0 rounded">
                         <div style="border: none;">
                             <div class="card-body d-flex align-items-center">
                                 <?php if (isset($box['icona_message']) && $box['icona_message'] && array_key_exists('icon', $box) && !empty($box['icon'])) { ?>
                                     <div class="avatar size-lg me-3" style="min-width: 50px; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%;">
-                                        <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>" style="color: #007bff; font-size: 24px;"></i>
+                                        <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>" style="color: #555555; font-size: 24px;"></i>
                                     </div>
                                 <?php } ?>
                                 <div class="flex-grow-1">
-                                    <h3 class="card-title t-primary title-xlarge text-white <?= $sfondo_scuro ? 'text-white' : 'text-dark' ?>" style="font-size: 1.5rem; line-height: 1.2;">
+                                    <h3 class="card-title t-primary title-xlarge text-dark" style="font-size: 1.5rem; line-height: 1.2;">
                                         <?php echo $box['titolo_message']; ?>
                                     </h3>
                                     <?php if (isset($box['desc_message']) && $box['desc_message']) { ?>
-                                        <p class="card-text text-sans-serif mb-0 description text-white <?= $sfondo_scuro ? 'text-white' : '' ?>" style="font-size: 1rem; line-height: 1.5;">
+                                        <p class="card-text text-sans-serif mb-0 description text-muted" style="font-size: 1rem; line-height: 1.5;">
                                             <?php echo $box['desc_message']; ?>
                                         </p>
                                     <?php } ?>
@@ -47,6 +47,7 @@ $box_accesso_rapido = $boxes;
 
 
 
+
     
 <style>
 /* Stile per la lista dei pulsanti accesso rapido */
@@ -57,71 +58,94 @@ $box_accesso_rapido = $boxes;
 }
 
 .custom-styles .card {
-    background-color: #ffffff; /* Sfondo bianco per il pulsante */
-    border: 1px solid #ddd; /* Bordo grigio per la separazione */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Leggera ombra per dare profondità */
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transizione per effetto hover */
+    background-color: #f9f9f9; /* Sfondo neutro chiaro per i pulsanti */
+    border: 1px solid #e0e0e0; /* Bordo grigio chiaro per i pulsanti */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Leggera ombra per dare profondità */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transizione per effetto hover */
 }
 
 .custom-styles .card:hover {
-    transform: translateY(-5px); /* Lieve sollevamento al passaggio del mouse */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombra più pronunciata durante l'hover */
+    transform: translateY(-5px); /* Sollevamento al passaggio del mouse */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra più forte durante hover */
 }
 
 .custom-styles .card-body {
     display: flex;
     align-items: center;
-    padding: 15px; /* Distanza tra il bordo e il contenuto */
+    padding: 20px; /* Padding generoso per dare respiro ai contenuti */
 }
 
 .custom-styles .card-title {
-    margin-bottom: 0; /* Rimosso margine per una visualizzazione compatta */
+    margin-bottom: 8px; /* Margine inferiore per un aspetto compatto */
     font-size: 1.2rem;
-    color: #333; /* Colore scuro per il titolo */
+    color: #333333; /* Colore scuro per il titolo */
 }
 
 .custom-styles .description {
     font-size: 1rem;
     line-height: 1.5;
-    color: #666; /* Colore di descrizione grigio scuro */
-    margin-top: 8px; /* Un po' di margine sopra la descrizione */
+    color: #777777; /* Grigio chiaro per la descrizione */
+    margin-top: 10px; /* Margine tra titolo e descrizione */
 }
 
-/* Per le icone, usa un colore contrastante */
+/* Icona - Circolare e centrale con background chiaro */
 .custom-styles .avatar i {
-    color: #ffffff; /* Colore icona bianco */
-    font-size: 1.5rem; /* Icona più grande */
+    color: #555555; /* Colore neutro per l'icona */
+    font-size: 24px; /* Dimensione dell'icona */
 }
 
-/* Aggiungere un po' di padding e arrotondamento ai pulsanti */
-.custom-styles .card.teaser {
-    padding: 20px 15px; /* Più padding per un aspetto più spazioso */
-    border-radius: 10px; /* Bordi arrotondati per i pulsanti */
-    background-color: #f8f9fa; /* Sfondo più chiaro per i pulsanti */
-}
-
-/* Colori di sfondo specifici per i pulsanti */
-.custom-styles .card.bg-primary {
-    background-color: #007bff !important; /* Colore blu per pulsanti */
-    color: white; /* Colore testo bianco */
-}
-
-.custom-styles .card.bg-primary .card-title,
-.custom-styles .card.bg-primary .description {
-    color: white; /* Colore bianco per il testo in pulsante blu */
+/* Per i pulsanti con sfondo neutro */
+.custom-styles .card.bg-neutral {
+    background-color: #fafafa; /* Colore neutro chiaro */
+    color: #333; /* Colore scuro per il testo */
 }
 
 /* Effetto hover per il pulsante */
-.custom-styles .card.bg-primary:hover {
-    background-color: #0056b3; /* Cambia il colore di sfondo al passaggio del mouse */
+.custom-styles .card.bg-neutral:hover {
+    background-color: #e0e0e0; /* Cambio sfondo su hover per effetto interattivo */
 }
 
-/* Icone più grandi */
-.custom-styles .avatar {
-    background-color: #ffffff;
-    border-radius: 50%;
-    padding: 10px;
+/* Colori del testo in caso di hover */
+.custom-styles .card.bg-neutral:hover .card-title {
+    color: #0056b3; /* Colore blu scuro per il titolo quando hover */
 }
+
+/* Icone per i pulsanti */
+.custom-styles .avatar {
+    background-color: #f0f0f0; /* Colore di sfondo grigio chiaro per l'avatar */
+    border-radius: 50%; /* Forma circolare per l'icona */
+    padding: 12px; /* Un po' di padding per l'icona */
+}
+
+/* Card spacing and layout */
+.custom-styles .card-wrapper {
+    width: 100%;
+}
+
+.custom-styles .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+}
+
+.custom-styles .card-title {
+    font-size: 1.2rem; /* Font size più grande per i titoli */
+    color: #333; /* Colore scuro per il titolo */
+    font-weight: 600;
+}
+
+/* Separazione tra pulsanti per dispositivi mobili */
+@media (max-width: 768px) {
+    .custom-styles .card-body {
+        flex-direction: column; /* Colonne per schermi piccoli */
+        text-align: center;
+    }
+    .custom-styles .card-title {
+        font-size: 1.1rem; /* Font size ridotto sui dispositivi piccoli */
+    }
+}
+
 
 </style>
 
