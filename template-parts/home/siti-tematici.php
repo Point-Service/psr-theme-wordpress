@@ -28,6 +28,7 @@ if (is_array($siti_tematici) && count($siti_tematici)) {
     </div>
   </div>
 <?php } ?>
+  
 <style>
     /* Stile per la sezione dei siti tematici */
     .siti-tematici-section .card-wrapper {
@@ -133,3 +134,4 @@ if (is_array($siti_tematici) && count($siti_tematici)) {
         flex-grow: 1;
     }
 </style>
+
