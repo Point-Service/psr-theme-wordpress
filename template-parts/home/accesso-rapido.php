@@ -40,7 +40,7 @@ $box_accesso_rapido = $boxes;
                                         <?php echo esc_html($titolo); ?>
                                     </h3>
                                     <?php if (!empty($descrizione)) { ?>
-                                        <p class="card-text text-sans-serif mb-0 description text-white <?= $sfondo_scuro ? 'text-white' : '' ?>" style="font-size: 1rem; line-height: 1.5;">
+                                        <p class="card-text text-sans-serif mb-0 description text-dark <?= $sfondo_scuro ? '' : 'text-dark' ?>" style="font-size: 1rem; line-height: 1.5;">
                                             <?php echo esc_html($descrizione); ?>
                                         </p>
                                     <?php } ?>
@@ -58,40 +58,44 @@ $box_accesso_rapido = $boxes;
 
 
 
+
     
 <style>
 .custom-styles .card {
-    background-color: #fff !important; /* Sfondo bianco */
-    border: 1px solid #ddd; /* Leggera bordatura per separare */
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Leggero ombreggiamento */
+    background-color: #fff !important; /* Sfondo bianco per la card */
+    border: 1px solid #ddd; /* Bordi leggeri per separare visivamente */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Ombra leggera */
 }
 
 .custom-styles .card-body {
-    padding: 15px; /* Ridotto padding per stringere il contenuto */
+    padding: 15px; /* Ridotto padding per contenuto più compatto */
 }
 
 .custom-styles .card-text {
     font-size: 0.95rem;
     line-height: 1.4;
     margin-top: 0.5rem;
+    color: #333; /* Colore testo scuro per buona visibilità su sfondo bianco */
 }
 
+/* Titolo più contrastato */
 .custom-styles .card-title {
     margin-bottom: 0;
-    font-size: 1.2rem; /* Titolo leggermente più compatto */
+    font-size: 1.2rem;
+    color: #333; /* Colore del titolo più scuro per contrastare il bianco */
 }
 
-/* Stile per tasto (se ne avessi ancora uno) */
+/* Stile per il tasto (se ne avessi uno) */
 .custom-styles .btn {
-    width: 120px; /* Ridotto il bottone */
-    padding: 8px 16px; /* Più stretto */
-    background-color: #007bff; /* Colore blu */
+    width: 150px; /* Ristretto il bottone */
+    padding: 10px 15px; /* Più stretto */
+    background-color: #007bff; /* Colore blu per il tasto */
     color: white;
     border: none;
     border-radius: 30px; /* Tasto arrotondato */
     text-transform: uppercase;
     font-size: 0.875rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombra per evidenziare */
 }
 
 .custom-styles .btn:hover {
@@ -101,6 +105,12 @@ $box_accesso_rapido = $boxes;
 .custom-styles .btn:focus {
     outline: none;
 }
+
+/* Per le icone, un colore contrastante */
+.custom-styles .avatar i {
+    color: #333; /* Colore icona più scuro */
+}
+
 
 </style>
 
