@@ -46,9 +46,6 @@ $box_accesso_rapido = $boxes;
 <?php } ?>
 
 <style>
-
-
-    
 /* Stile per la lista dei pulsanti accesso rapido */
 .custom-styles .row {
     display: grid;
@@ -64,7 +61,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 140px; /* Ridotto l'altezza minima delle card */
+    min-height: 160px; /* Ridotto l'altezza minima delle card */
 }
 
 .custom-styles .card:hover {
@@ -76,7 +73,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     align-items: center;
     justify-content: space-between; /* Aggiunto per un migliore allineamento del contenuto */
-    padding: 15px; /* Ridotto il padding per rendere la card più compatta */
+    padding: 15px; /* Ridotto il padding per una card più compatta */
     flex-grow: 1; /* Consente al contenitore di crescere per riempire lo spazio disponibile */
 }
 
@@ -97,7 +94,7 @@ $box_accesso_rapido = $boxes;
 /* Icona - Circolare e centrale con background chiaro */
 .custom-styles .avatar i {
     color: #555555; /* Colore neutro per l'icona */
-    font-size: 22px; /* Ridotto un po' la dimensione dell'icona */
+    font-size: 24px; /* Dimensione dell'icona */
 }
 
 /* Per i pulsanti con sfondo neutro */
@@ -132,7 +129,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 10px; /* Ridotto il padding per compattezza */
+    padding: 10px; /* Ridotto il padding per una card più compatta */
 }
 
 /* Separazione tra pulsanti per dispositivi mobili */
@@ -156,7 +153,7 @@ $box_accesso_rapido = $boxes;
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 140px; /* Altezza minima uniforme per tutti i pulsanti */
+    min-height: 160px; /* Altezza minima uniforme per tutti i pulsanti */
 }
 
 .custom-styles .card-body {
@@ -166,4 +163,5 @@ $box_accesso_rapido = $boxes;
     padding: 10px;
     flex-grow: 1;
 }
+
 </style>
