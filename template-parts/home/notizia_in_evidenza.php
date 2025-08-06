@@ -186,8 +186,8 @@ elseif (!empty($post_ids)):
           <!-- Argomenti -->
           <small>Argomenti: </small>
           <?php get_template_part("template-parts/common/badges-argomenti"); ?>
-
-          <a class="read-more mt-4 d-inline-flex align-items-center" href="<?php echo get_permalink($post->ID); ?>">
+  
+          <a class="read-more mt-4 d-inline-flex align-items-center ms-0 ps-0" style="margin-left: 0 !important; padding-left: 0 !important;" href="<?php echo get_permalink($post->ID); ?>">
             <span class="text">Vai alla pagina</span>
             <svg class="icon ms-1">
               <use xlink:href="#it-arrow-right"></use>
