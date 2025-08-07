@@ -17,7 +17,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
    class="card card-teaser <?= $colore_sfondo ? '' : '' ?> mt-0 p-2 shadow-sm" 
    target="_blank">
 
-    <div class="card-body" style="background-color: #f7f7f7; padding: 12px; border-radius: 8px; display: flex; flex-direction: column;">
+    <div class="card-body" style="background-color: #f7f7f7; padding: 12px; border-radius: 8px; display: flex; flex-direction: column; position: relative;">
 
         <!-- Icona e Titolo: Usa flexbox solo per allinearli orizzontalmente -->
         <div style="display: flex; align-items: center; margin-bottom: 5px;">
@@ -35,6 +35,11 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
             </h3>
         </div>
 
+        <!-- Aggiungi l'icona SVG qui -->
+        <svg class="icon icon-white svg-top-right" style="width: 20px; height: 20px;">
+            <use href="#it-external-link"></use>
+        </svg>
+
         <!-- Descrizione sotto il titolo -->
         <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-black' : '' ?>"
            style="color: <?= $sfondo_scuro ? '#333' : '#555' ?>; font-size: 0.85rem; margin-bottom: 0;">
@@ -43,6 +48,21 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
     </div>
 </a>
+<style>
 
+   /* Posiziona l'icona in alto a destra solo per questo codice */
+.sito-tematico-page .card-body {
+    position: relative; /* Assicurati che il contenitore abbia posizione relativa */
+}
+
+.sito-tematico-page .svg-top-right {
+    position: absolute;
+    top: 10px; /* Distanza dal top */
+    right: 10px; /* Distanza dal lato destro */
+    z-index: 10; /* Assicurati che l'icona sia sopra gli altri contenuti */
+}
+
+   
+</style>
 
 
