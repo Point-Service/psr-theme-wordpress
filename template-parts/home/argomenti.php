@@ -35,9 +35,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
             <div class="row d-lg-inline-flex">
                 <div class="col-lg-3">
-                    <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">
-                        Altri argomenti<br>
-                    </h3>
+                    <h2 class="title-xxlarge mb-4">Altri argomenti</h2>
                 </div>
                 <div class="col-lg-9">
                     <div class="button-group">
