@@ -63,8 +63,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 
 
 <style>
-
-    /* Sezione "Altri argomenti" */
+/* Sezione "Altri argomenti" */
 .container .row.pt-30 {
     padding-top: 30px;
 }
@@ -113,7 +112,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     transition: all 0.3s ease; /* Transizione per gli effetti */
 }
 
-/* Hover: Solo effetto di sollevamento e ombra */
+/* Hover: Effetto di sollevamento e ombra */
 .container .row.pt-30 .button-group a.btn-argomento:hover {
     background-color: #ffffff; /* Mantieni lo stesso colore di sfondo */
     color: #333; /* Mantieni lo stesso colore del testo */
@@ -144,8 +143,6 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         font-size: 0.9rem;
     }
 }
-
-
 
     
 </style>
