@@ -123,7 +123,7 @@ $box_accesso_rapido = $boxes;
 .custom-styles .avatar {
     background-color: #f0f0f0; /* Colore di sfondo grigio chiaro per l'avatar */
     border-radius: 50%; /* Forma circolare per l'icona */
-    padding: 10px; /* Un po' di padding per l'icona */
+    padding: 5px; /* Un po' di padding per l'icona */
 }
 
 /* Card spacing and layout */
