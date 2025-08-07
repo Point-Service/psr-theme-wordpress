@@ -55,107 +55,44 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                     </div>
                 </div>
             </div>
-        </div>
-            <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
+             <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
                 <a href="<?php echo dci_get_template_page_url("page-templates/argomenti.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
             </div>
+        </div> 
     <?php } ?>
 </div>
 <style>
-
-    /* Sezione Altri Argomenti */
-.altri-argomenti-section {
-    background-color: #f7f9fb; /* Sfondo chiaro per la sezione */
-    padding: 40px 0;
-    border-radius: 10px; /* Angoli arrotondati */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Ombra leggera */
-    margin-top: 20px;
-}
-
-/* Titolo "Altri argomenti" */
-.altri-argomenti-section h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #333;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 20px;
-}
-
-/* Chip (tag) per gli argomenti */
+/* Stile moderno per i chip */
 .altri-argomenti-section .chip {
-    background: #eef3f9; /* Colore di sfondo chiaro per i chip */
-    border: 1px solid #d1e0e8;
-    color: #007bff;
-    padding: 8px 16px;
-    border-radius: 25px;
+    background-color: #e1eff7; /* Colore chiaro e moderno */
+    border: 1px solid #c2e1f0; /* Bordo sottile e morbido */
+    color: #007bff; /* Colore del testo blu per contrasto */
+    padding: 10px 18px;
+    border-radius: 30px; /* Angoli arrotondati per un look morbido */
     margin-right: 12px;
     margin-bottom: 12px;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    transition: all 0.3s ease; /* Animazione al passaggio del mouse */
-}
-
-.altri-argomenti-section .chip:hover {
-    background-color: #007bff; /* Colore di sfondo al passaggio del mouse */
-    color: #fff; /* Colore del testo al passaggio */
-    border-color: #0056b3; /* Colore del bordo al passaggio */
-    transform: translateY(-2px); /* Leggero sollevamento */
-}
-
-/* Lista degli argomenti */
-.altri-argomenti-section .chip-label {
     display: inline-block;
-    text-transform: capitalize; /* Prima lettera maiuscola */
+    text-transform: capitalize;
+    transition: all 0.3s ease-in-out; /* Animazione di transizione per hover */
 }
 
-/* Colonna dei chip */
-.altri-argomenti-section .col-lg-9 {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* Distanza tra i chip */
-    justify-content: flex-start;
+/* Effetto hover sui chip */
+.altri-argomenti-section .chip:hover {
+    background-color: #007bff; /* Colore di sfondo blu quando hover */
+    color: #fff; /* Colore del testo bianco */
+    border-color: #0056b3; /* Colore del bordo al passaggio */
+    transform: translateY(-3px); /* Effetto di sollevamento per rendere il chip più interattivo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Aggiunta di un'ombra leggera */
 }
 
-/* Pulsante "Mostra tutti" */
-.altri-argomenti-section .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    display: block;
-    margin: 20px auto;
-    max-width: 220px;
-}
-
-.altri-argomenti-section .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-/* Responsività: Ottimizzazione per schermi più piccoli */
-@media (max-width: 768px) {
-    .altri-argomenti-section .col-lg-10 {
-        width: 100%;
-    }
-
-    .altri-argomenti-section h3 {
-        font-size: 1.125rem; /* Ridurre la dimensione del titolo su schermi piccoli */
-        text-align: center;
-    }
-
-    .altri-argomenti-section .col-lg-9 {
-        justify-content: center;
-    }
-
-    .altri-argomenti-section .chip {
-        margin-right: 8px;
-        margin-bottom: 8px;
-    }
+/* Opzione per chip disabilitati o non cliccabili */
+.altri-argomenti-section .chip.disabled {
+    background-color: #f2f6fa;
+    color: #b0c4d0;
+    border: 1px solid #d1e2f1;
+    cursor: not-allowed;
 }
 
 </style>
