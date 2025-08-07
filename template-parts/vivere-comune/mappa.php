@@ -7,7 +7,8 @@
 
     if($show_map === 'true' && !empty($link_map) &&$link_map!=null){?>
         <div class="row g-4">
-            <iframe style="border: 0;" src="<?= $link_map ?>" width="100%" height="450px" allowfullscreen></iframe>
+            <iframe style="border: 0;" src="<?= $link_map ?>" width="98%" height="450px" allowfullscreen></iframe>
         </div>
     <?php }
 ?>
+
