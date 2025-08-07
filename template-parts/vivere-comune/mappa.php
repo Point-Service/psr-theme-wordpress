@@ -6,8 +6,8 @@
     // Controllo se l'opzione per visualizzare la mappa e se il link non è null
     if ($show_map === 'true' && !empty($link_map) && $link_map != null) {
 ?>
-        <div class="row g-4" style="overflow: hidden; max-width: 100%;">
-            <div style="position: relative; width: 95%; height: 450px; margin: 0 auto;">
+        <div class="row g-4" style="overflow: hidden; max-width: 100%; background: transparent;">
+            <div style="position: relative; width: 95%; height: 450px; margin: 0 auto; background: transparent;">
                 <iframe style="border: 0; width: 100%; height: 100%; max-width: 100%;" src="<?= $link_map ?>" allowfullscreen scrolling="no"></iframe>
             </div>
         </div>
