@@ -32,7 +32,6 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
     </div>
 </a>
 <style>
-
 /* Aggiunta dell'effetto hover per la card */
 .sito-tematico-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
@@ -56,6 +55,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 
 /* Personalizzazione per il colore del titolo e descrizione */
 .sito-tematico-card .card-title {
+    position: relative; /* Necessario per il posizionamento assoluto dell'icona */
     font-size: 1.5rem;
     font-weight: 600;
 }
@@ -96,22 +96,32 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
     margin-top: 10px;
 }
 
+/* Aggiungi queste regole per posizionare l'icona in alto a destra */
+.sito-tematico-card .card-title svg.icon-white {
+    position: absolute;
+    top: 0; /* Posiziona l'icona al bordo superiore */
+    right: 0; /* Posiziona l'icona al bordo destro */
+    width: 20px; /* Imposta una dimensione fissa per l'icona */
+    height: 20px; /* Imposta una dimensione fissa per l'icona */
+    z-index: 1; /* Assicurati che l'icona sia sopra gli altri elementi */
+    transition: transform 0.3s ease, fill 0.3s ease; /* Aggiungi transizioni per l'hover */
+}
 
-    /* Aggiungi un effetto hover (opzionale) per l'icona */
-.custom-styles .card-title svg.icon-white:hover {
+/* Hover: Aggiungi un effetto quando si passa sopra l'icona */
+.sito-tematico-card .card-title svg.icon-white:hover {
     transform: scale(1.1); /* Leggera ingrandimento dell'icona al passaggio del mouse */
     fill: #f0f0f0 !important; /* Cambia colore dell'icona a bianco quando si passa sopra */
 }
 
-
 /* Modifica il margine della card-body se necessario per fare spazio all'icona */
-.custom-styles .card-body {
+.sito-tematico-card .card-body {
     padding: 15px; /* Aggiungi padding per fare spazio all'icona */
 }
 
 /* Aggiungi spazio tra l'icona e il contenuto (opzionale) */
-.custom-styles .card-title {
+.sito-tematico-card .card-title {
     margin-right: 40px; /* Spazio a destra per fare posto all'icona */
 }
+
     
 </style>
