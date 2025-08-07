@@ -13,12 +13,10 @@ $links = dci_get_option('link', 'link_utili');
         <form role="search" method="get" class="search-form mb-4" action="<?php echo esc_url(home_url('/')); ?>">
           <div class="input-group shadow-sm">
             <input type="search" class="form-control" placeholder="Cerca una parola chiave" name="s" value="<?php echo get_search_query(); ?>" aria-label="Cerca una parola chiave">
-           <button class="btn btn-primary btn-white-fill" type="submit">
-              <font color="white">
-                <svg class="icon icon-sm me-1 text-white" aria-hidden="true">
-                  <use href="#it-search"></use>
-                </svg>
-              </font>
+            <button class="btn btn-primary" type="submit">
+              <svg class="icon icon-sm me-1" aria-hidden="true" style="fill: white;">
+                <use href="#it-search"></use>
+              </svg>
               Cerca
             </button>
           </div>
@@ -46,9 +44,5 @@ $links = dci_get_option('link', 'link_utili');
     </div>
   </div>
 </section>
-<style>
-.btn-white-fill {
-  background-color: white;
-  color: #FFF;
-}  
-</style>
+
+
