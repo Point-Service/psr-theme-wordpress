@@ -174,7 +174,7 @@ $box_accesso_rapido = $boxes;
     
 /* Icona SVG in Accesso rapido */
 .custom-styles .card-title svg.icon-white {
-    color: white; /* Colore dell'icona impostato su bianco */
+    fill: white; /* Colore bianco per l'icona di default */
     position: absolute;
     top: 10px; /* Posiziona l'icona a 10px dalla parte superiore della card */
     right: 10px; /* Posiziona l'icona a 10px dal lato destro della card */
@@ -186,13 +186,13 @@ $box_accesso_rapido = $boxes;
 /* Aggiungi un effetto hover (opzionale) per l'icona */
 .custom-styles .card-title svg.icon-white:hover {
     transform: scale(1.1); /* Leggera ingrandimento dell'icona al passaggio del mouse */
+    fill: #f0f0f0; /* Cambia colore quando si passa sopra (opzionale) */
 }
 
 /* Card: Assicurati che la card abbia posizione relativa per contenere l'icona */
 .custom-styles .card {
     position: relative; /* Essenziale per posizionare l'icona assoluta */
 }
-
 
 
 </style>
