@@ -27,6 +27,10 @@ $box_accesso_rapido = $boxes;
                                 <div class="flex-grow-1">
                                     <h3 class="card-title t-primary title-xlarge text-dark" style="font-size: 1.5rem; line-height: 1.2;">
                                         <?php echo $box['titolo_message']; ?>
+                                        <!-- Aggiungi l'icona SVG qui -->
+                                        <svg class="icon icon-white" style="width: 20px; height: 20px; margin-left: 8px;">
+                                            <use href="#it-external-link"></use>
+                                        </svg>
                                     </h3>
                                     <?php if (isset($box['desc_message']) && $box['desc_message']) { ?>
                                         <p class="card-text text-sans-serif mb-0 description text-muted" style="font-size: 1rem; line-height: 1.5;">
@@ -44,6 +48,7 @@ $box_accesso_rapido = $boxes;
 
 </div>
 <?php } ?>
+
 
 <style>
 /* Stile per la lista dei pulsanti accesso rapido */
