@@ -24,10 +24,6 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
         <h3 class="card-title title-xlarge-card"><?php echo $argomento->name?></h3>
         <p class="card-text">
             <?php echo $argomento->description?>
-            <!-- Aggiungi l'icona SVG in alto a destra -->
-            <svg class="icon icon-white svg-top-right" style="width: 20px; height: 20px;">
-                <use href="#it-external-link"></use>
-            </svg>
         </p>
 
         <!-- sito tematico -->
@@ -67,22 +63,5 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
         </span>
     </a>
 </div>
-<style>
-
-   /* Posiziona l'icona in alto a destra */
-.svg-top-right {
-    position: absolute;
-    top: 10px; /* Distanza dal top */
-    right: 10px; /* Distanza dal lato destro */
-    z-index: 10; /* Assicurati che l'icona sia sopra gli altri contenuti */
-}
-
-/* Aggiungi un po' di padding alla card per far spazio all'icona */
-.card-body {
-    position: relative; /* Importante per il posizionamento assoluto */
-    padding-right: 40px; /* Spazio per evitare che l'icona si sovrapponga al testo */
-}
- 
-</style>
 <?php
 $sito_tematico_id = null;
