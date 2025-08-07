@@ -172,7 +172,7 @@ $box_accesso_rapido = $boxes;
 
 /* Icona SVG in Accesso rapido */
 .custom-styles .card-title svg.icon-white {
-    fill: white; /* Colore bianco per l'icona di default */
+    fill: black; /* Colore bianco per l'icona di default */
     position: absolute;
     top: 10px; /* Posiziona l'icona a 10px dalla parte superiore della card */
     right: 10px; /* Posiziona l'icona a 10px dal lato destro della card */
