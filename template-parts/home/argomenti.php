@@ -56,8 +56,11 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                 ?>
             </div>
         </div>
-        <div class="col-12 text-left">
-            <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
+        <!-- Spazio tra gli argomenti e il pulsante "Mostra tutti" -->
+        <div class="col-12 text-left mt-4">
+            <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>" class="btn btn-primary">
+                Mostra tutti <i class="fa fa-arrow-right"></i> <!-- Aggiunta freccia -->
+            </a>
         </div>
     </div>
     <?php } ?>
@@ -118,8 +121,14 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 }
 
 /* Pulsante "Mostra tutti" */
-.container .row.pt-30 .btn.btn-primary.mt-40 {
+.container .row.pt-30 .btn.btn-primary {
     margin-left: 0; /* Allinea il pulsante a sinistra */
+    display: inline-flex;
+    align-items: center;
+}
+
+.container .row.pt-30 .btn.btn-primary i.fa-arrow-right {
+    margin-left: 8px; /* Distanza tra il testo e la freccia */
 }
 
 /* Media queries per schermi più piccoli */
@@ -138,3 +147,4 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     }
 }
 </style>
+
