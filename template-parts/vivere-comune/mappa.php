@@ -6,7 +6,7 @@
     // Controllo se l'opzione per visualizzare la mappa e se il link non è null
     if ($show_map === 'true' && !empty($link_map) && $link_map != null) {
 ?>
-        <div class="row custom-map-container" style="overflow: hidden; max-width: 100%; background: transparent; display: flex; justify-content: center; align-items: center;">
+        <div class="row custom-map-container" style="overflow: hidden; background: transparent; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 100vh;">
             <div style="position: relative; width: 99%; height: 450px; background: transparent;">
                 <iframe style="border: 0; width: 100%; height: 100%; max-width: 100%;" src="<?= $link_map ?>" allowfullscreen scrolling="no"></iframe>
             </div>
@@ -20,13 +20,14 @@
     --bs-gutter-y: 0 !important;
 }    
 
-/* Centra l'iframe nel contenitore */
+/* Assicurarsi che il contenitore occupi tutta l'altezza della pagina */
 .custom-map-container {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%; /* Assicurati che il contenitore abbia altezza sufficiente */
+    min-height: 100vh; /* Minima altezza della pagina */
+    background: transparent;
 }
 
 .custom-map-container > div {
@@ -35,3 +36,5 @@
     height: 450px; /* Altezza fissa per l'iframe */
 }
 </style>
+
+
