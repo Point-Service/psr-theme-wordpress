@@ -57,7 +57,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 
 
             <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>" class="btn btn-primary">
-                Mostra tutti <i class="fa fa-arrow-right"></i> <!-- Aggiunta freccia -->
+                Mostra tutti a<i class="fa fa-arrow-right"></i> <!-- Aggiunta freccia -->
             </a>
 
                 
