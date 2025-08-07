@@ -54,18 +54,14 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
         </div>
         <?php } ?>
     </div>
-
-    <!-- Esplora argomento link con icona -->
     <a class="read-more pt-0" href="<?php echo get_term_link(intval($argomento->term_id),'argomenti'); ?>">
         <span class="list-item-title-icon-wrapper">
             <span class="text">Esplora argomento</span>
             <svg class="icon">
-                <use xlink:href="#it-arrow-right"></use> <!-- Icona della freccia -->
+                <use xlink:href="#it-arrow-right"></use>
             </svg>
         </span>
     </a>
 </div>
-
 <?php
 $sito_tematico_id = null;
-
