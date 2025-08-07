@@ -54,18 +54,19 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                 </div>
             </div>
         </div>
-                <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
+        <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
             <a href="<?php echo dci_get_template_page_url("page-templates/argomenti.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
         </div>
     </div>
 
     <?php } ?>
 </div>  
+
+
 <style>
 /* Sezione "Altri argomenti" */
 .container .row.pt-30 {
     padding-top: 30px;
-
 }
 
 /* Intestazione "Altri argomenti" */
@@ -74,6 +75,9 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     font-weight: 600;
     color: #333;
     letter-spacing: 0.5px;
+    white-space: nowrap; /* Impedisce che vada a capo */
+    overflow: hidden;    /* Impedisce il testo di uscire dal contenitore */
+    text-overflow: ellipsis; /* Aggiunge i puntini di sospensione se il testo è troppo lungo */
 }
 
 /* Colonna con il testo e i link */
@@ -106,16 +110,16 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Hover sui pulsanti */
+/* Hover sui pulsanti - Colore dinamico da .it-header-center-content-wrapper */
 .container .row.pt-30 .button-group a.btn-argomento:hover {
-    background-color: #007bff;
+    background-color: var(--header-hover-color, #007bff); /* Imposta il colore di hover dinamicamente */
     color: white;
-    border-color: #007bff;
+    border-color: var(--header-hover-color, #007bff); /* Imposta il colore del bordo */
     transform: translateY(-4px); /* Leggera animazione di spostamento */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-
+/* Pulsante "Mostra tutti" hover (rimane invariato) */
 .container .row.pt-30 .btn.btn-primary.mt-40:hover {
     background-color: #0056b3;
     border-color: #0056b3;
@@ -136,6 +140,11 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         padding: 8px 14px;
         font-size: 0.9rem;
     }
+}
+
+/* Colorazione del pulsante hover dinamica basata su .it-header-center-content-wrapper */
+.it-header-center-content-wrapper {
+    --header-hover-color: #007bff; /* Modifica con il tuo colore desiderato */
 }
 
     
