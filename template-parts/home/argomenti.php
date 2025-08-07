@@ -67,7 +67,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     </div>
     <?php } ?>
 </div>
-<br>
+<br><br>
 <style>
 /* Allineamento degli elementi dentro la riga */
 .container .row.pt-30 {
