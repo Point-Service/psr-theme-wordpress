@@ -68,16 +68,17 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     padding-top: 30px;
 }
 
-/* Titolo "Altri argomenti" sopra il container, visualizzazione corretta */
+/* Titolo "Altri argomenti" sopra il container */
 .container .row.pt-30 h3.title-xsmall-bold.text.u-grey-light {
     font-size: 1.2rem;
     font-weight: 600;
     color: #333;
     letter-spacing: 0.5px;
-    white-space: normal; /* Rimuovi il nowrap, così il testo può andare su più righe se necessario */
+    white-space: normal; /* Permette al testo di andare a capo se necessario */
     overflow: visible;    /* Assicurati che il testo sia visibile */
-    text-overflow: unset; /* Rimuovi l'ellissi */
+    text-overflow: unset; /* Rimuove l'ellissi */
     margin-top: 30px; /* Spazio sopra */
+    margin-bottom: 10px; /* Ridotto lo spazio tra il titolo e gli elementi */
 }
 
 /* Colonna con il testo e i link */
@@ -89,7 +90,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 .container .row.pt-30 .button-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 16px;  /* Distanza tra i pulsanti */
     padding: 0;
     margin: 0;
     justify-content: flex-start; /* Allinea i pulsanti a sinistra */
