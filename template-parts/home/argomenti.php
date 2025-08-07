@@ -34,19 +34,23 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     <!-- Titolo "Altri argomenti" sopra il container -->
     <div class="row pt-30">
         <div class="col-12">
-            <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
+            <h3 class="text-uppercase mb-2 title-xsmall-bold text u-grey-light">Altri argomenti</h3> <!-- Ridotto il margine -->
         </div>
     </div>
 
     <div class="row pt-30">
         <div class="col-12">
             <div class="button-group">
-                <a href="https://comune.termevigliatore.me.it/argomento/trasparenza-amministrativa/" class="btn-argomento">
-                    Trasparenza amministrativa
+                <?php
+                // Ciclo per i pulsanti "Altri argomenti"
+                foreach ($altri_argomenti as $argomento) {
+                    $url = $argomento['url'] ?? '#'; // Recupera il link dell'argomento
+                    $title = $argomento['title'] ?? 'Link';
+                ?>
+                <a href="<?php echo esc_url($url); ?>" class="btn-argomento">
+                    <?php echo esc_html($title); ?>
                 </a>
-                <a href="https://comune.termevigliatore.me.it/argomento/turismo/" class="btn-argomento">
-                    Turismo
-                </a>
+                <?php } ?>
             </div>
         </div>
         <div class="col-12 text-left"> <!-- Allineato a sinistra -->
@@ -108,9 +112,8 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     overflow: visible;
     text-overflow: unset;
     margin-top: 10px; /* Mantieni o regola se necessario */
-    margin-bottom: 5px; /* Riduci la distanza tra il titolo e i pulsanti */
+    margin-bottom: 5px; /* Ridotto la distanza tra il titolo e i pulsanti */
 }
-
 
 /* Pulsante "Mostra tutti" */
 .container .row.pt-30 .btn.btn-primary.mt-40 {
@@ -132,7 +135,4 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         font-size: 0.9rem;
     }
 }
-
-
-    
 </style>
