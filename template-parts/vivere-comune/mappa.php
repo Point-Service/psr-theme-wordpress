@@ -7,11 +7,9 @@
     if ($show_map === 'true' && !empty($link_map) && $link_map != null) {
 ?>
         <div class="row g-4" style="overflow: hidden; max-width: 100%;">
-            <div style="position: relative; width: 100%; height: 450px; overflow: hidden;">
+            <div style="position: relative; width: 95%; height: 450px; margin: 0 auto;">
                 <iframe style="border: 0; width: 100%; height: 100%; max-width: 100%;" src="<?= $link_map ?>" allowfullscreen scrolling="no"></iframe>
             </div>
         </div>
 <?php }
 ?>
-
-
