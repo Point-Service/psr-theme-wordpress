@@ -110,13 +110,13 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     transition: all 0.3s ease; /* Transizione per gli effetti */
 }
 
-/* Rimuovere il cambiamento di colore al passaggio del mouse */
+/* Hover: Solo effetto di sollevamento e ombra */
 .container .row.pt-30 .button-group a.btn-argomento:hover {
-    background-color: #ffffff; /* Mantenere lo stesso colore di sfondo */
-    color: #333; /* Mantenere lo stesso colore del testo */
-    border-color: #dcdcdc; /* Mantenere lo stesso colore del bordo */
-    transform: none; /* Rimuovere l'animazione di spostamento */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Rimuovere l'effetto di ombra più grande */
+    background-color: #ffffff; /* Mantieni lo stesso colore di sfondo */
+    color: #333; /* Mantieni lo stesso colore del testo */
+    border-color: #dcdcdc; /* Mantieni lo stesso colore del bordo */
+    transform: translateY(-4px); /* Leggera animazione di spostamento */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Più grande ombra al passaggio del mouse */
 }
 
 /* Pulsante "Mostra tutti" hover (rimane invariato) */
@@ -141,6 +141,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         font-size: 0.9rem;
     }
 }
+
 
     
 </style>
