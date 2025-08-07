@@ -60,35 +60,23 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 
 
 <style>
-/* Allineamento degli elementi all'interno del container */
+
+    /* Allineamento degli elementi dentro la riga */
 .container .row.pt-30 {
     text-align: left; /* Allinea il testo e gli altri contenuti a sinistra */
-}
-
-/* Titolo "Altri argomenti" sopra il container */
-.container .row.pt-30 h3.title-xsmall-bold.text.u-grey-light {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
-    letter-spacing: 0.5px;
-    white-space: normal; /* Permette al testo di andare a capo */
-    overflow: visible;
-    text-overflow: unset;
-    margin-top: 10px; /* Ridotto lo spazio sopra il titolo */
-    margin-bottom: 10px; /* Ridotto lo spazio tra il titolo e gli elementi */
 }
 
 /* Gruppo di pulsanti "Altri argomenti" */
 .container .row.pt-30 .button-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;  /* Distanza tra i pulsanti */
+    gap: 16px; /* Spazio tra i pulsanti */
     padding: 0;
     margin: 0;
     justify-content: flex-start; /* Allinea i pulsanti a sinistra */
 }
 
-/* Stile per ogni pulsante */
+/* Gruppo di pulsanti "Altri argomenti" - Evita che i pulsanti occupino l'intera larghezza */
 .container .row.pt-30 .button-group a.btn-argomento {
     display: inline-block;
     padding: 10px 16px;
@@ -104,20 +92,31 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     transition: all 0.3s ease;
 }
 
-/* Hover: solo effetto di sollevamento e ombra, senza cambiare colore */
+/* Hover: Solo effetto di sollevamento e ombra */
 .container .row.pt-30 .button-group a.btn-argomento:hover {
-    background-color: #ffffff; /* Mantieni lo stesso colore di sfondo */
-    color: #333; /* Mantieni lo stesso colore del testo */
-    border-color: #dcdcdc; /* Mantieni lo stesso colore del bordo */
-    transform: translateY(-4px); /* Leggera animazione di spostamento */
+    background-color: #ffffff;
+    color: #333;
+    border-color: #dcdcdc;
+    transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Pulsante "Mostra tutti" hover */
-.container .row.pt-30 .btn.btn-primary.mt-40:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-    transform: translateY(-2px);
+/* Titolo "Altri argomenti" sopra il container */
+.container .row.pt-30 h3.title-xsmall-bold.text.u-grey-light {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    letter-spacing: 0.5px;
+    white-space: normal; /* Permette al testo di andare a capo */
+    overflow: visible;
+    text-overflow: unset;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Pulsante "Mostra tutti" */
+.container .row.pt-30 .btn.btn-primary.mt-40 {
+    margin-left: 0; /* Allinea il pulsante a sinistra */
 }
 
 /* Media queries per schermi più piccoli */
