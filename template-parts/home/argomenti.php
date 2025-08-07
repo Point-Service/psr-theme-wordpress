@@ -9,7 +9,7 @@ for ($i = 1; $i <= 9; $i++) {
 }
 $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 ?>
-
+jj
 <div class="container">
  <?php if (!empty($argomenti_evidenza)) { ?>
     <div class="row"> 
