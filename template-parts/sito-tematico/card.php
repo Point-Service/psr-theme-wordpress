@@ -19,13 +19,13 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
         </div>
     <?php } ?>
     <div class="card-body">
-        <h3 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-white':'text-dark' ?>">
+        <h4 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-white':'text-dark' ?>">
             <?php echo $sito_tematico->post_title ?>
                <!-- Aggiungi l'icona SVG qui -->
             <svg class="icon icon-white" style="width: 20px; height: 20px; margin-left: 8px;">
                 <use href="#it-external-link"></use>
             </svg>
-        </h3>
+        </h4>
         <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-white':'' ?>">
             <?php echo $st_descrizione; ?>
         </p>
