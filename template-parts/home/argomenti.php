@@ -54,17 +54,18 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                 </div>
             </div>
         </div>
-        <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
+                <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
             <a href="<?php echo dci_get_template_page_url("page-templates/argomenti.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
         </div>
     </div>
+
     <?php } ?>
 </div>  
 <style>
 /* Sezione "Altri argomenti" */
 .container .row.pt-30 {
     padding-top: 30px;
-    background-color: #f4f4f4; /* Colore di sfondo chiaro per separare visivamente la sezione */
+
 }
 
 /* Intestazione "Altri argomenti" */
@@ -114,16 +115,6 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Stile per il pulsante "Mostra tutti" - Senza modifiche */
-.container .row.pt-30 .btn.btn-primary.mt-40 {
-    background-color: #007bff;
-    border-color: #007bff;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
 
 .container .row.pt-30 .btn.btn-primary.mt-40:hover {
     background-color: #0056b3;
