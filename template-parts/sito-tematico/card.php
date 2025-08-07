@@ -79,7 +79,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 .sito-tematico-card .avatar {
     background-color: #FFFFFF;
     border-radius: 50%;
-    padding: 12px;
+    padding: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
