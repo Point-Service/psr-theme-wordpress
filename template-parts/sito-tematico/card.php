@@ -23,7 +23,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
             <?php echo $sito_tematico->post_title ?>
                <!-- Aggiungi l'icona SVG qui -->
             <svg class="icon icon-white" style="width: 20px; height: 20px; margin-left: 8px;">
-                   <use href="#it-external-link"></use>
+                <use href="#it-share-alt"></use>
             </svg>
         </h3>
         <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-white':'' ?>">
