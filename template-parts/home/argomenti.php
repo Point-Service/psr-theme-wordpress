@@ -33,30 +33,27 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     <?php if ($altri_argomenti) { ?>
     <!-- Titolo "Altri argomenti" sopra il container -->
     <div class="row pt-30">
-        <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
-            <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
-        </div>
+    <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
+        <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
     </div>
+</div>
 
-    <!-- Gruppo di pulsanti -->
-    <div class="row pt-30">
-        <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
-            <div class="button-group">
-                <?php if (is_array($altri_argomenti)) {
-                    foreach ($altri_argomenti as $arg_id) {
-                        $argomento = get_term_by('term_taxonomy_id', $arg_id);
-                        $url = get_term_link(intval($arg_id),'argomenti');
-                ?>
-                <a href="<?php echo $url ?>" class="btn-argomento">
-                    <?php echo $argomento->name ?>
-                </a>
-                <?php } } ?>
-            </div>
-        </div>
-        <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
-            <a href="<?php echo dci_get_template_page_url("page-templates/argomenti.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
+<div class="row pt-30">
+    <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
+        <div class="button-group">
+            <a href="https://comune.termevigliatore.me.it/argomento/trasparenza-amministrativa/" class="btn-argomento">
+                Trasparenza amministrativa
+            </a>
+            <a href="https://comune.termevigliatore.me.it/argomento/turismo/" class="btn-argomento">
+                Turismo
+            </a>
         </div>
     </div>
+    <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
+        <a href="https://comune.termevigliatore.me.it/argomenti-2/" class="btn btn-primary mt-40">Mostra tutti</a>
+    </div>
+</div>
+    
     <?php } ?>
 </div>
 
