@@ -33,7 +33,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     <?php if ($altri_argomenti) { ?>
     <div class="row pt-30">
         <div class="col-12">
-            <h3 class="text-uppercase mb-2 title-xsmall-bold text u-grey-light"><font color="black">Altri argomenti</font></h3>
+            <h2 class="text-uppercase mb-2 title-xsmall-bold text u-grey-light"><font color="black">Altri argomenti</font></h2>
         </div>
     </div>
 
@@ -56,12 +56,9 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                 ?>
 
 
-                        <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>"  
-                           class="btn btn-primary" 
-                           style="margin-left: 40px; margin-top: 20px;">
-                            Mostra tutti <i class="fa fa-arrow-right"></i> <!-- Aggiunta freccia -->
-                        </a>
-
+                    <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>"  class="btn btn-primary" style="margin-left: 40px;">
+                        Mostra tutti
+                    </a>
 
                 <br>
             </div>
@@ -85,7 +82,6 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     padding: 0;
     margin: 0;
     justify-content: flex-start; /* Allinea i pulsanti a sinistra */
-    margin-bottom: 20px; /* Distanza tra il gruppo di pulsanti e il pulsante "Mostra tutti" */
 }
 
 /* Gruppo di pulsanti "Altri argomenti" - Evita che i pulsanti occupino l'intera larghezza */
@@ -131,10 +127,8 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     margin-left: 0; /* Allinea il pulsante a sinistra */
     display: inline-flex;
     align-items: center;
-    margin-top: 20px; /* Distanza tra i pulsanti e il pulsante "Mostra tutti" */
 }
 
-/* Aggiungi margine tra il testo e la freccia */
 .container .row.pt-30 .btn.btn-primary i.fa-arrow-right {
     margin-left: 8px; /* Distanza tra il testo e la freccia */
 }
@@ -154,6 +148,5 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         font-size: 0.9rem;
     }
 }
-
 </style>
 
