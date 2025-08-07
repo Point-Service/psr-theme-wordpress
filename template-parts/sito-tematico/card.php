@@ -77,7 +77,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 
 /* Stile dell'immagine (se presente) */
 .sito-tematico-card .avatar {
-    background-color: #f0f0f0;
+    background-color: #FFFFFF;
     border-radius: 50%;
     padding: 12px;
     display: flex;
@@ -124,5 +124,9 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
     margin-right: 40px; /* Spazio a destra per fare posto all'icona */
 }
 
+
+
+
+    
     
 </style>
