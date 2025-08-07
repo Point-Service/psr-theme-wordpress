@@ -27,7 +27,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                 } 
             } ?>
         </div>
-    </div>
+    
     <?php } ?>
 
     <?php if ($altri_argomenti) { ?>
@@ -56,7 +56,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     
     <?php } ?>
 </div>
-
+</div>
 
 
 <style>
