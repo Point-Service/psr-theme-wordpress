@@ -327,6 +327,22 @@ endif;
   padding-left: 1.5rem;
   padding-right: 1rem;
 }
+  
+/* Modifica per centrare l'immagine sui dispositivi mobili */
+@media (max-width: 991px) {
+  /* Centra l'immagine nel carosello e nei post singoli su mobile */
+  #carosello-evidenza .col-img,
+  .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+    justify-content: center; /* Centra orizzontalmente */
+  }
 
+  /* Centra l'immagine su mobile */
+  #carosello-evidenza img.img-evidenza,
+  .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+    margin: 0 auto; /* Centra l'immagine */
+    max-width: 100%;
+    height: auto;
+  }
+}
   
 </style>
