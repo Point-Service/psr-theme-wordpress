@@ -56,11 +56,11 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                 ?>
 
 
-                    <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>" style="margin-left: 30px; vertical-align: bottom;">
+                    <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>"  class="btn btn-primary" style="margin-left: 40px;">
                         Mostra tutti
                     </a>
 
-                
+                <br>
             </div>
         </div>
 
