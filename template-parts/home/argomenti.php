@@ -60,6 +60,11 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 
 
 <style>
+/* Allineamento degli elementi all'interno del container */
+.container .row.pt-30 {
+    text-align: left; /* Allinea il testo e gli altri contenuti a sinistra */
+}
+
 /* Titolo "Altri argomenti" sopra il container */
 .container .row.pt-30 h3.title-xsmall-bold.text.u-grey-light {
     font-size: 1.2rem;
@@ -67,9 +72,9 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     color: #333;
     letter-spacing: 0.5px;
     white-space: normal; /* Permette al testo di andare a capo */
-    overflow: visible;    /* Assicurati che il testo non venga troncato */
+    overflow: visible;
     text-overflow: unset;
-    margin-top: 10px; /* Ridotto spazio sopra il titolo */
+    margin-top: 10px; /* Ridotto lo spazio sopra il titolo */
     margin-bottom: 10px; /* Ridotto lo spazio tra il titolo e gli elementi */
 }
 
