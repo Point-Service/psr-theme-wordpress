@@ -56,9 +56,8 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                 ?>
 
 
-                    <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>" 
-                       style="margin-left: 40px; vertical-align: bottom; margin-top: 10px;">
-                        Mostra tutti <i class="fa fa-arrow-right"></i> <!-- Aggiunta freccia -->
+                    <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>"  class="btn btn-primary" style="margin-left: 40px;">
+                        Mostra tutti
                     </a>
 
                 <br>
@@ -68,7 +67,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     </div>
     <?php } ?>
 </div>
-
+<br>
 <style>
 /* Allineamento degli elementi dentro la riga */
 .container .row.pt-30 {
@@ -149,25 +148,5 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         font-size: 0.9rem;
     }
 }
-
-    /* Pulsante "Mostra tutti" */
-.container .row.pt-30 .btn.btn-primary {
-    margin-left: 0; /* Allinea il pulsante a sinistra */
-    display: inline-flex;
-    align-items: center;
-    margin-top: 20px; /* Aggiungi margine top per distanziare il pulsante dagli altri */
-}
-
-.container .row.pt-30 .btn.btn-primary i.fa-arrow-right {
-    margin-left: 8px; /* Distanza tra il testo e la freccia */
-}
-
-/* Correggere l'allineamento in basso se necessario */
-.container .row.pt-30 .button-group a {
-    vertical-align: bottom;
-}
-
-
-    
 </style>
 
