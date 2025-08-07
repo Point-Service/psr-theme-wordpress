@@ -93,7 +93,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     font-size: 1rem;
     font-weight: 500;
     border: 2px solid #dcdcdc;
-    border-radius: 4px;
+    border-radius: 8px; 
     text-decoration: none;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
