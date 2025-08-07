@@ -98,37 +98,32 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 .container .row.pt-30 .button-group a.btn-argomento {
     display: inline-block;
     padding: 10px 16px;
-    background-color: #ffffff;
-    color: #333;
+    background-color: #ffffff; /* Colore di sfondo iniziale */
+    color: #333; /* Colore del testo */
     font-size: 1rem;
     font-weight: 500;
-    border: 2px solid #dcdcdc;
-    border-radius: 4px;
-    transition: all 0.3s ease;
+    border: 2px solid #dcdcdc; /* Colore del bordo */
+    border-radius: 4px; /* Bordo arrotondato */
     text-decoration: none;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Leggera ombra */
+    transition: all 0.3s ease; /* Transizione per gli effetti */
 }
 
-/* Prendere il colore hover dal pulsante "Mostra tutti" */
-.container .row.pt-30 .btn.btn-primary.mt-40 {
-    background-color: #007bff; /* Colore di sfondo */
-    border-color: #007bff; /* Colore del bordo */
+/* Rimuovere il cambiamento di colore al passaggio del mouse */
+.container .row.pt-30 .button-group a.btn-argomento:hover {
+    background-color: #ffffff; /* Mantenere lo stesso colore di sfondo */
+    color: #333; /* Mantenere lo stesso colore del testo */
+    border-color: #dcdcdc; /* Mantenere lo stesso colore del bordo */
+    transform: none; /* Rimuovere l'animazione di spostamento */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Rimuovere l'effetto di ombra più grande */
 }
 
+/* Pulsante "Mostra tutti" hover (rimane invariato) */
 .container .row.pt-30 .btn.btn-primary.mt-40:hover {
     background-color: #0056b3; /* Colore al passaggio del mouse */
     border-color: #0056b3; /* Colore del bordo al passaggio del mouse */
     transform: translateY(-2px); /* Animazione di elevazione */
-}
-
-/* Hover sui pulsanti "Altri argomenti" con lo stesso colore di "Mostra tutti" */
-.container .row.pt-30 .button-group a.btn-argomento:hover {
-    background-color: #0056b3; /* Colore hover del pulsante Mostra tutti */
-    color: white;
-    border-color: #0056b3; /* Colore del bordo hover */
-    transform: translateY(-4px); /* Leggera animazione di spostamento */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* Media queries per schermi più piccoli */
