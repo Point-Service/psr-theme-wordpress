@@ -35,6 +35,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 /* Aggiunta dell'effetto hover per la card */
 .sito-tematico-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    position: relative; /* Necessario per il posizionamento assoluto dell'icona */
 }
 
 /* Hover: sollevamento della card */
@@ -55,9 +56,9 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 
 /* Personalizzazione per il colore del titolo e descrizione */
 .sito-tematico-card .card-title {
-    position: relative; /* Necessario per il posizionamento assoluto dell'icona */
     font-size: 1.5rem;
     font-weight: 600;
+    padding-right: 30px; /* Aggiungi un po' di padding a destra per fare spazio all'icona */
 }
 
 /* Colori del titolo e descrizione basati sul colore di sfondo */
@@ -99,11 +100,11 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
 /* Aggiungi queste regole per posizionare l'icona in alto a destra */
 .sito-tematico-card .card-title svg.icon-white {
     position: absolute;
-    top: 0; /* Posiziona l'icona al bordo superiore */
-    right: 0; /* Posiziona l'icona al bordo destro */
+    top: 10px; /* Posiziona l'icona a 10px dalla parte superiore della card */
+    right: 10px; /* Posiziona l'icona a 10px dal lato destro della card */
     width: 20px; /* Imposta una dimensione fissa per l'icona */
     height: 20px; /* Imposta una dimensione fissa per l'icona */
-    z-index: 1; /* Assicurati che l'icona sia sopra gli altri elementi */
+    z-index: 2; /* Assicurati che l'icona sia sopra gli altri elementi */
     transition: transform 0.3s ease, fill 0.3s ease; /* Aggiungi transizioni per l'hover */
 }
 
