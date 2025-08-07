@@ -211,63 +211,62 @@ endif;
 ?>
 
 <style>
-/* Stili singolo post con classe personalizzata */
-.single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-height: 400px;
-  padding-right: 5rem; /* margine più ampio a destra immagine */
-}
-
-.single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-  max-width: 90%;
-  max-height: 400px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin-left: auto;
-}
-
-/* Singolo post su mobile (fino a 991px) */
+/* Stili solo per dispositivi mobili (max-width: 991px) */
 @media (max-width: 991px) {
-  /* Centrare il contenitore immagine */
-  .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-    display: flex;
-    justify-content: center; /* Centra orizzontalmente */
-    align-items: center; /* Centra verticalmente */
-    min-height: 400px;
-    padding-right: 0; /* Rimuove il padding a destra per mobile */
+  
+  /* Contenitore del carosello */
+  #carosello-evidenza {
+    position: relative;
+    overflow: hidden;
   }
 
-  /* Immagine mobile */
-  .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-    max-width: 100%; /* Fa in modo che l'immagine non superi la larghezza del contenitore */
-    max-height: 100%; /* Adatta l'altezza per mobile */
+  /* Altezza minima slide */
+  #carosello-evidenza .carousel-item {
+    min-height: 400px;
+  }
+
+  /* Evita overflow visivo */
+  #carosello-evidenza .carousel-inner {
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  /* Immagine: container grigio */
+  #carosello-evidenza .col-img {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* centrato per mobile */
+    padding: 0 1rem;
+    min-height: 300px;
+  }
+
+  /* Immagine: stile base */
+  #carosello-evidenza img.img-evidenza {
+    max-width: 90%;
+    max-height: 300px;
     width: auto;
     height: auto;
     object-fit: contain;
     display: block;
-    margin: 0 auto; /* Centrato orizzontalmente */
+    margin: 0 auto; /* centrato per mobile */
   }
 
-  /* Colonna testo mobile */
-  .single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
-    padding-left: 0rem; /* spostato più a sinistra */
-    padding-right: 0rem;
+  /* Testo della card */
+  #carosello-evidenza .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Allinea contenuto in alto */
+    min-height: 320px;
+    padding: 0 1rem;
   }
-}
 
-/* Versione desktop (da 992px in su) */
-@media (min-width: 992px) {
-  /* Stile originale per la versione desktop */
+  /* Versione mobile per singolo post */
   .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     min-height: 400px;
-    padding-right: 7rem;
+    padding-right: 5rem; /* margine più ampio a destra immagine */
   }
 
   .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
@@ -278,13 +277,40 @@ endif;
     object-fit: contain;
     display: block;
     margin-left: auto;
-    transform: translateX(19px);
   }
 
   .single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
-    padding-left: 0rem;
-    padding-right: 1rem;
+    padding-left: 0rem; /* spostato più a sinistra */
+    padding-right: 0rem;
   }
+
+  /* Versione mobile per il carosello di immagini */
+  .carousel-item {
+    min-height: 400px;
+  }
+
+  .carousel-item img {
+    max-width: 90%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+
+  /* Aggiustamenti ai pulsanti di navigazione del carosello */
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 5%;
+    z-index: 1;
+  }
+  
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Colore scuro per le frecce */
+  }
+  
 }
+
 
 </style>
