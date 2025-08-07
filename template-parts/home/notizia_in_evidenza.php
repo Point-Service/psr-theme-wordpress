@@ -282,12 +282,13 @@ endif;
 /* Stili singolo post con classe personalizzata */
 .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  justify-content: center; /* Centrato orizzontalmente */
+  align-items: center; /* Centrato verticalmente */
   min-height: 400px;
   padding-right: 5rem; /* margine più ampio a destra immagine */
 }
 
+/* Centrato immagine nel singolo post */
 .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
   max-width: 90%;
   max-height: 400px;
@@ -295,12 +296,23 @@ endif;
   height: auto;
   object-fit: contain;
   display: block;
-  margin-left: auto;
+  margin: 0 auto; /* Centrato orizzontalmente */
 }
 
-.single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
-  padding-left: 0rem; /* spostato più a sinistra */
-  padding-right: 0rem;
+/* Stili per mobile (fino a 992px) */
+@media (max-width: 991px) {
+  /* Centrato contenitore immagine */
+  .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+    padding-right: 0rem; /* Rimuove il padding a destra per mobile */
+  }
+
+  /* Immagine mobile */
+  .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+    max-width: 100%; /* Fa in modo che l'immagine non superi la larghezza del contenitore */
+    max-height: 100%; /* Adatta l'altezza per mobile */
+    margin-left: auto;
+    margin-right: auto; /* Centrato orizzontalmente */
+  }
 }
 
 /* Stili originali singolo post senza classe custom (per sicurezza) */
