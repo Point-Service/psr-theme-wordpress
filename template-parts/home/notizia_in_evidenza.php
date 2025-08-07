@@ -215,6 +215,8 @@ endif;
 #carosello-evidenza {
   position: relative;
   overflow: hidden;
+  width: 110%; /* Allarga leggermente il carosello */
+  margin-left: -5%; /* Centra meglio il carosello */
 }
 
 /* Altezza minima slide */
@@ -279,73 +281,52 @@ endif;
     margin-right: 0;
     object-fit: cover; /* Assicura che l'immagine riempi lo spazio senza distorsioni */
   }
-}
 
+  /* Frecce di navigazione */
+  .carousel-control-prev, .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5); /* Colore semi-trasparente per le frecce */
+    width: 50px; /* Larghezza delle frecce */
+    height: 50px; /* Altezza delle frecce */
+    border-radius: 50%; /* Rende le frecce circolari */
+  }
 
-/* Stili singolo post con classe personalizzata */
-.single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-height: 400px;
-  padding-right: 5rem; /* margine più ampio a destra immagine */
-}
+  /* Freccia sinistra */
+  .carousel-control-prev {
+    left: -20px; /* Sposta la freccia a sinistra */
+  }
 
-.single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-  max-width: 90%;
-  max-height: 400px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin-left: auto;
-}
+  /* Freccia destra */
+  .carousel-control-next {
+    right: -20px; /* Sposta la freccia a destra */
+  }
 
-.single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
-  padding-left: 0rem; /* spostato più a sinistra */
-  padding-right: 0rem;
-}
-
-/* Stili originali singolo post senza classe custom (per sicurezza) */
-.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-height: 400px;
-  padding-right: 7rem;
-}
-
-.single-news .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
-  max-width: 90%;
-  max-height: 400px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin-left: auto;
-  transform: translateX(19px);
-}
-
-.single-news .row .col-lg-5.order-2.order-lg-1 {
-  padding-left: 1.5rem;
-  padding-right: 1rem;
+  /* Controllo visibilità frecce su mobile */
+  @media (max-width: 991px) {
+    .carousel-control-prev, .carousel-control-next {
+      width: 40px; /* Frecce più piccole su mobile */
+      height: 40px;
+    }
+  }
 }
   
 /* Modifica per centrare l'immagine sui dispositivi mobili */
 @media (max-width: 991px) {
-  /* Centra l'immagine nel carosello e nei post singoli su mobile */
-  #carosello-evidenza .col-img,
-  .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
+  /* Centra l'immagine nel carosello */
+  #carosello-evidenza .col-img {
     justify-content: center; /* Centra orizzontalmente */
   }
 
   /* Centra l'immagine su mobile */
-  #carosello-evidenza img.img-evidenza,
-  .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
+  #carosello-evidenza img.img-evidenza {
     margin: 0 auto; /* Centra l'immagine */
     max-width: 100%;
     height: auto;
   }
 }
+
   
 </style>
