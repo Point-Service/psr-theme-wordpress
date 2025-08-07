@@ -19,7 +19,19 @@
 .custom-map-container .g-4, .custom-map-container .gy-4 {
     --bs-gutter-y: 0 !important;
 }    
+
+/* Centra l'iframe nel contenitore */
+.custom-map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%; /* Assicurati che il contenitore abbia altezza sufficiente */
+}
+
+.custom-map-container > div {
+    width: 99%;  /* 99% per lasciare un piccolo margine */
+    max-width: 100%;
+    height: 450px; /* Altezza fissa per l'iframe */
+}
 </style>
-
-
-
