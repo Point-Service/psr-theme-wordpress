@@ -70,6 +70,7 @@ $box_accesso_rapido = $boxes;
     flex-direction: column;
     height: 100%;
     min-height: 120px; /* Ridotto l'altezza minima delle card */
+    position: relative; /* Essenziale per posizionare l'icona assoluta */
 }
 
 .custom-styles .card:hover {
@@ -171,7 +172,7 @@ $box_accesso_rapido = $boxes;
     padding: 10px;
     flex-grow: 1;
 }
-    
+
 /* Icona SVG in Accesso rapido */
 .custom-styles .card-title svg.icon-white {
     fill: white; /* Colore bianco per l'icona di default */
@@ -180,6 +181,7 @@ $box_accesso_rapido = $boxes;
     right: 10px; /* Posiziona l'icona a 10px dal lato destro della card */
     width: 20px; /* Imposta una dimensione fissa */
     height: 20px; /* Imposta una dimensione fissa */
+    z-index: 2; /* Assicurati che l'icona sia sopra gli altri elementi */
     transition: transform 0.3s ease; /* Transizione se desideri effetti al passaggio del mouse */
 }
 
@@ -189,9 +191,14 @@ $box_accesso_rapido = $boxes;
     fill: #f0f0f0; /* Cambia colore quando si passa sopra (opzionale) */
 }
 
-/* Card: Assicurati che la card abbia posizione relativa per contenere l'icona */
-.custom-styles .card {
-    position: relative; /* Essenziale per posizionare l'icona assoluta */
+/* Modifica il margine della card-body se necessario per fare spazio all'icona */
+.custom-styles .card-body {
+    padding: 15px; /* Aggiungi padding per fare spazio all'icona */
+}
+
+/* Aggiungi spazio tra l'icona e il contenuto (opzionale) */
+.custom-styles .card-title {
+    margin-right: 40px; /* Spazio a destra per fare posto all'icona */
 }
 
 
