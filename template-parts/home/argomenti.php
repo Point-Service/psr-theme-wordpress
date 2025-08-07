@@ -54,14 +54,17 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                     }
                 }
                 ?>
-            </div>
-        </div>
+
         <!-- Spazio tra gli argomenti e il pulsante "Mostra tutti" -->
         <div class="col-12 text-left mt-4">
             <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>" class="btn btn-primary">
                 Mostra tutti <i class="fa fa-arrow-right"></i> <!-- Aggiunta freccia -->
             </a>
         </div>
+                
+            </div>
+        </div>
+
     </div>
     <?php } ?>
 </div>
