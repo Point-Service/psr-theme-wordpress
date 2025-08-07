@@ -45,7 +45,10 @@ if (is_array($post_ids) && count($post_ids) > 1):
 
                   <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
                     <h3 class="card-title">
-                      <?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?>
+                      <?php 
+                        $truncated_title = mb_strlen($post->post_title) > 100 ? mb_substr($post->post_title, 0, 100) . '...' : $post->post_title;
+                        // Applicazione della logica per maiuscole
+                        echo preg_match('/[A-Z]{5,}/', $truncated_title) ? ucfirst(strtolower($truncated_title)) : $truncated_title; ?>
                     </h3>
                   </a>
 
