@@ -107,9 +107,10 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     white-space: normal; /* Permette al testo di andare a capo */
     overflow: visible;
     text-overflow: unset;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 10px; /* Mantieni o regola se necessario */
+    margin-bottom: 5px; /* Riduci la distanza tra il titolo e i pulsanti */
 }
+
 
 /* Pulsante "Mostra tutti" */
 .container .row.pt-30 .btn.btn-primary.mt-40 {
