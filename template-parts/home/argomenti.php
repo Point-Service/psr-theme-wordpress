@@ -11,7 +11,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 ?>
 
 <div class="container">
- <?php if (!empty($argomenti_evidenza)) { ?>
+    <?php if (!empty($argomenti_evidenza)) { ?>
     <div class="row"> 
             <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2> 
     </div>
@@ -29,6 +29,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         </div>
     </div>
     <?php } 
+
     if ($altri_argomenti) { ?>
     <div class="row pt-30">
         <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
@@ -39,19 +40,17 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                     </h3>
                 </div>
                 <div class="col-lg-9">
-                    <ul class="d-flex flex-wrap gap-1">
+                    <div class="button-group">
                         <?php if (is_array($altri_argomenti)) {
                             foreach ($altri_argomenti as $arg_id) {
                                 $argomento = get_term_by('term_taxonomy_id', $arg_id);
                                 $url = get_term_link(intval($arg_id),'argomenti');
                         ?>
-                        <li>
-                            <a href="<?php echo $url ?>" class="chip chip-simple">
-                                <span class="chip-label"><?php echo $argomento->name ?></span>
-                            </a>
-                        </li>
+                        <a href="<?php echo $url ?>" class="btn-argomento">
+                            <?php echo $argomento->name ?>
+                        </a>
                         <?php } } ?>
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,15 +59,12 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         </div>
     </div>
     <?php } ?>
-</div>
-
+</div>  
 <style>
 /* Sezione "Altri argomenti" */
 .container .row.pt-30 {
     padding-top: 30px;
     background-color: #f4f4f4; /* Colore di sfondo chiaro per separare visivamente la sezione */
-    border-radius: 8px;
-    padding-bottom: 40px;
 }
 
 /* Intestazione "Altri argomenti" */
@@ -84,31 +80,33 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     padding-top: 10px;
 }
 
-/* Listaggio argomenti */
-.container .row.pt-30 ul.d-flex.flex-wrap.gap-1 {
+/* Gruppo di pulsanti */
+.container .row.pt-30 .button-group {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
     padding: 0;
     margin: 0;
-    list-style-type: none;
 }
 
-/* Stile per ogni argomento */
-.container .row.pt-30 ul.d-flex.flex-wrap.gap-1 li a {
+/* Stile per ogni pulsante */
+.container .row.pt-30 .button-group a.btn-argomento {
+    display: inline-block;
     padding: 10px 16px;
     background-color: #ffffff;
-    border-radius: 30px;
     color: #333;
     font-size: 1rem;
     font-weight: 500;
     border: 2px solid #dcdcdc;
+    border-radius: 4px;
     transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Hover sui link degli argomenti */
-.container .row.pt-30 ul.d-flex.flex-wrap.gap-1 li a:hover {
+/* Hover sui pulsanti */
+.container .row.pt-30 .button-group a.btn-argomento:hover {
     background-color: #007bff;
     color: white;
     border-color: #007bff;
@@ -116,7 +114,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Stile del pulsante "Mostra tutti" - Senza modifiche */
+/* Stile per il pulsante "Mostra tutti" - Senza modifiche */
 .container .row.pt-30 .btn.btn-primary.mt-40 {
     background-color: #007bff;
     border-color: #007bff;
@@ -139,11 +137,11 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         font-size: 1rem;
     }
 
-    .container .row.pt-30 ul.d-flex.flex-wrap.gap-1 {
+    .container .row.pt-30 .button-group {
         gap: 12px;
     }
 
-    .container .row.pt-30 ul.d-flex.flex-wrap.gap-1 li a {
+    .container .row.pt-30 .button-group a.btn-argomento {
         padding: 8px 14px;
         font-size: 0.9rem;
     }
