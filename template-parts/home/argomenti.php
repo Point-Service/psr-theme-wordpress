@@ -80,11 +80,15 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     letter-spacing: 1px;
 }
 
-/* Layout della lista di chip */
+/* Layout della lista di chip: espansione orizzontale */
 #altri-argomenti-container ul {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    justify-content: space-between; /* Distribuisce uniformemente i chip orizzontalmente */
+    width: 100%; /* Si estende al 100% della larghezza */
+    padding: 0;
+    margin: 0;
 }
 
 /* Stile per ogni chip */
@@ -98,6 +102,8 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.2s ease;
     border: 1px solid #2980b9; /* Bordo blu leggermente più scuro per i chip */
+    max-width: 45%; /* Limita la larghezza del chip al 45% */
+    margin-bottom: 10px; /* Spaziatura tra i chip */
 }
 
 /* Hover sul chip */
@@ -138,8 +144,10 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     #altri-argomenti-container .chip {
         font-size: 12px; /* Riduce la dimensione del testo su mobile */
         padding: 6px 12px; /* Riduce le dimensioni del chip su mobile */
+        max-width: 80%; /* Limita la larghezza dei chip al 80% su mobile */
     }
 }
+
 
     
 </style>
