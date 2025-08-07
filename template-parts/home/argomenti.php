@@ -13,7 +13,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 <div class="container">
     <?php if (!empty($argomenti_evidenza)) { ?>
     <div class="row"> 
-            <h4 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h4> 
+        <h2 class="text-black title-xlarge mb-3">Argomenti in Evidenza</h2> 
     </div>
     <div>
         <div class="card-wrapper card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
@@ -28,37 +28,38 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
             } ?>
         </div>
     </div>
-    <?php } 
+    <?php } ?>
 
-    if ($altri_argomenti) { ?>
+    <?php if ($altri_argomenti) { ?>
+    <!-- Titolo "Altri argomenti" sopra il container -->
     <div class="row pt-30">
         <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
-            <div class="row d-lg-inline-flex">
-                <div class="col-lg-3">
-                    <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
-                </div>
-                <div class="col-lg-9">
-                    <div class="button-group">
-                        <?php if (is_array($altri_argomenti)) {
-                            foreach ($altri_argomenti as $arg_id) {
-                                $argomento = get_term_by('term_taxonomy_id', $arg_id);
-                                $url = get_term_link(intval($arg_id),'argomenti');
-                        ?>
-                        <a href="<?php echo $url ?>" class="btn-argomento">
-                            <?php echo $argomento->name ?>
-                        </a>
-                        <?php } } ?>
-                    </div>
-                </div>
+            <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
+        </div>
+    </div>
+
+    <!-- Gruppo di pulsanti -->
+    <div class="row pt-30">
+        <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
+            <div class="button-group">
+                <?php if (is_array($altri_argomenti)) {
+                    foreach ($altri_argomenti as $arg_id) {
+                        $argomento = get_term_by('term_taxonomy_id', $arg_id);
+                        $url = get_term_link(intval($arg_id),'argomenti');
+                ?>
+                <a href="<?php echo $url ?>" class="btn-argomento">
+                    <?php echo $argomento->name ?>
+                </a>
+                <?php } } ?>
             </div>
         </div>
         <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
             <a href="<?php echo dci_get_template_page_url("page-templates/argomenti.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
         </div>
     </div>
-
     <?php } ?>
-</div>  
+</div>
+
 
 
 <style>
@@ -67,15 +68,16 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     padding-top: 30px;
 }
 
-/* Intestazione "Altri argomenti" */
-.container .row.pt-30 .title-xsmall-bold.text.u-grey-light {
+/* Titolo "Altri argomenti" sopra il container, visualizzazione corretta */
+.container .row.pt-30 h3.title-xsmall-bold.text.u-grey-light {
     font-size: 1.2rem;
     font-weight: 600;
     color: #333;
     letter-spacing: 0.5px;
-    white-space: nowrap; /* Impedisce che vada a capo */
-    overflow: hidden;    /* Impedisce il testo di uscire dal contenitore */
-    text-overflow: ellipsis; /* Aggiunge i puntini di sospensione se il testo è troppo lungo */
+    white-space: normal; /* Rimuovi il nowrap, così il testo può andare su più righe se necessario */
+    overflow: visible;    /* Assicurati che il testo sia visibile */
+    text-overflow: unset; /* Rimuovi l'ellissi */
+    margin-top: 30px; /* Spazio sopra */
 }
 
 /* Colonna con il testo e i link */
@@ -90,6 +92,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     gap: 16px;
     padding: 0;
     margin: 0;
+    justify-content: flex-start; /* Allinea i pulsanti a sinistra */
 }
 
 /* Stile per ogni pulsante */
