@@ -31,10 +31,9 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     <?php } ?>
 
     <?php if ($altri_argomenti) { ?>
-    <!-- Titolo "Altri argomenti" sopra il container -->
     <div class="row pt-30">
         <div class="col-12">
-            <h3 class="text-uppercase mb-2 title-xsmall-bold text u-grey-light">Altri argomenti</h3> <!-- Ridotto il margine -->
+            <h3 class="text-uppercase mb-2 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
         </div>
     </div>
 
@@ -42,24 +41,27 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         <div class="col-12">
             <div class="button-group">
                 <?php
-                // Ciclo per i pulsanti "Altri argomenti"
-                foreach ($altri_argomenti as $argomento) {
-                    $url = $argomento['url'] ?? '#'; // Recupera il link dell'argomento
-                    $title = $argomento['title'] ?? 'Link';
+                // Ciclo per gli altri argomenti
+                foreach ($altri_argomenti as $i => $arg_id) {
+                    $argomento = get_term_by('term_taxonomy_id', $arg_id);
+                    if ($argomento) {
+                        $url = get_term_link($argomento->term_id, 'argomenti');
                 ?>
                 <a href="<?php echo esc_url($url); ?>" class="btn-argomento">
-                    <?php echo esc_html($title); ?>
+                    <?php echo esc_html($argomento->name); ?>
                 </a>
-                <?php } ?>
+                <?php
+                    }
+                }
+                ?>
             </div>
         </div>
-        <div class="col-12 text-left"> <!-- Allineato a sinistra -->
-            <a href="https://comune.termevigliatore.me.it/argomenti-2/" class="btn btn-primary mt-40">Mostra tutti</a>
+        <div class="col-12 text-left">
+            <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
         </div>
     </div>
     <?php } ?>
 </div>
-
 
 <style>
 /* Allineamento degli elementi dentro la riga */
@@ -111,7 +113,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     white-space: normal; /* Permette al testo di andare a capo */
     overflow: visible;
     text-overflow: unset;
-    margin-top: 10px; /* Mantieni o regola se necessario */
+    margin-top: 10px;
     margin-bottom: 5px; /* Ridotto la distanza tra il titolo e i pulsanti */
 }
 
