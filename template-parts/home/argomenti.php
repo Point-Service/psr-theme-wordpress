@@ -31,6 +31,11 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     <?php } 
     if ($altri_argomenti) { ?>
         <div class="altri-argomenti-section">
+            <!-- Pulsante "Mostra tutti" sopra gli altri argomenti -->
+            <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
+                <a href="<?php echo dci_get_template_page_url("page-templates/argomenti.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
+            </div>
+
             <div class="row pt-30">
                 <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
                     <div class="row d-lg-inline-flex">
@@ -56,17 +61,13 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
-                    <a href="<?php echo dci_get_template_page_url("page-templates/argomenti.php"); ?>" class="btn btn-primary mt-40">Mostra tutti</a>
-                </div>
             </div>
         </div>
     <?php } ?>
 </div>
 
 <style>
-
-    /* Contenitore principale della sezione Altri Argomenti */
+/* Sezione principale degli altri argomenti */
 .altri-argomenti-section {
     background-color: #f9f9f9; /* Colore di sfondo soft */
     padding: 40px 0;
@@ -74,6 +75,26 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Pulsante "Mostra tutti" sopra gli altri argomenti */
+.altri-argomenti-section .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto 30px auto; /* Spazio sopra gli altri argomenti */
+}
+
+.altri-argomenti-section .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Titolo "Altri argomenti" */
 .altri-argomenti-section .title-xsmall-bold {
     font-size: 1.25rem;
     color: #333; /* Colore scuro per il titolo */
@@ -84,42 +105,28 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 
 /* Collezione dei chip (tag) */
 .altri-argomenti-section .chip {
-    background-color: #f0f4f8;
-    border: 1px solid #d1d9e6;
-    color: #555;
+    background: linear-gradient(135deg, #a0c4ff, #78a1f1); /* Colore gradiente */
+    border: 1px solid #78a1f1;
+    color: #fff;
     padding: 8px 16px;
     border-radius: 30px;
     margin-right: 10px;
     margin-bottom: 10px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 .altri-argomenti-section .chip:hover {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
+    background: linear-gradient(135deg, #007bff, #0056b3); /* Cambio gradiente al passaggio del mouse */
+    border-color: #0056b3;
+    transform: translateY(-2px); /* Leggera animazione per l'hover */
 }
 
 .altri-argomenti-section .chip .chip-label {
     font-size: 0.875rem;
     font-weight: 600;
-}
-
-/* Bottone "Mostra tutti" */
-.altri-argomenti-section .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-}
-
-.altri-argomenti-section .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
 }
 
 /* Aggiustamenti responsivi */
@@ -135,6 +142,10 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     .altri-argomenti-section .chip {
         margin-right: 5px;
         margin-bottom: 5px;
+    }
+
+    .altri-argomenti-section .btn-primary {
+        width: 100%;
     }
 }
 
