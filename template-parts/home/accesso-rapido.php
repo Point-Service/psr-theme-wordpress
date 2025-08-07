@@ -27,6 +27,10 @@ $box_accesso_rapido = $boxes;
                                 <div class="flex-grow-1">
                                     <h3 class="card-title t-primary title-xlarge text-dark" style="font-size: 1.5rem; line-height: 1.2;">
                                         <?php echo $box['titolo_message']; ?>
+                                        <!-- Aggiungi l'icona SVG qui -->
+                                        <svg class="icon icon-white" style="width: 20px; height: 20px; margin-left: 8px;">
+                                            <use href="#it-external-link"></use>
+                                        </svg>
                                     </h3>
                                     <?php if (isset($box['desc_message']) && $box['desc_message']) { ?>
                                         <p class="card-text text-sans-serif mb-0 description text-muted" style="font-size: 1rem; line-height: 1.5;">
@@ -38,19 +42,12 @@ $box_accesso_rapido = $boxes;
                         </div>
                     </div>
                 </a>
-
-                <!-- Icona SVG aggiunta qui -->
-                <svg class="icon icon-white" style="width: 20px; height: 20px;" aria-hidden="true">
-                    <use href="#it-external-link"></use>
-                </svg>
-
             </div>
         <?php } ?>
     </div>
 
 </div>
 <?php } ?>
-
 
 
 <style>
@@ -70,7 +67,6 @@ $box_accesso_rapido = $boxes;
     flex-direction: column;
     height: 100%;
     min-height: 120px; /* Ridotto l'altezza minima delle card */
-    position: relative; /* Essenziale per posizionare l'icona assoluta */
 }
 
 .custom-styles .card:hover {
@@ -173,33 +169,19 @@ $box_accesso_rapido = $boxes;
     flex-grow: 1;
 }
 
-/* Icona SVG in Accesso rapido */
+    /* Icona SVG in Accesso rapido */
 .custom-styles .card-title svg.icon-white {
-    fill: white; /* Colore bianco per l'icona di default */
-    position: absolute;
-    top: 10px; /* Posiziona l'icona a 10px dalla parte superiore della card */
-    right: 10px; /* Posiziona l'icona a 10px dal lato destro della card */
-    width: 20px; /* Imposta una dimensione fissa */
-    height: 20px; /* Imposta una dimensione fissa */
-    z-index: 2; /* Assicurati che l'icona sia sopra gli altri elementi */
-    transition: transform 0.3s ease; /* Transizione se desideri effetti al passaggio del mouse */
+    color: #007bff; /* Colore blu per l'icona */
+    width: 18px; /* Imposta una dimensione fissa */
+    height: 18px; /* Imposta una dimensione fissa */
+    margin-left: 10px; /* Distanza tra il titolo e l'icona */
+    transition: transform 0.3s ease; /* Aggiungi una transizione se desideri un effetto hover */
 }
 
-/* Aggiungi un effetto hover (opzionale) per l'icona */
 .custom-styles .card-title svg.icon-white:hover {
-    transform: scale(1.1); /* Leggera ingrandimento dell'icona al passaggio del mouse */
-    fill: #f0f0f0; /* Cambia colore quando si passa sopra (opzionale) */
+    transform: translateX(4px); /* Lieve spostamento orizzontale al passaggio del mouse */
 }
 
-/* Modifica il margine della card-body se necessario per fare spazio all'icona */
-.custom-styles .card-body {
-    padding: 15px; /* Aggiungi padding per fare spazio all'icona */
-}
-
-/* Aggiungi spazio tra l'icona e il contenuto (opzionale) */
-.custom-styles .card-title {
-    margin-right: 40px; /* Spazio a destra per fare posto all'icona */
-}
 
 
 </style>
