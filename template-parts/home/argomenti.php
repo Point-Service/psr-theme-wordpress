@@ -33,7 +33,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     <?php if ($altri_argomenti) { ?>
     <div class="row pt-30">
         <div class="col-12">
-            <h3 class="text-uppercase mb-2 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
+            <h3 class="text-uppercase mb-2 title-xsmall-bold text u-grey-light"><font color="black">Altri argomenti</font></h3>
         </div>
     </div>
 
