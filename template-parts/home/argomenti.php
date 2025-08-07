@@ -63,8 +63,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
 
 
 <style>
-
-    /* Sezione "Altri argomenti" */
+/* Sezione "Altri argomenti" */
 .container .row.pt-30 {
     padding-top: 30px;
 }
@@ -144,7 +143,6 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         font-size: 0.9rem;
     }
 }
-
 
 
     
