@@ -34,12 +34,12 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     <!-- Titolo "Altri argomenti" sopra il container -->
     <div class="row pt-30">
         <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
-            <h3 class="text-uppercase mb-2 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
+            <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
         </div>
     </div>
 
     <!-- Gruppo di pulsanti -->
-    <div class="row pt-10"> <!-- Ridotto il padding-top -->
+    <div class="row pt-30">
         <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
             <div class="button-group">
                 <?php if (is_array($altri_argomenti)) {
@@ -68,17 +68,16 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     padding-top: 30px;
 }
 
-/* Titolo "Altri argomenti" sopra il container */
+/* Titolo "Altri argomenti" sopra il container, visualizzazione corretta */
 .container .row.pt-30 h3.title-xsmall-bold.text.u-grey-light {
     font-size: 1.2rem;
     font-weight: 600;
     color: #333;
     letter-spacing: 0.5px;
-    white-space: normal; /* Permette al testo di andare a capo se necessario */
-    overflow: visible;    /* Assicura che il testo non venga troncato */
-    text-overflow: unset; /* Rimuove l'ellissi */
-    margin-top: 0; /* Rimuove lo spazio tra il titolo e gli elementi */
-    margin-bottom: 10px; /* Distanza minima tra il titolo e il gruppo di pulsanti */
+    white-space: normal; /* Rimuovi il nowrap, così il testo può andare su più righe se necessario */
+    overflow: visible;    /* Assicurati che il testo sia visibile */
+    text-overflow: unset; /* Rimuovi l'ellissi */
+    margin-top: 30px; /* Spazio sopra */
 }
 
 /* Colonna con il testo e i link */
