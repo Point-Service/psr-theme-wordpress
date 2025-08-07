@@ -8,7 +8,7 @@
 ?>
         <div class="row custom-map-container" style="overflow: hidden; max-width: 100%; background: transparent; display: flex; justify-content: center; align-items: center;">
             <div style="position: relative; width: 100%; height: 450px; background: transparent;">
-              <center>  <iframe style="border: 0; width: 100%; height: 100%; max-width: 100%;" src="<?= $link_map ?>" allowfullscreen scrolling="no"></iframe></center>
+              <iframe style="border: 0; width: 100%; height: 100%; max-width: 100%;" src="<?= $link_map ?>" allowfullscreen scrolling="no"></iframe>
             </div>
         </div>
 <?php }
@@ -20,6 +20,7 @@
     --bs-gutter-y: 0 !important;
 }    
 </style>
+
 
 
 
