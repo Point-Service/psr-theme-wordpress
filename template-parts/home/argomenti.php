@@ -93,7 +93,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     font-size: 1rem;
     font-weight: 500;
     border: 2px solid #dcdcdc;
-    margin-top: 10px; /* Aggiungi un po' di margine sopra i pulsanti per farli avvicinare al titolo */
+    margin-top: -2px; /* Aggiungi un po' di margine sopra i pulsanti per farli avvicinare al titolo */
     border-radius: 8px; 
     text-decoration: none;
     text-align: center;
