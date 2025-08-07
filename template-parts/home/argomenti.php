@@ -36,7 +36,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
             <div class="row d-lg-inline-flex">
                 <div class="col-lg-3">
                     <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">
-                        Altri argomenti
+                        Altri argomenti<br>
                     </h3>
                 </div>
                 <div class="col-lg-9">
@@ -110,20 +110,25 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Hover sui pulsanti - Colore dinamico da .it-header-center-content-wrapper */
-.container .row.pt-30 .button-group a.btn-argomento:hover {
-    background-color: var(--header-hover-color, #007bff); /* Imposta il colore di hover dinamicamente */
-    color: white;
-    border-color: var(--header-hover-color, #007bff); /* Imposta il colore del bordo */
-    transform: translateY(-4px); /* Leggera animazione di spostamento */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+/* Prendere il colore hover dal pulsante "Mostra tutti" */
+.container .row.pt-30 .btn.btn-primary.mt-40 {
+    background-color: #007bff; /* Colore di sfondo */
+    border-color: #007bff; /* Colore del bordo */
 }
 
-/* Pulsante "Mostra tutti" hover (rimane invariato) */
 .container .row.pt-30 .btn.btn-primary.mt-40:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-    transform: translateY(-2px); /* Animazione di elevazione al passaggio del mouse */
+    background-color: #0056b3; /* Colore al passaggio del mouse */
+    border-color: #0056b3; /* Colore del bordo al passaggio del mouse */
+    transform: translateY(-2px); /* Animazione di elevazione */
+}
+
+/* Hover sui pulsanti "Altri argomenti" con lo stesso colore di "Mostra tutti" */
+.container .row.pt-30 .button-group a.btn-argomento:hover {
+    background-color: #0056b3; /* Colore hover del pulsante Mostra tutti */
+    color: white;
+    border-color: #0056b3; /* Colore del bordo hover */
+    transform: translateY(-4px); /* Leggera animazione di spostamento */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* Media queries per schermi più piccoli */
@@ -140,11 +145,6 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         padding: 8px 14px;
         font-size: 0.9rem;
     }
-}
-
-/* Colorazione del pulsante hover dinamica basata su .it-header-center-content-wrapper */
-.it-header-center-content-wrapper {
-    --header-hover-color: #007bff; /* Modifica con il tuo colore desiderato */
 }
 
     
