@@ -21,6 +21,10 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
     <div class="card-body">
         <h3 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-white':'text-dark' ?>">
             <?php echo $sito_tematico->post_title ?>
+               <!-- Aggiungi l'icona SVG qui -->
+            <svg class="icon icon-white" style="width: 20px; height: 20px; margin-left: 8px;">
+                   <use href="#it-external-link"></use>
+            </svg>
         </h3>
         <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-white':'' ?>">
             <?php echo $st_descrizione; ?>
@@ -92,5 +96,22 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
     margin-top: 10px;
 }
 
+
+    /* Aggiungi un effetto hover (opzionale) per l'icona */
+.custom-styles .card-title svg.icon-white:hover {
+    transform: scale(1.1); /* Leggera ingrandimento dell'icona al passaggio del mouse */
+    fill: #f0f0f0 !important; /* Cambia colore dell'icona a bianco quando si passa sopra */
+}
+
+
+/* Modifica il margine della card-body se necessario per fare spazio all'icona */
+.custom-styles .card-body {
+    padding: 15px; /* Aggiungi padding per fare spazio all'icona */
+}
+
+/* Aggiungi spazio tra l'icona e il contenuto (opzionale) */
+.custom-styles .card-title {
+    margin-right: 40px; /* Spazio a destra per fare posto all'icona */
+}
     
 </style>
