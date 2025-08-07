@@ -257,6 +257,7 @@ endif;
   padding: 0 1rem;
 }
 
+
 /* Versione desktop (da 992px in su) */
 @media (min-width: 992px) {
   #carosello-evidenza .card-body {
@@ -270,14 +271,16 @@ endif;
     min-height: 400px;
   }
 
-  /* Immagine in desktop */
+  /* Immagine in desktop - aumentiamo la larghezza orizzontale */
   #carosello-evidenza img.img-evidenza {
-    max-width: 100%;
+    max-width: 120%; /* Aumenta la larghezza */
     max-height: 100%;
     margin-left: auto;
     margin-right: 0;
+    object-fit: cover; /* Assicura che l'immagine riempi lo spazio senza distorsioni */
   }
 }
+
 
 /* Stili singolo post con classe personalizzata */
 .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
