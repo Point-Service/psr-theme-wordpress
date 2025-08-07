@@ -282,7 +282,7 @@ endif;
   }
 
   .single-news.single-news-custom .row .col-lg-5.order-2.order-lg-1 {
-    padding-left: 2rem;
+    padding-left: 0rem;
     padding-right: 1rem;
   }
 }
