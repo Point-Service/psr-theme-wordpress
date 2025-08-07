@@ -49,6 +49,6 @@ $links = dci_get_option('link', 'link_utili');
 <style>
 .btn-white-fill {
   background-color: white;
-  color: #000;
+  color: #FFF;
 }  
 </style>
