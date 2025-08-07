@@ -7,7 +7,7 @@
     if ($show_map === 'true' && !empty($link_map) && $link_map != null) {
 ?>
         <div class="row custom-map-container" style="overflow: hidden; background: transparent; display: flex; justify-content: center; align-items: center; width: 100%; height: 450px;">
-            <div style="position: relative; width: 99%; height: 450px; background: transparent; margin-left: 2%; /* Spostato a destra */">
+            <div style="position: relative; width: 99%; height: 450px; background: transparent; margin-left: 1%; /* Spostato a destra */">
                 <iframe style="border: 0; width: 100%; height: 100%; max-width: 100%;" src="<?= $link_map ?>" allowfullscreen scrolling="no"></iframe>
             </div>
         </div>
@@ -20,6 +20,7 @@
     --bs-gutter-y: 0 !important;
 }
 </style>
+
 
 
 
