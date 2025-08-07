@@ -27,41 +27,38 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                 } 
             } ?>
         </div>
-    
+    </div>
     <?php } ?>
 
     <?php if ($altri_argomenti) { ?>
     <!-- Titolo "Altri argomenti" sopra il container -->
     <div class="row pt-30">
-    <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
-        <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
-    </div>
-</div>
-
-<div class="row pt-30">
-    <div class="col-lg-10 col-xl-6 offset-lg-1 offset-xl-2">
-        <div class="button-group">
-            <a href="https://comune.termevigliatore.me.it/argomento/trasparenza-amministrativa/" class="btn-argomento">
-                Trasparenza amministrativa
-            </a>
-            <a href="https://comune.termevigliatore.me.it/argomento/turismo/" class="btn-argomento">
-                Turismo
-            </a>
+        <div class="col-12">
+            <h3 class="text-uppercase mb-3 title-xsmall-bold text u-grey-light">Altri argomenti</h3>
         </div>
     </div>
-    <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 text-center">
-        <a href="https://comune.termevigliatore.me.it/argomenti-2/" class="btn btn-primary mt-40">Mostra tutti</a>
+
+    <div class="row pt-30">
+        <div class="col-12">
+            <div class="button-group">
+                <a href="https://comune.termevigliatore.me.it/argomento/trasparenza-amministrativa/" class="btn-argomento">
+                    Trasparenza amministrativa
+                </a>
+                <a href="https://comune.termevigliatore.me.it/argomento/turismo/" class="btn-argomento">
+                    Turismo
+                </a>
+            </div>
+        </div>
+        <div class="col-12 text-left"> <!-- Allineato a sinistra -->
+            <a href="https://comune.termevigliatore.me.it/argomenti-2/" class="btn btn-primary mt-40">Mostra tutti</a>
+        </div>
     </div>
-</div>
-    
     <?php } ?>
-</div>
 </div>
 
 
 <style>
-
-    /* Allineamento degli elementi dentro la riga */
+/* Allineamento degli elementi dentro la riga */
 .container .row.pt-30 {
     text-align: left; /* Allinea il testo e gli altri contenuti a sinistra */
 }
