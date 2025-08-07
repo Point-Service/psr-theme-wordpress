@@ -32,10 +32,6 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
             <h3 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-black' : 'text-dark' ?>"
                 style="font-size: 1.1rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>; margin-bottom: 0;">
                 <?php echo $sito_tematico->post_title ?>
-               <!-- Aggiungi l'icona SVG in alto a destra -->
-               <svg class="icon icon-white svg-top-right" style="width: 20px; height: 20px;">
-                   <use href="#it-external-link"></use>
-               </svg>
             </h3>
         </div>
 
@@ -47,26 +43,6 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
     </div>
 </a>
-
-<style>
-
-   /* Posiziona l'icona in alto a destra */
-.svg-top-right {
-    position: absolute;
-    top: 10px; /* Distanza dal top */
-    right: 10px; /* Distanza dal lato destro */
-    z-index: 10; /* Assicurati che l'icona sia sopra gli altri contenuti */
-}
-
-/* Aggiungi un po' di padding alla card per far spazio all'icona */
-.card-body {
-    position: relative; /* Importante per il posizionamento assoluto */
-    padding-right: 40px; /* Spazio per evitare che l'icona si sovrapponga al testo */
-}
-
-   
-</style>
-
 
 
 
