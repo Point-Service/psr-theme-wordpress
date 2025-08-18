@@ -26,7 +26,7 @@ $links = dci_get_option('link', 'link_utili');
         <?php if ($links) { ?>
           <div class="d-flex flex-wrap gap-3">
             <?php foreach ($links as $link) { ?>
-              <a href="<?php echo esc_url($link['url']); ?>" class="d-inline-flex align-items-center gap-2 px-3 py-2 border border-light rounded shadow-sm bg-white text-primary text-decoration-none link-hover flex-shrink-0" style="max-width: 100%;">
+              <a href="<?php echo esc_url($link['url']); ?>" target="_blank" class="d-inline-flex align-items-center gap-2 px-3 py-2 border border-light rounded shadow-sm bg-white text-primary text-decoration-none link-hover flex-shrink-0" style="max-width: 100%;">
                 <svg class="icon icon-primary" aria-hidden="true" style="min-width: 1.2rem;">
                   <use href="#it-link"></use>
                 </svg>
