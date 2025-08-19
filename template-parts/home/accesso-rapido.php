@@ -201,55 +201,38 @@ $box_accesso_rapido = $boxes;
 
 
 
-
 @media (max-width: 768px) {
+    /* Card-body diventa riga con avatar a sinistra */
     .custom-styles .card-body {
-        display: flex;
-        flex-direction: row;        /* avatar a sinistra, testo a destra */
-        align-items: center;        /* centra verticalmente avatar e testo */
-        justify-content: flex-start; 
-        padding: 12px;
-        text-align: left;           /* testo allineato a sinistra */
+        flex-direction: row;      /* avatar a sinistra, testo a destra */
+        align-items: center;      /* centrato verticalmente */
+        text-align: left;
+        padding: 8px 12px;        /* regola padding se necessario */
     }
 
-    .custom-styles .avatar {
-        margin: 0 12px 0 0;         /* margine tra avatar e testo */
-        flex-shrink: 0;             /* non ridurre l’avatar */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
+    /* Contenitore testo (titolo + descrizione) */
     .custom-styles .flex-grow-1 {
         display: flex;
         flex-direction: column;
-        justify-content: center;    /* titolo e descrizione centrati verticalmente rispetto all’avatar */
+        justify-content: center;  /* centra verticalmente rispetto all’avatar */
     }
 
+    /* Avatar a sinistra con spazio a destra */
+    .custom-styles .avatar {
+        margin-right: 12px;       /* spazio tra avatar e testo */
+        flex-shrink: 0;           /* non ridurre l’avatar */
+    }
+
+    /* Titolo e descrizione */
     .custom-styles .card-title {
-        font-size: 1.2rem;
-        margin: 0 0 4px 0;
+        margin-bottom: 4px;
+        margin-right: 0;
     }
 
     .custom-styles .description {
-        font-size: 0.9rem;
-        line-height: 1.3;
         margin: 0;
     }
-
-    /* SVG in alto a destra rimane */
-    .custom-styles .card-title svg.icon-white {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 16px;
-        height: 16px;
-    }
 }
-
-
-
-
 
 
    
