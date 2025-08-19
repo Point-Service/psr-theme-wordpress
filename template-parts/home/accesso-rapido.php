@@ -202,34 +202,32 @@ $box_accesso_rapido = $boxes;
 
     /* Mobile */
 @media (max-width: 768px) {
-    .custom-styles .card-body {
+    /* Wrapper del contenuto (senza toccare SVG) */
+    .custom-styles .card-body > div {
         display: flex;
-        flex-direction: column;  /* mette avatar, titolo, descrizione in colonna */
-        align-items: center;     /* centra il contenuto orizzontalmente */
-        justify-content: center; /* centra il contenuto verticalmente */
-        text-align: center;      /* centra testo */
-        position: relative;      /* necessario per l'SVG assoluto */
+        flex-direction: column;
+        justify-content: center; /* centra verticalmente */
+        align-items: center;     /* centra orizzontalmente */
+        text-align: center;
+        width: 100%;
+    }
+
+    .custom-styles .avatar {
+        margin-bottom: 10px; /* spazio tra avatar e titolo */
     }
 
     .custom-styles .card-title {
-        display: inline-flex;    /* testo e SVG non si rompono */
-        align-items: center;     
-        justify-content: center; 
-        margin: 10px 0 5px 0;
+        margin: 0 0 5px 0;
+        line-height: 1.2;
     }
 
-    /* Avatar centrato sopra il titolo */
-    .custom-styles .avatar {
-        margin-bottom: 10px;
+    .custom-styles .description {
+        margin-top: 5px;
     }
 
-    /* SVG rimane in alto a destra */
-    .custom-styles .card-title svg.icon-white {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
+
 }
+
 
 
 
