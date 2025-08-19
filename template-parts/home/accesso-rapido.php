@@ -199,4 +199,39 @@ $box_accesso_rapido = $boxes;
     margin-right: 40px; /* Spazio a destra per fare posto all'icona */
 }
 
+
+
+
+ @media (max-width: 768px) {
+    .custom-styles .card-body {
+        flex-direction: column; /* Contenuto in colonna */
+        align-items: center; /* Centra verticalmente */
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .custom-styles .avatar {
+        margin-bottom: 10px; /* Spazio sotto l'icona */
+    }
+
+    .custom-styles .card-title {
+        font-size: 1.1rem; /* Titolo più piccolo */
+        margin: 0; 
+        text-align: center;
+    }
+
+    .custom-styles .description {
+        font-size: 0.9rem; 
+        line-height: 1.3;
+        text-align: center;
+    }
+
+    .custom-styles .card-title svg.icon-white {
+        top: 8px;
+        right: 8px;
+        width: 18px;
+        height: 18px;
+    }
+}
+   
 </style>
