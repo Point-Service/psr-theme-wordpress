@@ -70,14 +70,15 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
   </div>
 
   <!-- footer -->
-    <a class="read-more d-flex align-items-center justify-content-between"
-       href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
-       style="display:flex; align-items:center; justify-content:space-between; text-decoration:none; font-weight:500; padding:8px 12px; border:1px solid #e9ecef; border-radius:6px; background-color:#fff; margin:20px 12px 12px 12px; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
-      <span class="text" style="font-size:0.95rem; color:#0d6efd;">Esplora argomento</span>
-      <svg class="icon" style="width:18px; height:18px; margin-left:6px; fill:#0d6efd;">
-        <use xlink:href="#it-arrow-right"></use>
-      </svg>
-    </a>
+  <a class="read-more d-flex align-items-center"
+     href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
+     style="text-decoration:none; font-weight:500; padding:8px 0 8px 0; margin-top:12px; color:#0d6efd;">
+    <span class="text" style="font-size:0.95rem;">Esplora argomento</span>
+    <svg class="icon" style="width:18px; height:18px; margin-left:6px; fill:#0d6efd;">
+      <use xlink:href="#it-arrow-right"></use>
+    </svg>
+  </a>
+
 
 </div>
 
