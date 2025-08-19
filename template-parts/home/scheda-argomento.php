@@ -83,14 +83,18 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
   </div>
 
   <!-- footer -->
-  <a class="read-more d-flex align-items-center"
-     href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
-     style="text-decoration:none; font-weight:500; padding:8px 0 8px 0; margin-top:12px; color:#0d6efd;">
+<a class="read-more d-inline-flex align-items-center"
+   href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
+   style="text-decoration:none; font-weight:500; margin-left:0 !important; padding-left:0 !important; margin-top:30px; color:#0d6efd;"
+   aria-label="Esplora l'argomento <?php echo $argomento->name; ?>"
+   title="Esplora l'argomento <?php echo $argomento->name; ?>"
+   data-focus-mouse="false"
+>
     <span class="text" style="font-size:0.95rem;">Esplora argomento</span>
-    <svg class="icon" style="width:18px; height:18px; margin-left:6px; ">
-      <use xlink:href="#it-arrow-right"></use>
+    <svg class="icon ms-1" style="width:18px; height:18px;">
+        <use xlink:href="#it-arrow-right"></use>
     </svg>
-  </a>
+</a>
 
 
 </div>
