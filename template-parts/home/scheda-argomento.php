@@ -46,7 +46,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 
      <!-- links -->
     <?php if(isset($links) && is_array($links) && count($links)) { ?>
-      <div class="link-list-wrapper mb-5">
+      <div class="link-list-wrapper mt-4">
         <ul class="link-list" style="padding-left:0; list-style:none; margin:0;">
           <?php foreach ($links as $link_id) { 
             $link_obj = get_post($link_id);
