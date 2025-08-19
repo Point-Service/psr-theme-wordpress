@@ -18,9 +18,14 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
        class="card card-teaser sito-tematico-card mt-0 p-2 shadow-sm" 
        target="_blank">
 
+        <!-- Icona in alto a destra della card -->
+        <svg class="icon icon-dark external-icon">
+            <use href="#it-external-link"></use>
+        </svg>
+
         <div class="card-body d-flex align-items-center" style="padding:10px; position: relative;">
 
-            <!-- Icona -->
+            <!-- Icona avatar -->
             <?php if($st_img) { ?>
                 <div class="avatar size-lg me-3" style="flex-shrink: 0; width:40px; height:40px; border-radius:50%; background-color:#f0f0f0; display:flex; align-items:center; justify-content:center;">
                     <?php dci_get_img($st_img); ?>
@@ -29,12 +34,8 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
             <!-- Titolo e descrizione -->
             <div class="flex-grow-1 position-relative">
-                <h3 class="card-title mb-1 position-relative" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
+                <h3 class="card-title mb-1" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
                     <?php echo $sito_tematico->post_title ?>
-                    <!-- Icona in alto a destra dentro h3 -->
-                    <svg class="icon icon-dark external-icon" style="width:18px; height:18px; fill:#555555; position:absolute; top:0; right:0;">
-                        <use href="#it-external-link"></use>
-                    </svg>
                 </h3>
                 <p class="card-text mb-0" style="font-size:0.85rem; color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;">
                     <?php echo $st_descrizione; ?>
@@ -55,7 +56,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    position: relative;
+    position: relative; /* necessario per posizionamento assoluto dell'icona */
     text-decoration: none;
     min-height: 80px;
 }
@@ -79,18 +80,20 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     border-radius: 50%;
 }
 
-/* Icona in alto a destra dentro h3 */
-.sito-tematico-card-wrapper .sito-tematico-card .card-title {
-    margin-right: 35px; /* spazio per icona */
-    position: relative;
-}
-
+/* Icona SVG in alto a destra della card */
 .sito-tematico-card-wrapper .sito-tematico-card .external-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    fill: #555;
     transition: transform 0.3s ease, fill 0.3s ease;
 }
 
 .sito-tematico-card-wrapper .sito-tematico-card:hover .external-icon {
     transform: scale(1.1);
-    fill: #777777;
+    fill: #777;
 }
 </style>
+
