@@ -90,7 +90,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
    title="Esplora l'argomento <?php echo $argomento->name; ?>"
    data-focus-mouse="false"
 >
-    <span class="text" style="font-size:0.95rem;">Esplora argomento</span>
+    <span class="text" style="font-size:0.80rem;"><b>Esplora argomento</b></span>
     <svg class="icon ms-1" style="width:18px; height:18px;">
         <use xlink:href="#it-arrow-right"></use>
     </svg>
