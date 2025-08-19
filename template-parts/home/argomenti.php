@@ -48,11 +48,11 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                     if ($argomento) {
                         $url = get_term_link($argomento->term_id, 'argomenti');
                 ?>
-                 <svg class="icon text-primary" style="width:22px; height:22px; display:block; margin-left:0; margin-right:8px;">
-                    <use xlink:href="#it-bookmark"></use>
-                  </svg>
+
                 <a href="<?php echo esc_url($url); ?>" class="btn-argomento">
-                    <?php echo esc_html($argomento->name); ?>
+                  <svg class="icon text-primary" style="width:22px; height:22px; display:block; margin-left:0; margin-right:8px;">
+                    <use xlink:href="#it-bookmark"></use>
+                  </svg>  <?php echo esc_html($argomento->name); ?>
                 </a>
                 <?php
                     }
