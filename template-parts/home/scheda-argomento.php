@@ -71,7 +71,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
   <!-- footer -->
   <a class="read-more pt-0 d-flex align-items-center justify-content-between"
      href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
-     style="text-decoration:none; font-weight:500; padding:12px 16px; margin-top:10px;">
+     style="text-decoration:none; font-weight:500; padding:12px 16px; margin-top:20px;">
     <span class="text" style="color:#0d6efd;">Esplora argomento</span>
     <svg class="icon" style="width:18px; height:18px; fill:#0d6efd;">
       <use xlink:href="#it-arrow-right"></use>
