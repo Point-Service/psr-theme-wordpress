@@ -36,19 +36,13 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
     </p>
 
     <!-- sito tematico -->
-      <?php if($sito_tematico_id) { ?>
-        <div style="margin-top:16px; margin-bottom:16px; padding:12px; background-color:#f8f9fa; border-radius:8px; border:1px solid #e9ecef;">
-            <p style="margin:0 0 8px 0; font-weight:600; font-size:0.95rem; display:flex; align-items:center; gap:6px; color:#0d6efd;">
-                <span style="font-size:1rem;">🌐</span>
-                Visita il sito
-            </p>
-            <?php 
-              $custom_class = "no-after mt-0";
-              get_template_part("template-parts/sito-tematico/card_argomento");
-            ?>
-        </div>
-      <?php } ?>
-
+   <?php if($sito_tematico_id) { ?>
+      <p class="card-text pb-3 mt-3 fw-bold">🌐 Visita il sito:</p>
+      <?php 
+        $custom_class = "no-after mt-0";
+        get_template_part("template-parts/sito-tematico/card_argomento");
+      ?>
+    <?php } ?>
 
      <!-- links -->
     <?php if(isset($links) && is_array($links) && count($links)) { ?>
