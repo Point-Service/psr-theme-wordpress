@@ -203,63 +203,22 @@ $box_accesso_rapido = $boxes;
 
 
 @media (max-width: 768px) {
-
-    /* Colonne full-width */
-    .custom-styles .col-md-6,
-    .custom-styles .col-xl-4 {
-        flex: 1 1 100%;
-        max-width: 100%;
-        display: flex;
-    }
-
-    /* Card layout orizzontale su mobile */
-    .custom-styles .card {
-        flex-direction: row; /* icona a sinistra, testo a destra */
-        align-items: center;
-        min-height: auto;
-        padding: 12px;
-        text-align: left;
-        position: relative; /* per icona SVG se serve */
-    }
-
-    /* Avatar (icona) a sinistra */
-    .custom-styles .avatar {
-        margin: 0 12px 0 0; /* spazio tra icona e testo */
-        flex-shrink: 0; /* non ridurre l’icona */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* Titolo e descrizione a destra, verticale */
     .custom-styles .card-body {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        padding: 0;
-        flex: 1; /* riempie lo spazio disponibile */
+        align-items: center;       /* centra avatar e testo orizzontalmente */
+        justify-content: center;   /* centra verticalmente se c’è più spazio */
+        text-align: center;        /* testo centrato */
+        padding: 12px;
     }
 
-    .custom-styles .card-title {
-        font-size: 1.2rem;
-        margin-bottom: 4px;
-        margin-right: 0; /* rimuove spazio extra per icona top-right */
+    .custom-styles .avatar {
+        margin: 0 0 8px 0;         /* margine sotto l’avatar */
     }
 
+    .custom-styles .card-title,
     .custom-styles .description {
-        font-size: 0.9rem;
-        line-height: 1.3;
-        margin: 0;
-    }
-
-    /* Posizionamento icona SVG (se vuoi mantenerla in alto a destra) */
-    .custom-styles .card-title svg.icon-white {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 16px;
-        height: 16px;
+        margin: 0;                 /* rimuove margini extra */
     }
 }
 
