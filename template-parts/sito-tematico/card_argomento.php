@@ -12,39 +12,41 @@ $colore_sfondo = $st_colore ?: false;
 $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 ?>
 
-<a href="<?php echo $st_link ?>" 
-   style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" 
-   class="card card-teaser sito-tematico-card mt-0 p-2 shadow-sm" 
-   target="_blank">
+<div class="sito-tematico-card-wrapper">
+    <a href="<?php echo $st_link ?>" 
+       style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" 
+       class="card card-teaser sito-tematico-card mt-0 p-2 shadow-sm" 
+       target="_blank">
 
-    <div class="card-body d-flex align-items-center" style="padding:10px; position: relative;">
+        <div class="card-body d-flex align-items-center" style="padding:10px; position: relative;">
 
-        <!-- Icona -->
-        <?php if($st_img) { ?>
-            <div class="avatar size-lg me-3" style="flex-shrink: 0; width:40px; height:40px; border-radius:50%; background-color:#f0f0f0; display:flex; align-items:center; justify-content:center;">
-                <?php dci_get_img($st_img); ?>
+            <!-- Icona -->
+            <?php if($st_img) { ?>
+                <div class="avatar size-lg me-3" style="flex-shrink: 0; width:40px; height:40px; border-radius:50%; background-color:#f0f0f0; display:flex; align-items:center; justify-content:center;">
+                    <?php dci_get_img($st_img); ?>
+                </div>
+            <?php } ?>
+
+            <!-- Titolo e descrizione -->
+            <div class="flex-grow-1">
+                <h3 class="card-title mb-1" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
+                    <?php echo $sito_tematico->post_title ?>
+                    <svg class="icon icon-dark" style="width:18px; height:18px; margin-left:8px; position:absolute; top:10px; right:10px; fill:#555555;">
+                        <use href="#it-external-link"></use>
+                    </svg>
+                </h3>
+                <p class="card-text mb-0" style="font-size:0.85rem; color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;">
+                    <?php echo $st_descrizione; ?>
+                </p>
             </div>
-        <?php } ?>
 
-        <!-- Titolo e descrizione -->
-        <div class="flex-grow-1">
-            <h3 class="card-title mb-1" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
-                <?php echo $sito_tematico->post_title ?>
-                <svg class="icon icon-dark" style="width:18px; height:18px; margin-left:8px; position:absolute; top:10px; right:10px; fill:#555555;">
-                    <use href="#it-external-link"></use>
-                </svg>
-            </h3>
-            <p class="card-text mb-0" style="font-size:0.85rem; color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;">
-                <?php echo $st_descrizione; ?>
-            </p>
         </div>
-
-    </div>
-</a>
+    </a>
+</div>
 
 <style>
-/* Card compatta e coerente */
-.sito-tematico-card {
+/* Isolamento CSS usando wrapper */
+.sito-tematico-card-wrapper .sito-tematico-card {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background-color: #fafafa;
@@ -57,35 +59,35 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     min-height: 80px; /* meno verticale */
 }
 
-.sito-tematico-card:hover {
+.sito-tematico-card-wrapper .sito-tematico-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
-.sito-tematico-card .card-body {
+.sito-tematico-card-wrapper .sito-tematico-card .card-body {
     display: flex;
     align-items: center;
     padding: 8px 10px; /* meno padding verticale */
 }
 
-.sito-tematico-card .avatar i,
-.sito-tematico-card .avatar img {
+.sito-tematico-card-wrapper .sito-tematico-card .avatar i,
+.sito-tematico-card-wrapper .sito-tematico-card .avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
 }
 
-.sito-tematico-card .card-title svg.icon-dark {
+.sito-tematico-card-wrapper .sito-tematico-card .card-title svg.icon-dark {
     transition: transform 0.3s ease, fill 0.3s ease;
 }
 
-.sito-tematico-card:hover .card-title svg.icon-dark {
+.sito-tematico-card-wrapper .sito-tematico-card:hover .card-title svg.icon-dark {
     transform: scale(1.1);
     fill: #777777; /* leggero cambio hover */
 }
 
-.sito-tematico-card .card-title {
+.sito-tematico-card-wrapper .sito-tematico-card .card-title {
     margin-right: 35px; /* spazio per icona */
 }
 </style>
