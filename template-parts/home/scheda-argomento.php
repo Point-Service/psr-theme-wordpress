@@ -17,9 +17,7 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
         <!-- card head -->
         <div class="category-top">
             <svg class="icon">
-            <use
-                xlink:href="#<?php #echo $icon ? $icon : 'it-info-circle'; ?>"
-            ></use>
+                <use xlink:href="#it-bookmark"></use>
             </svg>
         </div>
         <h3 class="card-title title-xlarge-card"><?php echo $argomento->name?></h3>
