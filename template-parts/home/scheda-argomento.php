@@ -74,7 +74,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
      href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
      style="text-decoration:none; font-weight:500; padding:8px 0 8px 0; margin-top:12px; color:#0d6efd;">
     <span class="text" style="font-size:0.95rem;">Esplora argomento</span>
-    <svg class="icon" style="width:18px; height:18px; margin-left:6px; fill:#0d6efd;">
+    <svg class="icon" style="width:18px; height:18px; margin-left:6px; ">
       <use xlink:href="#it-arrow-right"></use>
     </svg>
   </a>
