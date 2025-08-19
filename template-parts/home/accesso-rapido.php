@@ -199,4 +199,34 @@ $box_accesso_rapido = $boxes;
     margin-right: 40px; /* Spazio a destra per fare posto all'icona */
 }
 
+
+    /* Mobile */
+@media (max-width: 768px) {
+    .custom-styles .card-body {
+        flex-direction: column; /* colonne per contenuto centrale */
+        text-align: center;     /* centra il contenuto della card */
+        align-items: center;    /* centra orizzontalmente il contenuto */
+        position: relative;     /* necessario per icona SVG assoluta */
+    }
+
+    /* Mantieni l'SVG in alto a destra della card */
+    .custom-styles .card-title svg.icon-white {
+        position: absolute;    /* rimane fuori dal flusso normale */
+        top: 10px;
+        right: 10px;
+    }
+
+    /* Spazio tra titolo e descrizione */
+    .custom-styles .card-title {
+        margin-right: 0;        /* elimina margine usato solo per desktop */
+        margin-top: 10px;       /* margine sopra per separare dal top della card */
+    }
+
+    /* Avatar e contenuto centrati */
+    .custom-styles .avatar {
+        margin-bottom: 10px;    /* distanza tra icona e titolo */
+    }
+}
+
+
 </style>
