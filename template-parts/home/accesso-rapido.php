@@ -193,4 +193,3 @@ $box_accesso_rapido = $boxes;
     }
 }
 </style>
-
