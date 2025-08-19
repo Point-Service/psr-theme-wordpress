@@ -18,6 +18,11 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
        target="_blank"
        style="<?= $colore_sfondo ? "background-color: $colore_sfondo;" : '' ?>">
 
+        <!-- Icona in alto a destra -->
+        <svg class="icon-top-right" style="width:20px; height:20px;">
+            <use href="#it-external-link"></use>
+        </svg>
+
         <div class="card-body">
             <?php if($st_img) { ?>
                 <div class="avatar me-3" style="min-width:50px; width:50px; height:50px; display:flex; justify-content:center; align-items:center; background-color:#f0f0f0; border-radius:50%;">
@@ -28,9 +33,6 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
             <div class="flex-grow-1">
                 <h3 class="card-title" style="color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
                     <?= $sito_tematico->post_title ?>
-                    <svg class="icon" style="width:20px; height:20px; margin-left:8px;">
-                        <use href="#it-external-link"></use>
-                    </svg>
                 </h3>
                 <p class="card-text mb-0" style="font-size:1rem; line-height:1.5; color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;">
                     <?= $st_descrizione ?>
@@ -49,9 +51,9 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    position: relative;
+    position: relative; /* necessario per l'icona assoluta */
     text-decoration: none;
-    min-height: 80px;
+    min-height: 100px;
     padding: 12px;
 }
 
@@ -73,19 +75,24 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     border-radius: 50%;
 }
 
-/* Titolo con icona inline */
+/* Titolo normale */
 .sito-tematico-card-wrapper .sito-tematico-card .card-title {
-    display: flex;
-    align-items: center;
     margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.2;
 }
 
-.sito-tematico-card-wrapper .sito-tematico-card .icon {
+/* Icona assoluta in alto a destra */
+.sito-tematico-card-wrapper .sito-tematico-card .icon-top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     transition: transform 0.3s ease, fill 0.3s ease;
+    fill: #555555;
 }
 
-.sito-tematico-card-wrapper .sito-tematico-card:hover .icon {
-    transform: scale(1.1);
+.sito-tematico-card-wrapper .sito-tematico-card:hover .icon-top-right {
+    transform: scale(1.2);
     fill: #777777;
 }
 </style>
