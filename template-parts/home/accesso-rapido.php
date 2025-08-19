@@ -203,24 +203,47 @@ $box_accesso_rapido = $boxes;
 
 
 @media (max-width: 768px) {
+    /* Card in colonna con avatar sopra titolo e descrizione */
     .custom-styles .card-body {
         display: flex;
         flex-direction: column;
         align-items: center;       /* centra avatar e testo orizzontalmente */
-        justify-content: center;   /* centra verticalmente se c’è più spazio */
+        justify-content: flex-start; /* parte dall’alto */
         text-align: center;        /* testo centrato */
         padding: 12px;
     }
 
+    /* Avatar sopra il testo, margine sotto */
     .custom-styles .avatar {
-        margin: 0 0 8px 0;         /* margine sotto l’avatar */
+        margin: 0 0 12px 0;         /* margine sotto avatar */
+        flex-shrink: 0;             /* non ridurre dimensione avatar */
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    .custom-styles .card-title,
+    /* Titolo e descrizione centrati */
+    .custom-styles .card-title {
+        font-size: 1.2rem;
+        margin: 0 0 6px 0;          /* margine solo sotto il titolo */
+    }
+
     .custom-styles .description {
-        margin: 0;                 /* rimuove margini extra */
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin: 0;                  /* nessun margine extra */
+    }
+
+    /* SVG in alto a destra rimane fuori flusso */
+    .custom-styles .card-title svg.icon-white {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 16px;
+        height: 16px;
     }
 }
+
 
 
 
