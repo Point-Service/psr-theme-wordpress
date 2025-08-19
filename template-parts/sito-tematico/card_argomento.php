@@ -4,43 +4,38 @@ global $sito_tematico_id;
 $sito_tematico = get_post($sito_tematico_id);
 $prefix = '_dci_sito_tematico_';
 $st_descrizione = dci_get_meta('descrizione_breve', $prefix, $sito_tematico->ID);
-$st_link = dci_get_meta('link',$prefix, $sito_tematico->ID);
-$st_colore = dci_get_meta('colore',$prefix, $sito_tematico->ID);
-$st_img = dci_get_meta('immagine',$prefix, $sito_tematico->ID);
+$st_link = dci_get_meta('link', $prefix, $sito_tematico->ID);
+$st_colore = dci_get_meta('colore', $prefix, $sito_tematico->ID);
+$st_img = dci_get_meta('immagine', $prefix, $sito_tematico->ID);
 
 $colore_sfondo = $st_colore ?: false;
 $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 ?>
 
-<div class="sito-tematico-card-wrapper">
-    <a href="<?php echo $st_link ?>" 
-       style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" 
-       class="card card-teaser sito-tematico-card mt-0 p-2 shadow-sm" 
-       target="_blank">
+<div class="sito-tematico-card-wrapper col-md-6 col-xl-4">
+    <a href="<?= $st_link ?>" 
+       class="sito-tematico-card" 
+       target="_blank"
+       style="<?= $colore_sfondo ? "background-color: $colore_sfondo;" : '' ?>">
 
-        <div class="card-body d-flex align-items-center" style="padding:10px; position: relative;">
-
-            <!-- Icona -->
+        <div class="card-body">
             <?php if($st_img) { ?>
-                <div class="avatar size-lg me-3" style="flex-shrink: 0; width:40px; height:40px; border-radius:50%; background-color:#f0f0f0; display:flex; align-items:center; justify-content:center;">
+                <div class="avatar me-3" style="min-width:50px; width:50px; height:50px; display:flex; justify-content:center; align-items:center; background-color:#f0f0f0; border-radius:50%;">
                     <?php dci_get_img($st_img); ?>
                 </div>
             <?php } ?>
 
-            <!-- Titolo e descrizione -->
             <div class="flex-grow-1">
-                <h3 class="card-title" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>; margin:0; display:flex; align-items:center;">
-                    <?php echo $sito_tematico->post_title ?>
-                    <!-- Icona inline accanto al titolo -->
-                    <svg class="icon icon-dark ms-2" style="width:18px; height:18px; fill:#555555;">
+                <h3 class="card-title" style="color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
+                    <?= $sito_tematico->post_title ?>
+                    <svg class="icon" style="width:20px; height:20px; margin-left:8px;">
                         <use href="#it-external-link"></use>
                     </svg>
                 </h3>
-                <p class="card-text mb-0" style="font-size:0.85rem; color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;">
-                    <?php echo $st_descrizione; ?>
+                <p class="card-text mb-0" style="font-size:1rem; line-height:1.5; color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;">
+                    <?= $st_descrizione ?>
                 </p>
             </div>
-
         </div>
     </a>
 </div>
@@ -57,6 +52,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     position: relative;
     text-decoration: none;
     min-height: 80px;
+    padding: 12px;
 }
 
 .sito-tematico-card-wrapper .sito-tematico-card:hover {
@@ -67,7 +63,6 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 .sito-tematico-card-wrapper .sito-tematico-card .card-body {
     display: flex;
     align-items: center;
-    padding: 8px 10px;
 }
 
 .sito-tematico-card-wrapper .sito-tematico-card .avatar i,
@@ -94,5 +89,4 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     fill: #777777;
 }
 </style>
-
 
