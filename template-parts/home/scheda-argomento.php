@@ -46,7 +46,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 
      <!-- links -->
     <?php if(isset($links) && is_array($links) && count($links)) { ?>
-      <div class="link-list-wrapper mt-4 mb-5">
+      <div class="link-list-wrapper mb-5">
         <ul class="link-list" style="padding-left:0; list-style:none; margin:0;">
           <?php foreach ($links as $link_id) { 
             $link_obj = get_post($link_id);
@@ -83,18 +83,22 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
   </div>
 
   <!-- footer -->
-<a class="read-more d-inline-flex align-items-center"
-   href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
-   style="text-decoration:none; font-weight:500; margin-left:0 !important; padding-left:0 !important; margin-top:30px; color:#0d6efd;"
-   aria-label="Esplora l'argomento <?php echo $argomento->name; ?>"
-   title="Esplora l'argomento <?php echo $argomento->name; ?>"
-   data-focus-mouse="false"
->
-    <span class="text" style="font-size:0.80rem;"><b>Esplora argomento</b></span>
-    <svg class="icon ms-1" style="width:18px; height:18px;">
-        <use xlink:href="#it-arrow-right"></use>
-    </svg>
-</a>
+
+<div class="card-footer mt-4" style="padding:0; border:none;">
+  <a class="read-more d-inline-flex align-items-center"
+     href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
+     style="text-decoration:none; font-weight:500; margin-left:0 !important; padding-left:0 !important; margin-top:20px; color:#0d6efd;"
+     aria-label="Esplora l'argomento <?php echo $argomento->name; ?>"
+     title="Esplora l'argomento <?php echo $argomento->name; ?>"
+     data-focus-mouse="false"
+  >
+      <span class="text" style="font-size:0.80rem;"><b>Esplora argomento</b></span>
+      <svg class="icon ms-1" style="width:18px; height:18px;">
+          <use xlink:href="#it-arrow-right"></use>
+      </svg>
+  </a>
+</div>
+
 
 
 </div>
