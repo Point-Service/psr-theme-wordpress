@@ -41,24 +41,25 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
         <div class="col-12">
             <div class="button-group">
                 
-                <?php
-                // Ciclo per gli altri argomenti
-                foreach ($altri_argomenti as $i => $arg_id) {
-                    $argomento = get_term_by('term_taxonomy_id', $arg_id);
-                    if ($argomento) {
-                        $url = get_term_link($argomento->term_id, 'argomenti');
-                ?>
-
-                <a href="<?php echo esc_url($url); ?>" class="btn-argomento">
-                  <svg class="icon text-primary" style="width:22px; height:22px; display:block; margin-left:0; margin-right:8px;">
-                    <use xlink:href="#it-bookmark"></use>
-                  </svg>  <?php echo esc_html($argomento->name); ?>
-                </a>
-                <?php
-                    }
-                }
-                ?>
-
+                        <?php
+                        // Ciclo per gli altri argomenti
+                        foreach ($altri_argomenti as $i => $arg_id) {
+                            $argomento = get_term_by('term_taxonomy_id', $arg_id);
+                            if ($argomento) {
+                                $url = get_term_link($argomento->term_id, 'argomenti');
+                        ?>
+                        
+                        <a href="<?php echo esc_url($url); ?>" class="btn-argomento" style="display: inline-flex; align-items: center; gap: 8px;">
+                          <svg class="icon text-primary" style="width:22px; height:22px; display:inline-block; vertical-align:middle;">
+                            <use xlink:href="#it-bookmark"></use>
+                          </svg>
+                          <?php echo esc_html($argomento->name); ?>
+                        </a>
+                        
+                        <?php
+                            }
+                        }
+                        ?>
 
                     <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>"  class="btn btn-primary" style="margin-left: 40px;">
                         Mostra tutti
