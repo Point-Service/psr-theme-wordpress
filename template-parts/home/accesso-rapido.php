@@ -202,14 +202,19 @@ $box_accesso_rapido = $boxes;
 
     /* Mobile */
 @media (max-width: 768px) {
-    /* Wrapper del contenuto (senza toccare SVG) */
-    .custom-styles .card-body > div {
-        display: flex;
-        flex-direction: column;
+    .custom-styles .card-body {
+        flex-direction: column; 
         justify-content: center; /* centra verticalmente */
         align-items: center;     /* centra orizzontalmente */
         text-align: center;
-        width: 100%;
+        position: relative;      /* necessario per SVG assoluto */
+    }
+
+    .custom-styles .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .custom-styles .avatar {
@@ -217,7 +222,7 @@ $box_accesso_rapido = $boxes;
     }
 
     .custom-styles .card-title {
-        margin: 0 0 5px 0;
+        margin-bottom: 5px;
         line-height: 1.2;
     }
 
@@ -227,6 +232,9 @@ $box_accesso_rapido = $boxes;
 
 
 }
+
+
+
 
 
 
