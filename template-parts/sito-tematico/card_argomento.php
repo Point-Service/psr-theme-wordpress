@@ -20,7 +20,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
         <div class="card-body d-flex align-items-center" style="padding:10px; position: relative;">
 
-            <!-- Icona principale -->
+            <!-- Icona -->
             <?php if($st_img) { ?>
                 <div class="avatar size-lg me-3" style="flex-shrink: 0; width:40px; height:40px; border-radius:50%; background-color:#f0f0f0; display:flex; align-items:center; justify-content:center;">
                     <?php dci_get_img($st_img); ?>
@@ -29,17 +29,16 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
             <!-- Titolo e descrizione -->
             <div class="flex-grow-1 position-relative">
-                <h3 class="card-title mb-1" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
+                <h3 class="card-title mb-1 position-relative" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
                     <?php echo $sito_tematico->post_title ?>
+                    <!-- Icona in alto a destra dentro h3 -->
+                    <svg class="icon icon-dark external-icon" style="width:18px; height:18px; fill:#555555; position:absolute; top:0; right:0;">
+                        <use href="#it-external-link"></use>
+                    </svg>
                 </h3>
                 <p class="card-text mb-0" style="font-size:0.85rem; color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;">
                     <?php echo $st_descrizione; ?>
                 </p>
-
-                <!-- Icona in alto a destra -->
-                <svg class="icon icon-dark external-icon" style="width:18px; height:18px; fill:#555555;">
-                    <use href="#it-external-link"></use>
-                </svg>
             </div>
 
         </div>
@@ -70,7 +69,6 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     display: flex;
     align-items: center;
     padding: 8px 10px;
-    position: relative;
 }
 
 .sito-tematico-card-wrapper .sito-tematico-card .avatar i,
@@ -81,14 +79,13 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     border-radius: 50%;
 }
 
-/* Icona in alto a destra */
+/* Icona in alto a destra dentro h3 */
+.sito-tematico-card-wrapper .sito-tematico-card .card-title {
+    margin-right: 35px; /* spazio per icona */
+    position: relative;
+}
+
 .sito-tematico-card-wrapper .sito-tematico-card .external-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 18px;
-    height: 18px;
-    fill: #555555;
     transition: transform 0.3s ease, fill 0.3s ease;
 }
 
@@ -97,5 +94,4 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     fill: #777777;
 }
 </style>
-
 
