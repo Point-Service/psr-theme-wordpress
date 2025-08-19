@@ -204,13 +204,6 @@ $box_accesso_rapido = $boxes;
 
 @media (max-width: 768px) {
 
-    /* Row full-width con card impilate */
-    .custom-styles .row {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
     /* Colonne full-width */
     .custom-styles .col-md-6,
     .custom-styles .col-xl-4 {
@@ -219,32 +212,39 @@ $box_accesso_rapido = $boxes;
         display: flex;
     }
 
-    /* Card layout orizzontale */
+    /* Card layout orizzontale su mobile */
     .custom-styles .card {
         flex-direction: row; /* icona a sinistra, testo a destra */
         align-items: center;
         min-height: auto;
         padding: 12px;
         text-align: left;
+        position: relative; /* per icona SVG se serve */
     }
 
-    /* Avatar a sinistra */
+    /* Avatar (icona) a sinistra */
     .custom-styles .avatar {
         margin: 0 12px 0 0; /* spazio tra icona e testo */
         flex-shrink: 0; /* non ridurre l’icona */
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    /* Testo title + description a destra, verticale */
+    /* Titolo e descrizione a destra, verticale */
     .custom-styles .card-body {
+        display: flex;
         flex-direction: column;
-        align-items: flex-start; /* testo allineato a sinistra */
+        align-items: flex-start;
         justify-content: center;
         padding: 0;
+        flex: 1; /* riempie lo spazio disponibile */
     }
 
     .custom-styles .card-title {
         font-size: 1.2rem;
         margin-bottom: 4px;
+        margin-right: 0; /* rimuove spazio extra per icona top-right */
     }
 
     .custom-styles .description {
@@ -253,14 +253,16 @@ $box_accesso_rapido = $boxes;
         margin: 0;
     }
 
-    /* SVG in alto a destra della card */
+    /* Posizionamento icona SVG (se vuoi mantenerla in alto a destra) */
     .custom-styles .card-title svg.icon-white {
-        width: 16px;
-        height: 16px;
+        position: absolute;
         top: 8px;
         right: 8px;
+        width: 16px;
+        height: 16px;
     }
 }
+
 
 
 
