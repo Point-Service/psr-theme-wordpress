@@ -203,38 +203,41 @@ $box_accesso_rapido = $boxes;
 
 
 @media (max-width: 768px) {
-    /* Card in colonna con avatar sopra titolo e descrizione */
     .custom-styles .card-body {
         display: flex;
-        flex-direction: column;
-        align-items: center;       /* centra avatar e testo orizzontalmente */
-        justify-content: flex-start; /* parte dall’alto */
-        text-align: center;        /* testo centrato */
+        flex-direction: row;        /* avatar a sinistra, testo a destra */
+        align-items: center;        /* centra verticalmente avatar e testo */
+        justify-content: flex-start; 
         padding: 12px;
+        text-align: left;           /* testo allineato a sinistra */
     }
 
-    /* Avatar sopra il testo, margine sotto */
     .custom-styles .avatar {
-        margin: 0 0 12px 0;         /* margine sotto avatar */
-        flex-shrink: 0;             /* non ridurre dimensione avatar */
+        margin: 0 12px 0 0;         /* margine tra avatar e testo */
+        flex-shrink: 0;             /* non ridurre l’avatar */
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    /* Titolo e descrizione centrati */
+    .custom-styles .flex-grow-1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;    /* titolo e descrizione centrati verticalmente rispetto all’avatar */
+    }
+
     .custom-styles .card-title {
         font-size: 1.2rem;
-        margin: 0 0 6px 0;          /* margine solo sotto il titolo */
+        margin: 0 0 4px 0;
     }
 
     .custom-styles .description {
         font-size: 0.9rem;
-        line-height: 1.4;
-        margin: 0;                  /* nessun margine extra */
+        line-height: 1.3;
+        margin: 0;
     }
 
-    /* SVG in alto a destra rimane fuori flusso */
+    /* SVG in alto a destra rimane */
     .custom-styles .card-title svg.icon-white {
         position: absolute;
         top: 8px;
@@ -243,6 +246,7 @@ $box_accesso_rapido = $boxes;
         height: 16px;
     }
 }
+
 
 
 
