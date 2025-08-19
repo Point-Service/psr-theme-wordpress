@@ -203,12 +203,66 @@ $box_accesso_rapido = $boxes;
 
 
 @media (max-width: 768px) {
+
+    /* Row con colonna singola */
     .custom-styles .row {
-        display: grid;
-        grid-template-columns: 1fr; /* Una colonna sola */
-        gap: 15px; /* Riduci lo spazio verticale tra card */
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* Card full-width */
+    .custom-styles .col-md-6,
+    .custom-styles .col-xl-4 {
+        flex: 1 1 100%;
+        max-width: 100%;
+        display: flex;
+    }
+
+    .custom-styles .card {
+        min-height: auto;
+        flex-direction: column;
+        justify-content: center;
+        padding: 12px;
+        text-align: center;
+    }
+
+    /* Icona circolare sopra il titolo */
+    .custom-styles .avatar {
+        margin: 0 auto 10px auto;
+    }
+
+    /* Titolo centrato e font più piccolo */
+    .custom-styles .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 6px;
+        text-align: center;
+    }
+
+    /* Descrizione centrata e compatta */
+    .custom-styles .description {
+        font-size: 0.9rem;
+        line-height: 1.3;
+        text-align: center;
+    }
+
+    /* SVG in alto a destra più piccolo */
+    .custom-styles .card-title svg.icon-white {
+        width: 16px;
+        height: 16px;
+        top: 8px;
+        right: 8px;
+    }
+
+    /* Riduci padding interno della card-body */
+    .custom-styles .card-body {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
     }
 }
+
 
    
 </style>
