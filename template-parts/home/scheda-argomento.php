@@ -16,7 +16,7 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
     <div class="card-body pb-5">
         <!-- card head -->
         <div class="category-top">
-            <svg class="icon">
+              <svg class="icon" width="12" height="12">
                 <use xlink:href="#it-bookmark"></use>
             </svg>
         </div>
