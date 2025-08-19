@@ -204,14 +204,14 @@ $box_accesso_rapido = $boxes;
 
 @media (max-width: 768px) {
 
-    /* Row con colonna singola */
+    /* Row full-width con card impilate */
     .custom-styles .row {
         display: flex;
         flex-direction: column;
         gap: 15px;
     }
 
-    /* Card full-width */
+    /* Colonne full-width */
     .custom-styles .col-md-6,
     .custom-styles .col-xl-4 {
         flex: 1 1 100%;
@@ -219,49 +219,49 @@ $box_accesso_rapido = $boxes;
         display: flex;
     }
 
+    /* Card layout orizzontale */
     .custom-styles .card {
+        flex-direction: row; /* icona a sinistra, testo a destra */
+        align-items: center;
         min-height: auto;
-        flex-direction: column;
-        justify-content: center;
         padding: 12px;
-        text-align: center;
+        text-align: left;
     }
 
-    /* Icona circolare sopra il titolo */
+    /* Avatar a sinistra */
     .custom-styles .avatar {
-        margin: 0 auto 10px auto;
+        margin: 0 12px 0 0; /* spazio tra icona e testo */
+        flex-shrink: 0; /* non ridurre l’icona */
     }
 
-    /* Titolo centrato e font più piccolo */
+    /* Testo title + description a destra, verticale */
+    .custom-styles .card-body {
+        flex-direction: column;
+        align-items: flex-start; /* testo allineato a sinistra */
+        justify-content: center;
+        padding: 0;
+    }
+
     .custom-styles .card-title {
         font-size: 1.2rem;
-        margin-bottom: 6px;
-        text-align: center;
+        margin-bottom: 4px;
     }
 
-    /* Descrizione centrata e compatta */
     .custom-styles .description {
         font-size: 0.9rem;
         line-height: 1.3;
-        text-align: center;
+        margin: 0;
     }
 
-    /* SVG in alto a destra più piccolo */
+    /* SVG in alto a destra della card */
     .custom-styles .card-title svg.icon-white {
         width: 16px;
         height: 16px;
         top: 8px;
         right: 8px;
     }
-
-    /* Riduci padding interno della card-body */
-    .custom-styles .card-body {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 8px;
-    }
 }
+
 
 
    
