@@ -12,15 +12,16 @@ $links = $argomento_full['argomento_'.$count.'_contenuti'];
 ?>
 
 <div class="card card-teaser no-after rounded shadow-sm border border-light">
+    
     <div class="card-body pb-5">
         <!-- card head -->
-        <!-- <div class="category-top">
+        <div class="category-top">
             <svg class="icon">
             <use
                 xlink:href="#<?php #echo $icon ? $icon : 'it-info-circle'; ?>"
             ></use>
             </svg>
-        </div> -->
+        </div>
         <h3 class="card-title title-xlarge-card"><?php echo $argomento->name?></h3>
         <p class="card-text">
             <?php echo $argomento->description?>
