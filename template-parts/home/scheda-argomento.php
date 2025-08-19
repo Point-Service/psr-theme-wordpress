@@ -44,28 +44,41 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
       ?>
     <?php } ?>
 
-    <!-- links -->
+     <!-- links -->
     <?php if(isset($links) && is_array($links) && count($links)) { ?>
-      <div class="link-list-wrapper mt-5 mb-5">
+      <div class="link-list-wrapper mt-4 mb-5">
         <ul class="link-list" style="padding-left:0; list-style:none; margin:0;">
           <?php foreach ($links as $link_id) { 
             $link_obj = get_post($link_id);
           ?>
-  
-            <li class="mb-2" style="margin-bottom:8px;">
+            <li style="margin-bottom:10px;">
               <a class="list-item icon-left d-flex align-items-center"
                  href="<?php echo get_permalink(intval($link_id)); ?>"
-                 style="padding:8px 12px; border:1px solid #e9ecef; border-radius:6px; background-color:#fff; text-decoration:none; box-shadow:0 1px 2px rgba(0,0,0,0.05); transition:background-color 0.2s;">
-                <svg class="icon text-secondary me-2" style="width:18px; height:18px; margin-right:6px;">
+                 style="
+                   padding:10px 14px;
+                   border-radius:8px;
+                   background-color:#f8f9fa;
+                   text-decoration:none;
+                   color:#212529;
+                   display:flex;
+                   align-items:center;
+                   box-shadow:0 2px 4px rgba(0,0,0,0.05);
+                   transition: all 0.3s ease;
+                 "
+                 onmouseover="this.style.backgroundColor='#e2e6ea'; this.style.transform='translateY(-2px)';"
+                 onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.transform='translateY(0)';"
+              >
+                <svg class="icon text-secondary me-2" style="width:18px; height:18px; margin-right:8px;">
                   <use xlink:href="#it-link"></use>
                 </svg>
-                <span style="font-size:0.95rem; color:#212529;"><?php echo $link_obj->post_title; ?></span>
+                <span style="font-size:0.95rem; font-weight:500;"><?php echo $link_obj->post_title; ?></span>
               </a>
             </li>
           <?php } ?>
         </ul>
       </div>
     <?php } ?>
+
 
   </div>
 
