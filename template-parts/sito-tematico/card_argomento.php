@@ -98,4 +98,3 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     fill: #777777;
 }
 </style>
-
