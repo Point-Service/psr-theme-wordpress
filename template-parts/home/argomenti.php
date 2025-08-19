@@ -50,7 +50,7 @@ $altri_argomenti = dci_get_option('argomenti_altri','homepage');
                         ?>
                         
                         <a href="<?php echo esc_url($url); ?>" class="btn-argomento" style="display: inline-flex; align-items: center; gap: 8px;">
-                          <svg class="icon text-primary" style="width:22px; height:22px; display:inline-block; vertical-align:middle;">
+                          <svg class="icon text-primary" style="width:22px; height:19px; display:inline-block; vertical-align:middle;">
                             <use xlink:href="#it-bookmark"></use>
                           </svg>
                           <?php echo esc_html($argomento->name); ?>
