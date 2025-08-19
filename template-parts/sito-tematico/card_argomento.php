@@ -28,10 +28,10 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
             <?php } ?>
 
             <!-- Titolo e descrizione -->
-            <div class="flex-grow-1 position-relative">
-                <h3 class="card-title mb-1 position-relative" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
+            <div class="flex-grow-1">
+                <h3 class="card-title" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>; position: relative;">
                     <?php echo $sito_tematico->post_title ?>
-                    <!-- Icona in alto a destra dentro h3 -->
+                    <!-- Icona in alto a destra -->
                     <svg class="icon icon-dark external-icon" style="width:18px; height:18px; fill:#555555; position:absolute; top:0; right:0;">
                         <use href="#it-external-link"></use>
                     </svg>
@@ -46,7 +46,6 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 </div>
 
 <style>
-/* Isolamento CSS usando wrapper */
 .sito-tematico-card-wrapper .sito-tematico-card {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -79,10 +78,10 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     border-radius: 50%;
 }
 
-/* Icona in alto a destra dentro h3 */
+/* Icona in alto a destra */
 .sito-tematico-card-wrapper .sito-tematico-card .card-title {
-    margin-right: 35px; /* spazio per icona */
-    position: relative;
+    position: relative; /* necessario per absolute dell’icona */
+    margin: 0;
 }
 
 .sito-tematico-card-wrapper .sito-tematico-card .external-icon {
@@ -94,4 +93,5 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     fill: #777777;
 }
 </style>
+
 
