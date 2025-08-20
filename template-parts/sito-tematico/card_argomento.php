@@ -15,11 +15,10 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 <a href="<?php echo $st_link ?>" 
    style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : 'background-color:#f7f7f7;' ?>" 
    class="card card-teaser sito-tematico-page mt-0 p-2 shadow-sm" 
-   target="_blank" 
-   style="position: relative;"> <!-- posizione relativa per contenitore -->
+   target="_blank">
 
     <!-- Icona in alto a destra -->
-    <svg class="icon icon-white external-icon" style="width: 20px; height: 20px;">
+    <svg class="icon external-icon">
         <use href="#it-external-link"></use>
     </svg>
 
@@ -48,7 +47,8 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
 <style>
 .sito-tematico-page {
-    position: relative; /* rende l'elemento contesto per l'assoluto */
+    position: relative;
+    color: <?= $sfondo_scuro ? '#333' : '#000' ?>; /* Colore del testo principale */
 }
 
 .sito-tematico-page .external-icon {
@@ -57,14 +57,14 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     right: 8px;
     width: 20px;
     height: 20px;
-    z-index: 10;
-    fill: currentColor; /* usa il colore corrente */
+    fill: currentColor; /* Usa lo stesso colore del testo */
     transition: transform 0.3s ease, fill 0.3s ease;
 }
 
 .sito-tematico-page:hover .external-icon {
     transform: scale(1.1);
-    fill: #777;
+    fill: currentColor;
 }
 </style>
+
 
