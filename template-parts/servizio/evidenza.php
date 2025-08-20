@@ -29,7 +29,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 $oggi = new DateTime();
 
                                 // Valutazione stato
-                                $stato_attivo = false;
+                                $stato_attivo = true;
                                 if ($startDate && $endDate && $startDate < $endDate) {
                                     $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
                                 }
