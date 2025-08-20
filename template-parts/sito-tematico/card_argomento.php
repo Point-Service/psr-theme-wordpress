@@ -34,7 +34,7 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
                 <?php echo $sito_tematico->post_title ?>
             </h3>
         </div>
-
+k
         <!-- Descrizione sotto il titolo -->
         <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-black' : '' ?>"
            style="color: <?= $sfondo_scuro ? '#333' : '#555' ?>; font-size: 0.85rem; margin-bottom: 0;">
