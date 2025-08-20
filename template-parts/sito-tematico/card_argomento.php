@@ -49,16 +49,4 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     </div>
 </a>
 
-<style>
-
-  /* Hover effetto */
-  .sito-tematico-card:hover {
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    transform: translateY(-3px);
-  }
-  /* Cambia colore icona al hover */
-  .sito-tematico-card:hover .external-icon {
-    fill: #777;
-  }
-</style>
 
