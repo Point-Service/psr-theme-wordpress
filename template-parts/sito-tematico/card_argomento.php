@@ -13,11 +13,11 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 ?>
 
 <a href="<?php echo $st_link ?>" 
-   style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : 'background-color:#f7f7f7;' ?>" 
+   style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : 'background-color:#f7f7f7;' ?>; border-radius: 1px;" 
    class="card card-teaser sito-tematico-page mt-0 p-2 shadow-sm" 
    target="_blank">
 
-    <!-- Icona in alto a destra -->
+   <!-- Icona in alto a destra -->
     <svg class="icon external-icon">
         <use href="#it-external-link"></use>
     </svg>
