@@ -50,6 +50,9 @@ if ($startDate && $endDate && $startDate < $endDate) {
     $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
 }
 
+
+echo $startDate;
+    
 // Mostra badge di stato
 echo '<div class="mt-2">';
 echo '<span class="chip chip-simple" data-element="service-status">';
@@ -74,5 +77,4 @@ echo '</div>';
     <?php
 }
 ?>
-8
 
