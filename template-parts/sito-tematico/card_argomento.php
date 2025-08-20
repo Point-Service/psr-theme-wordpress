@@ -14,32 +14,27 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
 <a href="<?php echo $st_link ?>" 
    style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : 'background-color:#f7f7f7;' ?>" 
-   class="card card-teaser <?= $colore_sfondo ? '' : '' ?> mt-0 p-2 shadow-sm" 
+   class="card card-teaser sito-tematico-page mt-0 p-2 shadow-sm" 
    target="_blank">
 
-    <div class="card-body" style="background-color: #f7f7f7; padding: 12px; border-radius: 8px; display: flex; flex-direction: column;">
+    <div class="card-body" style="background-color: #f7f7f7; padding: 12px; border-radius: 8px; display: flex; flex-direction: column; position: relative;">
 
-        <!-- Icona e Titolo: Usa flexbox solo per allinearli orizzontalmente -->
         <div style="display: flex; align-items: center; margin-bottom: 5px;">
-            <!-- Icona -->
             <?php if($st_img) { ?>
                 <div class="avatar size-lg me-2" style="flex-shrink: 0;">
                     <?php dci_get_img($st_img); ?>
                 </div>
             <?php } ?>
 
-            <!-- Titolo -->
             <h3 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-black' : 'text-dark' ?>"
-                style="font-size: 1.1rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>; margin-bottom: 0;">
+                style="font-size: 1.1rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>; margin-bottom: 0; position: relative;">
                 <?php echo $sito_tematico->post_title ?>
-               <!-- Aggiungi l'icona SVG qui -->
-               <svg class="icon icon-white" style="width: 20px; height: 20px; margin-left: 8px;">
-                   <use href="#it-external-link"></use>
-               </svg>
+                <svg class="icon icon-white" style="width: 20px; height: 20px; margin-left: 8px;">
+                    <use href="#it-external-link"></use>
+                </svg>
             </h3>
         </div>
 
-        <!-- Descrizione sotto il titolo -->
         <p class="card-text text-sans-serif <?= $sfondo_scuro ? 'text-black' : '' ?>"
            style="color: <?= $sfondo_scuro ? '#333' : '#555' ?>; font-size: 0.85rem; margin-bottom: 0;">
             <?php echo $st_descrizione; ?>
@@ -48,3 +43,14 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     </div>
 </a>
 
+<style>
+.sito-tematico-page .card-title svg.icon-white {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    z-index: 2;
+    transition: transform 0.3s ease, fill 0.3s ease;
+}
+</style>
