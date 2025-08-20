@@ -11,14 +11,12 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
   $links = $argomento_full['argomento_'.$count.'_contenuti'];
 ?>
 
-<div class="card card-teaser no-after rounded shadow-sm border border-light" style="overflow:hidden;">
+<div class="card card-teaser no-after rounded shadow-sm border border-light" style="overflow:hidden; position:relative;">
   
-  <!-- Aggiungiamo l'icona in un contenitore sopra la tabella -->
-  <div class="icon-container" style="position:relative; margin-bottom:10px;">
-    <svg class="icon text-primary" style="position:absolute; top:0; left:0; width:18px; height:20px; display:block;">
-      <use xlink:href="#it-bookmark"></use>
-    </svg>
-  </div>
+  <!-- Icona posizionata sopra la card, in alto a sinistra -->
+  <svg class="icon text-primary" style="position:absolute; top:0; left:0; width:18px; height:20px; z-index:1;">
+    <use xlink:href="#it-bookmark"></use>
+  </svg>
 
   <div class="card-body pb-4">
     <!-- card head -->
@@ -40,7 +38,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
     </p>
 
     <!-- sito tematico -->
-   <?php if($sito_tematico_id) { ?>
+    <?php if($sito_tematico_id) { ?>
       <p class="card-text pb-3 mt-3 fw-bold">🌐 Visita il sito:</p>
       <?php 
         $custom_class = "no-after mt-0";
@@ -48,7 +46,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
       ?>
     <?php } ?>
 
-     <!-- links -->
+    <!-- links -->
     <?php if(isset($links) && is_array($links) && count($links)) { ?>
       <div class="link-list-wrapper mt-4">
         <ul class="link-list" style="padding-left:0; list-style:none; margin:0;">
@@ -92,6 +90,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
   </div>
 
 </div>
+
 
 <?php
 $sito_tematico_id = null;
