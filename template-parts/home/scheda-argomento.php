@@ -13,12 +13,16 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 
 <div class="card card-teaser no-after rounded shadow-sm border border-light" style="overflow:hidden;">
   <div class="card-body pb-4">
-    <!-- card head -->
-    <div class="category-top d-flex align-items-center mb-2" style="text-align:left;">
-      <svg class="icon text-primary" style="width:18px; height:20px; display:block; margin-left:0; margin-right:8px;">
+    
+    <!-- icona separata dalla parte del titolo -->
+    <div class="category-top d-flex align-items-center mb-2" style="text-align:left; position:relative;">
+      <!-- Posizioniamo l'icona qui fuori dal titolo -->
+      <svg class="icon text-primary" style="position:absolute; top:0; left:0; width:18px; height:20px; display:block; margin-right:8px;">
         <use xlink:href="#it-bookmark"></use>
       </svg>
-      <h3 class="card-title title-xlarge-card mb-0" style="font-size:1.3rem; font-weight:600;">
+      
+      <!-- Titolo del card -->
+      <h3 class="card-title title-xlarge-card mb-0" style="font-size:1.3rem; font-weight:600; padding-left:24px;">
         <?php echo $argomento->name ?>
       </h3>
     </div>
@@ -53,17 +57,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
             <li style="margin-bottom:10px;">
               <a class="list-item icon-left d-flex align-items-center"
                  href="<?php echo get_permalink(intval($link_id)); ?>"
-                 style="
-                   padding:10px 14px;
-                   border-radius:8px;
-                   background-color:#f8f9fa;
-                   text-decoration:none;
-                   color:#212529;
-                   display:flex;
-                   align-items:center;
-                   box-shadow:0 2px 4px rgba(0,0,0,0.05);
-                   transition: all 0.3s ease;
-                 "
+                 style="padding:10px 14px; border-radius:8px; background-color:#f8f9fa; text-decoration:none; color:#212529; display:flex; align-items:center; box-shadow:0 2px 4px rgba(0,0,0,0.05); transition: all 0.3s ease;"
                  onmouseover="this.style.backgroundColor='#e2e6ea'; this.style.transform='translateY(-2px)';"
                  onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.transform='translateY(0)';"
               >
@@ -78,29 +72,26 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
       </div>
     <?php } ?>
 
-
   </div>
 
   <!-- footer -->
-
-<div class="card-footer mt-4" style="padding:0; border:none;">
-  <a class="read-more d-inline-flex align-items-center"
-     href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
-     style="text-decoration:none; font-weight:500; margin-left:0 !important; padding-left:0 !important; margin-top:20px; color:#0d6efd;"
-     aria-label="Esplora l'argomento <?php echo $argomento->name; ?>"
-     title="Esplora l'argomento <?php echo $argomento->name; ?>"
-     data-focus-mouse="false"
-  >
-      <span class="text" style="font-size:0.80rem;"><b>Esplora argomento</b></span>
-      <svg class="icon ms-1" style="width:18px; height:18px;">
-          <use xlink:href="#it-arrow-right"></use>
-      </svg>
-  </a>
-</div>
-
-
+  <div class="card-footer mt-4" style="padding:0; border:none;">
+    <a class="read-more d-inline-flex align-items-center"
+       href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
+       style="text-decoration:none; font-weight:500; margin-left:0 !important; padding-left:0 !important; margin-top:20px; color:#0d6efd;"
+       aria-label="Esplora l'argomento <?php echo $argomento->name; ?>"
+       title="Esplora l'argomento <?php echo $argomento->name; ?>"
+       data-focus-mouse="false"
+    >
+        <span class="text" style="font-size:0.80rem;"><b>Esplora argomento</b></span>
+        <svg class="icon ms-1" style="width:18px; height:18px;">
+            <use xlink:href="#it-arrow-right"></use>
+        </svg>
+    </a>
+  </div>
 
 </div>
+
 
 <?php
 $sito_tematico_id = null;
