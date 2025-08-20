@@ -39,12 +39,16 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?php echo get_permalink($post->ID); ?>">
                                         <svg class="icon"><use xlink:href="#it-arrow-right-triangle"></use></svg>
                                         <span><?php echo $post->post_title; ?></span>
+                                    </a>
+
+                                    <!-- Badge stato -->
+                                    <div class="mt-1">
                                         <span class="chip chip-simple" data-element="service-status">
                                             <span class="chip-label">
                                                 <?php echo $stato_attivo ? '<span class="text-success">Servizio attivo</span>' : '<span class="text-danger">Servizio non attivo</span>'; ?>
                                             </span>
                                         </span>
-                                    </a>
+
                                         <!-- Periodo -->
                                         <?php if ($startDate && $endDate) { ?>
                                             <div class="service-period">
