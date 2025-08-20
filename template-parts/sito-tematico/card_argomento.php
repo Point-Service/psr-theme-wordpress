@@ -58,42 +58,63 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
     flex-direction: column;
     position: relative; /* necessario per posizionamento assoluto dell'icona */
     text-decoration: none;
-    min-height: 80px;
+    min-height: 70px; /* Ridurre l'altezza minima */
+    margin-bottom: 10px; /* Ridurre lo spazio tra le card */
+    padding: 6px; /* Ridurre il padding generale */
 }
 
+/* Effetto hover sulle card */
 .sito-tematico-card-wrapper .sito-tematico-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
+/* Card body */
 .sito-tematico-card-wrapper .sito-tematico-card .card-body {
     display: flex;
     align-items: center;
-    padding: 8px 10px;
+    padding: 6px 8px; /* Ridurre il padding interno della card */
 }
 
-.sito-tematico-card-wrapper .sito-tematico-card .avatar i,
-.sito-tematico-card-wrapper .sito-tematico-card .avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
+/* Avatar */
+.sito-tematico-card-wrapper .sito-tematico-card .avatar {
+    width: 32px; /* Ridurre la dimensione dell'avatar */
+    height: 32px; /* Ridurre la dimensione dell'avatar */
+    margin-right: 8px; /* Ridurre il margine tra l'avatar e il testo */
+}
+
+/* Titolo card */
+.sito-tematico-card-wrapper .sito-tematico-card .card-title {
+    font-size: 1.0rem; /* Ridurre la dimensione del titolo */
+    font-weight: 600;
+}
+
+/* Testo della card */
+.sito-tematico-card-wrapper .sito-tematico-card .card-text {
+    font-size: 0.8rem; /* Ridurre la dimensione del testo */
 }
 
 /* Icona SVG in alto a destra della card */
 .sito-tematico-card-wrapper .sito-tematico-card .external-icon {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 18px;
-    height: 18px;
+    top: 6px; /* Ridurre la distanza dall'alto */
+    right: 6px; /* Ridurre la distanza a destra */
+    width: 16px; /* Ridurre la dimensione dell'icona */
+    height: 16px; /* Ridurre la dimensione dell'icona */
     fill: #555;
     transition: transform 0.3s ease, fill 0.3s ease;
 }
 
+/* Effetto hover sull'icona */
 .sito-tematico-card-wrapper .sito-tematico-card:hover .external-icon {
     transform: scale(1.1);
     fill: #777;
 }
+
+/* Ridurre i margini e padding generali */
+.sito-tematico-card-wrapper {
+    margin-bottom: 15px; /* Spazio tra le card */
+}
+
 </style>
 
