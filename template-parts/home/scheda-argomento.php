@@ -13,10 +13,9 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 
 <div class="card card-teaser no-after rounded shadow-sm border border-light" style="overflow:hidden;">
   <div class="card-body pb-4">
-
     <!-- card head -->
     <div class="category-top d-flex align-items-center mb-2" style="text-align:left;">
-      <svg class="icon text-primary" style="width:22px; height:22px; display:block; margin-left:0; margin-right:8px;">
+      <svg class="icon text-primary" style="width:20px; height:30px; display:block; margin-left:0; margin-right:8px;">
         <use xlink:href="#it-bookmark"></use>
       </svg>
       <h3 class="card-title title-xlarge-card mb-0" style="font-size:1.3rem; font-weight:600;">
