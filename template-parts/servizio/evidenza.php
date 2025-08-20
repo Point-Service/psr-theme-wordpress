@@ -41,7 +41,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         <span><?php echo $post->post_title; ?></span>
                                     </a>
 
-                                    <!-- Badge stato e periodo spostato qui dopo il nome -->
+                                    <!-- Badge stato -->
                                     <div class="mt-1">
                                         <span class="chip chip-simple" data-element="service-status">
                                             <span class="chip-label">
@@ -49,7 +49,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                             </span>
                                         </span>
 
-                                        <!-- Periodo se disponibile -->
+                                        <!-- Periodo -->
                                         <?php if ($startDate && $endDate) { ?>
                                             <div class="service-period">
                                                 <small><strong>Periodo:</strong> <?php echo $startDate->format('d/m/Y'); ?> - <?php echo $endDate->format('d/m/Y'); ?></small>
