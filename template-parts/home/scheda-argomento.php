@@ -14,8 +14,8 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 <div class="card card-teaser no-after rounded shadow-sm border border-light" style="overflow:hidden; position:relative;">
   
   <!-- Icona posizionata sopra la card, in alto a sinistra -->
-<svg class="icon text-primary" style="position:absolute; top:7px; left:0px; width:18px; height:20px; z-index:1;">
-  <use xlink:href="#it-clip"></use>
+<svg class="icon text-primary" style="position:absolute; top:7px; left:0px; width:18px; height:18px; z-index:1;">
+  <use xlink:href="#it-share"></use>
 </svg>
 
   <div class="card-body pb-4">
