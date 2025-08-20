@@ -46,12 +46,10 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 </div>
 
 <style>
-/* Wrapper: margini sopra/sotto più contenuti, laterali stretti */
 .sito-tematico-card-wrapper {
-  margin: 6px 8px; /* top/bottom 6px, left/right 8px */
+  margin: 6px 8px; /* Spazio esterno contenuto */
 }
 
-/* Card principale */
 .sito-tematico-card-wrapper .sito-tematico-card {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -66,20 +64,17 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
   padding: 4px 6px;
 }
 
-/* Hover */
 .sito-tematico-card-wrapper .sito-tematico-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
-/* Card body */
 .sito-tematico-card-wrapper .sito-tematico-card .card-body {
   display: flex;
   align-items: center;
   padding: 6px 8px;
 }
 
-/* Avatar */
 .sito-tematico-card-wrapper .sito-tematico-card .avatar {
   width: 32px;
   height: 32px;
@@ -92,37 +87,40 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
   justify-content: center;
 }
 
-/* Titolo: leggermente più piccolo, margine sotto ridotto */
+/* TITOLO */
 .sito-tematico-card-wrapper .sito-tematico-card .card-title {
   font-size: 0.95rem;
   font-weight: 600;
-  margin-bottom: 2px;
+  line-height: 1.2;        /* Più compatto */
+  margin: 0;               /* Nessun margine extra */
+  padding: 0;
   color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;
 }
 
-/* Testo: margini sopra e sotto azzerati, font più piccolo */
+/* DESCRIZIONE */
 .sito-tematico-card-wrapper .sito-tematico-card .card-text {
   font-size: 0.78rem;
+  line-height: 1.2;        /* Più compatto */
+  margin: 2px 0 0 0;       /* Ridotto margine sopra */
+  padding: 0;
   color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
-/* Icona SVG in alto a destra della card */
+/* ICONA */
 .sito-tematico-card-wrapper .sito-tematico-card .external-icon {
   position: absolute;
   top: 6px;
   right: 6px;
-  width: 16px;
-  height: 16px;
+  width: 18px;  /* Icona torna alla dimensione originale */
+  height: 18px;
   fill: #555;
   transition: transform 0.3s ease, fill 0.3s ease;
 }
 
-/* Hover sull’icona */
 .sito-tematico-card-wrapper .sito-tematico-card:hover .external-icon {
   transform: scale(1.1);
   fill: #777;
 }
+
 
 </style>
