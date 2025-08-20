@@ -17,8 +17,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 <svg class="icon text-primary" style="position:absolute; top:7px; left:0px; width:18px; height:18px; z-index:1;">
   <use xlink:href="#it-share"></use>
 </svg>
-<br>
-  <div class="card-body pb-4">
+  <div class="card-body pb-4" style="padding-top: 10px;">
     <!-- card head -->
     <div class="category-top d-flex align-items-center mb-2" style="text-align:left;">
       <h3 class="card-title title-xlarge-card mb-0" style="font-size:1.3rem; font-weight:600;">
