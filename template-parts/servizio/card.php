@@ -51,8 +51,8 @@ if ($startDate && $endDate && $startDate < $endDate) {
 }
 
 
-echo $startDate;
-echo $endDate;  
+echo $data_inizio_servizio;
+echo $data_fine_servizio;  
 
 
     
