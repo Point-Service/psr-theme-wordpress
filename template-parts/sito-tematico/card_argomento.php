@@ -73,45 +73,56 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 }
 
 /* Card body */
-.sito-tematico-card-wrapper .card-body {
+.sito-tematico-card-wrapper .sito-tematico-card .card-body {
+  display: flex;
+  align-items: center;
   padding: 6px 8px;
 }
 
 /* Avatar */
-.sito-tematico-card-wrapper .avatar {
+.sito-tematico-card-wrapper .sito-tematico-card .avatar {
   width: 32px;
   height: 32px;
   margin-right: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Titolo: lievemente più piccolo */
-.sito-tematico-card-wrapper .card-title {
+/* Titolo: leggermente più piccolo, margine sotto ridotto */
+.sito-tematico-card-wrapper .sito-tematico-card .card-title {
   font-size: 0.95rem;
   font-weight: 600;
   margin-bottom: 2px;
+  color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;
 }
 
-/* Testo */
-.sito-tematico-card-wrapper .card-text {
+/* Testo: margini sopra e sotto azzerati, font più piccolo */
+.sito-tematico-card-wrapper .sito-tematico-card .card-text {
   font-size: 0.78rem;
-  margin-bottom: 0;
   color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-/* Icona esterna in alto a destra */
-.sito-tematico-card-wrapper .external-icon {
+/* Icona SVG in alto a destra della card */
+.sito-tematico-card-wrapper .sito-tematico-card .external-icon {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 15px;
-  height: 15px;
+  top: 6px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
   fill: #555;
   transition: transform 0.3s ease, fill 0.3s ease;
 }
 
-/* Hover sull'icona */
+/* Hover sull’icona */
 .sito-tematico-card-wrapper .sito-tematico-card:hover .external-icon {
   transform: scale(1.1);
   fill: #777;
 }
+
 </style>
