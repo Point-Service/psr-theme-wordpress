@@ -66,4 +66,24 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
     </div>
 </div>
 <br>
+<style>
+/* Usa Flexbox per disporre i badge e il periodo sulla stessa riga */
+.link-list .service-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Allinea verticalmente */
+    margin-top: 10px; /* Spazio sopra la riga */
+}
 
+/* Aggiungi uno spazio tra il badge e il periodo */
+.link-list .service-period {
+    margin-left: 20px; /* Distanza tra il badge e il periodo */
+}
+
+/* Modifica del chip per migliorare la visibilità */
+.link-list .chip {
+    display: inline-block;
+    margin-right: 15px; /* Spazio tra il badge e il periodo */
+}
+    
+</style>
