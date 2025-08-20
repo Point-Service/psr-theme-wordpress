@@ -50,18 +50,12 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 </a>
 
 <style>
-  /* Per posizionare l'icona sopra la card */
-  .sito-tematico-card {
-    position: relative;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
 
   /* Hover effetto */
   .sito-tematico-card:hover {
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     transform: translateY(-3px);
   }
-
   /* Cambia colore icona al hover */
   .sito-tematico-card:hover .external-icon {
     fill: #777;
