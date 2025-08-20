@@ -15,9 +15,15 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 <a href="<?php echo $st_link ?>" 
    style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : 'background-color:#f7f7f7;' ?>" 
    class="card card-teaser sito-tematico-page mt-0 p-2 shadow-sm" 
-   target="_blank">
+   target="_blank" 
+   style="position: relative;"> <!-- posizione relativa per contenitore -->
 
-    <div class="card-body" style="background-color: #f7f7f7; padding: 12px; border-radius: 8px; display: flex; flex-direction: column; position: relative;">
+    <!-- Icona in alto a destra -->
+    <svg class="icon icon-white external-icon" style="width: 20px; height: 20px;">
+        <use href="#it-external-link"></use>
+    </svg>
+
+    <div class="card-body" style="background-color: #f7f7f7; padding: 12px; border-radius: 8px; display: flex; flex-direction: column;">
 
         <div style="display: flex; align-items: center; margin-bottom: 5px;">
             <?php if($st_img) { ?>
@@ -27,11 +33,8 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
             <?php } ?>
 
             <h3 class="card-title sito-tematico titolo-sito-tematico <?= $sfondo_scuro ? 'text-black' : 'text-dark' ?>"
-                style="font-size: 1.1rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>; margin-bottom: 0; position: relative;">
+                style="font-size: 1.1rem; font-weight: 600; color: <?= $sfondo_scuro ? '#333' : '#000' ?>; margin-bottom: 0;">
                 <?php echo $sito_tematico->post_title ?>
-                <svg class="icon icon-white" style="width: 20px; height: 20px; margin-left: 8px;">
-                    <use href="#it-external-link"></use>
-                </svg>
             </h3>
         </div>
 
@@ -44,13 +47,24 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 </a>
 
 <style>
-.sito-tematico-page .card-title svg.icon-white {
+.sito-tematico-page {
+    position: relative; /* rende l'elemento contesto per l'assoluto */
+}
+
+.sito-tematico-page .external-icon {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 8px;
+    right: 8px;
     width: 20px;
     height: 20px;
-    z-index: 2;
+    z-index: 10;
+    fill: currentColor; /* usa il colore corrente */
     transition: transform 0.3s ease, fill 0.3s ease;
 }
+
+.sito-tematico-page:hover .external-icon {
+    transform: scale(1.1);
+    fill: #777;
+}
 </style>
+
