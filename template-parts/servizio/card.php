@@ -35,37 +35,37 @@ if($servizio->post_status == "publish") {
                     </p>
 
                     <?php
-                    // Recupera le date e stato per la card
-                    $data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $servizio->ID);
-                    $data_fine_servizio = dci_get_meta('data_fine_servizio', $prefix, $servizio->ID);
-                    $stato_servizio = dci_get_meta('stato', $prefix, $servizio->ID);
 
-                    // Converte le date
-                    $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
-                    $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
-                    $oggi = new DateTime();
+$data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $servizio->ID);
+$data_fine_servizio = dci_get_meta('data_fine_servizio', $prefix, $servizio->ID);
 
-                    // Valuta se il servizio è attivo
-                    $stato_attivo = false;
-                    if ($startDate && $endDate && $startDate < $endDate) {
-                        $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
-                    }
+// Converte le date
+$startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
+$endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
+$oggi = new DateTime();
 
-                    // Mostra badge di stato e periodo
-                    echo '<div class="mt-2">';
-                    echo '<span class="chip chip-simple" data-element="service-status">';
-                    echo '<span class="chip-label">';
-                    echo $stato_attivo ? '<span class="text-success">Servizio attivo</span>' : '<span class="text-danger">Servizio non attivo</span>';
-                    echo '</span>';
-                    echo '</span>';
+// Valuta se il servizio è attivo
+$stato_attivo = false;
+if ($startDate && $endDate && $startDate < $endDate) {
+    $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
+}
 
-                    if ($startDate && $endDate) {
-                        echo '<div class="service-period">';
-                        echo '<small><strong>Periodo:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y') . '</small>';
-                        echo '</div>';
-                    }
+// Mostra badge di stato
+echo '<div class="mt-2">';
+echo '<span class="chip chip-simple" data-element="service-status">';
+echo '<span class="chip-label">';
+echo $stato_attivo ? '<span class="text-success">Servizio attivo</span>' : '<span class="text-danger">Servizio non attivo</span>';
+echo '</span>';
+echo '</span>';
 
-                    echo '</div>';
+// Mostra periodo se valido
+if ($startDate && $endDate) {
+    echo '<div class="service-period">';
+    echo '<small><strong>Periodo:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y') . '</small>';
+    echo '</div>';
+}
+echo '</div>';
+
                     ?>
                 </div>
             </div>
