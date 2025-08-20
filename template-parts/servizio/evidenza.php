@@ -5,7 +5,7 @@ global $post, $posts;
 $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 ?>
 
-<div class="container servizi-evidenza">
+<div class="container">
     <div class="row">
         <?php if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
             <div class="col-12">
@@ -18,31 +18,31 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             <?php foreach ($servizi_evidenza as $servizio_id) {
                                 $post = get_post($servizio_id);
 
-                                // Recupero le date dal servizio
+                                // Recupero date dal servizio
                                 $prefix = '_dci_servizio_';
                                 $data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $post->ID);
                                 $data_fine_servizio = dci_get_meta('data_fine_servizio', $prefix, $post->ID);
 
-                                // Conversione delle date in oggetti DateTime
+                                // Conversione in DateTime
                                 $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
                                 $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
                                 $oggi = new DateTime();
 
-                                // Valutazione dello stato attivo
+                                // Valutazione stato
                                 $stato_attivo = true;
                                 if ($startDate && $endDate && $startDate < $endDate) {
                                     $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
                                 }
-                            ?>
+                                ?>
                                 <li class="mb-4 mt-4">
+                                    <!-- Nome del servizio -->
                                     <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?php echo get_permalink($post->ID); ?>">
                                         <svg class="icon"><use xlink:href="#it-arrow-right-triangle"></use></svg>
                                         <span><?php echo $post->post_title; ?></span>
                                     </a>
 
-                                    <!-- Contenitore per il badge e il periodo -->
-                                    <div class="service-info d-flex justify-content-between align-items-center mt-2">
-                                        <!-- Badge di stato -->
+                                    <!-- Badge stato -->
+                                    <div class="mt-1">
                                         <span class="chip chip-simple" data-element="service-status">
                                             <span class="chip-label">
                                                 <?php echo $stato_attivo ? '<span class="text-success">Servizio attivo</span>' : '<span class="text-danger">Servizio non attivo</span>'; ?>
@@ -65,26 +65,4 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
         <?php } ?>
     </div>
 </div>
-
 <br>
-
-<style>
-/* CSS per la sezione dei Servizi in evidenza */
-.servizi-evidenza .link-list .service-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.servizi-evidenza .link-list .service-period {
-    margin-left: 20px;
-    font-size: 0.875rem; /* Font di dimensione più piccola per il periodo */
-    color: #6c757d; /* Colore più soft per il testo del periodo */
-}
-
-.servizi-evidenza .link-list .chip {
-    display: inline-block;
-    margin-right: 15px;
-}
-</style>
