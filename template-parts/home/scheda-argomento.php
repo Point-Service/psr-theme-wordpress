@@ -14,7 +14,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 <div class="card card-teaser no-after rounded shadow-sm border border-light" style="overflow:hidden; position:relative;">
   
   <!-- Icona posizionata sopra la card, in alto a sinistra -->
-<svg class="icon text-primary" style="position:absolute; top:6px; left:0; width:18px; height:20px; z-index:1;">
+<svg class="icon text-primary" style="position:absolute; top:6px; left:6px; width:18px; height:20px; z-index:1;">
   <use xlink:href="#it-bookmark"></use>
 </svg>
 
