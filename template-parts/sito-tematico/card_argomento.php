@@ -14,10 +14,15 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
 <a href="<?php echo $st_link ?>" 
    style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : 'background-color:#f7f7f7;' ?>" 
-   class="card card-teaser <?= $colore_sfondo ? '' : '' ?> mt-0 p-2 shadow-sm" 
+   class="card card-teaser sito-tematico-card mt-0 p-2 shadow-sm" 
    target="_blank">
 
-    <div class="card-body" style="background-color: #f7f7f7; padding: 12px; border-radius: 8px; display: flex; flex-direction: column;">
+    <!-- Icona SVG in alto a destra -->
+    <svg class="external-icon" aria-hidden="true" focusable="false" style="position:absolute; top:8px; right:8px; width:18px; height:18px; fill:#555;">
+      <use href="#it-external-link"></use>
+    </svg>
+
+    <div class="card-body" style="background-color: #f7f7f7; padding: 12px; border-radius: 8px; display: flex; flex-direction: column; position: relative;">
 
         <!-- Icona e Titolo: Usa flexbox solo per allinearli orizzontalmente -->
         <div style="display: flex; align-items: center; margin-bottom: 5px;">
@@ -43,3 +48,23 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 
     </div>
 </a>
+
+<style>
+  /* Per posizionare l'icona sopra la card */
+  .sito-tematico-card {
+    position: relative;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Hover effetto */
+  .sito-tematico-card:hover {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    transform: translateY(-3px);
+  }
+
+  /* Cambia colore icona al hover */
+  .sito-tematico-card:hover .external-icon {
+    fill: #777;
+  }
+</style>
+
