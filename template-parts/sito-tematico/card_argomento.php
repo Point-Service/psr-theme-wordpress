@@ -13,109 +13,105 @@ $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : false;
 ?>
 
 <div class="sito-tematico-card-wrapper">
-    <a href="<?php echo $st_link ?>" 
-       style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" 
-       class="card card-teaser sito-tematico-card mt-0 p-2 shadow-sm" 
-       target="_blank">
+  <a href="<?php echo $st_link ?>" 
+     style="<?= ($colore_sfondo) ? 'background-color:'.$colore_sfondo : '' ?>" 
+     class="card card-teaser sito-tematico-card shadow-sm" 
+     target="_blank">
 
-        <!-- Icona in alto a destra della card -->
-        <svg class="icon icon-dark external-icon">
-            <use href="#it-external-link"></use>
-        </svg>
+    <!-- Icona in alto a destra della card -->
+    <svg class="icon icon-dark external-icon">
+      <use href="#it-external-link"></use>
+    </svg>
 
-        <div class="card-body d-flex align-items-center" style="padding:10px; position: relative;">
+    <div class="card-body d-flex align-items-center" style="padding:10px; position: relative;">
 
-            <!-- Icona avatar -->
-            <?php if($st_img) { ?>
-                <div class="avatar size-lg me-3" style="flex-shrink: 0; width:40px; height:40px; border-radius:50%; background-color:#f0f0f0; display:flex; align-items:center; justify-content:center;">
-                    <?php dci_get_img($st_img); ?>
-                </div>
-            <?php } ?>
-
-            <!-- Titolo e descrizione -->
-            <div class="flex-grow-1 position-relative">
-                <h3 class="card-title mb-1" style="font-size:1.1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
-                    <?php echo $sito_tematico->post_title ?>
-                </h3>
-                <p class="card-text mb-0" style="font-size:0.85rem; color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;">
-                    <?php echo $st_descrizione; ?>
-                </p>
-            </div>
-
+      <!-- Icona avatar -->
+      <?php if($st_img) { ?>
+        <div class="avatar size-lg me-3" style="flex-shrink: 0; width:36px; height:36px; border-radius:50%; background-color:#f0f0f0; display:flex; align-items:center; justify-content:center;">
+          <?php dci_get_img($st_img); ?>
         </div>
-    </a>
+      <?php } ?>
+
+      <!-- Titolo e descrizione -->
+      <div class="flex-grow-1 position-relative">
+        <h3 class="card-title mb-1" style="font-size:1rem; font-weight:600; color: <?= $sfondo_scuro ? '#fff' : '#333' ?>;">
+          <?php echo $sito_tematico->post_title ?>
+        </h3>
+        <p class="card-text mb-0" style="font-size:0.8rem; color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;">
+          <?php echo $st_descrizione; ?>
+        </p>
+      </div>
+    </div>
+  </a>
 </div>
 
 <style>
-/* Isolamento CSS usando wrapper */
-.sito-tematico-card-wrapper .sito-tematico-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #fafafa;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    position: relative; /* necessario per posizionamento assoluto dell'icona */
-    text-decoration: none;
-    min-height: 70px; /* Ridurre altezza minima */
-    margin-bottom: 10px; /* Ridurre lo spazio tra le card */
-    padding: 6px; /* Ridurre il padding generale */
+/* Wrapper: margini sopra/sotto più contenuti, laterali stretti */
+.sito-tematico-card-wrapper {
+  margin: 6px 8px; /* top/bottom 6px, left/right 8px */
 }
 
-/* Effetto hover sulle card */
+/* Card principale */
+.sito-tematico-card-wrapper .sito-tematico-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-decoration: none;
+  min-height: 65px;
+  padding: 4px 6px;
+}
+
+/* Hover */
 .sito-tematico-card-wrapper .sito-tematico-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
 /* Card body */
-.sito-tematico-card-wrapper .sito-tematico-card .card-body {
-    display: flex;
-    align-items: center;
-    padding: 6px 8px; /* Ridurre il padding interno della card */
+.sito-tematico-card-wrapper .card-body {
+  padding: 6px 8px;
 }
 
 /* Avatar */
-.sito-tematico-card-wrapper .sito-tematico-card .avatar {
-    width: 32px; /* Ridurre la dimensione dell'avatar */
-    height: 32px; /* Ridurre la dimensione dell'avatar */
-    margin-right: 6px; /* Ridurre lo spazio tra l'avatar e il testo */
+.sito-tematico-card-wrapper .avatar {
+  width: 32px;
+  height: 32px;
+  margin-right: 6px;
 }
 
-/* Titolo card */
-.sito-tematico-card-wrapper .sito-tematico-card .card-title {
-    font-size: 1.0rem; /* Ridurre la dimensione del titolo */
-    font-weight: 600;
-    margin-bottom: 4px; /* Ridurre il margine sotto il titolo */
+/* Titolo: lievemente più piccolo */
+.sito-tematico-card-wrapper .card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 2px;
 }
 
-/* Testo della card */
-.sito-tematico-card-wrapper .sito-tematico-card .card-text {
-    font-size: 0.8rem; /* Ridurre la dimensione del testo */
-    color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;
-    margin-bottom: 0; /* Rimuovere margine sotto il testo */
+/* Testo */
+.sito-tematico-card-wrapper .card-text {
+  font-size: 0.78rem;
+  margin-bottom: 0;
+  color: <?= $sfondo_scuro ? '#ddd' : '#555' ?>;
 }
 
-/* Icona SVG in alto a destra della card */
-.sito-tematico-card-wrapper .sito-tematico-card .external-icon {
-    position: absolute;
-    top: 6px; /* Ridurre la distanza dall'alto */
-    right: 6px; /* Ridurre la distanza a destra */
-    width: 16px; /* Ridurre la dimensione dell'icona */
-    height: 16px; /* Ridurre la dimensione dell'icona */
-    fill: #555;
-    transition: transform 0.3s ease, fill 0.3s ease;
+/* Icona esterna in alto a destra */
+.sito-tematico-card-wrapper .external-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 15px;
+  height: 15px;
+  fill: #555;
+  transition: transform 0.3s ease, fill 0.3s ease;
 }
 
-/* Effetto hover sull'icona */
+/* Hover sull'icona */
 .sito-tematico-card-wrapper .sito-tematico-card:hover .external-icon {
-    transform: scale(1.1);
-    fill: #777;
-}
-
-/* Ridurre i margini generali */
-.sito-tematico-card-wrapper {
-    margin-bottom: 12px; /* Spazio tra le card */
+  transform: scale(1.1);
+  fill: #777;
 }
 </style>
