@@ -45,14 +45,12 @@ $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_
 $oggi = new DateTime();
 
 // Valuta se il servizio è attivo
-$stato_attivo = false;
+$stato_attivo = true;
 if ($startDate && $endDate && $startDate < $endDate) {
     $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
 }
 
 
-echo $data_inizio_servizio;
-echo $data_fine_servizio;  
 
 
     
