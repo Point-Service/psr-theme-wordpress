@@ -35,12 +35,13 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 }
                                 ?>
                                 <li class="mb-4 mt-4">
+                                    <!-- Nome del servizio -->
                                     <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?php echo get_permalink($post->ID); ?>">
                                         <svg class="icon"><use xlink:href="#it-arrow-right-triangle"></use></svg>
                                         <span><?php echo $post->post_title; ?></span>
                                     </a>
 
-                                    <!-- Badge stato -->
+                                    <!-- Badge stato e periodo spostato qui dopo il nome -->
                                     <div class="mt-1">
                                         <span class="chip chip-simple" data-element="service-status">
                                             <span class="chip-label">
