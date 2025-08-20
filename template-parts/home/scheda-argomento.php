@@ -12,17 +12,18 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 ?>
 
 <div class="card card-teaser no-after rounded shadow-sm border border-light" style="overflow:hidden;">
+  
+  <!-- Aggiungiamo l'icona in un contenitore sopra la tabella -->
+  <div class="icon-container" style="position:relative; margin-bottom:10px;">
+    <svg class="icon text-primary" style="position:absolute; top:0; left:0; width:18px; height:20px; display:block;">
+      <use xlink:href="#it-bookmark"></use>
+    </svg>
+  </div>
+
   <div class="card-body pb-4">
-    
-    <!-- icona separata dalla parte del titolo -->
-    <div class="category-top d-flex align-items-center mb-2" style="text-align:left; position:relative;">
-      <!-- Posizioniamo l'icona qui fuori dal titolo -->
-      <svg class="icon text-primary" style="position:absolute; top:0; left:0; width:18px; height:20px; display:block; margin-right:8px;">
-        <use xlink:href="#it-bookmark"></use>
-      </svg>
-      
-      <!-- Titolo del card -->
-      <h3 class="card-title title-xlarge-card mb-0" style="font-size:1.3rem; font-weight:600; padding-left:24px;">
+    <!-- card head -->
+    <div class="category-top d-flex align-items-center mb-2" style="text-align:left;">
+      <h3 class="card-title title-xlarge-card mb-0" style="font-size:1.3rem; font-weight:600;">
         <?php echo $argomento->name ?>
       </h3>
     </div>
@@ -91,7 +92,6 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
   </div>
 
 </div>
-
 
 <?php
 $sito_tematico_id = null;
