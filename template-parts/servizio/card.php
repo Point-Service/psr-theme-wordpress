@@ -33,7 +33,7 @@ if($servizio->post_status == "publish") {
                     <p class="text-paragraph">
                         <?php echo $descrizione_breve; ?>
                     </p>
-
+<br>
                     <?php
 
                             $data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $servizio->ID);
