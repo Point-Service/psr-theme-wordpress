@@ -52,6 +52,9 @@ if ($startDate && $endDate && $startDate < $endDate) {
 
 
 echo $startDate;
+echo $endDate;  
+
+
     
 // Mostra badge di stato
 echo '<div class="mt-2">';
