@@ -70,8 +70,8 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         </div>
                                     </div>
 
-                                    <!-- Badge stato -->
-                                    <div class="mt-2">
+                                    <!-- Badge stato (spostato a destra) -->
+                                    <div class="d-flex justify-content-end mt-2">
                                         <span class="badge <?php echo $stato_attivo ? 'bg-success' : 'bg-danger'; ?> text-white">
                                             <?php echo $stato_attivo ? 'Servizio attivo' : 'Servizio non attivo'; ?>
                                         </span>
@@ -86,4 +86,3 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
     </div>
 </div>
 <br>
-
