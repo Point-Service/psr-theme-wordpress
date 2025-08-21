@@ -11,6 +11,7 @@ $descrizione = dci_get_meta('descrizione_breve') ?: dci_get_meta('_dci_page_desc
 			?>
 				<a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="<?php echo get_permalink(get_page_by_path(dci_get_group($post->post_type))); ?>">
 					<?= $post_type ?>
+				j
 				</a>
 			<?php
 			} else {
