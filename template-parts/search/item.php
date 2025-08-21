@@ -50,7 +50,7 @@ if ($is_servizio) {
                 $count = 1;
                 foreach ($categorie as $categoria) {
                     echo $count == 1 ? '' : ' - ';
-                    echo '<a class="text-decoration-none category text-uppercase" href="' . get_term_link($categoria->term_id) . '">';
+                    echo '<a class="text-decoration-none category text-uppercase category-name-small" href="' . get_term_link($categoria->term_id) . '">';
                     echo $categoria->name;
                     echo '</a>';
                     ++$count;
@@ -65,21 +65,6 @@ if ($is_servizio) {
             <p class="text-paragraph">
                 <?php echo $descrizione; ?>
             </p>
-
-            <?php if ($is_servizio): ?>
-                <!-- Mostra argomenti (tag) con chips -->
-                <?php if (is_array($argomenti) && count($argomenti)): ?>
-                    <div class="tags mb-2">
-                        <span class="text-uppercase">Argomenti:</span>
-                        <div class="d-flex gap-1 flex-wrap">
-                            <?php
-                            foreach ($argomenti as $argomento) {
-                                echo '<span class="badge bg-secondary text-white">' . $argomento->name . '</span>';
-                            }
-                            ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
 
                 <!-- Mostra badge di stato per il servizio -->
                 <div class="mt-2">
@@ -99,3 +84,10 @@ if ($is_servizio) {
         </div>
     </div>
 </div>
+
+<!-- CSS personalizzato per la categoria con font più piccolo -->
+<style>
+    .category-name-small {
+        font-size: 0.85em; /* Font più piccolo per il nome della categoria */
+    }
+</style>
