@@ -54,13 +54,14 @@ if($servizio->post_status == "publish") {
                             
                             
                                 
-                            // Mostra badge di stato
-                            echo '<div class="mt-2">';
-                            echo '<span class="chip chip-simple" data-element="service-status">';
-                            echo '<span class="chip-label">';
-                            echo $stato_attivo ? '<span class="text-success">Servizio attivo</span>' : '<span class="text-danger">Servizio non attivo</span>';
-                            echo '</span>';
-                            echo '</span>';
+                              
+                                // Mostra badge di stato
+                                echo '<div class="mt-1">';  // Ridotto il margine per compattezza
+                                echo '<span class="badge ' . ($stato_attivo ? 'bg-success' : 'bg-danger') . ' text-white">';
+                                echo $stato_attivo ? 'Attivo' : 'Non attivo';
+                                echo '</span>';
+                                echo '</div>';
+                               
                             
                             // Mostra periodo se valido
                             if ($startDate && $endDate) {
