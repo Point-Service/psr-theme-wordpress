@@ -71,20 +71,17 @@ if ($is_servizio) {
                     </div>
                 <?php endif; ?>
 
-                <!-- Mostra argomenti (tag) -->
+                <!-- Mostra argomenti (tag) con chip -->
                 <?php if (is_array($argomenti) && count($argomenti)): ?>
                     <div class="tags mb-2">
                         <span class="text-uppercase">Argomenti:</span>
-                        <?php
-                        $count = 1;
-                        foreach ($argomenti as $argomento) {
-                            echo $count == 1 ? '' : ' - ';
-                            echo '<a class="text-decoration-none tag text-uppercase" href="' . get_term_link($argomento->term_id) . '">';
-                            echo $argomento->name;
-                            echo '</a>';
-                            ++$count;
-                        }
-                        ?>
+                        <div class="d-flex gap-1 flex-wrap">
+                            <?php
+                            foreach ($argomenti as $argomento) {
+                                echo '<span class="badge bg-secondary text-white">' . $argomento->name . '</span>';
+                            }
+                            ?>
+                        </div>
                     </div>
                 <?php endif; ?>
 
@@ -106,4 +103,5 @@ if ($is_servizio) {
         </div>
     </div>
 </div>
+
 
