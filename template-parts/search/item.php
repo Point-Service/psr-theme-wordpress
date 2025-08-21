@@ -6,9 +6,12 @@ $descrizione = dci_get_meta('descrizione_breve') ?: dci_get_meta('_dci_page_desc
 // Verifica se il post è un "servizio"
 $is_servizio = ($post->post_type === 'servizio');
 
-// Recupera le date di inizio e fine se è un servizio
+// Recupera le categorie e gli argomenti se è un servizio
 if ($is_servizio) {
     $prefix = '_dci_servizio_';
+    $categorie = get_the_terms($post->ID, 'categorie_servizio');
+    $argomenti = get_the_terms($post->ID, 'post_tag'); // Argomenti (tag)
+
     $data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $post->ID);
     $data_fine_servizio = dci_get_meta('data_fine_servizio', $prefix, $post->ID);
 
@@ -51,6 +54,40 @@ if ($is_servizio) {
             </p>
 
             <?php if ($is_servizio): ?>
+                <!-- Mostra categorie del servizio -->
+                <?php if (is_array($categorie) && count($categorie)): ?>
+                    <div class="categories mb-2">
+                        <span class="text-uppercase">Categorie:</span>
+                        <?php
+                        $count = 1;
+                        foreach ($categorie as $categoria) {
+                            echo $count == 1 ? '' : ' - ';
+                            echo '<a class="text-decoration-none category text-uppercase" href="' . get_term_link($categoria->term_id) . '">';
+                            echo $categoria->name;
+                            echo '</a>';
+                            ++$count;
+                        }
+                        ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Mostra argomenti (tag) -->
+                <?php if (is_array($argomenti) && count($argomenti)): ?>
+                    <div class="tags mb-2">
+                        <span class="text-uppercase">Argomenti:</span>
+                        <?php
+                        $count = 1;
+                        foreach ($argomenti as $argomento) {
+                            echo $count == 1 ? '' : ' - ';
+                            echo '<a class="text-decoration-none tag text-uppercase" href="' . get_term_link($argomento->term_id) . '">';
+                            echo $argomento->name;
+                            echo '</a>';
+                            ++$count;
+                        }
+                        ?>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Mostra badge di stato per il servizio -->
                 <div class="mt-2">
                     <span class="badge <?php echo $stato_attivo ? 'bg-success' : 'bg-danger'; ?> text-white">
@@ -69,3 +106,4 @@ if ($is_servizio) {
         </div>
     </div>
 </div>
+
