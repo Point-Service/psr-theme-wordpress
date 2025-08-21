@@ -174,24 +174,25 @@ get_header();
                     <?php echo $sottotitolo; ?>
                 </h2>
             <?php } ?>
-            <ul class="d-flex flex-wrap gap-1 my-3">
-                <li>
-                    <div class="chip chip-simple" data-element="service-status">
-                        <span class="chip-label">
-                            <?php echo ($stato == 'true') ? '<span class="text-success">Servizio attivo</span>' : '<span class="text-danger">Servizio non attivo</span>'; ?>
-                        </span>			    
-                    </div>
-                    <?php
-                    // Controlla se le due date sono presenti
-                    if ($startDate && $endDate) {
-                        // Se entrambe le date sono presenti, mostra il periodo
-                        echo '<div class="service-period">';
-                        echo '<small><strong>Periodo di validità:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y');
-                        echo '</small></div>';
-                    }
-                    ?>
-                </li>
-            </ul>
+				<ul class="d-flex flex-wrap gap-1 my-3">
+				    <li>
+				        <!-- Badge di stato -->
+				        <span class="badge <?php echo ($stato == 'true') ? 'bg-success' : 'bg-danger'; ?> text-white">
+				            <?php echo ($stato == 'true') ? 'Servizio attivo' : 'Servizio non attivo'; ?>
+				        </span>
+				
+				        <?php
+				        // Controlla se le due date sono presenti
+				        if ($startDate && $endDate) {
+				            // Se entrambe le date sono presenti, mostra il periodo
+				            echo '<div class="service-period mt-2">';
+				            echo '<small><strong>Periodo di validità:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y') . '</small>';
+				            echo '</div>';
+				        }
+				        ?>
+				    </li>
+				</ul>
+
             <p class="subtitle-small mb-3 text-start">
                 <?php echo $descrizione_breve ?? 'Descrizione non disponibile.'; ?>
             </p>
