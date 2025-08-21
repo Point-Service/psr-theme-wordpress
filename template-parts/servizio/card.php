@@ -33,44 +33,36 @@ if($servizio->post_status == "publish") {
                     <p class="text-paragraph">
                         <?php echo $descrizione_breve; ?>
                     </p>
-<br>
+                    
                     <?php
+                    // Recupero le date del servizio
+                    $data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $servizio->ID);
+                    $data_fine_servizio = dci_get_meta('data_fine_servizio', $prefix, $servizio->ID);
 
-                            $data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $servizio->ID);
-                            $data_fine_servizio = dci_get_meta('data_fine_servizio', $prefix, $servizio->ID);
-                            
-                            // Converte le date
-                            $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
-                            $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
-                            $oggi = new DateTime();
-                            
-                            // Valuta se il servizio è attivo
-                            $stato_attivo = true;
-                            if ($startDate && $endDate && $startDate < $endDate) {
-                                $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
-                            }
-                            
-                            
-                            
-                            
-                                
-                              
-                                // Mostra badge di stato
-                                echo '<div class="mt-1">';  // Ridotto il margine per compattezza
-                                echo '<span class="badge ' . ($stato_attivo ? 'bg-success' : 'bg-danger') . ' text-white">';
-                                echo $stato_attivo ? 'Attivo' : 'Non attivo';
-                                echo '</span>';
-                                echo '</div>';
-                               
-                            
-                            // Mostra periodo se valido
-                            if ($startDate && $endDate) {
-                                echo '<div class="service-period">';
-                                echo '<small><strong>Periodo:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y') . '</small>';
-                                echo '</div>';
-                            }
-                            echo '</div>';
+                    // Converte le date
+                    $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
+                    $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
+                    $oggi = new DateTime();
 
+                    // Valuta se il servizio è attivo
+                    $stato_attivo = true;
+                    if ($startDate && $endDate && $startDate < $endDate) {
+                        $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
+                    }
+
+                    // Mostra badge di stato
+                    echo '<div class="mt-2">';  // Maggiore margine per separarlo dal resto
+                    echo '<span class="badge ' . ($stato_attivo ? 'bg-success' : 'bg-danger') . ' text-white">';
+                    echo $stato_attivo ? 'Attivo' : 'Non attivo';
+                    echo '</span>';
+                    echo '</div>';
+
+                    // Mostra periodo se valido
+                    if ($startDate && $endDate) {
+                        echo '<div class="service-period mt-2">';
+                        echo '<small><strong>Periodo:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y') . '</small>';
+                        echo '</div>';
+                    }
                     ?>
                 </div>
             </div>
@@ -79,3 +71,4 @@ if($servizio->post_status == "publish") {
     <?php
 }
 ?>
+
