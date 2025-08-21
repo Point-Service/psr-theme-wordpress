@@ -67,20 +67,7 @@ if ($is_servizio) {
             </p>
 
             <?php if ($is_servizio): ?>
-                <!-- Mostra argomenti (tag) con chips -->
-                <?php if (is_array($argomenti) && count($argomenti)): ?>
-                    <div class="tags mb-2">
-                        <span class="text-uppercase">Argomenti:</span>
-                        <div class="d-flex gap-1 flex-wrap">
-                            <?php
-                            foreach ($argomenti as $argomento) {
-                                echo '<span class="badge bg-secondary text-white">' . $argomento->name . '</span>';
-                            }
-                            ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
+              
                 <!-- Mostra badge di stato per il servizio -->
                 <div class="mt-2">
                     <span class="badge <?php echo $stato_attivo ? 'bg-success' : 'bg-danger'; ?> text-white">
