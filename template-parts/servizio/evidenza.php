@@ -35,24 +35,46 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 }
                                 ?>
                                 <li class="mb-4">
-                                    <!-- Nome del servizio -->
-                                    <a class="d-flex align-items-center list-item text-decoration-none text-dark ps-0 title-medium" href="<?php echo get_permalink($post->ID); ?>">
-                                        <svg class="icon me-2"><use xlink:href="#it-arrow-right-triangle"></use></svg>
-                                        <span><?php echo $post->post_title; ?></span>
-                                    </a>
+                                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
+                                        <!-- Nome del servizio -->
+                                        <a class="d-flex align-items-center list-item text-decoration-none text-dark ps-0 title-medium mb-2 mb-sm-0" href="<?php echo get_permalink($post->ID); ?>">
+                                            <svg class="icon me-2"><use xlink:href="#it-arrow-right-triangle"></use></svg>
+                                            <span><?php echo $post->post_title; ?></span>
+                                        </a>
+
+                                        <!-- Categoria e Periodo -->
+                                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center mt-2 mt-sm-0">
+                                            <!-- Categoria -->
+                                            <?php 
+                                            $categorie = get_the_terms($post->ID, 'categorie_servizio');
+                                            if (is_array($categorie) && count($categorie)) { ?>
+                                                <div class="text-muted me-3 mb-2 mb-sm-0">
+                                                    <strong>Categoria:</strong>
+                                                    <?php 
+                                                    $count = 1;
+                                                    foreach ($categorie as $categoria) {
+                                                        echo $count == 1 ? '' : ' - ';
+                                                        echo '<a class="text-decoration-none text-primary" href="'.get_term_link($categoria->term_id).'">' . $categoria->name . '</a>';
+                                                        ++$count;
+                                                    }
+                                                    ?>
+                                                </div>
+                                            <?php } ?>
+
+                                            <!-- Periodo -->
+                                            <?php if ($startDate && $endDate) { ?>
+                                                <div class="service-period me-3">
+                                                    <small><strong>Periodo:</strong> <?php echo $startDate->format('d/m/Y'); ?> - <?php echo $endDate->format('d/m/Y'); ?></small>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
 
                                     <!-- Badge stato -->
                                     <div class="mt-2">
                                         <span class="badge <?php echo $stato_attivo ? 'bg-success' : 'bg-danger'; ?> text-white">
                                             <?php echo $stato_attivo ? 'Servizio attivo' : 'Servizio non attivo'; ?>
                                         </span>
-
-                                        <!-- Periodo -->
-                                        <?php if ($startDate && $endDate) { ?>
-                                            <div class="service-period mt-2">
-                                                <small><strong>Periodo:</strong> <?php echo $startDate->format('d/m/Y'); ?> - <?php echo $endDate->format('d/m/Y'); ?></small>
-                                            </div>
-                                        <?php } ?>
                                     </div>
                                 </li>
                             <?php } ?>
@@ -64,3 +86,4 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
     </div>
 </div>
 <br>
+
