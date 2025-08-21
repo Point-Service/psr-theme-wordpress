@@ -9,7 +9,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
     <div class="row">
         <?php if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
             <div class="col-12">
-                <div class="card shadow-lg rounded-3 border-light p-4">
+                <div class="card border-light p-4">
                     <h3 class="title-large mb-4">Servizi in evidenza</h3>
                     <table class="table table-striped table-hover table-soft">
                         <thead>
@@ -55,7 +55,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         <?php if ($startDate && $endDate) {
                                             echo $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y');
                                         } else {
-                                            echo 'N/D';
+                                            echo '';
                                         } ?>
                                     </td>
                                     <td>
