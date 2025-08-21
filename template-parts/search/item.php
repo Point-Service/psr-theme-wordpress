@@ -45,7 +45,6 @@ if ($is_servizio) {
             }
             ?>
         </div>
-
         <div class="card-body p-0 my-2">
             <h3 class="green-title-big t-primary mb-8">
                 <a class="text-decoration-none" href="<?= ($post->post_type == 'sito_tematico') ? dci_get_meta('link') : get_permalink() ?>" data-element="service-link"><?php echo the_title(); ?></a>
@@ -54,11 +53,11 @@ if ($is_servizio) {
                 <?php echo $descrizione; ?>
             </p>
 
-        <?php if ($is_servizio): ?>
+            <?php if ($is_servizio): ?>
                 <!-- Mostra categorie del servizio -->
                 <?php if (is_array($categorie) && count($categorie)): ?>
                     <div class="categories mb-2">
-                        <span class="text-uppercase"> / </span>
+                        <span class="text-uppercase">Categorie:</span>
                         <?php
                         $count = 1;
                         foreach ($categorie as $categoria) {
@@ -70,7 +69,7 @@ if ($is_servizio) {
                         }
                         ?>
                     </div>
-        <?php endif; ?>
+                <?php endif; ?>
 
                 <!-- Mostra argomenti (tag) con chip -->
                 <?php if (is_array($argomenti) && count($argomenti)): ?>
@@ -104,5 +103,3 @@ if ($is_servizio) {
         </div>
     </div>
 </div>
-
-
