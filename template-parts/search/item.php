@@ -43,6 +43,19 @@ if ($is_servizio) {
                 <span class="title-xsmall-bold mb-2 category text-uppercase text-primary">Pagina</span>
             <?php
             }
+
+            // Mostra le categorie dopo il nome del gruppo separato da "/"
+            if (is_array($categorie) && count($categorie)) {
+                echo ' / ';
+                $count = 1;
+                foreach ($categorie as $categoria) {
+                    echo $count == 1 ? '' : ' - ';
+                    echo '<a class="text-decoration-none category text-uppercase" href="' . get_term_link($categoria->term_id) . '">';
+                    echo $categoria->name;
+                    echo '</a>';
+                    ++$count;
+                }
+            }
             ?>
         </div>
         <div class="card-body p-0 my-2">
@@ -54,24 +67,7 @@ if ($is_servizio) {
             </p>
 
             <?php if ($is_servizio): ?>
-                <!-- Mostra categorie del servizio -->
-                <?php if (is_array($categorie) && count($categorie)): ?>
-                    <div class="categories mb-2">
-                        <span class="text-uppercase">Categorie:</span>
-                        <?php
-                        $count = 1;
-                        foreach ($categorie as $categoria) {
-                            echo $count == 1 ? '' : ' - ';
-                            echo '<a class="text-decoration-none category text-uppercase" href="' . get_term_link($categoria->term_id) . '">';
-                            echo $categoria->name;
-                            echo '</a>';
-                            ++$count;
-                        }
-                        ?>
-                    </div>
-                <?php endif; ?>
-
-                <!-- Mostra argomenti (tag) con chip -->
+                <!-- Mostra argomenti (tag) con chips -->
                 <?php if (is_array($argomenti) && count($argomenti)): ?>
                     <div class="tags mb-2">
                         <span class="text-uppercase">Argomenti:</span>
