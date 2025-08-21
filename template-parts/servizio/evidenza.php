@@ -9,12 +9,12 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
     <div class="row">
         <?php if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
             <div class="col-12">
-                <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
+                <div class="card shadow-lg rounded-3 border-light p-4">
                     <div class="link-list-wrap">
-                        <h3 class="title-large">
+                        <h3 class="title-large mb-4">
                             <span>Servizi in evidenza</span>
                         </h3>
-                        <ul class="link-list t-primary">
+                        <ul class="list-unstyled">
                             <?php foreach ($servizi_evidenza as $servizio_id) {
                                 $post = get_post($servizio_id);
 
@@ -34,24 +34,22 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
                                 }
                                 ?>
-                                <li class="mb-4 mt-4">
+                                <li class="mb-4">
                                     <!-- Nome del servizio -->
-                                    <a class="list-item ps-0 title-medium underline" style="text-decoration:none;" href="<?php echo get_permalink($post->ID); ?>">
-                                        <svg class="icon"><use xlink:href="#it-arrow-right-triangle"></use></svg>
+                                    <a class="d-flex align-items-center list-item text-decoration-none text-dark ps-0 title-medium" href="<?php echo get_permalink($post->ID); ?>">
+                                        <svg class="icon me-2"><use xlink:href="#it-arrow-right-triangle"></use></svg>
                                         <span><?php echo $post->post_title; ?></span>
                                     </a>
 
                                     <!-- Badge stato -->
-                                    <div class="mt-1">
-                                        <span class="chip chip-simple" data-element="service-status">
-                                            <span class="chip-label">
-                                                <?php echo $stato_attivo ? '<span class="text-success">Servizio attivo</span>' : '<span class="text-danger">Servizio non attivo</span>'; ?>
-                                            </span>
+                                    <div class="mt-2">
+                                        <span class="badge <?php echo $stato_attivo ? 'bg-success' : 'bg-danger'; ?> text-white">
+                                            <?php echo $stato_attivo ? 'Servizio attivo' : 'Servizio non attivo'; ?>
                                         </span>
 
                                         <!-- Periodo -->
                                         <?php if ($startDate && $endDate) { ?>
-                                            <div class="service-period">
+                                            <div class="service-period mt-2">
                                                 <small><strong>Periodo:</strong> <?php echo $startDate->format('d/m/Y'); ?> - <?php echo $endDate->format('d/m/Y'); ?></small>
                                             </div>
                                         <?php } ?>
