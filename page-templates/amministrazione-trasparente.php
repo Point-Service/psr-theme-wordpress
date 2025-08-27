@@ -32,7 +32,7 @@ if (
 
 
 function info(){?>
-				fdfffffffffffffffffffffffffff
+
 <section class="hero-img mb-20 mb-lg-50">
     <div class="container">
         <div class="row">
@@ -77,6 +77,7 @@ get_header();
 
 <?php
 get_footer();?>
+
 
 
 
