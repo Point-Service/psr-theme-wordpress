@@ -11,6 +11,8 @@ $search_url = esc_url( home_url( '/' ));
 $link_amministrazione=dci_get_option("link_ammtrasparente");
 $url_img="https://saassipa.cultura.gov.it/wp-content/uploads/2020/04/amm_trasp-1024x381.png";
 
+
+//Indirizza se c'è un link personalizzato, ma ignora il redirect se riporta all'amministrazione trasparente interna al sito.
 if (
     isset($link_amministrazione) &&
     !empty($link_amministrazione) &&
@@ -77,6 +79,7 @@ get_header();
 
 <?php
 get_footer();?>
+
 
 
 
