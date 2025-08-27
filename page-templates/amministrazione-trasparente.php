@@ -25,7 +25,7 @@ if (
     // Confronto
     if ($normalized_link !== $link_da_ignorare) {
       //  header("Location: $link_amministrazione");
-        exit;
+      //  exit;
     }
 }
 
@@ -76,6 +76,7 @@ get_header();
 
 <?php
 get_footer();?>
+
 
 
 
