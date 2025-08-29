@@ -133,7 +133,7 @@ function dci_add_persona_pubblica_metaboxes()
        $attributes['disabled'] = 'disabled';
         
     } else{
-    $attributes['disabled'];
+       unset($attributes['disabled']);
     }
 
 
@@ -340,4 +340,5 @@ function dci_persona_pubblica_set_post_title($data)
     return $data;
 }
 add_filter('wp_insert_post_data', 'dci_persona_pubblica_set_post_title', '99', 1);
+
 
