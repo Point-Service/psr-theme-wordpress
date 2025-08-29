@@ -56,15 +56,29 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
             $item->url = home_url('/page-templates/prenotazioni');
         }
 
-        // Sovrascrivi l'URL per "Segnalazione disservizio" se è vuoto
-        if ($item->title == 'Segnalazione disservizio' && $item->url == '#') {
-            $item->url = 'mailto:' . dci_get_option("email_principale");
+        
+        // Sovrascrivi l'URL per "Comunicati" se è vuoto
+        if ($item->title == 'Comunicati' && $item->url == '/novita') {
+            $item->url = home_url('/tipi_notizia/comunicati');
         }
 
+        
+        // Sovrascrivi l'URL per "Piano di miglioramento del sito" se è vuoto
+        if ($item->title == 'Piano di miglioramento del sito' && $item->url == '/piano-di-miglioramento-del-sito') {
+           $item->url = home_url('/piano-di-miglioramento-del-sito');
+        }
+
+        
         // Sovrascrivi l'URL per "Amministrazione trasparente" se è vuoto
         if ($item->title == 'Amministrazione trasparente' && $item->url == '#') {
             $item->url = esc_url(dci_get_option("link_ammtrasparente")) . '" target="_blank" ';
         }
+        
+        // Sovrascrivi l'URL per "Amministrazione trasparente" se è vuoto
+        if ($item->title == 'Amministrazione trasparente' && $item->url == '/amministrazione-trasparente') {
+           $item->url = home_url('/amministrazione-trasparente');
+        }
+
 
         // Sovrascrivi l'URL per "Informativa privacy" se è vuoto
         if ($item->title == 'Informativa privacy' && $item->url == '#') {
