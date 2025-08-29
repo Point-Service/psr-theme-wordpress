@@ -1,6 +1,6 @@
 {
     "tipologie" :{
-        "evento" : {
+        "   " : {
             "name" : "evento",
             "capability" : "eventi",
             "prefix" : "_dci_evento_",
@@ -233,6 +233,18 @@
                 "tipi_procedura_contraente",
                 "tipi_stato_bando"
             ]
+        },
+        "titolare_incarico":{
+            "name": "Titolari di incarico",
+            "capability" : "titolari_incarico",
+            "prefix" : "_dci_titolare_incarico_", 
+            "singular_name" : "Titolare di incarico",
+            "plural_name" : "Titolari di incarichi",
+            "group_id"   : "titolare_incarico",
+            "group_name"  : "titolare_incarico",
+            "taxonomy"    : []
         }
+
+        
     }
 }
