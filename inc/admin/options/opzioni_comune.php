@@ -205,7 +205,7 @@ function dci_register_comune_options(){
     $header_options->add_field(array(
         'id'      => $prefix . 'ck_collegamenti_contenuti',
         'name'    => __('Collegamenti Automaticament Contenuti Correlati', 'design_comuni_italia'),
-        'desc'    => __('Attivando questa opzione, i contenuti selezionati saranno automaticamente collegati tra loro. Selezionando Sì, il sistema gestirà in modo automatico i collegamenti tra le pagine e i contenuto correlati.', 'design_comuni_italia'),
+        'desc'    => __('Attivando questa opzione, i nuovi contenuto inseriti saranno automaticamente collegati tra loro, il sistema gestirà in modo automatico i collegamenti tra le pagine e i contenuto correlati.', 'design_comuni_italia'),
         'type'    => 'radio_inline',
         'default' => 'true',
         'options' => array(
