@@ -224,14 +224,15 @@
 
 						     <?php if (strlen(dci_get_option("sitemap",'footer')) > 3) { 
 				                      ?>
-				                         <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>				
+				                         <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>
+						                 <a href="<?php echo home_url('/page-sitemap'); ?>">Mappa del sito</a>
 						      <?php } 
 			                                else 
 			                              { ?>			    
 						         <a href="/page-sitemap">Mappa del sito</a>
                                                       <?php } ?>
 		    
-						<a href="<?php echo dci_get_option("servizi",'header'); ?>/index.php/servizi">Servizi</a>
+						<a href="<?php echo site_url('/servizi'); ?>">Servizi</a>
 			          
 						<a id="area_personale_admin" href="<?php echo get_admin_url(); ?>">Area Riservata</a>
 								                      
