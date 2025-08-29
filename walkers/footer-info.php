@@ -44,7 +44,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 
                // Sovrascrivi l'URL per "Notizie" se è vuoto
 	        if ($item->title == 'Notizie' && $item->url == '/novita') {
-	            $item->url = '/tipi_notizia/notizie';
+	            $item->url = home_url('/tipi_notizia/notizie');
 	        }
 		
                // Sovrascrivi l'URL per "Notizie" se è vuoto
