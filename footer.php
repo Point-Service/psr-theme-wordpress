@@ -220,17 +220,17 @@
 						     /**
 	                                             Se trovo più di 3 caratteri nel modulo Footer/Mappa del sito richiamo quel link, altrimenti indirizzo al link del plugin XML Sitemap Generator for Google
 						      */
-	                                             ?>	
-
-						     <?php if (strlen(dci_get_option("sitemap",'footer')) > 3) { 
-				                      ?>
-				                         <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>
-						                 <a href="<?php echo home_url('/page-sitemap'); ?>">Mappa del sito</a>
-						      <?php } 
+	                                              ?>	
+                                  <?php if (strlen(dci_get_option("sitemap",'footer')) > 3) {  ?>
+				                         <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>				
+						                <?php } 
 			                                else 
 			                              { ?>			    
-						         <a href="/page-sitemap">Mappa del sito</a>
-                                                      <?php } ?>
+						                   <a href="<?php echo home_url('/page-sitemap'); ?>">Mappa del sito</a>
+                                    <?php } ?>
+
+						
+						   
 		    
 						<a href="<?php echo site_url('/servizi'); ?>">Servizi</a>
 			          
