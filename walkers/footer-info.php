@@ -23,12 +23,12 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
 
         // Sovrascrivi l'URL per "Luoghi" se è vuoto
         if ($item->title == 'Luoghi' && $item->url == '/vivere-il-comune') {
-            $item->url = home_url('/tipi_notizia/luoghi');
+            $item->url = home_url('/vivere-il-comune/tipi_notizia/luoghi');
         }
 
         // Sovrascrivi l'URL per "Eventi" se è vuoto
         if ($item->title == 'Eventi' && $item->url == '/vivere-il-comune') {
-            $item->url = home_url('/tipi_notizia/eventi');
+            $item->url = home_url('/vivere-il-comune/tipi_notizia/eventi');
         }
 
         // Sovrascrivi l'URL per "Avvisi" se è vuoto
