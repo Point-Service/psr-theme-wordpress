@@ -91,6 +91,7 @@ function dci_get_tassonomie_names(){
         'categorie_servizio',
         'tipi_evento',
         'tipi_notizia',
+        'tipi_galleria',
         'tipi_progetto',
         'tipi_commissario',
         'tipi_luogo',
@@ -106,7 +107,8 @@ function dci_get_tassonomie_names(){
         'tipi_incarico',
         'stati_pratica',
         'tipi_documento',
-        'tipi_cat_amm_trasp'
+        'tipi_cat_amm_trasp',
+        
     );
     return $tassonomie;
 }
@@ -258,6 +260,7 @@ function dci_get_admin_menu_order() {
         'edit.php?post_type=commissario',
         'edit.php?post_type=elemento_trasparenza',
         'edit.php?post_type=bando',
+        'edit.php?post_type=titolari_di_incarichi_collaborazione_consulenza',
         'edit.php?post_type=unita_organizzativa',
         'edit.php?post_type=persona_pubblica',
         'edit.php?post_type=punto_contatto',
