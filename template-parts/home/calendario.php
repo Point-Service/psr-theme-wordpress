@@ -51,34 +51,41 @@ foreach ($date as $data) {
 					else $eventi = [];
 					?>
 	<li class="splide__slide">
-  <div class="card h-100" style="border: none; border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); overflow: hidden;">
-    <div class="card-body d-flex flex-column justify-content-between" style="padding: 1.5rem;">
-      <div class="mb-3">
+  <div class="card h-100" style="border: none; border-radius: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s ease;">
+    <div class="card-body d-flex flex-column justify-content-between" style="padding: 2rem; color: #333;">
+      <!-- Data e giorno -->
+      <div class="mb-4">
         <div class="d-flex align-items-center mb-2">
-          <div style="font-size: 2rem; font-weight: bold; color: #0d6efd; margin-right: 0.5rem;"><?php echo $arrdata[2]; ?></div>
-          <div style="text-transform: uppercase; font-size: 0.875rem; color: #6c757d;"><?php echo $dayName; ?></div>
-        </div>
-
-        <?php if (is_array($eventi) && count($eventi)) {
-          foreach ($eventi as $evento) {
-            $img = dci_get_meta('immagine', '_dci_evento_', $evento['id']);
-        ?>
-          <div class="d-flex align-items-start mb-3">
-            <?php if ($img): ?>
-              <div style="width: 60px; height: 60px; overflow: hidden; border-radius: 8px; margin-right: 1rem;">
-                <?php dci_get_img($img, 'img-fluid'); ?>
-              </div>
-            <?php endif; ?>
-            <div style="flex-grow: 1;">
-              <a href="<?php echo $evento['link']; ?>" style="text-decoration: none; color: #212529; font-weight: 500;">
-                <?php echo $evento['titolo']; ?>
-              </a>
-            </div>
+          <div style="font-size: 2.25rem; font-weight: bold; color: #007bff; margin-right: 0.75rem;">
+            <?php echo $arrdata[2]; ?>
           </div>
-        <?php } } else { ?>
-          <p style="color: #6c757d;">Nessun evento per questo giorno.</p>
-        <?php } ?>
+          <div style="font-size: 1rem; text-transform: uppercase; color: #6c757d;">
+            <?php echo $dayName; ?>
+          </div>
+        </div>
       </div>
+
+      <!-- Eventi -->
+      <?php if (is_array($eventi) && count($eventi)) {
+        foreach ($eventi as $evento) {
+          $img = dci_get_meta('immagine', '_dci_evento_', $evento['id']);
+      ?>
+      <div class="d-flex align-items-start mb-4" style="transition: transform 0.3s ease;">
+        <!-- Immagine dell'evento -->
+        <?php if ($img): ?>
+          <div style="width: 70px; height: 70px; overflow: hidden; border-radius: 10px; margin-right: 1rem;">
+            <?php dci_get_img($img, 'img-fluid'); ?>
+          </div>
+        <?php endif; ?>
+        <div style="flex-grow: 1;">
+          <a href="<?php echo $evento['link']; ?>" style="text-decoration: none; color: #333; font-weight: 500; font-size: 1rem; transition: color 0.3s ease;">
+            <?php echo $evento['titolo']; ?>
+          </a>
+        </div>
+      </div>
+      <?php } } else { ?>
+        <p style="color: #6c757d; font-size: 1rem;">Nessun evento per questo giorno.</p>
+      <?php } ?>
     </div>
   </div>
 </li>
