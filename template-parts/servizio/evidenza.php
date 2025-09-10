@@ -9,8 +9,12 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
     <div class="row">
         <?php if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) { ?>
             <div class="col-12">
+                    <div class="row"> 
+                        <h2 class="text-black title-xlarge mb-3">Servizi in evidenza</h2> 
+                    </div>
+               
                 <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
-                    <h3 class="title-large mb-4">Servizi in evidenza</h3>
+                    <h3 class="title-large mb-4"></h3>
                     <table class="table table-striped table-hover table-soft">
                         <thead>
                             <tr>
