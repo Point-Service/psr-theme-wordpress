@@ -50,27 +50,39 @@ foreach ($date as $data) {
 					$eventi = $calendario[$data]['eventi'];
 					else $eventi = [];
 					?>
-					<li class="splide__slide">
-						<div class="it-single-slide-wrapper h-100">
-						<div class="card-wrapper h-100">
-							<div class="card card-bg">
-							<div class="card-body">
-								<h1 class="card-title pb-4 mb-10"><?php echo $arrdata[2] ?><span><?php echo $dayName; ?></span></h4>
-								<?php
-								if(is_array($eventi) && count($eventi)) {
-									foreach ($eventi as $evento) {
-										$img = dci_get_meta('immagine', '_dci_evento_', $evento['id']);
-								?>
-									<p class="card-text px-2 pb-10 mb-10 d-flex">
-										<?php if ($img) dci_get_img($img, 'me-3 rounded'); ?>
-										<a href="<?php echo $evento['link'] ?>"><?php echo $evento['titolo'] ?></a>
-									</p>
-								<?php }} ?>
-							</div>
-							</div>
-						</div>
-						</div>
-					</li>
+	<li class="splide__slide">
+  <div class="card h-100" style="border: none; border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); overflow: hidden;">
+    <div class="card-body d-flex flex-column justify-content-between" style="padding: 1.5rem;">
+      <div class="mb-3">
+        <div class="d-flex align-items-center mb-2">
+          <div style="font-size: 2rem; font-weight: bold; color: #0d6efd; margin-right: 0.5rem;"><?php echo $arrdata[2]; ?></div>
+          <div style="text-transform: uppercase; font-size: 0.875rem; color: #6c757d;"><?php echo $dayName; ?></div>
+        </div>
+
+        <?php if (is_array($eventi) && count($eventi)) {
+          foreach ($eventi as $evento) {
+            $img = dci_get_meta('immagine', '_dci_evento_', $evento['id']);
+        ?>
+          <div class="d-flex align-items-start mb-3">
+            <?php if ($img): ?>
+              <div style="width: 60px; height: 60px; overflow: hidden; border-radius: 8px; margin-right: 1rem;">
+                <?php dci_get_img($img, 'img-fluid'); ?>
+              </div>
+            <?php endif; ?>
+            <div style="flex-grow: 1;">
+              <a href="<?php echo $evento['link']; ?>" style="text-decoration: none; color: #212529; font-weight: 500;">
+                <?php echo $evento['titolo']; ?>
+              </a>
+            </div>
+          </div>
+        <?php } } else { ?>
+          <p style="color: #6c757d;">Nessun evento per questo giorno.</p>
+        <?php } ?>
+      </div>
+    </div>
+  </div>
+</li>
+
 					<?php } ?>
 				</ul>
 			</div>
