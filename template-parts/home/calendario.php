@@ -82,7 +82,7 @@ if($total_eventi>0){
 				<?php } ?>
 			</div>
 			<?php if ( is_home() ) {?>
-				<div class="d-flex justify-content-end">
+				<div class="row my-2 justify-content-md-center"">
 					<a href="<?= $url_eventi ?>" class="btn btn-outline-primary full-mb" aria-label="Mostra tutti gli eventi" data-element="live-button-events">
 						Mostra tutti gli eventi
 						<svg class="icon icon-primary icon-xs ml-10">
@@ -90,6 +90,12 @@ if($total_eventi>0){
 						</svg>
 					</a>
 				</div>
+
+
+
+
+
+															
 			<?php } ?>
 		</div>
 	</div>
