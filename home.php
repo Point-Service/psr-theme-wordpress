@@ -38,7 +38,7 @@ get_header();
             </div>
         </section>
 		   
-        <?php get_template_part("template-parts/servizi/evidenza"); ?>
+        <?php get_template_part("template-parts/servizio/evidenza"); ?>
 		   
         <section id="accesso-rapido" class="quick-access-section">
 
@@ -87,4 +87,5 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
