@@ -76,8 +76,7 @@ if($total_eventi>0){
 							</ul>
 						</div>
 					</div>
-				<?php } else { ?>
-					
+				<?php } else { ?>					
 					<div class="h4 mt-4"> Nessun evento in programma. </div>
 				<?php } ?>
 			</div>
@@ -89,13 +88,7 @@ if($total_eventi>0){
 							<use href="#it-arrow-right"></use>
 						</svg>
 					</a>
-				</div>
-
-
-
-
-
-															
+				</div>											
 			<?php } ?>
 		</div>
 	</div>
