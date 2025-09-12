@@ -52,7 +52,7 @@ if($servizio->post_status == "publish") {
 
 
                                 // Verifico lo stato del pulsante generale, se è false lo segnalo 
-                                 $checkbox_stato = get_post_meta($post->ID, '_dci_servizio_stato', true);
+                                 $checkbox_stato = get_post_meta($servizio->ID, '_dci_servizio_stato', true);
                                 if ($checkbox_stato == 'false') {
                                     $stato_attivo = false;
                                 }
