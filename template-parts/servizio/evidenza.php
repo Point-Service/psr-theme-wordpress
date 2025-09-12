@@ -98,16 +98,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 				        <span class="badge <?php echo ($stato == 'true') ? 'bg-success' : 'bg-danger'; ?> text-white">
 				            <?php echo ($stato == 'true') ? 'Servizio attivo' : 'Servizio non attivo'; ?>
 				        </span>
-				
-				        <?php
-				        // Controlla se le due date sono presenti
-				        if ($startDate && $endDate) {
-				            // Se entrambe le date sono presenti, mostra il periodo
-				            echo '<div class="service-period mt-2">';
-				            echo '<small><strong>Periodo di validità:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y') . '</small>';
-				            echo '</div>';
-				        }
-				        ?>
+
                                     </td>
                                 </tr>
                             <?php } ?>
