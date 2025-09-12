@@ -84,9 +84,11 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         } ?>
                                     </td>
                                     <td>
-                                        <span class="badge <?php echo $stato_attivo ? 'bg-success' : 'bg-danger'; ?> text-white">
-                                            <?php echo $stato_attivo ? 'Attivo' : 'Non attivo'; ?>
-                                        </span>
+                                       <!-- Badge di stato -->
+                				        <span class="badge <?php echo ($stato == 'true') ? 'bg-success' : 'bg-danger'; ?> text-white">
+                				            <?php echo ($stato == 'true') ? 'Servizio attivo' : 'Servizio non attivo'; ?>
+                				        </span>
+
                                     </td>
                                 </tr>
                             <?php } ?>
