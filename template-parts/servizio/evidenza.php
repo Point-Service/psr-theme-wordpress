@@ -25,7 +25,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                             </tr>
                         </thead>
                         <tbody>
-                           <?php foreach ($servizi_evidenza as $servizio_id) {
+<?php foreach ($servizi_evidenza as $servizio_id) {
     $post = get_post($servizio_id);
 
     // Recupero date dal servizio
@@ -33,8 +33,8 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
     $data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $post->ID);
     $data_fine_servizio = dci_get_meta('data_fine_servizio', $prefix, $post->ID);
 
-    // Recupero lo stato dal checkbox
-    $checkbox_stato = dci_get_meta('stato', $prefix, $post->ID); // può essere "true" o "false"
+    // Recupero checkbox di stato (true / false come stringa)
+    $checkbox_stato = get_post_meta($post->ID, '_dci_servizio_stato', true);
 
     // Conversione in DateTime
     $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
@@ -47,7 +47,9 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
         $periodo_valido = ($oggi >= $startDate && $oggi <= $endDate);
     }
 
-    // Stato attivo se entrambe le condizioni sono vere
+    // Stato attivo SOLO se:
+    // - le date sono valide e oggi è nel periodo
+    // - il checkbox è spuntato (valore "true")
     $stato_attivo = ($periodo_valido && $checkbox_stato === 'true');
 
     // Recupero le categorie del servizio
@@ -56,6 +58,26 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
         return $cat->name;
     }, $categorie)) : 'N/D';
 ?>
+    <tr>
+        <td>
+            <a class="text-decoration-none" href="<?php echo get_permalink($post->ID); ?>"><?php echo esc_html($post->post_title); ?></a>
+        </td>
+        <td><?php echo esc_html($categoria); ?></td>
+        <td>
+            <?php if ($startDate && $endDate) {
+                echo $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y');
+            } else {
+                echo '—';
+            } ?>
+        </td>
+        <td>
+            <span class="badge <?php echo $stato_attivo ? 'bg-success' : 'bg-danger'; ?> text-white">
+                <?php echo $stato_attivo ? 'Attivo' : 'Non attivo'; ?>
+            </span>
+        </td>
+    </tr>
+<?php } ?>
+sssssss
     <tr>
         <td>
             <a class="text-decoration-none" href="<?php echo get_permalink($post->ID); ?>"><?php echo $post->post_title; ?></a>
