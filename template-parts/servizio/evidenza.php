@@ -43,7 +43,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                 		        $stato = dci_get_meta("_dci_servizio_stato");
                 
 echo $stato;
-
+echo 'sa';
     
                                 // Valutazione stato
                                 $stato_attivo = true;
