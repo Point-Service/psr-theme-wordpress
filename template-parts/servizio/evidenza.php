@@ -30,37 +30,50 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 
                                 // Recupero date dal servizio
                                 $prefix = '_dci_servizio_';
-                                $data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $post->ID);
-                                $data_fine_servizio = dci_get_meta('data_fine_servizio', $prefix, $post->ID);
-
-                                // Conversione in DateTime
-                                $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
-                                $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
-                                $oggi = new DateTime();
 
 
-                		        // Recupera lo stato del servizio
-                		        $stato = dci_get_meta('_dci_servizio_stato', $prefix, $post->ID);
 
 
-                                  // Controlla se entrambe le date sono presenti e che la data di inizio sia inferiore alla data di fine
-                            			if ($startDate && $endDate && $startDate < $endDate) {
-                            			    // Verifica se la data di oggi è all'interno del periodo
-                            			    if ($oggi >= $startDate && $oggi <= $endDate) {
-                            			        // Servizio attivo
-                            			        $stato = "true";
-                            			    } else {
-                            			        // Servizio disattivato automaticamente
-                            			        $stato = "false";
-                            			    }
-                            			
-                            			    // Aggiorna lo stato del servizio nel database solo se entra in questa condizione
-                            			    update_post_meta($post->ID, "_dci_servizio_stato", $stato);
-                            			} else {
-                            			    // Se le date non sono valide (entrambe mancanti o data inizio >= data fine), stato è "false"
-                            			    $stato = "false";
-                            			    // Non aggiorno lo stato nel database se non entra in questa condizione
-                            			}
+                                    
+                                                     // Recupera le date di inizio e fine del servizio
+                                    		        $data_inizio_servizio = dci_get_meta("data_inizio_servizio", $prefix, $post->ID);
+                                    		        $data_fine_servizio = dci_get_meta("data_fine_servizio", $prefix, $post->ID);
+                                    		
+                                    		        // Recupera lo stato del servizio
+                                    		        $stato = dci_get_meta("_dci_servizio_stato", $prefix, $post->ID);
+                                    		
+                                    		        // Converte le date in formato DateTime
+                                    		        $oggi = new DateTime(); // data di oggi
+                                    		        $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
+                                    		        $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
+                                    		
+                                    			       
+                                    			// Controlla se entrambe le date sono presenti e che la data di inizio sia inferiore alla data di fine
+                                    			if ($startDate && $endDate && $startDate < $endDate) {
+                                    			    // Verifica se la data di oggi è all'interno del periodo
+                                    			    if ($oggi >= $startDate && $oggi <= $endDate) {
+                                    			        // Servizio attivo
+                                    			        $stato = "true";
+                                    			    } else {
+                                    			        // Servizio disattivato automaticamente
+                                    			        $stato = "false";
+                                    			    }
+                                    			
+                                    			    // Aggiorna lo stato del servizio nel database solo se entra in questa condizione
+                                    			    update_post_meta($post->ID, "_dci_servizio_stato", $stato);
+                                    			} else {
+                                    			    // Se le date non sono valide (entrambe mancanti o data inizio >= data fine), stato è "false"
+                                    			    $stato = "false";
+                                    			    // Non aggiorno lo stato nel database se non entra in questa condizione
+                                    			}
+                                    
+                                    
+
+
+
+
+
+
 
                                 // Recupero le categorie del servizio
                                 $categorie = get_the_terms($post->ID, 'categorie_servizio');
@@ -81,9 +94,20 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                         } ?>
                                     </td>
                                     <td>
-                                        <span class="badge <?php echo $stato_attivo ? 'bg-success' : 'bg-danger'; ?> text-white">
-                                            <?php echo $stato ? 'Attivo' : 'Non attivo'; ?>
-                                        </span>
+                       <!-- Badge di stato -->
+				        <span class="badge <?php echo ($stato == 'true') ? 'bg-success' : 'bg-danger'; ?> text-white">
+				            <?php echo ($stato == 'true') ? 'Servizio attivo' : 'Servizio non attivo'; ?>
+				        </span>
+				
+				        <?php
+				        // Controlla se le due date sono presenti
+				        if ($startDate && $endDate) {
+				            // Se entrambe le date sono presenti, mostra il periodo
+				            echo '<div class="service-period mt-2">';
+				            echo '<small><strong>Periodo di validità:</strong> ' . $startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y') . '</small>';
+				            echo '</div>';
+				        }
+				        ?>
                                     </td>
                                 </tr>
                             <?php } ?>
