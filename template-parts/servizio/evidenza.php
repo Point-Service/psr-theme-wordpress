@@ -50,7 +50,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 
 
                                 // Verifico lo stato del pulsante generale, se è false lo segnalo 
-                                 $checkbox_stato = get_post_meta($post->ID, '_dci_servizio_stato');
+                                 $checkbox_stato = get_post_meta($post->ID, '_dci_servizio_stato', true);
                                 if ($checkbox_stato == 'false') {
                                     $stato_attivo = false;
                                 }
