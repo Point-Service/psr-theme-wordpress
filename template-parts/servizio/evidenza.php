@@ -45,9 +45,24 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 $stato_attivo = get_post_meta($post->ID, '_dci_servizio_stato', true); // <-- TRUE o FALSE come stringa
 
 
-                                if ($startDate && $endDate && $startDate < $endDate) {
-                                    $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
-                                }
+                            	// Controlla se entrambe le date sono presenti e che la data di inizio sia inferiore alla data di fine
+                            			if ($startDate && $endDate && $startDate < $endDate) {
+                            			    // Verifica se la data di oggi è all'interno del periodo
+                            			    if ($oggi >= $startDate && $oggi <= $endDate) {
+                            			        // Servizio attivo
+                            			        $stato_attivo = "true";
+                            			    } else {
+                            			        // Servizio disattivato automaticamente
+                            			        $stato_attivo = "false";
+                            			    }
+                            			
+                            			    // Aggiorna lo stato del servizio nel database solo se entra in questa condizione
+                            			    update_post_meta($post->ID, "_dci_servizio_stato", $stato_attivo);
+                            			} else {
+                            			    // Se le date non sono valide (entrambe mancanti o data inizio >= data fine), stato è "false"
+                            			    $stato_attivo = "false";
+                            			    // Non aggiorno lo stato nel database se non entra in questa condizione
+                            			}
 
                                 // Recupero le categorie del servizio
                                 $categorie = get_the_terms($post->ID, 'categorie_servizio');
