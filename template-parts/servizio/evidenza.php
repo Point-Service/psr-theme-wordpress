@@ -40,8 +40,8 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 
 
                 		        // Recupera lo stato del servizio
-                		        $stato = dci_get_meta("_dci_servizio_stato");
-                
+                		        $stato = dci_get_meta("_dci_servizio_stato", $prefix, $post->ID);
+                 
                                 // Valutazione stato
                                 $stato_attivo = true;
                                 if ($startDate && $endDate && $startDate < $endDate) {
@@ -77,7 +77,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                     </table>
                 </div>
             </div>
-        <?php } ?>g
+        <?php }  ?>
     </div>
 </div>
 <br>
