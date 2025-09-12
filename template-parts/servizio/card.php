@@ -51,11 +51,11 @@ if($servizio->post_status == "publish") {
                     }
 
 
-                                // Verifico lo stato del pulsante generale, se è false lo segnalo 
-                                 $checkbox_stato = get_post_meta($servizio->ID, '_dci_servizio_stato', true);
-                                if ($checkbox_stato == 'false') {
-                                    $stato_attivo = false;
-                                }
+                    // Verifico lo stato del pulsante generale, se è false lo segnalo 
+                    $checkbox_stato = get_post_meta($servizio->ID, '_dci_servizio_stato', true);
+                       if ($checkbox_stato == 'false') {
+                            $stato_attivo = false;
+                       }
 
                     // Mostra badge di stato
                     echo '<div class="mt-2">';  // Maggiore margine per separarlo dal resto
