@@ -38,12 +38,22 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
                                 $oggi = new DateTime();
 
+
+
+                                $checkbox_stato = get_post_meta($post->ID, '_dci_servizio_stato', true);
+    
+    
+    
                                 // Valutazione stato
                                 $stato_attivo = true;
                                 if ($startDate && $endDate && $startDate < $endDate) {
                                     $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
                                 }
 
+if ($checkbox_stato == 'false') {
+    $stato_attivo = false;
+}
+    
                                 // Recupero le categorie del servizio
                                 $categorie = get_the_terms($post->ID, 'categorie_servizio');
                                 $categoria = is_array($categorie) ? implode(", ", array_map(function($cat) {
