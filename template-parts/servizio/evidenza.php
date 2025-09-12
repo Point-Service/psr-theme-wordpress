@@ -38,6 +38,13 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
                                 $oggi = new DateTime();
 
+
+
+                
+                		        // Recupera lo stato del servizio
+                		        $stato = dci_get_meta("_dci_servizio_stato", $prefix, $post->ID);
+
+    echo $stato;
                                 // Valutazione stato
                                 $stato_attivo = true;
                                 if ($startDate && $endDate && $startDate < $endDate) {
