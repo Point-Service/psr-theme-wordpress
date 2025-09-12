@@ -28,28 +28,36 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 $post = get_post($servizio_id);
 
                                 // Recupero date dal servizio
-                                $prefix = '_dci_servizio_';
-                                $data_inizio_servizio = dci_get_meta('data_inizio_servizio', $prefix, $post->ID);
-                                $data_fine_servizio = dci_get_meta('data_fine_servizio', $prefix, $post->ID);
+                                $data_inizio_servizio = dci_get_meta("data_inizio_servizio", "_dci_servizio_", $post->ID);
+                                $data_fine_servizio = dci_get_meta("data_fine_servizio", "_dci_servizio_", $post->ID);
 
-                                // Recupero checkbox di stato (true / false come stringa)
-                                $checkbox_stato = get_post_meta($post->ID, '_dci_servizio_stato', true);
+                                // Recupero lo stato dal checkbox nel DB
+                                $stato_db = dci_get_meta("_dci_servizio_stato", "", $post->ID); 
+                                // attenzione: dci_get_meta pare che già legga il metadato
 
-                                // Conversione in DateTime
+                                // Conversione date
+                                $oggi = new DateTime();
                                 $startDate = DateTime::createFromFormat('d/m/Y', $data_inizio_servizio);
                                 $endDate = $data_fine_servizio ? DateTime::createFromFormat('d/m/Y', $data_fine_servizio) : null;
-                                $oggi = new DateTime();
 
-                                // Controllo validità periodo
-                                $periodo_valido = false;
+                                // Logica identica al template singolo: se date valide & oggi nel periodo allora "true", altrimenti "false"
+                                $stato_calcolato = "false"; // predefinito
                                 if ($startDate && $endDate && $startDate < $endDate) {
-                                    $periodo_valido = ($oggi >= $startDate && $oggi <= $endDate);
+                                    if ($oggi >= $startDate && $oggi <= $endDate) {
+                                        $stato_calcolato = "true";
+                                    } else {
+                                        $stato_calcolato = "false";
+                                    }
+                                    // salvo nel DB solo se entri in questa condizione
+                                    update_post_meta($post->ID, "_dci_servizio_stato", $stato_calcolato);
+                                } else {
+                                    // date non valide
+                                    $stato_calcolato = "false";
+                                    // non aggiorno altrove
                                 }
 
-                                // Stato attivo SOLO se:
-                                // - le date sono valide e oggi è nel periodo
-                                // - il checkbox è spuntato (valore "true")
-                                $stato_attivo = ($periodo_valido && $checkbox_stato === 'true');
+                                // Ora uso lo stato corrente che dovrebbe essere coerente con DB e calcolo
+                                $stato_effettivo = ($stato_db === "true" && $stato_calcolato === "true") ? "true" : "false";
 
                                 // Recupero le categorie del servizio
                                 $categorie = get_the_terms($post->ID, 'categorie_servizio');
@@ -76,8 +84,8 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     ?>
                                 </td>
                                 <td>
-                                    <span class="badge <?php echo $stato_attivo ? 'bg-success' : 'bg-danger'; ?> text-white">
-                                        <?php echo $stato_attivo ? 'Attivo' : 'Non attivo'; ?>
+                                    <span class="badge <?php echo ($stato_effettivo === "true") ? 'bg-success' : 'bg-danger'; ?> text-white">
+                                        <?php echo ($stato_effettivo === "true") ? 'Attivo' : 'Non attivo'; ?>
                                     </span>
                                 </td>
                             </tr>
@@ -86,8 +94,9 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                     </table>
                 </div>
             </div>
-        <?php } // fine if ?>
+        <?php } ?>
     </div>
 </div>
 <br>
+
 
