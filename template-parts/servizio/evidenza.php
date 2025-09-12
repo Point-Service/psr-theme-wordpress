@@ -40,9 +40,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 
 
 
-                                $checkbox_stato = get_post_meta($post->ID, '_dci_servizio_stato', true);
-    
-    
+
     
                                 // Valutazione stato
                                 $stato_attivo = true;
@@ -50,9 +48,12 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
                                 }
 
-if ($checkbox_stato == 'false') {
-    $stato_attivo = false;
-}
+
+                                // Verifico lo stato del pulsante generale, se è false lo segnalo 
+                                 $checkbox_stato = get_post_meta($post->ID, '_dci_servizio_stato');
+                                if ($checkbox_stato == 'false') {
+                                    $stato_attivo = false;
+                                }
     
                                 // Recupero le categorie del servizio
                                 $categorie = get_the_terms($post->ID, 'categorie_servizio');
