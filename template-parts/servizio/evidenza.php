@@ -42,12 +42,9 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 
                 
                              // Recupero checkbox stato (checkbox salvata)
-                                $checkbox_stato = get_post_meta($post->ID, '_dci_servizio_stato', true); // <-- TRUE o FALSE come stringa
+                                $stato_attivo = get_post_meta($post->ID, '_dci_servizio_stato', true); // <-- TRUE o FALSE come stringa
 
 
-
-                                // Valutazione stato
-                                $stato_attivo = true;
                                 if ($startDate && $endDate && $startDate < $endDate) {
                                     $stato_attivo = ($oggi >= $startDate && $oggi <= $endDate);
                                 }
@@ -57,7 +54,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                 $categoria = is_array($categorie) ? implode(", ", array_map(function($cat) {
                                     return $cat->name;
                                 }, $categorie)) : 'N/D';
-        echo $checkbox_stato;
+
                                 ?>
                                 <tr>
                                     <td>
