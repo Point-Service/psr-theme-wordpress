@@ -48,7 +48,8 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
                                     } else {
                                         $stato_calcolato = "false";
                                     }
-
+                                      // salvo nel DB solo se entri in questa condizione
+                                    update_post_meta($post->ID, "_dci_servizio_stato", $stato_calcolato);
                                 } else {
                                     // date non valide
                                     $stato_calcolato = "false";
