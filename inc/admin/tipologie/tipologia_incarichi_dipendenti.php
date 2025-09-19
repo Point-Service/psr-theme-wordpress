@@ -10,10 +10,7 @@
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
 
-  // Controllo permessi: se l'utente NON può editare incarichi_dip, non registrare il CPT
-    if (!current_user_can('edit_incarichi_dip')) {
-        return;
-    }
+
   
 	
     $labels = array(
@@ -31,7 +28,7 @@ function dci_register_post_type_icad() {
         'supports'        => array( 'title', 'author' ),
         'hierarchical'    => true,
         'public'          => true,
-        'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza', // <‑‑ cambio qui
+        'show_in_menu'    => 'edit.php?post_type=elemento_trasparenza', // <‑‑ cambio qui
         'menu_icon'       => 'dashicons-media-interactive',
         'has_archive'     => false, 
         'rewrite'         => array(
