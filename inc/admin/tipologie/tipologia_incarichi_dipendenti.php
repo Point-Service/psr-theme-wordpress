@@ -12,13 +12,6 @@ function dci_register_post_type_icad() {
 
 
 
-    // Controlla se l'opzione 
-    if (dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === 'false' || dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === '') {
-        return; // Non registrare il CPT se la condizione non è soddisfatta
-    }
-
-
-
 	
     $labels = array(
         'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
@@ -74,6 +67,15 @@ function dci_register_post_type_icad() {
 --------------------------------------------------*/
 add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
 function dci_add_incarichi_dipendenti_submenu() {
+
+
+
+    // Controllo dell'opzione
+    if (dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === 'false' 
+        || dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === '') {
+        return; // Non aggiunge il menu se opzione falsa
+    }
+	
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
     $menu_slug   = 'edit.php?post_type=incarichi_dip';
 
@@ -102,6 +104,13 @@ function dci_add_incarichi_dipendenti_submenu() {
    Nascondere la voce "Aggiungi Nuovo" dal menu
 --------------------------------------------------*/
 add_action('admin_head', function() {
+	
+	    // Controllo dell'opzione
+    if (dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === 'false' 
+        || dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === '') {
+        return; // Non aggiunge il menu se opzione falsa
+    }
+	
     global $submenu;
     if (isset($submenu['edit.php?post_type=elemento_trasparenza'])) {
         foreach ($submenu['edit.php?post_type=elemento_trasparenza'] as $key => $item) {
