@@ -27,7 +27,7 @@ function dci_register_post_type_icad() {
         'supports'        => array( 'title', 'author' ),
         'hierarchical'    => true,
         'public'          => true,
-        'show_in_menu'    => $show_in_menu,  // Mostra il menu solo se la condizione è soddisfatta
+        'show_in_menu' => false,
         'menu_icon'       => 'dashicons-media-interactive',
         'has_archive'     => false, 
         'rewrite'         => array(
