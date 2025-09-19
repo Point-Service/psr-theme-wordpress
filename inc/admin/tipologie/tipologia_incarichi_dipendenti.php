@@ -211,14 +211,14 @@ function dci_icad_set_post_content( $data ) {
 // Aggiungi voce al menu admin
 add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
 function dci_add_incarichi_dipendenti_submenu() {
-    // Usa una capability esistente (gli admin la possiedono già)
-    if ( current_user_can('edit_incarico_dip') ) {
-		add_submenu_page(
-		    'edit.php?post_type=elemento_trasparenza', // oppure 'edit.php?post_type=incarichi_dip' se vuoi come padre
-		    __('Incarichi conferiti e autorizzati', 'design_comuni_italia'),
-		    __('Incarichi conferiti e autorizzati', 'design_comuni_italia'),
-		    'edit_incarichi_dip', // usa la capability che hai definito per la lista (non singolo post)
-		    'edit.php?post_type=incarichi_dip'
-		);
+    if ( current_user_can('edit_incarichi_dip') ) { // usa la capability corretta per la lista
+        add_submenu_page(
+            'edit.php?post_type=elemento_trasparenza', // padre: stesso menu che hai usato in show_in_menu
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Titolo della pagina
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Etichetta nel menu
+            'edit_incarichi_dip', // capability richiesta
+            'edit.php?post_type=incarichi_dip' // link diretto al CPT corretto
+        );
     }
 }
+
