@@ -25,7 +25,7 @@ function dci_register_post_type_icad() {
         'supports'        => array( 'title', 'author' ),
         'hierarchical'    => true,
         'public'          => true,
-        'show_in_menu'    => false, // <‑‑ non vogliamo voce principale
+        'show_in_menu'    => false, // non mostra menu principale
         'menu_icon'       => 'dashicons-media-interactive',
         'has_archive'     => false, 
         'rewrite'         => array(
@@ -71,16 +71,36 @@ function dci_add_incarichi_dipendenti_submenu() {
         // Lista dei post
         add_submenu_page(
             $parent_slug,
-            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Titolo pagina
-            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Etichetta menu
-            'edit_incarichi_dip', // capability
-            $menu_slug // link alla lista
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'),
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'),
+            'edit_incarichi_dip',
+            $menu_slug
         );
 
-        // NON aggiungiamo la voce "Aggiungi nuovo"
+        // Aggiungi nuovo (necessario per permessi) ma lo nascondiamo via CSS
+        add_submenu_page(
+            $parent_slug,
+            __('Aggiungi Nuovo Incarico', 'design_comuni_italia'),
+            __('Aggiungi Nuovo', 'design_comuni_italia'),
+            'edit_incarichi_dip',
+            'post-new.php?post_type=incarichi_dip'
+        );
     }
 }
 
+/* -------------------------------------------------
+   Nascondere la voce "Aggiungi Nuovo" dal menu
+--------------------------------------------------*/
+add_action('admin_head', function() {
+    global $submenu;
+    if (isset($submenu['edit.php?post_type=elemento_trasparenza'])) {
+        foreach ($submenu['edit.php?post_type=elemento_trasparenza'] as $key => $item) {
+            if ($item[2] === 'post-new.php?post_type=incarichi_dip') {
+                unset($submenu['edit.php?post_type=elemento_trasparenza'][$key]);
+            }
+        }
+    }
+});
 
 
 
