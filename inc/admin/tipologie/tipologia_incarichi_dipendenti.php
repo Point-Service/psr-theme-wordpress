@@ -32,11 +32,12 @@ function dci_register_post_type_icad() {
 
 
 
-    $args = array(
-        'label'           => __('Incarico conferito', 'design_comuni_italia'),
-        'labels'          => $labels,
-        'supports'        => array('title', 'author'),
-        'hierarchical'    => true,
+
+   $args = array(
+       'label'           => __('Incarico conferito', 'design_comuni_italia'),
+       'labels'          => $labels,
+       'supports'        => array('title', 'author'),
+       'hierarchical'    => true,
         'public'          => true,
         'show_in_menu'    => $show_in_menu,
         'menu_icon'       => 'dashicons-media-interactive',
