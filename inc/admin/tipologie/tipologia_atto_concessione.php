@@ -85,15 +85,20 @@ add_action('admin_init', function() {
         }
     }
 });
+
+
+
+
 // Aggiungi voce al menu admin per Atti di Concessione, con "Aggiungi nuovo" nascosta
 add_action('admin_menu', 'dci_add_atto_concessione_submenu', 9);
 function dci_add_atto_concessione_submenu() {
 
-    // Controlla se l'opzione è false o vuota
+        // Controlla se l'opzione "ck_attidiconcessione" è impostata su 'false' o vuota
     if (dci_get_option("ck_attidiconcessione", "Trasparenza") === 'false' || dci_get_option("ck_attidiconcessione", "Trasparenza") === '') {
-        return; // Non aggiunge il sottomenu
+        return; // Non registrare il CPT se la condizione non è soddisfatta
     }
 
+    
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
     $menu_slug   = 'edit.php?post_type=atto_concessione';
 
@@ -107,38 +112,34 @@ function dci_add_atto_concessione_submenu() {
             $menu_slug
         );
 
-        // Aggiungi nuovo (necessario per i permessi)
-        $add_new_slug = 'post-new.php?post_type=atto_concessione';
+        // Aggiungi nuovo (necessario per permessi, poi nascosto)
         add_submenu_page(
             $parent_slug,
             __('Aggiungi Nuovo Atto', 'design_comuni_italia'),
             __('Aggiungi Nuovo', 'design_comuni_italia'),
             'edit_atti_concessione',
-            $add_new_slug
+            'post-new.php?post_type=atto_concessione'
         );
-
-        // Nascondere "Aggiungi nuovo" tramite CSS
-        add_action('admin_head', function() use ($add_new_slug, $parent_slug) {
-            ?>
-            <style>
-                #adminmenu li.wp-has-submenu a[href="<?php echo $add_new_slug; ?>"] {
-                    display: none !important;
-                }
-            </style>
-            <?php
-            // Rimuove dal submenu array (ulteriormente)
-            global $submenu;
-            if (isset($submenu[$parent_slug])) {
-                foreach ($submenu[$parent_slug] as $key => $item) {
-                    if ($item[2] === $add_new_slug) {
-                        unset($submenu[$parent_slug][$key]);
-                    }
-                }
-            }
-        });
     }
 }
 
+// Nascondere la voce "Aggiungi nuovo" dal menu
+add_action('admin_head', function() {
+        // Controlla se l'opzione "ck_attidiconcessione" è impostata su 'false' o vuota
+    if (dci_get_option("ck_attidiconcessione", "Trasparenza") === 'false' || dci_get_option("ck_attidiconcessione", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+
+    global $submenu;
+    $parent_slug = 'edit.php?post_type=elemento_trasparenza';
+    if (isset($submenu[$parent_slug])) {
+        foreach ($submenu[$parent_slug] as $key => $item) {
+            if ($item[2] === 'post-new.php?post_type=atto_concessione') {
+                unset($submenu[$parent_slug][$key]);
+            }
+        }
+    }
+});
 
 
 /**
@@ -289,8 +290,5 @@ function dci_atto_concessione_set_post_content($data)
 
     return $data;
 }
-
-
-
 
 
