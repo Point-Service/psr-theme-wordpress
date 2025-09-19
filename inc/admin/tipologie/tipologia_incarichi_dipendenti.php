@@ -10,7 +10,12 @@
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
 
-
+    // Verifica se l'utente ha il permesso per vedere il menu
+    $show_in_menu = (current_user_can('gestione_permessi_trasparenza') && 
+                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== 'false' && 
+                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== '') 
+        ? 'edit.php?post_type=elemento_trasparenza' 
+        : false; // Nasconde il menu se la condizione non è soddisfatta o permessi insufficienti
 
     $labels = array(
         'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
