@@ -134,7 +134,7 @@ function dci_elemento_trasparenza_add_content_after_title($post)
                 </a>
             <?php endif; ?>
 
-            <?php if (dci_get_option("ck_titolariincarico", "Trasparenza") !== 'false' && dci_get_option("ck_titolariincarico", "Trasparenza") !== ''): ?>
+            <?php if (dci_get_option("ck_titolariIncarichiCollaborazioneConsulenzaTemplatePersonalizzato", "Trasparenza") !== 'false' && dci_get_option("ck_titolariincarico", "Trasparenza") !== ''): ?>
                 <a href="edit.php?post_type=titolare_incarico" class="dci-menu-btn">
                     Titolari di incarichi <b>Consulenze e Collaborazioni</b>
                 </a>
@@ -668,6 +668,7 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
     return $value;
 
 }
+
 
 
 
