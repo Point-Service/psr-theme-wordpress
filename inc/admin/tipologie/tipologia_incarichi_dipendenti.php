@@ -10,11 +10,6 @@
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
 
-
-
-
-
-	
     $labels = array(
         'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
         'singular_name'  => _x( 'Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia' ),
@@ -30,7 +25,7 @@ function dci_register_post_type_icad() {
         'supports'        => array( 'title', 'author' ),
         'hierarchical'    => true,
         'public'          => true,
-        'show_in_menu'    => 'edit.php?post_type=elemento_trasparenza', // <‑‑ cambio qui
+        'show_in_menu'    => false, // <‑‑ non vogliamo voce principale
         'menu_icon'       => 'dashicons-media-interactive',
         'has_archive'     => false, 
         'rewrite'         => array(
@@ -58,16 +53,33 @@ function dci_register_post_type_icad() {
         'description'     => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
     );
 
-	
+    register_post_type( 'incarichi_dip', $args );
 
-     register_post_type( 'incarichi_dip', $args );
-
-	
     // Rimuove l'editor standard
     remove_post_type_support( 'incarichi_dip', 'editor' );
 }
 
+/* -------------------------------------------------
+   Sottomenu sotto elemento_trasparenza
+--------------------------------------------------*/
+add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
+function dci_add_incarichi_dipendenti_submenu() {
+    $parent_slug = 'edit.php?post_type=elemento_trasparenza';
+    $menu_slug   = 'edit.php?post_type=incarichi_dip';
 
+    if (current_user_can('edit_incarichi_dip')) {
+        // Lista dei post
+        add_submenu_page(
+            $parent_slug,
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Titolo pagina
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Etichetta menu
+            'edit_incarichi_dip', // capability
+            $menu_slug // link alla lista
+        );
+
+        // NON aggiungiamo la voce "Aggiungi nuovo"
+    }
+}
 
 
 
@@ -214,29 +226,4 @@ function dci_icad_set_post_content( $data ) {
 }
 
 
-add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
-function dci_add_incarichi_dipendenti_submenu() {
-    $parent_slug = 'edit.php?post_type=elemento_trasparenza';
-    $menu_slug   = 'edit.php?post_type=incarichi_dip';
-
-    if (current_user_can('edit_incarichi_dip')) {
-        // Lista dei post
-        add_submenu_page(
-            $parent_slug,
-            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'),
-            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'),
-            'edit_incarichi_dip',
-            $menu_slug
-        );
-
-        // Aggiungi nuovo
-        add_submenu_page(
-            $parent_slug,
-            __('Aggiungi Nuovo Incarico', 'design_comuni_italia'),
-            __('Aggiungi Nuovo', 'design_comuni_italia'),
-            'edit_incarichi_dip',
-            'post-new.php?post_type=incarichi_dip'
-        );
-    }
-}
 
