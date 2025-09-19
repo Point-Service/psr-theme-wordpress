@@ -277,7 +277,7 @@ function dci_titolare_incarico_set_post_content($data)
 
 
 // Aggiungi voce al menu admin
-add_action('admin_menu', 'dci_add_titolare_incarico_submenu');
+add_action('admin_menu', 'dci_add_titolare_incarico_submenu', 19);
 function dci_add_titolare_incarico_submenu() {
     // Usa una capability esistente (gli admin la possiedono già)
     if ( current_user_can('edit_titolari_incarichi') ) {
@@ -290,3 +290,4 @@ function dci_add_titolare_incarico_submenu() {
         );
     }
 }
+
