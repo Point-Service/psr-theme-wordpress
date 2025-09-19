@@ -10,7 +10,10 @@
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
 
-
+  // Controllo permessi: se l'utente NON può editare incarichi_dip, non registrare il CPT
+    if (!current_user_can('edit_incarichi_dip')) {
+        return;
+    }
   
 	
     $labels = array(
