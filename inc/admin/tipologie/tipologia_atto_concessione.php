@@ -90,7 +90,7 @@ add_action('admin_init', function() {
 
 
 // Aggiungi voce al menu admin per Atti di Concessione, con "Aggiungi nuovo" nascosta
-add_action('admin_menu', 'dci_add_atto_concessione_submenu', 10);
+add_action('admin_menu', 'dci_add_atto_concessione_submenu', 9);
 function dci_add_atto_concessione_submenu() {
 
         // Controlla se l'opzione "ck_attidiconcessione" è impostata su 'false' o vuota
@@ -290,6 +290,7 @@ function dci_atto_concessione_set_post_content($data)
 
     return $data;
 }
+
 
 
 
