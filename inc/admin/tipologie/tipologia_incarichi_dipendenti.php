@@ -206,3 +206,19 @@ function dci_icad_set_post_content( $data ) {
 
 	return $data;
 }
+
+
+// Aggiungi voce al menu admin
+add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
+function dci_add_incarichi_dipendenti_submenu() {
+    // Usa una capability esistente (gli admin la possiedono già)
+    if ( current_user_can('edit_incarico_dip') ) {
+        add_submenu_page(
+            'edit.php?post_type=incarichi_dip', // Slug del menu padre
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Titolo pagina
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Titolo nel menu
+            'edit_incarico_dip', // Capability richiesta
+            'edit.php?post_type=edit_incarico_dip' // Link diretto al CPT
+        );
+    }
+}
