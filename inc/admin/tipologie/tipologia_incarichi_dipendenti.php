@@ -10,9 +10,7 @@
 add_action('init', 'dci_register_post_type_icad');
 function dci_register_post_type_icad() {
 
-    if (!current_user_can('edit_incarichi_dip')) {
-        return;
-    }
+
 
     $labels = array(
         'name'           => _x('Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia'),
