@@ -13,10 +13,7 @@ function dci_register_post_type_icad() {
 
 
 
-	
-   $show_in_menu = current_user_can('edit_incarichi_dip') 
-    ? true  // true crea un menu principale
-    : false;
+
 
 	
     $labels = array(
