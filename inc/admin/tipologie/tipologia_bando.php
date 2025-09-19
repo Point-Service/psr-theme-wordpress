@@ -67,7 +67,7 @@ function dci_register_post_type_bando()
 
 
 // Aggiungi voce al menu admin per Bandi, con "Aggiungi nuovo" nascosta
-add_action('admin_menu', 'dci_add_bando_submenu', 10);
+add_action('admin_menu', 'dci_add_bando_submenu', 9);
 function dci_add_bando_submenu() {
 
     
@@ -439,6 +439,7 @@ function dci_bando_set_post_content($data)
 
     return $data;
 }
+
 
 
 
