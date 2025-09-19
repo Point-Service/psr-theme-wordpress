@@ -30,7 +30,7 @@ function dci_register_post_type_icad() {
         'supports'        => array( 'title', 'author' ),
         'hierarchical'    => true,
         'public'          => true,
-        'show_in_menu' => 'edit.php?post_type=elemento_trasparenza',
+        'show_in_menu'    => 'edit.php?post_type=elemento_trasparenza',
         'menu_icon'       => 'dashicons-media-interactive',
         'has_archive'     => false, 
         'rewrite'         => array(
