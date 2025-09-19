@@ -123,6 +123,28 @@ add_action('admin_head', function() {
     }
 });
 
+// Aggiunge la voce "Aggiungi Bando" nella Admin Bar sotto "+ Nuovo"
+add_action('admin_bar_menu', 'dci_add_admin_bar_new_bando', 999);
+function dci_add_admin_bar_new_bando($wp_admin_bar) {
+
+    // Controlla se l'opzione è false o vuota
+    if (dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") === 'false' || dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") === '') {
+        return; // Non aggiungere la voce
+    }
+
+    // Controlla se l'utente ha i permessi
+    if (!current_user_can('edit_bandi')) {
+        return; // Non aggiungere la voce
+    }
+
+    // Aggiunge la voce sotto il menu "+ Nuovo" (ID: new-content)
+    $wp_admin_bar->add_node(array(
+        'id'     => 'new-bando', // ID unico
+        'title'  => 'Bando di Gara',
+        'href'   => admin_url('post-new.php?post_type=bando'),
+        'parent' => 'new-content' // Sotto "+ Nuovo"
+    ));
+}
 
 
 /**
@@ -439,6 +461,7 @@ function dci_bando_set_post_content($data)
 
     return $data;
 }
+
 
 
 
