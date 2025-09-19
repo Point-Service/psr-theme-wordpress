@@ -9,10 +9,6 @@ function dci_register_post_type_atto_concessione()
 
 
 
-    // Controlla se l'opzione "ck_attidiconcessione" è impostata su 'false' o vuota
-    if (dci_get_option("ck_attidiconcessione", "Trasparenza") === 'false' || dci_get_option("ck_attidiconcessione", "Trasparenza") === '') {
-        return; // Non registrare il CPT se la condizione non è soddisfatta
-    }
 
 
     
@@ -96,6 +92,13 @@ add_action('admin_init', function() {
 // Aggiungi voce al menu admin per Atti di Concessione, con "Aggiungi nuovo" nascosta
 add_action('admin_menu', 'dci_add_atto_concessione_submenu', 19);
 function dci_add_atto_concessione_submenu() {
+
+        // Controlla se l'opzione "ck_attidiconcessione" è impostata su 'false' o vuota
+    if (dci_get_option("ck_attidiconcessione", "Trasparenza") === 'false' || dci_get_option("ck_attidiconcessione", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+
+    
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
     $menu_slug   = 'edit.php?post_type=atto_concessione';
 
@@ -122,6 +125,11 @@ function dci_add_atto_concessione_submenu() {
 
 // Nascondere la voce "Aggiungi nuovo" dal menu
 add_action('admin_head', function() {
+        // Controlla se l'opzione "ck_attidiconcessione" è impostata su 'false' o vuota
+    if (dci_get_option("ck_attidiconcessione", "Trasparenza") === 'false' || dci_get_option("ck_attidiconcessione", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+
     global $submenu;
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
     if (isset($submenu[$parent_slug])) {
@@ -282,4 +290,5 @@ function dci_atto_concessione_set_post_content($data)
 
     return $data;
 }
+
 
