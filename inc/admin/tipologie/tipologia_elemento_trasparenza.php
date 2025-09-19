@@ -66,35 +66,38 @@ function dci_elemento_trasparenza_add_content_after_title($post)
 
     ?>
     <style>
-        .dci-section-title {
+        .dci-section-box {
+            background: #f0f6fc;
+            border-left: 4px solid #0073aa;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 6px;
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,0.05);
+        }
+        .dci-section-box h2 {
             font-size: 18px;
             font-weight: 600;
-            margin: 25px 0 20px;
-            padding: 10px 15px;
-            border-left: 4px solid #0073aa;
-            background: #f0f6fc;
+            margin: 0 0 20px;
             color: #1d2327;
-            box-shadow: inset 0 -1px 0 rgba(0,0,0,0.05);
         }
         .dci-menu-container {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 25px;
         }
         .dci-menu-btn {
             display: inline-block;
-            padding: 15px 20px;
-            border-radius: 10px;
+            padding: 14px 20px;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             text-decoration: none;
-            background: #f8f9fa;
+            background: #fff;
             border: 1px solid #ddd;
             color: #1d2327;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             transition: all 0.2s ease;
-            min-width: 260px;
+            min-width: 240px;
         }
         .dci-menu-btn:hover {
             background: #fff;
@@ -110,27 +113,29 @@ function dci_elemento_trasparenza_add_content_after_title($post)
         }
     </style>
 
-    <h2 class="dci-section-title">Categorie personalizzate</h2>
+    <div class="dci-section-box">
+        <h2>Categorie personalizzate</h2>
+        <div class="dci-menu-container">
+            <a href="edit.php?post_type=incarichi_dip" class="dci-menu-btn">
+                Personale <b>Incarichi dirigenziali</b>
+            </a>
 
-    <div class="dci-menu-container">
-        <a href="edit.php?post_type=incarichi_dip" class="dci-menu-btn">
-            Personale <b>Incarichi dirigenziali</b>
-        </a>
+            <a href="edit.php?post_type=bando" class="dci-menu-btn">
+                Bandi di Gara e contratti <b>Contratti Pubblici</b>
+            </a>
 
-        <a href="edit.php?post_type=bando" class="dci-menu-btn">
-            Bandi di Gara e contratti <b>Contratti Pubblici</b>
-        </a>
+            <a href="edit.php?post_type=atto_concessione" class="dci-menu-btn">
+                Sovvenzioni, contributi <b>Atti di concessione</b>
+            </a>
 
-        <a href="edit.php?post_type=atto_concessione" class="dci-menu-btn">
-            Sovvenzioni, contributi <b>Atti di concessione</b>
-        </a>
-
-        <a href="edit.php?post_type=titolare_incarico" class="dci-menu-btn">
-            Titolari di incarichi <b>Consulenze e Collaborazioni</b>
-        </a>
+            <a href="edit.php?post_type=titolare_incarico" class="dci-menu-btn">
+                Titolari di incarichi <b>Consulenze e Collaborazioni</b>
+            </a>
+        </div>
     </div>
     <?php
 }
+
 
 
 
@@ -654,6 +659,7 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
     return $value;
 
 }
+
 
 
 
