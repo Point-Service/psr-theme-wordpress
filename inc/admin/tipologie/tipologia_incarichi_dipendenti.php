@@ -1,46 +1,35 @@
 <?php
 /**
  * Custom Post Type: incarichi_dip
- * (Incarichi conferiti ai dipendenti)
+ * Incarichi conferiti ai dipendenti
  */
 
 /* -------------------------------------------------
-   Registrazione CPT con controllo permesso
+   Registrazione CPT
 --------------------------------------------------*/
-add_action( 'init', 'dci_register_post_type_icad' );
+add_action('init', 'dci_register_post_type_icad');
 function dci_register_post_type_icad() {
 
-    // Verifica se l'utente ha il permesso per vedere il menu
-    $show_in_menu = (current_user_can('gestione_permessi_trasparenza') && 
-                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== 'false' && 
-                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== '') 
-        ? 'edit.php?post_type=elemento_trasparenza' 
-        : false; // Nasconde il menu se la condizione non è soddisfatta o permessi insufficienti
-
     $labels = array(
-        'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
-        'singular_name'  => _x( 'Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia' ),
-        'add_new'        => _x( 'Aggiungi un Incarico conferito', 'Post Type', 'design_comuni_italia' ),
-        'add_new_item'   => __( 'Aggiungi un nuovo Incarico conferito', 'design_comuni_italia' ),
-        'edit_item'      => __( 'Modifica Incarico conferito', 'design_comuni_italia' ),
-        'featured_image' => __( 'Immagine di riferimento incarico', 'design_comuni_italia' ),
+        'name'           => _x('Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia'),
+        'singular_name'  => _x('Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia'),
+        'add_new'        => _x('Aggiungi un Incarico conferito', 'Post Type', 'design_comuni_italia'),
+        'add_new_item'   => __('Aggiungi un nuovo Incarico conferito', 'design_comuni_italia'),
+        'edit_item'      => __('Modifica Incarico conferito', 'design_comuni_italia'),
+        'featured_image' => __('Immagine di riferimento incarico', 'design_comuni_italia'),
     );
 
     $args = array(
-        'label'           => __( 'Incarico conferito', 'design_comuni_italia' ),
+        'label'           => __('Incarico conferito', 'design_comuni_italia'),
         'labels'          => $labels,
-        'supports'        => array( 'title', 'author' ),
+        'supports'        => array('title', 'author'),
         'hierarchical'    => true,
         'public'          => true,
-        'show_in_menu'    => $show_in_menu,  // Mostra il menu solo se la condizione è soddisfatta
+        'show_in_menu'    => false, // Nascondiamo menu principale, aggiungeremo come sottomenu
         'menu_icon'       => 'dashicons-media-interactive',
-        'has_archive'     => false, 
-        'rewrite'         => array(
-            'with_front' => false,
-            'pages' => true,
-        ),
-        'map_meta_cap'    => true,
+        'has_archive'     => false,
         'capability_type' => 'incarico_dip',
+        'map_meta_cap'    => true,
         'capabilities'    => array(
             'edit_post'             => 'edit_incarico_dip',
             'read_post'             => 'read_incarico_dip',
@@ -57,203 +46,164 @@ function dci_register_post_type_icad() {
             'edit_published_posts'  => 'edit_published_incarichi_dip',
             'create_posts'          => 'create_incarichi_dip',
         ),
-        'description'     => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
+        'description'     => __('Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia'),
     );
 
-	
+    register_post_type('incarichi_dip', $args);
 
-     register_post_type( 'incarichi_dip', $args );
+    // Rimuove editor standard
+    remove_post_type_support('incarichi_dip', 'editor');
+}
 
-	
-    // Rimuove l'editor standard
-    remove_post_type_support( 'incarichi_dip', 'editor' );
+/* -------------------------------------------------
+   Sottomenu sotto "Elemento Trasparenza"
+--------------------------------------------------*/
+add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
+function dci_add_incarichi_dipendenti_submenu() {
+    if (!current_user_can('edit_incarichi_dip')) return;
+
+    add_submenu_page(
+        'edit.php?post_type=elemento_trasparenza', // Menu principale
+        __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Titolo pagina
+        __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Etichetta menu
+        'edit_incarichi_dip', // Capability
+        'edit.php?post_type=incarichi_dip' // Link al CPT
+    );
 }
 
 /* -------------------------------------------------
    Messaggio informativo nel backend
 --------------------------------------------------*/
-add_action( 'edit_form_after_title', 'dci_icad_notice_after_title' );
-
-
-function dci_icad_notice_after_title( $post ) {
-	if ( $post->post_type === 'incarichi_dip' ) {
-		echo '<span><i>Il <strong>titolo/norma</strong> corrisponde al <strong>titolo dell\'incarico conferito</strong>.</i></span><br><br>';
-	}
+add_action('edit_form_after_title', 'dci_icad_notice_after_title');
+function dci_icad_notice_after_title($post) {
+    if ($post->post_type === 'incarichi_dip') {
+        echo '<span><i>Il <strong>titolo/norma</strong> corrisponde al <strong>titolo dell\'incarico conferito</strong>.</i></span><br><br>';
+    }
 }
 
 /* -------------------------------------------------
-   CMB2 Metaboxes con nuovi campi
+   CMB2 Metaboxes
 --------------------------------------------------*/
-add_action( 'cmb2_init', 'dci_icad_metaboxes' );
+add_action('cmb2_init', 'dci_icad_metaboxes');
 function dci_icad_metaboxes() {
 
-	$prefix = '_dci_icad_';
+    $prefix = '_dci_icad_';
 
-	$cmb_apertura = new_cmb2_box( array(
-		'id'           => $prefix . 'box_apertura',
-		'title'        => __( 'Informazioni sull\'incarico conferito', 'design_comuni_italia' ),
-		'object_types' => array( 'incarichi_dip' ),
-	) );
+    $cmb_apertura = new_cmb2_box(array(
+        'id'           => $prefix . 'box_apertura',
+        'title'        => __('Informazioni sull\'incarico conferito', 'design_comuni_italia'),
+        'object_types' => array('incarichi_dip'),
+    ));
 
-	$cmb_apertura->add_field( array(
-		'id'          => $prefix . 'anno_conferimento',
-		'name'        => __( 'Anno di Conferimento', 'design_comuni_italia' ),
-		'type'        => 'text_date_timestamp',
-		'date_format' => 'Y',
-	) );
+    $cmb_apertura->add_field(array(
+        'id'          => $prefix . 'anno_conferimento',
+        'name'        => __('Anno di Conferimento', 'design_comuni_italia'),
+        'type'        => 'text_date_timestamp',
+        'date_format' => 'Y',
+    ));
 
-	$cmb_apertura->add_field( array(
-		'id'   => $prefix . 'soggetto_dichiarante',
-		'name' => __( 'Soggetto dichiarante', 'design_comuni_italia' ),
-		'type' => 'text',
-	) );
+    $cmb_apertura->add_field(array(
+        'id'   => $prefix . 'soggetto_dichiarante',
+        'name' => __('Soggetto dichiarante', 'design_comuni_italia'),
+        'type' => 'text',
+    ));
 
-	$cmb_apertura->add_field( array(
-		'id'   => $prefix . 'soggetto_percettore',
-		'name' => __( 'Soggetto percettore', 'design_comuni_italia' ),
-		'type' => 'text',
-	) );
+    $cmb_apertura->add_field(array(
+        'id'   => $prefix . 'soggetto_percettore',
+        'name' => __('Soggetto percettore', 'design_comuni_italia'),
+        'type' => 'text',
+    ));
 
-	$cmb_apertura->add_field( array(
-		'id'      => $prefix . 'dirigente_non_dirigente',
-		'name'    => __( 'Dirigente/Non Dirigente', 'design_comuni_italia' ),
-		'type'    => 'select',
-		'options' => array(
-			'dirigente'     => __( 'Dirigente', 'design_comuni_italia' ),
-			'non_dirigente' => __( 'Non Dirigente', 'design_comuni_italia' ),
-		),
-	) );
+    $cmb_apertura->add_field(array(
+        'id'      => $prefix . 'dirigente_non_dirigente',
+        'name'    => __('Dirigente/Non Dirigente', 'design_comuni_italia'),
+        'type'    => 'select',
+        'options' => array(
+            'dirigente'     => __('Dirigente', 'design_comuni_italia'),
+            'non_dirigente' => __('Non Dirigente', 'design_comuni_italia'),
+        ),
+    ));
 
-	$cmb_apertura->add_field( array(
-		'id'   => $prefix . 'soggetto_conferente',
-		'name' => __( 'Soggetto Conferente', 'design_comuni_italia' ),
-		'type' => 'text',
-	) );
+    $cmb_apertura->add_field(array(
+        'id'   => $prefix . 'soggetto_conferente',
+        'name' => __('Soggetto Conferente', 'design_comuni_italia'),
+        'type' => 'text',
+    ));
 
-	$cmb_apertura->add_field( array(
-		'id'          => $prefix . 'data_conferimento_autorizzazione',
-		'name'        => __( 'Data conferimento autorizzazione dell’incarico', 'design_comuni_italia' ),
-		'type'        => 'text_date_timestamp',
-		'date_format' => 'd/m/Y',
-	) );
+    $cmb_apertura->add_field(array(
+        'id'          => $prefix . 'data_conferimento_autorizzazione',
+        'name'        => __('Data conferimento autorizzazione dell’incarico', 'design_comuni_italia'),
+        'type'        => 'text_date_timestamp',
+        'date_format' => 'd/m/Y',
+    ));
 
-	$cmb_apertura->add_field( array(
-		'id'   => $prefix . 'oggetto_incarico',
-		'name' => __( 'Oggetto dell’incarico', 'design_comuni_italia' ),
-		'type' => 'text',
-	) );
+    $cmb_apertura->add_field(array(
+        'id'   => $prefix . 'oggetto_incarico',
+        'name' => __('Oggetto dell’incarico', 'design_comuni_italia'),
+        'type' => 'text',
+    ));
 
-	$cmb_apertura->add_field( array(
-		'id'   => $prefix . 'durata',
-		'name' => __( 'Durata', 'design_comuni_italia' ),
-		'type' => 'text',
-	) );
+    $cmb_apertura->add_field(array(
+        'id'   => $prefix . 'durata',
+        'name' => __('Durata', 'design_comuni_italia'),
+        'type' => 'text',
+    ));
 
-	$cmb_apertura->add_field( array(
-		'id'   => $prefix . 'compenso_lordo',
-		'name' => __( 'Compenso Lordo', 'design_comuni_italia' ),
-		'type' => 'text',
-	) );
+    $cmb_apertura->add_field(array(
+        'id'   => $prefix . 'compenso_lordo',
+        'name' => __('Compenso Lordo', 'design_comuni_italia'),
+        'type' => 'text',
+    ));
 
-	$cmb_documenti = new_cmb2_box( array(
-		'id'           => $prefix . 'box_documenti',
-		'title'        => __( 'Documenti', 'design_comuni_italia' ),
-		'object_types' => array( 'incarichi_dip' ),
-	) );
+    $cmb_documenti = new_cmb2_box(array(
+        'id'           => $prefix . 'box_documenti',
+        'title'        => __('Documenti', 'design_comuni_italia'),
+        'object_types' => array('incarichi_dip'),
+    ));
 
-	$cmb_documenti->add_field( array(
-		'id'   => $prefix . 'allegati',
-		'name' => __( 'Allegati', 'design_comuni_italia' ),
-		'type' => 'file_list',
-	) );
-}
-
-/* -------------------------------------------------
-   JS backend (opzionale)
---------------------------------------------------*/
-add_action( 'admin_print_scripts-post-new.php', 'dci_icad_admin_script', 11 );
-add_action( 'admin_print_scripts-post.php',      'dci_icad_admin_script', 11 );
-function dci_icad_admin_script() {
-	if ( get_current_screen()->post_type === 'incarichi_dip' ) {
-		wp_enqueue_script(
-			'icad-admin-script',
-			get_template_directory_uri() . '/inc/admin-js/incarichi_dip.js',
-			array(), null, true
-		);
-	}
+    $cmb_documenti->add_field(array(
+        'id'   => $prefix . 'allegati',
+        'name' => __('Allegati', 'design_comuni_italia'),
+        'type' => 'file_list',
+    ));
 }
 
 /* -------------------------------------------------
    Popola automaticamente post_content
 --------------------------------------------------*/
-add_filter( 'wp_insert_post_data', 'dci_icad_set_post_content', 99, 1 );
-function dci_icad_set_post_content( $data ) {
+add_filter('wp_insert_post_data', 'dci_icad_set_post_content', 99, 1);
+function dci_icad_set_post_content($data) {
 
-	if ( $data['post_type'] === 'incarichi_dip' ) {
+    if ($data['post_type'] === 'incarichi_dip') {
 
-		$prefix = '_dci_icad_';
+        $prefix = '_dci_icad_';
 
-		$descrizione_breve = isset( $_POST[$prefix . 'oggetto_incarico'] )
-			? sanitize_text_field( $_POST[$prefix . 'oggetto_incarico'] )
-			: '';
+        $descrizione_breve = isset($_POST[$prefix . 'oggetto_incarico']) 
+            ? sanitize_text_field($_POST[$prefix . 'oggetto_incarico']) 
+            : '';
 
-		$soggetto_dichiarante = isset( $_POST[$prefix . 'soggetto_dichiarante'] )
-			? sanitize_text_field( $_POST[$prefix . 'soggetto_dichiarante'] )
-			: '';
+        $soggetto_dichiarante = isset($_POST[$prefix . 'soggetto_dichiarante']) 
+            ? sanitize_text_field($_POST[$prefix . 'soggetto_dichiarante']) 
+            : '';
 
-		$data['post_content'] = $descrizione_breve . "\n\n" . 'Dichiarante: ' . $soggetto_dichiarante;
-	}
-
-	return $data;
-}
-
-
-// Aggiungi voce al menu admin evitando duplicati
-add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
-function dci_add_incarichi_dipendenti_submenu() {
-    global $submenu;
-
-    $parent_slug = 'edit.php?post_type=elemento_trasparenza';
-    $menu_slug   = 'edit.php?post_type=incarichi_dip';
-
-    // Controllo se esiste già il sottomenu con quel link
-    $already_exists = false;
-    if ( isset($submenu[$parent_slug]) ) {
-        foreach ( $submenu[$parent_slug] as $item ) {
-            if ( isset($item[2]) && $item[2] === $menu_slug ) {
-                $already_exists = true;
-                break;
-            }
-        }
+        $data['post_content'] = $descrizione_breve . "\n\n" . 'Dichiarante: ' . $soggetto_dichiarante;
     }
 
-    // Se non esiste e l'utente ha i permessi, lo aggiungo
-    if ( !$already_exists && current_user_can('edit_incarichi_dip') ) {
-        add_submenu_page(
-            $parent_slug,
-            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Titolo della pagina
-            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Etichetta nel menu
-            'edit_incarichi_dip',
-            $menu_slug
-        );
-    }
+    return $data;
 }
 
-// Aggiungi voce al menu "Nuovo" della Admin Bar
+/* -------------------------------------------------
+   Admin Bar "+ Nuovo"
+--------------------------------------------------*/
 add_action('admin_bar_menu', 'dci_admin_bar_incarichi_dip', 80);
 function dci_admin_bar_incarichi_dip($wp_admin_bar) {
-    if ( ! current_user_can('edit_incarichi_dip') ) {
-        return;
-    }
+    if (!current_user_can('edit_incarichi_dip')) return;
 
-    $args = array(
-        'id'     => 'new_incarico_dip', // ID univoco
-        'title'  => 'Incarichi conferiti e autorizzati ai dipendenti', // Testo che compare
-        'parent' => 'new-content', // Sotto il menu "+ Nuovo"
-        'href'   => admin_url('post-new.php?post_type=incarichi_dip'), // Link alla creazione nuovo CPT
-        'meta'   => array(
-            'class' => 'dci-admin-bar-inacarichi',
-        )
-    );
-    $wp_admin_bar->add_node($args);
+    $wp_admin_bar->add_node(array(
+        'id'     => 'new_incarico_dip',
+        'title'  => 'Incarichi conferiti e autorizzati ai dipendenti',
+        'parent' => 'new-content',
+        'href'   => admin_url('post-new.php?post_type=incarichi_dip'),
+        'meta'   => array('class' => 'dci-admin-bar-incarichi'),
+    ));
 }
