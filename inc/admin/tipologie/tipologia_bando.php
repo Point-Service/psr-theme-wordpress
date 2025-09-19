@@ -14,8 +14,6 @@ function dci_register_post_type_bando()
     }
 
 
-
-
     
     $labels = array(
         'name'               => _x('Bandi di Gara', 'Post Type General Name', 'design_comuni_italia'),
@@ -32,7 +30,7 @@ function dci_register_post_type_bando()
         'supports'            => array('title', 'author'),
         'hierarchical'        => false,
         'public'              => true,
-        'show_in_menu'        => 'edit.php?post_type=elemento_trasparenza',
+        'show_in_menu'        => false,
         //'menu_position'       => 5,
         'menu_icon'           => 'dashicons-media-interactive',
         'has_archive'         => false,
@@ -64,6 +62,49 @@ function dci_register_post_type_bando()
     remove_post_type_support('bando', 'editor');
 }
 
+
+
+
+
+// Aggiungi voce al menu admin per Bandi, con "Aggiungi nuovo" nascosta
+add_action('admin_menu', 'dci_add_bando_submenu', 19);
+function dci_add_bando_submenu() {
+    $parent_slug = 'edit.php?post_type=elemento_trasparenza';
+    $menu_slug   = 'edit.php?post_type=bando';
+
+    if ( current_user_can('edit_bandi') ) {
+        // Lista dei bandi
+        add_submenu_page(
+            $parent_slug,
+            __('Bandi di Gara', 'design_comuni_italia'),
+            __('Bandi di Gara', 'design_comuni_italia'),
+            'edit_bandi',
+            $menu_slug
+        );
+
+        // Aggiungi nuovo (necessario per permessi, poi nascosto)
+        add_submenu_page(
+            $parent_slug,
+            __('Aggiungi Nuovo Bando', 'design_comuni_italia'),
+            __('Aggiungi Nuovo', 'design_comuni_italia'),
+            'edit_bandi',
+            'post-new.php?post_type=bando'
+        );
+    }
+}
+
+// Nascondere la voce "Aggiungi nuovo" dal menu
+add_action('admin_head', function() {
+    global $submenu;
+    $parent_slug = 'edit.php?post_type=elemento_trasparenza';
+    if (isset($submenu[$parent_slug])) {
+        foreach ($submenu[$parent_slug] as $key => $item) {
+            if ($item[2] === 'post-new.php?post_type=bando') {
+                unset($submenu[$parent_slug][$key]);
+            }
+        }
+    }
+});
 
 
 
@@ -381,3 +422,4 @@ function dci_bando_set_post_content($data)
 
     return $data;
 }
+
