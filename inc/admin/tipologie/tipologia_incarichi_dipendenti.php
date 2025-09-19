@@ -10,6 +10,17 @@
 add_action('init', 'dci_register_post_type_icad');
 function dci_register_post_type_icad() {
 
+
+
+
+    $show_in_menu = current_user_can('edit_incarichi_dip') 
+    ? 'edit.php?post_type=elemento_trasparenza' 
+    : null; // null evita di mostrare menu se non ha permessi
+
+
+
+
+   
     $labels = array(
         'name'           => _x('Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia'),
         'singular_name'  => _x('Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia'),
