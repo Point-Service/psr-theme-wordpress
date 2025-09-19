@@ -10,6 +10,16 @@
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
 
+
+
+    // Controlla se l'opzione 
+    if (dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === 'false' || dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+
+
+
+	
     $labels = array(
         'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
         'singular_name'  => _x( 'Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia' ),
