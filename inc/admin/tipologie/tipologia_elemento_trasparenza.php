@@ -117,7 +117,7 @@ function dci_elemento_trasparenza_add_content_after_title($post)
         <h2>Categorie personalizzate</h2>
         <div class="dci-menu-container">
             <a href="edit.php?post_type=incarichi_dip" class="dci-menu-btn">
-                Personale <b>Incarichi dirigenziali</b>
+                Personale <b>Incarichi conferiti e autorizzati</b>
             </a>
 
             <a href="edit.php?post_type=bando" class="dci-menu-btn">
@@ -659,6 +659,7 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
     return $value;
 
 }
+
 
 
 
