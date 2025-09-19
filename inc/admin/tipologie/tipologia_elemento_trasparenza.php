@@ -91,7 +91,7 @@ function dci_elemento_trasparenza_add_content_after_title($post)
 
 
 // Aggiungi la nuova voce di sottomenu per la pagina "Multi-Post"
-add_action('admin_menu', 'dci_add_transparency_multipost_page', 20);
+add_action('admin_menu', 'dci_add_transparency_multipost_page', 30);
 
 function dci_add_transparency_multipost_page() {
     // Aggiungi una sottovoce sotto "Amministrazione Trasparente"
@@ -609,3 +609,4 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
     return $value;
 
 }
+
