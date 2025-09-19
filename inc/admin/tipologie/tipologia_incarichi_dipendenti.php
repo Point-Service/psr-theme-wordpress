@@ -13,7 +13,7 @@ function dci_register_post_type_icad() {
 
 
 
-    $show_in_menu = current_user_can('edit_incarichi_dip') 
+    $show_in_menu = current_user_can('edit_incarico_dip') 
     ? 'edit.php?post_type=incarichi_dip' 
     : false; // false evita di mostrare menu se non ha permessi
 
