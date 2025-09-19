@@ -6,12 +6,7 @@
 add_action('init', 'dci_register_post_type_titolare_incarico');
 function dci_register_post_type_titolare_incarico()
 {
-    // Verifica se l'opzione è attiva
-    $show_in_menu = ((current_user_can('gestione_permessi_trasparenza')) && 
-            dci_get_option("ck_titolariIncarichiCollaborazioneConsulenzaTemplatePersonalizzato", "Trasparenza") === 'false' 
-        && dci_get_option("ck_titolariIncarichiCollaborazioneConsulenzaTemplatePersonalizzato", "Trasparenza") === '') 
-        ? 'edit.php?post_type=elemento_trasparenza' 
-        : false;
+
 
     $labels = array(
         'name'               => _x('Titolari di incarichi di collaborazione o consulenza', 'Post Type General Name', 'design_comuni_italia'),
@@ -290,4 +285,5 @@ function dci_add_titolare_incarico_submenu() {
         );
     }
 }
+
 
