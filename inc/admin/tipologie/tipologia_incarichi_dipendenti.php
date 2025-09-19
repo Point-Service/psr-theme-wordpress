@@ -10,12 +10,7 @@
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
 
-    // Verifica se l'utente ha il permesso per vedere il menu
-    $show_in_menu = (current_user_can('gestione_permessi_trasparenza') && 
-                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== 'false' && 
-                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== '') 
-        ? 'edit.php?post_type=elemento_trasparenza' 
-        : false; // Nasconde il menu se la condizione non è soddisfatta o permessi insufficienti
+
 
     $labels = array(
         'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
@@ -239,4 +234,21 @@ function dci_add_incarichi_dipendenti_submenu() {
     }
 }
 
+// Aggiungi voce al menu "Nuovo" della Admin Bar
+add_action('admin_bar_menu', 'dci_admin_bar_incarichi_dip', 80);
+function dci_admin_bar_incarichi_dip($wp_admin_bar) {
+    if ( ! current_user_can('edit_incarichi_dip') ) {
+        return;
+    }
 
+    $args = array(
+        'id'     => 'new_incarico_dip', // ID univoco
+        'title'  => 'Incarichi conferiti e autorizzati ai dipendenti', // Testo che compare
+        'parent' => 'new-content', // Sotto il menu "+ Nuovo"
+        'href'   => admin_url('post-new.php?post_type=incarichi_dip'), // Link alla creazione nuovo CPT
+        'meta'   => array(
+            'class' => 'dci-admin-bar-inacarichi',
+        )
+    );
+    $wp_admin_bar->add_node($args);
+}
