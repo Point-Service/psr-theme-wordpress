@@ -65,7 +65,7 @@ function dci_register_post_type_icad() {
 /* -------------------------------------------------
    Sottomenu sotto elemento_trasparenza
 --------------------------------------------------*/
-add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
+add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu', 9);
 function dci_add_incarichi_dipendenti_submenu() {
 
 
