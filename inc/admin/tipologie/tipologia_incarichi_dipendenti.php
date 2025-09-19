@@ -7,33 +7,32 @@
 /* -------------------------------------------------
    Registrazione CPT con controllo permesso
 --------------------------------------------------*/
-add_action( 'init', 'dci_register_post_type_icad' );
+add_action('init', 'dci_register_post_type_icad');
 function dci_register_post_type_icad() {
 
-
+    if (!current_user_can('edit_incarichi_dip')) {
+        return;
+    }
 
     $labels = array(
-        'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
-        'singular_name'  => _x( 'Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia' ),
-        'add_new'        => _x( 'Aggiungi un Incarico conferito', 'Post Type', 'design_comuni_italia' ),
-        'add_new_item'   => __( 'Aggiungi un nuovo Incarico conferito', 'design_comuni_italia' ),
-        'edit_item'      => __( 'Modifica Incarico conferito', 'design_comuni_italia' ),
-        'featured_image' => __( 'Immagine di riferimento incarico', 'design_comuni_italia' ),
+        'name'           => _x('Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia'),
+        'singular_name'  => _x('Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia'),
+        'add_new'        => _x('Aggiungi un Incarico conferito', 'Post Type', 'design_comuni_italia'),
+        'add_new_item'   => __('Aggiungi un nuovo Incarico conferito', 'design_comuni_italia'),
+        'edit_item'      => __('Modifica Incarico conferito', 'design_comuni_italia'),
+        'featured_image' => __('Immagine di riferimento incarico', 'design_comuni_italia'),
     );
 
     $args = array(
-        'label'           => __( 'Incarico conferito', 'design_comuni_italia' ),
+        'label'           => __('Incarico conferito', 'design_comuni_italia'),
         'labels'          => $labels,
-        'supports'        => array( 'title', 'author' ),
+        'supports'        => array('title', 'author'),
         'hierarchical'    => true,
         'public'          => true,
-        'show_in_menu' => false,
+        'show_in_menu'    => false, // Nasconde menu principale
         'menu_icon'       => 'dashicons-media-interactive',
-        'has_archive'     => false, 
-        'rewrite'         => array(
-            'with_front' => false,
-            'pages' => true,
-        ),
+        'has_archive'     => false,
+        'rewrite'         => array('with_front' => false, 'pages' => true),
         'map_meta_cap'    => true,
         'capability_type' => 'incarico_dip',
         'capabilities'    => array(
@@ -52,16 +51,11 @@ function dci_register_post_type_icad() {
             'edit_published_posts'  => 'edit_published_incarichi_dip',
             'create_posts'          => 'create_incarichi_dip',
         ),
-        'description'     => __( 'Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia' ),
+        'description'     => __('Incarichi conferiti ai dipendenti del Comune.', 'design_comuni_italia'),
     );
 
-	
-
-     register_post_type( 'incarichi_dip', $args );
-
-	
-    // Rimuove l'editor standard
-    remove_post_type_support( 'incarichi_dip', 'editor' );
+    register_post_type('incarichi_dip', $args);
+    remove_post_type_support('incarichi_dip', 'editor');
 }
 
 /* -------------------------------------------------
