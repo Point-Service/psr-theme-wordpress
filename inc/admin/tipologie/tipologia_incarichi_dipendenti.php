@@ -238,4 +238,3 @@ function dci_add_incarichi_dipendenti_submenu() {
         );
     }
 }
-}
