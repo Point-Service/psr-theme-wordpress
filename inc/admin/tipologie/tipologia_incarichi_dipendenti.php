@@ -125,21 +125,11 @@ function dci_icad_set_post_content($data) {
     return $data;
 }
 
-/* -------------------------------------------------
-   Menu sottomenu sotto Amministrazione Trasparente
---------------------------------------------------*/
-add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
-function dci_add_incarichi_dipendenti_submenu() {
-    if (!current_user_can('edit_incarichi_dip')) return;
 
-    add_submenu_page(
-        'edit.php?post_type=elemento_trasparenza', // Parent
-        __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Page title
-        __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Menu title
-        'edit_incarichi_dip', // Capability
-        'edit.php?post_type=incarichi_dip' // Link
-    );
-}
+
+
+
+
 
 /* -------------------------------------------------
    Admin Bar "+ Nuovo"
