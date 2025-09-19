@@ -62,32 +62,67 @@ function dci_elemento_trasparenza_add_content_after_title($post)
         return;
     }
 
-    if ($post->post_type === 'elemento_trasparenza') {
-        echo "<span><i>Il <b>Titolo</b> è il <b>Nome dell'elemento dell'amministrazione trasparente</b>.</i></span><br><br>";
-    }
-    
+    echo "<span><i>Il <b>Titolo</b> è il <b>Nome dell'elemento dell'amministrazione trasparente</b>.</i></span><br><br>";
+
     // Titolo sopra i pulsanti
-    echo '<h2 style="margin-top: 20px; margin-bottom: 10px;">Categorie personalizzate</h2>';
-    
-    // Pulsanti con URL fittizi
+    echo '<h2 style="margin-top: 25px; margin-bottom: 15px;">Categorie personalizzate</h2>';
+
     ?>
-    <div style="margin-bottom: 15px;">
-        <a href="edit.php?post_type=incarichi_dip" class="button button" style="margin-right: 10px;">
-            Personale - <b>Incarichi dirigenziali, a qualsiasi titolo conferiti</b>
+    <style>
+        .dci-menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .dci-menu-btn {
+            display: inline-block;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            color: #1d2327;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            min-width: 260px;
+        }
+        .dci-menu-btn:hover {
+            background: #fff;
+            border-color: #0073aa;
+            color: #0073aa;
+            box-shadow: 0 4px 10px rgba(0,115,170,0.15);
+        }
+        .dci-menu-btn b {
+            display: block;
+            font-weight: 700;
+            margin-top: 5px;
+            color: #0073aa;
+        }
+    </style>
+
+    <div class="dci-menu-container">
+        <a href="edit.php?post_type=incarichi_dip" class="dci-menu-btn">
+            Personale <b>Incarichi dirigenziali</b>
         </a>
-        <a href="edit.php?post_type=bando" class="button button-secondary" style="margin-right: 10px;">
-            Bandi di Gara e contratti - <b>Contratti Pubblici</b>
+
+        <a href="edit.php?post_type=bando" class="dci-menu-btn">
+            Bandi di Gara e contratti <b>Contratti Pubblici</b>
         </a>
-        <a href="edit.php?post_type=atto_concessione" class="button button-secondary" style="margin-right: 10px;">
-            Sovvenzioni , contributi sussidi, vantaggi economici - <b>Atti di concessione</b>
+
+        <a href="edit.php?post_type=atto_concessione" class="dci-menu-btn">
+            Sovvenzioni, contributi <b>Atti di concessione</b>
         </a>
-        <br> <br>
-        <a href="edit.php?post_type=titolare_incarico" class="button button-secondary" style="margin-right: 10px;">
-            Titolari di incarichi di collaborazione o consulenza
+
+        <a href="edit.php?post_type=titolare_incarico" class="dci-menu-btn">
+            Titolari di incarichi <b>Consulenze e Collaborazioni</b>
         </a>
     </div>
     <?php
 }
+
 
 
 // Aggiungi la nuova voce di sottomenu per la pagina "Multi-Post"
@@ -609,4 +644,5 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
     return $value;
 
 }
+
 
