@@ -90,7 +90,7 @@ add_action('admin_init', function() {
 
 
 // Aggiungi voce al menu admin con "Aggiungi nuovo" nascosta
-add_action('admin_menu', 'dci_add_titolare_incarico_submenu', 10);
+add_action('admin_menu', 'dci_add_titolare_incarico_submenu', 9);
 function dci_add_titolare_incarico_submenu() {
 
     
@@ -334,6 +334,7 @@ function dci_titolare_incarico_set_post_content($data)
 
     return $data;
 }
+
 
 
 
