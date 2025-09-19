@@ -145,6 +145,29 @@ add_action('admin_head', function() {
 
 
 
+// Aggiunge la voce "Aggiungi Titolare incarico" nella Admin Bar sotto "+ Nuovo"
+add_action('admin_bar_menu', 'dci_add_admin_bar_new_titolare_incarico', 999);
+function dci_add_admin_bar_new_titolare_incarico($wp_admin_bar) {
+
+    // Controlla l'opzione
+    if (dci_get_option("ck_titolariIncarichiCollaborazioneConsulenzaTemplatePersonalizzato", "Trasparenza") === 'false' 
+        || dci_get_option("ck_titolariIncarichiCollaborazioneConsulenzaTemplatePersonalizzato", "Trasparenza") === '') {
+        return; // Non aggiungere la voce
+    }
+
+    // Controlla permessi
+    if (!current_user_can('edit_titolari_incarichi')) {
+        return;
+    }
+
+    // Aggiunge la voce sotto "+ Nuovo"
+    $wp_admin_bar->add_node(array(
+        'id'     => 'new-titolare-incarico',
+        'title'  => 'Titolare incarico',
+        'href'   => admin_url('post-new.php?post_type=titolare_incarico'),
+        'parent' => 'new-content'
+    ));
+}
 
 
 
@@ -334,6 +357,7 @@ function dci_titolare_incarico_set_post_content($data)
 
     return $data;
 }
+
 
 
 
