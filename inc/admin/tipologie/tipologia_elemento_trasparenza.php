@@ -54,7 +54,6 @@ function dci_register_post_type_elemento_trasparenza()
 
 
 
-
 add_action('edit_form_after_title', 'dci_elemento_trasparenza_add_content_after_title');
 function dci_elemento_trasparenza_add_content_after_title($post)
 {
@@ -116,21 +115,31 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     <div class="dci-section-box">
         <h2>Categorie personalizzate</h2>
         <div class="dci-menu-container">
-            <a href="edit.php?post_type=incarichi_dip" class="dci-menu-btn">
-                Personale <b>Incarichi conferiti e autorizzati</b>
-            </a>
 
-            <a href="edit.php?post_type=bando" class="dci-menu-btn">
-                Bandi di Gara e contratti <b>Contratti Pubblici</b>
-            </a>
+            <?php if (dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== 'false' && dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== ''): ?>
+                <a href="edit.php?post_type=incarichi_dip" class="dci-menu-btn">
+                    Personale <b>Incarichi conferiti e autorizzati</b>
+                </a>
+            <?php endif; ?>
 
-            <a href="edit.php?post_type=atto_concessione" class="dci-menu-btn">
-                Sovvenzioni, contributi <b>Atti di concessione</b>
-            </a>
+            <?php if (dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== 'false' && dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") !== ''): ?>
+                <a href="edit.php?post_type=bando" class="dci-menu-btn">
+                    Bandi di Gara e contratti <b>Contratti Pubblici</b>
+                </a>
+            <?php endif; ?>
 
-            <a href="edit.php?post_type=titolare_incarico" class="dci-menu-btn">
-                Titolari di incarichi <b>Consulenze e Collaborazioni</b>
-            </a>
+            <?php if (dci_get_option("ck_attidiconcessione", "Trasparenza") !== 'false' && dci_get_option("ck_attidiconcessione", "Trasparenza") !== ''): ?>
+                <a href="edit.php?post_type=atto_concessione" class="dci-menu-btn">
+                    Sovvenzioni, contributi <b>Atti di concessione</b>
+                </a>
+            <?php endif; ?>
+
+            <?php if (dci_get_option("ck_titolariincarico", "Trasparenza") !== 'false' && dci_get_option("ck_titolariincarico", "Trasparenza") !== ''): ?>
+                <a href="edit.php?post_type=titolare_incarico" class="dci-menu-btn">
+                    Titolari di incarichi <b>Consulenze e Collaborazioni</b>
+                </a>
+            <?php endif; ?>
+
         </div>
     </div>
     <?php
@@ -659,6 +668,7 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
     return $value;
 
 }
+
 
 
 
