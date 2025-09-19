@@ -30,8 +30,7 @@ function dci_register_post_type_icad() {
         'supports'        => array( 'title', 'author' ),
         'hierarchical'    => true,
         'public'          => true,
-		'show_ui'      => true,       // crea le pagine admin, ma non il menu
-        'show_in_menu' => 'edit.php?post_type=page',
+        'show_in_menu' =>  null,
         'menu_icon'       => 'dashicons-media-interactive',
         'has_archive'     => false, 
         'rewrite'         => array(
