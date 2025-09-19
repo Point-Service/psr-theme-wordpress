@@ -142,6 +142,36 @@ add_action('admin_head', function() {
 });
 
 
+
+
+
+// Aggiunge la voce "Aggiungi Atto di Concessione" nella Admin Bar
+add_action('admin_bar_menu', 'dci_add_admin_bar_new_atto_concessione', 999);
+function dci_add_admin_bar_new_atto_concessione($wp_admin_bar) {
+
+    // Controlla se l'opzione è false o vuota
+    if (dci_get_option("ck_attidiconcessione", "Trasparenza") === 'false' || dci_get_option("ck_attidiconcessione", "Trasparenza") === '') {
+        return; // Non aggiungere la voce
+    }
+
+    // Controlla se l'utente ha i permessi
+    if (!current_user_can('edit_atti_concessione')) {
+        return; // Non aggiungere la voce
+    }
+
+    // Aggiunge la voce sotto il menu "Nuovo" (ID: new-content)
+    $wp_admin_bar->add_node(array(
+        'id'     => 'new-atto_concessione', // ID unico
+        'title'  => 'Atto di Concessione',
+        'href'   => admin_url('post-new.php?post_type=atto_concessione'),
+        'parent' => 'new-content' // Sotto "+ Nuovo"
+    ));
+}
+
+
+
+
+
 /**
  * Messaggio informativo sotto il titolo nel backend
  */
@@ -290,5 +320,6 @@ function dci_atto_concessione_set_post_content($data)
 
     return $data;
 }
+
 
 
