@@ -69,6 +69,21 @@ function dci_register_post_type_icad() {
     remove_post_type_support( 'incarichi_dip', 'editor' );
 }
 
+
+
+
+
+add_filter('get_edit_post_link', function($link, $post_id, $context){
+    $post = get_post($post_id);
+    if($post && $post->post_type === 'incarichi_dip') {
+        return admin_url('post-new.php?post_type=incarichi_dip');
+    }
+    return $link;
+}, 10, 3);
+
+
+
+
 /* -------------------------------------------------
    Messaggio informativo nel backend
 --------------------------------------------------*/
