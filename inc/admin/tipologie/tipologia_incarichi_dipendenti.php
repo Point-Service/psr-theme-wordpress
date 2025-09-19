@@ -123,6 +123,29 @@ add_action('admin_head', function() {
 
 
 
+// Aggiunge la voce "Aggiungi Incarico conferito" nella Admin Bar sotto "+ Nuovo"
+add_action('admin_bar_menu', 'dci_add_admin_bar_new_incarico_dip', 999);
+function dci_add_admin_bar_new_incarico_dip($wp_admin_bar) {
+
+    // Controlla se l'opzione è false o vuota
+    if (dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === 'false' 
+        || dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") === '') {
+        return; // Non aggiungere la voce
+    }
+
+    // Controlla se l'utente ha i permessi
+    if (!current_user_can('edit_incarichi_dip')) {
+        return;
+    }
+
+    // Aggiunge la voce sotto "+ Nuovo" (ID: new-content)
+    $wp_admin_bar->add_node(array(
+        'id'     => 'new-incarico-dip', // ID unico
+        'title'  => 'Incarico conferito',
+        'href'   => admin_url('post-new.php?post_type=incarichi_dip'),
+        'parent' => 'new-content' // Sotto "+ Nuovo"
+    ));
+}
 
 
 
