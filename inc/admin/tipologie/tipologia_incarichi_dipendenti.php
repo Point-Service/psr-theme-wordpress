@@ -19,10 +19,7 @@ function dci_register_post_type_icad() {
         'featured_image' => __('Immagine di riferimento incarico', 'design_comuni_italia'),
     );
 
-    // Mostra il menu solo agli utenti con permesso
-    $show_in_menu = current_user_can('edit_incarichi_dip') 
-        ? 'edit.php?post_type=elemento_trasparenza' 
-        : false;
+
 
     $args = array(
         'label'           => __('Incarico conferito', 'design_comuni_italia'),
