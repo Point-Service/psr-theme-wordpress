@@ -14,7 +14,6 @@ function dci_register_post_type_icad() {
 
 
 
-
 	
     $labels = array(
         'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
@@ -31,7 +30,8 @@ function dci_register_post_type_icad() {
         'supports'        => array( 'title', 'author' ),
         'hierarchical'    => true,
         'public'          => true,
-        'show_in_menu'    => NULL,  // Mostra il menu solo se la condizione è soddisfatta
+		'show_ui'      => true,       // crea le pagine admin, ma non il menu
+        'show_in_menu'    => false,  // Mostra il menu solo se la condizione è soddisfatta
         'menu_icon'       => 'dashicons-media-interactive',
         'has_archive'     => false, 
         'rewrite'         => array(
