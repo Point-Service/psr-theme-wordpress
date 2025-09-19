@@ -69,6 +69,15 @@ function dci_register_post_type_bando()
 // Aggiungi voce al menu admin per Bandi, con "Aggiungi nuovo" nascosta
 add_action('admin_menu', 'dci_add_bando_submenu', 19);
 function dci_add_bando_submenu() {
+
+    
+    // Controlla se l'opzione "ck_bandidigaratemplatepersonalizzato" è impostata su 'false' o vuota
+    if (dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") === 'false' || dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+
+
+    
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
     $menu_slug   = 'edit.php?post_type=bando';
 
@@ -95,6 +104,14 @@ function dci_add_bando_submenu() {
 
 // Nascondere la voce "Aggiungi nuovo" dal menu
 add_action('admin_head', function() {
+
+    
+    // Controlla se l'opzione "ck_bandidigaratemplatepersonalizzato" è impostata su 'false' o vuota
+    if (dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") === 'false' || dci_get_option("ck_bandidigaratemplatepersonalizzato", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+
+
     global $submenu;
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
     if (isset($submenu[$parent_slug])) {
@@ -422,4 +439,5 @@ function dci_bando_set_post_content($data)
 
     return $data;
 }
+
 
