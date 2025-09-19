@@ -92,6 +92,15 @@ add_action('admin_init', function() {
 // Aggiungi voce al menu admin con "Aggiungi nuovo" nascosta
 add_action('admin_menu', 'dci_add_titolare_incarico_submenu', 19);
 function dci_add_titolare_incarico_submenu() {
+
+    
+
+    if (dci_get_option("ck_titolariIncarichiCollaborazioneConsulenzaTemplatePersonalizzato", "Trasparenza") === 'false' || dci_get_option("ck_titolariIncarichiCollaborazioneConsulenzaTemplatePersonalizzato", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+
+
+    
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
     $menu_slug   = 'edit.php?post_type=titolare_incarico';
 
@@ -118,6 +127,11 @@ function dci_add_titolare_incarico_submenu() {
 
 // Nascondere la voce "Aggiungi nuovo" dal menu
 add_action('admin_head', function() {
+
+        if (dci_get_option("ck_titolariIncarichiCollaborazioneConsulenzaTemplatePersonalizzato", "Trasparenza") === 'false' || dci_get_option("ck_titolariIncarichiCollaborazioneConsulenzaTemplatePersonalizzato", "Trasparenza") === '') {
+        return; // Non registrare il CPT se la condizione non è soddisfatta
+    }
+    
     global $submenu;
     $parent_slug = 'edit.php?post_type=elemento_trasparenza';
     if (isset($submenu[$parent_slug])) {
@@ -320,6 +334,7 @@ function dci_titolare_incarico_set_post_content($data)
 
     return $data;
 }
+
 
 
 
