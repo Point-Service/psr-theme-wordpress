@@ -64,11 +64,18 @@ function dci_elemento_trasparenza_add_content_after_title($post)
 
     echo "<span><i>Il <b>Titolo</b> è il <b>Nome dell'elemento dell'amministrazione trasparente</b>.</i></span><br><br>";
 
-    // Titolo sopra i pulsanti
-    echo '<h2 style="margin-top: 25px; margin-bottom: 15px;">Categorie personalizzate</h2>';
-
     ?>
     <style>
+        .dci-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 25px 0 20px;
+            padding: 10px 15px;
+            border-left: 4px solid #0073aa;
+            background: #f0f6fc;
+            color: #1d2327;
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,0.05);
+        }
         .dci-menu-container {
             display: flex;
             flex-wrap: wrap;
@@ -103,6 +110,8 @@ function dci_elemento_trasparenza_add_content_after_title($post)
         }
     </style>
 
+    <h2 class="dci-section-title">Categorie personalizzate</h2>
+
     <div class="dci-menu-container">
         <a href="edit.php?post_type=incarichi_dip" class="dci-menu-btn">
             Personale <b>Incarichi dirigenziali</b>
@@ -122,6 +131,7 @@ function dci_elemento_trasparenza_add_content_after_title($post)
     </div>
     <?php
 }
+
 
 
 
@@ -644,5 +654,6 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
     return $value;
 
 }
+
 
 
