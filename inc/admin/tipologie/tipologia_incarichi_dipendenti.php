@@ -207,3 +207,35 @@ function dci_icad_set_post_content( $data ) {
 	return $data;
 }
 
+
+// Aggiungi voce al menu admin evitando duplicati
+add_action('admin_menu', 'dci_add_incarichi_dipendenti_submenu');
+function dci_add_incarichi_dipendenti_submenu() {
+    global $submenu;
+
+    $parent_slug = 'edit.php?post_type=elemento_trasparenza';
+    $menu_slug   = 'edit.php?post_type=incarichi_dip';
+
+    // Controllo se esiste già il sottomenu con quel link
+    $already_exists = false;
+    if ( isset($submenu[$parent_slug]) ) {
+        foreach ( $submenu[$parent_slug] as $item ) {
+            if ( isset($item[2]) && $item[2] === $menu_slug ) {
+                $already_exists = true;
+                break;
+            }
+        }
+    }
+
+    // Se non esiste e l'utente ha i permessi, lo aggiungo
+    if ( !$already_exists && current_user_can('edit_incarichi_dip') ) {
+        add_submenu_page(
+            $parent_slug,
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Titolo della pagina
+            __('Incarichi conferiti e autorizzati', 'design_comuni_italia'), // Etichetta nel menu
+            'edit_incarichi_dip',
+            $menu_slug
+        );
+    }
+}
+}
