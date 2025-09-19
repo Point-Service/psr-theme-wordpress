@@ -10,13 +10,15 @@
 add_action( 'init', 'dci_register_post_type_icad' );
 function dci_register_post_type_icad() {
 
-    // Verifica se l'utente ha il permesso per vedere il menu
-    $show_in_menu = (current_user_can('gestione_permessi_trasparenza') && 
-                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== 'false' && 
-                     dci_get_option("ck_incarichieautorizzazioniaidipendenti", "Trasparenza") !== '') 
-        ? 'edit.php?post_type=elemento_trasparenza' 
-        : false; // Nasconde il menu se la condizione non è soddisfatta o permessi insufficienti
 
+
+
+	
+   $show_in_menu = current_user_can('edit_incarichi_dip') 
+    ? true  // true crea un menu principale
+    : false;
+
+	
     $labels = array(
         'name'           => _x( 'Incarichi conferiti e autorizzati', 'Post Type General Name', 'design_comuni_italia' ),
         'singular_name'  => _x( 'Incarico conferito', 'Post Type Singular Name', 'design_comuni_italia' ),
@@ -73,13 +75,6 @@ function dci_register_post_type_icad() {
 
 
 
-add_filter('get_edit_post_link', function($link, $post_id, $context){
-    $post = get_post($post_id);
-    if($post && $post->post_type === 'incarichi_dip') {
-        return admin_url('post-new.php?post_type=incarichi_dip');
-    }
-    return $link;
-}, 10, 3);
 
 
 
