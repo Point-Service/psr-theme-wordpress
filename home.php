@@ -8,7 +8,8 @@
  */
 	
 
-$solotrasparenza = filter_var(dci_get_option("ck_solotrasparenza_esterna", "Trasparenza"), FILTER_VALIDATE_BOOLEAN);
+$solotrasparenza = dci_get_option("ck_solotrasparenza_esterna", "Trasparenza");
+echo $solotrasparenza;
 
 if ($solotrasparenza==1) {
    // wp_redirect(dci_get_option("url_homesolopertrasparenza", "Trasparenza"));
@@ -106,6 +107,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
