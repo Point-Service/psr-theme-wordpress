@@ -10,7 +10,7 @@
  */
 
 
-$ck_esterno = get_option('trasparenza_ck_solotrasparenza_esterna');
+$ck_esterno = get_option('ck_solotrasparenzaesterna');
 echo $ck_esterno;
 
 if ($ck_esterno === 'true') {
