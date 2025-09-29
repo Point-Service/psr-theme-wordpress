@@ -45,7 +45,7 @@ if ($ck_esterno === 'true') {
                 <img class="ue-logo" src="<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" alt="logo Unione Europea">
                     <div class="it-brand-wrapper">
 						
-                        <a href="<?php echo $home_url_custom() ?>">
+                        <a href="<?php echo $home_url ?>">
                             <?php get_template_part("template-parts/common/logo");?>
                             <div class="it-brand-text">
                                 <h2 class="no_toc"><?php echo dci_get_option("nome_comune");?></h2>
