@@ -139,7 +139,23 @@ function dci_register_pagina_trasparenza_options()
         'desc'  => __('Opzione per chi usa solo la nostra trasparenza https://amministrazionetrasparente.servizipa.cloud.', 'design_comuni_italia'),
         'type'  => 'title',
     ));
+
+         $trasparenza_options->add_field(array(
+        'id'      => $prefix . 'ck_solotrasparenza_esterna',
+        'name'    => __('Abilita l opzione per la gestione esterna della Trasparenza.', 'design_comuni_italia'),
+        'desc'    => __('Con questa opzione abiliti e disattivi parte del portale per la gestione solo della trasparenza.', 'design_comuni_italia'),
+        'type'    => 'radio_inline',
+        'default' => 'true',
+        'options' => array(
+            'true'  => __('Sì', 'design_comuni_italia'),
+            'false' => __('No', 'design_comuni_italia'),
+        ),
+        'attributes' => array(
+            'data-conditional-value' => 'true',
+        ),
+    ));
     
 }?>
+
 
 
