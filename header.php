@@ -51,7 +51,7 @@ if ($ck_esterno === 'true') {
             <div class="it-header-center-content-wrapper">
               <div class="it-brand-wrapper">
                 <a 
-                href="<?php echo home_url(); ?>" 
+                href="<?php echo esc_url($home_url_custom); ?>" 
                 <?php if(!is_front_page()) echo 'title="Vai alla Homepage"'; ?>>
                     <div class="it-brand-text d-flex align-items-center">
                       <?php get_template_part("template-parts/common/logo"); ?>
