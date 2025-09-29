@@ -8,6 +8,25 @@
  *
  * @package Design_Comuni_Italia
  */
+
+
+
+add_filter('home_url', 'redirect_home_url_if_trasparenza_esterna_enabled', 10, 4);
+function redirect_home_url_if_trasparenza_esterna_enabled($url, $path, $orig_scheme, $blog_id) {
+    // Recupera il valore dell'opzione CMB2 (cambia "trasparenza_" con il tuo prefix se serve)
+    $solo_trasparenza_esterna = get_option('trasparenza_ck_solotrasparenza_esterna');
+
+    // Se è attiva (true) e siamo nel frontend
+    if ($solo_trasparenza_esterna === 'true' && !is_admin()) {
+        $nuovo_url = 'https://www.comune.antillo.me.it'; // <-- cambia con il tuo URL finale
+        return $nuovo_url . $path;
+    }
+
+    // Altrimenti restituisci il valore originale
+    return $url;
+}
+
+
 ?>
 
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
@@ -35,6 +54,7 @@
                 <div class="col-12 footer-items-wrapper logo-wrapper">
                 <img class="ue-logo" src="<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" alt="logo Unione Europea">
                     <div class="it-brand-wrapper">
+						
                         <a href="<?php echo home_url() ?>">
                             <?php get_template_part("template-parts/common/logo");?>
                             <div class="it-brand-text">
