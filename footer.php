@@ -11,6 +11,8 @@
 
 
 $ck_esterno = get_option('trasparenza_ck_solotrasparenza_esterna');
+echo $ck_esterno;
+
 if ($ck_esterno === 'true') {
     $home_url_custom = 'https://www.comune.antillo.me.it';
 } else {
