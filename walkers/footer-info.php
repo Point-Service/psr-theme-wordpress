@@ -75,7 +75,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
         }
         
         // Sovrascrivi l'URL per "Amministrazione trasparente" se è vuoto
-        if ($item->title == 'Amministrazione trasparente' && $item->url == '/amministrazione-trasparente') {
+        if ($item->title == 'Amministrazione trasparente' && $item->url == '/index.php/amministrazione-trasparente') {
            $item->url = home_url('/amministrazione-trasparente');
         }
 
