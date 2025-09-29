@@ -11,14 +11,7 @@
 get_header();
 
 
-//OPZIONE PER CHI SOLO LA TRASPARENZA CON NOI
 
-$solotrasparenza = filter_var(dci_get_option("ck_solotrasparenza_esterna", "Trasparenza"), FILTER_VALIDATE_BOOLEAN);
-
-if ($solotrasparenza && is_front_page()) {
-    wp_redirect(dci_get_option("url_homesolopertrasparenza", "Trasparenza"));
-    exit;
-}
 
 
 
@@ -107,6 +100,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
