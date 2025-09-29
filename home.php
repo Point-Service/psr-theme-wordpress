@@ -6,6 +6,18 @@
  *
  * @package Design_Comuni_Italia
  */
+
+
+
+if dci_get_option("ck_solotrasparenzaesterna", "Trasparenza") == 'true' {
+
+echo'dddd';
+	
+}
+
+
+	
+
 get_header();
 ?>
 	    
@@ -92,6 +104,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
