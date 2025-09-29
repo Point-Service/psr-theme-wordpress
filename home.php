@@ -16,10 +16,11 @@ get_header();
 var_dump( dci_get_option("ck_solotrasparenzaesterna", "Trasparenza") );
 
 
-if ( dci_get_option("ck_solotrasparenza_esterna", "Trasparenza") === 'true' ) {
+if ( dci_get_option("ck_solotrasparenza_esterna", "Trasparenza") == 'true' ) {
         if ( is_front_page() ) {
         //    wp_redirect( dci_get_option("url_homesolopertrasparenza", "Trasparenza") );
          //   exit;
+			exho 'dddd'
         }
 }
 
@@ -109,6 +110,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
