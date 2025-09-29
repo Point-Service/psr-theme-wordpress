@@ -151,7 +151,7 @@ function dci_register_pagina_trasparenza_options()
             'false' => __('No', 'design_comuni_italia'),
         ),
         'attributes' => array(
-            'data-conditional-value' => 'true',
+            'data-conditional-value' => 'false',
         ),
     ));
 
@@ -167,6 +167,7 @@ function dci_register_pagina_trasparenza_options()
     ));
     
 }?>
+
 
 
 
