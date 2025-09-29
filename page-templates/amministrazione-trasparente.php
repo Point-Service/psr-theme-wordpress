@@ -70,8 +70,22 @@ get_header();
 			<?php get_template_part("template-parts/single/hero-custom"); ?>
                         <?php info();?>
 			<?php get_template_part("template-parts/amministrazione-trasparente/categorie"); ?>		
-			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
-			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
+
+           <?php 
+			// Recupera l'opzione della trasparenza esterna
+			$solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
+			
+			// Se è attiva la trasparenza esterna, non visualizzare questi elementi
+			if ($solotrasparenza !== 'true') {				
+			
+			            get_template_part("template-parts/common/valuta-servizio");
+			            get_template_part("template-parts/common/assistenza-contatti");
+			 } ?>
+		
+
+
+
+		
 		<?php 
 			endwhile; // End of the loop.
 		?>
@@ -79,6 +93,7 @@ get_header();
 
 <?php
 get_footer();?>
+
 
 
 
