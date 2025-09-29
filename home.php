@@ -13,9 +13,9 @@ $solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
 echo $solotrasparenza;
 
 if ($solotrasparenza==='true') {
-   // wp_redirect(dci_get_option("url_homesolopertrasparenza", "Trasparenza"));
-  //  exit;
-	echo 'hgfhgfhgfhgf';
+    wp_redirect(dci_get_option("url_homesolopertrasparenza", "Trasparenza"));
+    exit;
+
 }
 
 
@@ -108,6 +108,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
