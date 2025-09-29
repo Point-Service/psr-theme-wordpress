@@ -9,7 +9,7 @@
 	
 
 
-$solotrasparenza = dci_get_option("url_homesolopertrasparenza", "Trasparenza");
+$solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
 echo $solotrasparenza;
 
 if ($solotrasparenza==='true') {
@@ -108,6 +108,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
