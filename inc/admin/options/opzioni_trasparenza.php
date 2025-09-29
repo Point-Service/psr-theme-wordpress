@@ -135,10 +135,11 @@ function dci_register_pagina_trasparenza_options()
 
         $trasparenza_options->add_field(array(
         'id'    => $prefix . 'trasparente_options2',
-        'name'  => __('OPZIONI - Amministrazione Trasparente Esterna dal Sito', 'design_comuni_italia'),
-        'desc'  => __('Opzione per chi usa l''amministrazione trasparente esterna dal sito.', 'design_comuni_italia'),
+        'name'  => __('Amministrazione Trasparente Esterna.', 'design_comuni_italia'),
+        'desc'  => __('Opzione per chi usa solo la nostra trasparenza https://amministrazionetrasparente.servizipa.cloud.', 'design_comuni_italia'),
         'type'  => 'title',
     ));
     
 }?>
+
 
