@@ -15,7 +15,7 @@ if ($solotrasparenza) {
   //  exit;
 }
 
-
+echo $solotrasparenza;
 
 get_header();
 
@@ -105,6 +105,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
