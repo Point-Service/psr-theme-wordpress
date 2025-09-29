@@ -10,8 +10,8 @@
 
 get_header();
 
-
-var_dump( dci_get_option("ck_solotrasparenzaesterna", "Trasparenza") );
+$prefix = '_dci_elemento_trasparenza_';
+var_dump( dci_get_option( $prefix . 'ck_solotrasparenza_esterna', "trasparenza" ) );
 
 
 
@@ -111,6 +111,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
