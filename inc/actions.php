@@ -412,3 +412,46 @@ function dci_edit_permission_check() {
 
 }
 add_filter( 'admin_head', 'dci_edit_permission_check', 1, 4 );
+
+
+
+
+
+add_action('rest_api_init', function () {
+
+    register_rest_route('ente/v1', '/header', array(
+        'methods' => 'GET',
+        'callback' => function () {
+            ob_start();
+            get_header(); // oppure: get_template_part('partials/header-custom')
+            return ob_get_clean();
+        },
+        'permission_callback' => '__return_true'
+    ));
+
+    register_rest_route('ente/v1', '/footer', array(
+        'methods' => 'GET',
+        'callback' => function () {
+            ob_start();
+            get_footer(); // oppure: get_template_part('partials/footer-custom')
+            return ob_get_clean();
+        },
+        'permission_callback' => '__return_true'
+    ));
+});
+
+
+
+add_action('init', function() {
+    // Lista di domini esterni autorizzati
+    $allowed_origins = [
+        'https://amministrazionetrasparente.servizipa.cloud'
+    ];
+
+    if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
+        header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+        header("Access-Control-Allow-Methods: GET, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type");
+    }
+});
+
