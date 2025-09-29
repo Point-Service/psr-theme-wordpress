@@ -9,16 +9,6 @@
  * @package Design_Comuni_Italia
  */
 
-
-$ck_esterno = get_option('ck_solotrasparenzaesterna');
-echo $ck_esterno;
-
-if ($ck_esterno === 'true') {
-    $home_url_custom = 'https://www.comune.antillo.me.it';
-} else {
-    $home_url_custom = home_url();
-}
-
 ?>
 
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
