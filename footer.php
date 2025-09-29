@@ -10,6 +10,13 @@
  */
 
 
+$ck_esterno = get_option('trasparenza_ck_solotrasparenza_esterna');
+if ($ck_esterno === 'true') {
+    $home_url_custom = 'https://www.comune.antillo.me.it';
+} else {
+    $home_url_custom = home_url();
+}
+
 ?>
 
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
@@ -38,7 +45,7 @@
                 <img class="ue-logo" src="<?php echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" alt="logo Unione Europea">
                     <div class="it-brand-wrapper">
 						
-                        <a href="<?php echo home_url() ?>">
+                        <a href="<?php echo $home_url_custom() ?>">
                             <?php get_template_part("template-parts/common/logo");?>
                             <div class="it-brand-text">
                                 <h2 class="no_toc"><?php echo dci_get_option("nome_comune");?></h2>
