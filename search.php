@@ -8,6 +8,35 @@
  */
 global $load_card_type;
 
+
+
+
+//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
+
+$solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
+// Se è attiva la trasparenza esterna, forza il redirect alla home definita
+if ($solotrasparenza === 'true') {
+
+    // Se siamo sulla pagina di ricerca (quindi c'è un parametro ?s=...)
+    if ( isset($_GET['s']) && !is_admin() ) {
+
+        // Recupera il termine di ricerca
+        $search_query = trim($_GET['s']);
+
+        // Costruisci l’URL pulito
+        $redirect_url = dci_get_option("url_homesolopertrasparenza", "Trasparenza");
+
+        // Aggiungi il parametro di ricerca all’URL
+        $redirect_url = trailingslashit($redirect_url) . '?s=' . urlencode($search_query);
+
+        // Fai il redirect
+        wp_redirect($redirect_url);
+        exit;
+    }
+
+
+
+
 get_header();
 ?>
     <main>
@@ -17,7 +46,7 @@ get_header();
             <?php get_template_part("template-parts/common/breadcrumb"); ?>
           </div>
         </div>
-jjjjjjjjjjjjjjjjjj
+
         <div class="container">
             <form role="search" id="search-form" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
                 <div class="form-group cmp-input-search-button mt-2 mb-4 mb-lg-50">
