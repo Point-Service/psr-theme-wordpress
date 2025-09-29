@@ -159,7 +159,7 @@ function dci_register_pagina_trasparenza_options()
         $trasparenza_options->add_field( array(
         'id'    => $prefix . 'url_homesolopertrasparenza',
         'name'  => __( 'Url Home Page Personalizzato', 'design_comuni_italia' ),
-        'desc'  => __( 'Inserisci l''url del portale del comune in modo da indirizzare allo loro homepage.' , 'design_comuni_italia' ),
+        'desc'  => __( 'Inserisci url del portale del comune in modo da indirizzare allo loro homepage.' , 'design_comuni_italia' ),
         'type'  => 'text_url',
         'attributes' => array(
             'required' => 'required'
@@ -167,6 +167,7 @@ function dci_register_pagina_trasparenza_options()
     ));
     
 }?>
+
 
 
 
