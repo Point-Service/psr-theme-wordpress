@@ -216,29 +216,38 @@
 						<?php } ?>
 
 			    
-				                    <?php
+				          <?php
 						     /**
-	                                             Se trovo più di 3 caratteri nel modulo Footer/Mappa del sito richiamo quel link, altrimenti indirizzo al link del plugin XML Sitemap Generator for Google
+	                             Se trovo più di 3 caratteri nel modulo Footer/Mappa del sito richiamo quel link, altrimenti indirizzo al link del plugin XML Sitemap Generator for Google
 						      */
-	                                              ?>	
-                                  <?php if (strlen(dci_get_option("sitemap",'footer')) > 3) {  ?>
-				                         <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>				
-						                <?php } 
-			                                else 
-			                              { ?>			    
-						                   <a href="<?php echo home_url('/page-sitemap'); ?>">Mappa del sito</a>
-                                    <?php } ?>
+
+							//Se il portale gestisce solo la nostra Trasparenza in modo esterno, nascondi i link.
+							$solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
+							if ($solotrasparenza==='true') {
+	                       ?>	
+		                         <?php if (strlen(dci_get_option("sitemap",'footer')) > 3) {  ?>
+						              <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>				
+								  <?php } 
+					                 else 
+					              { ?>			    
+								     <a href="<?php echo home_url('/page-sitemap'); ?>">Mappa del sito</a>
+		                         <?php } ?>
+		
+								<a href="<?php echo site_url('/servizi'); ?>">Servizi</a>
+
+
+					      	<?php
+							    wp_redirect(dci_get_option("url_homesolopertrasparenza", "Trasparenza"));
+							    exit;
+							}?>
+		  
 
 						
-						   
-		    
-						<a href="<?php echo site_url('/servizi'); ?>">Servizi</a>
-			          
 						<a id="area_personale_admin" href="<?php echo get_admin_url(); ?>">Area Riservata</a>
 								                      
 				
 
-			  <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
+			         <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row" style="float: right;">
 	                            <li class="list-inline-item d-flex">
 	                                <small>  © <?php echo dci_get_option("nome_comune"); ?>                                        
 					 <?php
