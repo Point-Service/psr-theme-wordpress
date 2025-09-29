@@ -10,14 +10,14 @@
 
 get_header();
 
-$prefix = '_dci_elemento_trasparenza_';
-var_dump( dci_get_option( $prefix . 'ck_solotrasparenza_esterna', "trasparenza" ) );
 
-
-
-
+//OPZIONE PER CHI SOLO LA TRASPARENZA CON NOI
 if ( dci_get_option("ck_solotrasparenzaesterna", "Trasparenza") === 'true' ) {
-    echo 'dddd';
+		// Reindirizzamento alla nuova home
+		if ( is_front_page() ) {
+		    wp_redirect( 'https://comune.antillo.me.it' );
+		    exit; // Assicurati che il codice si fermi dopo il redirect
+		}
 }
 
 
@@ -111,6 +111,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
