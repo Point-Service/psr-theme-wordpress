@@ -194,16 +194,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 <?php
 
-// Recupera l'opzione della trasparenza esterna
-$solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
 
-// Se è attiva la trasparenza esterna, non visualizzare questi elementi
-if ($solotrasparenza !== 'true') {
-
-
-            get_template_part("template-parts/common/valuta-servizio");
-            get_template_part("template-parts/common/assistenza-contatti");
-    }
 
 
 
@@ -217,5 +208,6 @@ get_footer();
         }, 100);
     });
 </script>
+
 
 
