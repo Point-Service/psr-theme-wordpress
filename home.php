@@ -15,7 +15,7 @@ get_header();
 if ( dci_get_option("ck_solotrasparenzaesterna", "Trasparenza") === 'true' ) {
 		// Reindirizzamento alla nuova home
 		if ( is_front_page() ) {
-		    wp_redirect( 'https://comune.antillo.me.it' );
+		    wp_redirect( ci_get_option("url_homesolopertrasparenza", "Trasparenza") );
 		    exit; // Assicurati che il codice si fermi dopo il redirect
 		}
 }
@@ -111,6 +111,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
