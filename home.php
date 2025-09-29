@@ -12,18 +12,13 @@ get_header();
 
 
 //OPZIONE PER CHI SOLO LA TRASPARENZA CON NOI
-if ( dci_get_option("ck_solotrasparenzaesterna", "Trasparenza") === 'true' ) {
-		// Reindirizzamento alla nuova home
-		if ( is_front_page() ) {
-		    wp_redirect( ci_get_option("url_homesolopertrasparenza", "Trasparenza") );
-		    exit; // Assicurati che il codice si fermi dopo il redirect
-		}
+
+if ( dci_get_option("ck_solotrasparenza_esterna", "Trasparenza") === 'true' ) {
+        if ( is_front_page() ) {
+            wp_redirect( dci_get_option("url_homesolopertrasparenza", "Trasparenza") );
+            exit;
+        }
 }
-
-
-
-
-
 
 
 ?>
@@ -111,6 +106,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
