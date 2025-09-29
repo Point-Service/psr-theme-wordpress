@@ -8,11 +8,14 @@
  */
 	
 
+$solotrasparenza = filter_var(dci_get_option("ck_solotrasparenza_esterna", "Trasparenza"), FILTER_VALIDATE_BOOLEAN);
+echo $solotrasparenza;
+
+
+
+
+
 get_header();
-
-
-
-
 
 
 ?>
@@ -100,6 +103,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
