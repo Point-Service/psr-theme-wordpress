@@ -10,18 +10,6 @@
  */
 $theme_locations = get_nav_menu_locations();
 $current_group = dci_get_current_group();
-
-$ck_esterno = get_option('ck_solotrasparenzaesterna');
-echo $ck_esterno;
-
-if ($ck_esterno === 'true') {
-    $home_url_custom = 'https://www.comune.antillo.me.it';
-} else {
-    $home_url_custom = home_url();
-}
-
-
-
 ?>
 <!doctype html>
 <html lang="it">
@@ -51,7 +39,7 @@ if ($ck_esterno === 'true') {
             <div class="it-header-center-content-wrapper">
               <div class="it-brand-wrapper">
                 <a 
-                href="<?php echo esc_url($home_url_custom); ?>" 
+                href="<?php echo home_url(); ?>" 
                 <?php if(!is_front_page()) echo 'title="Vai alla Homepage"'; ?>>
                     <div class="it-brand-text d-flex align-items-center">
                       <?php get_template_part("template-parts/common/logo"); ?>
@@ -322,4 +310,3 @@ if(!is_user_logged_in())
   }
 }
 </style>
-
