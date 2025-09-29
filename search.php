@@ -33,7 +33,7 @@ if ($solotrasparenza === 'true') {
         wp_redirect($redirect_url);
         exit;
     }
-
+}
 
 
 
