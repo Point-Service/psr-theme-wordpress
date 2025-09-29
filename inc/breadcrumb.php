@@ -522,8 +522,8 @@ class Breadcrumb_Trail {
 		    
 
 				   if (get_post_type() == 'elemento_trasparenza') {
-					    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-					
+					   $this->items[] = "<a href='" . esc_url( home_url('amministrazione-trasparente') ) . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+					   
 					    // Recupera i termini associati al post nella tassonomia 'tipi_cat_amm_trasp'
 					    $terms = get_the_terms(get_the_ID(), 'tipi_cat_amm_trasp');
 					    if ($terms) {
