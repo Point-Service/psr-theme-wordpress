@@ -1004,7 +1004,7 @@ class Breadcrumb_Trail {
 			    
                     else if (is_tax(array("elemento_trasparenza"))){
 			//$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
-                        $this->items[] =  "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+                          $this->items[] = "<a href='" . esc_url(home_url('index.php/amministrazione-trasparente') ) . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		
