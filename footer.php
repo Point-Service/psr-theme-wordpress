@@ -217,27 +217,21 @@
 
 			    
 				          <?php
-						     /**
-	                             Se trovo più di 3 caratteri nel modulo Footer/Mappa del sito richiamo quel link, altrimenti indirizzo al link del plugin XML Sitemap Generator for Google
-						      */
-
-							//Se il portale gestisce solo la nostra Trasparenza in modo esterno, nascondi i link.
+							// Se il portale gestisce solo la nostra Trasparenza in modo esterno, nascondi i link.
 							$solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
-							if ($solotrasparenza!=='true') {
-	                       ?>	
-		                         <?php if (strlen(dci_get_option("sitemap",'footer')) > 3) {  ?>
-						              <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>				
-								  <?php } 
-					                 else 
-					              { ?>			    
-								     <a href="<?php echo home_url('/page-sitemap'); ?>">Mappa del sito</a>
-		                         <?php } ?>
-		
-								<a href="<?php echo site_url('/servizi'); ?>">Servizi</a>
-
-
-					      	<?php}?>
-		  
+							
+							if ($solotrasparenza !== 'true') :
+							    $custom_sitemap_url = dci_get_option("sitemap", 'footer');
+							    $has_custom_sitemap = strlen(trim($custom_sitemap_url)) > 3;
+							    ?>
+							    
+							    <a target="_blank" href="<?php echo esc_url($has_custom_sitemap ? $custom_sitemap_url : home_url('/page-sitemap')); ?>">
+							        Mappa del sito
+							    </a>
+							
+							    <a href="<?php echo esc_url(site_url('/servizi')); ?>">Servizi</a>
+							
+							<?php endif; ?>
 
 						
 						<a id="area_personale_admin" href="<?php echo get_admin_url(); ?>">Area Riservata</a>
