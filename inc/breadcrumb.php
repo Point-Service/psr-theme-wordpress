@@ -981,8 +981,8 @@ class Breadcrumb_Trail {
                     }
 		
   		  else if (is_tax(array("tipi_cat_amm_trasp"))){
-			    $this->items[] = "<a href='" . home_url("amministrazione-trasparente") . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
 			
+			    $this->items[] = "<a href='" . esc_url(home_url('index.php/amministrazione-trasparente') ) . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
 			    $term = get_queried_object();
 			    if ($term instanceof WP_Term) {
 			        $ancestors = get_ancestors($term->term_id, $term->taxonomy);
