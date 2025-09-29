@@ -9,12 +9,11 @@
 	
 
 
+//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
 $solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
-
 if ($solotrasparenza==='true') {
     wp_redirect(dci_get_option("url_homesolopertrasparenza", "Trasparenza"));
     exit;
-
 }
 
 
@@ -107,6 +106,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
