@@ -141,7 +141,7 @@ function dci_register_pagina_trasparenza_options()
     ));
 
          $trasparenza_options->add_field(array(
-        'id'      => $prefix . 'ck_solotrasparenza_esterna',
+        'id'      => $prefix . 'ck_solotrasparenzaesterna',
         'name'    => __('Abilita l opzione per la gestione esterna della Trasparenza.', 'design_comuni_italia'),
         'desc'    => __('Con questa opzione abiliti e disattivi parte del portale per la gestione solo della trasparenza.', 'design_comuni_italia'),
         'type'    => 'radio_inline',
@@ -156,6 +156,7 @@ function dci_register_pagina_trasparenza_options()
     ));
     
 }?>
+
 
 
 
