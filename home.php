@@ -13,6 +13,8 @@ get_header();
 
 //OPZIONE PER CHI SOLO LA TRASPARENZA CON NOI
 
+var_dump(dci_get_option("ck_solotrasparenza_esterna", "Trasparenza"));
+var_dump(filter_var(dci_get_option("ck_solotrasparenza_esterna", "Trasparenza"), FILTER_VALIDATE_BOOLEAN));
 
 
 if ( filter_var(dci_get_option("ck_solotrasparenza_esterna", "Trasparenza"), True) ) {
@@ -110,6 +112,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
