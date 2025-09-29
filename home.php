@@ -15,7 +15,7 @@ get_header();
 
 
 
-echo dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
+echo dci_get_option("ck_solotrasparenzaesterna");
 
 if ( dci_get_option("ck_solotrasparenzaesterna", "Trasparenza") === 'true' ) {
     echo 'dddd';
@@ -112,6 +112,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
