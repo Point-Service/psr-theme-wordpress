@@ -223,7 +223,7 @@
 
 							//Se il portale gestisce solo la nostra Trasparenza in modo esterno, nascondi i link.
 							$solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
-							if ($solotrasparenza==='true') {
+							if ($solotrasparenza!=='true') {
 	                       ?>	
 		                         <?php if (strlen(dci_get_option("sitemap",'footer')) > 3) {  ?>
 						              <a target="_blank" href="<?php echo dci_get_option("sitemap",'footer'); ?>">Mappa del sito</a>				
@@ -236,10 +236,7 @@
 								<a href="<?php echo site_url('/servizi'); ?>">Servizi</a>
 
 
-					      	<?php
-							    wp_redirect(dci_get_option("url_homesolopertrasparenza", "Trasparenza"));
-							    exit;
-							}?>
+					      	<?php}?>
 		  
 
 						
