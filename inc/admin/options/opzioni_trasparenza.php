@@ -145,17 +145,18 @@ function dci_register_pagina_trasparenza_options()
         'name'    => __('Abilita l opzione per la gestione esterna della Trasparenza.', 'design_comuni_italia'),
         'desc'    => __('Con questa opzione abiliti e disattivi parte del portale per la gestione solo della trasparenza.', 'design_comuni_italia'),
         'type'    => 'radio_inline',
-        'default' => 'true',
+        'default' => 'false',
         'options' => array(
             'true'  => __('Sì', 'design_comuni_italia'),
             'false' => __('No', 'design_comuni_italia'),
         ),
         'attributes' => array(
-            'data-conditional-value' => 'true',
+            'data-conditional-value' => 'false',
         ),
     ));
     
 }?>
+
 
 
 
