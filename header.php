@@ -10,6 +10,18 @@
  */
 $theme_locations = get_nav_menu_locations();
 $current_group = dci_get_current_group();
+
+$ck_esterno = get_option('ck_solotrasparenzaesterna');
+echo $ck_esterno;
+
+if ($ck_esterno === 'true') {
+    $home_url_custom = 'https://www.comune.antillo.me.it';
+} else {
+    $home_url_custom = home_url();
+}
+
+
+
 ?>
 <!doctype html>
 <html lang="it">
