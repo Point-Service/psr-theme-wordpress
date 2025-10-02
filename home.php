@@ -11,6 +11,7 @@
 function dci_maybe_redirect_portale_esterno() {
     // Prendi l’opzione
     $portale = dci_get_option("ck_portalesoloperusoesterno", "header");
+	echo $portale;
     // Normalizza / controlla
     if ($portale == 'true') {
         $url = dci_get_option("url_homesoloesterno", "header");
@@ -114,6 +115,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
