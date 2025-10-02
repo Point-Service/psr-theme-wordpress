@@ -140,33 +140,9 @@ function dci_register_pagina_trasparenza_options()
         'type'  => 'title',
     ));
 
-    $trasparenza_options->add_field(array(
-        'id'      => $prefix . 'ck_solotrasparenzaesterna',
-        'name'    => __('Abilita l opzione per la gestione esterna della Trasparenza.', 'design_comuni_italia'),
-        'desc'    => __('Con questa opzione abiliti e disattivi parte del portale per la gestione solo della trasparenza.', 'design_comuni_italia'),
-        'type'    => 'radio_inline',
-        'default' => 'false',
-        'options' => array(
-            'true'  => __('Sì', 'design_comuni_italia'),
-            'false' => __('No', 'design_comuni_italia'),
-        ),
-        'attributes' => array(
-            'data-conditional-value' => 'false',
-        ),
-    ));
 
-
-        $trasparenza_options->add_field( array(
-        'id'    => $prefix . 'url_homesolopertrasparenza',
-        'name'  => __( 'Url Home Page Personalizzato', 'design_comuni_italia' ),
-        'desc'  => __( 'Inserisci url del portale del comune in modo da indirizzare allo loro homepage.' , 'design_comuni_italia' ),
-        'type'  => 'text_url',
-        'attributes' => array(
-            'required' => 'required'
-        ),
-    ));
-    
 }?>
+
 
 
 
