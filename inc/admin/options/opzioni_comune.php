@@ -221,7 +221,7 @@ function dci_register_comune_options(){
     $header_options->add_field( array(
         'id'    => $prefix . 'portalesoloperusoesterno',
         'name'  => __('<br><br><br>Portale personalizzato per uso Esterno. <br> (Questa sezione viene visualizzata solo agli utenti Administrator.)', 'design_comuni_italia'),
-        'desc'  => __('Opzione per chi usa solo la nostra trasparenza e pnnr https://amministrazionetrasparente.servizipa.cloud.<br><br>', 'design_comuni_italia'),
+        'desc'  => __('Opzione per chi usa solo la nostra trasparenza e pnnr https://amministrazionetrasparente.servizipa.cloud.<br><br><br><br>', 'design_comuni_italia'),
         'type'  => 'title',
         'show_on_cb' => 'dci_show_only_admin_field',
     ));
