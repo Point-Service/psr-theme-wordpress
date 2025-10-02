@@ -58,9 +58,8 @@ get_header();
 
 		           <?php 
 			//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
-			$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno", "header");
-			
-			// Se è attiva la trasparenza esterna, non visualizzare questi elementi
+			$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
+
 			if ($portalesoloperusoesterno !== 'true') {				
 			
 			            get_template_part("template-parts/common/valuta-servizio");
@@ -76,4 +75,5 @@ get_header();
 
 <?php
 get_footer();
+
 
