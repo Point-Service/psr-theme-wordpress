@@ -8,10 +8,10 @@
  */
 	
 
-
-function dci_redirect_if_portale_solo_esterno() {
+function dci_maybe_redirect_portale_esterno() {
+    // Prendi l’opzione
     $portale = dci_get_option("ck_portalesoloperusoesterno", "header");
-
+    // Normalizza / controlla
     if ($portale == 'true') {
         $url = dci_get_option("url_homesoloesterno", "header");
         if (!empty($url)) {
@@ -20,7 +20,8 @@ function dci_redirect_if_portale_solo_esterno() {
         }
     }
 }
-add_action('template_redirect', 'dci_redirect_if_portale_solo_esterno');
+add_action('template_redirect', 'dci_maybe_redirect_portale_esterno');
+
 
 
 
@@ -113,6 +114,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
