@@ -219,8 +219,8 @@ function dci_register_comune_options(){
 
    $header_options->add_field( array(
         'id'    => $prefix . 'portalesoloperusoesterno1',
-        'name'  => __('   ', 'design_comuni_italia'),
-        'desc'  => __('   ', 'design_comuni_italia'),
+        'name'  => __('OPZIONE SOLO PER UTENTE ADMINISTRATOR', 'design_comuni_italia'),
+        'desc'  => __('Questa sezione viene sisualizzata solo agli utenti Administrator.', 'design_comuni_italia'),
         'type'  => 'title',
         'show_on_cb' => 'dci_show_only_admin_field',  // aggiunto
     ));
