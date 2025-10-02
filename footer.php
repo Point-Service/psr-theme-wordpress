@@ -217,10 +217,12 @@
 
 			    
 				          <?php
-							// Se il portale gestisce solo la nostra Trasparenza in modo esterno, nascondi i link.
-							$solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
+
+							//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
+							$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno", "header");
+
 							
-							if ($solotrasparenza !== 'true') :
+							if ($portalesoloperusoesterno !== 'true') :
 							    $custom_sitemap_url = dci_get_option("sitemap", 'footer');
 							    $has_custom_sitemap = strlen(trim($custom_sitemap_url)) > 3;
 							    ?>
