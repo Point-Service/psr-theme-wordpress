@@ -12,7 +12,7 @@
 //Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
 $portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno", "header");
 if ($portalesoloperusoesterno==='true') {
-    wp_redirect(dci_get_option("url_homeportalesoloperusoesterno", "header"));
+    wp_redirect(dci_get_option("url_homesoloesterno", "header"));
     exit;
 }
 
@@ -106,6 +106,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
