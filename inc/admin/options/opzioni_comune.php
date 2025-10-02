@@ -218,6 +218,13 @@ function dci_register_comune_options(){
     ));
 
   $header_options->add_field(array(
+        'id'    => $prefix . 'portalesoloperusoesterno1',
+        'name'  => __('', 'design_comuni_italia'),
+        'desc'  => __('', 'design_comuni_italia'),
+        'type'  => 'title',
+    ));
+    
+  $header_options->add_field(array(
         'id'    => $prefix . 'portalesoloperusoesterno',
         'name'  => __('Portale personalizzato per uso Esterno.', 'design_comuni_italia'),
         'desc'  => __('Opzione per chi usa solo la nostra trasparenza e pnnr https://amministrazionetrasparente.servizipa.cloud.', 'design_comuni_italia'),
@@ -250,8 +257,7 @@ function dci_register_comune_options(){
             'required' => 'required'
         ),
     ));
-    
 
-  
+    
 }
 add_action('cmb2_admin_init', 'dci_register_comune_options');
