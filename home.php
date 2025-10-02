@@ -12,7 +12,7 @@ $portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
 
 
 if ($portalesoloperusoesterno==='true') {
-    wp_redirect(dci_get_option("url_homesolopertrasparenza"));
+    wp_redirect(dci_get_option("url_homesoloesterno"));
     exit;
 }
 
@@ -108,6 +108,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
