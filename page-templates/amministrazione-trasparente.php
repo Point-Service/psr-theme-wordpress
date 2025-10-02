@@ -72,8 +72,8 @@ get_header();
 			<?php get_template_part("template-parts/amministrazione-trasparente/categorie"); ?>		
 
            <?php 
-			//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
-			$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno", "header");
+				//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
+				$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
 			
 			// Se è attiva la trasparenza esterna, non visualizzare questi elementi
 			if ($portalesoloperusoesterno !== 'true') {				
@@ -93,6 +93,7 @@ get_header();
 
 <?php
 get_footer();?>
+
 
 
 
