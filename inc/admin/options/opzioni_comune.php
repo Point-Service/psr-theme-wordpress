@@ -242,7 +242,7 @@ function dci_register_comune_options(){
 
 
     $header_options->add_field( array(
-        'id'    => $prefix . 'url_homeportalesoloperusoesterno',
+        'id'    => $prefix . 'url_homesoloesterno',
         'name'  => __( 'Url Home Page Personalizzato', 'design_comuni_italia' ),
         'desc'  => __( 'Inserisci url del portale del comune in modo da indirizzare allo loro homepage.' , 'design_comuni_italia' ),
         'type'  => 'text_url',
@@ -252,9 +252,6 @@ function dci_register_comune_options(){
     ));
     
 
-
-
-    
   
 }
 add_action('cmb2_admin_init', 'dci_register_comune_options');
