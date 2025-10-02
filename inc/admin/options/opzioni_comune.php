@@ -219,7 +219,7 @@ function dci_register_comune_options(){
 
   $header_options->add_field(array(
         'id'    => $prefix . 'portalesoloperusoesterno1',
-        'name'  => __('', 'design_comuni_italia'),
+        'name'  => __('*********  ----------- *********', 'design_comuni_italia'),
         'desc'  => __('', 'design_comuni_italia'),
         'type'  => 'title',
     ));
