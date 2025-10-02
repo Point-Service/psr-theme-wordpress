@@ -9,13 +9,19 @@
 	
 
 
-//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
-$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno", "header");
-echo $portalesoloperusoesterno;
-if ($portalesoloperusoesterno==='true') {
-    wp_redirect(dci_get_option("url_homesoloesterno", "header"));
-    exit;
+function dci_redirect_if_portale_solo_esterno() {
+    $portale = dci_get_option("ck_portalesoloperusoesterno", "header");
+
+    if ($portale == 'true') {
+        $url = dci_get_option("url_homesoloesterno", "header");
+        if (!empty($url)) {
+            wp_redirect($url);
+            exit;
+        }
+    }
 }
+add_action('template_redirect', 'dci_redirect_if_portale_solo_esterno');
+
 
 
 
@@ -107,6 +113,7 @@ get_footer();
         object-position: center;
     }
 </style> -->
+
 
 
 
