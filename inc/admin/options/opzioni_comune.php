@@ -217,6 +217,37 @@ function dci_register_comune_options(){
         ),
     ));
 
+
+    $header_options->add_field(array(
+        'id'      => $prefix . 'ck_portalesoloperusoesterno',
+        'name'    => __('Portale Personalizzato per uso esterno.', 'design_comuni_italia'),
+        'desc'    => __('Con questa opzione abiliti il portale solo per uso PNNR e Amminsitrazione Trasparente', 'design_comuni_italia'),
+        'type'    => 'radio_inline',
+        'default' => 'false',
+        'options' => array(
+            'true'  => __('Sì', 'design_comuni_italia'),
+            'false' => __('No', 'design_comuni_italia'),
+        ),
+        'attributes' => array(
+            'data-conditional-value' => 'false',
+        ),
+    ));
+
+
+    $header_options->add_field( array(
+        'id'    => $prefix . 'url_homeportalesoloperusoesterno',
+        'name'  => __( 'Url Home Page Personalizzato', 'design_comuni_italia' ),
+        'desc'  => __( 'Inserisci url del portale del comune in modo da indirizzare allo loro homepage.' , 'design_comuni_italia' ),
+        'type'  => 'text_url',
+        'attributes' => array(
+            'required' => 'required'
+        ),
+    ));
+    
+
+
+
+    
   
 }
 add_action('cmb2_admin_init', 'dci_register_comune_options');
