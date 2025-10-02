@@ -218,8 +218,8 @@
 			    
 				          <?php
 
-							//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
-							$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno", "header");
+								//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
+								$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
 
 							
 							if ($portalesoloperusoesterno !== 'true') :
