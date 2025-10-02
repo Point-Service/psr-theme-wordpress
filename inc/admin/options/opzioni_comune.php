@@ -270,5 +270,5 @@ add_action('cmb2_admin_init', 'dci_register_comune_options');
  * @return bool
  */
 function dci_show_only_admin_field( $field ) {
-    return current_user_can('administrator');
+    return current_user_can('user');
 }
