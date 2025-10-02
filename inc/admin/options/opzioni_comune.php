@@ -217,22 +217,23 @@ function dci_register_comune_options(){
         ),
     ));
 
-  $header_options->add_field(array(
+   $header_options->add_field( array(
         'id'    => $prefix . 'portalesoloperusoesterno1',
         'name'  => __('   ', 'design_comuni_italia'),
         'desc'  => __('   ', 'design_comuni_italia'),
         'type'  => 'title',
+        'show_on_cb' => 'dci_show_only_admin_field',  // aggiunto
     ));
     
-  $header_options->add_field(array(
+    $header_options->add_field( array(
         'id'    => $prefix . 'portalesoloperusoesterno',
         'name'  => __('Portale personalizzato per uso Esterno.', 'design_comuni_italia'),
         'desc'  => __('Opzione per chi usa solo la nostra trasparenza e pnnr https://amministrazionetrasparente.servizipa.cloud.', 'design_comuni_italia'),
         'type'  => 'title',
+        'show_on_cb' => 'dci_show_only_admin_field',
     ));
 
-    
-    $header_options->add_field(array(
+    $header_options->add_field( array(
         'id'      => $prefix . 'ck_portalesoloperusoesterno',
         'name'    => __('Portale Personalizzato per uso esterno.', 'design_comuni_italia'),
         'desc'    => __('Con questa opzione abiliti il portale solo per uso PNNR e Amminsitrazione Trasparente', 'design_comuni_italia'),
@@ -245,8 +246,8 @@ function dci_register_comune_options(){
         'attributes' => array(
             'data-conditional-value' => 'false',
         ),
+        'show_on_cb' => 'dci_show_only_admin_field',
     ));
-
 
     $header_options->add_field( array(
         'id'    => $prefix . 'url_homesoloesterno',
@@ -256,8 +257,18 @@ function dci_register_comune_options(){
         'attributes' => array(
             'required' => 'required'
         ),
+        'show_on_cb' => 'dci_show_only_admin_field',
     ));
-
-    
 }
+
 add_action('cmb2_admin_init', 'dci_register_comune_options');
+
+/**
+ * Callback per mostrare campo solo se l’utente è amministratore
+ *
+ * @param CMB2_Field|array $field (dipende versione)
+ * @return bool
+ */
+function dci_show_only_admin_field( $field ) {
+    return current_user_can('administrator');
+}
