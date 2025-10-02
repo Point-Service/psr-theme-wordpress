@@ -195,11 +195,11 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 <?php
 
 
-// Recupera l'opzione della trasparenza esterna
-$solotrasparenza = dci_get_option("ck_solotrasparenzaesterna", "Trasparenza");
+//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
+$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
 
 // Se è attiva la trasparenza esterna, non visualizzare questi elementi
-if ($solotrasparenza !== 'true') {
+if ($portalesoloperusoesterno !== 'true') {
 
 
             get_template_part("template-parts/common/valuta-servizio");
@@ -217,6 +217,7 @@ get_footer();
         }, 100);
     });
 </script>
+
 
 
 
