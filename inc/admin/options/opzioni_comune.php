@@ -246,9 +246,7 @@ function dci_register_comune_options(){
         'id'    => $prefix . 'url_homesoloesterno',
         'name'  => __( 'Url Home Page Personalizzato', 'design_comuni_italia' ),
         'desc'  => __( 'Inserisci url del portale del comune in modo da indirizzare allo loro homepage.' , 'design_comuni_italia' ),
-        'type'  => 'text_url',
-        'attributes' => array(
-            'required' => 'required'
+        'type'  => 'text_url'
         ),
         'show_on_cb' => 'dci_show_only_admin_field',
     ));
