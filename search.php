@@ -76,6 +76,18 @@ get_header();
                         <span class="">Cerca</span>
                     </button>
                 </div>
+
+
+                <?php	
+                //Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
+                $portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
+                
+                if ($portalesoloperusoesterno==='true') {
+                    exit;
+                }
+                ?>
+
+                
                 <div class="row justify-content-center">
                     <?php get_template_part("template-parts/search/filters"); ?>
                     <div class="col-lg-8 offset-lg-1">
