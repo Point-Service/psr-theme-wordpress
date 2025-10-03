@@ -13,6 +13,27 @@ if ($tipo_terms && !is_wp_error($tipo_terms)) {
     $tipo = null;
 }
 
+$title = get_the_title();					
+// Se il titolo supera i 100 caratteri, lo tronca e aggiunge "..."
+if (strlen($title) > 100) {
+    $title = substr($title, 0, 97) . '...';
+}					
+// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+if (preg_match('/[A-Z]{5,}/', $title)) {
+    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+    $title = ucfirst(strtolower($title));
+}				
+
+if (strlen($nome_misura) > 100) {
+    $nome_misura = substr($nome_misura, 0, 97) . '...';
+}					
+// Controlla se il titolo contiene almeno 5 lettere maiuscole consecutive
+if (preg_match('/[A-Z]{5,}/', $nome_misura)) {
+    // Se sì, lo trasforma in minuscolo con la prima lettera maiuscola
+    $nome_misura = ucfirst(strtolower($nome_misura));
+}			
+
+
 if ($img) {
 ?>
     <div class="col-12 col-md-6 col-xl-4">
@@ -36,10 +57,12 @@ if ($img) {
                     <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                     </div>
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                        <h3 class="h5 card-title u-grey-light"><?php echo $nome_misura ?></h3>
+                        <h3 class="h5 card-title u-grey-light">
+                            <?php echo $title; ?>
+                        </h3>
                     </a>
                     <p class="card-text d-none d-md-block">
-                        <?php echo the_title(); ?>
+                        <?php echo $nome_misura; ?>
                     </p>
                 </div>
                 </div>
@@ -68,10 +91,10 @@ if ($img) {
                                 <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                             </div>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                                <h3 class="h5 card-title u-grey-light"><?php echo $nome_misura; ?></h3>
+                                <h3 class="h5 card-title u-grey-light"><?php echo $title ?></h3>
                             </a>
                             <p class="card-text d-none d-md-block">
-                                <?php echo the_title(); ?>
+                                <?php echo $nome_misura; ?>
                             </p>
                         </div>
                     </div>
