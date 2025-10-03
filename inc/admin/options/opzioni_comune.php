@@ -242,13 +242,13 @@ function dci_register_comune_options(){
         'show_on_cb' => 'dci_show_only_admin_field',
     ));
 
-$header_options->add_field( array(
-    'id'    => $prefix . 'url_homesoloesterno',
-    'name'  => __( 'Url Home Page Personalizzato', 'design_comuni_italia' ),
-    'desc'  => __( 'Inserisci url del portale del comune in modo da indirizzare allo loro homepage.', 'design_comuni_italia' ),
-    'type'  => 'text_url',
-    'show_on_cb' => 'dci_show_only_super_admin_field', // Usa la funzione per mostrare il campo solo al super admin
-));
+        $header_options->add_field( array(
+            'id'    => $prefix . 'url_homesoloesterno',
+            'name'  => __( 'Url Home Page Personalizzato', 'design_comuni_italia' ),
+            'desc'  => __( 'Inserisci url del portale del comune in modo da indirizzare allo loro homepage.', 'design_comuni_italia' ),
+            'type'  => 'text_url',
+            'show_on_cb' => 'dci_show_only_super_admin_field', // Usa la funzione per mostrare il campo solo al super admin
+        ));
 
 }
 
