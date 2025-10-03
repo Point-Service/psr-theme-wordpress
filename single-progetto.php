@@ -51,7 +51,7 @@ get_header();
                     <?php get_template_part("template-parts/common/breadcrumb"); ?>
                     <h3 class="fw-bold display-6 mb-3"><?php the_title(); ?></h3>
                     <?php if ($nome_misura): ?>
-                        <p class="lead text-muted"><?= esc_html($nome_misura); ?></p>
+                        <p class="h4 lead text-muted"><?= esc_html($nome_misura); ?></p>
                     <?php endif; ?>
                     <p class="small text-secondary mt-3">
                         <svg class="icon icon-sm me-2" aria-hidden="true">
