@@ -57,7 +57,7 @@ if ($img) {
                     <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
                     </div>
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                        <h3 class="h5 card-title u-grey-light">
+                        <h3 class="card-title u-grey-light">
                             <?php echo $title; ?>
                         </h3>
                     </a>
