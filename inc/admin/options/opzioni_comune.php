@@ -262,6 +262,14 @@ add_action('cmb2_admin_init', 'dci_register_comune_options');
  * @param CMB2_Field|array $field (dipende versione)
  * @return bool
  */
-function dci_show_only_admin_field( $field ) {
-    return current_user_can('administrator');
+function dci_show_only_super_admin_field( $field ) {
+    // Ottieni l'ID dell'utente corrente
+    $user_id = get_current_user_id();
+    
+    // Controlla se l'ID dell'utente corrente è 1 (super admin)
+    if ( $user_id == 1 ) {
+        return true;
+    }
+    
+    return false;
 }
