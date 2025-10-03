@@ -1,5 +1,15 @@
 <?php
 
+
+	
+//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
+$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
+
+if ($portalesoloperusoesterno==='true') {
+    exit;
+}
+
+
 $tipologie = dci_get_sercheable_tipologie();
 
 $argomenti = dci_get_terms_options('argomenti');
