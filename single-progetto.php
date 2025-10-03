@@ -49,7 +49,7 @@ get_header();
             <div class="row align-items-center mb-4">
                 <div class="col-lg-8">
                     <?php get_template_part("template-parts/common/breadcrumb"); ?>
-                    <h2 class="fw-bold display-5 mb-3"><?php the_title(); ?></h2>
+                    <h3 class="fw-bold display-5 mb-3"><?php the_title(); ?></h3>
                     <?php if ($nome_misura): ?>
                         <p class="lead text-muted"><?= esc_html($nome_misura); ?></p>
                     <?php endif; ?>
