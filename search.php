@@ -78,63 +78,57 @@ get_header();
                 </div>
 
 
-             <?php	
-// Se il portale gestisce solo la nostra Trasparenza in modo esterno, non mostra i risultati di ricerca
-$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
+                        <div class="row justify-content-center">
+                            <?php get_template_part("template-parts/search/filters"); ?>
+                            <div class="col-lg-8 offset-lg-1">
+                                <div class="d-flex justify-content-between align-items-center border-bottom border-light pb-3 mb-2">
+                                    <h2 class="visually-hidden" id="search-result">risultati di ricerca</h2>
+                                    <span class="search-results">
+                                        <strong><?php echo $wp_query->found_posts; ?></strong> Risultati
+                                    </span>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-categories" class="btn p-0 pe-2 d-lg-none">
+                                        <span class="rounded-icon">
+                                            <svg class="icon icon-primary icon-xs mb-1" aria-hidden="true">
+                                                <use href="#it-funnel"></use>
+                                            </svg> 
+                                        </span>
+                                        <span class="t-primary title-xsmall-semi-bold ms-1">Filtra</span>
+                                    </button>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#" class="btn p-0 pe-2 d-none d-lg-block"
+                                        onclick="location.href='?s=<?php echo get_search_query(); ?>'">
+                                        <span class="title-xsmall-semi-bold ms-1">Rimuovi tutti filtri</span>
+                                    </button>
+                                </div>
+                                <div class="container p-0">
+                                    <div class="row flex-column-reverse flex-lg-row">
+                                        <div class="col-12 pt-3">
+                                            <?php if ( have_posts() ) : ?>
+                                                <div id="load-more">
+                                                    <?php
+                                                    while ( have_posts() ) :
+                                                        the_post();
+                    
+                                                        $load_card_type = 'global-search';
+                                                        get_template_part("template-parts/search/item");  
+                                                    endwhile;
+                                                    ?> 
+                                                </div>  
+                                                <?php get_template_part("template-parts/search/more-results"); ?>
+                                            <?php else : ?>
+                                                <?php get_template_part( 'template-parts/content', 'none' ); ?>
+                                            <?php endif; ?>
+                    
+                                            <?php 
+                                            if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) {   
+                                                get_template_part("template-parts/search/item_maggioli");                                                    
+                                            }
+                                            ?> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-if ($portalesoloperusoesterno !== 'true') :
-?>
-    <div class="row justify-content-center">
-        <?php get_template_part("template-parts/search/filters"); ?>
-        <div class="col-lg-8 offset-lg-1">
-            <div class="d-flex justify-content-between align-items-center border-bottom border-light pb-3 mb-2">
-                <h2 class="visually-hidden" id="search-result">risultati di ricerca</h2>
-                <span class="search-results">
-                    <strong><?php echo $wp_query->found_posts; ?></strong> Risultati
-                </span>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-categories" class="btn p-0 pe-2 d-lg-none">
-                    <span class="rounded-icon">
-                        <svg class="icon icon-primary icon-xs mb-1" aria-hidden="true">
-                            <use href="#it-funnel"></use>
-                        </svg> 
-                    </span>
-                    <span class="t-primary title-xsmall-semi-bold ms-1">Filtra</span>
-                </button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#" class="btn p-0 pe-2 d-none d-lg-block"
-                    onclick="location.href='?s=<?php echo get_search_query(); ?>'">
-                    <span class="title-xsmall-semi-bold ms-1">Rimuovi tutti filtri</span>
-                </button>
-            </div>
-            <div class="container p-0">
-                <div class="row flex-column-reverse flex-lg-row">
-                    <div class="col-12 pt-3">
-                        <?php if ( have_posts() ) : ?>
-                            <div id="load-more">
-                                <?php
-                                while ( have_posts() ) :
-                                    the_post();
-
-                                    $load_card_type = 'global-search';
-                                    get_template_part("template-parts/search/item");  
-                                endwhile;
-                                ?> 
-                            </div>  
-                            <?php get_template_part("template-parts/search/more-results"); ?>
-                        <?php else : ?>
-                            <?php get_template_part( 'template-parts/content', 'none' ); ?>
-                        <?php endif; ?>
-
-                        <?php 
-                        if (strlen(dci_get_option('servizi_maggioli_url', 'servizi')) > 5) {   
-                            get_template_part("template-parts/search/item_maggioli");                                                    
-                        }
-                        ?> 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>
 
             </form>
         </div>  
