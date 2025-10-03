@@ -100,12 +100,12 @@ function dci_add_Progetto_metaboxes() {
 
     $cmb_apertura->add_field( array(
         'id' => $prefix . 'a_cura_di',
-        'name'    => __( 'A cura di *', 'design_comuni_italia' ),
+        'name'    => __( 'A cura di:', 'design_comuni_italia' ),
         'desc' => __( 'Ufficio che ha curato il progetto PNRR' , 'design_comuni_italia' ),
         'type'    => 'pw_multiselect',
         'options' => dci_get_posts_options('unita_organizzativa'),
         'attributes'    => array(
-            'required'    => 'required',
+            // 'required'    => 'required',
             'placeholder' =>  __( 'Seleziona le unità organizzative', 'design_comuni_italia' ),
         ),
     ) );
@@ -248,7 +248,7 @@ function dci_add_Progetto_metaboxes() {
 
     $cmb_avanzamento->add_field(array(
         'id' => $prefix . 'avanzamento',
-        'name'        => __( 'Avanzaqmento del progetto *', 'design_comuni_italia' ),
+        'name'        => __( 'Avanzamento del progetto *', 'design_comuni_italia' ),
         'type' => 'text',
     ));
 
