@@ -12,9 +12,9 @@ global $load_card_type;
 
 
 //Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
-$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno", "header");
+$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
 
-if ($portalesoloperusoesterno === 'true') {
+if ($portalesoloperusoesterno==='true') {
 
     // Se siamo sulla pagina di ricerca (quindi c'è un parametro ?s=...)
     if ( isset($_GET['s']) && !is_admin() ) {
