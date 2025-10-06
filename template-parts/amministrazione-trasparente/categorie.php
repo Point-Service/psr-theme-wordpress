@@ -36,10 +36,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
 <style>
     
-:root {
-  --main-color-trasparenza: #0D5982; /* colore blu header */
-  --main-color-light-trasparenza: #3B7FBF; /* versione schiarita */
-}
 
 /* TITOLO */
 .title-custom {
@@ -335,6 +331,7 @@ function updateToggleAllButton() {
         </form>
     </div>
 </main>
+
 
 
 
