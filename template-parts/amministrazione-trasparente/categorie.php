@@ -335,14 +335,34 @@ function updateToggleAllButton() {
 
 
 <script>
-  // Trova l'elemento
+  // Trova l'elemento da cui leggere il colore
   const slimWrapper = document.querySelector('.it-header-center-wrapper');
 
-  // Se esiste, leggi il colore e impostalo come variabile
   if (slimWrapper) {
     const bgColor = getComputedStyle(slimWrapper).backgroundColor;
+
+    // Imposta --main-color-trasparenza
     document.documentElement.style.setProperty('--main-color-trasparenza', bgColor);
+
+    // Funzione per simulare color-mix con white
+    function mixWithWhite(color, percentage = 85) {
+      const rgb = color.match(/\d+/g).map(Number);
+      if (rgb.length < 3) return color;
+
+      const white = 255;
+      const mix = (channel) => Math.round((channel * (percentage / 100)) + (white * (1 - percentage / 100)));
+
+      return `rgb(${mix(rgb[0])}, ${mix(rgb[1])}, ${mix(rgb[2])})`;
+    }
+
+    // Calcola il colore schiarito
+    const lightColor = mixWithWhite(bgColor, 85);
+
+    // Imposta --main-color-light-trasparenza
+    document.documentElement.style.setProperty('--main-color-light-trasparenza', lightColor);
   }
 </script>
+
+
 
 
