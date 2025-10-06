@@ -35,16 +35,16 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 ?>
 
 <style>
-/* Definisco la variabile principale basata sul colore header */
+    
 :root {
-  --main-color: #0D5982; /* colore blu header */
-  --main-color-light: #3B7FBF; /* versione schiarita */
+  --main-color-trasparenza: #0D5982; /* colore blu header */
+  --main-color-light-trasparenza: #3B7FBF; /* versione schiarita */
 }
 
 /* TITOLO */
 .title-custom {
     font-size: 22px;
-    background-color: white;               /* sfondo bianco */
+    background-color: white;
     padding: 14px 20px;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -57,9 +57,8 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     margin-bottom: 8px;
 }
 
-/* Hover: sfondo più chiaro, testo bianco */
 .title-custom:hover {
-    background-color: color-mix(in srgb, var(--main-color) 95%, white);
+    background-color: color-mix(in srgb, var(--main-color-trasparenza) 85%, white);
     color: white;
 }
 
@@ -71,7 +70,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     line-height: 1.6;
     color: #333;
     background-color: #fafafa;
-    border-left: 3px solid var(--main-color); /* bordo sinistro colore principale */
+    border-left: 3px solid var(--main-color-trasparenza);
     border-radius: 0 6px 6px 0;
     margin-bottom: 18px;
 }
@@ -80,7 +79,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 .content a {
     display: block;
     margin: 10px 0;
-    color: var(--main-color);
+    color: var(--main-color-trasparenza);
     text-decoration: none;
     padding-left: 20px;
     font-size: 18px;
@@ -89,8 +88,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     transition: color 0.3s ease;
 }
 
-
-/* Freccia prima del link */
 .content a::before {
     content: '▶';
     position: absolute;
@@ -98,20 +95,18 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     top: 50%;
     transform: translateY(-50%);
     font-size: 14px;
-    color: var(--main-color);
+    color: var(--main-color-trasparenza);
     transition: transform 0.3s ease;
-} 
+}
 
-
-/* Hover link e freccia */
 .content a:hover {
     text-decoration: underline;
-    color: var(--main-color-light);
+    color: var(--main-color-light-trasparenza);
 }
 
 .content a:hover::before {
     transform: translateY(-50%) rotate(90deg);
-    color: var(--main-color-light);
+    color: var(--main-color-light-trasparenza);
 }
 
 /* LISTE INTERNE */
@@ -140,7 +135,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 }
 
 .sub-sub-list a:hover {
-    color: var(--main-color);
+    color: var(--main-color-trasparenza);
     text-decoration: underline;
 }
 
@@ -169,7 +164,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 }
 
 .sub-sub-list .sub-sub-list a:hover {
-    color: var(--main-color);
+    color: var(--main-color-trasparenza);
     text-decoration: underline;
 }
 
@@ -186,17 +181,17 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     padding: 6px 18px;
     cursor: pointer;
     border-radius: 5px;
-    border: 1.5px solid var(--main-color);
+    border: 1.5px solid var(--main-color-trasparenza);
     background-color: transparent;
-    color: var(--main-color);
+    color: var(--main-color-trasparenza);
     font-weight: 600;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     user-select: none;
 }
 
 #toggle-all-btn:hover {
-    background-color: var(--main-color);
-    border-color: var(--main-color-light);
+    background-color: var(--main-color-trasparenza);
+    border-color: var(--main-color-light-trasparenza);
     color: white !important;
 }
 
@@ -210,6 +205,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     color: #222;
     letter-spacing: 0.03em;
 }
+
 
 
 </style>
@@ -339,5 +335,6 @@ function updateToggleAllButton() {
         </form>
     </div>
 </main>
+
 
 
