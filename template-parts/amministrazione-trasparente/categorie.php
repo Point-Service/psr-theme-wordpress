@@ -334,4 +334,14 @@ function updateToggleAllButton() {
 
 
 
+<script>
+  // Trova l'elemento
+  const slimWrapper = document.querySelector('.it-header-slim-wrapper.d-none.d-lg-block');
+
+  // Se esiste, leggi il colore e impostalo come variabile
+  if (slimWrapper) {
+    const bgColor = getComputedStyle(slimWrapper).backgroundColor;
+    document.documentElement.style.setProperty('--main-color-trasparenza', bgColor);
+  }
+</script>
 
