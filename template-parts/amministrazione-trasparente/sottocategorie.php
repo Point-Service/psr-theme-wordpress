@@ -18,7 +18,7 @@ if ( ! empty( $categoria_genitore ) && ! is_wp_error( $categoria_genitore ) ) {
 }
 
 // Verifica se ci sono sottocategorie prima di iniziare il markup HTML
-if ( ! empty( $sottocategorie ) ) { ?>
+if ( ! empty( $sottocategorie ) ) { ?>vvvvvvvvvvvvvvvvvvvvvvvvv
 <div class="container py-5" id="categorie">
     <div class="row g-2">           
         <?php foreach ( $sottocategorie as $sottocategoria ) { 
@@ -39,4 +39,5 @@ if ( ! empty( $sottocategorie ) ) { ?>
         <?php } } ?>
     </div>
 </div>
+
 <?php } ?>
