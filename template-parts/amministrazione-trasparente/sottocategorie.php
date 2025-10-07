@@ -29,7 +29,7 @@ if ( ! empty( $sottocategorie ) ) { ?>
                   <div class="card shadow-sm rounded">
                     <div class="card-body">
                         <a class="text-decoration-none" href="<?php echo get_term_link($sottocategoria->term_id); ?>" data-element="news-category-link"><h4 class="card-title t-primary title-xlarge"><?php echo ucfirst($sottocategoria->name); ?></h4></a>
-                        <p class="h4 titillium text-paragraph mb-0 description">
+                        <p class="titillium text-paragraph mb-0 description">
                             <?php echo $sottocategoria->description; ?>
                         </p>
                     </div>
@@ -41,5 +41,6 @@ if ( ! empty( $sottocategorie ) ) { ?>
 </div>
 
 <?php } ?>
+
 
 
