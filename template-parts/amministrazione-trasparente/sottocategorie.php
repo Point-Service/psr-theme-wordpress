@@ -18,7 +18,7 @@ if ( ! empty( $categoria_genitore ) && ! is_wp_error( $categoria_genitore ) ) {
 }
 
 // Verifica se ci sono sottocategorie prima di iniziare il markup HTML
-if ( ! empty( $sottocategorie ) ) { ?>vvvvvvvvvvvvvvvvvvvvvvvvv
+if ( ! empty( $sottocategorie ) ) { ?>
 <div class="container py-5" id="categorie">
     <div class="row g-2">           
         <?php foreach ( $sottocategorie as $sottocategoria ) { 
@@ -29,7 +29,7 @@ if ( ! empty( $sottocategorie ) ) { ?>vvvvvvvvvvvvvvvvvvvvvvvvv
                   <div class="card shadow-sm rounded">
                     <div class="card-body">
                         <a class="text-decoration-none" href="<?php echo get_term_link($sottocategoria->term_id); ?>" data-element="news-category-link"><h3 class="card-title t-primary title-xlarge"><?php echo ucfirst($sottocategoria->name); ?></h3></a>
-                        <p class="titillium text-paragraph mb-0 description">
+                        <p class="h4 titillium text-paragraph mb-0 description">
                             <?php echo $sottocategoria->description; ?>
                         </p>
                     </div>
@@ -41,3 +41,4 @@ if ( ! empty( $sottocategorie ) ) { ?>vvvvvvvvvvvvvvvvvvvvvvvvv
 </div>
 
 <?php } ?>
+
