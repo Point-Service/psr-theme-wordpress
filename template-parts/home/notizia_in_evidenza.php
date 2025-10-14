@@ -51,7 +51,7 @@ if (is_array($post_ids) && count($post_ids) > 1):
                         echo preg_match('/[A-Z]{5,}/', $truncated_title) ? ucfirst(strtolower($truncated_title)) : $truncated_title; ?>
                     </h3>
                   </a>
-ssssssssssssssssssssssssssssssssssssss
+
                     <p class="mb-2 font-serif">
                       <?php
                         if(mb_strlen($descrizione_breve) > 150){
@@ -153,7 +153,7 @@ elseif (!empty($post_ids)):
               </span>
             <?php endif; ?>
           </div>
-
+kkkkkkkkk
           <a href="<?php echo get_permalink($post->ID); ?>" class="text-decoration-none">
             <h3 class="card-title">
               <?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?>
