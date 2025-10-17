@@ -8,16 +8,27 @@
  * CREA CAPABILITY E COLLEGA ALLA TASSONOMIA
  */
 
-// Aggiunge capability agli amministratori alla prima attivazione
-add_action('after_switch_theme', 'dci_aggiungi_capacita_trasparenza');
-// Se è un plugin, usare: register_activation_hook(__FILE__, 'dci_aggiungi_capacita_trasparenza');
+add_filter('user_has_cap', 'dci_limita_capacita_trasparenza', 10, 4);
 
-function dci_aggiungi_capacita_trasparenza() {
-    $admin_role = get_role('administrator');
-    if ($admin_role && !$admin_role->has_cap('gestione_permessi_trasparenza')) {
-        $admin_role->add_cap('gestione_permessi_trasparenza');
+function dci_limita_capacita_trasparenza($allcaps, $caps, $args, $user) {
+    // Controlla che la capability richiesta sia la nostra personalizzata
+    if (in_array('gestione_permessi_trasparenza', $caps)) {
+
+        // Lista degli ID utente autorizzati   ES: 1, 5 , 6
+        
+        $utenti_autorizzati = [1]; // <-- Aggiungi qui gli ID che vuoi abilitare
+
+        if (in_array($user->ID, $utenti_autorizzati)) {
+            $allcaps['gestione_permessi_trasparenza'] = true;
+        } else {
+            $allcaps['gestione_permessi_trasparenza'] = false;
+        }
     }
+
+    return $allcaps;
 }
+
+
 
 // Collega tassonomia alla capability
 add_action('init', 'dci_collega_capacita_tassonomia', 11);
