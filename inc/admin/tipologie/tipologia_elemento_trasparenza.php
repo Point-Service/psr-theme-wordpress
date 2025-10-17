@@ -49,8 +49,39 @@ function dci_register_post_type_elemento_trasparenza()
 
     register_post_type('elemento_trasparenza', $args);
 
+
     remove_post_type_support('elemento_trasparenza', 'editor');
 }
+
+
+
+
+add_filter('user_has_cap', 'dci_limita_capacita_trasparenza', 10, 4);
+
+function dci_limita_capacita_trasparenza($allcaps, $caps, $args, $user) {
+    // Controlla che la capability richiesta sia la nostra personalizzata
+    if (in_array('gestione_permessi_trasparenza', $caps)) {
+
+        // Lista degli ID utente autorizzati   ES: 1, 5 , 6
+        
+        $utenti_autorizzati = [1]; // <-- Aggiungi qui gli ID che vuoi abilitare
+
+        if (in_array($user->ID, $utenti_autorizzati)) {
+            $allcaps['gestione_permessi_trasparenza'] = true;
+        } else {
+            $allcaps['gestione_permessi_trasparenza'] = false;
+        }
+    }
+
+    return $allcaps;
+}
+
+
+
+
+
+
+
 
 
 
@@ -668,6 +699,7 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
     return $value;
 
 }
+
 
 
 
