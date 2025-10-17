@@ -15,7 +15,7 @@ function dci_limita_capacita_trasparenza($allcaps, $caps, $args, $user) {
     if (in_array('gestione_permessi_trasparenza', $caps)) {
 
         // Lista degli ID utente autorizzati   ES: 1, 5 , 6
-        
+        // Per ora solo il nostro utente visiona permessi trasparente e aggiungere e modificare le tipologie
         $utenti_autorizzati = [1]; // <-- Aggiungi qui gli ID che vuoi abilitare
 
         if (in_array($user->ID, $utenti_autorizzati)) {
