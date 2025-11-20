@@ -509,19 +509,26 @@ function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 
 
         update_term_meta( $term_id, 'ordinamento', $ordine );
 
-        $visible = '1';
-            foreach ($to_hide as $hide_term) {
-                // Rimuovi tutte le virgole dai termini da nascondere e dal termine corrente
-                $cleaned_term_name = str_replace(',', '', trim($term_name));
-                $cleaned_hide_term = str_replace(',', '', trim($hide_term));
-            
-                // Confronta i termini senza virgole
-                if (strcasecmp($cleaned_term_name, $cleaned_hide_term) === 0) {
-                    $visible = '0';
-                    break;
-                }
+
+
+        
+        $visible = '1'; // di default visibile
+        foreach ($to_hide as $hide_term) {
+            if (strcasecmp(trim($term_name), trim($hide_term)) === 0) {
+                $visible = '0'; // nascondi solo se il nome corrisponde
+                break;
             }
+        }
         update_term_meta( $term_id, 'visualizza_elemento', $visible );
+        
+
+
+
+
+
+
+
+        
 
         $ordine++;
 
@@ -550,6 +557,7 @@ function dci_terms_to_hide() {
 
 
 ?>
+
 
 
 
