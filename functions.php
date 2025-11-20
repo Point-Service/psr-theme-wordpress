@@ -430,3 +430,20 @@ function crea_pagina_sitemap_personalizzata() {
 }
 add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 
+
+
+
+
+add_filter('upload_mimes', 'dci_force_zip_uploads', PHP_INT_MAX);
+function dci_force_zip_uploads($mimes){
+
+    // Forzatura MIME ZIP
+    $mimes['zip'] = 'application/zip';
+    $mimes['rar'] = 'application/x-rar-compressed';
+    $mimes['7z']  = 'application/x-7z-compressed';
+
+    // Ritorna TUTTI i mime che WordPress accetta normalmente
+    $wp_mimes = wp_get_mime_types();
+
+    return array_merge($wp_mimes, $mimes);
+}
