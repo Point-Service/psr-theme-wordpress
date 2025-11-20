@@ -225,7 +225,7 @@ function insertTaxonomyTrasparenzaTerms() {
     /* --------------------------- */
     // Categorie Trasparenza
     $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
-    recursionInsertTaxonomy( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
+ //   recursionInsertTaxonomy( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
     recursionInsertTaxonomy1( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
 
     // Tipi di procedura contraente
@@ -550,4 +550,5 @@ function dci_terms_to_hide() {
 
 
 ?>
+
 
