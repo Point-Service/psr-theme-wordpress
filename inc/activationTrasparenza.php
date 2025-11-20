@@ -225,8 +225,8 @@ function insertTaxonomyTrasparenzaTerms() {
     /* --------------------------- */
     // Categorie Trasparenza
     $tipi_cat_amm_trasp_array = dci_tipi_cat_amm_trasp_array();
-   recursionInsertTaxonomy( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
-   // recursionInsertTaxonomy1( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
+ // recursionInsertTaxonomy( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
+    recursionInsertTaxonomy1( $tipi_cat_amm_trasp_array, 'tipi_cat_amm_trasp' );
 
     // Tipi di procedura contraente
     $tipi_procedura_contraente_array = dci_tipi_procedura_contraente_array();
@@ -517,7 +517,7 @@ function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 
             
                 // Confronta i termini senza virgole
                 if (strcasecmp($cleaned_term_name, $cleaned_hide_term) === 0) {
-                    $visible = '0';
+                //    $visible = '0';
                     break;
                 }
             }
@@ -550,6 +550,7 @@ function dci_terms_to_hide() {
 
 
 ?>
+
 
 
 
