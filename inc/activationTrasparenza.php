@@ -517,7 +517,7 @@ function recursionInsertTaxonomy1( $terms, $taxonomy, $parent = 0, &$ordine = 1 
             
                 // Confronta i termini senza virgole
                 if (strcasecmp($cleaned_term_name, $cleaned_hide_term) === 0) {
-                //    $visible = '0';
+                    $visible = '0';
                     break;
                 }
             }
@@ -550,6 +550,7 @@ function dci_terms_to_hide() {
 
 
 ?>
+
 
 
 
