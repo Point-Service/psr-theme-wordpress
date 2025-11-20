@@ -191,7 +191,7 @@ function dci_render_transparency_multipost_page() {
                     <tr>
                         <th scope="row"><label for="dci_multi_files"><?php _e('Carica Documenti Multipli:', 'design_comuni_italia'); ?></label></th>
                         <td>
-                            <input type="file" id="dci_multi_files" name="dci_multi_files[]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.zip">
+                            <input type="file" id="dci_multi_files" name="dci_multi_files[]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.zip,.rar,.7zip">
                             <p class="description"><?php _e('Seleziona più documenti da caricare. Verrà creato un Elemento Trasparenza per ogni file.', 'design_comuni_italia'); ?></p>
                         </td>
                     </tr>
@@ -671,6 +671,7 @@ function dci_set_default_cmb2_values_for_type_2( $value, $object_id, $field_args
     return $value;
 
 }
+
 
 
 
