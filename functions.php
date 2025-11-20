@@ -401,16 +401,6 @@ JS
 }
 
 
-add_filter('upload_mimes', 'dci_allow_zip_mimes', 1);
-function dci_allow_zip_mimes($mimes){
-    $mimes['zip'] = 'application/zip';
-    $mimes['rar'] = 'application/x-rar-compressed';
-    $mimes['7z']  = 'application/x-7z-compressed';
-    return $mimes;
-}
-
-
-
 function crea_pagina_sitemap_personalizzata() {
     $slug = 'page-sitemap';
     $pagina = get_page_by_path($slug);
