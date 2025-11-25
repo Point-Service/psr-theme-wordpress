@@ -55,8 +55,6 @@ function dci_register_pagina_home_options(){
 	        'query_args'      => array(
 	            'posts_per_page' => -1,
 	            'post_type'      => array('notizia', 'commissario'),
-				'orderby'        => 'date',
-                'order'          => 'DESC',
 	        ),
 	    ),
 	    'attributes' => array(
@@ -284,4 +282,5 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
 
 
 }
+
 
