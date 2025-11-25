@@ -120,7 +120,7 @@ $home_options->add_field( array(
                 'closed'        => !$is_active, // Chiudi il gruppo se non c'è contenuto attivo
             )
         ));      
-        
+    
         $home_options->add_group_field($schede_group_id, array(
             'name'       => __('<h5>Selezione contenuto</h5>', 'design_comuni_italia'),
             'desc'       => __('Seleziona il contenuto da mostrare nella Scheda.', 'design_comuni_italia'),
@@ -132,7 +132,7 @@ $home_options->add_field( array(
                 'filter_boxes'    => true, // Show a text box for filtering the results
                 'query_args'      => array(
                     'posts_per_page' => -1,
-                    'post_type'      => array('evento', 'luogo', 'unita_organizzativa', 'documento_pubblico', 'servizio', 'notizia', 'dataset'),
+                    'post_type'      => array('evento', 'luogo', 'unita_organizzativa', 'documento_pubblico', 'servizio', 'notizia', 'dataset', 'commissario'),
                 ), // override the get_posts args
             ),
             'attributes' => array(
@@ -282,5 +282,6 @@ for ($i = 1; $i <= $num_argomenti; $i++) {
 
 
 }
+
 
 
