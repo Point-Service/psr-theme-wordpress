@@ -49,10 +49,16 @@ if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
             <div class="card no-after rounded">
                 <div class="row g-2 g-md-0 flex-md-column">
                     <div class="col-12 order-1 order-md-2">
-                        <div class="card-body card-img-none rounded-top">                           
+                        <div class="card-body card-img-none rounded-top">                          
+                            <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
+                                <h3 class="h5 card-title u-grey-light"><?php echo $title ?></h3>
+                            </a>
                              
-                                
-                         <!-- Data e orari con icone -->
+                            <p class="card-text d-none d-md-block">
+                                <?php echo $descrizione_breve; ?>
+                            </p>
+
+                             <!-- Data e orari con icone -->
                               <div class="row g-2 mb-0 align-items-center" style="font-size: 0.875rem;">
                                 <!-- Data -->
                                 <div class="col-auto d-flex align-items-center mb-1">
@@ -88,23 +94,14 @@ if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
                                   </p>
                                 </div>
                               </div>
-                             
-                      
-                             
-                            <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
-                                <h3 class="h5 card-title u-grey-light"><?php echo $title ?></h3>
-                            </a>
-                             
-                            <p class="card-text d-none d-md-block">
-                                <?php echo $descrizione_breve; ?>
-                            </p>
-                              
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
 
 
