@@ -517,8 +517,17 @@ class Breadcrumb_Trail {
 					$this->items[] = get_the_title();
 					return;
 				}
+				
+
+				if (get_post_type() == 'consiglio') {
+					$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("elenco-consigli-comunali", "design_comuni_italia")."</a>";
+		            $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";		
 
 
+					
+					$this->items[] = get_the_title();
+					return;
+				}
 		    
 
 				   if (get_post_type() == 'elemento_trasparenza') {
