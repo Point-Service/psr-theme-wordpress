@@ -527,13 +527,6 @@ class Breadcrumb_Trail {
 				}
 
 
-				if (get_post_type() == 'consiglio_comunale') {
-					$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("Elenco Consigli Comunali", "design_comuni_italia")."</a>";
-		            $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";		
-					$this->items[] = get_the_title();
-					return;
-				}
-
 
 
 				   if (get_post_type() == 'elemento_trasparenza') {
@@ -963,7 +956,7 @@ class Breadcrumb_Trail {
 
 			
 
-                elseif ( is_category() || is_tag() || is_tax() ){
+            elseif ( is_category() || is_tag() || is_tax() ){
 
 
 
@@ -978,11 +971,15 @@ class Breadcrumb_Trail {
 			            $taxonomy_name = $term->taxonomy;
 			
 			            // Stampa il nome della tassonomia
-			          //  echo "Nome della tassonomia: " . $taxonomy_name;
+			           echo "Nome della tassonomia: " . $taxonomy_name;
 			        }
 			    }
 
 
+
+
+
+				
 			
                     if (is_tax(array("categorie_servizio"))){
                         $this->items[] = "<a href='".home_url("servizi")."'>".__("Servizi", "design_comuni_italia")."</a>";
@@ -993,37 +990,37 @@ class Breadcrumb_Trail {
                         $this->items[] = single_term_title( '', false );
                     }
                     else if (is_tax(array("tipi_documento"))){
-			$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+		         	$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
                         $this->items[] =  "<a href='" . home_url("amministrazione/documenti-e-dati") . "'>" . __("Documenti e dati", "design_comuni_italia") . "</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 		
                     }
 		
-  		  else if (is_tax(array("tipi_cat_amm_trasp"))){
-			
-			    $this->items[] = "<a href='" . esc_url(home_url('index.php/amministrazione-trasparente') ) . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
-			    $term = get_queried_object();
-			    if ($term instanceof WP_Term) {
-			        $ancestors = get_ancestors($term->term_id, $term->taxonomy);
-			        $ancestors = array_reverse($ancestors);
-			
-			        foreach ($ancestors as $ancestor_id) {
-			            $ancestor = get_term($ancestor_id, $term->taxonomy);
-			            if (!is_wp_error($ancestor) && $ancestor) {
-			                $this->items[] = "<a href='" . esc_url(get_term_link($ancestor)) . "'>" . esc_html($ancestor->name) . "</a>";
-			            }
-			        }
-			
-			        $this->items[] = __(dci_get_breadcrumb_label($term->name), "design_comuni_italia");
-			    }
-			}  
+		  		  else if (is_tax(array("tipi_cat_amm_trasp"))){
+					
+					    $this->items[] = "<a href='" . esc_url(home_url('index.php/amministrazione-trasparente') ) . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
+					    $term = get_queried_object();
+					    if ($term instanceof WP_Term) {
+					        $ancestors = get_ancestors($term->term_id, $term->taxonomy);
+					        $ancestors = array_reverse($ancestors);
+					
+					        foreach ($ancestors as $ancestor_id) {
+					            $ancestor = get_term($ancestor_id, $term->taxonomy);
+					            if (!is_wp_error($ancestor) && $ancestor) {
+					                $this->items[] = "<a href='" . esc_url(get_term_link($ancestor)) . "'>" . esc_html($ancestor->name) . "</a>";
+					            }
+					        }
+					
+					        $this->items[] = __(dci_get_breadcrumb_label($term->name), "design_comuni_italia");
+					    }
+					}  
      
 
 
 			    
                     else if (is_tax(array("elemento_trasparenza"))){
-			//$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+		          	//$this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
                           $this->items[] = "<a href='" . esc_url(home_url('index.php/amministrazione-trasparente') ) . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
                         $term_name = single_term_title( '', false );
                         $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
@@ -1062,9 +1059,9 @@ class Breadcrumb_Trail {
 			    $term_name = single_term_title('', false);
 			    $this->items[] = __(dci_get_breadcrumb_label($term_name), "design_comuni_italia");
 			}
-                    else if (is_tax(array("tipi_notizia"))){
-                        $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
-                        // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
+              else if (is_tax(array("tipi_notizia"))){
+                 $this->items[] = "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
+                 // Ottieni i termini associati al post corrente nella tassonomia 'tipi_notizia'
 			$terms = get_the_terms(get_the_ID(), 'tipi_notizia');	    			    
 			// Ottieni l'oggetto del termine corrente
 			$term = get_queried_object();			
@@ -1072,8 +1069,7 @@ class Breadcrumb_Trail {
 			    $term_name = $term->name; // Nome del termine
 			    $this->items[] = dci_get_breadcrumb_label($term_name); // Senza __() perché è una variabile dinamica
 			}
-			    
-                    }else if (is_tax(array("tipi_progetto"))){
+			 }else if (is_tax(array("tipi_progetto"))){
                        // $this->items[] = "<a href='".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
 			$this->items[] = "<a href='index.php/".home_url("progetti")."'>".__("Progetti PNRR", "design_comuni_italia")."</a>";
 			    
