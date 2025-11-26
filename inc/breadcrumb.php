@@ -526,7 +526,7 @@ class Breadcrumb_Trail {
 					return;
 				}
 
-    var_dump( get_post() );   // stampa l’oggetto post completo
+    var_dump( get_post_type() );   // stampa l’oggetto post completo
 
 
 
