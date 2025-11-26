@@ -722,6 +722,9 @@ class Breadcrumb_Trail {
 
 
 
+    var_dump( get_post() );   // stampa l’oggetto post completo
+
+
 
 
 
