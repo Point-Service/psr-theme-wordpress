@@ -777,7 +777,7 @@ class Breadcrumb_Trail {
                         }
 
 
-
+                     echo $get_post_type();
 		    
 
 
@@ -786,7 +786,7 @@ class Breadcrumb_Trail {
 					
 
 				        // Determina la destinazione in base al tipo di incarico
-				        if (strtolower($tipo_incarico) === 'politico') {
+				    if (strtolower($tipo_incarico) === 'politico') {
 				            // Se l'incarico è "Politico", crea un link alla pagina "amministrazione/politici"
 				            $politici_link = home_url("amministrazione/politici");
 				            $this->items[] = "<a href='" . esc_url($politici_link) . "'>Politici</a>"; // Link Politici
