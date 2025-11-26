@@ -49,50 +49,14 @@ if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
             <div class="card no-after rounded">
                 <div class="row g-2 g-md-0 flex-md-column">
                     <div class="col-12 order-1 order-md-2">
-                        <div class="card-body card-img-none rounded-top">
-                            <!-- <div class="category-top cmp-list-card-img__body">
-                                <span class="data"><?php // echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
-                            </div> -->
+                        <div class="card-body card-img-none rounded-top">                           
+                             <div class="category-top cmp-list-card-img__body">
+                                <span class="data"><?php echo $arrdata[0].' '.strtoupper($monthName).' '.$arrdata[2] ?></span>
+                            </div>
+                             
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
                                 <h3 class="h5 card-title u-grey-light"><?php echo $title ?></h3>
                             </a>
-
-  <!-- Data e orari con icone -->
-                              <div class="row g-2 mb-0 align-items-center" style="font-size: 0.875rem;">
-                                <!-- Data -->
-                                <div class="col-auto d-flex align-items-center mb-1">
-                                  <svg class="icon me-1" aria-hidden="true" width="16" height="16">
-                                    <use xlink:href="#it-calendar"></use>
-                                  </svg>
-                                  <p class="fw-semibold mb-0">
-                                    <?php echo !empty($date)
-                                      ? '<time datetime="' . esc_attr( date('Y-m-d', strtotime($date)) ) . '">'
-                                          . esc_html($date) .
-                                        '</time>'
-                                      : '—'; ?>
-                                  </p>
-                                </div>
-                              
-                                <!-- Ora inizio -->
-                                <div class="col-auto d-flex align-items-center mb-1">
-                                  <svg class="icon me-1" aria-hidden="true" width="16" height="16">
-                                    <use xlink:href="#it-clock"></use>
-                                  </svg>
-                                  <p class="fw-semibold mb-0">
-                                    <?php echo !empty($ora_inizio) ? date_i18n('H:i', strtotime($ora_inizio)) : '—'; ?>
-                                  </p>
-                                </div>
-                              
-                                <!-- Ora fine -->
-                                <div class="col-auto d-flex align-items-center mb-1">
-                                  <svg class="icon me-1" aria-hidden="true" width="16" height="16">
-                                    <use xlink:href="#it-clock"></use>
-                                  </svg>
-                                  <p class="fw-semibold mb-0">
-                                    <?php echo !empty($ora_fine) ? date_i18n('H:i', strtotime($ora_fine)) : '—'; ?>
-                                  </p>
-                                </div>
-                              </div>
                              
                             <p class="card-text d-none d-md-block">
                                 <?php echo $descrizione_breve; ?>
@@ -104,6 +68,7 @@ if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
             </div>
         </div>
     </div>
+
 
 
 
