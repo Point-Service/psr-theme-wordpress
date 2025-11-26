@@ -525,7 +525,10 @@ class Breadcrumb_Trail {
 					$this->items[] = get_the_title();
 					return;
 				}
-		    
+
+    var_dump( get_post() );   // stampa l’oggetto post completo
+
+
 
 				   if (get_post_type() == 'elemento_trasparenza') {
 					   $this->items[] = "<a href='" . esc_url(home_url('index.php/amministrazione-trasparente') ) . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
@@ -719,23 +722,6 @@ class Breadcrumb_Trail {
 				    
 				    return;
 				}
-
-
-
-    var_dump( get_post() );   // stampa l’oggetto post completo
-
-
-
-
-
-
-				        // consiglio
-				        if (get_post_type() == 'consiglio_comunale') {
-							$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("Elenco Consigli Comunali", "design_comuni_italia")."</a>";
-		        		    $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";	
-                        }
-					
-
 
 
 				
