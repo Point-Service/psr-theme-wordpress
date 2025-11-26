@@ -518,13 +518,17 @@ class Breadcrumb_Trail {
 					return;
 				}
 				
+	
+					if (get_post_type() == 'consiglio') {
+						$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("Elenco Consigli Comunali", "design_comuni_italia")."</a>";
+			         //   $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";		
+						$this->items[] = get_the_title();
+						return;
+					}
 
-				if (get_post_type() == 'consiglio') {
-					$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("Elenco Consigli Comunali", "design_comuni_italia")."</a>";
-		         //   $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";		
-					$this->items[] = get_the_title();
-					return;
-				}
+
+
+                      var_dump( get_post_type() );   // stampa l’oggetto post completo
 
 
 
