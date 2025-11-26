@@ -727,7 +727,7 @@ class Breadcrumb_Trail {
 
 
 				        // consiglio
-				        if (get_post_type() == 'Consiglio_Comunale') {
+				        if (get_post_type() == 'consiglio_comunale') {
 							$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("Elenco Consigli Comunali", "design_comuni_italia")."</a>";
 		        		    $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";	
                         }
