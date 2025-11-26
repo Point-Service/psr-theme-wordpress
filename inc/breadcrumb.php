@@ -527,12 +527,6 @@ class Breadcrumb_Trail {
 					}
 
 
-
-                      var_dump( get_post_type() );   // stampa l’oggetto post completo
-
-
-
-
 				   if (get_post_type() == 'elemento_trasparenza') {
 					   $this->items[] = "<a href='" . esc_url(home_url('index.php/amministrazione-trasparente') ) . "'>" . __("Amministrazione Trasparente", "design_comuni_italia") . "</a>";
 					   
