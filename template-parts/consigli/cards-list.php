@@ -49,7 +49,10 @@ if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
             <div class="card no-after rounded">
                 <div class="row g-2 g-md-0 flex-md-column">
                     <div class="col-12 order-1 order-md-2">
-                        <div class="card-body card-img-none rounded-top">                          
+                        <div class="card-body card-img-none rounded-top">   
+                           <p class="card-text d-none d-md-block">
+                                Consiglio Comunale
+                            </p>
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
                                 <h3 class="h5 card-title u-grey-light"><?php echo $title ?></h3>
                             </a>
@@ -101,11 +104,3 @@ if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
