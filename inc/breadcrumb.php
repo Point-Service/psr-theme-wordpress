@@ -775,14 +775,6 @@ class Breadcrumb_Trail {
 							$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("Elenco Consigli Comunali", "design_comuni_italia")."</a>";
 		        		    $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";	
                         }
-
-
-                     echo $get_post_type();
-		    
-
-
-
-
 					
 
 				        // Determina la destinazione in base al tipo di incarico
