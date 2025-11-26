@@ -521,7 +521,7 @@ class Breadcrumb_Trail {
 
 				if (get_post_type() == 'consiglio') {
 					$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("Elenco Consigli Comunali", "design_comuni_italia")."</a>";
-		            $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";		
+		         //   $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";		
 					$this->items[] = get_the_title();
 					return;
 				}
@@ -971,14 +971,9 @@ class Breadcrumb_Trail {
 			            $taxonomy_name = $term->taxonomy;
 			
 			            // Stampa il nome della tassonomia
-			           echo "Nome della tassonomia: " . $taxonomy_name;
+			         //  echo "Nome della tassonomia: " . $taxonomy_name;
 			        }
 			    }
-
-
-
-
-
 				
 			
                     if (is_tax(array("categorie_servizio"))){
