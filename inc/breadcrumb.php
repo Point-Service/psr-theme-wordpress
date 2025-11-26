@@ -719,6 +719,22 @@ class Breadcrumb_Trail {
 				    
 				    return;
 				}
+
+
+
+
+
+
+
+				        // consiglio
+				        if (get_post_type() == 'consiglio') {
+							$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("Elenco Consigli Comunali", "design_comuni_italia")."</a>";
+		        		    $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";	
+                        }
+					
+
+
+
 				
 				
 				if (get_post_type() == 'persona_pubblica') {
@@ -735,6 +751,8 @@ class Breadcrumb_Trail {
 				        $referer_parts = explode('/', trim($referer_path, '/'));
 				    }
 
+
+					
 
 					// Recupera gli incarichi, se esistono
 					$incarichi = dci_get_meta("incarichi") ?? []; // Recupera tutti gli incarichi associati al post				
@@ -766,16 +784,6 @@ class Breadcrumb_Trail {
 					    $tipo_incarico = '';
 					}
 
-
-
-
-
-				        // consiglio
-				        if (get_post_type() == 'consiglio') {
-							$this->items[] =  "<a href='".home_url("elenco-consigli-comunali")."'>".__("Elenco Consigli Comunali", "design_comuni_italia")."</a>";
-		        		    $this->items[] =  "<a href='/consiglio/'>" . __("Consiglio", "design_comuni_italia") . "</a>";	
-                        }
-					
 
 				        // Determina la destinazione in base al tipo di incarico
 				    if (strtolower($tipo_incarico) === 'politico') {
