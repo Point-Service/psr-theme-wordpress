@@ -202,7 +202,7 @@ $base_url = add_query_arg([
 form.filter-form {
     padding: 1.5rem;
     background: rgba(255, 255, 255, 0.9);
-
+    border-radius: 1rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -262,7 +262,7 @@ form.filter-form select:focus {
 }
 
 .btn-filter-reset {
-    padding: 0.75rem 1.75rem;
+    padding: 0.25rem 1.25rem;
     font-weight: 600;
     border-radius: 0.5rem;
     display: flex;
