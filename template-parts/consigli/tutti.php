@@ -200,10 +200,10 @@ $base_url = add_query_arg([
 
 /* Form centrato, moderno e responsivo */
 form.filter-form {
-    padding: 1.5rem;
+    padding: 1rem;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 1rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 32px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     max-width: 100%;
@@ -239,11 +239,11 @@ form.filter-form select {
     border-radius: 0.5rem;
     padding: 0.5rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    min-width: 100px;
+    min-width: 120px;
 }
 form.filter-form input[type="search"] {
-    min-width: 150px;
-    max-width: 350px;
+    min-width: 200px;
+    max-width: 400px;
 }
 form.filter-form input[type="search"]:focus,
 form.filter-form select:focus {
