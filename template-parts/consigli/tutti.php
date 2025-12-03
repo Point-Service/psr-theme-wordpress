@@ -263,8 +263,7 @@ form.filter-form select:focus {
 
 .btn-filter-reset {
 
-    font-weight: 600;
-    border-radius: 0.2rem;
+    
     display: flex;
     align-items: center;
     justify-content: center;
