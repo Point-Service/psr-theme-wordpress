@@ -262,7 +262,7 @@ form.filter-form select:focus {
 }
 
 .btn-filter-reset {
-    padding: 0.25rem 1.25rem;
+    padding: 0.5rem 1.5rem;
     font-weight: 600;
     border-radius: 0.5rem;
     display: flex;
