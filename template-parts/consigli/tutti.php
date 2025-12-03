@@ -239,11 +239,11 @@ form.filter-form select {
     border-radius: 0.5rem;
     padding: 0.5rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    min-width: 120px;
+    min-width: 100px;
 }
 form.filter-form input[type="search"] {
-    min-width: 200px;
-    max-width: 400px;
+    min-width: 150px;
+    max-width: 350px;
 }
 form.filter-form input[type="search"]:focus,
 form.filter-form select:focus {
