@@ -262,9 +262,9 @@ form.filter-form select:focus {
 }
 
 .btn-filter-reset {
-    padding: 0.75rem 1.75rem;
+
     font-weight: 600;
-    border-radius: 0.5rem;
+    border-radius: 0.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -273,10 +273,7 @@ form.filter-form select:focus {
     cursor: pointer;
 }
 
-.btn-filter-reset {
-    height: 32px;
-    padding: 0;  
-}
+
 
 .btn-filter-reset:hover {
     transform: scale(1.05);
