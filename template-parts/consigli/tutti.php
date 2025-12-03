@@ -124,15 +124,15 @@ $base_url = add_query_arg([
             </div>
             <!-- Pulsanti Filtra e Reset -->
             <div class="btn-row d-flex justify-content-center mt-3 gap-2">
-                <button type="submit" class="btn btn-primary" aria-label="Applica i filtri di ricerca">
-                    <svg class="icon flex-shrink-0 me-2" aria-hidden="true" width="12" height="12" style="fill: #fff">
+                <button type="submit" class="btn btn-primary btn-filter-reset" aria-label="Applica i filtri di ricerca">
+                    <svg class="icon flex-shrink-0 me-2" aria-hidden="true" width="10" height="10" style="fill: #fff">
                         <use xlink:href="#it-search"></use>
                     </svg>
                     Filtra
                 </button>
 
-                <button type="reset" class="btn btn-danger" aria-label="Resetta tutti i filtri">
-                    <svg class="icon flex-shrink-0 me-2" aria-hidden="true" width="12" height="12" style="fill: #fff">
+                <button type="reset" class="btn btn-danger btn-filter-reset" aria-label="Resetta tutti i filtri">
+                    <svg class="icon flex-shrink-0 me-2" aria-hidden="true" width="10" height="10" style="fill: #fff">
                         <use xlink:href="#it-delete"></use>
                     </svg>
                     Reset
