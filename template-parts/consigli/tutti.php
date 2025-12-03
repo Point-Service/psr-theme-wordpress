@@ -202,7 +202,7 @@ $base_url = add_query_arg([
 form.filter-form {
     padding: 1.5rem;
     background: rgba(255, 255, 255, 0.9);
-    border-radius: 1rem;
+
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
