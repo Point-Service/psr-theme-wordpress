@@ -445,7 +445,7 @@ function wpc_contatore_homepage_shortcode() {
 
     return "
     <div class='home-counter' style='text-align:right; font-size:14px; color:#333; display:flex; align-items:center; justify-content:flex-end; gap:5px;'>
-        <i class='fas fa-chart-line' style='color:#007bff; font-size:16px;'></i>
+        <i class='fas fa-chart-line' style='color:white; font-size:16px;'></i>
         <span>Contatore accessi: <strong style='color:red;'>$count</strong></span>
     </div>
     ";
