@@ -442,7 +442,7 @@ add_action('wp', 'wpc_contatore_homepage');
 // Shortcode per visualizzare il contatore con il tuo stile
 function wpc_contatore_homepage_shortcode() {
     $count = get_option('wpc_home_count', 0);
-    return "<div class='home-counter'><font size='1'>Contatore accessi : (</font><font size='1' color='red'>$count</font><font size='1'>)</font></div>";
+    return "<div class='home-counter'><font size='2'>Contatore accessi : (</font><font size='2' color='red'>$count</font><font size='2'>)</font></div>";
 }
 add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
 
