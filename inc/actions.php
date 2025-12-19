@@ -444,7 +444,7 @@ function wpc_contatore_homepage_shortcode() {
     $count = get_option('wpc_home_count', 0);
 
     return "
-    <div class='home-counter' style='text-align:left; font-size:14px; color:#white; display:flex; align-items:center; justify-content:flex-end; gap:5px;'>
+    <div class='home-counter' style='text-align:left; font-size:14px; color:white; display:flex; align-items:center; justify-content:flex-end; gap:5px;'>
         <i class='fas fa-chart-line' style='color:white; font-size:16px;'></i>
         <span>Contatore accessi: <strong style='color:red;'>$count</strong></span>
     </div>
