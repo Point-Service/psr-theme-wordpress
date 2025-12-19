@@ -439,11 +439,18 @@ function wpc_contatore_homepage() {
 }
 add_action('wp', 'wpc_contatore_homepage');
 
-// Shortcode per visualizzare il contatore con il tuo stile
+// Shortcode contatore con icona Font Awesome
 function wpc_contatore_homepage_shortcode() {
     $count = get_option('wpc_home_count', 0);
-    return "<div class='home-counter'><font size='2'>Contatore accessi : (</font><font size='2' color='red'> $count </font><font size='2'>)</font></div>";
+
+    return "
+    <div class='home-counter' style='text-align:right; font-size:14px; color:#333; display:flex; align-items:center; justify-content:flex-end; gap:5px;'>
+        <i class='fas fa-chart-line' style='color:#007bff; font-size:16px;'></i>
+        <span>Contatore accessi: <strong style='color:red;'>$count</strong></span>
+    </div>
+    ";
 }
 add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
+
 
 
