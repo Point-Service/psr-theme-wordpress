@@ -208,7 +208,7 @@
 				    echo $shortcode_output;
 				}
 			     ?>
-
+<?php echo do_shortcode('[home_counter]'); ?>
                     <div class="footer-bottom">
 
 						<?php if(dci_get_option("media_policy",'footer')) { ?>
@@ -238,7 +238,7 @@
 						
 						<a id="area_personale_admin" href="<?php echo get_admin_url(); ?>">Area Riservata</a>
 								                      
-				<?php echo do_shortcode('[home_counter]'); ?>
+				
 
 
 
