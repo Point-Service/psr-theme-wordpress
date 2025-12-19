@@ -420,12 +420,21 @@ add_filter( 'admin_head', 'dci_edit_permission_check', 1, 4 );
 
 // CONTATORE ACCESSI
 function wpc_contatore_homepage() {
-    if ( !is_admin() && is_front_page() ) {
-        // Prendi il conteggio corrente
-        $count = get_option('wpc_home_count', 0);
-        $count++;
-        // Aggiorna il conteggio
-        update_option('wpc_home_count', $count);
+
+    // Controlla se siamo nella home page
+    if ( is_front_page() || is_home() ) {
+
+        // Usa un cookie per evitare incrementi multipli nello stesso browser
+        if ( !isset($_COOKIE['wpc_home_counted']) ) {
+
+            $count = get_option('wpc_home_count', 0);
+            $count++;
+            update_option('wpc_home_count', $count);
+
+            // Imposta il cookie per 1 giorno
+            setcookie('wpc_home_counted', '1', time() + 86400, COOKIEPATH, COOKIE_DOMAIN);
+            $_COOKIE['wpc_home_counted'] = '1'; // Aggiorna la variabile per la stessa richiesta
+        }
     }
 }
 add_action('wp', 'wpc_contatore_homepage');
@@ -433,7 +442,7 @@ add_action('wp', 'wpc_contatore_homepage');
 // Shortcode per visualizzare il contatore
 function wpc_contatore_homepage_shortcode() {
     $count = get_option('wpc_home_count', 0);
-    return "<div class='home-counter'>Visite home page: $count</div>";
+    return "<div class='home-counter'>Contatore : $count</div>";
 }
 add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
 
