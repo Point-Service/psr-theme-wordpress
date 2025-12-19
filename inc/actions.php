@@ -419,9 +419,9 @@ add_filter( 'admin_head', 'dci_edit_permission_check', 1, 4 );
 
 
 // CONTATORE ACCESSI
+// Funzione per contare le visite della home page
 function wpc_contatore_homepage() {
 
-    // Controlla se siamo nella home page
     if ( is_front_page() || is_home() ) {
 
         // Usa un cookie per evitare incrementi multipli nello stesso browser
@@ -433,16 +433,16 @@ function wpc_contatore_homepage() {
 
             // Imposta il cookie per 1 giorno
             setcookie('wpc_home_counted', '1', time() + 86400, COOKIEPATH, COOKIE_DOMAIN);
-            $_COOKIE['wpc_home_counted'] = '1'; // Aggiorna la variabile per la stessa richiesta
+            $_COOKIE['wpc_home_counted'] = '1';
         }
     }
 }
 add_action('wp', 'wpc_contatore_homepage');
 
-// Shortcode per visualizzare il contatore
+// Shortcode per visualizzare il contatore con il tuo stile
 function wpc_contatore_homepage_shortcode() {
     $count = get_option('wpc_home_count', 0);
-    return "<div class='home-counter'>Contatore : $count</div>";
+    return "<div class='home-counter'><font size='1'>Contatore accessi : (</font><font size='1' color='red'>$count</font><font size='1'>)</font></div>";
 }
 add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
 
