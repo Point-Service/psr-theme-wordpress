@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     background: #000;
     box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     cursor: pointer;
-    aspect-ratio: 16/9;
+   /* aspect-ratio: 16/9; */
 }
 
 /* Video */
@@ -273,3 +273,4 @@ document.addEventListener('DOMContentLoaded', () => {
     display: block;
 }
 </style>
+
