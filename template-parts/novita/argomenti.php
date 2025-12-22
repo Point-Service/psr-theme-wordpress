@@ -28,31 +28,56 @@
     </div>
 </div>
 
-<?php if(isset($argomenti_evidenza) && count($argomenti_evidenza)>0){ ?>
+<?php if (!empty($argomenti_evidenza) && is_array($argomenti_evidenza)) { ?>
+    
 <div class="container py-4" id="argomenti">
-     <h3 class="title-xlarge mb-4">Argomenti</h3>
-        <div class="row pt-20">
-            <div class="col-12">
-                <div class="button-group">
-                            <?php
-                            // Ciclo per gli altri argomenti
-                            foreach ($argomenti_evidenza as $i => $arg_id) {
-                                $argomento = get_term_by('term_taxonomy_id', $arg_id);
-                                if ($argomento) {
-                                    $url = get_term_link($argomento->term_id, 'argomenti');
-                            ?>
-                            
-                            <a href="<?php echo esc_url($url); ?>" class="btn-argomento" style="display: inline-flex; align-items: center; gap: 8px;">
-                            <svg class="icon text-primary" style="width:20px; height:30px; display:inline-block; vertical-align:middle;">
-                                <use xlink:href="#it-bookmark"></use>
-                            </svg>
-                            <?php echo esc_html($argomento->name); ?>
-                            </a>
-                            
-                            <?php
-                                }
-                            }
-                            ?>
+    <h3 class="title-xlarge mb-4">Argomenti</h3>
+
+    <div class="row pt-20">
+        <div class="col-12">
+            <div class="button-group">
+
+                <?php
+                foreach ($argomenti_evidenza as $arg_id) {
+
+                    // Recupera il termine dalla tassonomia "argomenti"
+                    $argomento = get_term_by(
+                        'term_taxonomy_id',
+                        (int) $arg_id,
+                        'argomenti'
+                    );
+
+                    if (!$argomento || is_wp_error($argomento)) {
+                        continue;
+                    }
+
+                    $url = get_term_link($argomento);
+                    if (is_wp_error($url)) {
+                        continue;
+                    }
+                ?>
+
+                    <a href="<?php echo esc_url($url); ?>" 
+                       class="btn-argomento" 
+                       style="display:inline-flex; align-items:center; gap:8px;">
+
+                        <svg class="icon text-primary" 
+                             style="width:20px; height:30px; display:inline-block; vertical-align:middle;">
+                            <use xlink:href="#it-bookmark"></use>
+                        </svg>
+
+                        <?php echo esc_html($argomento->name); ?>
+                    </a>
+
+                <?php } ?>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>
+
                     <br>
                 </div>
                  <div style="display: flex; justify-content: center; margin-top: 20px;">
