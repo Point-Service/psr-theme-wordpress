@@ -19,10 +19,12 @@ function dci_register_post_type_richiesta_assistenza() {
         'use_featured_image' => __( 'Usa come Immagine Richiesta Assistenza' , 'design_comuni_italia' ),
     );
     $args = array(
-        'label'                 => __( 'Rating', 'design_comuni_italia' ),
+        'label'                 => __( 'Richiesta Assistenza', 'design_comuni_italia' ),
         'labels'                => $labels,
         'hierarchical'          => false,
         'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true, // <- aggiungi questa riga
         'menu_position'         => 5,
         'menu_icon'             => 'dashicons-media-spreadsheet',
         'has_archive'           => false,
@@ -33,6 +35,7 @@ function dci_register_post_type_richiesta_assistenza() {
         'map_meta_cap'    => true,
         'description'    => __( "Struttura dei resoconti delle richieste di assistenza degli utenti", 'design_comuni_italia' ),
     );
+
     register_post_type( 'richiesta_assistenza', $args );
     remove_post_type_support( 'richiesta_assistenza', 'title');
     remove_post_type_support( 'richiesta_assistenza', 'editor');
