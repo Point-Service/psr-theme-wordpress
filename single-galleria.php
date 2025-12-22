@@ -1,6 +1,6 @@
 <?php
 /**
- * Template single – Galleria moderna con paginazione + loader
+ * Template single – Galleria moderna con paginazione
  *
  * @package Design_Comuni_Italia
  */
@@ -17,7 +17,11 @@ while ( have_posts() ) :
     $url_video_group = get_post_meta( $id, $prefix . 'url_video_group', true );
     $video_array   = get_post_meta( $id, $prefix . 'video', true );
 
-    // Unisco foto e video
+    // --- PAGINAZIONE ---
+    $paged     = ( get_query_var('page') ) ? get_query_var('page') : 1;
+    $per_page  = -1;
+
+    // Unisco foto e video in un unico array
     $all_items = [];
     if ( !empty($foto_array) ) {
         foreach ( $foto_array as $foto ) {
@@ -34,7 +38,11 @@ while ( have_posts() ) :
             $all_items[] = ['type' => 'video_file', 'data' => $video];
         }
     }
+
+    $total_items = count($all_items);
+    $paged_items = $all_items;
 ?>
+
 <div class="container" id="main-container">
     <div class="row">
         <div class="col px-lg-4">
@@ -60,7 +68,7 @@ while ( have_posts() ) :
     <br>
     <div class="container mb-5">
         <div class="gallery-grid">
-            <?php foreach ( $all_items as $item ): ?>
+            <?php foreach ( $paged_items as $item ): ?>
                 <?php if ( $item['type'] === 'foto' ):
                     $foto = $item['data'];
                     $attachment_id = attachment_url_to_postid($foto);
@@ -73,13 +81,19 @@ while ( have_posts() ) :
                                 <i class="fas fa-search-plus"></i>
                                 <p class="gallery-title"><?= esc_html($image_title); ?></p>
                             </div>
-                            <img src="<?= esc_url($foto); ?>" alt="<?= esc_attr($image_alt); ?>" width="600" height="338">
+                            <img 
+                                src="<?= esc_url($foto); ?>" 
+                                alt="<?= esc_attr($image_alt); ?>" 
+                                loading="lazy"
+                                onerror="this.src='https://via.placeholder.com/600x338?text=Immagine+non+disponibile';"
+                                width="600" height="338"
+                            >
                             <span class="badge">Foto</span>
                         </a>
                     </div>
                 <?php elseif ( $item['type'] === 'video_embed' ):
                     $video = $item['data']; ?>
-                    <div class="gallery-item video" style="aspect-ratio:16/9;">
+                    <div class="gallery-item video">
                         <div class="video-container">
                             <iframe src="<?= esc_url($video['url_video']); ?>" title="<?= esc_attr($video['titolo']); ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
@@ -87,7 +101,7 @@ while ( have_posts() ) :
                     </div>
                 <?php elseif ( $item['type'] === 'video_file' ):
                     $video = $item['data']; ?>
-                    <div class="gallery-item video" style="aspect-ratio:16/9;">
+                    <div class="gallery-item video">
                         <div class="video-container">
                             <video controls>
                                 <source src="<?= esc_url($video); ?>" type="video/mp4">
@@ -104,55 +118,157 @@ while ( have_posts() ) :
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Lightbox
-    GLightbox({ selector: '.glightbox', touchNavigation: true, zoomable:true, draggable:true, loop:true, showTitle:true });
+    const lightbox = GLightbox({
+        selector: '.glightbox',
+        touchNavigation: true,
+        zoomable: true,
+        draggable: true,
+        openEffect: 'zoom',
+        closeEffect: 'fade',
+        slideEffect: 'slide',
+        loop: true,
+        height: '100vh',
+        showTitle: true
+    });
 
-    // Skeleton loader
-    const galleryImages = document.querySelectorAll('.gallery-item img');
-    galleryImages.forEach(img => {
-        const parent = img.closest('.gallery-item');
-        parent.classList.add('loading');
-        img.onload = () => parent.classList.remove('loading');
+    // Rimuove la classe loading quando l'immagine è pronta
+    const galleryItems = document.querySelectorAll('.gallery-item.image img');
+    galleryItems.forEach(img => {
+        const tmp = new Image();
+        tmp.src = img.src;
+        tmp.onload = () => img.closest('.gallery-item').classList.remove('loading');
     });
 });
 </script>
 
+<?php endwhile; get_footer(); ?>
+
 <style>
-/* Galleria */
-.gallery-page { background:#f8f9fa; padding:40px 20px; }
-.gallery-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:25px; }
+/* Loader e layout stabile */
+.gallery-item.loading img {
+    filter: blur(10px);
+    opacity: 0.5;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
 
-/* Skeleton loader */
-.gallery-item.loading { background-color:#e0e0e0; position:relative; }
-.gallery-item.loading img { visibility:hidden; }
-.gallery-item.loading::after { content:""; display:block; padding-bottom:56.25%; }
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
 
-/* Immagini e video */
-.gallery-item { position:relative; overflow:hidden; border-radius:15px; background:#000; box-shadow:0 6px 18px rgba(0,0,0,0.1); cursor:pointer; }
-.gallery-item.image, .gallery-item.video { aspect-ratio:16/9; }
-.gallery-item img, .gallery-item iframe, .gallery-item video { width:100%; height:100%; object-fit:cover; display:block; border:none; transition:transform 0.4s ease, filter 0.4s ease; }
-.gallery-item:hover img { transform:scale(1.08); filter:blur(4px); }
+.gallery-item:not(.loading) img {
+    filter: blur(0);
+    opacity: 1;
+}
 
-/* Overlay info hover */
-.gallery-info { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; transition:opacity 0.4s ease; pointer-events:none; }
-.gallery-item:hover .gallery-info { opacity:1; }
-.gallery-info .fas { color:#fff; font-size:2.5rem; margin-bottom:10px; transform:translateY(20px); transition:transform 0.4s ease; }
-.gallery-info .gallery-title { color:#fff; font-size:1.2rem; font-weight:bold; text-align:center; padding:0 20px; transform:translateY(20px); transition:transform 0.4s ease; }
-.gallery-item:hover .gallery-info .fas, .gallery-item:hover .gallery-info .gallery-title { transform:translateY(0); }
+/* Stili generali */
+.gallery-page {
+    background: #f8f9fa;
+    padding: 40px 20px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    background: #000;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    cursor: pointer;
+    aspect-ratio: 16/9;
+}
+
+/* Video */
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.gallery-item iframe,
+.gallery-item video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+}
+
+/* Info overlay */
+.gallery-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.gallery-item:hover .gallery-info {
+    opacity: 1;
+}
+
+.gallery-info .fas {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+}
+
+.gallery-info .gallery-title {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 0 20px;
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+}
+
+.gallery-item:hover .gallery-info .fas,
+.gallery-item:hover .gallery-info .gallery-title {
+    transform: translateY(0);
+}
 
 /* Badge */
-.badge { position:absolute; top:12px; left:12px; background:#007bff; color:#fff; font-size:0.8rem; padding:5px 10px; border-radius:10px; font-weight:600; z-index:10; }
-.badge-video { background:#e63946; }
+.badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #007bff;
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    z-index: 10;
+}
 
-/* Lightbox titolo */
-.gdesc-title { color:#f8f9fa; font-family:'Georgia',serif; font-size:1.8rem; font-weight:700; text-shadow:2px 2px 8px rgba(0,0,0,0.7); padding:15px 25px; background:linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0.2)); border-radius:8px; margin-top:20px; letter-spacing:0.05em; line-height:1.3; }
-.gdesc-bottom { background:transparent; border-top:none; padding-top:0; min-height:auto; }
-.ginner-desc { text-align:center; }
+.badge-video {
+    background: #e63946;
+}
 </style>
-
-<?php endwhile; get_footer(); ?>
 
 
