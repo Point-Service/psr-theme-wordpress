@@ -60,7 +60,7 @@ get_header();
     </div>
   </div>
 
-
+kkkkkkk
   <?php //get_template_part("template-parts/galleria/categorie");
   ?>
 
@@ -196,4 +196,5 @@ get_footer(); ?>
       font-size: 1.8rem;
     }
   }
+
 </style>
