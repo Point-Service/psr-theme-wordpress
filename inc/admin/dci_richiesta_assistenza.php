@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Definisce post type Richiesta Assistenza (per memorizzare le richieste di assistenza da parte degli utenti)
+ * Definisce post type Richiesta Assistenza
  */
 add_action( 'init', 'dci_register_post_type_richiesta_assistenza', 100 );
 function dci_register_post_type_richiesta_assistenza() {
@@ -10,36 +9,34 @@ function dci_register_post_type_richiesta_assistenza() {
         'name'                  => _x( 'Tickets', 'Post Type General Name', 'design_comuni_italia' ),
         'singular_name'         => _x( 'Ticket', 'Post Type Singular Name', 'design_comuni_italia' ),
         'add_new'               => _x( 'Aggiungi un Ticket', 'Post Type Singular Name', 'design_comuni_italia' ),
-        'add_new_item'               => _x( 'Aggiungi un nuovo Ticket', 'Post Type Singular Name', 'design_comuni_italia' ),
-        //'featured_image' => __( 'Logo Identificativo del Rating', 'design_comuni_italia' ),
-        'edit_item'      => _x( 'Dettagli Ticket', 'Post Type Singular Name', 'design_comuni_italia' ),
-        'view_item'      => _x( 'Visualizza il Ticket', 'Post Type Singular Name', 'design_comuni_italia' ),
-        'set_featured_image' => __( 'Seleziona Immagine Richiesta Assistenza' ),
+        'add_new_item'          => _x( 'Aggiungi un nuovo Ticket', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'edit_item'             => _x( 'Dettagli Ticket', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'view_item'             => _x( 'Visualizza il Ticket', 'Post Type Singular Name', 'design_comuni_italia' ),
+        'set_featured_image'    => __( 'Seleziona Immagine Richiesta Assistenza' ),
         'remove_featured_image' => __( 'Rimuovi Immagine Richiesta Assistenza' , 'design_comuni_italia' ),
-        'use_featured_image' => __( 'Usa come Immagine Richiesta Assistenza' , 'design_comuni_italia' ),
+        'use_featured_image'    => __( 'Usa come Immagine Richiesta Assistenza' , 'design_comuni_italia' ),
     );
+
     $args = array(
         'label'                 => __( 'Richiesta Assistenza', 'design_comuni_italia' ),
         'labels'                => $labels,
         'hierarchical'          => false,
         'public'                => true,
         'show_ui'               => true,
-        'show_in_menu'          => true, // <- aggiungi questa riga
+        'show_in_menu'          => true,   // menu visibile
         'menu_position'         => 5,
         'menu_icon'             => 'dashicons-media-spreadsheet',
         'has_archive'           => false,
-        'capability_type' => array('richiesta_assistenza', 'richieste_assistenza'),
-        'capabilities' => array(
-            'create_posts' => 'do_not_allow'
-        ),
-        'map_meta_cap'    => true,
-        'description'    => __( "Struttura dei resoconti delle richieste di assistenza degli utenti", 'design_comuni_italia' ),
+        'capability_type'       => 'post', // usare capacità standard
+        'map_meta_cap'          => true,
+        'description'           => __( "Struttura dei resoconti delle richieste di assistenza degli utenti", 'design_comuni_italia' ),
     );
 
     register_post_type( 'richiesta_assistenza', $args );
-    remove_post_type_support( 'richiesta_assistenza', 'title');
-    remove_post_type_support( 'richiesta_assistenza', 'editor');
 
+    // Rimuovo titolo e editor (se vuoi campi solo custom)
+    remove_post_type_support( 'richiesta_assistenza', 'title' );
+    remove_post_type_support( 'richiesta_assistenza', 'editor' );
 }
 
 /**
