@@ -17,11 +17,6 @@ while ( have_posts() ) :
     $url_video_group = get_post_meta( $id, $prefix . 'url_video_group', true );
     $video_array   = get_post_meta( $id, $prefix . 'video', true );
 
-    // --- PAGINAZIONE ---
-    $paged     = ( get_query_var('page') ) ? get_query_var('page') : 1;
-    $per_page  = -1;
-
-    // Unisco foto e video in un unico array
     $all_items = [];
     if ( !empty($foto_array) ) {
         foreach ( $foto_array as $foto ) {
@@ -39,7 +34,6 @@ while ( have_posts() ) :
         }
     }
 
-    $total_items = count($all_items);
     $paged_items = $all_items;
 ?>
 
@@ -77,6 +71,7 @@ while ( have_posts() ) :
                 ?>
                     <div class="gallery-item image loading">
                         <a href="<?= esc_url($foto); ?>" class="glightbox" data-gallery="galleria" data-title="<?= esc_attr($image_title); ?>">
+                            <div class="skeleton"></div>
                             <div class="gallery-info">
                                 <i class="fas fa-search-plus"></i>
                                 <p class="gallery-title"><?= esc_html($image_title); ?></p>
@@ -133,12 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
         showTitle: true
     });
 
-    // Rimuove la classe loading quando l'immagine è pronta
-    const galleryItems = document.querySelectorAll('.gallery-item.image img');
-    galleryItems.forEach(img => {
+    // Gestione loading skeleton
+    const images = document.querySelectorAll('.gallery-item.image img');
+    images.forEach(img => {
+        const galleryItem = img.closest('.gallery-item');
         const tmp = new Image();
         tmp.src = img.src;
-        tmp.onload = () => img.closest('.gallery-item').classList.remove('loading');
+        tmp.onload = () => {
+            galleryItem.classList.remove('loading');
+        };
     });
 });
 </script>
@@ -146,26 +144,23 @@ document.addEventListener('DOMContentLoaded', () => {
 <?php endwhile; get_footer(); ?>
 
 <style>
-/* Loader e layout stabile */
-.gallery-item.loading img {
-    filter: blur(10px);
-    opacity: 0.5;
-    transition: filter 0.3s ease, opacity 0.3s ease;
+/* Skeleton loader */
+.gallery-item.loading .skeleton {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 15px;
+    z-index: 2;
 }
 
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
-.gallery-item:not(.loading) img {
-    filter: blur(0);
-    opacity: 1;
-}
-
-/* Stili generali */
+/* Layout */
 .gallery-page {
     background: #f8f9fa;
     padding: 40px 20px;
@@ -269,6 +264,12 @@ document.addEventListener('DOMContentLoaded', () => {
 .badge-video {
     background: #e63946;
 }
+
+/* Immagini */
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
 </style>
-
-
