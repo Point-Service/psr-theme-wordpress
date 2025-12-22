@@ -1,6 +1,6 @@
 <?php
 /**
- * Template single – Galleria moderna con skeleton loader
+ * Template single – Galleria moderna con paginazione
  *
  * @package Design_Comuni_Italia
  */
@@ -17,11 +17,6 @@ while ( have_posts() ) :
     $url_video_group = get_post_meta( $id, $prefix . 'url_video_group', true );
     $video_array   = get_post_meta( $id, $prefix . 'video', true );
 
-    // --- PAGINAZIONE ---
-    $paged     = ( get_query_var('page') ) ? get_query_var('page') : 1;
-    $per_page  = -1;
-
-    // Unisco foto e video in un unico array
     $all_items = [];
     if ( !empty($foto_array) ) {
         foreach ( $foto_array as $foto ) {
@@ -39,9 +34,9 @@ while ( have_posts() ) :
         }
     }
 
-    $total_items = count($all_items);
     $paged_items = $all_items;
 ?>
+
 <div class="container" id="main-container">
     <div class="row">
         <div class="col px-lg-4">
@@ -52,7 +47,7 @@ while ( have_posts() ) :
         <div class="col-lg-8 px-lg-4 py-lg-2">
             <h1><?php the_title(); ?></h1>
             <h3 class="visually-hidden">Dettagli galleria</h3>
-            <p><?= esc_html($descrizione); ?></p>
+            <p><?= esc_html($descrizione);?></p>
         </div>
         <div class="col-lg-3 offset-lg-1">
             <?php
@@ -74,14 +69,20 @@ while ( have_posts() ) :
                     $image_title   = $attachment_id ? get_the_title($attachment_id) : "Immagine della galleria";
                     $image_alt     = $attachment_id ? get_post_meta($attachment_id, '_wp_attachment_image_alt', true) : "Immagine della galleria";
                 ?>
-                    <div class="gallery-item image">
-                        <div class="skeleton"></div>
+                    <div class="gallery-item image loading">
                         <a href="<?= esc_url($foto); ?>" class="glightbox" data-gallery="galleria" data-title="<?= esc_attr($image_title); ?>">
-                            <img src="<?= esc_url($foto); ?>" alt="<?= esc_attr($image_alt); ?>" loading="lazy">
+                            <div class="skeleton"></div>
                             <div class="gallery-info">
                                 <i class="fas fa-search-plus"></i>
                                 <p class="gallery-title"><?= esc_html($image_title); ?></p>
                             </div>
+                            <img 
+                                src="<?= esc_url($foto); ?>" 
+                                alt="<?= esc_attr($image_alt); ?>" 
+                                loading="lazy"
+                                onerror="this.src='https://via.placeholder.com/600x338?text=Immagine+non+disponibile';"
+                                width="600" height="338"
+                            >
                             <span class="badge">Foto</span>
                         </a>
                     </div>
@@ -127,10 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
         showTitle: true
     });
 
-    // Fade-in immagini al caricamento
-    const images = document.querySelectorAll('.gallery-item img');
+    // Gestione loading skeleton
+    const images = document.querySelectorAll('.gallery-item.image img');
     images.forEach(img => {
-        img.onload = () => img.classList.add('loaded');
+        const galleryItem = img.closest('.gallery-item');
+        const tmp = new Image();
+        tmp.src = img.src;
+        tmp.onload = () => {
+            galleryItem.classList.remove('loading');
+        };
     });
 });
 </script>
@@ -139,58 +145,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <style>
 /* Skeleton loader */
-.skeleton {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
+.gallery-item.loading .skeleton {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
     border-radius: 15px;
     z-index: 2;
 }
-@keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
-/* Immagine nascosta fino al caricamento */
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: opacity 0.5s ease-in;
-    border-radius: 15px;
-}
-.gallery-item img.loaded {
-    opacity: 1;
-}
-
-/* Layout griglia */
+/* Layout */
 .gallery-page {
     background: #f8f9fa;
     padding: 40px 20px;
 }
+
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
 }
+
 .gallery-item {
     position: relative;
     overflow: hidden;
     border-radius: 15px;
     background: #000;
-    aspect-ratio: 16 / 9;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    cursor: pointer;
+    aspect-ratio: 16/9;
 }
 
-/* Video container */
+/* Video */
 .video-container {
     position: relative;
     width: 100%;
@@ -198,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
     border-radius: 15px;
     overflow: hidden;
 }
+
 .gallery-item iframe,
 .gallery-item video {
     position: absolute;
@@ -209,14 +202,14 @@ document.addEventListener('DOMContentLoaded', () => {
     border: none;
 }
 
-/* Hover info per immagini */
+/* Info overlay */
 .gallery-info {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -226,9 +219,11 @@ document.addEventListener('DOMContentLoaded', () => {
     z-index: 5;
     pointer-events: none;
 }
+
 .gallery-item:hover .gallery-info {
     opacity: 1;
 }
+
 .gallery-info .fas {
     color: #fff;
     font-size: 2.5rem;
@@ -236,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     transform: translateY(20px);
     transition: transform 0.4s ease;
 }
+
 .gallery-info .gallery-title {
     color: #fff;
     font-size: 1.2rem;
@@ -245,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
     transform: translateY(20px);
     transition: transform 0.4s ease;
 }
+
 .gallery-item:hover .gallery-info .fas,
 .gallery-item:hover .gallery-info .gallery-title {
     transform: translateY(0);
@@ -263,8 +260,16 @@ document.addEventListener('DOMContentLoaded', () => {
     font-weight: 600;
     z-index: 10;
 }
+
 .badge-video {
     background: #e63946;
 }
-</style>
 
+/* Immagini */
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+</style>
