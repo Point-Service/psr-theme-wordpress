@@ -60,7 +60,6 @@ get_header();
     </div>
   </div>
 
-kkkkkkk
   <?php //get_template_part("template-parts/galleria/categorie");
   ?>
 
@@ -198,3 +197,4 @@ get_footer(); ?>
   }
 
 </style>
+
