@@ -468,7 +468,7 @@ function wpc_contatore_homepage_shortcode() {
     return "<br>
         <div class='home-counter' style='text-align:left; font-size:14px; color:white; display:flex; align-items:center; justify-content:flex-start; gap:5px;'>
             <i class='fas fa-chart-line' style='color:white; font-size:16px;'></i>
-            <span>Contatore accessi: $count</span>
+            <span>Contatore totale accessi: $count</span>
         </div>
     ";
 }
