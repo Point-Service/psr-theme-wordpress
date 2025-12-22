@@ -8,7 +8,7 @@ $tipo_terms = get_the_terms($post, 'tipi_galleria');
 $tipo = $tipo_terms ? $tipo_terms[0]->name : '';
 
 if(isset($img) && $img != null){ ?>
-
+lllll
     <div class="gallery-item">
         <a href="<?= get_permalink(); ?>">
             <img src="<?php echo $img ?>" 
