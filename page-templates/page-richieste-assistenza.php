@@ -1,81 +1,64 @@
 <?php
-/**
- * Template Name: Elenco Richieste Assistenza
- * Description: Visualizza le richieste di assistenza (Ticket)
- */
+/*
+Template Name: Tickets Assistenza
+Description: Visualizza tutte le Richieste di Assistenza
+*/
 
-if ( ! is_user_logged_in() ) {
-    wp_redirect( wp_login_url( get_permalink() ) );
-    exit;
-}
+get_header(); ?>
 
-get_header();
-?>
-
-<main id="main-container" class="container my-5">
-
-    <h1 class="mb-4">Richieste di assistenza</h1>
+<div class="container">
+    <h1>Richieste di Assistenza</h1>
 
     <?php
+    // Query tutti i ticket pubblicati
     $args = array(
         'post_type'      => 'richiesta_assistenza',
         'post_status'    => 'publish',
-        'posts_per_page' => 20,
+        'posts_per_page' => -1,
         'orderby'        => 'date',
         'order'          => 'DESC',
     );
 
-    $query = new WP_Query( $args );
+    $tickets = new WP_Query($args);
 
-    if ( $query->have_posts() ) :
-    ?>
+    if ($tickets->have_posts()) : ?>
 
-    <div class="table-responsive">
-        <table class="table table-striped">
+        <table style="width:100%; border-collapse: collapse;">
             <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Richiedente</th>
-                    <th>Email</th>
-                    <th>Categoria</th>
-                    <th>Servizio</th>
-                    <th>Dettagli</th>
+                <tr style="background:#f2f2f2;">
+                    <th style="padding:8px; border:1px solid #ddd;">Richiedente</th>
+                    <th style="padding:8px; border:1px solid #ddd;">Email</th>
+                    <th style="padding:8px; border:1px solid #ddd;">Categoria</th>
+                    <th style="padding:8px; border:1px solid #ddd;">Servizio</th>
+                    <th style="padding:8px; border:1px solid #ddd;">Dettagli</th>
                 </tr>
             </thead>
             <tbody>
-
-                <?php while ( $query->have_posts() ) : $query->the_post(); ?>
-
-                <?php
-                    $nome      = get_post_meta( get_the_ID(), '_dci_richiesta_assistenza_nome', true );
-                    $cognome   = get_post_meta( get_the_ID(), '_dci_richiesta_assistenza_cognome', true );
-                    $email     = get_post_meta( get_the_ID(), '_dci_richiesta_assistenza_email', true );
-                    $categoria = get_post_meta( get_the_ID(), '_dci_richiesta_assistenza_categoria_servizio', true );
-                    $servizio  = get_post_meta( get_the_ID(), '_dci_richiesta_assistenza_servizio', true );
-                    $dettagli  = get_post_meta( get_the_ID(), '_dci_richiesta_assistenza_dettagli', true );
+                <?php while ($tickets->have_posts()) : $tickets->the_post(); 
+                    $nome      = get_post_meta(get_the_ID(), '_dci_richiesta_assistenza_nome', true);
+                    $cognome   = get_post_meta(get_the_ID(), '_dci_richiesta_assistenza_cognome', true);
+                    $email     = get_post_meta(get_the_ID(), '_dci_richiesta_assistenza_email', true);
+                    $categoria = get_post_meta(get_the_ID(), '_dci_richiesta_assistenza_categoria_servizio', true);
+                    $servizio  = get_post_meta(get_the_ID(), '_dci_richiesta_assistenza_servizio', true);
+                    $dettagli  = get_post_meta(get_the_ID(), '_dci_richiesta_assistenza_dettagli', true);
                 ?>
-
-                <tr>
-                    <td><?php echo esc_html( get_the_date('d/m/Y H:i') ); ?></td>
-                    <td><?php echo esc_html( $cognome . ' ' . $nome ); ?></td>
-                    <td><?php echo esc_html( $email ); ?></td>
-                    <td><?php echo esc_html( $categoria ); ?></td>
-                    <td><?php echo esc_html( $servizio ); ?></td>
-                    <td><?php echo esc_html( wp_trim_words( $dettagli, 20 ) ); ?></td>
-                </tr>
-
+                    <tr>
+                        <td style="padding:8px; border:1px solid #ddd;"><?php echo esc_html($cognome . ' ' . $nome); ?></td>
+                        <td style="padding:8px; border:1px solid #ddd;"><?php echo esc_html($email); ?></td>
+                        <td style="padding:8px; border:1px solid #ddd;"><?php echo esc_html($categoria); ?></td>
+                        <td style="padding:8px; border:1px solid #ddd;"><?php echo esc_html($servizio); ?></td>
+                        <td style="padding:8px; border:1px solid #ddd;"><?php echo esc_html($dettagli); ?></td>
+                    </tr>
                 <?php endwhile; ?>
-
             </tbody>
         </table>
-    </div>
 
     <?php else : ?>
+        <p>Nessuna richiesta di assistenza trovata.</p>
+    <?php endif; 
 
-        <p>Nessuna richiesta di assistenza presente.</p>
-
-    <?php endif; wp_reset_postdata(); ?>
-
-</main>
+    wp_reset_postdata(); ?>
+</div>
 
 <?php get_footer(); ?>
+
