@@ -21,7 +21,7 @@ if (is_array($gallery_ids) && count($gallery_ids) >= 1) { ?>
                 wp_reset_postdata();
                 ?>
             </div>
-kkkkkkkkkkkkkkkk
+
             <div class="text-center mt-5">
                 <a href="<?php echo get_permalink(get_page_by_path('galleria')); ?>" 
                    class="btn btn-primary" 
@@ -185,4 +185,5 @@ kkkkkkkkkkkkkkkk
             }
         </style>
     <?php } ?>
+
 
