@@ -82,7 +82,7 @@ function dci_add_richiesta_assistenza_metaboxes()
     $cmb_richiedente->add_field( array(
         'id' => $prefix . 'nome',
         'name'  => __( 'Nome', 'design_comuni_italia' ),
-        'desc'  => __( 'Nome del Richiedente dddddddddd', 'design_comuni_italia' ),
+        'desc'  => __( 'Nome del Richiedente', 'design_comuni_italia' ),
         'type' => 'text',
         'attributes' => array(
             'readonly' => true
