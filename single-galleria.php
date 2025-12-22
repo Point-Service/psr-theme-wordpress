@@ -70,7 +70,7 @@ while ( have_posts() ) :
 
 <main class="gallery-page">
   
-    <br>
+    <br>bbbbb
     <div class="container mb-5">
         <div class="gallery-grid">
             <?php foreach ( $paged_items as $item ): ?>
@@ -304,3 +304,4 @@ while ( have_posts() ) :
         background: #e63946;
     }
 </style>
+
