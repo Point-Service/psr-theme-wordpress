@@ -70,7 +70,7 @@ while ( have_posts() ) :
 
 <main class="gallery-page">
   
-    <br>bbbbb
+    <br>
     <div class="container mb-5">
         <div class="gallery-grid">
             <?php foreach ( $paged_items as $item ): ?>
@@ -201,19 +201,18 @@ while ( have_posts() ) :
         cursor: pointer;
     }
 
+
     .gallery-item.image {
-        height: 100%;
+        aspect-ratio: 16 / 9;
     }
     
-    .gallery-item img {
+    .gallery-item.image img {
         width: 100%;
         height: 100%;
-        display: block;
         object-fit: cover;
-        border-radius: 15px;
-        transition: transform 0.4s ease, filter 0.4s ease;
     }
 
+    
     .gallery-item:hover img {
         transform: scale(1.08);
         filter: blur(4px);
@@ -304,4 +303,5 @@ while ( have_posts() ) :
         background: #e63946;
     }
 </style>
+
 
