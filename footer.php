@@ -208,14 +208,18 @@
 				    echo $shortcode_output;
 				}
 			     ?>
-                    <?php echo do_shortcode('[home_counter]');
-						$daily_counts = get_option('wpc_home_daily_counts', array());
-						$today = date('Y-m-d');
-						
-						$accessi_oggi = isset($daily_counts[$today]) ? $daily_counts[$today] : 0;
-						
-						
-						?>
+				<?php 
+				echo do_shortcode('[home_counter]');
+				
+				$daily_counts = get_option('wpc_home_daily_counts', array());
+				$today = date('Y-m-d');
+				$accessi_oggi = isset($daily_counts[$today]) ? $daily_counts[$today] : 0;
+				?>
+				
+				<p style="color:white; font-size:14px;">
+				    Accessi oggi: <strong><?php echo $accessi_oggi; ?></strong>
+				</p>
+				
 
 
 
