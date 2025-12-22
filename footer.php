@@ -216,10 +216,13 @@
 				$accessi_oggi = isset($daily_counts[$today]) ? $daily_counts[$today] : 0;
 				?>
 				
-				<p style="color:white; font-size:14px;">
-				    Accessi oggi: <strong><?php echo $accessi_oggi; ?></strong>
-				</p>
+				<div class="home-counter" style="text-align:left; font-size:14px; color:white; display:flex; align-items:center; justify-content:flex-start; gap:5px;">
+				    <i class="fas fa-calendar-day" style="color:white; font-size:16px;"></i>
+				    <span>Accessi oggi: <strong><?php echo $accessi_oggi; ?></strong></span>
+				</div>
 				
+				
+								
 
 
 
