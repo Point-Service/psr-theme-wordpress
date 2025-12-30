@@ -65,7 +65,7 @@ foreach ($visits as $v) {
         // Maschera ultimi 3 caratteri dell'IP
         $ip_parts = explode('.', $v['ip']);
         if (count($ip_parts) === 4) {
-            $ip_parts[3] = '***';
+            $ip_parts[3] = '*** (Nascosto per Privacy)';
             $ip_display = implode('.', $ip_parts);
         } else {
             $ip_display = $v['ip']; // fallback
