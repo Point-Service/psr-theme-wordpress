@@ -19,21 +19,18 @@ add_action('admin_menu', 'wpc_accessi_admin_menu');
 // PAGINA ADMIN CON SELEZIONE DATA
 // ================================
 function wpc_accessi_admin_page() {
-
     if (!current_user_can('manage_options')) return;
 
-    $daily_ips = get_option('wpc_home_daily_ips', array());
+    $daily_visits = get_option('wpc_home_daily_visits', array());
     $daily_counts = get_option('wpc_home_daily_counts', array());
 
-    // Selezione data dal GET o default oggi
     $selected_date = isset($_GET['data']) ? sanitize_text_field($_GET['data']) : date('Y-m-d');
-
-    $ips = $daily_ips[$selected_date] ?? array();
+    $visits = $daily_visits[$selected_date] ?? array();
     $count = $daily_counts[$selected_date] ?? 0;
 
     echo '<div class="wrap"><h1>Accessi Homepage</h1>';
 
-    // Form calendario per selezionare il giorno
+    // Form calendario
     echo '<form method="get" style="margin-bottom:15px;">';
     echo '<input type="hidden" name="page" value="wpc-accessi">';
     echo '<label for="data">Seleziona giorno: </label>';
@@ -43,21 +40,27 @@ function wpc_accessi_admin_page() {
 
     echo "<p><strong>Accessi univoci:</strong> $count</p>";
 
-    if (empty($ips)) {
+    if (empty($visits)) {
         echo '<p>Nessun accesso registrato in questa data.</p></div>';
         return;
     }
 
-    // Tabella IP
+    // Tabella dettagliata
     echo '<table class="widefat fixed striped">';
-    echo '<thead><tr><th>#</th><th>IP</th></tr></thead><tbody>';
+    echo '<thead><tr><th>#</th><th>IP</th><th>Ora</th><th>Browser/User Agent</th></tr></thead><tbody>';
 
     $i = 1;
-    foreach ($ips as $ip) {
-        echo '<tr><td>'.$i.'</td><td>'.esc_html($ip).'</td></tr>';
+    foreach ($visits as $v) {
+        echo '<tr>';
+        echo '<td>'.$i.'</td>';
+        echo '<td>'.esc_html($v['ip']).'</td>';
+        echo '<td>'.esc_html($v['time']).'</td>';
+        echo '<td>'.esc_html($v['user_agent']).'</td>';
+        echo '</tr>';
         $i++;
     }
 
     echo '</tbody></table></div>';
 }
+
 
