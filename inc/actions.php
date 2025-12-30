@@ -419,8 +419,6 @@ add_filter( 'admin_head', 'dci_edit_permission_check', 1, 4 );
 
 
 // CONTATORE ACCESSI
-// Funzione per contare le visite della home page
-// CONTATORE ACCESSI GIORNALIERI (ULTIMO ANNO)
 function wpc_contatore_homepage() {
 
     if ( is_front_page() || is_home() ) {
@@ -428,9 +426,18 @@ function wpc_contatore_homepage() {
         $today = date('Y-m-d');
         $count_total = get_option('wpc_home_count', 0);
         $daily_counts = get_option('wpc_home_daily_counts', array());
+        $daily_ips = get_option('wpc_home_daily_ips', array());
 
-        // Cookie per evitare incrementi multipli nello stesso browser
-        if ( !isset($_COOKIE['wpc_home_counted']) ) {
+        // Ottieni IP visitatore
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+        // Inizializza array del giorno se non esiste
+        if (!isset($daily_ips[$today])) {
+            $daily_ips[$today] = array();
+        }
+
+        // Se l'IP non è già presente per oggi, conta come nuova visita
+        if (!in_array($ip, $daily_ips[$today])) {
 
             // Incrementa contatore totale
             $count_total++;
@@ -443,23 +450,29 @@ function wpc_contatore_homepage() {
                 $daily_counts[$today] = 1;
             }
 
-            // Mantieni solo gli ultimi 365 giorni
+            // Salva l'IP nel giorno corrente
+            $daily_ips[$today][] = $ip;
+
+            // Mantieni solo ultimi 365 giorni
             $daily_counts = array_filter($daily_counts, function($date) use ($today) {
                 $date_ts = strtotime($date);
                 $one_year_ago = strtotime('-1 year', strtotime($today));
                 return $date_ts >= $one_year_ago;
             }, ARRAY_FILTER_USE_KEY);
 
-            update_option('wpc_home_daily_counts', $daily_counts);
+            $daily_ips = array_filter($daily_ips, function($date) use ($today) {
+                $date_ts = strtotime($date);
+                $one_year_ago = strtotime('-1 year', strtotime($today));
+                return $date_ts >= $one_year_ago;
+            }, ARRAY_FILTER_USE_KEY);
 
-            // Imposta cookie 1 giorno
-            setcookie('wpc_home_counted', '1', time() + 86400, COOKIEPATH, COOKIE_DOMAIN);
-            $_COOKIE['wpc_home_counted'] = '1';
+            // Salva opzioni
+            update_option('wpc_home_daily_counts', $daily_counts);
+            update_option('wpc_home_daily_ips', $daily_ips);
         }
     }
 }
 add_action('wp', 'wpc_contatore_homepage');
-
 
 // Shortcode contatore con icona Font Awesome
 function wpc_contatore_homepage_shortcode() {
@@ -473,7 +486,6 @@ function wpc_contatore_homepage_shortcode() {
     ";
 }
 add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
-
 
 
 
