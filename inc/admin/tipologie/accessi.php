@@ -1,25 +1,20 @@
 <?php
-// ===============================
 // MENU ADMIN
-// ===============================
 function wpc_accessi_admin_menu() {
     add_menu_page(
-        'Accessi Homepage',       // Titolo pagina
-        'Accessi Homepage',       // Titolo menu
-        'manage_options',         // Permessi (solo admin)
-        'wpc-accessi',            // Slug menu
-        'wpc_accessi_admin_page', // Funzione che genera contenuto
-        'dashicons-visibility',   // Icona
-        80                        // Posizione menu
+        'Accessi Homepage',
+        'Accessi Homepage',
+        'manage_options',
+        'wpc-accessi',
+        'wpc_accessi_admin_page',
+        'dashicons-visibility',
+        80
     );
 }
 add_action('admin_menu', 'wpc_accessi_admin_menu');
 
-// ===============================
-// PAGINA ADMIN: TABELLA ACCESSI
-// ===============================
+// PAGINA ADMIN: CONTATORE + DETTAGLI
 function wpc_accessi_admin_page() {
-
     if (!current_user_can('manage_options')) return;
 
     $logs = get_option('wpc_access_log', array());
@@ -31,6 +26,15 @@ function wpc_accessi_admin_page() {
         return;
     }
 
+    // --- Contatore per giorno ---
+    $today = current_time('Y-m-d');
+    $count_today = 0;
+    foreach ($logs as $log) {
+        if ($log['date'] === $today) $count_today++;
+    }
+    echo "<p><strong>Accessi oggi:</strong> $count_today</p>";
+
+    // --- Tabella dettagliata ---
     echo '<table class="widefat fixed striped">';
     echo '<thead>
             <tr>
@@ -41,7 +45,9 @@ function wpc_accessi_admin_page() {
             </tr>
           </thead><tbody>';
 
+    // Mostra solo gli accessi di oggi
     foreach (array_reverse($logs) as $log) {
+        if ($log['date'] !== $today) continue;
         echo '<tr>
                 <td>'.esc_html($log['date']).'</td>
                 <td>'.esc_html($log['time']).'</td>
