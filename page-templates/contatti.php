@@ -12,108 +12,71 @@ get_header();
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<!-- Stile moderno per la pagina contatti -->
+<!-- Stile personalizzato per la tabella accessi -->
 <style>
-    /* Card principale */
-    .contact-card {
-        border: 1px solid var(--border-color);
-        border-radius: 0; /* BORDI NON ARROTONDATI */
-        box-shadow: var(--shadow);
-        overflow: hidden;
-    }
-
-    /* Header card */
-    .contact-header {
-        color: #ffffff;
-        padding: 1.25rem 1.5rem;
-        border-radius: 0;
-    }
-
-    .contact-header h2 {
-        font-weight: 600;
-        font-size: 1.25rem;
-        margin: 0;
-    }
-
-    /* Corpo card */
-    .contact-body {
-        padding: 0;
-    }
-
-    /* Elementi elenco */
-    .contact-list-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        padding: 1.25rem 1.5rem;
-        background-color: #ffffff;
-    }
-
-    .contact-list-item {
-        border-left: 3px solid transparent;
-    }
-
-    .contact-list-item:hover {
-        background-color: rgba(0, 0, 0, 0.04);
-        border-left-color: var(--bs-primary);
-    }
-
-    /* Icone */
-    .contact-icon {
-        font-size: 1.4rem;
-        line-height: 1.4;
-        flex-shrink: 0;
-    }
-
-    /* Link */
-    .contact-link {
-        font-weight: 500;
-        text-decoration: none;
-    }
-
-    .contact-link:hover {
-        text-decoration: underline;
-    }
-
     /* CSS Personalizzato per la tabella accessi */
     .custom-access-table {
         width: 100%; /* Aumenta la larghezza della tabella */
-        max-width: 100%; /* Non limita la larghezza */
-        margin-left: 0; /* Sposta la tabella completamente a sinistra */
-        margin-right: 0; /* Nessun margine destro */
+        margin: 0; /* Allinea a sinistra */
+        border-spacing: 0; /* Elimina lo spazio tra le celle della tabella */
     }
 
     .custom-access-table th, .custom-access-table td {
         padding: 12px;
+        border: 1px solid #ddd; /* Aggiungi il bordo alla tabella */
     }
 
+    /* Allargare le colonne per una migliore visualizzazione */
     .custom-access-table th:nth-child(1),
     .custom-access-table td:nth-child(1) {
-        width: 5%;
+        width: 5%; /* Colonna # */
     }
 
     .custom-access-table th:nth-child(2),
     .custom-access-table td:nth-child(2) {
-        width: 40%;
+        width: 40%; /* Colonna IP */
     }
 
     .custom-access-table th:nth-child(3),
     .custom-access-table td:nth-child(3) {
-        width: 25%;
+        width: 25%; /* Colonna Ora */
     }
 
     .custom-access-table th:nth-child(4),
     .custom-access-table td:nth-child(4) {
-        width: 30%;
+        width: 30%; /* Colonna Browser/User Agent */
     }
 
+    /* Rendere la tabella responsive su dispositivi mobili */
     @media (max-width: 768px) {
         .custom-access-table th, .custom-access-table td {
             font-size: 14px;
             padding: 8px;
         }
+
+        /* Ridurre la larghezza delle colonne su schermi più piccoli */
+        .custom-access-table th:nth-child(1),
+        .custom-access-table td:nth-child(1) {
+            width: 10%;
+        }
+
+        .custom-access-table th:nth-child(2),
+        .custom-access-table td:nth-child(2) {
+            width: 30%;
+        }
+
+        .custom-access-table th:nth-child(3),
+        .custom-access-table td:nth-child(3) {
+            width: 30%;
+        }
+
+        .custom-access-table th:nth-child(4),
+        .custom-access-table td:nth-child(4) {
+            width: 30%;
+        }
     }
 </style>
+
 
 <main id="content">
     <div class="container" id="main-container">
@@ -251,3 +214,4 @@ get_header();
 </main>
 
 <?php get_footer(); ?>
+
