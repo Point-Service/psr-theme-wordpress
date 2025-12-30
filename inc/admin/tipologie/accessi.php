@@ -52,7 +52,7 @@ echo '<thead><tr><th>#</th><th>IP</th><th>Ora</th><th>Browser/User Agent</th></t
 
 $i = 1;
 $current_user = wp_get_current_user(); // recupera dati utente loggato
-$admin_id = 1; // ID dell'admin principale di default WordPress
+$admin_id = 5; // ID dell'admin principale di default WordPress
 
 foreach ($visits as $v) {
     echo '<tr>';
