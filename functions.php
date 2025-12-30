@@ -430,3 +430,39 @@ function crea_pagina_sitemap_personalizzata() {
 }
 add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 
+
+
+// ===============================
+// LOG ACCESSI HOMEPAGE (fino a 1 anno)
+// ===============================
+function wpc_log_accessi_homepage() {
+
+    if ( !is_front_page() && !is_home() ) return; // solo homepage
+    if ( is_admin() ) return; // solo frontend
+
+    $logs = get_option('wpc_access_log', array());
+
+    $entry = array(
+        'date' => current_time('Y-m-d'),
+        'time' => current_time('H:i:s'),
+        'ip'   => $_SERVER['REMOTE_ADDR'] ?? 'N/A',
+        'ua'   => $_SERVER['HTTP_USER_AGENT'] ?? 'N/A'
+    );
+
+    $logs[] = $entry;
+
+    // Mantieni solo ultimi 365 giorni
+    $one_year_ago = strtotime('-1 year', current_time('timestamp'));
+    $logs = array_filter($logs, function($log) use ($one_year_ago) {
+        return strtotime($log['date']) >= $one_year_ago;
+    });
+
+    update_option('wpc_access_log', $logs);
+}
+add_action('wp', 'wpc_log_accessi_homepage');
+
+// ===============================
+// INCLUDI IL FILE ADMIN (menu e tabella)
+// ===============================
+require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
+
