@@ -432,6 +432,12 @@ add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 
 
 
+function wpc_contatore_homepage_debug() {
+    error_log('Contatore homepage eseguito');
+}
+add_action('wp', 'wpc_contatore_homepage_debug');
+
+
 // ================================
 // CONTATORE ACCESSI UNIVOCI
 // ================================
