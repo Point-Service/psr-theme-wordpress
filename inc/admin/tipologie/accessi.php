@@ -1,6 +1,6 @@
 <?php
 // ================================
-// MENU ADMIN - ACCESSI HOMEPAGE
+// MENU ADMIN - ACCESSI HOMEPAGE AVANZATO
 // ================================
 function wpc_accessi_admin_menu() {
     add_menu_page(
@@ -16,7 +16,7 @@ function wpc_accessi_admin_menu() {
 add_action('admin_menu', 'wpc_accessi_admin_menu');
 
 // ================================
-// PAGINA ADMIN
+// PAGINA ADMIN CON SELEZIONE DATA
 // ================================
 function wpc_accessi_admin_page() {
 
@@ -24,24 +24,38 @@ function wpc_accessi_admin_page() {
 
     $daily_ips = get_option('wpc_home_daily_ips', array());
     $daily_counts = get_option('wpc_home_daily_counts', array());
-    $today = date('Y-m-d');
-    $ips_today = $daily_ips[$today] ?? array();
-    $count_today = $daily_counts[$today] ?? 0;
+
+    // Selezione data dal GET o default oggi
+    $selected_date = isset($_GET['data']) ? sanitize_text_field($_GET['data']) : date('Y-m-d');
+
+    $ips = $daily_ips[$selected_date] ?? array();
+    $count = $daily_counts[$selected_date] ?? 0;
 
     echo '<div class="wrap"><h1>Accessi Homepage</h1>';
 
-    echo "<p><strong>Accessi univoci oggi:</strong> $count_today</p>";
+    // Form calendario per selezionare il giorno
+    echo '<form method="get" style="margin-bottom:15px;">';
+    echo '<input type="hidden" name="page" value="wpc-accessi">';
+    echo '<label for="data">Seleziona giorno: </label>';
+    echo '<input type="date" id="data" name="data" value="' . esc_attr($selected_date) . '">';
+    echo '<input type="submit" class="button button-primary" value="Mostra">';
+    echo '</form>';
 
-    if (empty($ips_today)) {
-        echo '<p>Nessun accesso registrato oggi.</p></div>';
+    echo "<p><strong>Accessi univoci:</strong> $count</p>";
+
+    if (empty($ips)) {
+        echo '<p>Nessun accesso registrato in questa data.</p></div>';
         return;
     }
 
+    // Tabella IP
     echo '<table class="widefat fixed striped">';
-    echo '<thead><tr><th>IP</th></tr></thead><tbody>';
+    echo '<thead><tr><th>#</th><th>IP</th></tr></thead><tbody>';
 
-    foreach ($ips_today as $ip) {
-        echo '<tr><td>'.esc_html($ip).'</td></tr>';
+    $i = 1;
+    foreach ($ips as $ip) {
+        echo '<tr><td>'.$i.'</td><td>'.esc_html($ip).'</td></tr>';
+        $i++;
     }
 
     echo '</tbody></table></div>';
