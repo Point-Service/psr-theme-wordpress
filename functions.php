@@ -432,19 +432,36 @@ add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 
 
 
+
 // ===============================
 // LOG ACCESSI HOMEPAGE (tutti gli accessi, fino a 1 anno)
-function wpc_log_accessi_homepage() {
-    if ( !is_front_page() && !is_home() ) return; // solo homepage
-    if ( is_admin() ) return; // solo frontend
+// ===============================
+// CONTATORE ACCESSI UNIVOCI PER GIORNO
+function wpc_log_accessi_univoci() {
 
+    if ( !is_front_page() && !is_home() ) return; // solo homepage
+    if ( is_admin() ) return; // solo backend
+
+    $today = current_time('Y-m-d');
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'N/A';
+    $ua = $_SERVER['HTTP_USER_AGENT'] ?? 'N/A';
+
+    // Recupera i log
     $logs = get_option('wpc_access_log', array());
 
+    // Controlla se questo IP ha già visitato oggi
+    foreach ($logs as $log) {
+        if ($log['date'] === $today && $log['ip'] === $ip) {
+            return; // già registrato oggi, non fare nulla
+        }
+    }
+
+    // Aggiungi nuovo accesso univoco
     $logs[] = array(
-        'date' => current_time('Y-m-d'),
+        'date' => $today,
         'time' => current_time('H:i:s'),
-        'ip'   => $_SERVER['REMOTE_ADDR'] ?? 'N/A',
-        'ua'   => $_SERVER['HTTP_USER_AGENT'] ?? 'N/A'
+        'ip'   => $ip,
+        'ua'   => $ua
     );
 
     // Mantieni solo ultimi 365 giorni
@@ -455,10 +472,9 @@ function wpc_log_accessi_homepage() {
 
     update_option('wpc_access_log', $logs);
 }
-add_action('wp', 'wpc_log_accessi_homepage');
+add_action('wp', 'wpc_log_accessi_univoci');
 
-// ===============================
-// INCLUDI IL FILE ADMIN (menu e tabella)
-// ===============================
+// Includi il file admin per visualizzare contatore e tabella
 require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
+
 
