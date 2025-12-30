@@ -59,7 +59,7 @@ function dci_add_sito_tematico_metaboxes()
 
     $cmb_dati = new_cmb2_box(array(
         'id'           => $prefix . 'box_dati_card',
-        'title'        => __('Sezione Principale'),
+        'title'        => __('Card'),
         'object_types' => array('sito_tematico'),
         'context'      => 'normal',
         'priority'     => 'high',
@@ -97,40 +97,18 @@ function dci_add_sito_tematico_metaboxes()
         )
     );
 
-    // Metabox laterale per la configurazione delle impostazioni del sito tematico
-
-    $cmb_setting = new_cmb2_box(
-    array(
-        'id'           => $prefix . 'box_setting',
-        'title'        => __('Impostazioni di visualizzazione', 'design_comuni_italia'),
-        'object_types' => array('sito_tematico'),
-        'context'      => 'side',
-        'priority'     => 'high',
-    )
-);
-
-    $cmb_setting->add_field(array(
+    $cmb_dati->add_field(array(
         'name'  => __('Mostra pagina principale', 'design_comuni_italia'),
         'id'    => $prefix . 'mostra_pagina',
         'type'  => 'checkbox',
 
-         // Descrizione informativa visualizzata sotto il checkbox
-        'after' => '<br><p class="cmb2-metabox-description" style="margin-top:6px;">' .
-            __('Se selezionato, l’utente visualizzerà la pagina principale del sito tematico anziché essere reindirizzato al link esterno.<br>
+        // Descrizione posizionata sotto il checkbox
+        'after' => '<p class="cmb2-metabox-description" style="margin-top:6px;">' .
+            __('Se selezionato, l’utente visualizzerà la pagina principale del sito tematico anziché essere reindirizzato al link esterno.  
         Quando questa opzione è attiva, il campo “Link principale” deve essere lasciato vuoto.', 'design_comuni_italia') .
             '</p>',
     ));
 
-    $cmb_setting->add_field(array(
-        'name'  => __('Mostra Immagine nella pagina principale', 'design_comuni_italia'),
-        'id'    => $prefix . 'mostra_immagine',
-        'type'  => 'checkbox',
-        'after' => '<br><p class="cmb2-metabox-description" style="margin-top:6px;">' .
-            __('Se selezionato, l’immagine principale verrà visualizzata nella pagina iniziale del sito tematico.<br> 
-            Questa opzione non è consigliata quando l’immagine risulta eccessivamente grande o impatta negativamente sulla leggibilità della pagina.<br>
-            L’impostazione ha effetto solo se l’opzione “Mostra pagina principale” è attiva.', 'design_comuni_italia') .
-            '</p>',
-    ));
 
 
     // Box link multipli
@@ -217,7 +195,15 @@ function dci_add_sito_tematico_metaboxes()
         ),
     ));
 
-    
+    $cmb_other_option->add_field(array(
+        'name'  => __('Mostra Immagine nella pagina principale', 'design_comuni_italia'),
+        'id'    => $prefix . 'mostra_immagine',
+        'type'  => 'checkbox',
+        'desc'  => __('Se selezionato, l\'immagine del sito tematico sarà mostrata nella pagina principale. Funziona solo se l\'opzione "Mostra pagina principale" è abilitata.', 'design_comuni_italia'),
+        'attributes' => array(
+            'style' => 'margin-bottom: 6px;',
+        ),
+    ));
 }
 
 /**
@@ -235,40 +221,25 @@ function dci_sito_tematico_inline_script()
 <script>
 jQuery(document).ready(function($) {
 
-    const checkbox = $('#_dci_sito_tematico_mostra_pagina');
-    const urlField = $('#_dci_sito_tematico_link');
-
-    const boxMultiLink  = $('#_dci_sito_tematico_box_multi_link');
-    const boxOtherOption = $('#_dci_sito_tematico_box_other_option');
-
-    function toggleSections() {
+    function toggleUrlRequired() {
+        const checkbox = $('#_dci_sito_tematico_mostra_pagina');
+        const urlField = $('#_dci_sito_tematico_link');
 
         if (checkbox.is(':checked')) {
-
-            // URL non obbligatorio
+            // Checkbox attiva → URL NON obbligatorio
             urlField.removeAttr('required');
-
-            // Mostra sezioni dipendenti
-            boxMultiLink.slideDown(200);
-            boxOtherOption.slideDown(200);
-
         } else {
-
-            // URL obbligatorio
+            // Checkbox non attiva → URL obbligatorio
             urlField.attr('required', 'required');
-
-            // Nasconde sezioni non pertinenti
-            boxMultiLink.slideUp(200);
-            boxOtherOption.slideUp(200);
         }
     }
 
-    // Stato iniziale al caricamento
-    toggleSections();
+    // Controllo al caricamento
+    toggleUrlRequired();
 
-    // Aggiornamento dinamico
-    checkbox.on('change', function() {
-        toggleSections();
+    // Listener corretto
+    $(document).on('change', '#_dci_sito_tematico_mostra_pagina', function() {
+        toggleUrlRequired();
     });
 
 });
