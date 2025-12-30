@@ -217,8 +217,6 @@
 				?>
 				
 				<div class="home-counter" style="text-align:left; font-size:14px; color:white; display:flex; align-items:center; justify-content:flex-start; gap:5px;">
-				    <i class="fas fa-user-clock" style="color:white; font-size:16px;"></i>
-				    <span>Accessi oggi: <?php echo $accessi_oggi; ?></span>
 				</div>
 				
 				
