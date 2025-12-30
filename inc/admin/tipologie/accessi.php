@@ -46,21 +46,40 @@ function wpc_accessi_admin_page() {
     }
 
     // Tabella dettagliata
-    echo '<table class="widefat fixed striped">';
-    echo '<thead><tr><th>#</th><th>IP</th><th>Ora</th><th>Browser/User Agent</th></tr></thead><tbody>';
+  // Tabella dettagliata
+echo '<table class="widefat fixed striped">';
+echo '<thead><tr><th>#</th><th>IP</th><th>Ora</th><th>Browser/User Agent</th></tr></thead><tbody>';
 
-    $i = 1;
-    foreach ($visits as $v) {
-        echo '<tr>';
-        echo '<td>'.$i.'</td>';
-        echo '<td>'.esc_html($v['ip']).'</td>';
-        echo '<td>'.esc_html($v['time']).'</td>';
-        echo '<td>'.esc_html($v['user_agent']).'</td>';
-        echo '</tr>';
-        $i++;
+$i = 1;
+$current_user = wp_get_current_user(); // recupera dati utente loggato
+$admin_id = 1; // ID dell'admin principale di default WordPress
+
+foreach ($visits as $v) {
+    echo '<tr>';
+    echo '<td>'.$i.'</td>';
+
+    // Mostra IP completo solo all'admin principale (ID = 1)
+    if ($current_user->ID === $admin_id) {
+        $ip_display = $v['ip'];
+    } else {
+        // Maschera ultimi 3 caratteri dell'IP
+        $ip_parts = explode('.', $v['ip']);
+        if (count($ip_parts) === 4) {
+            $ip_parts[3] = '***';
+            $ip_display = implode('.', $ip_parts);
+        } else {
+            $ip_display = $v['ip']; // fallback
+        }
     }
 
-    echo '</tbody></table></div>';
+    echo '<td>'.esc_html($ip_display).'</td>';
+    echo '<td>'.esc_html($v['time']).'</td>';
+    echo '<td>'.esc_html($v['user_agent']).'</td>';
+    echo '</tr>';
+    $i++;
+}
+echo '</tbody></table></div>';
+
 }
 
 
