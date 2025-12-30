@@ -307,13 +307,13 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
 	document.addEventListener('keydown', function(e) {
-	  const tag = e.target.tagName.toLowerCase();
-	  const isInput = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
+	  const editable = e.target.isContentEditable || e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'textarea';
 	
-	  if (isInput && e.key.toLowerCase() === 'm') {
-	    e.stopPropagation(); // blocca la M solo negli input
-	  }
+	  if (editable && e.key.toLowerCase() === 'm') {
+	    e.stopPropagation(); // blocca la M solo negli elementi editabili
+		  }
 	}, true);
 
 	
