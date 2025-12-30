@@ -432,49 +432,85 @@ add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 
 
 
-
-// ===============================
-// LOG ACCESSI HOMEPAGE (tutti gli accessi, fino a 1 anno)
-// ===============================
-// CONTATORE ACCESSI UNIVOCI PER GIORNO
-function wpc_log_accessi_univoci() {
+// ================================
+// CONTATORE ACCESSI UNIVOCI
+// ================================
+function wpc_contatore_homepage() {
 
     if ( !is_front_page() && !is_home() ) return; // solo homepage
-    if ( is_admin() ) return; // solo backend
+    if ( is_admin() ) return; // backend non contato
 
-    $today = current_time('Y-m-d');
+    $today = date('Y-m-d');
+    $count_total = get_option('wpc_home_count', 0);
+    $daily_counts = get_option('wpc_home_daily_counts', array());
+    $daily_ips = get_option('wpc_home_daily_ips', array());
+
+    // Ottieni IP visitatore
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'N/A';
-    $ua = $_SERVER['HTTP_USER_AGENT'] ?? 'N/A';
 
-    // Recupera i log
-    $logs = get_option('wpc_access_log', array());
-
-    // Controlla se questo IP ha già visitato oggi
-    foreach ($logs as $log) {
-        if ($log['date'] === $today && $log['ip'] === $ip) {
-            return; // già registrato oggi, non fare nulla
-        }
+    // Inizializza array del giorno se non esiste
+    if (!isset($daily_ips[$today])) {
+        $daily_ips[$today] = array();
     }
 
-    // Aggiungi nuovo accesso univoco
-    $logs[] = array(
-        'date' => $today,
-        'time' => current_time('H:i:s'),
-        'ip'   => $ip,
-        'ua'   => $ua
-    );
+    // Se l'IP non è già presente per oggi, conta come nuova visita
+    if (!in_array($ip, $daily_ips[$today])) {
 
-    // Mantieni solo ultimi 365 giorni
-    $one_year_ago = strtotime('-1 year', current_time('timestamp'));
-    $logs = array_filter($logs, function($log) use ($one_year_ago) {
-        return strtotime($log['date']) >= $one_year_ago;
-    });
+        // Incrementa contatore totale
+        $count_total++;
+        update_option('wpc_home_count', $count_total);
 
-    update_option('wpc_access_log', $logs);
+        // Incrementa contatore giornaliero
+        if (isset($daily_counts[$today])) {
+            $daily_counts[$today]++;
+        } else {
+            $daily_counts[$today] = 1;
+        }
+
+        // Salva l'IP nel giorno corrente
+        $daily_ips[$today][] = $ip;
+
+        // Mantieni solo ultimi 365 giorni
+        $daily_counts = array_filter($daily_counts, function($date) use ($today) {
+            $date_ts = strtotime($date);
+            $one_year_ago = strtotime('-1 year', strtotime($today));
+            return $date_ts >= $one_year_ago;
+        }, ARRAY_FILTER_USE_KEY);
+
+        $daily_ips = array_filter($daily_ips, function($date) use ($today) {
+            $date_ts = strtotime($date);
+            $one_year_ago = strtotime('-1 year', strtotime($today));
+            return $date_ts >= $one_year_ago;
+        }, ARRAY_FILTER_USE_KEY);
+
+        // Salva opzioni
+        update_option('wpc_home_daily_counts', $daily_counts);
+        update_option('wpc_home_daily_ips', $daily_ips);
+    }
 }
-add_action('wp', 'wpc_log_accessi_univoci');
+add_action('wp', 'wpc_contatore_homepage');
 
-// Includi il file admin per visualizzare contatore e tabella
+// ================================
+// SHORTCODE VISUALIZZAZIONE CONTATORE
+// ================================
+function wpc_contatore_homepage_shortcode() {
+    $count_total = get_option('wpc_home_count', 0);
+    $daily_counts = get_option('wpc_home_daily_counts', array());
+    $today = date('Y-m-d');
+    $count_today = $daily_counts[$today] ?? 0;
+
+    return "<div class='home-counter' style='text-align:left; font-size:14px; color:white; display:flex; flex-direction:column; gap:3px;'>
+                <span style='display:flex; align-items:center; gap:5px;'>
+                    <i class='fas fa-chart-line' style='color:white; font-size:16px;'></i>
+                    <strong>Totale accessi:</strong> $count_total
+                </span>
+                <span style='display:flex; align-items:center; gap:5px;'>
+                    <i class='fas fa-calendar-day' style='color:white; font-size:16px;'></i>
+                    <strong>Accessi oggi:</strong> $count_today
+                </span>
+            </div>";
+}
+add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
 require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
 
 
