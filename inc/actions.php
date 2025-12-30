@@ -414,30 +414,3 @@ function dci_edit_permission_check() {
 add_filter( 'admin_head', 'dci_edit_permission_check', 1, 4 );
 
 
-
-
-
-
-// CONTATORE ACCESSI
-function wpc_contatore_homepage_shortcode() {
-    $count_total = get_option('wpc_home_count', 0);
-    $daily_counts = get_option('wpc_home_daily_counts', array());
-    $today = date('Y-m-d');
-    $count_today = $daily_counts[$today] ?? 0;
-
-    return "<br>
-        <div class='home-counter' style='text-align:left; font-size:14px; color:white; display:flex; flex-direction:column; gap:3px;'>
-            <span style='display:flex; align-items:center; gap:5px;'>
-                <i class='fas fa-chart-line' style='color:white; font-size:16px;'></i>
-                <strong>Totale accessi:</strong> $count_total
-            </span>
-            <span style='display:flex; align-items:center; gap:5px;'>
-                <i class='fas fa-calendar-day' style='color:white; font-size:16px;'></i>
-                <strong>Accessi oggi:</strong> $count_today
-            </span>
-        </div>
-    ";
-}
-add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
-
-
