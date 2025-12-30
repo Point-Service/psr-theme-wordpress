@@ -14,10 +14,8 @@ get_header();
 
 <!-- Stile moderno per la pagina contatti -->
 <style>
-
     /* Card principale */
     .contact-card {
-        /* background-color: #f0f0f0ff; */
         border: 1px solid var(--border-color);
         border-radius: 0; /* BORDI NON ARROTONDATI */
         box-shadow: var(--shadow);
@@ -48,9 +46,7 @@ get_header();
         align-items: flex-start;
         gap: 1rem;
         padding: 1.25rem 1.5rem;
-        /* border-bottom: 1px solid var(--border-color); */
         background-color: #ffffff;
-        /* transition: var(--transition); */
     }
 
     .contact-list-item {
@@ -61,8 +57,6 @@ get_header();
         background-color: rgba(0, 0, 0, 0.04);
         border-left-color: var(--bs-primary);
     }
-
-
 
     /* Icone */
     .contact-icon {
@@ -81,15 +75,42 @@ get_header();
         text-decoration: underline;
     }
 
-    /* Responsive mobile */
-    @media (max-width: 768px) {
-        .contact-list-item {
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+    /* CSS Personalizzato per la tabella accessi */
+    .custom-access-table {
+        width: 100%; /* Aumenta la larghezza della tabella */
+        max-width: 100%; /* Non limita la larghezza */
+        margin-left: 0; /* Sposta la tabella completamente a sinistra */
+        margin-right: 0; /* Nessun margine destro */
+    }
 
-        .contact-icon {
-            font-size: 1.3rem;
+    .custom-access-table th, .custom-access-table td {
+        padding: 12px;
+    }
+
+    .custom-access-table th:nth-child(1),
+    .custom-access-table td:nth-child(1) {
+        width: 5%;
+    }
+
+    .custom-access-table th:nth-child(2),
+    .custom-access-table td:nth-child(2) {
+        width: 40%;
+    }
+
+    .custom-access-table th:nth-child(3),
+    .custom-access-table td:nth-child(3) {
+        width: 25%;
+    }
+
+    .custom-access-table th:nth-child(4),
+    .custom-access-table td:nth-child(4) {
+        width: 30%;
+    }
+
+    @media (max-width: 768px) {
+        .custom-access-table th, .custom-access-table td {
+            font-size: 14px;
+            padding: 8px;
         }
     }
 </style>
