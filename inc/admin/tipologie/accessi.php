@@ -1,3 +1,5 @@
+<?php
+// MENU ADMIN
 function wpc_accessi_admin_menu() {
     add_menu_page(
         'Accessi Homepage',
@@ -33,4 +35,6 @@ function wpc_accessi_admin_page() {
     }
 
     echo '</tbody></table></div>';
+}
+
 }
