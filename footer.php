@@ -305,6 +305,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
+	document.addEventListener('keydown', function(e) {
+	  const tag = e.target.tagName.toLowerCase();
+	  const isInput = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
+	
+	  if (isInput && e.key.toLowerCase() === 'm') {
+	    e.stopPropagation(); // blocca la M solo negli input
+	  }
+	}, true);
+
+	
 </script>
 
 
