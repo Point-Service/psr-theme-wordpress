@@ -435,60 +435,64 @@ add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 // ================================
 // CONTATORE ACCESSI UNIVOCI
 // ================================
+
 function wpc_contatore_homepage() {
 
-    if ( !is_front_page() && !is_home() ) return; // solo homepage
-    if ( is_admin() ) return; // backend non contato
+    if ( !is_front_page() && !is_home() ) return; 
+    if ( is_admin() ) return;
 
     $today = date('Y-m-d');
     $count_total = get_option('wpc_home_count', 0);
     $daily_counts = get_option('wpc_home_daily_counts', array());
-    $daily_ips = get_option('wpc_home_daily_ips', array());
+    $daily_visits = get_option('wpc_home_daily_visits', array()); // nuovo array dettagli
 
-    // Ottieni IP visitatore
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'N/A';
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'N/A';
+    $time = current_time('H:i:s');
 
-    // Inizializza array del giorno se non esiste
-    if (!isset($daily_ips[$today])) {
-        $daily_ips[$today] = array();
+    if (!isset($daily_visits[$today])) {
+        $daily_visits[$today] = array();
     }
 
-    // Se l'IP non è già presente per oggi, conta come nuova visita
-    if (!in_array($ip, $daily_ips[$today])) {
+    // controlla se IP già presente oggi
+    $ip_present = false;
+    foreach ($daily_visits[$today] as $v) {
+        if ($v['ip'] === $ip) {
+            $ip_present = true;
+            break;
+        }
+    }
 
-        // Incrementa contatore totale
+    if (!$ip_present) {
         $count_total++;
         update_option('wpc_home_count', $count_total);
 
-        // Incrementa contatore giornaliero
-        if (isset($daily_counts[$today])) {
-            $daily_counts[$today]++;
-        } else {
-            $daily_counts[$today] = 1;
-        }
+        $daily_counts[$today] = ($daily_counts[$today] ?? 0) + 1;
 
-        // Salva l'IP nel giorno corrente
-        $daily_ips[$today][] = $ip;
+        $daily_visits[$today][] = array(
+            'ip' => $ip,
+            'time' => $time,
+            'user_agent' => $user_agent,
+        );
 
-        // Mantieni solo ultimi 365 giorni
-        $daily_counts = array_filter($daily_counts, function($date) use ($today) {
-            $date_ts = strtotime($date);
-            $one_year_ago = strtotime('-1 year', strtotime($today));
-            return $date_ts >= $one_year_ago;
-        }, ARRAY_FILTER_USE_KEY);
+        // Mantieni ultimi 365 giorni
+        $daily_counts = array_filter($daily_counts, fn($date) => strtotime($date) >= strtotime('-1 year', strtotime($today)), ARRAY_FILTER_USE_KEY);
+        $daily_visits = array_filter($daily_visits, fn($date) => strtotime($date) >= strtotime('-1 year', strtotime($today)), ARRAY_FILTER_USE_KEY);
 
-        $daily_ips = array_filter($daily_ips, function($date) use ($today) {
-            $date_ts = strtotime($date);
-            $one_year_ago = strtotime('-1 year', strtotime($today));
-            return $date_ts >= $one_year_ago;
-        }, ARRAY_FILTER_USE_KEY);
-
-        // Salva opzioni
         update_option('wpc_home_daily_counts', $daily_counts);
-        update_option('wpc_home_daily_ips', $daily_ips);
+        update_option('wpc_home_daily_visits', $daily_visits);
     }
 }
 add_action('wp', 'wpc_contatore_homepage');
+
+
+
+
+
+
+
+
+
 
 // ================================
 // SHORTCODE VISUALIZZAZIONE CONTATORE
