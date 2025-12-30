@@ -477,21 +477,5 @@ add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
 
 
 
-// ------------------------
-// BLOCCO JS PER M NEGLI INPUT
-function wpc_blocca_m_input() {
-    ?>
-    <script>
-    document.addEventListener('keydown', function(e) {
-      const tag = e.target.tagName.toLowerCase();
-      const isInput = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
 
-      if (isInput && e.key.toLowerCase() === 'm') {
-        e.stopPropagation(); // impedisce al plugin di catturare la M
-      }
-    }, true);
-    </script>
-    <?php
-}
-add_action('wp_footer', 'wpc_blocca_m_input');
 
