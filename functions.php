@@ -433,23 +433,19 @@ add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 
 
 // ===============================
-// LOG ACCESSI HOMEPAGE (fino a 1 anno)
-// ===============================
+// LOG ACCESSI HOMEPAGE (tutti gli accessi, fino a 1 anno)
 function wpc_log_accessi_homepage() {
-
     if ( !is_front_page() && !is_home() ) return; // solo homepage
     if ( is_admin() ) return; // solo frontend
 
     $logs = get_option('wpc_access_log', array());
 
-    $entry = array(
+    $logs[] = array(
         'date' => current_time('Y-m-d'),
         'time' => current_time('H:i:s'),
         'ip'   => $_SERVER['REMOTE_ADDR'] ?? 'N/A',
         'ua'   => $_SERVER['HTTP_USER_AGENT'] ?? 'N/A'
     );
-
-    $logs[] = $entry;
 
     // Mantieni solo ultimi 365 giorni
     $one_year_ago = strtotime('-1 year', current_time('timestamp'));
