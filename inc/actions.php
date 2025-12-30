@@ -419,73 +419,25 @@ add_filter( 'admin_head', 'dci_edit_permission_check', 1, 4 );
 
 
 // CONTATORE ACCESSI
-function wpc_contatore_homepage() {
-
-    if ( is_front_page() || is_home() ) {
-
-        $today = date('Y-m-d');
-        $count_total = get_option('wpc_home_count', 0);
-        $daily_counts = get_option('wpc_home_daily_counts', array());
-        $daily_ips = get_option('wpc_home_daily_ips', array());
-
-        // Ottieni IP visitatore
-        $ip = $_SERVER['REMOTE_ADDR'];
-
-        // Inizializza array del giorno se non esiste
-        if (!isset($daily_ips[$today])) {
-            $daily_ips[$today] = array();
-        }
-
-        // Se l'IP non è già presente per oggi, conta come nuova visita
-        if (!in_array($ip, $daily_ips[$today])) {
-
-            // Incrementa contatore totale
-            $count_total++;
-            update_option('wpc_home_count', $count_total);
-
-            // Incrementa contatore giornaliero
-            if (isset($daily_counts[$today])) {
-                $daily_counts[$today]++;
-            } else {
-                $daily_counts[$today] = 1;
-            }
-
-            // Salva l'IP nel giorno corrente
-            $daily_ips[$today][] = $ip;
-
-            // Mantieni solo ultimi 365 giorni
-            $daily_counts = array_filter($daily_counts, function($date) use ($today) {
-                $date_ts = strtotime($date);
-                $one_year_ago = strtotime('-1 year', strtotime($today));
-                return $date_ts >= $one_year_ago;
-            }, ARRAY_FILTER_USE_KEY);
-
-            $daily_ips = array_filter($daily_ips, function($date) use ($today) {
-                $date_ts = strtotime($date);
-                $one_year_ago = strtotime('-1 year', strtotime($today));
-                return $date_ts >= $one_year_ago;
-            }, ARRAY_FILTER_USE_KEY);
-
-            // Salva opzioni
-            update_option('wpc_home_daily_counts', $daily_counts);
-            update_option('wpc_home_daily_ips', $daily_ips);
-        }
-    }
-}
-add_action('wp', 'wpc_contatore_homepage');
-
-// Shortcode contatore con icona Font Awesome
 function wpc_contatore_homepage_shortcode() {
-    $count = get_option('wpc_home_count', 0);
+    $count_total = get_option('wpc_home_count', 0);
+    $daily_counts = get_option('wpc_home_daily_counts', array());
+    $today = date('Y-m-d');
+    $count_today = $daily_counts[$today] ?? 0;
 
     return "<br>
-        <div class='home-counter' style='text-align:left; font-size:14px; color:white; display:flex; align-items:center; justify-content:flex-start; gap:5px;'>
-            <i class='fas fa-chart-line' style='color:white; font-size:16px;'></i>
-            <span>Contatore totale accessi: $count</span>
+        <div class='home-counter' style='text-align:left; font-size:14px; color:white; display:flex; flex-direction:column; gap:3px;'>
+            <span style='display:flex; align-items:center; gap:5px;'>
+                <i class='fas fa-chart-line' style='color:white; font-size:16px;'></i>
+                <strong>Totale accessi:</strong> $count_total
+            </span>
+            <span style='display:flex; align-items:center; gap:5px;'>
+                <i class='fas fa-calendar-day' style='color:white; font-size:16px;'></i>
+                <strong>Accessi oggi:</strong> $count_today
+            </span>
         </div>
     ";
 }
 add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
-
 
 
