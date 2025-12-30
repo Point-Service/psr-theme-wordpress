@@ -12,71 +12,87 @@ get_header();
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<!-- Stile personalizzato per la tabella accessi -->
+<!-- Stile moderno per la pagina contatti -->
 <style>
-    /* CSS Personalizzato per la tabella accessi */
-    .custom-access-table {
-        width: 100%; /* Aumenta la larghezza della tabella */
-        margin: 0; /* Allinea a sinistra */
-        border-spacing: 0; /* Elimina lo spazio tra le celle della tabella */
+
+    /* Card principale */
+    .contact-card {
+        /* background-color: #f0f0f0ff; */
+        border: 1px solid var(--border-color);
+        border-radius: 0; /* BORDI NON ARROTONDATI */
+        box-shadow: var(--shadow);
+        overflow: hidden;
     }
 
-    .custom-access-table th, .custom-access-table td {
-        padding: 12px;
-        border: 1px solid #ddd; /* Aggiungi il bordo alla tabella */
+    /* Header card */
+    .contact-header {
+        color: #ffffff;
+        padding: 1.25rem 1.5rem;
+        border-radius: 0;
     }
 
-    /* Allargare le colonne per una migliore visualizzazione */
-    .custom-access-table th:nth-child(1),
-    .custom-access-table td:nth-child(1) {
-        width: 5%; /* Colonna # */
+    .contact-header h2 {
+        font-weight: 600;
+        font-size: 1.25rem;
+        margin: 0;
     }
 
-    .custom-access-table th:nth-child(2),
-    .custom-access-table td:nth-child(2) {
-        width: 40%; /* Colonna IP */
+    /* Corpo card */
+    .contact-body {
+        padding: 0;
     }
 
-    .custom-access-table th:nth-child(3),
-    .custom-access-table td:nth-child(3) {
-        width: 25%; /* Colonna Ora */
+    /* Elementi elenco */
+    .contact-list-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.25rem 1.5rem;
+        /* border-bottom: 1px solid var(--border-color); */
+        background-color: #ffffff;
+        /* transition: var(--transition); */
     }
 
-    .custom-access-table th:nth-child(4),
-    .custom-access-table td:nth-child(4) {
-        width: 30%; /* Colonna Browser/User Agent */
+    .contact-list-item {
+        border-left: 3px solid transparent;
     }
 
-    /* Rendere la tabella responsive su dispositivi mobili */
+    .contact-list-item:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+        border-left-color: var(--bs-primary);
+    }
+
+
+
+    /* Icone */
+    .contact-icon {
+        font-size: 1.4rem;
+        line-height: 1.4;
+        flex-shrink: 0;
+    }
+
+    /* Link */
+    .contact-link {
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .contact-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Responsive mobile */
     @media (max-width: 768px) {
-        .custom-access-table th, .custom-access-table td {
-            font-size: 14px;
-            padding: 8px;
+        .contact-list-item {
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
-        /* Ridurre la larghezza delle colonne su schermi più piccoli */
-        .custom-access-table th:nth-child(1),
-        .custom-access-table td:nth-child(1) {
-            width: 10%;
-        }
-
-        .custom-access-table th:nth-child(2),
-        .custom-access-table td:nth-child(2) {
-            width: 30%;
-        }
-
-        .custom-access-table th:nth-child(3),
-        .custom-access-table td:nth-child(3) {
-            width: 30%;
-        }
-
-        .custom-access-table th:nth-child(4),
-        .custom-access-table td:nth-child(4) {
-            width: 30%;
+        .contact-icon {
+            font-size: 1.3rem;
         }
     }
 </style>
-
 
 <main id="content">
     <div class="container" id="main-container">
