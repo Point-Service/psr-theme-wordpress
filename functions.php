@@ -505,7 +505,7 @@ function wpc_contatore_homepage_shortcode() {
                     <strong>Totale accessi:</strong> $count_total
                 </span>
                 <span style='display:flex; align-items:center; gap:5px;'>
-                    <i class='fas fa-calendar-day' style='color:white; font-size:16px;'></i>
+                    <i class='fas fa-user-clock' style='color:white; font-size:16px;'></i>
                     <strong>Accessi oggi:</strong> $count_today
                 </span>
             </div>";
