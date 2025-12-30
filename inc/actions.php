@@ -488,6 +488,34 @@ function wpc_contatore_homepage_shortcode() {
 add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
 
 
+// LOG ACCESSI DETTAGLIATO HOMEPAGE
+function wpc_log_accessi_homepage() {
+
+    if ( !is_front_page() && !is_home() ) return;
+
+    // Solo frontend
+    if ( is_admin() ) return;
+
+    $logs = get_option('wpc_access_log', array());
+
+    $entry = array(
+        'date'  => current_time('Y-m-d'),
+        'time'  => current_time('H:i:s'),
+        'ip'    => $_SERVER['REMOTE_ADDR'] ?? 'N/A',
+        'ua'    => $_SERVER['HTTP_USER_AGENT'] ?? 'N/A'
+    );
+
+    $logs[] = $entry;
+
+    // Mantieni solo ultimi 30 giorni (opzionale)
+    if (count($logs) > 5000) {
+        $logs = array_slice($logs, -5000);
+    }
+
+    update_option('wpc_access_log', $logs);
+
+}
+add_action('wp', 'wpc_log_accessi_homepage');
 
 
 
