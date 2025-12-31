@@ -33,13 +33,15 @@ $posts = $the_query->posts;
 </div>
 
 <style>
-  .gallery-container {
-    max-width: auto;
-    height: auto;
-    margin: 0 auto;
-    padding: 0 2px;
-    /* Aggiunto padding per margini laterali su schermi piccoli */
-  }
+.gallery-container {
+    max-width: 1200px; /* Limita la larghezza massima */
+    width: 100%;       /* Occupa tutta la larghezza disponibile fino al max-width */
+    margin: 0 auto;    /* Centra il contenitore orizzontalmente */
+    padding: 0 15px;   /* Padding laterale per spazi su schermi piccoli */
+    display: block;    /* Garantisce il comportamento standard del blocco */
+    text-align: center; /* Centra eventuali elementi inline o inline-block */
+}
+
 
   .gallery-grid {
     display: grid;
@@ -224,6 +226,7 @@ $posts = $the_query->posts;
   });
 
 </script>
+
 
 
 
