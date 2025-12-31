@@ -30,7 +30,7 @@ $posts = $the_query->posts;
             </div>
         <?php } ?>
     </div>
-</div>
+
 
 <style>
 .gallery-container {
@@ -227,7 +227,7 @@ $posts = $the_query->posts;
 
 </script>
 
-
+</div>
 
 
 
