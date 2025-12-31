@@ -34,7 +34,7 @@ $posts = $the_query->posts;
 
 <style>
   .gallery-container {
-    max-width: 1200px;
+    max-width: auto;
     height: auto;
     margin: 0 auto;
     padding: 0 2px;
@@ -224,6 +224,7 @@ $posts = $the_query->posts;
   });
 
 </script>
+
 
 
 
