@@ -37,7 +37,7 @@ $posts = $the_query->posts;
     max-width: 1200px;
     height: auto;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 2px;
     /* Aggiunto padding per margini laterali su schermi piccoli */
   }
 
@@ -224,4 +224,5 @@ $posts = $the_query->posts;
   });
 
 </script>
+
 
