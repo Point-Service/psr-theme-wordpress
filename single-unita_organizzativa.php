@@ -76,6 +76,33 @@ get_header();
         //     return trim(strip_tags($text));
         // }
     ?>
+
+<style>
+/* Assicurati che la tabella non esca dal container */
+#contatti table {
+    width: 100%;           /* occuperà sempre tutto lo spazio disponibile */
+    table-layout: fixed;   /* forza larghezza fissa delle colonne */
+    word-break: break-word; /* spezza le parole troppo lunghe */
+    overflow-wrap: anywhere; /* moderna alternativa a word-break */
+}
+
+/* Per le celle */
+#contatti table td, 
+#contatti table th {
+    max-width: 1px;  /* obbliga il testo a spezzarsi se troppo lungo */
+    white-space: normal;
+}
+
+/* Opzionale: per rendere scrollabile orizzontalmente su mobile */
+@media (max-width: 767px) {
+    #contatti table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* scorrimento fluido su iOS */
+    }
+}
+ </style>
+    
 </main>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <script type="application/ld+json" data-element="metatag">
@@ -571,3 +598,4 @@ get_header();
 get_footer();
 
 ?>
+
