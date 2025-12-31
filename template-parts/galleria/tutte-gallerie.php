@@ -62,7 +62,7 @@ $posts = $the_query->posts;
   .gallery-item {
     position: relative;
     overflow: hidden;
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     cursor: pointer;
@@ -224,5 +224,6 @@ $posts = $the_query->posts;
   });
 
 </script>
+
 
 
