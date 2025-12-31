@@ -13,7 +13,7 @@ $the_query = new WP_Query($args);
 $posts = $the_query->posts;
 ?>
 
-<div class="bg-grey-dsk py-5">
+<div class="bg-light py-5">
     <div class="gallery-container">
         <h2 class="title-xxlarge mb-4">
                 Esplora le nostre gallerie
@@ -222,4 +222,5 @@ $posts = $the_query->posts;
       }
     });
   });
+
 </script>
