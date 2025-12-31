@@ -156,9 +156,13 @@ $posts = $the_query->posts;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    z-index: 2;
   }
 
+
+
+
+    
   @media (max-width: 768px) {
     .gallery-grid {
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -226,6 +230,7 @@ $posts = $the_query->posts;
   });
 
 </script>
+
 
 
 
