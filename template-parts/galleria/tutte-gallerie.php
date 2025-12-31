@@ -34,7 +34,7 @@ $posts = $the_query->posts;
 
 <style>
 .gallery-container {
-    max-width: 1200px; /* Limita la larghezza massima */
+    max-width: 1300px; /* Limita la larghezza massima */
     width: 100%;       /* Occupa tutta la larghezza disponibile fino al max-width */
     margin: 0 auto;    /* Centra il contenitore orizzontalmente */
     padding: 0 15px;   /* Padding laterale per spazi su schermi piccoli */
@@ -226,6 +226,7 @@ $posts = $the_query->posts;
   });
 
 </script>
+
 
 
 
