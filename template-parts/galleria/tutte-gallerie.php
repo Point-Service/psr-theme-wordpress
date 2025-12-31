@@ -67,7 +67,7 @@ $posts = $the_query->posts;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     cursor: pointer;
     aspect-ratio: 4/3;
-    background: #000;
+    background: #fff;
     width: 100%;
     /* Assicura che l'elemento occupi tutta la larghezza della colonna */
     max-width: 400px;
@@ -224,6 +224,7 @@ $posts = $the_query->posts;
   });
 
 </script>
+
 
 
 
