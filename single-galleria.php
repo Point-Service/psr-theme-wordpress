@@ -1,6 +1,6 @@
 <?php
 /**
- * Template single – Galleria moderna con paginazione
+ * Template single – Galleria moderna con loader
  *
  * @package Design_Comuni_Italia
  */
@@ -10,44 +10,46 @@ get_header();
 while ( have_posts() ) :
     the_post();
 
-    $prefix        = '_dci_galleria_';
-    $id            = get_the_ID();
-    $descrizione   = get_post_meta( $id, $prefix . 'descrizione_breve', true );
-    $foto_array    = get_post_meta( $id, $prefix . 'foto_gallery', true );
+    $prefix          = '_dci_galleria_';
+    $id              = get_the_ID();
+    $descrizione     = get_post_meta( $id, $prefix . 'descrizione_breve', true );
+    $foto_array      = get_post_meta( $id, $prefix . 'foto_gallery', true );
     $url_video_group = get_post_meta( $id, $prefix . 'url_video_group', true );
-    $video_array   = get_post_meta( $id, $prefix . 'video', true );
+    $video_array     = get_post_meta( $id, $prefix . 'video', true );
 
+    /* Unione contenuti */
     $all_items = [];
+
     if ( !empty($foto_array) ) {
         foreach ( $foto_array as $foto ) {
             $all_items[] = ['type' => 'foto', 'data' => $foto];
         }
     }
+
     if ( !empty($url_video_group) ) {
         foreach ( $url_video_group as $video ) {
             $all_items[] = ['type' => 'video_embed', 'data' => $video];
         }
     }
+
     if ( !empty($video_array) ) {
         foreach ( $video_array as $video ) {
             $all_items[] = ['type' => 'video_file', 'data' => $video];
         }
     }
-
-    $paged_items = $all_items;
 ?>
-
 <div class="container" id="main-container">
     <div class="row">
         <div class="col px-lg-4">
             <?php get_template_part("template-parts/common/breadcrumb"); ?>
         </div>
     </div>
+
     <div class="row">
         <div class="col-lg-8 px-lg-4 py-lg-2">
             <h1><?php the_title(); ?></h1>
             <h3 class="visually-hidden">Dettagli galleria</h3>
-            <p><?= esc_html($descrizione);?></p>
+            <p><?= esc_html($descrizione); ?></p>
         </div>
         <div class="col-lg-3 offset-lg-1">
             <?php
@@ -58,118 +60,142 @@ while ( have_posts() ) :
     </div>
 </div>
 
-<main class="gallery-page">
-    <br>
+<main class="gallery-page bg-grey-dsk py-5">
     <div class="container mb-5">
+
+        <!-- LOADER -->
+        <div id="gallery-loader" class="gallery-loader">
+            <div class="spinner"></div>
+            <p>Caricamento galleria…</p>
+        </div>
+
+        <!-- GALLERIA -->
         <div class="gallery-grid">
-            <?php foreach ( $paged_items as $item ): ?>
+            <?php 
+                $foto_counter = 1;
+                foreach ( $all_items as $item ): ?>
+
                 <?php if ( $item['type'] === 'foto' ):
                     $foto = $item['data'];
                     $attachment_id = attachment_url_to_postid($foto);
-                    $image_title   = $attachment_id ? get_the_title($attachment_id) : "Immagine della galleria";
-                    $image_alt     = $attachment_id ? get_post_meta($attachment_id, '_wp_attachment_image_alt', true) : "Immagine della galleria";
+                    $image_title   = $attachment_id ? get_the_title($attachment_id) : 'Foto ' . $foto_counter;
+                    $image_alt     = $attachment_id ? get_post_meta($attachment_id, '_wp_attachment_image_alt', true) : 'Immagine della galleria';
                 ?>
-                    <div class="gallery-item image loading">
+                    <div class="gallery-item image">
                         <a href="<?= esc_url($foto); ?>" class="glightbox" data-gallery="galleria" data-title="<?= esc_attr($image_title); ?>">
-                            <div class="skeleton"></div>
                             <div class="gallery-info">
                                 <i class="fas fa-search-plus"></i>
                                 <p class="gallery-title"><?= esc_html($image_title); ?></p>
                             </div>
-                            <img 
-                                src="<?= esc_url($foto); ?>" 
-                                alt="<?= esc_attr($image_alt); ?>" 
-                                loading="lazy"
-                                onerror="this.src='https://via.placeholder.com/600x338?text=Immagine+non+disponibile';"
-                                width="600" height="338"
-                            >
+                            <img src="<?= esc_url($foto); ?>" alt="<?= esc_attr($image_alt); ?>">
                             <span class="badge">Foto</span>
                         </a>
                     </div>
+
                 <?php elseif ( $item['type'] === 'video_embed' ):
                     $video = $item['data']; ?>
                     <div class="gallery-item video">
                         <div class="video-container">
-                            <iframe src="<?= esc_url($video['url_video']); ?>" title="<?= esc_attr($video['titolo']); ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe src="<?= esc_url($video['url_video']); ?>" title="<?= esc_attr($video['titolo']); ?>" loading="lazy" allowfullscreen></iframe>
                         </div>
                         <span class="badge badge-video">Video</span>
                     </div>
+
                 <?php elseif ( $item['type'] === 'video_file' ):
                     $video = $item['data']; ?>
                     <div class="gallery-item video">
                         <div class="video-container">
-                            <video controls>
+                            <video controls preload="metadata">
                                 <source src="<?= esc_url($video); ?>" type="video/mp4">
                             </video>
                         </div>
                         <span class="badge badge-video">Video</span>
                     </div>
                 <?php endif; ?>
+                    <?php $foto_counter++; ?>
             <?php endforeach; ?>
         </div>
     </div>
 </main>
-
+<?php get_template_part("template-parts/common/valuta-servizio"); ?>
+<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const lightbox = GLightbox({
+document.addEventListener('DOMContentLoaded', function () {
+
+    GLightbox({
         selector: '.glightbox',
         touchNavigation: true,
         zoomable: true,
-        draggable: true,
-        openEffect: 'zoom',
-        closeEffect: 'fade',
-        slideEffect: 'slide',
-        loop: true,
-        height: '100vh',
-        showTitle: true
+        loop: true
     });
 
-    // Gestione loading skeleton
-    const images = document.querySelectorAll('.gallery-item.image img');
-    images.forEach(img => {
-        const galleryItem = img.closest('.gallery-item');
-        const tmp = new Image();
-        tmp.src = img.src;
-        tmp.onload = () => {
-            galleryItem.classList.remove('loading');
-        };
+    const gallery = document.querySelector('.gallery-grid');
+    const loader = document.getElementById('gallery-loader');
+    const media  = gallery.querySelectorAll('img, video, iframe');
+    let loaded = 0;
+
+    if (media.length === 0) finalize();
+
+    function finalize() {
+        loader.style.display = 'none';
+        gallery.classList.add('is-loaded');
+    }
+
+    function check() {
+        loaded++;
+        if (loaded === media.length) finalize();
+    }
+
+    media.forEach(el => {
+        if (el.tagName === 'IMG') {
+            el.complete ? check() : el.addEventListener('load', check);
+        } else {
+            el.addEventListener('loadeddata', check, { once: true });
+            el.addEventListener('load', check, { once: true });
+            setTimeout(check, 4000);
+        }
     });
 });
 </script>
 
-<?php endwhile; get_footer(); ?>
-
 <style>
-/* Skeleton loader */
-.gallery-item.loading .skeleton {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 15px;
-    z-index: 2;
+/* Loader */
+.gallery-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    font-weight: 500;
 }
 
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #ddd;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
-/* Layout */
-.gallery-page {
-    background: #f8f9fa;
-    padding: 40px 20px;
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .4s ease;
+}
+
+.gallery-grid.is-loaded {
+    opacity: 1;
+    visibility: visible;
 }
 
 .gallery-item {
@@ -177,100 +203,77 @@ document.addEventListener('DOMContentLoaded', () => {
     overflow: hidden;
     border-radius: 15px;
     background: #000;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-    cursor: pointer;
-   /* aspect-ratio: 16/9; */
+    box-shadow: 0 6px 18px rgba(0,0,0,.1);
 }
 
-/* Video */
-.video-container {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.gallery-item iframe,
-.gallery-item video {
-    position: absolute;
-    top: 0;
-    left: 0;
+.gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: none;
+    transition: transform .4s ease, filter .4s ease;
 }
 
-/* Info overlay */
+.gallery-item:hover img {
+    transform: scale(1.08);
+    filter: blur(4px);
+}
+
 .gallery-info {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    inset: 0;
+    background: rgba(0,0,0,.6);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 5;
-    pointer-events: none;
+    transition: opacity .4s ease;
 }
 
 .gallery-item:hover .gallery-info {
     opacity: 1;
 }
 
-.gallery-info .fas {
+.gallery-info i,
+.gallery-info p {
     color: #fff;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
     transform: translateY(20px);
-    transition: transform 0.4s ease;
+    transition: transform .4s ease;
 }
 
-.gallery-info .gallery-title {
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-align: center;
-    padding: 0 20px;
-    transform: translateY(20px);
-    transition: transform 0.4s ease;
-}
-
-.gallery-item:hover .gallery-info .fas,
-.gallery-item:hover .gallery-info .gallery-title {
+.gallery-item:hover .gallery-info i,
+.gallery-item:hover .gallery-info p {
     transform: translateY(0);
 }
 
-/* Badge */
+.video-container {
+    position: relative;
+    padding-top: 56.25%;
+}
+
+.video-container iframe,
+.video-container video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .badge {
     position: absolute;
     top: 12px;
     left: 12px;
     background: #007bff;
     color: #fff;
-    font-size: 0.8rem;
     padding: 5px 10px;
     border-radius: 10px;
-    font-weight: 600;
-    z-index: 10;
+    font-size: .8rem;
+    z-index: 5;
 }
 
 .badge-video {
     background: #e63946;
 }
-
-/* Immagini */
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
 </style>
 
+<?php endwhile; get_footer(); ?>
