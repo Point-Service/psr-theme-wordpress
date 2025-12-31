@@ -39,8 +39,8 @@ $posts = $the_query->posts;
     margin: 0 auto;    /* Centra il contenitore orizzontalmente */
     padding: 0 15px;   /* Padding laterale per spazi su schermi piccoli */
     display: block;    /* Garantisce il comportamento standard del blocco */
-    text-align: center; /* Centra eventuali elementi inline o inline-block */
-}
+    text-align: left; 
+ }
 
 
   .gallery-grid {
@@ -226,6 +226,7 @@ $posts = $the_query->posts;
   });
 
 </script>
+
 
 
 
