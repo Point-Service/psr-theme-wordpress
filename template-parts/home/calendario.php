@@ -77,7 +77,7 @@ $url_eventi = dci_get_template_page_url("page-templates/eventi.php");
 						</div>
 					</div>
 				<?php } else { ?>					
-					<div class="h4 mt-4"> Nessun evento in programma. </div>
+					<div class="h4 mt-4"> Nessun evento in programma in questo periodo. </div>
 				<?php } ?>
 			</div>
 			<?php if ( is_home() ) {?>
