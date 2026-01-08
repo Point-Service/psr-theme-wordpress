@@ -24,7 +24,7 @@ foreach ($date as $data) {
 $url_eventi = dci_get_template_page_url("page-templates/eventi.php");
 
 
-echo '<pre>'; print_r($calendario); echo '</pre>';
+echo '<pre>'; print_r($fisrt_date); echo '</pre>';
 
 
 ?>
