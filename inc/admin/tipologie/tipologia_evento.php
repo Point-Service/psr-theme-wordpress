@@ -459,6 +459,62 @@ function dci_evento_admin_script() {
 }
 
 
+
+
+
+/**
+ * Aggiunge un tasto "Aggiorna eventi vecchi" nella pagina eventi
+ */
+add_action('restrict_manage_posts', function($post_type){
+    if($post_type === 'evento'){
+        $url = add_query_arg('aggiorna_eventi_vecchi', 1);
+        echo '<a href="' . esc_url($url) . '" class="button button-primary" style="margin-left:10px;">Aggiorna eventi vecchi</a>';
+    }
+});
+
+/**
+ * Esegue l'aggiornamento quando si clicca il tasto
+ */
+add_action('admin_init', function(){
+    if(isset($_GET['aggiorna_eventi_vecchi']) && current_user_can('manage_options')){
+        $args = [
+            'post_type'      => 'evento',
+            'posts_per_page' => -1,
+            'post_status'    => 'any',
+        ];
+        $eventi = get_posts($args);
+
+        foreach($eventi as $evento){
+            // Aggiorna il post per far risalire i metadati corretti
+            // Oppure impostare valori predefiniti per quelli mancanti
+            $inizio = get_post_meta($evento->ID, '_dci_evento_data_orario_inizio', true);
+            if(!$inizio){
+                // Imposta una data fittizia (es: giorno di pubblicazione)
+                update_post_meta($evento->ID, '_dci_evento_data_orario_inizio', strtotime($evento->post_date));
+            }
+
+            $fine = get_post_meta($evento->ID, '_dci_evento_data_orario_fine', true);
+            if(!$fine){
+                // Imposta stessa data di inizio se mancante
+                update_post_meta($evento->ID, '_dci_evento_data_orario_fine', strtotime($evento->post_date));
+            }
+
+            // Risalva il post per aggiornare eventuali altri campi
+            wp_update_post(['ID' => $evento->ID]);
+        }
+
+        // Redirect per evitare doppio aggiornamento
+        wp_redirect(remove_query_arg('aggiorna_eventi_vecchi'));
+        exit;
+    }
+});
+
+
+
+
+
+
+
 /**
  * Valorizzo il post content in base al contenuto dei campi custom
  * @param $data
