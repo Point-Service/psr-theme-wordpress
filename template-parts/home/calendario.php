@@ -1,5 +1,5 @@
 <?php
-$calendario = dci_get_calendar(30);
+$calendario = dci_get_calendar(60);
 $date = array_keys((array)$calendario);
 
 $fisrt_date = explode("-", $date[0]);
