@@ -1,5 +1,5 @@
 <?php
-$calendario = dci_get_calendar(60);
+$calendario = dci_get_calendar(30);
 $date = array_keys((array)$calendario);
 
 $fisrt_date = explode("-", $date[0]);
@@ -17,7 +17,7 @@ $total_eventi = 0;
 foreach ($date as $data) {
 	if (is_array($calendario[$data]) && count($calendario[$data])) {
 		$eventi = $calendario[$data]['eventi'];
-		$total_eventi++;
+		$total_eventi += count($calendario[$data]['eventi']);
 	}
 }
 
