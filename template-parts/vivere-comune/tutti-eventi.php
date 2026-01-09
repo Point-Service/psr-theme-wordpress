@@ -1,19 +1,24 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 3;
+    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : -1;
     $load_posts = 3;
     $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
     $args = array(
         's'         => $query,
-        'post_type' => 'evento'
+        'post_type' => 'evento',
+        'posts_per_page' => $max_posts,
+        'orderby' => 'meta_value',
+        'order' => 'ASC',
+        'meta_key' => '_dci_evento_data_orario_inizio',
+        'post_status'    => 'publish',
     );
 
     $the_query = new WP_Query( $args );
     $posts = $the_query->posts;
 ?>
 
-<div class="bg-card py-5">
+<div class="bg-card bg-grey-card py-5">
     <form role="search" id="search-form" method="get" class="search-form">
         <button type="submit" class="d-none"></button>
         <div class="container">
@@ -40,7 +45,7 @@ global $the_query, $load_posts, $load_card_type;
                             </span>
                         </div>
                         <p id="autocomplete-label" class="u-grey-light text-paragraph-card mt-2 mb-30 mt-lg-3 mb-lg-40">
-                            <?php echo $the_query->found_posts; ?> notizie trovate in ordine alfabetico
+                            <?php echo $the_query->found_posts; ?> eventi trovate in ordine alfabetico
                         </p>
                     </div>
                 </div>
