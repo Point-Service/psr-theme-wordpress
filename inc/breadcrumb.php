@@ -650,29 +650,38 @@ class Breadcrumb_Trail {
 
 
 
-                                   // Sistema percorso a tutti i componenti di ALTRA STRUTTURA
-								
-								$is_child_of_altra_struttura = false;								
-								if (!empty($ancestors)) {
-								
-								    foreach ($ancestors as $aid) {
-								        $t = get_term($aid, 'tipi_unita_organizzativa');
-								
-								        if ($t && $t->slug === 'altra-struttura') {
-								            $is_child_of_altra_struttura = true;
-								            break;
-								        }
-								    }
-								}
-								
-								if ($is_child_of_altra_struttura) {								
-								    $organi_link = home_url("amministrazione/organi-di-governo");
-								    $organi_text = "Organi di Governo";								
-								    if (!in_array($organi_link, $added_links)) {
-								        $this->items[] = "<a href='" . esc_url($organi_link) . "'>$organi_text</a>";
-								        $added_links[] = $organi_link;
-								    }
-								}
+                                // Sistema percorso a tutti i componenti di ALTRA STRUTTURA								
+								// Recupera tutti gli antenati del termine corrente
+										$ancestors = get_ancestors($term->term_id, 'tipi_unita_organizzativa');
+										
+										// Inizializza flag
+										$is_child_of_altra_struttura = false;
+										
+										// Cicla su tutti gli antenati
+										if (!empty($ancestors)) {
+										    foreach ($ancestors as $ancestor_id) {
+										        $ancestor_term = get_term($ancestor_id, 'tipi_unita_organizzativa');
+										        if ($ancestor_term && !is_wp_error($ancestor_term)) {
+										            // Controlla lo slug
+										            if ($ancestor_term->slug === 'altra-struttura') {
+										                $is_child_of_altra_struttura = true;
+										                break; // basta trovare un antenato con questo slug
+										            }
+										        }
+										    }
+										}
+										
+										// Se è figlio (diretto o indiretto) di 'altra-struttura'
+										if ($is_child_of_altra_struttura) {
+										    $organi_link = home_url("amministrazione/organi-di-governo");
+										    $organi_text = "Organi Di Governo";
+										
+										    if (!in_array($organi_link, $added_links)) {
+										        $this->items[] = "<a href='" . esc_url($organi_link) . "'>$organi_text</a>";
+										        $added_links[] = $organi_link;
+										    }
+										}
+
 
 
 
