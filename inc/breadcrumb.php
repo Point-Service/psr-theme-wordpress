@@ -649,8 +649,10 @@ class Breadcrumb_Trail {
 
 
 
-								$is_child_of_altra_struttura = false;
+
+                                   // Sistema percorso a tutti i componenti di ALTRA STRUTTURA
 								
+								$is_child_of_altra_struttura = false;								
 								if (!empty($ancestors)) {
 								
 								    foreach ($ancestors as $aid) {
