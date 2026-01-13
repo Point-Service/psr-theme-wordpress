@@ -633,7 +633,7 @@ class Breadcrumb_Trail {
                                  echo esc_html( $term->name );
 							
 					            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE' || strtoupper(esc_html($term->name)) == 'COMMISSIONE' || strtoupper(esc_html($term->name)) == 'ENTE') {
+					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE' || strtoupper(esc_html($term->name)) == 'COMMISSIONE') {
 		    
 							    
 					                // Controlliamo e aggiungiamo il link Organi di Governo solo se non è già presente
@@ -646,6 +646,37 @@ class Breadcrumb_Trail {
 					                    $added_links[] = $organi_link; // Aggiungiamo il link all'array dei link aggiunti
 					                }
 					            }
+
+
+
+								$is_child_of_altra_struttura = false;
+								
+								if (!empty($ancestors)) {
+								
+								    foreach ($ancestors as $aid) {
+								        $t = get_term($aid, 'tipi_unita_organizzativa');
+								
+								        if ($t && $t->slug === 'altra-struttura') {
+								            $is_child_of_altra_struttura = true;
+								            break;
+								        }
+								    }
+								}
+								
+								if ($is_child_of_altra_struttura) {								
+								    $organi_link = home_url("amministrazione/organi-di-governo");
+								    $organi_text = "Organi di Governo";								
+								    if (!in_array($organi_link, $added_links)) {
+								        $this->items[] = "<a href='" . esc_url($organi_link) . "'>$organi_text</a>";
+								        $added_links[] = $organi_link;
+								    }
+								}
+
+
+
+								
+
+								
 					        }
 					    }
 
