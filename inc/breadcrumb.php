@@ -614,84 +614,61 @@ class Breadcrumb_Trail {
 
 
 		    
-				if (get_post_type() == 'unita_organizzativa') {
-					    // Aggiungi il link alla pagina di amministrazione
-					    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
-					
-					    // Array per tracciare i link già aggiunti
-					    $added_links = [];
-					
-					    // Ottieni i termini della tassonomia 'tipi_unita_organizzativa'
-					    $terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
-				
-					
-					    if ($terms && !is_wp_error($terms)) {
-
-						    
-					        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
-					        foreach ($terms as $term) {
-                                 echo esc_html( $term->name );
-							
-					            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE' || strtoupper(esc_html($term->name)) == 'COMMISSIONE') {
-		    
-							    
-					                // Controlliamo e aggiungiamo il link Organi di Governo solo se non è già presente
-					                $organi_link = home_url("amministrazione/organi-di-governo");
-					                $organi_text = "Organi Di Governo";
-					                
-					                // Controlliamo se il link è già stato aggiunto
-					                if (!in_array($organi_link, $added_links)) {
-					                    $this->items[] = "<a href='" . esc_url($organi_link) . "'>$organi_text</a>";
-					                    $added_links[] = $organi_link; // Aggiungiamo il link all'array dei link aggiunti
-					                }
-					            }
-
-
-
-
-                                // Sistema percorso a tutti i componenti di ALTRA STRUTTURA								
-								// Recupera tutti gli antenati del termine corrente
-										$ancestors = get_ancestors($term->term_id, 'tipi_unita_organizzativa');
-										
-										// Inizializza flag
-										$is_child_of_altra_struttura = false;
-										
-										// Cicla su tutti gli antenati
-										if (!empty($ancestors)) {
-										    foreach ($ancestors as $ancestor_id) {
-										        $ancestor_term = get_term($ancestor_id, 'tipi_unita_organizzativa');
-										        if ($ancestor_term && !is_wp_error($ancestor_term)) {
-										            // Controlla lo slug
-										            if ($ancestor_term->slug === 'altra-struttura') {
-										                $is_child_of_altra_struttura = true;
-										                break; // basta trovare un antenato con questo slug
-										            }
-										        }
-										    }
-										}
-										
-										// Se è figlio (diretto o indiretto) di 'altra-struttura'
-										if ($is_child_of_altra_struttura) {
-										    $organi_link = home_url("amministrazione/enti-e-fondazioni");
-										    $organi_text = "Enti e Fondazioni";
-										
-										    if (!in_array($organi_link, $added_links)) {
-										        $this->items[] = "<a href='" . esc_url($organi_link) . "'>$organi_text</a>";
-										        $added_links[] = $organi_link;
-										    }
-										}
-
-
-
-
-								
-
-								
-					        }
-					    }
-
-
+						if (get_post_type() == 'unita_organizzativa') {
+						    // Link alla pagina di amministrazione
+						    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+						
+						    // Array per tracciare i link già aggiunti
+						    $added_links = [];
+						
+						    // Termini della tassonomia
+						    $terms = get_the_terms(get_the_ID(), 'tipi_unita_organizzativa');
+						
+						    if ($terms && !is_wp_error($terms)) {
+						
+						        foreach ($terms as $term) {
+						
+						            // Recupera tutti gli antenati una volta sola
+						            $ancestors = get_ancestors($term->term_id, 'tipi_unita_organizzativa');
+						
+						            // Flag
+						            $is_child_of_struttura_politica = false;
+						            $is_child_of_altra_struttura = false;
+						
+						            if (!empty($ancestors)) {
+						                foreach ($ancestors as $ancestor_id) {
+						                    $ancestor_term = get_term($ancestor_id, 'tipi_unita_organizzativa');
+						                    if ($ancestor_term && !is_wp_error($ancestor_term)) {
+						                        if ($ancestor_term->slug === 'struttura-politica') {
+						                            $is_child_of_struttura_politica = true;
+						                        }
+						                        if ($ancestor_term->slug === 'altra-struttura') {
+						                            $is_child_of_altra_struttura = true;
+						                        }
+						                    }
+						                }
+						            }
+						
+						            // Se è figlio di STRUTTURA POLITICA
+						            if ($is_child_of_struttura_politica) {
+						                $link = home_url("amministrazione/organi-di-governo");
+						                if (!in_array($link, $added_links)) {
+						                    $this->items[] = "<a href='" . esc_url($link) . "'>Organi di Governo</a>";
+						                    $added_links[] = $link;
+						                }
+						            }
+						
+						            // Se è figlio di ALTRA STRUTTURA
+						            if ($is_child_of_altra_struttura) {
+						                $link = home_url("amministrazione/enti-e-fondazioni");
+						                if (!in_array($link, $added_links)) {
+						                    $this->items[] = "<a href='" . esc_url($link) . "'>Enti e Fondazioni</a>";
+						                    $added_links[] = $link;
+						                }
+						            }
+						
+						        } // end foreach terms
+						    } // end if terms
 				
 
 				
