@@ -633,7 +633,7 @@ class Breadcrumb_Trail {
 
 							
 					            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE' || strtoupper(esc_html($term->name)) == 'COMMISSIONE') {
+					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE' || strtoupper(esc_html($term->name)) == 'COMMISSIONE' || strtoupper(esc_html($term->name)) == 'ENTE') {
 
 
 							    
