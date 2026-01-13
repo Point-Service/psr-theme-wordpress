@@ -630,10 +630,10 @@ class Breadcrumb_Trail {
 						    
 					        // Cicla attraverso ogni termine e controlla se c'è una "struttura politica"
 					        foreach ($terms as $term) {
-
+                                 echo esc_html( $term->name );
 							
 					            // Se trovi il termine "struttura politica", crea un link alla pagina "politici"
-					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE' || strtoupper(esc_html($term->name)) == 'COMMISSIONE' || strtoupper(esc_html($term->name)) == 'ENTE') {
+					            if (strtoupper(esc_html($term->name)) == 'STRUTTURA POLITICA' || strtoupper(esc_html($term->name)) == 'CONSIGLIO COMUNALE' || strtoupper(esc_html($term->name)) == 'GIUNTA COMUNALE' || strtoupper(esc_html($term->name)) == 'COMMISSIONE') {
 
 
 							    
