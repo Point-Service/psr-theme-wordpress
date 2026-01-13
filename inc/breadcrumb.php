@@ -673,8 +673,8 @@ class Breadcrumb_Trail {
 										
 										// Se è figlio (diretto o indiretto) di 'altra-struttura'
 										if ($is_child_of_altra_struttura) {
-										    $organi_link = home_url("amministrazione/organi-di-governo");
-										    $organi_text = "Organi Di Governo";
+										    $organi_link = home_url("amministrazione/enti-e-fondazioni");
+										    $organi_text = "Enti e Fondazioni";
 										
 										    if (!in_array($organi_link, $added_links)) {
 										        $this->items[] = "<a href='" . esc_url($organi_link) . "'>$organi_text</a>";
