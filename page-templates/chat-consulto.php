@@ -66,7 +66,7 @@ if ($consolto_login_url !== '#' && !preg_match('~^https?://~i', $consolto_login_
                               Login SPID/CIE
                             </a>
                             <br>
-                            Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
+                            Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE ed è comparso il pulsante sotto.
                             <br><br>
                            <button id="btn-consolto" style="
                               display:none;
@@ -155,6 +155,7 @@ if ($consolto_login_url !== '#' && !preg_match('~^https?://~i', $consolto_login_
 get_footer();
 
 ?>
+
 
 
 
