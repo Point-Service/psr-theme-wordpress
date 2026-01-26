@@ -39,12 +39,17 @@ get_header();
                     <strong>Attenzione:</strong> per motivi di sicurezza, il link sarà valido solo per l’orario indicato nell’email di conferma.
                 </p>
 
-                <p class="alert alert-warning mb-4" role="alert">
-                    <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE. Tramite il seguente link puoi effettuare il login:
-                    <a href="https://servizi.comune.mottacamastra.me.it/Servizi/FiloDiretto2/ProcedimentiClient.aspx?CE=mttcmstr4321&IDPr=13481">Login SPID/CIE</a><br>
-                    Puoi ignorarne il contenuto di questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
-                </p>
-
+                    <p class="alert alert-warning mb-4" role="alert" id="consolto-alert">
+                      <span id="consolto-alert-text">
+                        <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE.
+                        Tramite il seguente link puoi effettuare il login:
+                        <a id="consolto-login-link" href="https://servizi.comune.mottacamastra.me.it/Servizi/FiloDiretto2/ProcedimentiClient.aspx?CE=mttcmstr4321&IDPr=13481">
+                          Login SPID/CIE
+                        </a><br>
+                        Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
+                      </span>
+                    
+                      <div style="margin-top:12px;">
                         <button id="btn-consolto" style="
                           display:none;
                           padding: 12px 22px;
@@ -58,6 +63,9 @@ get_header();
                         ">
                           🎥 Avvia video chat
                         </button>
+                      </div>
+                    </p>
+
 
                 
            
@@ -131,5 +139,6 @@ get_header();
 get_footer();
 
 ?>
+
 
 
