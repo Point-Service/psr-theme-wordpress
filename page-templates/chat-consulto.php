@@ -8,6 +8,22 @@
  */
 
 get_header();
+
+
+
+
+$opts = get_option('dci_options', array());
+$consolto_login_url = isset($opts['consolto_referrer_url']) ? trim((string)$opts['consolto_referrer_url']) : '';
+
+// fallback (se vuoto, puoi mettere un link di default oppure "#")
+if ($consolto_login_url === '') {
+  $consolto_login_url = '#';
+}
+
+// se incollano senza https:// aggiungi schema
+if ($consolto_login_url !== '#' && !preg_match('~^https?://~i', $consolto_login_url)) {
+  $consolto_login_url = 'https://' . $consolto_login_url;
+}
 ?>
 
 <main>
@@ -39,35 +55,35 @@ get_header();
                     <strong>Attenzione:</strong> per motivi di sicurezza, il link sarà valido solo per l’orario indicato nell’email di conferma.
                 </p>
 
-                    <p class="alert alert-default mb-4" id="consolto-alert">
-                      <span id="consolto-alert-text">
-                        <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE.
-                        Tramite il seguente link puoi effettuare il login:
-                        <a id="consolto-login-link" href="https://servizi.comune.mottacamastra.me.it/Servizi/FiloDiretto2/ProcedimentiClient.aspx?CE=mttcmstr4321&IDPr=13481">
-                          Login SPID/CIE
-                        </a><br>
-                        Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
-                        <br><br>
-                       <button id="btn-consolto" style="
-                          display:none;
-                          padding: 12px 22px;
-                          background: #0b5ed7;
-                          color: #ffffff;
-                          border: none;
-                          border-radius: 10px;
-                          font-size: 16px;
-                          font-weight: 600;
-                          cursor: pointer;
-                        ">
-                          Avvia video chat
-                        </button>
-                      </span>
-                    
+                
+                  <p class="alert alert-default mb-4" id="consolto-alert">
+                        
+                          <span id="consolto-alert-text">
+                            <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE.
+                            Tramite il seguente link puoi effettuare il login:
+                            <a id="consolto-login-link" href="<?php echo esc_url($consolto_login_url); ?>" <?php echo ($consolto_login_url === '#') ? 'aria-disabled="true" onclick="return false;" style="pointer-events:none;opacity:.6;"' : 'target="_blank" rel="noopener noreferrer"'; ?>>
+                              Login SPID/CIE
+                            </a>
+                            <br>
+                            Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
+                            <br><br>
+                           <button id="btn-consolto" style="
+                              display:none;
+                              padding: 12px 22px;
+                              background: #0b5ed7;
+                              color: #ffffff;
+                              border: none;
+                              border-radius: 10px;
+                              font-size: 16px;
+                              font-weight: 600;
+                              cursor: pointer;
+                            ">
+                              Avvia video chat
+                            </button>
+                          </span>
+                        
                     </p>
 
-
-                
-           
                <!-- Box recapiti -->
                 <div class="card border-primary my-2 p-2">
                     <h5>Contatti</h5>
@@ -138,6 +154,7 @@ get_header();
 get_footer();
 
 ?>
+
 
 
 
