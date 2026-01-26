@@ -269,7 +269,6 @@ function dci_register_comune_options(){
 
 
 
-
         $header_options->add_field( array(
           'id'    => $prefix . 'abilitazionechat',
           'name'  => __('<br><br><center>Chat usando il Plugin Consolto</center>', 'design_comuni_italia'),
