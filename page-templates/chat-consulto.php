@@ -48,7 +48,7 @@ get_header();
                         </a><br>
                         Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
 
-                       div style="margin-top:12px;">
+                       <div style="margin-top:12px;">
                         <button id="btn-consolto" style="
                           display:none;
                           padding: 12px 22px;
@@ -139,6 +139,7 @@ get_header();
 get_footer();
 
 ?>
+
 
 
 
