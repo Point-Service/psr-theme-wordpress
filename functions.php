@@ -521,40 +521,93 @@ require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
 
 
 
-// ================================
-// BUTTON CHAT
-// ================================
 
+// ================================
+// BUTTON CHAT (Consolto) - Referrer check
+// ================================
 add_action('wp_footer', function () {
   ?>
   <script>
-  (function(){
-    function attach(){
-      var btn = document.getElementById("btn-consolto");
-      if (!btn) return;
+  (function () {
 
-      // evita doppio binding se WP ricarica parti della pagina
-      if (btn.dataset.bound) return;
-      btn.dataset.bound = "1";
+    // ✅ Controlla dominio (più affidabile dell'URL completo)
+    var ALLOWED_HOST = "servizi.comune.mottacamastra.me.it";
 
-      btn.addEventListener("click", function () {
-        document.querySelectorAll('iframe[src*="client.consolto.com"]').forEach(function(f){
-          f.style.setProperty("display","block","important");
-        });
+    // (opzionale) se vuoi anche limitare a una pagina specifica:
+    // var ALLOWED_PATH_CONTAINS = "/Servizi/FiloDiretto2/Login.aspx";
+
+    function getBtn() {
+      return document.getElementById("btn-consolto");
+    }
+
+    function enable(btn) {
+      btn.disabled = false;
+      btn.style.background = "#0b5ed7";
+      btn.style.color = "#fff";
+      btn.style.cursor = "pointer";
+    }
+
+    function disable(btn) {
+      btn.disabled = true;
+      btn.style.background = "#999";
+      btn.style.color = "#eee";
+      btn.style.cursor = "not-allowed";
+      btn.title = "Disponibile solo dopo la prenotazione online";
+    }
+
+    function showConsolto() {
+      document.querySelectorAll('iframe[src*="client.consolto.com"]').forEach(function (f) {
+        f.style.setProperty("display", "block", "important");
       });
     }
 
-    // DOM pronto + compatibilità con builder (Elementor, cache, ecc.)
+    function isAllowedReferrer() {
+      var ref = document.referrer || "";
+      if (!ref) return false;
+
+      try {
+        var u = new URL(ref);
+
+        if (u.hostname !== ALLOWED_HOST) return false;
+
+        // opzionale: attiva se vuoi controllare anche la pagina
+        // if (u.pathname.indexOf(ALLOWED_PATH_CONTAINS) === -1) return false;
+
+        return true;
+      } catch (e) {
+        // referrer non parseabile
+        return false;
+      }
+    }
+
+    function init() {
+      var btn = getBtn();
+      if (!btn) return;
+
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = "1";
+
+      if (isAllowedReferrer()) enable(btn);
+      else disable(btn);
+
+      btn.addEventListener("click", function () {
+        if (btn.disabled) return;
+        showConsolto();
+      });
+    }
+
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", attach);
+      document.addEventListener("DOMContentLoaded", init);
     } else {
-      attach();
+      init();
     }
 
   })();
   </script>
   <?php
 }, 999);
+
+
 
 
 
