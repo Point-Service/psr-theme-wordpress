@@ -267,7 +267,8 @@ function dci_register_comune_options(){
     ));
 
 
-}
+
+
 
         $header_options->add_field( array(
           'id'    => $prefix . 'abilitazionechat',
@@ -283,6 +284,10 @@ function dci_register_comune_options(){
           'desc' => __('Incolla l’URL della pagina esterna che deve abilitare il tasto (verrà usato solo il dominio/DNS). Esempio: https://servizi.comune.../Login.aspx', 'design_comuni_italia' ),
           'type' => 'text_url',
         ));
+
+    
+}
+
 
 
 
