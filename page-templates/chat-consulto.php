@@ -39,7 +39,7 @@ get_header();
                     <strong>Attenzione:</strong> per motivi di sicurezza, il link sarà valido solo per l’orario indicato nell’email di conferma.
                 </p>
 
-                    <p class="alert alert-warning mb-4" role="alert" id="consolto-alert">
+                    <p class="alert alert-default mb-4" id="consolto-alert">
                       <span id="consolto-alert-text">
                         <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE.
                         Tramite il seguente link puoi effettuare il login:
@@ -138,6 +138,7 @@ get_header();
 get_footer();
 
 ?>
+
 
 
 
