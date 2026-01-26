@@ -39,32 +39,26 @@ get_header();
                     <strong>Attenzione:</strong> per motivi di sicurezza, il link sarà valido solo per l’orario indicato nell’email di conferma.
                 </p>
 
-                    <p class="alert alert-warning mb-4" role="alert" id="consolto-alert">
-                      <span id="consolto-alert-text">
-                        <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE.
-                        Tramite il seguente link puoi effettuare il login:
-                        <a id="consolto-login-link" href="https://servizi.comune.mottacamastra.me.it/Servizi/FiloDiretto2/ProcedimentiClient.aspx?CE=mttcmstr4321&IDPr=13481">
-                          Login SPID/CIE
-                        </a><br>
-                        Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
+                                            <p class="alert alert-warning mb-4" role="alert" id="consolto-alert">
+                                              <span id="consolto-alert-text"></span>
+                                            
+                                              <div style="margin-top:12px;" id="consolto-btn-wrap">
+                                                <button id="btn-consolto" style="
+                                                  display:none;
+                                                  padding: 12px 22px;
+                                                  background: #0b5ed7;
+                                                  color: #ffffff;
+                                                  border: none;
+                                                  border-radius: 10px;
+                                                  font-size: 16px;
+                                                  font-weight: 600;
+                                                  cursor: pointer;
+                                                ">
+                                                  🎥 Avvia video chat
+                                                </button>
+                                              </div>
+                                            </p>
 
-                       <div style="margin-top:12px;">
-                        <button id="btn-consolto" style="
-                          display:none;
-                          padding: 12px 22px;
-                          background: #0b5ed7;
-                          color: #ffffff;
-                          border: none;
-                          border-radius: 10px;
-                          font-size: 16px;
-                          font-weight: 600;
-                          cursor: pointer;
-                        ">
-                          🎥 Avvia video chat
-                        </button>
-                      </div>
-                      </span>                   
-                    </p>
 
 
                 
@@ -134,6 +128,63 @@ get_header();
 
     <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
 </main>
+<script>
+(function () {
+
+  // 🔧 QUI CI METTI TU LA TUA CONDIZIONE
+  // es: risultato login SPID, referrer ok, cookie, ecc.
+  var ACCESS_OK = false; // <-- CAMBIA TU QUI true / false
+
+  var alertBox = document.getElementById("consolto-alert");
+  var alertTxt = document.getElementById("consolto-alert-text");
+  var btnWrap  = document.getElementById("consolto-btn-wrap");
+  var btn      = document.getElementById("btn-consolto");
+
+  if (!alertBox || !alertTxt || !btnWrap || !btn) return;
+
+  if (ACCESS_OK === false) {
+
+    // ❌ CASO: NON AUTORIZZATO
+    alertBox.classList.remove("alert-success");
+    alertBox.classList.add("alert-warning");
+
+    alertTxt.innerHTML = `
+      <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE.
+      Tramite il seguente link puoi effettuare il login:
+      <a id="consolto-login-link"
+         href="https://servizi.comune.mottacamastra.me.it/Servizi/FiloDiretto2/ProcedimentiClient.aspx?CE=mttcmstr4321&IDPr=13481">
+        Login SPID/CIE
+      </a><br>
+      Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
+    `;
+
+    btnWrap.style.display = "none";
+
+  } else {
+
+    // ✅ CASO: AUTORIZZATO
+    alertBox.classList.remove("alert-warning");
+    alertBox.classList.add("alert-success");
+
+    alertTxt.innerHTML = `
+      <strong>Accesso effettuato con successo.</strong><br>
+      Ora puoi avviare una <strong>videochiamata</strong>, una <strong>chiamata vocale</strong>
+      o una <strong>chat</strong> con un operatore comunale.
+    `;
+
+    btnWrap.style.display = "block";
+    btn.style.display = "inline-flex";
+
+  }
+
+  // click bottone (indipendente dall'IF)
+  btn.addEventListener("click", function () {
+    console.log("Avvio Consolto...");
+    // qui ci lasci la tua funzione forceShowConsolto();
+  });
+
+})();
+</script>
 
 <?php
 get_footer();
