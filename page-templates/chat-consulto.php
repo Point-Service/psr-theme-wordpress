@@ -56,7 +56,8 @@ if ($consolto_login_url !== '#' && !preg_match('~^https?://~i', $consolto_login_
                 </p>
 
                 
-                  <p class="alert alert-default mb-4" id="consolto-alert">
+                 <p class="alert alert-default mb-4" id="consolto-alert" style="padding: 12px 14px; text-align:left;">
+
                         
                           <span id="consolto-alert-text">
                             <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE.
@@ -154,6 +155,7 @@ if ($consolto_login_url !== '#' && !preg_match('~^https?://~i', $consolto_login_
 get_footer();
 
 ?>
+
 
 
 
