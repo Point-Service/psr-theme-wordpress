@@ -525,16 +525,15 @@ require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
 // ================================
 // BUTTON CHAT (Consolto) - Referrer check
 // ================================
+// ================================
+// BUTTON CHAT (Consolto) - FIX STABILITÀ
+// ================================
 add_action('wp_footer', function () {
   ?>
   <script>
   (function () {
 
-    // ✅ Controlla dominio (più affidabile dell'URL completo)
     var ALLOWED_HOST = "servizi.comune.mottacamastra.me.it";
-
-    // (opzionale) se vuoi anche limitare a una pagina specifica:
-    // var ALLOWED_PATH_CONTAINS = "/Servizi/FiloDiretto2/Login.aspx";
 
     function getBtn() {
       return document.getElementById("btn-consolto");
@@ -555,10 +554,23 @@ add_action('wp_footer', function () {
       btn.title = "Disponibile solo dopo la prenotazione online";
     }
 
-    function showConsolto() {
-      document.querySelectorAll('iframe[src*="client.consolto.com"]').forEach(function (f) {
-        f.style.setProperty("display", "block", "important");
-      });
+    function forceShowConsolto() {
+      var tries = 0;
+      var maxTries = 20; // ~10 secondi
+
+      var interval = setInterval(function () {
+        tries++;
+
+        document.querySelectorAll('iframe[src*="client.consolto.com"]').forEach(function (f) {
+          f.style.setProperty("display", "block", "important");
+          f.style.setProperty("visibility", "visible", "important");
+          f.style.setProperty("opacity", "1", "important");
+        });
+
+        if (tries >= maxTries) {
+          clearInterval(interval);
+        }
+      }, 500);
     }
 
     function isAllowedReferrer() {
@@ -567,15 +579,8 @@ add_action('wp_footer', function () {
 
       try {
         var u = new URL(ref);
-
-        if (u.hostname !== ALLOWED_HOST) return false;
-
-        // opzionale: attiva se vuoi controllare anche la pagina
-        // if (u.pathname.indexOf(ALLOWED_PATH_CONTAINS) === -1) return false;
-
-        return true;
+        return u.hostname === ALLOWED_HOST;
       } catch (e) {
-        // referrer non parseabile
         return false;
       }
     }
@@ -592,7 +597,9 @@ add_action('wp_footer', function () {
 
       btn.addEventListener("click", function () {
         if (btn.disabled) return;
-        showConsolto();
+
+        // 🔥 forza visibile per 10 secondi mentre Consolto si inizializza
+        forceShowConsolto();
       });
     }
 
@@ -606,6 +613,7 @@ add_action('wp_footer', function () {
   </script>
   <?php
 }, 999);
+
 
 
 
