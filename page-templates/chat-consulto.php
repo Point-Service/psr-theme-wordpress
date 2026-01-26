@@ -49,7 +49,7 @@ get_header();
                         Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
                       </span>
                     
-                      <div style="margin-top:12px;">
+                    
                         <button id="btn-consolto" style="
                           display:none;
                           padding: 12px 22px;
@@ -63,7 +63,7 @@ get_header();
                         ">
                           🎥 Avvia video chat
                         </button>
-                      </div>
+                  
                     </p>
 
 
