@@ -44,17 +44,59 @@ get_header();
                     Se non dovesse aprirsi, puoi utilizzare il pulsante nella parte destra della pagina.
                 </p>
 
-                    <button id="btn-consolto" style="
-                      padding: 12px 22px;
-                      background: #0b5ed7;
-                      color: #ffffff;
-                      border: none;
-                      border-radius: 6px;
-                      font-size: 16px;
-                      cursor: pointer;
-                    ">
-                      Avvia video chat
-                    </button>
+                <button id="btn-consolto" disabled style="
+                  padding: 12px 22px;
+                  background: #999;
+                  color: #eee;
+                  border: none;
+                  border-radius: 6px;
+                  font-size: 16px;
+                  cursor: not-allowed;
+                ">
+                  Avvia video chat
+                </button>
+                
+                <script>
+                (function(){
+                
+                  var btn = document.getElementById("btn-consolto");
+                  if (!btn) return;
+                
+                  function enable(){
+                    btn.disabled = false;
+                    btn.style.background = "#0b5ed7";
+                    btn.style.color = "#fff";
+                    btn.style.cursor = "pointer";
+                  }
+                
+                  function disable(){
+                    btn.disabled = true;
+                    btn.style.background = "#999";
+                    btn.style.color = "#eee";
+                    btn.style.cursor = "not-allowed";
+                  }
+                
+                  function getCookie(name) {
+                    return document.cookie.split('; ').find(row => row.startsWith(name+'='))?.split('=')[1];
+                  }
+                
+                  function setCookie(name, value, minutes) {
+                    var d = new Date();
+                    d.setTime(d.getTime() + (minutes*60*1000));
+                    document.cookie = name + "=" + value + ";path=/;expires=" + d.toUTCString();
+                  }
+                
+                  // 1) Se arriva con ?ok=1 → setta cookie
+                  if (new URLSearchParams(window.location.search).get("ok") === "1") {
+                    setCookie("consolto_ok", "1", 10); // valido 10 minuti
+                  }
+          
+                    enable();
+             
+                
+                })();
+                </script>
+
 
                 <!-- Box recapiti -->
                 <div class="card border-primary my-3 p-3">
@@ -122,3 +164,4 @@ get_header();
 get_footer();
 
 ?>
+
