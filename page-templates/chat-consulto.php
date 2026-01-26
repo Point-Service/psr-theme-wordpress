@@ -1,22 +1,62 @@
+<?php
 
+/**
+ * Template Name: Chat Consulto
+ * Description: Pagina dedicata alla prenotazione di appuntamenti via videochiamata o vocale con gli uffici comunali, con possibilità di interagire direttamente con un operatore tramite chat.
+ *
+ * @package Design_Comuni_Italia
+ */
 
+get_header();
+?>
 
-<button id="btn-consolto" disabled style="
-  padding: 12px 22px;
-  background: #999;
-  color: #eee;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: not-allowed;
-">
-  Avvia video chat
-</button>
+<main>
+    <div class="container" id="main-container">
 
+        <div class="row">
+            <div class="col px-lg-4">
+                <?php get_template_part("template-parts/common/breadcrumb"); ?>
+            </div>
+        </div>
 
+        <div class="row">
+            <div class="col-lg-12 px-lg-4 py-lg-2">
 
+                <h1 class="mb-4">Contatta gli uffici comunali</h1>
 
+                <p>
+                    Benvenuto nella pagina dedicata al contatto con gli uffici comunali.
+                    Puoi richiedere un incontro tramite <strong>videociamata</strong> o <strong>chiamata vocale</strong>, oppure interagire direttamente con un operatore attraverso la chat.
+                </p>
 
+                <p>
+                    Per effettuare una videochiamata o una chiamata vocale è necessario prenotare un appuntamento tramite l'apposito modulo.
+                    Ti verrà richiesto di fornire i tuoi dati, quali nome e cognome, indirizzo email e un messaggio.
+                    Nella sezione "messaggio" dovrai indicare il motivo della prenotazione e il nome dell'ufficio da contattare.
+                </p>
+
+                <p>
+                    Per accedere alla videochiamata o alla chiamata vocale basterà utilizzare il link fornito nell'email che riceverai all'indirizzo email inserito.
+                </p>
+
+                <p>
+                    <strong>Attenzione</strong>: l'apertura della chat con un operatore potrebbe richiedere qualche istante.
+                    Se non dovesse aprirsi, puoi utilizzare il pulsante nella parte destra della pagina.
+                </p>
+
+                <button id="btn-consolto" disabled style="
+                  padding: 12px 22px;
+                  background: #999;
+                  color: #eee;
+                  border: none;
+                  border-radius: 6px;
+                  font-size: 16px;
+                  cursor: not-allowed;
+                ">
+                  Avvia video chat
+                </button>
+                
+           
                 <!-- Box recapiti -->
                 <div class="card border-primary my-3 p-3">
                     <h5>Contatti</h5>
