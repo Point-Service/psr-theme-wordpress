@@ -524,7 +524,6 @@ require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
 
 
 
-
 add_action('wp_footer', function () {
   ?>
   <script>
@@ -536,24 +535,19 @@ add_action('wp_footer', function () {
       return document.getElementById("btn-consolto");
     }
 
-    function enable(btn) {
-      btn.disabled = false;
-      btn.style.background = "#0b5ed7";
-      btn.style.color = "#fff";
-      btn.style.cursor = "pointer";
+    function show(btn) {
+      btn.style.display = "inline-flex";
+      btn.style.alignItems = "center";
+      btn.style.gap = "8px";
     }
 
-    function disable(btn) {
-      btn.disabled = true;
-      btn.style.background = "#999";
-      btn.style.color = "#eee";
-      btn.style.cursor = "not-allowed";
-      btn.title = "Disponibile solo dopo la prenotazione online";
+    function hide(btn) {
+      btn.style.display = "none";
     }
 
     function forceShowConsolto() {
       var tries = 0;
-      var maxTries = 20; // ~10 secondi
+      var maxTries = 20; // ~10s
 
       var interval = setInterval(function () {
         tries++;
@@ -564,9 +558,7 @@ add_action('wp_footer', function () {
           f.style.setProperty("opacity", "1", "important");
         });
 
-        if (tries >= maxTries) {
-          clearInterval(interval);
-        }
+        if (tries >= maxTries) clearInterval(interval);
       }, 500);
     }
 
@@ -589,13 +581,11 @@ add_action('wp_footer', function () {
       if (btn.dataset.bound) return;
       btn.dataset.bound = "1";
 
-      if (isAllowedReferrer()) enable(btn);
-      else disable(btn);
+      // ✅ Se ok -> mostra, altrimenti nascondi
+      if (isAllowedReferrer()) show(btn);
+      else hide(btn);
 
       btn.addEventListener("click", function () {
-        if (btn.disabled) return;
-
-        // 🔥 forza visibile per 10 secondi mentre Consolto si inizializza
         forceShowConsolto();
       });
     }
