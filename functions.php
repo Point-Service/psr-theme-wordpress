@@ -518,3 +518,34 @@ add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
 require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
 
 
+
+
+
+// ================================
+// BUTTON CHAT
+// ================================
+
+add_action('wp_footer', function () {
+
+  // ESEGUE SOLO nella pagina /test_chat/
+  if ( ! is_page('test_chat') ) return;
+
+  ?>
+  <script>
+  (function(){
+    var btn = document.getElementById("btn-consolto");
+    if (!btn) return;
+
+    btn.addEventListener("click", function () {
+
+      // forza la ricomparsa anche se il CSS ha !important
+      document.querySelectorAll('iframe[src*="client.consolto.com"]').forEach(function(f){
+        f.style.setProperty("display","block","important");
+      });
+
+    });
+  })();
+  </script>
+  <?php
+}, 999);
+
