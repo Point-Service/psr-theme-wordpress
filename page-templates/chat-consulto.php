@@ -44,17 +44,20 @@ get_header();
                     Se non dovesse aprirsi, puoi utilizzare il pulsante nella parte destra della pagina.
                 </p>
 
-                <button id="btn-consolto" disabled style="
-                  padding: 12px 22px;
-                  background: #999;
-                  color: #eee;
-                  border: none;
-                  border-radius: 6px;
-                  font-size: 16px;
-                  cursor: not-allowed;
-                ">
-                  Avvia video chat
-                </button>
+                        <button id="btn-consolto" style="
+                          display:none;
+                          padding: 12px 22px;
+                          background: #0b5ed7;
+                          color: #ffffff;
+                          border: none;
+                          border-radius: 10px;
+                          font-size: 16px;
+                          font-weight: 600;
+                          cursor: pointer;
+                        ">
+                          🎥 Avvia video chat
+                        </button>
+
                 
            
                 <!-- Box recapiti -->
@@ -123,5 +126,6 @@ get_header();
 get_footer();
 
 ?>
+
 
 
