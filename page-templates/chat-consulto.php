@@ -60,7 +60,7 @@ if ($consolto_login_url !== '#' && !preg_match('~^https?://~i', $consolto_login_
 
                         
                           <span id="consolto-alert-text">
-                            <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE.<p></p>
+                            <strong>Attenzione</strong>: questa funzionalità è disponibile solo se l'utente accede con le proprie credenziali SPID o CIE.<br>
                             Tramite il seguente link puoi effettuare il login:
                             <a id="consolto-login-link" href="<?php echo esc_url($consolto_login_url); ?>" <?php echo ($consolto_login_url === '#') ? 'aria-disabled="true" onclick="return false;" style="pointer-events:none;opacity:.6;"' : 'target="_blank" rel="noopener noreferrer"'; ?>>
                               Login SPID/CIE
@@ -155,6 +155,7 @@ if ($consolto_login_url !== '#' && !preg_match('~^https?://~i', $consolto_login_
 get_footer();
 
 ?>
+
 
 
 
