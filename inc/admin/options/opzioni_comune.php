@@ -280,7 +280,7 @@ function dci_register_comune_options(){
         $header_options->add_field( array(
           'id'   => $prefix . 'consolto_referrer_url',
           'name' => __('Consolto – URL esterno abilitazione', 'design_comuni_italia' ),
-          'desc' => __('Incolla l’URL della pagina esterna che deve abilitare il tasto (verrà usato solo il dominio/DNS). Esempio: https://servizi.comune.../Login.aspx', 'design_comuni_italia' ),
+          'desc' => __('Incolla l’URL al servizio esterno che deve abilitare il tasto. Esempio: https://servizi.comune.../Login.aspx', 'design_comuni_italia' ),
           'type' => 'text_url',
         ));
 
