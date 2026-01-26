@@ -59,7 +59,7 @@ get_header();
                           font-weight: 600;
                           cursor: pointer;
                         ">
-                          🎥 Avvia video chat
+                          Avvia video chat
                         </button>
                       </span>
                     
@@ -138,6 +138,7 @@ get_header();
 get_footer();
 
 ?>
+
 
 
 
