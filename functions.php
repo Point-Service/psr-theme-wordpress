@@ -526,26 +526,35 @@ require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
 // ================================
 
 add_action('wp_footer', function () {
-
-  // ESEGUE SOLO nella pagina /test_chat/
-  if ( ! is_page('test_chat') ) return;
-
   ?>
   <script>
   (function(){
-    var btn = document.getElementById("btn-consolto");
-    if (!btn) return;
+    function attach(){
+      var btn = document.getElementById("btn-consolto");
+      if (!btn) return;
 
-    btn.addEventListener("click", function () {
+      // evita doppio binding se WP ricarica parti della pagina
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = "1";
 
-      // forza la ricomparsa anche se il CSS ha !important
-      document.querySelectorAll('iframe[src*="client.consolto.com"]').forEach(function(f){
-        f.style.setProperty("display","block","important");
+      btn.addEventListener("click", function () {
+        document.querySelectorAll('iframe[src*="client.consolto.com"]').forEach(function(f){
+          f.style.setProperty("display","block","important");
+        });
       });
+    }
 
-    });
+    // DOM pronto + compatibilità con builder (Elementor, cache, ecc.)
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", attach);
+    } else {
+      attach();
+    }
+
   })();
   </script>
   <?php
 }, 999);
+
+
 
