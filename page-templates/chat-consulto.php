@@ -47,10 +47,8 @@ get_header();
                           Login SPID/CIE
                         </a><br>
                         Puoi ignorare questo avviso se hai già effettuato l’accesso con le tue credenziali SPID o CIE.
-                      </span>
-                    
-                    
-                        <button id="btn-consolto" style="
+
+                       <button id="btn-consolto" style="
                           display:none;
                           padding: 12px 22px;
                           background: #0b5ed7;
@@ -63,7 +61,8 @@ get_header();
                         ">
                           🎥 Avvia video chat
                         </button>
-                  
+                      </span>
+                    
                     </p>
 
 
@@ -139,6 +138,7 @@ get_header();
 get_footer();
 
 ?>
+
 
 
 
