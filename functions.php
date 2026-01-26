@@ -525,26 +525,22 @@ require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
 // ================================
 add_action('wp_footer', function () {
 
-  // Legge l'URL salvato nella options page CMB2 (option_key = dci_options)
   $opts    = get_option('dci_options', array());
   $raw_url = isset($opts['consolto_referrer_url']) ? trim((string)$opts['consolto_referrer_url']) : '';
 
-  // Estrae host (DNS). Se vuoto/non valido => host vuoto => tasto nascosto.
   $allowed_host = '';
   if ($raw_url !== '') {
-    // se inseriscono solo il dominio senza schema, aggiunge https://
     if (!preg_match('~^https?://~i', $raw_url)) {
       $raw_url = 'https://' . $raw_url;
     }
     $allowed_host = (string) parse_url($raw_url, PHP_URL_HOST);
-    $allowed_host = preg_replace('/^www\./i', '', $allowed_host); // normalizza
+    $allowed_host = preg_replace('/^www\./i', '', $allowed_host);
   }
 
   ?>
   <script>
   (function () {
 
-    // ✅ host dinamico letto da WordPress (può essere stringa vuota)
     var ALLOWED_HOST = <?php echo json_encode($allowed_host); ?>;
 
     function getBtn() {
@@ -561,9 +557,26 @@ add_action('wp_footer', function () {
       btn.style.display = "none";
     }
 
+    function setAlertSuccess() {
+      var box = document.getElementById("consolto-alert");
+      var txt = document.getElementById("consolto-alert-text");
+      if (!box || !txt) return;
+
+      box.classList.remove("alert-warning");
+      box.classList.add("alert-success");
+
+      txt.innerHTML = `
+        <strong>✅ Accesso verificato.</strong><br>
+        Ora puoi avviare una <strong>videochiamata</strong>, una <strong>chiamata vocale</strong> o una <strong>chat</strong> con un operatore comunale.
+        <div style="margin-top:12px;">
+          ${document.getElementById("btn-consolto")?.outerHTML || ''}
+        </div>
+      `;
+    }
+
     function forceShowConsolto() {
       var tries = 0;
-      var maxTries = 20; // ~10s
+      var maxTries = 20;
 
       var interval = setInterval(function () {
         tries++;
@@ -579,7 +592,6 @@ add_action('wp_footer', function () {
     }
 
     function isAllowedReferrer() {
-      // Se l'admin non ha configurato l'URL => non abilitare mai
       if (!ALLOWED_HOST) return false;
 
       var ref = document.referrer || "";
@@ -601,9 +613,12 @@ add_action('wp_footer', function () {
       if (btn.dataset.bound) return;
       btn.dataset.bound = "1";
 
-      // ✅ Se ok -> mostra, altrimenti nascondi
-      if (isAllowedReferrer()) show(btn);
-      else hide(btn);
+      if (isAllowedReferrer()) {
+        show(btn);
+        setAlertSuccess();
+      } else {
+        hide(btn);
+      }
 
       btn.addEventListener("click", function () {
         forceShowConsolto();
@@ -620,5 +635,6 @@ add_action('wp_footer', function () {
   </script>
   <?php
 }, 999);
+
 
 
