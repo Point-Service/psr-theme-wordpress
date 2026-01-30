@@ -35,40 +35,45 @@ function dci_register_pagina_home_options(){
         'query_args' => array( 'type' => 'image' ),
     ) );
 
+    // Sezione Schede in Evidenza
+    $check_notizie_evidenziate_auto = dci_get_option('ck_notizie_evidenza','homepage') ?: false;    // Variabile per controllare se le notizie in evidenza sono automatiche
+    $check_notizie_auto = dci_get_option('ck_notizie_automatico','homepage') ?: false;    // Variabile per controllare se le notizie automatiche sono abilitate
+
+    if($check_notizie_evidenziate_auto === 'false' || $check_notizie_evidenziate_auto === false){
+        $home_options->add_field( array(
+            'id' => $prefix . 'schede_evidenziate_title',
+            'name'        => __( 'Sezione Schede in Evidenza', 'design_comuni_italia' ),
+            'desc' => __( 'Configurazione sezione Schede in Evidenza.' , 'design_comuni_italia' ),
+            'type' => 'title',
+        ) );
+        
+
+        $home_options->add_field( array(
+            'name' => __('<h5>Selezione notizia in evidenza</h5>', 'design_comuni_italia'),
+            'desc' => __('Seleziona una notizia da mostrare in homepage ', 'design_comuni_italia'),
+            'id' => $prefix . 'notizia_evidenziata',
+            'type'    => 'custom_attached_posts',
+            'column'  => true,
+            'options' => array(
+                'show_thumbnails' => false,
+                'filter_boxes'    => true,
+                'query_args'      => array(
+                    'posts_per_page' => -1,
+                    'post_type'      => array('notizia', 'commissario'),
+                ),
+            ),
+            'attributes' => array(
+                'data-max-items' => 5,
+            ),
+        ));
+    }
+
+
     $home_options->add_field( array(
-        'id' => $prefix . 'schede_evidenziate_title',
-        'name'        => __( 'Sezione Schede in Evidenza', 'design_comuni_italia' ),
-        'desc' => __( 'Configurazione sezione Schede in Evidenza.' , 'design_comuni_italia' ),
+        'id'   => $prefix . 'notizie_auto',
+        'name' => __( 'Notizie automatiche sull Home Page', 'design_comuni_italia' ),
+        'desc' => __( 'Con queste impostazioni è possibile attivare la pubblicazione delle notizie automatiche sull Home Page.', 'design_comuni_italia' ),
         'type' => 'title',
-    ) );
-	
-
-	$home_options->add_field( array(
-	    'name' => __('<h5>Selezione notizia in evidenza</h5>', 'design_comuni_italia'),
-	    'desc' => __('Seleziona una notizia da mostrare in homepage ', 'design_comuni_italia'),
-	    'id' => $prefix . 'notizia_evidenziata',
-	    'type'    => 'custom_attached_posts',
-	    'column'  => true,
-	    'options' => array(
-	        'show_thumbnails' => false,
-	        'filter_boxes'    => true,
-	        'query_args'      => array(
-	            'posts_per_page' => -1,
-	            'post_type'      => array('notizia', 'commissario'),
-	        ),
-	    ),
-	    'attributes' => array(
-	        'data-max-items' => 5,
-	    ),
-	));
-
-
-
-$home_options->add_field( array(
-    'id'   => $prefix . 'notizie_auto',
-    'name' => __( 'Notizie automatiche sull Home Page', 'design_comuni_italia' ),
-    'desc' => __( 'Con queste impostazioni è possibile attivare la pubblicazione delle notizie automatiche sull Home Page.', 'design_comuni_italia' ),
-    'type' => 'title',
     ));	
 
     $home_options->add_field(array(
@@ -86,26 +91,64 @@ $home_options->add_field( array(
         // ),
     ));
 
-	$home_options->add_field(array(
-	    'id' => $prefix . 'numero_notizie_home',
-	    'name' => __('Numero di notizie', 'design_comuni_italia'),
-	    'desc' => __(
-	        'Seleziona il numero di notizie da visualizzare in homepage.<br><strong>Nota:</strong> se è presente almeno un elemento compilato nelle schede "Scheda Notizie", questo avrà la priorità su questa impostazione.<br>Per attivare questa opzione, assicurati che tutte le schede sottostanti siano vuote.',
-	        'design_comuni_italia'
-	    ),
-	    'type' => 'radio_inline',
-	    'default' => 0,
-	    'options' => array(
-	        0 => __('0', 'design_comuni_italia'),
-	        3 => __('3', 'design_comuni_italia'),
-	        6 => __('6', 'design_comuni_italia'),
-            9 => __('9', 'design_comuni_italia'),
-	        12 => __('12', 'design_comuni_italia'),
-	    ),
-	));
+    if($check_notizie_auto === 'true' || $check_notizie_auto === true){
+        $home_options->add_field(array(
+            'id' => $prefix . 'numero_notizie_home',
+            'name' => __('Numero di notizie', 'design_comuni_italia'),
+            'desc' => __(
+                'Seleziona il numero di notizie da visualizzare in homepage.<br><strong>Nota:</strong> se è presente almeno un elemento compilato nelle schede "Scheda Notizie", questo avrà la priorità su questa impostazione.<br>Per attivare questa opzione, assicurati che tutte le schede sottostanti siano vuote.',
+                'design_comuni_italia'
+            ),
+            'type' => 'radio_inline',
+            'default' => 0,
+            'options' => array(
+                0 => __('0', 'design_comuni_italia'),
+                3 => __('3', 'design_comuni_italia'),
+                6 => __('6', 'design_comuni_italia'),
+                9 => __('9', 'design_comuni_italia'),
+                12 => __('12', 'design_comuni_italia'),
+            ),
+        ));
+    }
+
+    $home_options->add_field(array(
+        'id' => $prefix . 'ck_notizie_evidenza',
+        'name' => __('Notizia Evidenziata automatica', 'design_comuni_italia'),
+        'desc' => __(
+            'Se abilitata, la sezione "Notizie in evidenza" della homepage verrà popolata automaticamente utilizzando le notizie che, nella tipologia "Notizia", sono contrassegnate come "Evidenzia nella Homepage". ' .
+            'In questo modo la selezione delle notizie in evidenza avviene direttamente dalla singola notizia, senza dover intervenire manualmente sulla homepage.',
+            'design_comuni_italia'
+        ),
+        'type' => 'radio_inline',
+        'default' => 'false',
+        'options' => array(
+            'true' => __('Sì', 'design_comuni_italia'),
+            'false' => __('No', 'design_comuni_italia'),
+        ),
+    ));
+    
+    if($check_notizie_evidenziate_auto === 'true' || empty($check_notizie_evidenziate_auto)){
+        $home_options->add_field(array(
+            'id' => $prefix . 'numero_notizie_evidenza',
+            'name' => __('Numero di notizie in evidenza', 'design_comuni_italia'),
+            'desc' => __(
+                'Seleziona il numero massimo di notizie da visualizzare nella sezione "Notizie in evidenza" della homepage. ' .
+                'Le notizie verranno mostrate in base alla priorità impostata e ai criteri di evidenziazione.',
+                'design_comuni_italia'
+            ),
+            'type' => 'radio_inline',
+            'default' => 0,
+            'options' => array(
+                0 => __('0', 'design_comuni_italia'),   
+                1 => __('1', 'design_comuni_italia'),
+                3 => __('3', 'design_comuni_italia'),
+                5 => __('5', 'design_comuni_italia'),
+            ),
+        ));
+    }
 
 
-	$check_notizie_auto = dci_get_option('ck_notizie_automatico','homepage') ?: false;
+
     if($check_notizie_auto === 'false' || $check_notizie_auto === false){
         function add_scheda_group($home_options, $prefix, $index) {
         // Recupera il contenuto corrente della scheda
