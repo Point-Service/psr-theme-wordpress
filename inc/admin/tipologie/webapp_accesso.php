@@ -172,6 +172,9 @@ function dci_webapp_mobile_page() {
       </form>
     <?php else: ?>
       <p><em>URL WebApp configurato dall’amministratore (utente ID=1). Non hai permessi per modificarlo.</em></p>
+      <p style="margin-top:8px; color:#666;">
+          Il pulsante genera un token temporaneo (valido ~60s) e poi reindirizza alla WebApp aggiungendo <code>t=</code>.
+        </p>
       <?php if (!empty($webapp_url)): ?>
         <p><code><?php echo esc_html($webapp_url); ?></code></p>
       <?php else: ?>
@@ -186,9 +189,7 @@ function dci_webapp_mobile_page() {
           Apri pannello WebApp
         </a>
 
-        <p style="margin-top:8px; color:#666;">
-          Il pulsante genera un token temporaneo (valido ~60s) e poi reindirizza alla WebApp aggiungendo <code>t=</code>.
-        </p>
+
       <?php endif; ?>
     </div>
 
