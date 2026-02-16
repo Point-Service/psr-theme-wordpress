@@ -195,11 +195,6 @@ function dci_webapp_mobile_page() {
 
     <hr>
 
-    <h2>Gestione permessi (User Role Editor)</h2>
-    <p>
-      Concedi la capability <code><?php echo esc_html(DCI_WEBAPP_CAP); ?></code> ai ruoli che devono vedere il menu.
-    </p>
-
   </div>
   <?php
 }
