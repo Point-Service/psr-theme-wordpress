@@ -1,13 +1,33 @@
 <?php
 // =======================================
-// Admin page: Gestione WebApp mobile
+// Gestione WebApp mobile (menu + permessi)
+// - Menu visibile solo a chi ha capability: dci_manage_webapp_mobile
+// - Modifica URL SOLO per user ID = 1
 // =======================================
 
+define('DCI_WEBAPP_CAP', 'dci_manage_webapp_mobile');
+define('DCI_WEBAPP_OPT', 'dci_webapp_mobile_url');
+
+/**
+ * (Opzionale ma consigliato) assegna la capability all'amministratore (role)
+ * così vedi subito il menu. Poi la gestisci via User Role Editor.
+ */
+add_action('init', function () {
+  $role = get_role('administrator');
+  if ($role && !$role->has_cap(DCI_WEBAPP_CAP)) {
+    $role->add_cap(DCI_WEBAPP_CAP);
+  }
+}, 20);
+
+/**
+ * Crea voce di menu admin:
+ * - se non hai la capability -> NON vedi proprio il menu
+ */
 add_action('admin_menu', function () {
   add_menu_page(
     'Gestione WebApp mobile',
     'Gestione WebApp mobile',
-    'manage_options',
+    DCI_WEBAPP_CAP,            // <-- controllato via User Role Editor
     'dci_webapp_mobile',
     'dci_webapp_mobile_page',
     'dashicons-smartphone',
@@ -15,99 +35,122 @@ add_action('admin_menu', function () {
   );
 });
 
+/**
+ * Registra opzione URL ma:
+ * - Solo user ID=1 può salvare (protezione lato server)
+ */
 add_action('admin_init', function () {
-  register_setting('dci_webapp_mobile_group', 'dci_webapp_mobile_url', [
-    'type'              => 'string',
+  register_setting('dci_webapp_mobile_group', DCI_WEBAPP_OPT, [
+    'type' => 'string',
     'sanitize_callback' => function ($value) {
+      // blocca la modifica per chiunque non sia user_id=1
+      if (get_current_user_id() !== 1) {
+        // restituisco il valore già salvato (non cambia nulla)
+        return (string) get_option(DCI_WEBAPP_OPT, '');
+      }
+
       $value = trim((string)$value);
       if ($value === '') return '';
-      // Se incollano senza schema
-      if (!preg_match('~^https?://~i', $value)) $value = 'https://' . $value;
+
+      if (!preg_match('~^https?://~i', $value)) {
+        $value = 'https://' . $value;
+      }
       return esc_url_raw($value);
     },
     'default' => '',
   ]);
 });
 
-function dci_webapp_mobile_find_ure_url() {
-  // Slug più comuni del plugin User Role Editor
-  $candidates = [
+/**
+ * Pagina admin
+ * - Accesso pagina: solo chi ha capability (già gestito dal menu, ma doppio check)
+ * - Form modifica URL: SOLO user_id=1
+ */
+function dci_webapp_mobile_page() {
+  if (!current_user_can(DCI_WEBAPP_CAP)) {
+    wp_die('Non hai i permessi per accedere a questa pagina.');
+  }
+
+  $webapp_url = (string) get_option(DCI_WEBAPP_OPT, '');
+  $can_edit_url = (get_current_user_id() === 1);
+
+  // Link User Role Editor (slug più comuni)
+  $ure_links = [
     admin_url('users.php?page=user-role-editor'),
-    admin_url('users.php?page=users-user-role-editor'),
     admin_url('admin.php?page=user-role-editor'),
+    admin_url('users.php?page=users-user-role-editor'),
     admin_url('admin.php?page=users-user-role-editor'),
   ];
-
-  // Non possiamo verificare con certezza quale esiste senza conoscere il plugin,
-  // quindi restituiamo il primo candidato e mostriamo anche un link alternativo.
-  return $candidates;
-}
-
-function dci_webapp_mobile_page() {
-  if (!current_user_can('manage_options')) return;
-
-  $webapp_url = get_option('dci_webapp_mobile_url', '');
-  $ure_links = dci_webapp_mobile_find_ure_url();
-
   ?>
   <div class="wrap">
     <h1>Gestione WebApp mobile</h1>
 
-    <p>Da qui puoi impostare l’URL del pannello WebApp e gestire gli accessi tramite ruoli e permessi (User Role Editor).</p>
+    <p>
+      Questa pagina è visibile solo a chi ha il permesso:
+      <code><?php echo esc_html(DCI_WEBAPP_CAP); ?></code>
+      (assegnalo da <em>User Role Editor</em>).
+    </p>
 
     <hr>
 
-    <h2>URL pannello WebApp</h2>
-    <form method="post" action="options.php">
-      <?php settings_fields('dci_webapp_mobile_group'); ?>
-      <table class="form-table" role="presentation">
-        <tr>
-          <th scope="row"><label for="dci_webapp_mobile_url">URL WebApp</label></th>
-          <td>
-            <input
-              type="text"
-              id="dci_webapp_mobile_url"
-              name="dci_webapp_mobile_url"
-              value="<?php echo esc_attr($webapp_url); ?>"
-              class="regular-text"
-              placeholder="https://webapp.comune.it/admin"
-            />
-            <p class="description">Incolla l’URL del pannello di gestione WebApp mobile.</p>
-          </td>
-        </tr>
-      </table>
-      <?php submit_button('Salva URL'); ?>
-    </form>
+    <h2>Pannello WebApp</h2>
+
+    <?php if ($can_edit_url): ?>
+      <form method="post" action="options.php">
+        <?php settings_fields('dci_webapp_mobile_group'); ?>
+        <table class="form-table" role="presentation">
+          <tr>
+            <th scope="row"><label for="<?php echo esc_attr(DCI_WEBAPP_OPT); ?>">URL WebApp</label></th>
+            <td>
+              <input
+                type="text"
+                id="<?php echo esc_attr(DCI_WEBAPP_OPT); ?>"
+                name="<?php echo esc_attr(DCI_WEBAPP_OPT); ?>"
+                value="<?php echo esc_attr($webapp_url); ?>"
+                class="regular-text"
+                placeholder="https://webapp.comune.it/admin"
+              />
+              <p class="description">Solo l’utente con ID=1 può modificare questo valore.</p>
+            </td>
+          </tr>
+        </table>
+        <?php submit_button('Salva URL'); ?>
+      </form>
+    <?php else: ?>
+      <p><em>URL WebApp configurato dall’amministratore (utente ID=1). Non hai permessi per modificarlo.</em></p>
+      <?php if (!empty($webapp_url)): ?>
+        <p><code><?php echo esc_html($webapp_url); ?></code></p>
+      <?php else: ?>
+        <p><em>URL non configurato.</em></p>
+      <?php endif; ?>
+    <?php endif; ?>
 
     <div style="margin-top:16px;">
       <?php if (!empty($webapp_url)) : ?>
-        <a href="<?php echo esc_url($webapp_url); ?>" class="button button-primary button-hero" target="_blank" rel="noopener noreferrer">
+        <a href="<?php echo esc_url($webapp_url); ?>"
+           class="button button-primary button-hero"
+           target="_blank" rel="noopener noreferrer">
           Apri pannello WebApp
         </a>
-      <?php else: ?>
-        <p><em>Inserisci e salva l’URL della WebApp per visualizzare il pulsante.</em></p>
       <?php endif; ?>
     </div>
 
     <hr>
 
-    <h2>Gestione accessi (User Role Editor)</h2>
-    <p>Usa User Role Editor per concedere/rimuovere permessi ai ruoli che possono accedere alle pagine di gestione.</p>
+    <h2>Gestione permessi (User Role Editor)</h2>
+    <p>
+      Concedi la capability <code><?php echo esc_html(DCI_WEBAPP_CAP); ?></code> ai ruoli che devono vedere il menu.
+    </p>
 
-    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
-      <a href="<?php echo esc_url($ure_links[0]); ?>" class="button button-secondary">
-        Apri User Role Editor
-      </a>
-      <a href="<?php echo esc_url($ure_links[1]); ?>" class="button">
-        Link alternativo URE
-      </a>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <a href="<?php echo esc_url($ure_links[0]); ?>" class="button button-secondary">Apri User Role Editor</a>
+      <a href="<?php echo esc_url($ure_links[1]); ?>" class="button">Link alternativo URE</a>
     </div>
 
     <p style="margin-top:10px; color:#666;">
-      Se cliccando non si apre la pagina corretta, dimmi quale URL vedi nella barra quando apri User Role Editor,
-      e lo imposto fisso.
+      Se i link non aprono User Role Editor, dimmi l’URL esatto che vedi quando lo apri dal tuo WP e te lo imposto fisso.
     </p>
-
   </div>
   <?php
 }
+
