@@ -164,11 +164,11 @@ function dci_webapp_mobile_page() {
                 class="regular-text"
                 placeholder="https://assistenza.servizipa.cloud/appcomuni/pannello_admin.asp?Ente=mottacamastra"
               />
-              <p class="description">Solo l’utente con ID=1 può modificare questo valore.</p>
+              <p class="description">Solo l’utente con ID=1 può modificare questo valore.</p>         <?php submit_button('Salva URL'); ?>
             </td>
           </tr>
         </table>
-        <?php submit_button('Salva URL'); ?>
+
       </form>
     <?php else: ?>
       <p><em>URL WebApp configurato dall’amministratore (utente ID=1). Non hai permessi per modificarlo.</em></p>
@@ -188,8 +188,6 @@ function dci_webapp_mobile_page() {
            class="button button-primary button-hero">
           Apri pannello WebApp
         </a>
-
-
       <?php endif; ?>
     </div>
 
