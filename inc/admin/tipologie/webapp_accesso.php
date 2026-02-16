@@ -96,7 +96,10 @@ add_action('admin_post_dci_webapp_open', function () {
 
   // aggiunge ? o & automaticamente
   $sep = (strpos($webapp_url, '?') === false) ? '?' : '&';
-  $target = $webapp_url . $sep . 'token=' . rawurlencode($token);
+  $token = substr(hash('sha256', DCI_WEBAPP_SECRET . '|' . floor(time()/60)), 0, 24);
+  $sep = (strpos($webapp_url, '?') === false) ? '?' : '&';
+  $target = $webapp_url . $sep . 't=' . $token;
+
 
   wp_redirect($target);
   exit;
