@@ -12,7 +12,7 @@ define('DCI_WEBAPP_OPT', 'dci_webapp_mobile_url');
 
 // 🔐 Chiave segreta condivisa con ASP (lunga e casuale)
 if (!defined('DCI_WEBAPP_SECRET')) {
-  define('DCI_WEBAPP_SECRET', 'CAMBIA_QUESTA_CHIAVE_LUNGA_RANDOM_ALMENO_64_CARATTERI');
+  define('DCI_WEBAPP_SECRET', 'tonyluca');
 }
 
 /**
