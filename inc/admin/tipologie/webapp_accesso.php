@@ -1,10 +1,10 @@
 <?php
 // =======================================
-// Gestione WebApp mobile (menu + permessi + token)
+// Gestione WebApp mobile (menu + permessi + token ts/sig)
 // - Menu visibile solo a chi ha capability: dci_manage_webapp_mobile
 // - Modifica URL SOLO per user ID = 1
-// - Bottone apre la WebApp aggiungendo &t=... (token variabile a logica tempo)
-// - Rimossi pulsanti verso User Role Editor (restano solo spiegazioni)
+// - Bottone apre la WebApp aggiungendo ?ts=...&sig=...
+// - Token compatibile con il tuo ASP (NO crypto)
 // =======================================
 
 define('DCI_WEBAPP_CAP', 'dci_manage_webapp_mobile');
@@ -15,9 +15,14 @@ if (!defined('DCI_WEBAPP_SECRET')) {
   define('DCI_WEBAPP_SECRET', 'tonyluca');
 }
 
+// stessa tolleranza dell'ASP (in secondi)
+if (!defined('DCI_WEBAPP_MAX_SKEW_SEC')) {
+  define('DCI_WEBAPP_MAX_SKEW_SEC', 120);
+}
+
 /**
- * (Opzionale) assegna la capability all'amministratore (role)
- * così vedi subito il menu. Poi la gestisci via User Role Editor.
+ * (Opzionale) assegna la capability all'amministratore così vedi subito il menu.
+ * Poi la gestisci via User Role Editor.
  */
 add_action('init', function () {
   $role = get_role('administrator');
@@ -50,6 +55,8 @@ add_action('admin_init', function () {
   register_setting('dci_webapp_mobile_group', DCI_WEBAPP_OPT, [
     'type' => 'string',
     'sanitize_callback' => function ($value) {
+
+      // blocca la modifica per chiunque non sia user_id=1
       if (get_current_user_id() !== 1) {
         return (string) get_option(DCI_WEBAPP_OPT, '');
       }
@@ -57,9 +64,11 @@ add_action('admin_init', function () {
       $value = trim((string)$value);
       if ($value === '') return '';
 
+      // se inseriscono senza schema, aggiunge https://
       if (!preg_match('~^https?://~i', $value)) {
         $value = 'https://' . $value;
       }
+
       return esc_url_raw($value);
     },
     'default' => '',
@@ -67,34 +76,26 @@ add_action('admin_init', function () {
 });
 
 /**
- * FNV-1a 32bit (compatibile con Classic ASP senza librerie)
- * Ritorna 8 caratteri HEX.
+ * Genera la sig compatibile con ASP:
+ * expected = Asc(Left(SECRET,1)) & Len(SECRET) & (ts Mod 97)
  */
-function dci_fnv1a32_hex($str) {
-  $hash = 2166136261;
-  $len  = strlen($str);
-
-  for ($i = 0; $i < $len; $i++) {
-    $hash ^= ord($str[$i]);
-    $hash = ($hash * 16777619) & 0xFFFFFFFF; // overflow 32 bit
+function dci_make_sig_for_ts($ts) {
+  $secret = (string) DCI_WEBAPP_SECRET;
+  if ($secret === '') {
+    // se segreto vuoto (non dovrebbe), evita warning
+    $first = 0;
+  } else {
+    $first = ord($secret[0]); // Asc(Left(secret,1))
   }
 
-  return str_pad(dechex($hash), 8, '0', STR_PAD_LEFT);
+  $len = strlen($secret);
+  $mod = ((int)$ts) % 97;
+
+  return (string)$first . (string)$len . (string)$mod;
 }
 
 /**
- * Token a finestra tempo (60s):
- * payload = SECRET|window
- * token   = FNV1a32(payload)
- */
-function dci_make_time_token() {
-  $window  = (int) floor(time() / 60);
-  $payload = DCI_WEBAPP_SECRET . '|' . $window;
-  return dci_fnv1a32_hex($payload);
-}
-
-/**
- * Handler: genera token e fa redirect alla WebApp aggiungendo t=
+ * Handler: genera ts/sig e fa redirect alla WebApp
  * URL chiamato dal bottone:
  * admin-post.php?action=dci_webapp_open
  */
@@ -109,13 +110,16 @@ add_action('admin_post_dci_webapp_open', function () {
     wp_die('URL WebApp non configurato.');
   }
 
-  $token = dci_make_time_token();
+  $ts  = time();
+  $sig = dci_make_sig_for_ts($ts);
 
   // aggiunge ? o & automaticamente
   $sep = (strpos($webapp_url, '?') === false) ? '?' : '&';
 
-  // parametro token (coerente con ASP: "t")
-  $target = $webapp_url . $sep . 't=' . rawurlencode($token);
+  $target = $webapp_url
+          . $sep
+          . 'ts=' . rawurlencode((string)$ts)
+          . '&sig=' . rawurlencode((string)$sig);
 
   wp_redirect($target);
   exit;
@@ -164,17 +168,20 @@ function dci_webapp_mobile_page() {
                 class="regular-text"
                 placeholder="https://assistenza.servizipa.cloud/appcomuni/pannello_admin.asp?Ente=mottacamastra"
               />
-              <p class="description">Solo l’utente con ID=1 può modificare questo valore.</p>         <?php submit_button('Salva URL'); ?>
+              <p class="description">Solo l’utente con ID=1 può modificare questo valore.</p>
+              <?php submit_button('Salva URL'); ?>
             </td>
           </tr>
         </table>
-
       </form>
     <?php else: ?>
       <p><em>URL WebApp configurato dall’amministratore (utente ID=1). Non hai permessi per modificarlo.</em></p>
+
       <p style="margin-top:8px; color:#666;">
-          Il pulsante genera un token temporaneo (valido ~60s) e poi reindirizza alla WebApp aggiungendo <code>t=</code>.
-        </p>
+        Il pulsante genera un token temporaneo (valido ~<?php echo (int)DCI_WEBAPP_MAX_SKEW_SEC; ?>s) e poi reindirizza alla WebApp.
+        Parametri aggiunti: <code>ts</code> e <code>sig</code>.
+      </p>
+
       <?php if (!empty($webapp_url)): ?>
         <p><code><?php echo esc_html($webapp_url); ?></code></p>
       <?php else: ?>
@@ -192,7 +199,6 @@ function dci_webapp_mobile_page() {
     </div>
 
     <hr>
-
   </div>
   <?php
 }
