@@ -110,20 +110,48 @@ add_action('admin_post_dci_webapp_open', function () {
     wp_die('URL WebApp non configurato.');
   }
 
-  $ts  = time();
-  $sig = dci_make_sig_for_ts($ts);
+  $ts = time();
 
-  // aggiunge ? o & automaticamente
+  // nonce casuale (16 char)
+  $n = wp_generate_password(16, false, false);
+
+  // se nel tuo URL hai già Ente=..., lo leggiamo da lì per la firma
+  $parsed = wp_parse_url($webapp_url);
+  $ente = '';
+  if (!empty($parsed['query'])) {
+    parse_str($parsed['query'], $q);
+    if (!empty($q['Ente'])) $ente = (string)$q['Ente'];
+    if (!empty($q['ente'])) $ente = (string)$q['ente'];
+  }
+
+  if ($ente === '') {
+    wp_die('Nell’URL WebApp deve esserci Ente=... (serve per la firma).');
+  }
+
+  // SumAscii(n) in PHP
+  $sum = 0;
+  for ($i=0; $i<strlen($n); $i++) $sum += ord($n[$i]);
+
+  $secret = (string) DCI_WEBAPP_SECRET;
+
+  // expected = Asc(firstSecret) & Len(secret) & (ts mod 997) & Len(n) & (SumAscii(n) mod 997) & Len(ente)
+  $sig = (string)ord($secret[0])
+       . (string)strlen($secret)
+       . (string)($ts % 997)
+       . (string)strlen($n)
+       . (string)($sum % 997)
+       . (string)strlen($ente);
+
   $sep = (strpos($webapp_url, '?') === false) ? '?' : '&';
-
   $target = $webapp_url
-          . $sep
-          . 'ts=' . rawurlencode((string)$ts)
-          . '&sig=' . rawurlencode((string)$sig);
+          . $sep . 'ts=' . rawurlencode((string)$ts)
+          . '&n=' . rawurlencode($n)
+          . '&sig=' . rawurlencode($sig);
 
   wp_redirect($target);
   exit;
 });
+
 
 /**
  * Pagina admin
