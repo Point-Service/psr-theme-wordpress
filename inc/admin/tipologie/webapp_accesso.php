@@ -219,7 +219,7 @@ function dci_webapp_mobile_page() {
 
     <div style="margin-top:16px;">
       <?php if (!empty($webapp_url)) : ?>
-        <a taget="_black" href="<?php echo esc_url(admin_url('admin-post.php?action=dci_webapp_open')); ?>"
+        <a target="_black" href="<?php echo esc_url(admin_url('admin-post.php?action=dci_webapp_open')); ?>"
            class="button button-primary button-hero">
           Apri pannello WebApp
         </a>
