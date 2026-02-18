@@ -197,6 +197,7 @@ function dci_webapp_mobile_page() {
                 placeholder="https://assistenza.servizipa.cloud/appcomuni/pannello_admin.asp?Ente=nomeente"
               />
               <p class="description">Solo l’utente con ID=1 può modificare questo valore.</p>
+              <p class="description">Pin per sbloccare è 170186</p>
               <?php submit_button('Salva URL'); ?>
             </td>
           </tr>
