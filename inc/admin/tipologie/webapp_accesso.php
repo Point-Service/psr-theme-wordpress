@@ -194,7 +194,7 @@ function dci_webapp_mobile_page() {
                 name="<?php echo esc_attr(DCI_WEBAPP_OPT); ?>"
                 value="<?php echo esc_attr($webapp_url); ?>"
                 class="regular-text"
-                placeholder="https://assistenza.servizipa.cloud/appcomuni/pannello_admin.asp?Ente=mottacamastra"
+                placeholder="https://assistenza.servizipa.cloud/appcomuni/pannello_admin.asp?Ente=nomeente"
               />
               <p class="description">Solo l’utente con ID=1 può modificare questo valore.</p>
               <?php submit_button('Salva URL'); ?>
@@ -219,7 +219,7 @@ function dci_webapp_mobile_page() {
 
     <div style="margin-top:16px;">
       <?php if (!empty($webapp_url)) : ?>
-        <a href="<?php echo esc_url(admin_url('admin-post.php?action=dci_webapp_open')); ?>"
+        <a taget="_black" href="<?php echo esc_url(admin_url('admin-post.php?action=dci_webapp_open')); ?>"
            class="button button-primary button-hero">
           Apri pannello WebApp
         </a>
