@@ -369,6 +369,9 @@ add_action('admin_init', function() {
 
   // Pulisce eventuali doppioni
   wp_clear_scheduled_hook('dci_send_scheduled_push', [$data]);
+  if (wp_next_scheduled('dci_send_scheduled_push', [$data])) {
+    return;
+  }
 
   // Pianifica
   wp_schedule_single_event(
@@ -377,4 +380,9 @@ add_action('admin_init', function() {
     [$data]
   );
 
+  add_action('admin_notices', function() {
+  echo '<div class="notice notice-success is-dismissible">
+          <p>✅ Notifica push pianificata correttamente.</p>
+        </div>';
+});
 });
