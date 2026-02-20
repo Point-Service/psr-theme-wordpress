@@ -227,8 +227,154 @@ function dci_webapp_mobile_page() {
       <?php endif; ?>
     </div>
 
+
+
+
+
+
+<h2>Pianifica Notifica Push</h2>
+
+<form method="post">
+
+  <?php wp_nonce_field('dci_push_plan', 'dci_push_nonce'); ?>
+
+  <table class="form-table">
+
+    <tr>
+      <th>Titolo</th>
+      <td>
+        <input type="text" name="dci_title" required class="regular-text">
+      </td>
+    </tr>
+
+    <tr>
+      <th>Messaggio</th>
+      <td>
+        <textarea name="dci_msg" required class="large-text"></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <th>Data e Ora</th>
+      <td>
+        <input type="datetime-local" name="dci_time" required>
+      </td>
+    </tr>
+
+  </table>
+
+  <?php submit_button('Pianifica Notifica'); ?>
+
+</form>
+
+
+
+
+
+
+
+    
     <hr>
   </div>
   <?php
 }
 
+
+// ===============================
+// CRON INVIO NOTIFICHE PUSH
+// ===============================
+
+add_action('dci_send_scheduled_push', 'dci_send_scheduled_push_callback');
+
+function dci_send_scheduled_push_callback($data) {
+
+  $webapp_url = get_option(DCI_WEBAPP_OPT);
+
+  if (empty($webapp_url)) return;
+
+  $title = urlencode($data['title']);
+  $msg   = urlencode($data['msg']);
+
+  // genera token
+  $ts = time();
+  $n  = wp_generate_password(16, false, false);
+
+  // Legge Ente
+  $parsed = wp_parse_url($webapp_url);
+  parse_str($parsed['query'] ?? '', $q);
+
+  $ente = $q['Ente'] ?? $q['ente'] ?? '';
+
+  if (!$ente) return;
+
+  // SumAscii
+  $sum = 0;
+  for ($i=0; $i<strlen($n); $i++) {
+    $sum += ord($n[$i]);
+  }
+
+  $secret = DCI_WEBAPP_SECRET;
+
+  $sig =
+      ord($secret[0])
+    . strlen($secret)
+    . ($ts % 997)
+    . strlen($n)
+    . ($sum % 997)
+    . strlen($ente);
+
+  // Costruzione URL
+  $sep = (strpos($webapp_url, '?') === false) ? '?' : '&';
+
+  $url = $webapp_url . $sep .
+    'ts=' . $ts .
+    '&n=' . $n .
+    '&sig=' . $sig .
+    '&notificapush=ok' .
+    '&Titolo=' . $title .
+    '&msg=' . $msg;
+
+  // Chiamata HTTP
+  wp_remote_get($url, [
+    'timeout' => 15
+  ]);
+}
+
+// ===============================
+// SALVATAGGIO PIANIFICAZIONE
+// ===============================
+
+add_action('admin_init', function() {
+
+  if (!isset($_POST['dci_push_nonce'])) return;
+
+  if (!wp_verify_nonce($_POST['dci_push_nonce'], 'dci_push_plan')) return;
+
+  if (!current_user_can(DCI_WEBAPP_CAP)) return;
+
+  $title = sanitize_text_field($_POST['dci_title']);
+  $msg   = sanitize_textarea_field($_POST['dci_msg']);
+  $time  = sanitize_text_field($_POST['dci_time']);
+
+  if (!$title || !$msg || !$time) return;
+
+  $timestamp = strtotime($time);
+
+  if ($timestamp <= time()) return;
+
+  $data = [
+    'title' => $title,
+    'msg'   => $msg
+  ];
+
+  // Pulisce eventuali doppioni
+  wp_clear_scheduled_hook('dci_send_scheduled_push', [$data]);
+
+  // Pianifica
+  wp_schedule_single_event(
+    $timestamp,
+    'dci_send_scheduled_push',
+    [$data]
+  );
+
+});
