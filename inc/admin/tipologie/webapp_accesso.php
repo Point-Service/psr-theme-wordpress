@@ -1,263 +1,233 @@
 <?php
-/*
-Plugin Name: DCI Push Scheduler
-Description: Pianificazione notifiche push WebApp
-Version: 1.0
-Author: Luca Giardina
-*/
-
-if (!defined('ABSPATH')) exit;
-
-/* ================= CONFIG ================= */
+// =======================================
+// Gestione WebApp mobile (menu + permessi + token ts/sig)
+// - Menu visibile solo a chi ha capability: dci_manage_webapp_mobile
+// - Modifica URL SOLO per user ID = 1
+// - Bottone apre la WebApp aggiungendo ?ts=...&sig=...
+// - Token compatibile con il tuo ASP (NO crypto)
+// =======================================
 
 define('DCI_WEBAPP_CAP', 'dci_manage_webapp_mobile');
 define('DCI_WEBAPP_OPT', 'dci_webapp_mobile_url');
-define('DCI_WEBAPP_SECRET', 'tonyluca');
 
-/* ================= CAP ================= */
-
-register_activation_hook(__FILE__, function(){
-
-  $role = get_role('administrator');
-  if ($role) $role->add_cap(DCI_WEBAPP_CAP);
-
-  dci_create_push_table();
-});
-
-/* ================= DB ================= */
-
-function dci_create_push_table(){
-
-  global $wpdb;
-
-  $table = $wpdb->prefix.'dci_push_queue';
-  $charset = $wpdb->get_charset_collate();
-
-  $sql = "CREATE TABLE IF NOT EXISTS $table (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    msg TEXT NOT NULL,
-    send_at DATETIME NOT NULL,
-    status VARCHAR(20) DEFAULT 'pending',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  ) $charset;";
-
-  require_once ABSPATH.'wp-admin/includes/upgrade.php';
-  dbDelta($sql);
+// 🔐 Chiave segreta condivisa con ASP (deve essere IDENTICA)
+if (!defined('DCI_WEBAPP_SECRET')) {
+  define('DCI_WEBAPP_SECRET', 'tonyluca');
 }
 
-/* ================= MENU ================= */
+// stessa tolleranza dell'ASP (in secondi)
+if (!defined('DCI_WEBAPP_MAX_SKEW_SEC')) {
+  define('DCI_WEBAPP_MAX_SKEW_SEC', 120);
+}
 
-add_action('admin_menu', function(){
+/**
+ * (Opzionale) assegna la capability all'amministratore così vedi subito il menu.
+ * Poi la gestisci via User Role Editor.
+ */
+add_action('init', function () {
+  $role = get_role('administrator');
+  if ($role && !$role->has_cap(DCI_WEBAPP_CAP)) {
+    $role->add_cap(DCI_WEBAPP_CAP);
+  }
+}, 20);
 
+/**
+ * Crea voce di menu admin:
+ * - se non hai la capability -> NON vedi proprio il menu
+ */
+add_action('admin_menu', function () {
   add_menu_page(
-    'Push Scheduler',
-    'Push Scheduler',
+    'Gestione WebApp mobile',
+    'Gestione WebApp mobile',
     DCI_WEBAPP_CAP,
-    'dci_push',
-    'dci_admin_page',
-    'dashicons-megaphone',
+    'dci_webapp_mobile',
+    'dci_webapp_mobile_page',
+    'dashicons-smartphone',
     58
   );
 });
 
-/* ================= SETTINGS ================= */
+/**
+ * Registra opzione URL:
+ * - Solo user ID=1 può salvare (protezione lato server)
+ */
+add_action('admin_init', function () {
+  register_setting('dci_webapp_mobile_group', DCI_WEBAPP_OPT, [
+    'type' => 'string',
+    'sanitize_callback' => function ($value) {
 
-add_action('admin_init', function(){
+      // blocca la modifica per chiunque non sia user_id=1
+      if (get_current_user_id() !== 1) {
+        return (string) get_option(DCI_WEBAPP_OPT, '');
+      }
 
-  register_setting('dci_push_group', DCI_WEBAPP_OPT);
+      $value = trim((string)$value);
+      if ($value === '') return '';
+
+      // se inseriscono senza schema, aggiunge https://
+      if (!preg_match('~^https?://~i', $value)) {
+        $value = 'https://' . $value;
+      }
+
+      return esc_url_raw($value);
+    },
+    'default' => '',
+  ]);
 });
 
-/* ================= ADMIN PAGE ================= */
+/**
+ * Genera la sig compatibile con ASP:
+ * expected = Asc(Left(SECRET,1)) & Len(SECRET) & (ts Mod 97)
+ */
+function dci_make_sig_for_ts($ts) {
+  $secret = (string) DCI_WEBAPP_SECRET;
+  if ($secret === '') {
+    // se segreto vuoto (non dovrebbe), evita warning
+    $first = 0;
+  } else {
+    $first = ord($secret[0]); // Asc(Left(secret,1))
+  }
 
-function dci_admin_page(){
+  $len = strlen($secret);
+  $mod = ((int)$ts) % 97;
 
-  if (!current_user_can(DCI_WEBAPP_CAP)) return;
-
-  global $wpdb;
-  $table = $wpdb->prefix.'dci_push_queue';
-
-  $url = get_option(DCI_WEBAPP_OPT);
-  ?>
-
-<div class="wrap">
-
-<h1>DCI Push Scheduler</h1>
-
-<!-- URL -->
-
-<form method="post" action="options.php">
-<?php settings_fields('dci_push_group'); ?>
-
-<h2>URL WebApp</h2>
-
-<input type="text" name="<?=DCI_WEBAPP_OPT?>" value="<?=esc_attr($url)?>" class="regular-text">
-
-<?php submit_button('Salva URL'); ?>
-</form>
-
-<hr>
-
-<!-- FORM -->
-
-<h2>Pianifica Notifica</h2>
-
-<form method="post">
-
-<?php wp_nonce_field('dci_push_save','dci_push_nonce'); ?>
-
-<table class="form-table">
-
-<tr>
-<th>Titolo</th>
-<td><input name="title" required class="regular-text"></td>
-</tr>
-
-<tr>
-<th>Messaggio</th>
-<td><textarea name="msg" required class="large-text"></textarea></td>
-</tr>
-
-<tr>
-<th>Data / Ora</th>
-<td><input type="datetime-local" name="time" required></td>
-</tr>
-
-</table>
-
-<?php submit_button('Pianifica'); ?>
-
-</form>
-
-<hr>
-
-<!-- LISTA -->
-
-<h2>Storico</h2>
-
-<?php
-$rows = $wpdb->get_results("SELECT * FROM $table ORDER BY send_at DESC");
-?>
-
-<table class="widefat striped">
-
-<tr>
-<th>ID</th>
-<th>Titolo</th>
-<th>Messaggio</th>
-<th>Invio</th>
-<th>Stato</th>
-</tr>
-
-<?php foreach($rows as $r): ?>
-
-<tr>
-<td><?=$r->id?></td>
-<td><?=esc_html($r->title)?></td>
-<td><?=esc_html($r->msg)?></td>
-<td><?=$r->send_at?></td>
-<td><?=$r->status?></td>
-</tr>
-
-<?php endforeach; ?>
-
-</table>
-
-</div>
-
-<?php
+  return (string)$first . (string)$len . (string)$mod;
 }
 
-/* ================= SAVE ================= */
+/**
+ * Handler: genera ts/sig e fa redirect alla WebApp
+ * URL chiamato dal bottone:
+ * admin-post.php?action=dci_webapp_open
+ */
+add_action('admin_post_dci_webapp_open', function () {
 
-add_action('admin_init', function(){
+  if (!current_user_can(DCI_WEBAPP_CAP)) {
+    wp_die('Non autorizzato.');
+  }
 
-  if(!isset($_POST['dci_push_nonce'])) return;
-
-  if(!wp_verify_nonce($_POST['dci_push_nonce'],'dci_push_save')) return;
-
-  if(!current_user_can(DCI_WEBAPP_CAP)) return;
-
-  global $wpdb;
-
-  $table = $wpdb->prefix.'dci_push_queue';
-
-  $title = sanitize_text_field($_POST['title']);
-  $msg   = sanitize_textarea_field($_POST['msg']);
-  $time  = sanitize_text_field($_POST['time']);
-
-  $ts = strtotime($time);
-
-  if($ts <= time()) return;
-
-  $wpdb->insert($table,[
-    'title'=>$title,
-    'msg'=>$msg,
-    'send_at'=>date('Y-m-d H:i:s',$ts),
-    'status'=>'pending'
-  ]);
-
-  $id = $wpdb->insert_id;
-
-  wp_schedule_single_event($ts,'dci_send_push',[$id]);
-
-});
-
-/* ================= CRON ================= */
-
-add_action('dci_send_push','dci_send_push_callback');
-
-function dci_send_push_callback($id){
-
-  global $wpdb;
-
-  $table = $wpdb->prefix.'dci_push_queue';
-
-  $row = $wpdb->get_row($wpdb->prepare(
-    "SELECT * FROM $table WHERE id=%d",$id
-  ));
-
-  if(!$row || $row->status!='pending') return;
-
-  $url = get_option(DCI_WEBAPP_OPT);
-
-  if(!$url) return;
-
-  /* TOKEN */
+  $webapp_url = (string) get_option(DCI_WEBAPP_OPT, '');
+  if ($webapp_url === '') {
+    wp_die('URL WebApp non configurato.');
+  }
 
   $ts = time();
-  $n  = wp_generate_password(16,false,false);
 
-  parse_str(parse_url($url,PHP_URL_QUERY),$q);
+  // nonce casuale (16 char)
+  $n = wp_generate_password(16, false, false);
 
-  $ente = $q['Ente'] ?? '';
-
-  $sum=0; foreach(str_split($n) as $c) $sum+=ord($c);
-
-  $sec = DCI_WEBAPP_SECRET;
-
-  $sig = ord($sec[0]).strlen($sec).($ts%997).strlen($n).($sum%997).strlen($ente);
-
-  $sep = strpos($url,'?')===false?'?':'&';
-
-  $final = $url.$sep.
-    "ts=$ts&n=$n&sig=$sig".
-    "&notificapush=ok".
-    "&Titolo=".rawurlencode($row->title).
-    "&msg=".rawurlencode($row->msg);
-
-  /* SEND */
-
-  $res = wp_remote_get($final,['timeout'=>20]);
-
-  if(is_wp_error($res)){
-
-    $wpdb->update($table,['status'=>'error'],['id'=>$id]);
-
-  }else{
-
-    $wpdb->update($table,['status'=>'sent'],['id'=>$id]);
-
+  // se nel tuo URL hai già Ente=..., lo leggiamo da lì per la firma
+  $parsed = wp_parse_url($webapp_url);
+  $ente = '';
+  if (!empty($parsed['query'])) {
+    parse_str($parsed['query'], $q);
+    if (!empty($q['Ente'])) $ente = (string)$q['Ente'];
+    if (!empty($q['ente'])) $ente = (string)$q['ente'];
   }
-}
 
+  if ($ente === '') {
+    wp_die('Nell’URL WebApp deve esserci Ente=... (serve per la firma).');
+  }
+
+  // SumAscii(n) in PHP
+  $sum = 0;
+  for ($i=0; $i<strlen($n); $i++) $sum += ord($n[$i]);
+
+  $secret = (string) DCI_WEBAPP_SECRET;
+
+  // expected = Asc(firstSecret) & Len(secret) & (ts mod 997) & Len(n) & (SumAscii(n) mod 997) & Len(ente)
+  $sig = (string)ord($secret[0])
+       . (string)strlen($secret)
+       . (string)($ts % 997)
+       . (string)strlen($n)
+       . (string)($sum % 997)
+       . (string)strlen($ente);
+
+  $sep = (strpos($webapp_url, '?') === false) ? '?' : '&';
+  $target = $webapp_url
+          . $sep . 'ts=' . rawurlencode((string)$ts)
+          . '&n=' . rawurlencode($n)
+          . '&sig=' . rawurlencode($sig);
+
+  wp_redirect($target);
+  exit;
+});
+
+
+/**
+ * Pagina admin
+ * - Accesso pagina: solo chi ha capability
+ * - Form modifica URL: SOLO user_id=1
+ */
+function dci_webapp_mobile_page() {
+  if (!current_user_can(DCI_WEBAPP_CAP)) {
+    wp_die('Non hai i permessi per accedere a questa pagina.');
+  }
+
+  $webapp_url   = (string) get_option(DCI_WEBAPP_OPT, '');
+  $can_edit_url = (get_current_user_id() === 1);
+  ?>
+  <div class="wrap">
+    <h1>Gestione WebApp mobile</h1>
+
+    <p>
+      Questa pagina è visibile solo a chi ha il permesso:
+      <code><?php echo esc_html(DCI_WEBAPP_CAP); ?></code>
+      (assegnalo da <em>User Role Editor</em>).
+    </p>
+
+    <hr>
+
+    <h2>Pannello WebApp</h2>
+
+    <?php if ($can_edit_url): ?>
+      <form method="post" action="options.php">
+        <?php settings_fields('dci_webapp_mobile_group'); ?>
+        <table class="form-table" role="presentation">
+          <tr>
+            <th scope="row">
+              <label for="<?php echo esc_attr(DCI_WEBAPP_OPT); ?>">URL WebApp</label>
+            </th>
+            <td>
+              <input
+                type="text"
+                id="<?php echo esc_attr(DCI_WEBAPP_OPT); ?>"
+                name="<?php echo esc_attr(DCI_WEBAPP_OPT); ?>"
+                value="<?php echo esc_attr($webapp_url); ?>"
+                class="regular-text"
+                placeholder="https://assistenza.servizipa.cloud/appcomuni/pannello_admin.asp?Ente=nomeente"
+              />
+              <p class="description">Solo l’utente con ID=1 può modificare questo valore.</p>
+              <p class="description">Pin per sbloccare i campi protetti 170186</p>
+              <?php submit_button('Salva URL'); ?>
+            </td>
+          </tr>
+        </table>
+      </form>
+    <?php else: ?>
+      <p><em>URL WebApp configurato dall’amministratore (utente ID=1). Non hai permessi per modificarlo.</em></p>
+
+      <p style="margin-top:8px; color:#666;">
+        Il pulsante genera un token temporaneo (valido ~<?php echo (int)DCI_WEBAPP_MAX_SKEW_SEC; ?>s) e poi reindirizza alla WebApp.
+        Parametri aggiunti: <code>ts</code> e <code>sig</code>.
+      </p>
+
+      <?php if (!empty($webapp_url)): ?>
+        <p><code><?php echo esc_html($webapp_url); ?></code></p>
+      <?php else: ?>
+        <p><em>URL non configurato.</em></p>
+      <?php endif; ?>
+    <?php endif; ?>
+
+    <div style="margin-top:16px;">
+      <?php if (!empty($webapp_url)) : ?>
+        <a target="_black" href="<?php echo esc_url(admin_url('admin-post.php?action=dci_webapp_open')); ?>"
+           class="button button-primary button-hero">
+          Apri pannello WebApp
+        </a>
+      <?php endif; ?>
+    </div>
+
+    <hr>
+  </div>
+  <?php
+}
