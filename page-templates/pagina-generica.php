@@ -192,5 +192,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const wordsNumber = descText.split(' ').length
     document.querySelector('#readingTime').innerHTML = `${Math.ceil(wordsNumber / 200)} min`;
 </script>
+dsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 <?php
 get_footer();
