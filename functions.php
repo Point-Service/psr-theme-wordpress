@@ -623,6 +623,9 @@ add_action('wp_footer', function () {
 
 
 
+
+
+
 add_action('init', function() {
 
     global $wp_post_types;
@@ -645,6 +648,7 @@ add_action('init', function() {
 
 });
 
+
 add_action('rest_api_init', function () {
 
     register_rest_field('evento', 'data_inizio', [
@@ -659,9 +663,10 @@ add_action('rest_api_init', function () {
         }
     ]);
 
+    register_rest_field('evento', 'descrizione_breve', [
+        'get_callback' => function ($post) {
+            return get_post_meta($post['id'], '_dci_evento_descrizione_breve', true);
+        }
+    ]);
+
 });
-register_rest_field('evento', 'descrizione_breve', [
-    'get_callback' => function ($post) {
-        return get_post_meta($post['id'], '_dci_evento_descrizione_breve', true);
-    }
-]);
