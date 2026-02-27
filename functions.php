@@ -628,44 +628,10 @@ add_action('wp_footer', function () {
 
 
 
-
-add_action('rest_api_init', function () {
-
-    register_rest_route('municipio/v1', '/luoghi', [
-        'methods'  => 'GET',
-        'callback' => function () {
-
-            $args = [
-                'post_type'      => 'post', // notizie
-                'post_status'    => 'publish',
-                'posts_per_page' => -1,
-                'tax_query'      => [
-                    [
-                        'taxonomy' => 'tipi_notizia',  // tassonomia usata dal tema
-                        'field'    => 'slug',
-                        'terms'    => 'luoghi',        // termine "luoghi"
-                    ],
-                ],
-            ];
-
-            $query = new WP_Query($args);
-
-            $results = [];
-
-            foreach ($query->posts as $post) {
-                $results[] = [
-                    'id'      => $post->ID,
-                    'title'   => get_the_title($post),
-                    'slug'    => $post->post_name,
-                    'link'    => get_permalink($post),
-                    'excerpt' => get_the_excerpt($post),
-                    'image'   => get_the_post_thumbnail_url($post->ID, 'large'),
-                ];
-            }
-
-            return rest_ensure_response($results);
-        },
-        'permission_callback' => '__return_true',
-    ]);
-
+add_action('init', function() {
+    global $wp_post_types;
+    echo '<pre>';
+    print_r(array_keys($wp_post_types));
+    echo '</pre>';
+    exit;
 });
