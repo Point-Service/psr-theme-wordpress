@@ -635,20 +635,17 @@ add_action('rest_api_init', function () {
         'methods'  => 'GET',
         'callback' => function () {
 
-            // 🔹 Recupera la pagina Luoghi con percorso completo
-            $parent = get_page_by_path('vivere-il-comune/luoghi');
-
-            if (!$parent) {
-                return rest_ensure_response([]);
-            }
-
             $args = [
-                'post_type'      => 'page',
+                'post_type'      => 'post', // notizie
                 'post_status'    => 'publish',
-                'post_parent'    => $parent->ID,
                 'posts_per_page' => -1,
-                'orderby'        => 'menu_order',
-                'order'          => 'ASC'
+                'tax_query'      => [
+                    [
+                        'taxonomy' => 'tipi_notizia',  // tassonomia usata dal tema
+                        'field'    => 'slug',
+                        'terms'    => 'luoghi',        // termine "luoghi"
+                    ],
+                ],
             ];
 
             $query = new WP_Query($args);
@@ -656,14 +653,13 @@ add_action('rest_api_init', function () {
             $results = [];
 
             foreach ($query->posts as $post) {
-
                 $results[] = [
                     'id'      => $post->ID,
                     'title'   => get_the_title($post),
                     'slug'    => $post->post_name,
                     'link'    => get_permalink($post),
                     'excerpt' => get_the_excerpt($post),
-                    'image'   => get_the_post_thumbnail_url($post->ID, 'large')
+                    'image'   => get_the_post_thumbnail_url($post->ID, 'large'),
                 ];
             }
 
