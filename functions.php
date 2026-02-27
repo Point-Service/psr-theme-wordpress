@@ -631,49 +631,29 @@ add_action('init', function() {
         $wp_post_types['luogo']->rest_base = 'luoghi';
         $wp_post_types['luogo']->rest_controller_class = 'WP_REST_Posts_Controller';
     }
+    if (isset($wp_post_types['eventi'])) {
+        $wp_post_types['eventi']->show_in_rest = true;
+        $wp_post_types['eventi']->rest_base = 'eventi';
+        $wp_post_types['eventi']->rest_controller_class = 'WP_REST_Posts_Controller';
+    }
+	
+	    if (isset($wp_post_types['avvisi'])) {
+        $wp_post_types['avvisi']->show_in_rest = true;
+        $wp_post_types['avvisi']->rest_base = 'avvisi';
+        $wp_post_types['avvisi']->rest_controller_class = 'WP_REST_Posts_Controller';
+    }
 
+		if (isset($wp_post_types['comunicati'])) {
+        $wp_post_types['comunicati']->show_in_rest = true;
+        $wp_post_types['comunicati']->rest_base = 'avvisi';
+        $wp_post_types['comunicati']->rest_controller_class = 'WP_REST_Posts_Controller';
+    }
+
+		if (isset($wp_post_types['notizie'])) {
+        $wp_post_types['notizie']->show_in_rest = true;
+        $wp_post_types['notizie']->rest_base = 'avvisi';
+        $wp_post_types['notizie']->rest_controller_class = 'WP_REST_Posts_Controller';
+    }
+	
 });
-
-add_action('rest_api_init', function () {
-
-    register_rest_route('municipio/v1', '/luoghi-in-evidenza', [
-        'methods'  => 'GET',
-        'callback' => function () {
-
-            $args = [
-                'post_type'      => 'luogo',
-                'post_status'    => 'publish',
-                'posts_per_page' => -1,
-                'meta_query'     => [
-                    [
-                        'key'     => 'in_evidenza',
-                        'value'   => '1',
-                        'compare' => '='
-                    ]
-                ]
-            ];
-
-            $query = new WP_Query($args);
-
-            $results = [];
-
-            foreach ($query->posts as $post) {
-
-                $results[] = [
-                    'id'      => $post->ID,
-                    'title'   => get_the_title($post),
-                    'slug'    => $post->post_name,
-                    'link'    => get_permalink($post),
-                    'excerpt' => get_the_excerpt($post),
-                    'image'   => get_the_post_thumbnail_url($post->ID, 'large')
-                ];
-            }
-
-            return rest_ensure_response($results);
-        },
-        'permission_callback' => '__return_true',
-    ]);
-
-});
-
 
