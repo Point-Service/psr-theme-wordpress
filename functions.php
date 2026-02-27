@@ -632,6 +632,7 @@ add_action('init', function() {
     $types_to_enable = [
         'luogo',
         'evento',
+		'avvisi',
         'notizia'
     ];
 
