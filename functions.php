@@ -623,7 +623,16 @@ add_action('wp_footer', function () {
 
 
 
+add_action('init', function() {
+    global $wp_post_types;
 
+    if (isset($wp_post_types['luogo'])) {
+        $wp_post_types['luogo']->show_in_rest = true;
+        $wp_post_types['luogo']->rest_base = 'luoghi';
+        $wp_post_types['luogo']->rest_controller_class = 'WP_REST_Posts_Controller';
+    }
+
+});
 
 add_action('rest_api_init', function () {
 
