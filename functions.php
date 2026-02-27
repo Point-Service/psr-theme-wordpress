@@ -632,35 +632,42 @@ add_action('wp_footer', function () {
 add_action('rest_api_init', function () {
 
     register_rest_route('municipio/v1', '/luoghi', [
-        'methods' => 'GET',
-        'callback' => function ($request) {
+        'methods'  => 'GET',
+        'callback' => function () {
 
-            $parent_id = isset($request['parent']) ? intval($request['parent']) : 0;
+            // Recupera dinamicamente la pagina "luoghi"
+            $parent = get_page_by_path('luoghi');
+
+            if (!$parent) {
+                return rest_ensure_response([]);
+            }
 
             $args = [
                 'post_type'      => 'page',
                 'post_status'    => 'publish',
+                'post_parent'    => $parent->ID,
                 'posts_per_page' => -1,
-                'post_parent'    => $parent_id,
                 'orderby'        => 'menu_order',
                 'order'          => 'ASC'
             ];
 
             $query = new WP_Query($args);
 
-            $items = [];
+            $results = [];
 
             foreach ($query->posts as $post) {
-                $items[] = [
-                    'id'        => $post->ID,
-                    'title'     => get_the_title($post),
-                    'slug'      => $post->post_name,
-                    'link'      => get_permalink($post),
-                    'excerpt'   => get_the_excerpt($post),
+
+                $results[] = [
+                    'id'      => $post->ID,
+                    'title'   => get_the_title($post),
+                    'slug'    => $post->post_name,
+                    'link'    => get_permalink($post),
+                    'excerpt' => get_the_excerpt($post),
+                    'image'   => get_the_post_thumbnail_url($post->ID, 'large')
                 ];
             }
 
-            return rest_ensure_response($items);
+            return rest_ensure_response($results);
         },
         'permission_callback' => '__return_true',
     ]);
