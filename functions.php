@@ -623,8 +623,6 @@ add_action('wp_footer', function () {
 
 
 
-
-
 add_action('init', function() {
 
     global $wp_post_types;
@@ -632,8 +630,7 @@ add_action('init', function() {
     $map = [
         'luogo'   => 'luoghi',
         'evento'  => 'eventi',
-        'notizia' => 'notizie',
-		'avvisi' => 'avvisi'
+        'notizia' => 'notizie'
     ];
 
     foreach ($map as $type => $rest) {
@@ -645,5 +642,21 @@ add_action('init', function() {
             $wp_post_types[$type]->rest_controller_class = 'WP_REST_Posts_Controller';
         }
     }
+
+});
+
+add_action('rest_api_init', function () {
+
+    register_rest_field('evento', 'data_inizio', [
+        'get_callback' => function ($post) {
+            return get_post_meta($post['id'], '_dci_evento_data_orario_inizio', true);
+        }
+    ]);
+
+    register_rest_field('evento', 'data_fine', [
+        'get_callback' => function ($post) {
+            return get_post_meta($post['id'], '_dci_evento_data_orario_fine', true);
+        }
+    ]);
 
 });
