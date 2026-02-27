@@ -635,8 +635,8 @@ add_action('rest_api_init', function () {
         'methods'  => 'GET',
         'callback' => function () {
 
-            // Recupera dinamicamente la pagina "luoghi"
-            $parent = get_page_by_path('luoghi');
+            // 🔹 Recupera la pagina Luoghi con percorso completo
+            $parent = get_page_by_path('vivere-il-comune/luoghi');
 
             if (!$parent) {
                 return rest_ensure_response([]);
