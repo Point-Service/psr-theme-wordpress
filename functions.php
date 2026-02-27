@@ -621,3 +621,40 @@ add_action('wp_footer', function () {
   <?php
 }, 999);
 
+
+
+
+
+
+
+
+
+add_action('rest_api_init', function () {
+    register_rest_route('municipio/v1', '/luoghi-in-evidenza', [
+        'methods' => 'GET',
+        'callback' => function () {
+
+            $args = [
+                'post_type'      => 'page', // se sono pagine
+                'meta_key'       => 'in_evidenza',
+                'meta_value'     => '1',
+                'posts_per_page' => 10
+            ];
+
+            $query = new WP_Query($args);
+
+            $results = [];
+
+            foreach ($query->posts as $post) {
+                $results[] = [
+                    'id'    => $post->ID,
+                    'title' => get_the_title($post),
+                    'link'  => get_permalink($post),
+                ];
+            }
+
+            return rest_ensure_response($results);
+        },
+        'permission_callback' => '__return_true',
+    ]);
+});
