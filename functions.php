@@ -633,6 +633,7 @@ add_action('init', function() {
         'luogo'   => 'luoghi',
         'evento'  => 'eventi',
         'notizia' => 'notizie'
+		'avvisi' => 'avvisi'
     ];
 
     foreach ($map as $type => $rest) {
