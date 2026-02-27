@@ -672,8 +672,4 @@ add_action('rest_api_init', function () {
 });
 
 
-register_rest_field('evento', 'debug_all_meta', [
-    'get_callback' => function ($post) {
-        return get_post_meta($post['id']);
-    }
-]);
+
