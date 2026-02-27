@@ -623,37 +623,26 @@ add_action('wp_footer', function () {
 
 
 
+
+
 add_action('init', function() {
+
     global $wp_post_types;
 
-    if (isset($wp_post_types['luogo'])) {
-        $wp_post_types['luogo']->show_in_rest = true;
-        $wp_post_types['luogo']->rest_base = 'luoghi';
-        $wp_post_types['luogo']->rest_controller_class = 'WP_REST_Posts_Controller';
-    }
-    if (isset($wp_post_types['eventi'])) {
-        $wp_post_types['eventi']->show_in_rest = true;
-        $wp_post_types['eventi']->rest_base = 'eventi';
-        $wp_post_types['eventi']->rest_controller_class = 'WP_REST_Posts_Controller';
-    }
-	
-	    if (isset($wp_post_types['avvisi'])) {
-        $wp_post_types['avvisi']->show_in_rest = true;
-        $wp_post_types['avvisi']->rest_base = 'avvisi';
-        $wp_post_types['avvisi']->rest_controller_class = 'WP_REST_Posts_Controller';
+    $types_to_enable = [
+        'luogo',
+        'evento',
+        'notizia'
+    ];
+
+    foreach ($types_to_enable as $type) {
+
+        if (isset($wp_post_types[$type])) {
+
+            $wp_post_types[$type]->show_in_rest = true;
+            $wp_post_types[$type]->rest_base = $type; 
+            $wp_post_types[$type]->rest_controller_class = 'WP_REST_Posts_Controller';
+        }
     }
 
-		if (isset($wp_post_types['comunicati'])) {
-        $wp_post_types['comunicati']->show_in_rest = true;
-        $wp_post_types['comunicati']->rest_base = 'avvisi';
-        $wp_post_types['comunicati']->rest_controller_class = 'WP_REST_Posts_Controller';
-    }
-
-		if (isset($wp_post_types['notizie'])) {
-        $wp_post_types['notizie']->show_in_rest = true;
-        $wp_post_types['notizie']->rest_base = 'avvisi';
-        $wp_post_types['notizie']->rest_controller_class = 'WP_REST_Posts_Controller';
-    }
-	
 });
-
