@@ -636,6 +636,20 @@ add_action('init', function() {
         'notizia'
     ];
 
+	$map = [
+    'luogo'  => 'luoghi',
+    'evento' => 'eventi',
+    'notizia'=> 'notizie'
+  ];
+
+foreach ($map as $type => $rest) {
+    if (isset($wp_post_types[$type])) {
+        $wp_post_types[$type]->show_in_rest = true;
+        $wp_post_types[$type]->rest_base = $rest;
+        $wp_post_types[$type]->rest_controller_class = 'WP_REST_Posts_Controller';
+    }
+}
+
     foreach ($types_to_enable as $type) {
 
         if (isset($wp_post_types[$type])) {
