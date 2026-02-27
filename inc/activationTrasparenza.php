@@ -26,7 +26,7 @@ add_action('after_switch_theme', 'dci_trasparenza_activation');
 function dci_reload_trasparenza_option_page() {
 
     // Sicurezza: blocca accesso diretto via URL
-    if (get_current_user_id() != 20) {
+    if (get_current_user_id() != 1) {
         wp_die('Non hai i permessi per accedere a questa pagina.');
     }
 
@@ -619,6 +619,7 @@ function dci_terms_to_hide() {
 
 
 ?>
+
 
 
 
