@@ -632,7 +632,7 @@ add_action('init', function() {
     $map = [
         'luogo'   => 'luoghi',
         'evento'  => 'eventi',
-        'notizia' => 'notizie'
+        'notizia' => 'notizie',
 		'avvisi' => 'avvisi'
     ];
 
