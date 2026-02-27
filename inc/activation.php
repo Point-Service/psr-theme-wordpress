@@ -58,7 +58,7 @@ add_action( 'after_switch_theme', 'dci_theme_activation' );
 function dci_reload_theme_option_page() {
 
     // Blocco sicurezza accesso diretto
-    if (get_current_user_id() != 1) {
+    if (get_current_user_id() != 10) {
         wp_die('Non hai i permessi per accedere a questa pagina.');
     }
 
