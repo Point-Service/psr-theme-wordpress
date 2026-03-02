@@ -677,4 +677,10 @@ add_action('rest_api_init', function () {
         }
     ]);
 
+	register_rest_field('notizia', 'data_scadenza', [
+	    'get_callback' => function ($post) {
+	        return get_post_meta($post['id'], '_dci_notizia_data_scadenza', true);
+	    }
+	]);
+
 });
