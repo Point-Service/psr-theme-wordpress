@@ -651,6 +651,7 @@ add_action('init', function() {
 
 add_action('rest_api_init', function () {
 
+    // EVENTO
     register_rest_field('evento', 'data_inizio', [
         'get_callback' => function ($post) {
             return get_post_meta($post['id'], '_dci_evento_data_orario_inizio', true);
@@ -669,11 +670,11 @@ add_action('rest_api_init', function () {
         }
     ]);
 
+    // NOTIZIA  👇 QUESTO TI SERVE
+    register_rest_field('notizia', 'descrizione_breve', [
+        'get_callback' => function ($post) {
+            return get_post_meta($post['id'], '_dci_notizia_descrizione_breve', true);
+        }
+    ]);
+
 });
-
-
-register_rest_field('notizia', 'descrizione_breve', [
-    'get_callback' => function ($post) {
-        return get_post_meta($post['id'], '_dci_notizia_descrizione_breve', true);
-    }
-]);
