@@ -648,9 +648,10 @@ add_action('init', function() {
 
 });
 
+
 add_action('rest_api_init', function () {
 
-    // ===== EVENTO =====
+    // EVENTO
     register_rest_field('evento', 'data_inizio', [
         'get_callback' => function ($post) {
             return get_post_meta($post['id'], '_dci_evento_data_orario_inizio', true);
@@ -669,27 +670,30 @@ add_action('rest_api_init', function () {
         }
     ]);
 
-    // ===== NOTIZIA =====
+    // NOTIZIA  👇 QUESTO TI SERVE
     register_rest_field('notizia', 'descrizione_breve', [
         'get_callback' => function ($post) {
             return get_post_meta($post['id'], '_dci_notizia_descrizione_breve', true);
         }
     ]);
 
-    register_rest_field('notizia', 'data_scadenza', [
-        'get_callback' => function ($post) {
-            return get_post_meta($post['id'], '_dci_notizia_data_scadenza', true);
-        }
-    ]);
+	register_rest_field('notizia', 'data_scadenza', [
+	    'get_callback' => function ($post) {
+	        return get_post_meta($post['id'], '_dci_notizia_data_scadenza', true);
+	    }
+	]);
 
-    // ===== LUOGO =====
-    register_rest_field('luoghi', 'meta_luogo', [   // 👈 REST BASE GIUSTO
+
+	add_action('rest_api_init', function () {
+
+    register_rest_field('luogo', 'meta_luogo', array(
         'get_callback' => function ($post) {
 
             $prefix = '_dci_luogo_';
 
             $img = get_post_meta($post['id'], $prefix . 'immagine', true);
             $descrizione = get_post_meta($post['id'], $prefix . 'descrizione_breve', true);
+
             $gps = get_post_meta($post['id'], $prefix . 'posizione_gps', true);
             $indirizzo = get_post_meta($post['id'], $prefix . 'indirizzo', true);
             $quartiere = get_post_meta($post['id'], $prefix . 'quartiere', true);
@@ -708,18 +712,19 @@ add_action('rest_api_init', function () {
             }
 
             return [
-                'immagine' => $img ?: '',
-                'descrizione' => $descrizione ?: '',
-                'lat' => $gps['lat'] ?? '',
-                'lng' => $gps['lng'] ?? '',
-                'indirizzo' => $indirizzo ?: '',
-                'quartiere' => $quartiere ?: '',
-                'circoscrizione' => $circoscrizione ?: '',
+                'immagine' => $img,
+                'descrizione' => $descrizione,
+                'lat' => isset($gps['lat']) ? $gps['lat'] : '',
+                'lng' => isset($gps['lng']) ? $gps['lng'] : '',
+                'indirizzo' => $indirizzo,
+                'quartiere' => $quartiere,
+                'circoscrizione' => $circoscrizione,
                 'tipi_luogo' => $tipi_array
             ];
         }
-    ]);
+    ));
 
 });
 
+});
 
