@@ -822,20 +822,18 @@ wp-json/wp/v2/luogo?in_evidenza=1
 =====================================
 */
 
-add_filter('rest_luogo_query', function ($args, $request) {
+add_filter('rest_luoghi_query', function ($args, $request) {
 
     if ($request->get_param('in_evidenza')) {
 
         $ids = dci_get_option('luoghi_evidenziati','vivi');
 
         if (is_array($ids) && !empty($ids)) {
-
             $args['post__in'] = $ids;
             $args['orderby']  = 'post__in';
-
+            $args['posts_per_page'] = -1; // 🔥 IGNORA PAGINAZIONE
         } else {
-
-            $args['post__in'] = [0]; // Nessun risultato
+            $args['post__in'] = [0];
         }
     }
 
