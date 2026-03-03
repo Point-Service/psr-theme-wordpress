@@ -829,9 +829,13 @@ add_filter('rest_luoghi_query', function ($args, $request) {
         $ids = dci_get_option('luoghi_evidenziati','vivi');
 
         if (is_array($ids) && !empty($ids)) {
+
             $args['post__in'] = $ids;
-            $args['orderby']  = 'post__in';
-            $args['posts_per_page'] = -1; // 🔥 IGNORA PAGINAZIONE
+
+            // Se vuoi ultimi prima
+            $args['orderby'] = 'date';
+            $args['order']   = 'DESC';
+
         } else {
             $args['post__in'] = [0];
         }
