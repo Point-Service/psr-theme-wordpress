@@ -684,7 +684,9 @@ add_action('rest_api_init', function () {
 	]);
 
 
-	 register_rest_field('luogo', 'meta_luogo', array(
+	add_action('rest_api_init', function () {
+
+    register_rest_field('luogo', 'meta_luogo', array(
         'get_callback' => function ($post) {
 
             $prefix = '_dci_luogo_';
@@ -721,5 +723,7 @@ add_action('rest_api_init', function () {
             ];
         }
     ));
+
+});
 
 });
