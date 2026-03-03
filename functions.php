@@ -727,57 +727,121 @@ add_action('rest_api_init', function () {
 
 
 
-    register_rest_route('custom/v1', '/luoghi-evidenza', [
-        'methods'  => 'GET',
-        'callback' => function () {
+    add_action('rest_api_init', function () {
 
-            // ID evidenziati salvati nel tema
-            $ids = dci_get_option('luoghi_evidenziati','vivi');
+    /*
+    =====================================
+    EVENTO
+    =====================================
+    */
 
-            if (!is_array($ids) || empty($ids)) {
-                return [];
-            }
-
-            $args = [
-                'post_type'      => 'luogo',
-                'post__in'       => $ids,
-                'orderby'        => 'post__in',
-                'posts_per_page' => -1
-            ];
-
-            $query = new WP_Query($args);
-
-            $result = [];
-
-            while ($query->have_posts()) {
-                $query->the_post();
-
-                $post_id = get_the_ID();
-                $prefix  = '_dci_luogo_';
-
-                $gps = get_post_meta($post_id, $prefix . 'posizione_gps', true);
-
-                $result[] = [
-                    'id'    => $post_id,
-                    'title' => get_the_title(),
-                    'link'  => get_permalink(),
-                    'meta_luogo' => [
-                        'immagine' => get_post_meta($post_id, $prefix . 'immagine', true),
-                        'descrizione' => get_post_meta($post_id, $prefix . 'descrizione_breve', true),
-                        'lat' => $gps['lat'] ?? '',
-                        'lng' => $gps['lng'] ?? '',
-                        'indirizzo' => get_post_meta($post_id, $prefix . 'indirizzo', true),
-                        'quartiere' => get_post_meta($post_id, $prefix . 'quartiere', true),
-                        'circoscrizione' => get_post_meta($post_id, $prefix . 'circoscrizione', true),
-                    ]
-                ];
-            }
-
-            wp_reset_postdata();
-
-            return $result;
+    register_rest_field('evento', 'data_inizio', [
+        'get_callback' => function ($post) {
+            return get_post_meta($post['id'], '_dci_evento_data_orario_inizio', true);
         }
     ]);
+
+    register_rest_field('evento', 'data_fine', [
+        'get_callback' => function ($post) {
+            return get_post_meta($post['id'], '_dci_evento_data_orario_fine', true);
+        }
+    ]);
+
+    register_rest_field('evento', 'descrizione_breve', [
+        'get_callback' => function ($post) {
+            return get_post_meta($post['id'], '_dci_evento_descrizione_breve', true);
+        }
+    ]);
+
+
+    /*
+    =====================================
+    NOTIZIA
+    =====================================
+    */
+
+    register_rest_field('notizia', 'descrizione_breve', [
+        'get_callback' => function ($post) {
+            return get_post_meta($post['id'], '_dci_notizia_descrizione_breve', true);
+        }
+    ]);
+
+    register_rest_field('notizia', 'data_scadenza', [
+        'get_callback' => function ($post) {
+            return get_post_meta($post['id'], '_dci_notizia_data_scadenza', true);
+        }
+    ]);
+
+
+    /*
+    =====================================
+    LUOGO - META COMPLETO
+    =====================================
+    */
+
+    register_rest_field('luogo', 'meta_luogo', [
+        'get_callback' => function ($post) {
+
+            $prefix = '_dci_luogo_';
+
+            $gps = get_post_meta($post['id'], $prefix . 'posizione_gps', true);
+
+            $tipi = get_the_terms($post['id'], 'tipi_luogo');
+            $tipi_array = [];
+
+            if ($tipi && !is_wp_error($tipi)) {
+                foreach ($tipi as $t) {
+                    $tipi_array[] = [
+                        'name' => $t->name,
+                        'link' => get_term_link($t)
+                    ];
+                }
+            }
+
+            return [
+                'immagine' => get_post_meta($post['id'], $prefix . 'immagine', true),
+                'descrizione' => get_post_meta($post['id'], $prefix . 'descrizione_breve', true),
+                'lat' => isset($gps['lat']) ? $gps['lat'] : '',
+                'lng' => isset($gps['lng']) ? $gps['lng'] : '',
+                'indirizzo' => get_post_meta($post['id'], $prefix . 'indirizzo', true),
+                'quartiere' => get_post_meta($post['id'], $prefix . 'quartiere', true),
+                'circoscrizione' => get_post_meta($post['id'], $prefix . 'circoscrizione', true),
+                'tipi_luogo' => $tipi_array
+            ];
+        }
+    ]);
+
+});
+
+
+/*
+=====================================
+FILTRO LUOGHI IN EVIDENZA
+Endpoint:
+wp-json/wp/v2/luogo?in_evidenza=1
+=====================================
+*/
+
+add_filter('rest_luogo_query', function ($args, $request) {
+
+    if ($request->get_param('in_evidenza')) {
+
+        $ids = dci_get_option('luoghi_evidenziati','vivi');
+
+        if (is_array($ids) && !empty($ids)) {
+
+            $args['post__in'] = $ids;
+            $args['orderby']  = 'post__in';
+
+        } else {
+
+            $args['post__in'] = [0]; // Nessun risultato
+        }
+    }
+
+    return $args;
+
+}, 10, 2);
 
 
 
