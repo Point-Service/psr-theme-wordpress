@@ -684,7 +684,6 @@ add_action('rest_api_init', function () {
 	]);
 
 
-	add_action('rest_api_init', function () {
 
     register_rest_field('luogo', 'meta_luogo', array(
         'get_callback' => function ($post) {
@@ -724,7 +723,7 @@ add_action('rest_api_init', function () {
         }
     ));
 
-});
+
 
 });
 
