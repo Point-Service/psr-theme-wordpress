@@ -725,5 +725,61 @@ add_action('rest_api_init', function () {
 
 
 
+
+
+    register_rest_route('custom/v1', '/luoghi-evidenza', [
+        'methods'  => 'GET',
+        'callback' => function () {
+
+            // ID evidenziati salvati nel tema
+            $ids = dci_get_option('luoghi_evidenziati','vivi');
+
+            if (!is_array($ids) || empty($ids)) {
+                return [];
+            }
+
+            $args = [
+                'post_type'      => 'luogo',
+                'post__in'       => $ids,
+                'orderby'        => 'post__in',
+                'posts_per_page' => -1
+            ];
+
+            $query = new WP_Query($args);
+
+            $result = [];
+
+            while ($query->have_posts()) {
+                $query->the_post();
+
+                $post_id = get_the_ID();
+                $prefix  = '_dci_luogo_';
+
+                $gps = get_post_meta($post_id, $prefix . 'posizione_gps', true);
+
+                $result[] = [
+                    'id'    => $post_id,
+                    'title' => get_the_title(),
+                    'link'  => get_permalink(),
+                    'meta_luogo' => [
+                        'immagine' => get_post_meta($post_id, $prefix . 'immagine', true),
+                        'descrizione' => get_post_meta($post_id, $prefix . 'descrizione_breve', true),
+                        'lat' => $gps['lat'] ?? '',
+                        'lng' => $gps['lng'] ?? '',
+                        'indirizzo' => get_post_meta($post_id, $prefix . 'indirizzo', true),
+                        'quartiere' => get_post_meta($post_id, $prefix . 'quartiere', true),
+                        'circoscrizione' => get_post_meta($post_id, $prefix . 'circoscrizione', true),
+                    ]
+                ];
+            }
+
+            wp_reset_postdata();
+
+            return $result;
+        }
+    ]);
+
+
+
 });
 
