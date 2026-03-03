@@ -683,4 +683,43 @@ add_action('rest_api_init', function () {
 	    }
 	]);
 
+
+	 register_rest_field('luoghi', 'meta_luogo', array(
+        'get_callback' => function ($post) {
+
+            $prefix = '_dci_luogo_';
+
+            $img = get_post_meta($post['id'], $prefix . 'immagine', true);
+            $descrizione = get_post_meta($post['id'], $prefix . 'descrizione_breve', true);
+
+            $gps = get_post_meta($post['id'], $prefix . 'posizione_gps', true);
+            $indirizzo = get_post_meta($post['id'], $prefix . 'indirizzo', true);
+            $quartiere = get_post_meta($post['id'], $prefix . 'quartiere', true);
+            $circoscrizione = get_post_meta($post['id'], $prefix . 'circoscrizione', true);
+
+            $tipi = get_the_terms($post['id'], 'tipi_luogo');
+            $tipi_array = [];
+
+            if ($tipi && !is_wp_error($tipi)) {
+                foreach ($tipi as $t) {
+                    $tipi_array[] = [
+                        'name' => $t->name,
+                        'link' => get_term_link($t)
+                    ];
+                }
+            }
+
+            return [
+                'immagine' => $img,
+                'descrizione' => $descrizione,
+                'lat' => isset($gps['lat']) ? $gps['lat'] : '',
+                'lng' => isset($gps['lng']) ? $gps['lng'] : '',
+                'indirizzo' => $indirizzo,
+                'quartiere' => $quartiere,
+                'circoscrizione' => $circoscrizione,
+                'tipi_luogo' => $tipi_array
+            ];
+        }
+    ));
+
 });
