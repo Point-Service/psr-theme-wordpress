@@ -192,22 +192,36 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 
 
 <style>
-
 /* ===============================
-   FIX WEBVIEW GLOBAL
+   FIX WEBVIEW MOBILE
 ================================ */
 
-.argomento-card,
-.argomento-link {
+.argomento-card{
     touch-action: manipulation;
 }
 
-.argomento-card svg,
-.argomento-card span {
-    pointer-events: none;
+.argomento-link{
+    display:flex;
+    align-items:center;
+    text-decoration:none;
+    cursor:pointer;
 }
 
-/* Disabilita hover mobile */
+.argomento-link svg{
+    pointer-events:none;
+}
+
+/* NON bloccare gli span */
+.argomento-link span{
+    pointer-events:auto;
+}
+
+/* miglior click mobile */
+.argomento-link:active{
+    opacity:0.7;
+}
+
+/* Disabilita hover su mobile */
 @media (hover:none){
 
 .argomento-link:hover{
@@ -216,12 +230,12 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 }
 
 }
-
 </style>
 
 
 <?php
 $sito_tematico_id = null;
+
 
 
 
