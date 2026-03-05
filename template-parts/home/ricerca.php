@@ -57,7 +57,7 @@ $links = dci_get_option('link', 'link_utili');
             <?php foreach ($links as $link) { ?>
 
               <!-- LINK -->
-              <a href="<?php echo esc_url($link['url']); ?>"
+              <a  target="_blank" href="<?php echo esc_url($link['url']); ?>"
                  class="d-inline-flex align-items-center gap-2
                         px-3 py-2 border border-light rounded
                         shadow-sm bg-white text-primary
