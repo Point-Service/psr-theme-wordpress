@@ -138,7 +138,7 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 <?php } ?>
 
 </div>
-
+<?php } ?> 
 
 <!-- ================= FOOTER ================= -->
 
@@ -303,6 +303,7 @@ pointer-events:none;
 
 <?php
 $sito_tematico_id = null;
+
 
 
 
