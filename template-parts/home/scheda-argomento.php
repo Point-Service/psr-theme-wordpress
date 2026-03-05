@@ -104,9 +104,6 @@ get_template_part("template-parts/sito-tematico/card_argomento");
 
 <div class="link-list-wrapper mt-4">
 
-<ul class="link-list"
-    style="padding-left:0;list-style:none;margin:0;">
-
 <?php foreach ($links as $link_id) {
 
 $link_obj = get_post($link_id);
@@ -114,34 +111,31 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 
 ?>
 
-<li class="argomento-item">
+<a href="<?php echo esc_url(get_permalink(intval($link_id))); ?>"
+   class="argomento-card-link">
 
-<a href="<?php echo esc_url(get_permalink(intval($link_id))); ?>" class="argomento-btn">
+    <div class="argomento-card-item">
 
-<span class="argomento-icon">
+        <span class="argomento-icon">
 
-<svg viewBox="0 0 24 24" width="18" height="18">
-<path fill="currentColor" d="M10.59 13.41a1 1 0 0 0 1.41 0l4.59-4.59v3.17a1 1 0 0 0 2 0V5h-7a1 1 0 0 0 0 2h3.17l-4.59 4.59a1 1 0 0 0 0 1.41z"/>
-</svg>
+            <svg viewBox="0 0 24 24" width="18" height="18">
+                <path fill="currentColor"
+                d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
+            </svg>
 
-</span>
+        </span>
 
-<span class="argomento-text">
-<?php echo esc_html($title); ?>
-</span>
+        <span class="argomento-title">
+
+            <?php echo esc_html($title); ?>
+
+        </span>
+
+    </div>
 
 </a>
 
-</li>
-
 <?php } ?>
-
-</ul>
-
-</div>
-
-<?php } ?>
-
 
 </div>
 
@@ -235,11 +229,81 @@ color:#6c757d;
 flex:1;
 
 }
+
+    /* ===============================
+   LINK ARGOMENTI
+================================ */
+
+.argomento-card-link{
+
+display:block;
+
+text-decoration:none;
+
+margin-bottom:10px;
+
+touch-action: manipulation;
+
+}
+
+.argomento-card-item{
+
+display:flex;
+align-items:center;
+gap:10px;
+
+padding:12px 14px;
+
+background:#f8f9fa;
+
+border-radius:10px;
+
+box-shadow:0 2px 6px rgba(0,0,0,0.06);
+
+transition:all .25s ease;
+
+}
+
+.argomento-card-link:hover .argomento-card-item{
+
+background:#eef2f7;
+transform:translateY(-2px);
+
+}
+
+.argomento-card-link:active .argomento-card-item{
+
+transform:scale(0.97);
+
+}
+
+.argomento-icon{
+
+display:flex;
+align-items:center;
+
+color:#6c757d;
+
+pointer-events:none;
+
+}
+
+.argomento-title{
+
+font-size:0.95rem;
+font-weight:500;
+
+color:#212529;
+
+pointer-events:none;
+
+}
 </style>
 
 
 <?php
 $sito_tematico_id = null;
+
 
 
 
