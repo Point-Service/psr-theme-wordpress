@@ -45,6 +45,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 
 </div>
 
+
 <!-- ================= BADGE ================= -->
 
 <div class="mb-3">
@@ -104,6 +105,9 @@ get_template_part("template-parts/sito-tematico/card_argomento");
 
 <div class="link-list-wrapper mt-4">
 
+<ul class="link-list"
+    style="padding-left:0;list-style:none;margin:0;">
+
 <?php foreach ($links as $link_id) {
 
 $link_obj = get_post($link_id);
@@ -111,34 +115,48 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 
 ?>
 
-<a href="<?php echo esc_url(get_permalink(intval($link_id))); ?>"
-   class="argomento-card-link">
+<li style="margin-bottom:10px;">
 
-    <div class="argomento-card-item">
+<a class="list-item icon-left d-flex align-items-center argomento-link"
+   href="<?php echo get_permalink(intval($link_id)); ?>"
+   style="padding:10px 14px;border-radius:8px;
+          background:#f8f9fa;text-decoration:none;
+          color:#212529;display:flex;
+          align-items:center;
+          box-shadow:0 2px 4px rgba(0,0,0,0.05);
+          transition:all .3s ease;">
 
-        <span class="argomento-icon">
+<svg class="icon text-secondary me-2"
+     style="width:18px;height:18px;
+            margin-right:8px;
+            pointer-events:none;">
 
-            <svg viewBox="0 0 24 24" width="18" height="18">
-                <path fill="currentColor"
-                d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3z"/>
-            </svg>
+<use xlink:href="#it-link"></use>
 
-        </span>
+</svg>
 
-        <span class="argomento-title">
+<span style="font-size:0.95rem;font-weight:500;
+             pointer-events:none;">
 
-            <?php echo esc_html($title); ?>
+<?php echo esc_html($title); ?>
 
-        </span>
-
-    </div>
+</span>
 
 </a>
 
+</li>
+
 <?php } ?>
 
+</ul>
+
 </div>
-<?php } ?> 
+
+<?php } ?>
+
+
+</div>
+
 
 <!-- ================= FOOTER ================= -->
 
@@ -173,140 +191,36 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 
 
 <style>
-.argomento-item{
-margin-bottom:10px;
-}
 
-.argomento-btn{
-
-display:flex;
-align-items:center;
-gap:10px;
-
-padding:12px 14px;
-
-background:#f8f9fa;
-
-border-radius:10px;
-
-text-decoration:none;
-color:#212529;
-
-font-size:0.95rem;
-font-weight:500;
-
-transition:all .25s ease;
-
-box-shadow:0 2px 6px rgba(0,0,0,0.05);
-
-}
-
-.argomento-btn:hover{
-
-background:#e9ecef;
-transform:translateY(-1px);
-
-}
-
-.argomento-btn:active{
-
-transform:scale(0.98);
-
-}
-
-.argomento-icon{
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-color:#6c757d;
-
-}
-
-.argomento-text{
-
-flex:1;
-
-}
-
-    /* ===============================
-   LINK ARGOMENTI
+/* ===============================
+   FIX WEBVIEW GLOBAL
 ================================ */
 
-.argomento-card-link{
+.argomento-card,
+.argomento-link {
+    touch-action: manipulation;
+}
 
-display:block;
+.argomento-card svg,
+.argomento-card span {
+    pointer-events: none;
+}
 
-text-decoration:none;
+/* Disabilita hover mobile */
+@media (hover:none){
 
-margin-bottom:10px;
-
-touch-action: manipulation;
+.argomento-link:hover{
+    background:inherit;
+    transform:none;
+}
 
 }
 
-.argomento-card-item{
-
-display:flex;
-align-items:center;
-gap:10px;
-
-padding:12px 14px;
-
-background:#f8f9fa;
-
-border-radius:10px;
-
-box-shadow:0 2px 6px rgba(0,0,0,0.06);
-
-transition:all .25s ease;
-
-}
-
-.argomento-card-link:hover .argomento-card-item{
-
-background:#eef2f7;
-transform:translateY(-2px);
-
-}
-
-.argomento-card-link:active .argomento-card-item{
-
-transform:scale(0.97);
-
-}
-
-.argomento-icon{
-
-display:flex;
-align-items:center;
-
-color:#6c757d;
-
-pointer-events:none;
-
-}
-
-.argomento-title{
-
-font-size:0.95rem;
-font-weight:500;
-
-color:#212529;
-
-pointer-events:none;
-
-}
 </style>
 
 
 <?php
 $sito_tematico_id = null;
-
-
-
-
 
 
 
