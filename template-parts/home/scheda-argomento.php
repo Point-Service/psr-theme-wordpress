@@ -117,7 +117,9 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 <li style="margin-bottom:10px;">
 
 <a class="list-item icon-left d-flex align-items-center argomento-link"
-   href="<?php echo get_permalink(intval($link_id)); ?>"
+   href="<?php echo esc_url(get_permalink(intval($link_id))); ?>"
+   target="_self"
+   rel="noopener"
    style="padding:10px 14px;border-radius:8px;
           background:#f8f9fa;text-decoration:none;
           color:#212529;display:flex;
@@ -220,6 +222,7 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 
 <?php
 $sito_tematico_id = null;
+
 
 
 
