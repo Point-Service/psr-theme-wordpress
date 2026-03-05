@@ -114,33 +114,20 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 
 ?>
 
-<li style="margin-bottom:10px;">
+<li class="argomento-item">
 
-<a class="list-item icon-left d-flex align-items-center argomento-link"
-   href="<?php echo esc_url(get_permalink(intval($link_id))); ?>"
-   target="_self"
-   rel="noopener"
-   style="padding:10px 14px;border-radius:8px;
-          background:#f8f9fa;text-decoration:none;
-          color:#212529;display:flex;
-          align-items:center;
-          box-shadow:0 2px 4px rgba(0,0,0,0.05);
-          transition:all .3s ease;">
+<a href="<?php echo esc_url(get_permalink(intval($link_id))); ?>" class="argomento-btn">
 
-<svg class="icon text-secondary me-2"
-     style="width:18px;height:18px;
-            margin-right:8px;
-            pointer-events:none;">
+<span class="argomento-icon">
 
-<use xlink:href="#it-link"></use>
-
+<svg viewBox="0 0 24 24" width="18" height="18">
+<path fill="currentColor" d="M10.59 13.41a1 1 0 0 0 1.41 0l4.59-4.59v3.17a1 1 0 0 0 2 0V5h-7a1 1 0 0 0 0 2h3.17l-4.59 4.59a1 1 0 0 0 0 1.41z"/>
 </svg>
 
-<span style="font-size:0.95rem;font-weight:500;
-             pointer-events:none;">
+</span>
 
+<span class="argomento-text">
 <?php echo esc_html($title); ?>
-
 </span>
 
 </a>
@@ -192,42 +179,60 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 
 
 <style>
-/* ===============================
-   FIX WEBVIEW MOBILE
-================================ */
-
-.argomento-card{
-    touch-action: manipulation;
+.argomento-item{
+margin-bottom:10px;
 }
 
-.argomento-link{
-    display:flex;
-    align-items:center;
-    text-decoration:none;
-    cursor:pointer;
+.argomento-btn{
+
+display:flex;
+align-items:center;
+gap:10px;
+
+padding:12px 14px;
+
+background:#f8f9fa;
+
+border-radius:10px;
+
+text-decoration:none;
+color:#212529;
+
+font-size:0.95rem;
+font-weight:500;
+
+transition:all .25s ease;
+
+box-shadow:0 2px 6px rgba(0,0,0,0.05);
+
 }
 
-.argomento-link svg{
-    pointer-events:none;
+.argomento-btn:hover{
+
+background:#e9ecef;
+transform:translateY(-1px);
+
 }
 
-/* NON bloccare gli span */
-.argomento-link span{
-    pointer-events:auto;
+.argomento-btn:active{
+
+transform:scale(0.98);
+
 }
 
-/* miglior click mobile */
-.argomento-link:active{
-    opacity:0.7;
+.argomento-icon{
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+color:#6c757d;
+
 }
 
-/* Disabilita hover su mobile */
-@media (hover:none){
+.argomento-text{
 
-.argomento-link:hover{
-    background:inherit;
-    transform:none;
-}
+flex:1;
 
 }
 </style>
@@ -235,6 +240,7 @@ $title = wp_trim_words($link_obj->post_title, 15, '...');
 
 <?php
 $sito_tematico_id = null;
+
 
 
 
