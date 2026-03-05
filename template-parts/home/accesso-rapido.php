@@ -21,7 +21,7 @@ $box_accesso_rapido = $boxes;
         <div class="col-md-6 col-xl-4">
 
             <!-- LINK -->
-            <a href="<?php echo esc_url($box['link_message']); ?>"
+            <a target="_blank" href="<?php echo esc_url($box['link_message']); ?>"
                style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>"
                class="card card-teaser <?= $colore_sfondo ? '' : 'bg-neutral' ?> rounded mt-0 p-3">
 
