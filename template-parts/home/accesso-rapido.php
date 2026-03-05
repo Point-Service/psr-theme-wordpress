@@ -1,299 +1,224 @@
 <?php
-global $boxes;
-$box_accesso_rapido = $boxes;
+global $argomento_full, $count, $sito_tematico_id;
+
+$argomento = get_term_by(
+    'slug',
+    $argomento_full['argomento_'.$count.'_argomento'],
+    'argomenti'
+);
+
+$icon = dci_get_term_meta('icona', "dci_term_", $argomento->term_id);
+
+if (isset($argomento_full['argomento_'.$count.'_siti_tematici']))
+    $sito_tematico_id = $argomento_full['argomento_'.$count.'_siti_tematici'];
+
+if (isset($argomento_full['argomento_'.$count.'_contenuti']))
+    $links = $argomento_full['argomento_'.$count.'_contenuti'];
 ?>
 
-<?php if (!empty($boxes)) { ?>
-<div class="container py-5">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<div class="card card-teaser no-after rounded shadow-sm border border-light argomento-card"
+     style="overflow:hidden; position:relative;">
 
-    <h2 class="title-xxlarge mb-4">Accesso rapido</h2>
+<div class="card-body pb-4 mt-2">
 
-    <div class="row g-4 custom-styles">
 
-        <?php foreach ($boxes as $box) {
+<!-- ================= HEADER ================= -->
 
-            $colore_sfondo = $box['colore'] ?? false;
-            $sfondo_scuro = $colore_sfondo ? is_this_dark_hex($colore_sfondo) : true;
-        ?>
+<div class="category-top d-flex align-items-center mb-2">
 
-        <div class="col-md-6 col-xl-4">
+<h3 class="card-title title-xlarge-card mb-0"
+    style="font-size:1.3rem;font-weight:600;">
 
-            <!-- LINK -->
-            <a href="<?php echo esc_url($box['link_message']); ?>"
-               style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>"
-               class="card card-teaser <?= $colore_sfondo ? '' : 'bg-neutral' ?> rounded mt-0 p-3">
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 640 640"
+     class="icon text-primary"
+     style="width:20px;height:20px;fill:#A2A2A2;pointer-events:none;">
 
-                <div class="cmp-card-simple card-wrapper pb-0 rounded">
+<path d="M371.8 82.4C359.8 87.4 352 99 352 112L352 192L240 192C142.8 192 64 270.8 64 368C64 481.3 145.5 531.9 164.2 542.1C166.7 543.5 169.5 544 172.3 544C183.2 544 192 535.1 192 524.3C192 516.8 187.7 509.9 182.2 504.8C172.8 496 160 478.4 160 448.1C160 395.1 203 352.1 256 352.1L352 352.1L352 432.1C352 445 359.8 456.7 371.8 461.7C383.8 466.7 397.5 463.9 406.7 454.8L566.7 294.8C579.2 282.3 579.2 262 566.7 249.5L406.7 89.5C397.5 80.3 383.8 77.6 371.8 82.6z"/>
 
-                    <div style="border: none;">
+</svg>
 
-                        <div class="card-body d-flex align-items-center">
+<?php echo esc_html($argomento->name); ?>
 
-                            <?php if (
-                                isset($box['icona_message']) &&
-                                $box['icona_message'] &&
-                                array_key_exists('icon', $box) &&
-                                !empty($box['icon'])
-                            ) { ?>
-
-                                <div class="avatar size-lg me-3"
-                                     style="min-width:50px;width:50px;height:50px;
-                                            display:flex;justify-content:center;
-                                            align-items:center;
-                                            background-color:#f0f0f0;
-                                            border-radius:50%;">
-
-                                    <i class="fas fa-<?php echo htmlspecialchars($box['icon']); ?>"
-                                       style="color:#555;font-size:24px;"></i>
-
-                                </div>
-
-                            <?php } ?>
-
-                            <div class="flex-grow-1">
-
-                                <h3 class="card-title t-primary title-xlarge text-dark"
-                                    style="font-size:1.5rem;line-height:1.2;">
-
-                                    <?php echo $box['titolo_message']; ?>
-
-                                    <!-- ICONA -->
-                                    <svg class="icon icon-white"
-                                         style="width:20px;height:20px;margin-left:8px;">
-                                        <use href="#it-external-link"></use>
-                                    </svg>
-
-                                </h3>
-
-                                <?php if (!empty($box['desc_message'])) { ?>
-
-                                    <p class="card-text text-sans-serif mb-0 description text-muted"
-                                       style="font-size:1rem;line-height:1.5;">
-
-                                        <?php echo $box['desc_message']; ?>
-
-                                    </p>
-
-                                <?php } ?>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </a>
-
-        </div>
-
-        <?php } ?>
-
-    </div>
+</h3>
 
 </div>
+
+
+<!-- ================= BADGE ================= -->
+
+<div class="mb-3">
+
+<span style="background:#eef2f7;color:#495057;
+font-size:0.75rem;padding:0.25rem 0.6rem;
+border-radius:0.5rem;">
+
+Argomento •
+<?php echo isset($links) ? count($links)." link" : "0 link"; ?>
+
+</span>
+
+</div>
+
+
+<!-- ================= DESCRIZIONE ================= -->
+
+<p class="card-text text-muted"
+   style="font-size:0.95rem;line-height:1.4;">
+
+<?php echo esc_html($argomento->description); ?>
+
+</p>
+
+
+<!-- ================= SITO TEMATICO ================= -->
+
+<?php if($sito_tematico_id) { ?>
+
+<p class="card-text pb-3 mt-3 fw-bold">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 640 640"
+     width="15" height="15"
+     style="vertical-align:middle;margin-right:5px;
+            pointer-events:none;">
+
+<path d="M288.6 76.8C344.8 20.6 436 20.6 492.2 76.8C548.4 133 548.4 224.2 492.2 280.4L328.2 444.4C293.8 478.8 238.1 478.8 203.7 444.4C169.3 410 169.3 354.3 203.7 319.9L356.5 167.3C369 154.8 389.3 154.8 401.8 167.3C414.3 179.8 414.3 200.1 401.8 212.6L249 365.3C239.6 374.7 239.6 389.9 249 399.2C258.4 408.5 273.6 408.6 282.9 399.2L446.9 235.2C478.1 204 478.1 153.3 446.9 122.1C415.7 90.9 365 90.9 333.8 122.1L169.8 286.1C116.7 339.2 116.7 425.3 169.8 478.4C222.9 531.5 309 531.5 362.1 478.4L492.3 348.3C504.8 335.8 525.1 335.8 537.6 348.3C550.1 360.8 550.1 381.1 537.6 393.6L407.4 523.6C329.3 601.7 202.7 601.7 124.6 523.6C46.5 445.5 46.5 318.9 124.6 240.8L288.6 76.8z"/>
+
+</svg>
+
+Visita il sito:
+
+</p>
+
+<?php
+get_template_part("template-parts/sito-tematico/card_argomento");
+?>
+
 <?php } ?>
+
+
+<!-- ================= LINK LIST ================= -->
+
+<?php if(!empty($links)) { ?>
+
+<div class="link-list-wrapper mt-4">
+
+<ul class="link-list"
+    style="padding-left:0;list-style:none;margin:0;">
+
+<?php foreach ($links as $link_id) {
+
+$link_obj = get_post($link_id);
+$title = wp_trim_words($link_obj->post_title, 15, '...');
+
+?>
+
+<li style="margin-bottom:10px;">
+
+<a class="list-item icon-left d-flex align-items-center argomento-link"
+   href="<?php echo get_permalink(intval($link_id)); ?>"
+   style="padding:10px 14px;border-radius:8px;
+          background:#f8f9fa;text-decoration:none;
+          color:#212529;display:flex;
+          align-items:center;
+          box-shadow:0 2px 4px rgba(0,0,0,0.05);
+          transition:all .3s ease;">
+
+<svg class="icon text-secondary me-2"
+     style="width:18px;height:18px;
+            margin-right:8px;
+            pointer-events:none;">
+
+<use xlink:href="#it-link"></use>
+
+</svg>
+
+<span style="font-size:0.95rem;font-weight:500;
+             pointer-events:none;">
+
+<?php echo esc_html($title); ?>
+
+</span>
+
+</a>
+
+</li>
+
+<?php } ?>
+
+</ul>
+
+</div>
+
+<?php } ?>
+
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<div class="card-footer mt-4" style="padding:0;border:none;">
+
+<a class="read-more d-inline-flex align-items-center argomento-link"
+   href="<?php echo get_term_link(intval($argomento->term_id), 'argomenti'); ?>"
+   style="text-decoration:none;font-weight:500;
+          margin-top:20px;color:#0d6efd;">
+
+<span class="text"
+      style="font-size:0.85rem;
+             pointer-events:none;">
+
+<b>Esplora Argomento</b>
+
+</span>
+
+<svg class="icon ms-1"
+     style="width:18px;height:18px;
+            pointer-events:none;">
+
+<use xlink:href="#it-arrow-right"></use>
+
+</svg>
+
+</a>
+
+</div>
+
+</div>
 
 
 <style>
 
 /* ===============================
-   CARD BASE
+   FIX WEBVIEW GLOBAL
 ================================ */
 
-.custom-styles .card {
-
-    background-color: #f9f9f9;
-    border: 1px solid #e0e0e0;
-
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-
-    transition: transform 0.3s ease,
-                box-shadow 0.3s ease;
-
-    display: flex;
-    flex-direction: column;
-
-    height: 100%;
-    min-height: 120px;
-
-    position: relative;
-
-    /* FIX TAP ANDROID */
+.argomento-card,
+.argomento-link {
     touch-action: manipulation;
 }
 
-
-/* Hover */
-.custom-styles .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-
-/* ===============================
-   TESTI
-================================ */
-
-.custom-styles .card-title {
-
-    margin-bottom: 6px;
-    font-size: 1.2rem;
-
-    color: #333;
-
-    flex-grow: 1;
-
-    margin-right: 40px;
-}
-
-.custom-styles .description {
-
-    font-size: 0.9rem;
-    line-height: 1.4;
-
-    color: #777;
-
-    margin-top: 8px;
-}
-
-
-/* ===============================
-   AVATAR
-================================ */
-
-.custom-styles .avatar {
-
-    background-color: #f0f0f0;
-    border-radius: 50%;
-
-    padding: 2px;
-}
-
-.custom-styles .avatar i {
-    color: #555;
-    font-size: 24px;
-}
-
-
-/* ===============================
-   BODY
-================================ */
-
-.custom-styles .card-body {
-
-    display: flex;
-    align-items: center;
-
-    justify-content: flex-start;
-
-    padding: 15px;
-
-    flex-grow: 1;
-}
-
-
-/* ===============================
-   ICONA SVG (FIX CLICK)
-================================ */
-
-.custom-styles .card-title svg.icon-white {
-
-    fill: #000 !important;
-
-    position: absolute;
-
-    top: 10px;
-    right: 10px;
-
-    width: 20px;
-    height: 20px;
-
-    z-index: 2;
-
-    transition: transform 0.3s ease,
-                fill 0.3s ease;
-
-    /* 🔴 FIX PRINCIPALE */
+.argomento-card svg,
+.argomento-card span {
     pointer-events: none;
 }
 
+/* Disabilita hover mobile */
+@media (hover:none){
 
-/* Hover icona */
-.custom-styles .card-title svg.icon-white:hover {
-
-    transform: scale(1.1);
-    fill: #f0f0f0 !important;
+.argomento-link:hover{
+    background:inherit;
+    transform:none;
 }
 
-
-/* ===============================
-   GRID
-================================ */
-
-.custom-styles .row {
-
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-
-    gap: 20px;
-}
-
-
-/* ===============================
-   MOBILE FIX
-================================ */
-
-@media (hover: none) {
-
-    .custom-styles .card:hover {
-
-        transform: none;
-        box-shadow: none;
-        background-color: inherit;
-    }
-}
-
-
-/* ===============================
-   RESPONSIVE
-================================ */
-
-@media (max-width: 768px) {
-
-    .custom-styles .card-body {
-        flex-direction: row;
-        align-items: center;
-        text-align: left;
-
-        padding: 8px 12px;
-    }
-
-    .custom-styles .flex-grow-1 {
-
-        display: flex;
-        flex-direction: column;
-
-        justify-content: center;
-    }
-
-    .custom-styles .avatar {
-
-        margin-right: 12px;
-        flex-shrink: 0;
-    }
-
-    .custom-styles .card-title {
-        margin-bottom: 4px;
-        margin-right: 0;
-    }
-
-    .custom-styles .description {
-        margin: 0;
-    }
 }
 
 </style>
+
+
+<?php
+$sito_tematico_id = null;
+
