@@ -19,7 +19,7 @@ $link_pagina = ((!empty($mostra_pagina) && $mostra_pagina) || empty($st_link))
     : $st_link;
 ?>
 
-<a href="<?php echo esc_url($link_pagina); ?>"
+<a  target="_blank" href="<?php echo esc_url($link_pagina); ?>"
    style="<?= ($colore_sfondo) ? 'background-color:' . $colore_sfondo : '' ?>"
    class="card card-teaser <?= $colore_sfondo ? '' : 'bg-primary' ?> rounded mt-0 p-3 shadow-sm border border-light sito-tematico-card">
 
