@@ -66,23 +66,23 @@ if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) { ?>
 
                 // 👉 ORDINAMENTO LIVELLO 4
                 if (!empty($sub_sub_sub_categories) && !is_wp_error($sub_sub_sub_categories)) {
-usort($sub_sub_categories, function($a, $b) {
-
-    $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
-    $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
-
-    // 👉 vuoto = 0
-    $ordinamento_a = ($ordinamento_a === '' || $ordinamento_a === null) ? 0 : (int)$ordinamento_a;
-    $ordinamento_b = ($ordinamento_b === '' || $ordinamento_b === null) ? 0 : (int)$ordinamento_b;
-
-    // prima per ordinamento
-    if ($ordinamento_a === $ordinamento_b) {
-        // fallback per stabilità
-        return strcmp($a->name, $b->name);
-    }
-
-    return $ordinamento_a <=> $ordinamento_b;
-});
+                    usort($sub_sub_categories, function($a, $b) {
+                    
+                        $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
+                        $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
+                    
+                        // 👉 vuoto = 0
+                        $ordinamento_a = ($ordinamento_a === '' || $ordinamento_a === null) ? 0 : (int)$ordinamento_a;
+                        $ordinamento_b = ($ordinamento_b === '' || $ordinamento_b === null) ? 0 : (int)$ordinamento_b;
+                    
+                        // prima per ordinamento
+                        if ($ordinamento_a === $ordinamento_b) {
+                            // fallback per stabilità
+                            return strcmp($a->name, $b->name);
+                        }
+                    
+                        return $ordinamento_a <=> $ordinamento_b;
+                    });
                 }
 
                 if (!empty($sub_sub_sub_categories) && !is_wp_error($sub_sub_sub_categories)) { ?>
