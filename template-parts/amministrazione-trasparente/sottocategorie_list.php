@@ -1,6 +1,6 @@
 <?php
 if (!isset($term_id)) {
-    return; // Evita errori se $term_id non è passato
+    return;
 }
 
 // TERZO LIVELLO
@@ -9,20 +9,38 @@ $sub_sub_categories = get_terms('tipi_cat_amm_trasp', array(
     'parent' => $term_id
 ));
 
+// 👉 ORDINAMENTO LIVELLO 3
+if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) {
+    usort($sub_sub_categories, function($a, $b) {
+
+        $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
+        $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
+
+        if ($ordinamento_a === '' || $ordinamento_a === null) {
+            $ordinamento_a = PHP_INT_MAX;
+        }
+
+        if ($ordinamento_b === '' || $ordinamento_b === null) {
+            $ordinamento_b = PHP_INT_MAX;
+        }
+
+        return (int)$ordinamento_a - (int)$ordinamento_b;
+    });
+}
+
 if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) { ?>
     <ul class="sub-sub-list">
         <?php foreach ($sub_sub_categories as $sub_sub) { 
-            // Recupero i metadati dell'URL personalizzato e del flag per aprire in una nuova finestra
+
             $term_url = get_term_meta($sub_sub->term_id, 'term_url', true);
             $open_new_window = get_term_meta($sub_sub->term_id, 'open_new_window', true);
 
-            // Se c'è un URL personalizzato, lo sostituisco al link predefinito
             if (!empty($term_url)) {
-                $link = $term_url; // Imposto l'URL personalizzato
-                $target = $open_new_window ? ' target="_blank"' : ''; // Se c'è la spunta "Apri in una nuova finestra"
+                $link = $term_url;
+                $target = $open_new_window ? ' target="_blank"' : '';
             } else {
-                $link = get_term_link($sub_sub->term_id); // Link di default se non c'è URL personalizzato
-                $target = ''; // Nessun target, se non c'è URL personalizzato
+                $link = get_term_link($sub_sub->term_id);
+                $target = '';
             }
         ?>
             <li>
@@ -36,6 +54,25 @@ if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) { ?>
                     'hide_empty' => false,
                     'parent' => $sub_sub->term_id
                 ));
+
+                // 👉 ORDINAMENTO LIVELLO 4
+                if (!empty($sub_sub_sub_categories) && !is_wp_error($sub_sub_sub_categories)) {
+                    usort($sub_sub_sub_categories, function($a, $b) {
+
+                        $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
+                        $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
+
+                        if ($ordinamento_a === '' || $ordinamento_a === null) {
+                            $ordinamento_a = PHP_INT_MAX;
+                        }
+
+                        if ($ordinamento_b === '' || $ordinamento_b === null) {
+                            $ordinamento_b = PHP_INT_MAX;
+                        }
+
+                        return (int)$ordinamento_a - (int)$ordinamento_b;
+                    });
+                }
 
                 if (!empty($sub_sub_sub_categories) && !is_wp_error($sub_sub_sub_categories)) { ?>
                     <ul class="sub-sub-list">
@@ -53,5 +90,4 @@ if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) { ?>
         <?php } ?>
     </ul>
 <?php } ?>
-
 
