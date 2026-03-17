@@ -9,6 +9,15 @@ $sub_sub_categories = get_terms('tipi_cat_amm_trasp', array(
     'parent' => $term_id
 ));
 
+
+foreach ($sub_sub_categories as $t) {
+    echo $t->name . ' = ' . get_term_meta($t->term_id, 'ordinamento', true) . '<br>';
+}
+
+
+
+
+
 // 👉 ORDINAMENTO LIVELLO 3
 if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) {
     usort($sub_sub_categories, function($a, $b) {
@@ -16,7 +25,7 @@ if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) {
         $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
         $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
 
-echo $ordinamento_a;
+
 
 
 
