@@ -10,9 +10,7 @@ $sub_sub_categories = get_terms('tipi_cat_amm_trasp', array(
 ));
 
 
-foreach ($sub_sub_categories as $t) {
-    echo $t->name . ' = ' . get_term_meta($t->term_id, 'ordinamento', true) . '<br>';
-}
+
 
 
 
