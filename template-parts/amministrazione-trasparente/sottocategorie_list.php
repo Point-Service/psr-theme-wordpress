@@ -7,6 +7,8 @@ if (!isset($term_id)) {
 $sub_sub_categories = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
     'parent' => $term_id
+    'orderby' => 'ID',
+    'order' => 'ASC'
 ));
 
 if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) { ?>
