@@ -20,18 +20,18 @@ foreach ($sub_sub_categories as $t) {
 
 // 👉 ORDINAMENTO LIVELLO 3
 if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) {
-   usort($sub_sub_categories, function($a, $b) {
+usort($sub_sub_categories, function($a, $b) {
 
-    $ordinamento_a = (int) get_term_meta($a->term_id, 'ordinamento', true);
-    $ordinamento_b = (int) get_term_meta($b->term_id, 'ordinamento', true);
+    $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
+    $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
 
-    // fallback
-    if ($ordinamento_a <= 0) $ordinamento_a = PHP_INT_MAX;
-    if ($ordinamento_b <= 0) $ordinamento_b = PHP_INT_MAX;
+    // 👉 vuoto = 0
+    $ordinamento_a = ($ordinamento_a === '' || $ordinamento_a === null) ? 0 : (int)$ordinamento_a;
+    $ordinamento_b = ($ordinamento_b === '' || $ordinamento_b === null) ? 0 : (int)$ordinamento_b;
 
     // prima per ordinamento
     if ($ordinamento_a === $ordinamento_b) {
-        // poi per nome (IMPORTANTISSIMO)
+        // fallback per stabilità
         return strcmp($a->name, $b->name);
     }
 
@@ -68,21 +68,23 @@ if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) { ?>
 
                 // 👉 ORDINAMENTO LIVELLO 4
                 if (!empty($sub_sub_sub_categories) && !is_wp_error($sub_sub_sub_categories)) {
-                    usort($sub_sub_sub_categories, function($a, $b) {
+usort($sub_sub_categories, function($a, $b) {
 
-                        $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
-                        $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
+    $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
+    $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
 
-                        if ($ordinamento_a === '' || $ordinamento_a === null) {
-                            $ordinamento_a = PHP_INT_MAX;
-                        }
+    // 👉 vuoto = 0
+    $ordinamento_a = ($ordinamento_a === '' || $ordinamento_a === null) ? 0 : (int)$ordinamento_a;
+    $ordinamento_b = ($ordinamento_b === '' || $ordinamento_b === null) ? 0 : (int)$ordinamento_b;
 
-                        if ($ordinamento_b === '' || $ordinamento_b === null) {
-                            $ordinamento_b = PHP_INT_MAX;
-                        }
+    // prima per ordinamento
+    if ($ordinamento_a === $ordinamento_b) {
+        // fallback per stabilità
+        return strcmp($a->name, $b->name);
+    }
 
-                        return (int)$ordinamento_a - (int)$ordinamento_b;
-                    });
+    return $ordinamento_a <=> $ordinamento_b;
+});
                 }
 
                 if (!empty($sub_sub_sub_categories) && !is_wp_error($sub_sub_sub_categories)) { ?>
