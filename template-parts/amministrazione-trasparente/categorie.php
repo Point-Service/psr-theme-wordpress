@@ -11,17 +11,6 @@ $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
 ));
 
 
-
-
-echo '<pre>';
-foreach ($sub_sub_categories as $t) {
-    echo $t->name . ' -> ' . get_term_meta($t->term_id, 'ordinamento', true) . "\n";
-}
-echo '</pre>';
-
-
-
-
 // Ordina ulteriormente per 'ordinamento' (campo meta) se presente
 usort($categorie_genitori, function($a, $b) {
 
@@ -317,10 +306,26 @@ function updateToggleAllButton() {
                                 
                                 <div id="<?= $id_genitore ?>" class="content">
                                     <?php
-                                    $sottocategorie = get_terms('tipi_cat_amm_trasp', array(
-                                        'hide_empty' => false,
-                                        'parent' => $genitore->term_id
-                                    ));
+                                          $sottocategorie = get_terms('tipi_cat_amm_trasp', array(
+                                            'hide_empty' => false,
+                                            'parent' => $genitore->term_id
+                                        ));
+                                        
+                                        // 👉 ORDINAMENTO
+                                        if (!empty($sottocategorie) && !is_wp_error($sottocategorie)) {
+                                            usort($sottocategorie, function($a, $b) {
+                                        
+                                                $ordinamento_a = (int) get_term_meta($a->term_id, 'ordinamento', true);
+                                                $ordinamento_b = (int) get_term_meta($b->term_id, 'ordinamento', true);
+                                        
+                                                // fallback alfabetico
+                                                if ($ordinamento_a === $ordinamento_b) {
+                                                    return strcmp($a->name, $b->name);
+                                                }
+                                        
+                                                return $ordinamento_a <=> $ordinamento_b;
+                                            });
+                                        }
                                     ?>
                                     <ul class="link-list t-primary">
                                         <?php foreach ($sottocategorie as $sotto) {
