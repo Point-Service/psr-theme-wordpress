@@ -11,6 +11,14 @@ $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
 ));
 
 
+
+// 👉 FILTRO VISIBILITÀ (PRIMA)
+$categorie_genitori = array_filter($categorie_genitori, function($term) {
+    $visible = get_term_meta($term->term_id, 'visualizza_elemento', true);
+    return $visible == 1; // mostra solo se = 1
+});
+
+
 // Ordina ulteriormente per 'ordinamento' (campo meta) se presente
 usort($categorie_genitori, function($a, $b) {
 
