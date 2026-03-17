@@ -18,11 +18,12 @@ if ( ! empty( $categoria_genitore ) && ! is_wp_error( $categoria_genitore ) ) {
         'parent' => $parent_term_id
     ));
 
-    // 👉 FILTRO VISIBILITÀ (FIX: vuoto = visibile)
+    
+    // 👉 FILTRO VISIBILITÀ
     $sottocategorie = array_filter($sottocategorie, function($term) {
-        $visible = get_term_meta($term->term_id, 'visualizza_elemento', true);
-        return ($visible == 1 || $visible === '');
+        return get_term_meta($term->term_id, 'visualizza_elemento', true) == 1;
     });
+
 
     // 👉 ORDINAMENTO
     if (!empty($sottocategorie)) {
