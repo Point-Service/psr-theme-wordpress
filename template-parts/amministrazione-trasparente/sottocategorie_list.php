@@ -6,7 +6,7 @@ if (!isset($term_id)) {
 // TERZO LIVELLO
 $sub_sub_categories = get_terms('tipi_cat_amm_trasp', array(
     'hide_empty' => false,
-    'parent' => $term_id
+    'parent' => $term_id,
     'orderby' => 'ID',
     'order' => 'ASC'
 ));
