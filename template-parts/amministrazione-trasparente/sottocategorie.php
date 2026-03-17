@@ -23,7 +23,7 @@ if ( ! empty( $sottocategorie ) ) { ?>
     <div class="row g-2">           
         <?php foreach ( $sottocategorie as $sottocategoria ) { 
         if($title != $sottocategoria->name){
-            ?>
+            ?>dddddddddddddd
             <div class="col-md-3 col-xl-4">
                 <div class="cmp-card-simple card-wrapper pb-0 rounded border border-light">
                   <div class="card shadow-sm rounded">
