@@ -11,6 +11,17 @@ $categorie_genitori = get_terms('tipi_cat_amm_trasp', array(
 ));
 
 
+
+
+echo '<pre>';
+foreach ($sub_sub_categories as $t) {
+    echo $t->name . ' -> ' . get_term_meta($t->term_id, 'ordinamento', true) . "\n";
+}
+echo '</pre>';
+
+
+
+
 // Ordina ulteriormente per 'ordinamento' (campo meta) se presente
 usort($categorie_genitori, function($a, $b) {
 
