@@ -16,6 +16,11 @@ if (!empty($sub_sub_categories) && !is_wp_error($sub_sub_categories)) {
         $ordinamento_a = get_term_meta($a->term_id, 'ordinamento', true);
         $ordinamento_b = get_term_meta($b->term_id, 'ordinamento', true);
 
+echo $ordinamento_a;
+
+
+
+        
         if ($ordinamento_a === '' || $ordinamento_a === null) {
             $ordinamento_a = PHP_INT_MAX;
         }
