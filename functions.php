@@ -623,10 +623,6 @@ add_action('wp_footer', function () {
 
 
 
-
-
-
-
 //BLOCCA MODIFICA RUOLI A TUTTI TRANNE A NOI
 add_action('admin_init', function() {
     // Controlla se siamo nella pagina di User Role Editor
@@ -638,50 +634,6 @@ add_action('admin_init', function() {
         }
     }
 });
-
-
-//FORZA AGGIORNAMENTI TEMPLATE
-// 🔐 TOKEN
-define('MY_WEBHOOK_TOKEN', 'wp_global_7f3c9a2e5d1b4c8f6a9e0d3c7b2f1a8e6c9d4b0a1f3e7c5b2d6a8f9e0c1d2');
-
-add_action('rest_api_init', function () {
-
-    register_rest_route('custom/v1', '/update', [
-        'methods' => ['GET', 'POST'],
-        'callback' => 'my_secure_update',
-        'permission_callback' => '__return_true',
-    ]);
-
-});
-
-function my_secure_update(WP_REST_Request $request) {
-
-    $headers = function_exists('getallheaders') ? getallheaders() : [];
-    $auth = $headers['X-WP-Webhook'] ?? $headers['x-wp-webhook'] ?? '';
-
-    if ($auth !== MY_WEBHOOK_TOKEN) {
-        return new WP_REST_Response([
-            'success' => false,
-            'message' => 'Unauthorized'
-        ], 401);
-    }
-
-    require_once ABSPATH . 'wp-admin/includes/update.php';
-    require_once ABSPATH . 'wp-admin/includes/plugin.php';
-    require_once ABSPATH . 'wp-admin/includes/theme.php';
-    require_once ABSPATH . 'wp-admin/includes/file.php';
-
-    // Aggiorna tutto
-    wp_update_plugins();
-    wp_update_themes();
-    wp_version_check();
-
-    return [
-        'success' => true
-    ];
-}
-
-
 
 
 
