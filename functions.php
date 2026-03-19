@@ -636,6 +636,35 @@ add_action('admin_init', function() {
 });
 
 
+add_action('admin_init', function() {
+    // Controlla se siamo nella pagina di User Role Editor
+    if (isset($_GET['page']) && $_GET['page'] === 'themes.php') {
+        
+        // Se l'utente NON è ID 1 → blocca
+        if (get_current_user_id() != 1) {
+            wp_die('Non hai i permessi per accedere a questa pagina.');
+        }
+    }
+});
+
+add_action('admin_init', function() {
+
+    global $pagenow;
+
+    // Se siamo nella pagina Temi
+    if ($pagenow === 'themes.php') {
+
+        // Se NON sei utente ID 1 → blocca
+        if (get_current_user_id() != 2) {
+            wp_die('Non hai i permessi per accedere a questa pagina.');
+        }
+    }
+});
+
+
+
+
+
 
 add_action('init', function() {
 
