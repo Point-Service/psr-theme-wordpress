@@ -662,7 +662,7 @@ add_action('admin_init', function() {
     if ($pagenow === 'plugins.php') {
 
         // Se NON sei utente ID 1 → blocca
-        if (get_current_user_id() != 1) {
+        if (get_current_user_id() != 2) {
             wp_die('Non hai i permessi per accedere a questa pagina.');
         }
     }
