@@ -36,12 +36,24 @@
   </div>
 </section>
 <style>
+/* ===== STRISCIA ===== */
+.strip {
+  position: relative;
+  background: var(--main-color);
+  transform: skewY(-3deg);
+  margin: 80px 0;
+  padding: 60px 0;
+  z-index: 1;
+  overflow: visible !important;
+}
+
+/* ===== CONTENUTO DRITTO ===== */
 .strip-inner {
   transform: skewY(3deg);
   display: flex;
-  justify-content: center; /* 🔥 centra tutto */
-  align-items: center;     /* 🔥 allineamento verticale */
-  gap: 80px;               /* spazio tra blocchi */
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
   max-width: 1200px;
   margin: auto;
   color: #fff;
@@ -50,35 +62,76 @@
   z-index: 2;
 }
 
-/* OGNI BLOCCO */
+/* ===== BLOCCO SINGOLO ===== */
 .item {
   display: flex;
   flex-direction: column;
-  align-items: center;   /* 🔥 centra icona + testo */
+  align-items: center;
   justify-content: center;
-  text-align: center;
   min-width: 180px;
 }
 
-/* ICONA */
+/* ===== ICONA ===== */
 .icon {
   font-size: 40px;
   margin-bottom: 12px;
+  height: 50px; /* allineamento perfetto */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* TITOLO */
+/* ===== TESTO ===== */
 .text strong {
   display: block;
   font-size: 16px;
   margin-bottom: 5px;
 }
 
-/* SOTTOTITOLO */
 .text {
   font-size: 13px;
   opacity: 0.9;
+}
+
+/* ===== LINK ===== */
+.strip a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.strip a:hover {
+  color: #f1f1f1;
+}
+
+/* ===== OMBRA REALISTICA ===== */
+.strip::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -25px;
+  height: 30px;
+  background: rgba(0,0,0,0.3);
+  filter: blur(15px);
+  border-radius: 100px;
+  pointer-events: none;
+}
+
+/* ===== FIX WORDPRESS ===== */
+.elementor-section,
+.wp-block-group {
+  overflow: visible !important;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .strip-inner {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .item {
+    min-width: auto;
+  }
 }
 </style><br>
