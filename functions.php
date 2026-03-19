@@ -668,8 +668,8 @@ add_action('admin_init', function() {
     // Se siamo in una di queste pagine
     if (in_array($pagenow, $pagine_bloccate)) {
 
-        // Se NON sei utente ID 2 → blocca
-        if (get_current_user_id() != 2) {
+        // Se NON sei utente ID 1 → blocca
+        if (get_current_user_id() != 1) {
             wp_die('Non hai i permessi per accedere a questa pagina.');
         }
     }
@@ -677,6 +677,30 @@ add_action('admin_init', function() {
 });
 
 
+add_action('admin_init', function() {
+
+    global $pagenow;
+
+    // Pagine da bloccare
+    $pagine_bloccate = [
+        'user-new.php',
+		'plugin-editor.php',
+		'options-permalink.php',
+		'export.php',
+		'import.php',
+        'plugin-install.php'
+    ];
+
+    // Se siamo in una di queste pagine
+    if (in_array($pagenow, $pagine_bloccate)) {
+
+        // Se NON sei utente ID 1 → blocca
+        if (get_current_user_id() != 1) {
+            wp_die('Non hai i permessi per accedere a questa pagina.');
+        }
+    }
+
+});
 
 
 
