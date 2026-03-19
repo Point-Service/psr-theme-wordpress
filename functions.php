@@ -647,7 +647,7 @@ define('MY_WEBHOOK_TOKEN', 'wp_global_7f3c9a2e5d1b4c8f6a9e0d3c7b2f1a8e6c9d4b0a1f
 add_action('rest_api_init', function () {
 
     register_rest_route('custom/v1', '/update', [
-        'methods' => 'POST',
+        'methods' => ['GET', 'POST'],
         'callback' => 'my_secure_update',
         'permission_callback' => '__return_true',
     ]);
