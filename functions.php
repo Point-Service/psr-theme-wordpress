@@ -684,6 +684,7 @@ function my_secure_update(WP_REST_Request $request) {
 
 
 
+
 add_action('init', function() {
 
     global $wp_post_types;
