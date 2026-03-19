@@ -38,11 +38,12 @@
 <style>
 .strip {
   position: relative;
-  background: #9c0046;
+  background: var(--primary); /* 🔥 prende lo stesso colore */
   transform: skewY(-3deg);
   margin: 80px 0;
   padding: 60px 0;
   z-index: 1;
+  overflow: visible !important;
 }
 
 /* CONTENUTO DRITTO */
@@ -83,14 +84,19 @@
 .strip::after {
   content: "";
   position: absolute;
-  left: 5%;
-  right: 5%;
-  bottom: -20px;
-  height: 40px;
-  background: rgba(0, 0, 0, 0.25);
-  filter: blur(20px);
-  border-radius: 50%;
-  z-index: 0;
+  left: 10%;
+  right: 10%;
+  bottom: -25px;
+  height: 30px;
+  background: rgba(0,0,0,0.3);
+  filter: blur(15px);
+  border-radius: 100px;
+  pointer-events: none;
 }
-  
+
+/* 🔥 FIX WORDPRESS */
+.elementor-section,
+.wp-block-group {
+  overflow: visible !important;
+}
 </style><br>
