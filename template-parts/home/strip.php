@@ -38,7 +38,7 @@
 <style>
 .strip {
   position: relative;
-  background: var(--primary); /* 🔥 prende lo stesso colore */
+  background: var(--bs-primary); /* 🔥 prende il colore ufficiale */
   transform: skewY(-3deg);
   margin: 80px 0;
   padding: 60px 0;
@@ -80,7 +80,7 @@
   opacity: 0.9;
 }
 
-/* 🔥 OMBRA REALISTICA */
+/* 🔥 OMBRA */
 .strip::after {
   content: "";
   position: absolute;
@@ -94,7 +94,7 @@
   pointer-events: none;
 }
 
-/* 🔥 FIX WORDPRESS */
+/* FIX WORDPRESS */
 .elementor-section,
 .wp-block-group {
   overflow: visible !important;
