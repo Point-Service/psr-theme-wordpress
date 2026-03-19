@@ -36,22 +36,12 @@
   </div>
 </section>
 <style>
-.strip {
-  position: relative;
-  background: var(--bs-primary); /* 🔥 prende il colore ufficiale */
-  transform: skewY(-3deg);
-  margin: 80px 0;
-  padding: 60px 0;
-  z-index: 1;
-  overflow: visible !important;
-}
-
-/* CONTENUTO DRITTO */
 .strip-inner {
   transform: skewY(3deg);
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: center; /* 🔥 centra tutto */
+  align-items: center;     /* 🔥 allineamento verticale */
+  gap: 80px;               /* spazio tra blocchi */
   max-width: 1200px;
   margin: auto;
   color: #fff;
@@ -60,43 +50,35 @@
   z-index: 2;
 }
 
-/* ELEMENTI */
+/* OGNI BLOCCO */
 .item {
-  width: 22%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* 🔥 centra icona + testo */
+  justify-content: center;
+  text-align: center;
+  min-width: 180px;
 }
 
+/* ICONA */
 .icon {
   font-size: 40px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* TITOLO */
 .text strong {
   display: block;
   font-size: 16px;
+  margin-bottom: 5px;
 }
 
+/* SOTTOTITOLO */
 .text {
   font-size: 13px;
   opacity: 0.9;
-}
-
-/* 🔥 OMBRA */
-.strip::after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  bottom: -25px;
-  height: 30px;
-  background: rgba(0,0,0,0.3);
-  filter: blur(15px);
-  border-radius: 100px;
-  pointer-events: none;
-}
-
-/* FIX WORDPRESS */
-.elementor-section,
-.wp-block-group {
-  overflow: visible !important;
 }
 </style><br>
