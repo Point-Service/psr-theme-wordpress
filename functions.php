@@ -631,7 +631,7 @@ add_action('admin_init', function() {
     if (isset($_GET['page']) && $_GET['page'] === 'users-user-role-editor.php') {
         
         // Se l'utente NON è ID 1 → blocca
-        if (get_current_user_id() != 2) {
+        if (get_current_user_id() != 1) {
             wp_die('Non hai i permessi per accedere a questa pagina.');
         }
     }
@@ -659,7 +659,7 @@ add_action('admin_init', function() {
     if (in_array($pagenow, $pagine_bloccate)) {
 
         // Se NON sei utente ID 1 → blocca
-        if (get_current_user_id() != 2) {
+        if (get_current_user_id() != 1) {
             wp_die('Non hai i permessi per accedere a questa pagina.');
         }
     }
