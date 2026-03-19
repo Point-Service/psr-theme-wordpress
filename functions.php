@@ -624,35 +624,6 @@ add_action('wp_footer', function () {
 
 
 //BLOCCA MODIFICA RUOLI A TUTTI TRANNE A NOI
-add_action('admin_init', function() {
-    // Controlla se siamo nella pagina di User Role Editor
-    if (isset($_GET['page']) && $_GET['page'] === 'users-user-role-editor.php') {
-        
-        // Se l'utente NON è ID 1 → blocca
-        if (get_current_user_id() != 1) {
-            wp_die('Non hai i permessi per accedere a questa pagina.');
-        }
-    }
-});
-
-
-
-add_action('admin_init', function() {
-
-    global $pagenow;
-
-    // Se siamo nella pagina Temi
-    if ($pagenow === 'themes.php') {
-
-        // Se NON sei utente ID 1 → blocca
-        if (get_current_user_id() != 1) {
-            wp_die('Non hai i permessi per accedere a questa pagina.');
-        }
-    }
-});
-
-
-
 
 add_action('admin_init', function() {
 
@@ -660,29 +631,9 @@ add_action('admin_init', function() {
 
     // Pagine da bloccare
     $pagine_bloccate = [
-        'plugins.php',
-		'plugin-editor.php',
-        'plugin-install.php'
-    ];
-
-    // Se siamo in una di queste pagine
-    if (in_array($pagenow, $pagine_bloccate)) {
-
-        // Se NON sei utente ID 1 → blocca
-        if (get_current_user_id() != 1) {
-            wp_die('Non hai i permessi per accedere a questa pagina.');
-        }
-    }
-
-});
-
-
-add_action('admin_init', function() {
-
-    global $pagenow;
-
-    // Pagine da bloccare
-    $pagine_bloccate = [
+		'users-user-role-editor.php',
+		'themes.php',
+		'plugins.php',
         'user-new.php',
 		'plugin-editor.php',
 		'options-permalink.php',
@@ -695,7 +646,7 @@ add_action('admin_init', function() {
     if (in_array($pagenow, $pagine_bloccate)) {
 
         // Se NON sei utente ID 1 → blocca
-        if (get_current_user_id() != 1) {
+        if (get_current_user_id() != 2) {
             wp_die('Non hai i permessi per accedere a questa pagina.');
         }
     }
