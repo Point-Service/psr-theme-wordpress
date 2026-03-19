@@ -658,15 +658,26 @@ add_action('admin_init', function() {
 
     global $pagenow;
 
-    // Se siamo nella pagina
-    if ($pagenow === 'plugins.php') {
+    // Pagine da bloccare
+    $pagine_bloccate = [
+        'plugins.php',
+		'plugin-editor.php',
+        'plugin-install.php'
+    ];
 
-        // Se NON sei utente ID 1 → blocca
+    // Se siamo in una di queste pagine
+    if (in_array($pagenow, $pagine_bloccate)) {
+
+        // Se NON sei utente ID 2 → blocca
         if (get_current_user_id() != 2) {
             wp_die('Non hai i permessi per accedere a questa pagina.');
         }
     }
+
 });
+
+
+
 
 
 
