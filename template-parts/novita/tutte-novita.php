@@ -11,10 +11,11 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 // QUERY
 $args = array(
-    's'              => $query,
-    'posts_per_page' => 9,
-    'post_type'      => array('notizia'),
-    'paged'          => $paged
+    's'                   => $query,
+    'posts_per_page'      => 9,
+    'post_type'           => array('notizia'),
+    'paged'               => $paged,
+    'suppress_filters'    => false
 );
 
 $the_query = new WP_Query($args);
