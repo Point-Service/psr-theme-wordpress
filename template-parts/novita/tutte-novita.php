@@ -102,7 +102,4 @@ $GLOBALS['wp_query'] = $the_query;
 
 </main>
 
-<?php
-wp_reset_postdata();
-get_footer();
-?>
+<?php wp_reset_query(); ?>
