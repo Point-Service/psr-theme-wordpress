@@ -269,6 +269,37 @@ function dci_register_comune_options(){
 
 
 
+
+
+
+
+
+  // ================= METEO =================
+    $header_options->add_field( array(
+        'id'    => $prefix . 'meteo_title',
+        'name'  => __('<br><br><center>Configurazione Meteo</center>', 'design_comuni_italia'),
+        'desc'  => __('<center>Inserisci i dati per visualizzare il meteo nel sito.</center><br><br>', 'design_comuni_italia'),
+        'type'  => 'title',
+    ));
+
+    $header_options->add_field( array(
+        'id'    => $prefix . 'meteo_city',
+        'name'  => __('Città', 'design_comuni_italia' ),
+        'desc'  => __('Es: Venetico,IT', 'design_comuni_italia' ),
+        'type'  => 'text',
+    ));
+
+    $header_options->add_field( array(
+        'id'    => $prefix . 'meteo_api',
+        'name'  => __('API Key OpenWeather', 'design_comuni_italia' ),
+        'desc'  => __('Inserisci la tua API Key di OpenWeatherMap', 'design_comuni_italia' ),
+        'type'  => 'text',
+    ));
+
+
+    
+
+
         $header_options->add_field( array(
           'id'    => $prefix . 'abilitazionechat',
           'name'  => __('<br><br><center>Chat usando il Plugin Consolto</center>', 'design_comuni_italia'),
