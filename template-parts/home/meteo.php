@@ -1,54 +1,27 @@
 <section class="weather-section">
   <div class="container">
 
-    <h2 class="weather-title"></h2>
+    <h2 class="weather-title">Meteo</h2>
 
     <div class="weather-grid">
 
       <!-- OGGI -->
       <div class="weather-card big">
-        <div class="weather-day">OGGI - 20/3/2026</div>
+        <div class="weather-day" id="weather-date">OGGI</div>
 
         <div class="weather-content">
           <div class="weather-info">
-            <div>Temp. media 6.75°C</div>
-            <div>Temp. massima 10.18°C</div>
-            <div>Temp. minima 6.75°C</div>
-            <div>Umidità 59%</div>
+            <div id="temperature">--°C</div>
+            <div id="condition">--</div>
+            <div id="location">--</div>
           </div>
 
-          <div class="weather-icon">☀️</div>
+          <img id="icon" src="" alt="" class="weather-img">
         </div>
-
-        <div class="weather-desc">cielo sereno</div>
-      </div>
-
-      <!-- GIORNI -->
-      <div class="weather-card">
-        <div class="weather-day">SABATO</div>
-        <div class="weather-icon">☁️</div>
-        <div class="weather-desc">cielo coperto</div>
-      </div>
-
-      <div class="weather-card">
-        <div class="weather-day">DOMENICA</div>
-        <div class="weather-icon">🌧️</div>
-        <div class="weather-desc">pioggia moderata</div>
-      </div>
-
-      <div class="weather-card">
-        <div class="weather-day">LUNEDÌ</div>
-        <div class="weather-icon">⛅</div>
-        <div class="weather-desc">nubi sparse</div>
-      </div>
-
-      <div class="weather-card">
-        <div class="weather-day">MARTEDÌ</div>
-        <div class="weather-icon">☁️</div>
-        <div class="weather-desc">cielo coperto</div>
       </div>
 
     </div>
+
   </div>
 </section>
 <style>
@@ -65,27 +38,23 @@
 .weather-grid {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap;
 }
 
 .weather-card {
   background: #f5f5f5;
   border-radius: 10px;
-  padding: 20px;
-  text-align: center;
+  padding: 25px;
   flex: 1;
-  min-width: 180px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .weather-card.big {
-  flex: 2;
-  min-width: 300px;
+  max-width: 500px;
 }
 
 .weather-day {
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .weather-content {
@@ -95,25 +64,60 @@
 }
 
 .weather-info {
-  text-align: left;
-  font-size: 14px;
+  font-size: 16px;
 }
 
-.weather-icon {
-  font-size: 40px;
+.weather-img {
+  width: 80px;
 }
 
-.weather-desc {
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-/* mobile */
 @media (max-width: 768px) {
   .weather-grid {
     flex-direction: column;
   }
 }
-
   
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const weatherIcon = document.getElementById('icon');
+    const temperatureElement = document.getElementById('temperature');
+    const conditionElement = document.getElementById('condition');
+    const locationElement = document.getElementById('location');
+    const dateElement = document.getElementById('weather-date');
+
+    const city = "Venetico, IT";
+    const apiKey = "062a482b6456a7f66cfdec432a930862";
+
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=it`;
+
+    async function updateWeather() {
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            const temperature = data.main.temp;
+            const condition = data.weather[0].description;
+            const iconCode = data.weather[0].icon;
+
+            temperatureElement.textContent = `${Math.round(temperature)}°C`;
+            conditionElement.textContent = condition.charAt(0).toUpperCase() + condition.slice(1);
+            locationElement.textContent = `${data.name}, ${data.sys.country}`;
+
+            weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+            // DATA
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('it-IT');
+            dateElement.textContent = `OGGI - ${formattedDate}`;
+
+        } catch (error) {
+            console.error('Errore meteo:', error);
+        }
+    }
+
+    updateWeather();
+});
+</script>
