@@ -56,7 +56,7 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
 
 </main>
 
-<?php get_footer(); ?>
+
 
 
 <style>
