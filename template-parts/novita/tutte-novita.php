@@ -77,14 +77,11 @@ $the_query = new WP_Query($args);
                 <!-- PAGINAZIONE -->
                 <div class="row my-4">
                     <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-                        <?php
-                        echo dci_bootstrap_pagination(array(
-                            'query' => $the_query,
-                            'add_args' => array(
-                                'search' => $query
-                            )
-                        ));
-                        ?>
+                       <div class="row my-4">
+                            <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+                                <?php echo dci_bootstrap_pagination(); ?>
+                            </nav>
+                        </div>
                     </nav>
                 </div>
 
