@@ -3,6 +3,7 @@ global $the_query, $load_card_type;
 
 get_header();
 
+// Recupero ricerca
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
 // PAGINAZIONE
@@ -17,6 +18,9 @@ $args = array(
 );
 
 $the_query = new WP_Query($args);
+
+// 🔥 Serve per far funzionare la paginazione del tema
+$GLOBALS['wp_query'] = $the_query;
 ?>
 
 <main>
@@ -77,11 +81,7 @@ $the_query = new WP_Query($args);
                 <!-- PAGINAZIONE -->
                 <div class="row my-4">
                     <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-                       <div class="row my-4">
-                            <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-                                <?php echo dci_bootstrap_pagination(); ?>
-                            </nav>
-                        </div>
+                        <?php echo dci_bootstrap_pagination(); ?>
                     </nav>
                 </div>
 
