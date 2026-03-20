@@ -194,3 +194,17 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
   }
 }
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const container = document.getElementById("stripScroll");
+
+  document.querySelector(".strip-arrow.left").onclick = function() {
+    container.scrollBy({ left: -300, behavior: 'smooth' });
+  };
+
+  document.querySelector(".strip-arrow.right").onclick = function() {
+    container.scrollBy({ left: 300, behavior: 'smooth' });
+  };
+});
+</script>
