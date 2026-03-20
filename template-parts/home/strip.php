@@ -2,14 +2,14 @@
 
 <main id="main">
 
- <?php
+<?php
 $strip = get_option('strip_home');
 
 if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
 ?>
 
 <section class="strip">
-  
+
   <button class="strip-arrow left">&#10094;</button>
 
   <div class="strip-inner" id="stripScroll">
@@ -47,63 +47,38 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
 
 </main>
 
-
+<?php get_footer(); ?>
 
 
 <style>
 
-/* ===== STRISCIA ===== */
 /* ===== STRIP ===== */
 .strip {
   position: relative;
   background: var(--bs-primary, #980847);
   transform: skewY(-3deg);
-  margin: 80px 0;
+  margin: 80px 0 140px;
   padding: 60px 0;
   z-index: 1;
-  overflow: visible !important;
 }
 
 /* CONTENUTO */
 .strip .strip-inner {
   transform: skewY(3deg);
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 80px;
+  gap: 40px;
   max-width: 1200px;
   margin: auto;
   color: #fff;
   text-align: center;
-  position: relative;
-  z-index: 2;
+  overflow: hidden;
 }
 
-/* SCROLL SOLO QUI */
-.strip .strip-inner.scrollable {
-  overflow-x: auto;
-  flex-wrap: nowrap;
-  padding-bottom: 10px;
-}
-
-/* scrollbar */
-.strip .strip-inner.scrollable::-webkit-scrollbar {
-  height: 6px;
-}
-
-.strip .strip-inner.scrollable::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.3);
-  border-radius: 10px;
-}
-
-/* ITEM */
+/* 4 elementi visibili */
 .strip .strip-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 180px;
-  flex: 0 0 auto;
+  flex: 0 0 calc(25% - 30px);
+  max-width: calc(25% - 30px);
 }
 
 /* ICONA */
@@ -138,27 +113,7 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
   color: #f1f1f1;
 }
 
-/* OMBRA */
-.strip::after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  bottom: -25px;
-  height: 30px;
-  background: rgba(0,0,0,0.3);
-  filter: blur(15px);
-  border-radius: 100px;
-  pointer-events: none;
-}
-
- /* nasconde scrollbar */
-.strip .strip-inner {
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
-/* frecce */
+/* FRECCE */
 .strip-arrow {
   position: absolute;
   top: 50%;
@@ -166,7 +121,7 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
   background: rgba(0,0,0,0.3);
   border: none;
   color: #fff;
-  font-size: 24px;
+  font-size: 22px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -174,37 +129,59 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
   z-index: 3;
 }
 
-.strip-arrow.left {
-  left: 10px;
-}
-
-.strip-arrow.right {
-  right: 10px;
-}
+.strip-arrow.left { left: 10px; }
+.strip-arrow.right { right: 10px; }
 
 .strip-arrow:hover {
   background: rgba(0,0,0,0.5);
 }
 
-/* RESPONSIVE SOLO STRIP */
+/* OMBRA */
+.strip::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -20px;
+  height: 25px;
+  background: rgba(0,0,0,0.3);
+  filter: blur(12px);
+  border-radius: 100px;
+  pointer-events: none;
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
-  .strip .strip-inner {
-    flex-direction: column;
-    gap: 30px;
+  .strip .strip-item {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 }
+
 </style>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   const container = document.getElementById("stripScroll");
+  const items = container?.querySelectorAll(".strip-item");
 
-  document.querySelector(".strip-arrow.left").onclick = function() {
-    container.scrollBy({ left: -300, behavior: 'smooth' });
-  };
+  if (!container || !items || items.length === 0) return;
 
-  document.querySelector(".strip-arrow.right").onclick = function() {
-    container.scrollBy({ left: 300, behavior: 'smooth' });
-  };
+  const gap = 40;
+  const itemWidth = items[0].offsetWidth + gap;
+  const scrollAmount = itemWidth * 4;
+
+  const left = document.querySelector(".strip-arrow.left");
+  const right = document.querySelector(".strip-arrow.right");
+
+  left.onclick = () => container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  right.onclick = () => container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+
+  // nasconde frecce se <= 4
+  if (items.length <= 4) {
+    left.style.display = "none";
+    right.style.display = "none";
+  }
 });
 </script>
