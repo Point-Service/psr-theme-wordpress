@@ -27,7 +27,11 @@ $GLOBALS['wp_query'] = $the_query;
 <main>
 
 <div class="bg-grey-card py-5">
-    <form role="search" id="search-form" method="get" class="search-form" action="#search-form">
+    <form role="search" 
+      id="search-form" 
+      method="get" 
+      class="search-form" 
+      action="<?php echo esc_url(home_url('/')); ?>">
         <div class="container">
 
             <h2 class="title-xxlarge mb-4">
