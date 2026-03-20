@@ -10,8 +10,8 @@ add_action( 'init', 'dci_register_taxonomy_tipi_cat_amm_trasp', -10 );
 function dci_register_taxonomy_tipi_cat_amm_trasp() {
 
 	$labels = array(
-		'name'              => _x( 'Tipi categoria Amministrazione Trasparente', 'taxonomy general name', 'design_comuni_italia' ),
-		'singular_name'     => _x( 'Tipo di categoria Amministrazione Trasparente', 'taxonomy singular name', 'design_comuni_italia' ),
+		'name'          => _x( 'Tipi categoria Amministrazione Trasparente', 'taxonomy general name', 'design_comuni_italia' ),
+		'singular_name' => _x( 'Tipo di categoria Amministrazione Trasparente', 'taxonomy singular name', 'design_comuni_italia' ),
 	);
 
 	$args = array(
@@ -34,7 +34,7 @@ function dci_register_taxonomy_tipi_cat_amm_trasp() {
 }
 
 /**
- * 🔥 Limita lunghezza slug (evita problemi con nomi lunghi)
+ * 🔥 Limita slug
  */
 add_filter('wp_insert_term_data', function($data, $taxonomy) {
 	if ($taxonomy === 'tipi_cat_amm_trasp') {
@@ -45,7 +45,7 @@ add_filter('wp_insert_term_data', function($data, $taxonomy) {
 
 
 /**
- * Campi personalizzati aggiunta/modifica termine
+ * Campi personalizzati
  */
 add_action( 'tipi_cat_amm_trasp_add_form_fields', 'dci_tassonomia_add_fields' );
 add_action( 'tipi_cat_amm_trasp_edit_form_fields', 'dci_tassonomia_edit_fields' );
@@ -58,6 +58,7 @@ function dci_get_role_boxes_html( $selected_roles = [] ) {
 
 	ob_start();
 	?>
+
 	<style>
 		.dci-dual-select {
 			display: flex;
@@ -101,27 +102,39 @@ function dci_get_role_boxes_html( $selected_roles = [] ) {
 	</div>
 
 	<script>
-	document.addEventListener('DOMContentLoaded', () => {
+	document.addEventListener('DOMContentLoaded', function () {
 
-		const available = document.getElementById('roles-available');
-		const selected = document.getElementById('roles-selected');
+		var available = document.getElementById('roles-available');
+		var selected = document.getElementById('roles-selected');
 
 		function moveSelected(from, to) {
-			Array.from(from.selectedOptions).forEach(opt => {
-				to.appendChild(opt);
+			if (!from || !to) return;
+
+			var opts = from.selectedOptions;
+			for (var i = 0; i < opts.length; i++) {
+				to.appendChild(opts[i]);
+			}
+		}
+
+		if (available && selected) {
+			available.addEventListener('dblclick', function() {
+				moveSelected(available, selected);
+			});
+
+			selected.addEventListener('dblclick', function() {
+				moveSelected(selected, available);
 			});
 		}
 
-		if(available && selected){
-			available.ondblclick = () => moveSelected(available, selected);
-			selected.ondblclick = () => moveSelected(selected, available);
-		}
+		// 🔥 FIX SUBMIT
+		var form = document.querySelector('form');
 
-		// 🔥 FIX SUBMIT (FONDAMENTALE)
-		const form = document.querySelector('form');
-		if(form){
-			form.addEventListener('submit', function(){
-				Array.from(selected.options).forEach(opt => opt.selected = true);
+		if (form && selected) {
+			form.addEventListener('submit', function () {
+				var options = selected.options;
+				for (var i = 0; i < options.length; i++) {
+					options[i].selected = true;
+				}
 			});
 		}
 	});
@@ -165,15 +178,18 @@ function dci_tassonomia_add_fields() {
 
 	<script>
 	document.addEventListener('DOMContentLoaded', function() {
-		const parentSelect = document.getElementById('parent');
-		const urlWrapper = document.getElementById('url-wrapper');
+		var parentSelect = document.getElementById('parent');
+		var urlWrapper = document.getElementById('url-wrapper');
 
 		function toggleUrlFields() {
-			const isTopLevel = parentSelect && parentSelect.value === '0';
-			urlWrapper.style.display = isTopLevel ? 'none' : 'block';
+			if (!parentSelect || !urlWrapper) return;
+			urlWrapper.style.display = parentSelect.value === '0' ? 'none' : 'block';
 		}
 
-		parentSelect?.addEventListener('change', toggleUrlFields);
+		if (parentSelect) {
+			parentSelect.addEventListener('change', toggleUrlFields);
+		}
+
 		toggleUrlFields();
 	});
 	</script>
@@ -191,66 +207,11 @@ function dci_tassonomia_edit_fields( $term ) {
 		<td><?php echo dci_get_role_boxes_html($excluded_roles); ?></td>
 	</tr>
 
-	<tbody id="url-wrapper-edit">
-		<tr class="form-field">
-			<th><?php _e('URL', 'design_comuni_italia'); ?></th>
-			<td>
-				<input type="url" name="term_url"
-				value="<?php echo esc_attr(get_term_meta($term->term_id, 'term_url', true)); ?>" />
-			</td>
-		</tr>
-
-		<tr class="form-field">
-			<th><?php _e('Nuova finestra', 'design_comuni_italia'); ?></th>
-			<td>
-				<label>
-					<input type="checkbox" name="open_new_window" value="1"
-					<?php checked(get_term_meta($term->term_id, 'open_new_window', true), '1'); ?> />
-					<?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?>
-				</label>
-			</td>
-		</tr>
-	</tbody>
-
-	<tr class="form-field">
-		<th><?php _e('Ordinamento', 'design_comuni_italia'); ?></th>
-		<td>
-			<input name="ordinamento" type="number"
-			value="<?php echo esc_attr(get_term_meta($term->term_id, 'ordinamento', true)); ?>" />
-		</td>
-	</tr>
-
-	<tr class="form-field">
-		<th><?php _e('Visualizza', 'design_comuni_italia'); ?></th>
-		<td>
-			<label>
-				<input name="visualizza_elemento" type="checkbox" value="1"
-				<?php checked(get_term_meta($term->term_id, 'visualizza_elemento', true), '1'); ?> />
-				<?php _e('Visualizza elemento', 'design_comuni_italia'); ?>
-			</label>
-		</td>
-	</tr>
-
-	<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		const parentSelect = document.querySelector('select[name="parent"]');
-		const urlWrapper = document.getElementById('url-wrapper-edit');
-
-		function toggleUrlFields() {
-			const isTopLevel = parentSelect && parentSelect.value === '0';
-			urlWrapper.style.display = isTopLevel ? 'none' : '';
-		}
-
-		parentSelect?.addEventListener('change', toggleUrlFields);
-		toggleUrlFields();
-	});
-	</script>
-
 	<?php
 }
 
 /**
- * Salvataggio metadati
+ * Salvataggio
  */
 add_action( 'created_tipi_cat_amm_trasp', 'dci_save_term_meta' );
 add_action( 'edited_tipi_cat_amm_trasp',  'dci_save_term_meta' );
@@ -272,47 +233,7 @@ function dci_save_term_meta( $term_id ) {
 }
 
 /**
- * Colonne personalizzate
- */
-add_filter('manage_edit-tipi_cat_amm_trasp_columns', 'dci_custom_column_order');
-function dci_custom_column_order($columns) {
-
-	$new_columns = [];
-
-	foreach ($columns as $key => $label) {
-		$new_columns[$key] = $label;
-
-		if ($key === 'name') {
-			$new_columns['ordinamento'] = 'Ordinamento';
-			$new_columns['visualizza_item'] = 'Visualizza';
-			$new_columns['term_url'] = 'URL';
-		}
-	}
-
-	return $new_columns;
-}
-
-add_filter( 'manage_tipi_cat_amm_trasp_custom_column', 'dci_show_custom_columns', 10, 3 );
-function dci_show_custom_columns( $out, $column, $term_id ) {
-
-	switch ( $column ) {
-
-		case 'ordinamento':
-			return esc_html( get_term_meta( $term_id, 'ordinamento', true ) );
-
-		case 'visualizza_item':
-			return get_term_meta( $term_id, 'visualizza_elemento', true ) === '1' ? 'Sì' : 'No';
-
-		case 'term_url':
-			$url = get_term_meta( $term_id, 'term_url', true );
-			return $url ? '<a href="'.esc_url($url).'" target="_blank">'.$url.'</a>' : '—';
-	}
-
-	return $out;
-}
-
-/**
- * 🔥 FIX DEFINITIVO (NO LOOP)
+ * 🔥 FIX LOOP DEFINITIVO
  */
 add_filter( 'terms_clauses', 'dci_hide_invisible_or_restricted_terms', 10, 3 );
 function dci_hide_invisible_or_restricted_terms( $clauses, $taxonomies, $args ) {
@@ -320,7 +241,7 @@ function dci_hide_invisible_or_restricted_terms( $clauses, $taxonomies, $args ) 
 	if ( ! in_array( 'tipi_cat_amm_trasp', (array) $taxonomies, true ) ) return $clauses;
 	if ( ! is_admin() ) return $clauses;
 
-	// 🔥 blocco totale durante salvataggi
+	// 🔥 blocco totale durante submit
 	if (
 		( defined('DOING_AJAX') && DOING_AJAX ) ||
 		( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) ||
@@ -329,19 +250,6 @@ function dci_hide_invisible_or_restricted_terms( $clauses, $taxonomies, $args ) 
 		return $clauses;
 	}
 
-	$screen = function_exists('get_current_screen') ? get_current_screen() : null;
-
-	if ( ! $screen || $screen->base !== 'post' ) return $clauses;
-
-	global $wpdb;
-
-	$clauses['join'] .= " LEFT JOIN {$wpdb->termmeta} tm_vis 
-		ON tm_vis.term_id = t.term_id 
-		AND tm_vis.meta_key = 'visualizza_elemento' ";
-
-	$clauses['where'] .= " AND (tm_vis.meta_value IS NULL OR tm_vis.meta_value = '1')";
-
 	return $clauses;
 }
 ?>
-
