@@ -1,6 +1,7 @@
 <?php
 global $the_query, $load_card_type;
 
+get_header();
 
 // Recupero ricerca
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
@@ -98,4 +99,5 @@ $GLOBALS['wp_query'] = $the_query;
 
 <?php
 wp_reset_postdata();
+get_footer();
 ?>
