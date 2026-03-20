@@ -6,32 +6,32 @@ get_header();
 // Recupero ricerca
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
-// PAGINAZIONE
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+// PAGINAZIONE (fix completo)
+$paged = max(
+    1,
+    get_query_var('paged'),
+    get_query_var('page'),
+    isset($_GET['paged']) ? intval($_GET['paged']) : 1
+);
 
 // QUERY
 $args = array(
-    's'                   => $query,
-    'posts_per_page'      => 9,
-    'post_type'           => array('notizia'),
-    'paged'               => $paged,
-    'suppress_filters'    => false
+    's'              => $query,
+    'posts_per_page' => 9,
+    'post_type'      => array('notizia'),
+    'paged'          => $paged,
 );
 
 $the_query = new WP_Query($args);
 
-// 🔥 Serve per far funzionare la paginazione del tema
+// 🔥 fondamentale per la paginazione del tema
 $GLOBALS['wp_query'] = $the_query;
 ?>
 
 <main>
 
 <div class="bg-grey-card py-5">
-    <form role="search" 
-      id="search-form" 
-      method="get" 
-      class="search-form" 
-      action="<?php echo esc_url(home_url('/')); ?>">
+    <form role="search" id="search-form" method="get" class="search-form" action="">
         <div class="container">
 
             <h2 class="title-xxlarge mb-4">
@@ -50,6 +50,9 @@ $GLOBALS['wp_query'] = $the_query;
                                id="autocomplete-two"
                                name="search"
                                value="<?php echo esc_attr($query); ?>" />
+
+                        <!-- 🔥 RESET PAGINAZIONE -->
+                        <input type="hidden" name="paged" value="1">
 
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit">
