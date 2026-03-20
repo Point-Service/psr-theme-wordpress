@@ -1,12 +1,10 @@
 <?php
 global $the_query, $load_card_type;
 
-get_header();
-
 // Recupero ricerca
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
-// PAGINAZIONE (fix completo)
+// PAGINAZIONE FIX
 $paged = max(
     1,
     get_query_var('paged'),
@@ -24,11 +22,9 @@ $args = array(
 
 $the_query = new WP_Query($args);
 
-// 🔥 fondamentale per la paginazione del tema
+// 🔥 serve per la paginazione del tema
 $GLOBALS['wp_query'] = $the_query;
 ?>
-
-<main>
 
 <div class="bg-grey-card py-5">
     <form role="search" id="search-form" method="get" class="search-form" action="">
@@ -51,7 +47,7 @@ $GLOBALS['wp_query'] = $the_query;
                                name="search"
                                value="<?php echo esc_attr($query); ?>" />
 
-                        <!-- 🔥 RESET PAGINAZIONE -->
+                        <!-- RESET PAGINA -->
                         <input type="hidden" name="paged" value="1">
 
                         <div class="input-group-append">
@@ -103,8 +99,4 @@ $GLOBALS['wp_query'] = $the_query;
     </form>
 </div>
 
-</main>
-
-<?php
-wp_reset_postdata();
-?>
+<?php wp_reset_postdata(); ?>
