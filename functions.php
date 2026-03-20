@@ -646,13 +646,10 @@ add_action('admin_init', function() {
     $pagine_bloccate = [
 		'users-user-role-editor.php',
 		'themes.php',
-		'plugins.php',
         'user-new.php',
-		'plugin-editor.php',
 		'options-permalink.php',
 		'export.php',
-		'import.php',
-        'plugin-install.php'
+		'import.php',       
     ];
 
     // Se siamo in una di queste pagine
