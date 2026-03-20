@@ -33,13 +33,7 @@
       </div>
     </div>
     
-    <div class="item">
-      <div class="icon">&#8596;&#65039;</div>
-      <div class="text">
-        <strong>ANAC - Contratti pubblici</strong><br>
-        Art.37 D.Lgs. 33/2013
-      </div>
-    </div>
+
     
   </div>
 </section>
