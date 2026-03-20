@@ -198,7 +198,11 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
 
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function() {
+
+  if (window.innerWidth <= 768) return; // 🔥 BLOCCA SU MOBILE
+
   const container = document.getElementById("stripScroll");
   const items = container?.querySelectorAll(".strip-item");
 
@@ -214,10 +218,10 @@ document.addEventListener("DOMContentLoaded", function() {
   left.onclick = () => container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
   right.onclick = () => container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
 
-  // nasconde frecce se <= 4
   if (items.length <= 4) {
     left.style.display = "none";
     right.style.display = "none";
   }
+
 });
 </script>
