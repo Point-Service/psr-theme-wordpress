@@ -39,21 +39,6 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
 
 <?php endif; ?>
 
-
-  <!-- =========================
-       CONTENUTO NORMALE PAGINA
-       ========================= -->
-
-  <div class="container">
-    <?php
-    if ( have_posts() ) :
-      while ( have_posts() ) : the_post();
-        the_content();
-      endwhile;
-    endif;
-    ?>
-  </div>
-
 </main>
 
 
