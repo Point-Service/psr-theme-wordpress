@@ -1,31 +1,14 @@
 <section class="weather-section">
   <div class="container">
 
-    <h2 class="weather-title"></h2>
+    <h2 class="weather-title">Meteo</h2>
 
-    <div class="weather-grid">
-
-      <!-- OGGI -->
-      <div class="weather-card big">
-        <div class="weather-day" id="weather-date">OGGI</div>
-
-        <div class="weather-content">
-          <div class="weather-info">
-            <div id="temperature">--°C</div>
-            <div id="condition">--</div>
-            <div id="location">--</div>
-          </div>
-
-          <img id="icon" src="" alt="" class="weather-img">
-        </div>
-      </div>
-
-    </div>
+    <div class="weather-grid"></div>
 
   </div>
 </section>
-<style>
 
+<style>
 .weather-section {
   padding: 60px 0;
 }
@@ -38,23 +21,27 @@
 .weather-grid {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .weather-card {
   background: #f5f5f5;
   border-radius: 10px;
-  padding: 25px;
+  padding: 20px;
+  text-align: center;
   flex: 1;
+  min-width: 180px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .weather-card.big {
-  max-width: 500px;
+  flex: 2;
+  min-width: 300px;
 }
 
 .weather-day {
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .weather-content {
@@ -64,31 +51,27 @@
 }
 
 .weather-info {
-  font-size: 16px;
-}
-
-.weather-img {
-  width: 80px;
-}
-.weather-temp {
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 5px;
+  text-align: left;
+  font-size: 14px;
 }
 
 .weather-icon img {
   width: 60px;
 }
-  
+
+.weather-desc {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* mobile */
 @media (max-width: 768px) {
   .weather-grid {
     flex-direction: column;
   }
 }
-  
-</style>
 
-<script>
+  <script>
 document.addEventListener("DOMContentLoaded", function() {
 
     const container = document.querySelector(".weather-grid");
@@ -105,25 +88,38 @@ document.addEventListener("DOMContentLoaded", function() {
 
             container.innerHTML = "";
 
-            const dailyData = {};
+            const daily = {};
 
-            // Raggruppa per giorno (prende circa le 12:00)
+            // Raggruppa per giorno
             data.list.forEach(item => {
                 const date = item.dt_txt.split(" ")[0];
 
-                if (!dailyData[date] && item.dt_txt.includes("12:00:00")) {
-                    dailyData[date] = item;
+                if (!daily[date]) {
+                    daily[date] = {
+                        temps: [],
+                        humidity: [],
+                        icons: [],
+                        desc: item.weather[0].description
+                    };
                 }
+
+                daily[date].temps.push(item.main.temp);
+                daily[date].humidity.push(item.main.humidity);
+                daily[date].icons.push(item.weather[0].icon);
             });
 
-            const days = Object.keys(dailyData).slice(0, 5);
+            const days = Object.keys(daily).slice(0, 5);
 
             days.forEach((day, index) => {
 
-                const item = dailyData[day];
-                const temp = Math.round(item.main.temp);
-                const desc = item.weather[0].description;
-                const icon = item.weather[0].icon;
+                const d = daily[day];
+
+                const avgTemp = Math.round(d.temps.reduce((a,b)=>a+b)/d.temps.length);
+                const minTemp = Math.round(Math.min(...d.temps));
+                const maxTemp = Math.round(Math.max(...d.temps));
+                const avgHumidity = Math.round(d.humidity.reduce((a,b)=>a+b)/d.humidity.length);
+
+                const icon = d.icons[Math.floor(d.icons.length/2)];
 
                 const dateObj = new Date(day);
                 const dayName = index === 0 
@@ -133,11 +129,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 const html = `
                     <div class="weather-card ${index === 0 ? 'big' : ''}">
                         <div class="weather-day">${dayName}</div>
-                        <div class="weather-icon">
-                            <img src="https://openweathermap.org/img/wn/${icon}@2x.png">
+
+                        <div class="weather-content">
+                            <div class="weather-info">
+                                <div>Temp. media ${avgTemp}°C</div>
+                                <div>Max ${maxTemp}°C</div>
+                                <div>Min ${minTemp}°C</div>
+                                <div>Umidità ${avgHumidity}%</div>
+                            </div>
+
+                            <div class="weather-icon">
+                                <img src="https://openweathermap.org/img/wn/${icon}@2x.png">
+                            </div>
                         </div>
-                        <div class="weather-temp">${temp}°C</div>
-                        <div class="weather-desc">${desc}</div>
+
+                        <div class="weather-desc">${d.desc}</div>
                     </div>
                 `;
 
@@ -152,3 +158,5 @@ document.addEventListener("DOMContentLoaded", function() {
     updateWeather();
 });
 </script>
+  
+</style>
