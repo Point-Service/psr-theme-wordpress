@@ -70,7 +70,16 @@
 .weather-img {
   width: 80px;
 }
+.weather-temp {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 5px;
+}
 
+.weather-icon img {
+  width: 60px;
+}
+  
 @media (max-width: 768px) {
   .weather-grid {
     flex-direction: column;
