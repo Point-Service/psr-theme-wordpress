@@ -5,7 +5,7 @@
 <section class="weather-section">
   <div class="container">
 
-    <h1 class="weather-title">Meteo</h1>
+    <h1 class="weather-title"></h1>
 
     <div class="weather-grid"></div>
 
