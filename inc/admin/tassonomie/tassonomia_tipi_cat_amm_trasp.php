@@ -8,10 +8,9 @@
  */
 add_action( 'init', 'dci_register_taxonomy_tipi_cat_amm_trasp', -10 );
 function dci_register_taxonomy_tipi_cat_amm_trasp() {
-
 	$labels = array(
-		'name'          => _x( 'Tipi categoria Amministrazione Trasparente', 'taxonomy general name', 'design_comuni_italia' ),
-		'singular_name' => _x( 'Tipo di categoria Amministrazione Trasparente', 'taxonomy singular name', 'design_comuni_italia' ),
+		'name'              => _x( 'Tipi categoria Amministrazione Trasparente', 'taxonomy general name', 'design_comuni_italia' ),
+		'singular_name'     => _x( 'Tipo di categoria Amministrazione Trasparente', 'taxonomy singular name', 'design_comuni_italia' ),
 	);
 
 	$args = array(
@@ -58,17 +57,9 @@ function dci_get_role_boxes_html( $selected_roles = [] ) {
 
 	ob_start();
 	?>
-
 	<style>
-		.dci-dual-select {
-			display: flex;
-			gap: 20px;
-			margin-top: 10px;
-		}
-		.dci-dual-select select {
-			width: 200px;
-			height: 150px;
-		}
+		.dci-dual-select { display:flex; gap:20px; margin-top:10px; }
+		.dci-dual-select select { width:200px; height:150px; }
 	</style>
 
 	<div class="form-field term-excluded_roles-wrap">
@@ -109,7 +100,6 @@ function dci_get_role_boxes_html( $selected_roles = [] ) {
 
 		function moveSelected(from, to) {
 			if (!from || !to) return;
-
 			var opts = from.selectedOptions;
 			for (var i = 0; i < opts.length; i++) {
 				to.appendChild(opts[i]);
@@ -120,15 +110,13 @@ function dci_get_role_boxes_html( $selected_roles = [] ) {
 			available.addEventListener('dblclick', function() {
 				moveSelected(available, selected);
 			});
-
 			selected.addEventListener('dblclick', function() {
 				moveSelected(selected, available);
 			});
 		}
 
-		// 🔥 FIX SUBMIT
+		// 🔥 FIX submit
 		var form = document.querySelector('form');
-
 		if (form && selected) {
 			form.addEventListener('submit', function () {
 				var options = selected.options;
@@ -151,30 +139,12 @@ function dci_tassonomia_add_fields() {
 	</div>
 
 	<div id="url-wrapper">
-		<div class="form-field">
-			<label><?php _e('URL personalizzato', 'design_comuni_italia'); ?></label>
-			<input name="term_url" type="url" placeholder="https://..." />
-		</div>
-
-		<div class="form-field">
-			<label>
-				<input type="checkbox" name="open_new_window" value="1" />
-				<?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?>
-			</label>
-		</div>
+		<div class="form-field"><label><?php _e('URL personalizzato', 'design_comuni_italia'); ?></label><input name="term_url" type="url" placeholder="https://..." /></div>
+		<div class="form-field"><label><input type="checkbox" name="open_new_window" value="1" /> <?php _e('Apri in nuova finestra', 'design_comuni_italia'); ?></label></div>
 	</div>
 
-	<div class="form-field">
-		<label><?php _e('Ordinamento', 'design_comuni_italia'); ?></label>
-		<input type="number" name="ordinamento" value="0" />
-	</div>
-
-	<div class="form-field">
-		<label>
-			<input type="checkbox" name="visualizza_elemento" value="1" checked />
-			<?php _e('Visualizza elemento', 'design_comuni_italia'); ?>
-		</label>
-	</div>
+	<div class="form-field"><label><?php _e('Ordinamento', 'design_comuni_italia'); ?></label><input type="number" name="ordinamento" value="0" /></div>
+	<div class="form-field"><label><input type="checkbox" name="visualizza_elemento" value="1" checked /> <?php _e('Visualizza elemento', 'design_comuni_italia'); ?></label></div>
 
 	<script>
 	document.addEventListener('DOMContentLoaded', function() {
@@ -197,43 +167,36 @@ function dci_tassonomia_add_fields() {
 }
 
 function dci_tassonomia_edit_fields( $term ) {
-
 	$excluded_roles = get_term_meta( $term->term_id, 'excluded_roles', true );
 	$excluded_roles = is_array( $excluded_roles ) ? $excluded_roles : [];
 	?>
-
 	<tr class="form-field">
-		<th><?php _e('Ruoli da escludere', 'design_comuni_italia'); ?></th>
+		<th scope="row"><?php _e('Ruoli da escludere', 'design_comuni_italia'); ?></th>
 		<td><?php echo dci_get_role_boxes_html($excluded_roles); ?></td>
 	</tr>
-
-	<?php
-}
+<?php }
 
 /**
  * Salvataggio
  */
-add_action( 'created_tipi_cat_amm_trasp', 'dci_save_term_meta' );
-add_action( 'edited_tipi_cat_amm_trasp',  'dci_save_term_meta' );
+add_action( 'created_tipi_cat_amm_trasp', 'dci_save_term_meta', 10, 2 );
+add_action( 'edited_tipi_cat_amm_trasp',  'dci_save_term_meta', 10, 2 );
 
 function dci_save_term_meta( $term_id ) {
-
 	update_term_meta( $term_id, 'ordinamento', isset($_POST['ordinamento']) ? intval($_POST['ordinamento']) : 0 );
 	update_term_meta( $term_id, 'visualizza_elemento', isset($_POST['visualizza_elemento']) ? '1' : '0' );
 	update_term_meta( $term_id, 'term_url', isset($_POST['term_url']) ? esc_url_raw($_POST['term_url']) : '' );
 	update_term_meta( $term_id, 'open_new_window', isset($_POST['open_new_window']) ? '1' : '0' );
 
 	if ( isset($_POST['excluded_roles']) && is_array($_POST['excluded_roles']) ) {
-		update_term_meta( $term_id, 'excluded_roles',
-			array_map('sanitize_text_field', $_POST['excluded_roles'])
-		);
+		update_term_meta( $term_id, 'excluded_roles', array_map('sanitize_text_field', $_POST['excluded_roles']) );
 	} else {
 		delete_term_meta( $term_id, 'excluded_roles' );
 	}
 }
 
 /**
- * 🔥 FIX LOOP DEFINITIVO
+ * 🔥 FIX LOOP
  */
 add_filter( 'terms_clauses', 'dci_hide_invisible_or_restricted_terms', 10, 3 );
 function dci_hide_invisible_or_restricted_terms( $clauses, $taxonomies, $args ) {
@@ -241,7 +204,7 @@ function dci_hide_invisible_or_restricted_terms( $clauses, $taxonomies, $args ) 
 	if ( ! in_array( 'tipi_cat_amm_trasp', (array) $taxonomies, true ) ) return $clauses;
 	if ( ! is_admin() ) return $clauses;
 
-	// 🔥 blocco totale durante submit
+	// blocca durante submit
 	if (
 		( defined('DOING_AJAX') && DOING_AJAX ) ||
 		( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) ||
@@ -252,4 +215,3 @@ function dci_hide_invisible_or_restricted_terms( $clauses, $taxonomies, $args ) 
 
 	return $clauses;
 }
-?>
