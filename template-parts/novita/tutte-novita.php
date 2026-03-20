@@ -7,7 +7,12 @@ get_header();
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
 // PAGINAZIONE
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+// Se sto cercando → forza pagina 1
+if (!empty($_GET['search'])) {
+    $paged = isset($_GET['paged']) ? intval($_GET['paged']) : 1;
+} else {
+    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+}
 
 // QUERY
 $args = array(
