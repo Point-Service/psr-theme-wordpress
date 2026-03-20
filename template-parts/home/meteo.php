@@ -53,7 +53,10 @@ if (empty($city)) {
   text-align: center;
   flex: 1;
   min-width: 180px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 
+  0 4px 10px rgba(0,0,0,0.05),
+  0 15px 40px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
 }
 
 /* OGGI PIÙ GRANDE */
