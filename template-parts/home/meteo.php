@@ -82,39 +82,61 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-    const weatherIcon = document.getElementById('icon');
-    const temperatureElement = document.getElementById('temperature');
-    const conditionElement = document.getElementById('condition');
-    const locationElement = document.getElementById('location');
-    const dateElement = document.getElementById('weather-date');
+    const container = document.querySelector(".weather-grid");
 
-    const city = "Venetico, IT";
+    const city = "Venetico,IT";
     const apiKey = "062a482b6456a7f66cfdec432a930862";
 
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=it`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric&lang=it`;
 
     async function updateWeather() {
         try {
             const response = await fetch(apiUrl);
             const data = await response.json();
 
-            const temperature = data.main.temp;
-            const condition = data.weather[0].description;
-            const iconCode = data.weather[0].icon;
+            container.innerHTML = "";
 
-            temperatureElement.textContent = `${Math.round(temperature)}°C`;
-            conditionElement.textContent = condition.charAt(0).toUpperCase() + condition.slice(1);
-            locationElement.textContent = `${data.name}, ${data.sys.country}`;
+            const dailyData = {};
 
-            weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+            // Raggruppa per giorno (prende circa le 12:00)
+            data.list.forEach(item => {
+                const date = item.dt_txt.split(" ")[0];
 
-            // DATA
-            const today = new Date();
-            const formattedDate = today.toLocaleDateString('it-IT');
-            dateElement.textContent = `OGGI - ${formattedDate}`;
+                if (!dailyData[date] && item.dt_txt.includes("12:00:00")) {
+                    dailyData[date] = item;
+                }
+            });
+
+            const days = Object.keys(dailyData).slice(0, 5);
+
+            days.forEach((day, index) => {
+
+                const item = dailyData[day];
+                const temp = Math.round(item.main.temp);
+                const desc = item.weather[0].description;
+                const icon = item.weather[0].icon;
+
+                const dateObj = new Date(day);
+                const dayName = index === 0 
+                    ? "OGGI" 
+                    : dateObj.toLocaleDateString("it-IT", { weekday: 'long' }).toUpperCase();
+
+                const html = `
+                    <div class="weather-card ${index === 0 ? 'big' : ''}">
+                        <div class="weather-day">${dayName}</div>
+                        <div class="weather-icon">
+                            <img src="https://openweathermap.org/img/wn/${icon}@2x.png">
+                        </div>
+                        <div class="weather-temp">${temp}°C</div>
+                        <div class="weather-desc">${desc}</div>
+                    </div>
+                `;
+
+                container.innerHTML += html;
+            });
 
         } catch (error) {
-            console.error('Errore meteo:', error);
+            console.error("Errore meteo:", error);
         }
     }
 
