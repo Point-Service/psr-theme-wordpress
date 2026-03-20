@@ -285,7 +285,7 @@ function dci_register_comune_options(){
     $header_options->add_field( array(
         'id'    => $prefix . 'meteo_city',
         'name'  => __('Città', 'design_comuni_italia' ),
-        'desc'  => __('Es: Venetico,IT', 'design_comuni_italia' ),
+        'desc'  => __('Es: Roma,IT', 'design_comuni_italia' ),
         'type'  => 'text',
     ));
 
