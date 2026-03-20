@@ -1,11 +1,21 @@
+<?php
+$options = get_option('dci_options');
 
+$city = $options['meteo_city'] ?? '';
+$apiKey = $options['meteo_api'] ?? '';
+
+// ❌ se city vuota → non mostra nulla
+if (empty($city)) {
+    return;
+}
+?>
 
 <main id="main">
 
 <section class="weather-section">
   <div class="container">
 
-    <h1 class="weather-title"></h1>
+    <h1 class="weather-title">Meteo <?php echo esc_html($city); ?></h1>
 
     <div class="weather-grid"></div>
 
@@ -91,14 +101,18 @@
 
 </style>
 
+<script>
+const weatherCity = "<?php echo esc_js($city); ?>";
+const weatherApiKey = "<?php echo esc_js($apiKey); ?>";
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
   const container = document.querySelector(".weather-grid");
 
-  const city = "Venetico,IT";
-  const apiKey = "062a482b6456a7f66cfdec432a930862";
+  const city = weatherCity;
+  const apiKey = weatherApiKey;
 
   const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric&lang=it`;
 
@@ -109,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
       const daily = {};
 
-      // Raggruppa per giorno
       data.list.forEach(item => {
         const date = item.dt_txt.split(" ")[0];
 
