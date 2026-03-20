@@ -9,7 +9,10 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
 ?>
 
 <section class="strip">
-  <div class="strip-inner scrollable">
+  
+  <button class="strip-arrow left">&#10094;</button>
+
+  <div class="strip-inner" id="stripScroll">
 
     <?php foreach ($strip['strip_items'] as $item) : 
         $target = (!empty($item['blank'])) ? ' target="_blank"' : '';
@@ -35,6 +38,9 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
     <?php endforeach; ?>
 
   </div>
+
+  <button class="strip-arrow right">&#10095;</button>
+
 </section>
 
 <?php endif; ?>
@@ -144,6 +150,40 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
   filter: blur(15px);
   border-radius: 100px;
   pointer-events: none;
+}
+
+ /* nasconde scrollbar */
+.strip .strip-inner {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* frecce */
+.strip-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.3);
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.strip-arrow.left {
+  left: 10px;
+}
+
+.strip-arrow.right {
+  right: 10px;
+}
+
+.strip-arrow:hover {
+  background: rgba(0,0,0,0.5);
 }
 
 /* RESPONSIVE SOLO STRIP */
