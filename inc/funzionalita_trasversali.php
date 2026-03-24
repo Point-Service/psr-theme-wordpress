@@ -112,18 +112,52 @@ add_action('rest_api_init', 'dci_register_footer_export_route');
  * @return array
  */
 function dci_get_rendered_footer() {
+    $is_external_only = dci_get_option('ck_portalesoloperusoesterno') === 'true';
+    $external_home = trim((string) dci_get_option('url_homesoloesterno'));
+
+    if ($is_external_only && !empty($external_home) && filter_var($external_home, FILTER_VALIDATE_URL)) {
+        $normalized_external = trailingslashit($external_home);
+        $current_home = trailingslashit(home_url('/'));
+
+        // Evita loop su stesso host.
+        if (parse_url($normalized_external, PHP_URL_HOST) !== parse_url($current_home, PHP_URL_HOST)) {
+            $external_api = $normalized_external . 'wp-json/wp/v2/footer/rendered/';
+            $api_response = wp_remote_get($external_api, array('timeout' => 12));
+
+            if (!is_wp_error($api_response) && wp_remote_retrieve_response_code($api_response) === 200) {
+                $payload = json_decode(wp_remote_retrieve_body($api_response), true);
+                if (is_array($payload) && !empty($payload['html'])) {
+                    $payload['source'] = $external_api;
+                    return $payload;
+                }
+            }
+
+            // Fallback: prova a leggere direttamente homepage esterna ed estrarre il footer.
+            $home_response = wp_remote_get($normalized_external, array('timeout' => 12));
+            if (!is_wp_error($home_response) && wp_remote_retrieve_response_code($home_response) === 200) {
+                $external_html = wp_remote_retrieve_body($home_response);
+                $footer_html = dci_extract_footer_html($external_html);
+                if (!empty($footer_html)) {
+                    return array(
+                        'success' => true,
+                        'generated_at' => current_time('c'),
+                        'html' => $footer_html,
+                        'source' => $normalized_external,
+                        'assets' => array(
+                            'css' => array(),
+                            'js' => array(),
+                        ),
+                    );
+                }
+            }
+        }
+    }
+
     ob_start();
     locate_template('footer.php', true, false);
     $raw = ob_get_clean();
 
-    $footer_html = '';
-    if (preg_match('/<section class="cookiebar[\\s\\S]*?<\\/footer>/i', $raw, $matches)) {
-        $footer_html = $matches[0];
-    } elseif (preg_match('/<footer[\\s\\S]*?<\\/footer>/i', $raw, $matches)) {
-        $footer_html = $matches[0];
-    } else {
-        $footer_html = $raw;
-    }
+    $footer_html = dci_extract_footer_html($raw);
 
     return array(
         'success' => true,
@@ -141,6 +175,28 @@ function dci_get_rendered_footer() {
             ),
         ),
     );
+}
+
+/**
+ * Estrae blocco HTML footer/cookiebar da una pagina completa.
+ *
+ * @param string $html
+ * @return string
+ */
+function dci_extract_footer_html($html) {
+    if (!is_string($html) || $html === '') {
+        return '';
+    }
+
+    if (preg_match('/<section class="cookiebar[\\s\\S]*?<\\/footer>/i', $html, $matches)) {
+        return $matches[0];
+    }
+
+    if (preg_match('/<footer[\\s\\S]*?<\\/footer>/i', $html, $matches)) {
+        return $matches[0];
+    }
+
+    return $html;
 }
 
 /**
