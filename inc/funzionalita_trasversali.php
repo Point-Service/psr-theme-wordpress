@@ -317,8 +317,25 @@ function dci_get_external_head_html() {
         return '';
     }
 
-    $candidate_homes = array(trailingslashit($external_home));
+    $candidate_homes = array();
+    $candidate_homes[] = trailingslashit($external_home);
     $candidate_homes[] = $external_parts['scheme'] . '://' . $external_parts['host'] . '/';
+    if (!empty($external_parts['path'])) {
+        $path = '/' . ltrim($external_parts['path'], '/');
+        $candidate_homes[] = trailingslashit($external_parts['scheme'] . '://' . $external_parts['host'] . untrailingslashit($path));
+
+        if (strpos($path, '/index.php/') !== false) {
+            $before_index = strstr($path, '/index.php/', true);
+            if ($before_index !== false && $before_index !== '') {
+                $candidate_homes[] = trailingslashit($external_parts['scheme'] . '://' . $external_parts['host'] . $before_index);
+            }
+        }
+
+        $dirname_path = untrailingslashit(wp_normalize_path(dirname($path)));
+        if ($dirname_path !== '' && $dirname_path !== '.' && $dirname_path !== '/') {
+            $candidate_homes[] = trailingslashit($external_parts['scheme'] . '://' . $external_parts['host'] . $dirname_path);
+        }
+    }
     $candidate_homes = array_values(array_unique(array_filter($candidate_homes)));
 
     $request_args = array(

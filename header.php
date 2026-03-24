@@ -18,7 +18,6 @@ $current_group = dci_get_current_group();
     $external_head_html = function_exists('dci_get_external_head_html') ? dci_get_external_head_html() : '';
     if (!empty($external_head_html)) {
         echo $external_head_html;
-        wp_head();
     } else {
     ?>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
