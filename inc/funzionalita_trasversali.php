@@ -408,7 +408,8 @@ function dci_save_richiesta_assistenza(){
         $ticket_title = 'ticket_'.$timestamp;
         $postId = wp_insert_post(array(
             'post_type' => 'richiesta_assistenza',
-            'post_title' =>  $ticket_title
+            'post_title' =>  $ticket_title,
+            'post_status' => 'publish'
         ));
     }
 
@@ -476,7 +477,8 @@ function dci_save_appuntamento(){
 
         $postId = wp_insert_post(array(
             'post_type' => 'appuntamento',
-            'post_title' =>  $appuntamento_title
+            'post_title' =>  $appuntamento_title,
+            'post_status' => 'publish'
         ));
     }
 
