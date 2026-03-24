@@ -448,8 +448,11 @@ function dci_save_richiesta_assistenza(){
         update_post_meta($postId, '_dci_richiesta_assistenza_dettagli',  $params['dettagli']);
     }
 
+    $mail_sent = dci_send_richiesta_assistenza_notification($postId, $params, $ticket_title);
+
     echo json_encode(array(
         "success" => true,
+        "mail_sent" => $mail_sent,
         "richiesta_assistenza" => array(
             "id" => $postId),
         "title" => $ticket_title
@@ -458,6 +461,67 @@ function dci_save_richiesta_assistenza(){
 }
 add_action("wp_ajax_save_richiesta_assistenza" , "dci_save_richiesta_assistenza");
 add_action("wp_ajax_nopriv_save_richiesta_assistenza" , "dci_save_richiesta_assistenza");
+
+/**
+ * Invia notifica e-mail per nuove richieste assistenza/disservizio.
+ *
+ * @param int   $postId
+ * @param array $params
+ * @param string $ticket_title
+ * @return bool
+ */
+function dci_send_richiesta_assistenza_notification($postId, $params, $ticket_title) {
+    if (empty($postId)) {
+        return false;
+    }
+
+    $recipients = array();
+    $email_principale = dci_get_option('email_principale');
+    if (is_email($email_principale)) {
+        $recipients[] = $email_principale;
+    }
+
+    $admin_email = get_option('admin_email');
+    if (is_email($admin_email)) {
+        $recipients[] = $admin_email;
+    }
+
+    $recipients = array_values(array_unique(array_filter($recipients)));
+    if (empty($recipients)) {
+        return false;
+    }
+
+    $subject = sprintf('[%s] Nuova segnalazione disservizio', wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES));
+    $message = implode("\n", array(
+        'È stata creata una nuova segnalazione di disservizio.',
+        '',
+        'ID richiesta: ' . $postId,
+        'Ticket: ' . $ticket_title,
+        'Nome: ' . ($params['nome'] ?? ''),
+        'Cognome: ' . ($params['cognome'] ?? ''),
+        'Email: ' . ($params['email'] ?? ''),
+        'Servizio: ' . ($params['servizio'] ?? ''),
+        'Dettagli: ' . ($params['dettagli'] ?? ''),
+        '',
+        'Link nel pannello admin: ' . admin_url('post.php?post=' . $postId . '&action=edit'),
+    ));
+
+    $headers = array('Content-Type: text/plain; charset=UTF-8');
+    if (is_email($email_principale)) {
+        $headers[] = 'From: ' . wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES) . ' <' . $email_principale . '>';
+    }
+    if (is_email($params['email'] ?? '')) {
+        $headers[] = 'Reply-To: ' . $params['email'];
+    }
+
+    $result = true;
+    foreach ($recipients as $to) {
+        $sent = wp_mail($to, $subject, $message, $headers);
+        $result = $result && $sent;
+    }
+
+    return $result;
+}
 
 /**
  * crea contenuto di tipo Appuntamento
