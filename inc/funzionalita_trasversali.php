@@ -153,9 +153,10 @@ function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
 
     $slots = array();
     $cursor = clone $first_day;
+    $now = new DateTime('now', wp_timezone());
 
     while ($cursor <= $last_day) {
-        if ($cursor >= $data_inizio && $cursor <= $data_fine) {
+        if ($cursor >= $data_inizio && $cursor <= $data_fine && !dci_is_festivo_nazionale($cursor)) {
             $weekday = (int) $cursor->format('N');
             $day_prefix = $giorni_map[$weekday];
 
@@ -175,6 +176,11 @@ function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
 
                 while ((clone $slot_start)->modify('+' . $slot_duration . ' minutes') <= $slot_end_limit) {
                     $slot_end = (clone $slot_start)->modify('+' . $slot_duration . ' minutes');
+                    if ($slot_start <= $now) {
+                        $slot_start = $slot_end;
+                        continue;
+                    }
+
                     $slots[] = array(
                         'startDate' => $slot_start->format('Y-m-d\TH:i'),
                         'endDate' => $slot_end->format('Y-m-d\TH:i'),
@@ -188,6 +194,39 @@ function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
     }
 
     return $slots;
+}
+
+/**
+ * Verifica se una data ricade in un giorno festivo nazionale.
+ *
+ * @param DateTime $date
+ * @return bool
+ */
+function dci_is_festivo_nazionale(DateTime $date) {
+    $fixed_holidays = array(
+        '01-01', // Capodanno
+        '01-06', // Epifania
+        '04-25', // Liberazione
+        '05-01', // Festa del Lavoro
+        '06-02', // Festa della Repubblica
+        '08-15', // Ferragosto
+        '11-01', // Ognissanti
+        '12-08', // Immacolata
+        '12-25', // Natale
+        '12-26', // Santo Stefano
+    );
+
+    if (in_array($date->format('m-d'), $fixed_holidays, true)) {
+        return true;
+    }
+
+    $year = (int) $date->format('Y');
+    $easter_timestamp = easter_date($year);
+    $easter = (new DateTime('@' . $easter_timestamp))->setTimezone(wp_timezone());
+    $easter_monday = (clone $easter)->modify('+1 day');
+
+    return $date->format('Y-m-d') === $easter->format('Y-m-d') ||
+        $date->format('Y-m-d') === $easter_monday->format('Y-m-d');
 }
 
 /**
