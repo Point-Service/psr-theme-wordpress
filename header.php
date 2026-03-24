@@ -351,7 +351,24 @@ $current_group = dci_get_current_group();
 if(!is_user_logged_in())
     get_template_part("template-parts/common/access-modal");
 ?>
-	
+<script>
+document.addEventListener('click', function(event) {
+  var searchTrigger = event.target.closest('#search-home, .search-link[data-bs-target="#search-modal"]');
+  if (!searchTrigger) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  if (typeof event.stopImmediatePropagation === 'function') {
+    event.stopImmediatePropagation();
+  }
+
+  var modalEl = document.getElementById('search-modal');
+  if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+    window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+  }
+}, true);
+</script>
+		
 <style>
 @media (max-width: 767.98px) {
   /* Riduce margine e padding tra voci menu mobile */
