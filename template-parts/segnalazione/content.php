@@ -62,10 +62,10 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="select-wrapper p-0 mt-1 select-partials">
-                        <label for="appointment" class="visually-hidden">
+                        <label for="luogo-disservizio" class="visually-hidden">
                             Indica il luogo del disservizio
                         </label>
-                        <select id="appointment" class="">
+                        <select id="luogo-disservizio" class="">
                             <option selected="selected" value="">
                                 Indica il luogo del disservizio
                             </option>
@@ -105,7 +105,7 @@
                         <label for="motivo-appuntamento" class="visually-hidden">
                             Tipologia di Disservizio
                         </label>
-                        <select id="appointment" class="">
+                        <select id="motivo-appuntamento" class="">
                             <option selected="selected" value="">
                                 Tipologia di Disservizio
                             </option>
