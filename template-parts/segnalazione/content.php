@@ -3,6 +3,7 @@
 
     $disservizi = dci_get_disservizi_names();
     $privacy_url = dci_get_template_page_url('page-templates/privacy.php') ?: home_url('/page-templates/privacy');
+    $area_riservata_url = dci_get_option('area_riservata') ?: wp_login_url();
 
     $uffici = get_posts(array(
         'posts_per_page' => -1,
@@ -207,7 +208,7 @@
         <p class="subtitle-small pb-40 mb-0 d-lg-none">
             Hai un’identità digitale SPID o CIE?
             <a class="title-small-semi-bold t-primary underline"
-                href="./iscrizione-graduatoria-accedere-servizio.html"
+                href="<?php echo esc_url($area_riservata_url); ?>"
             >
                 Accedi
             </a>
