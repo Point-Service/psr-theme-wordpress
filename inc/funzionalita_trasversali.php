@@ -115,13 +115,32 @@ function dci_get_rendered_footer() {
     $is_external_only = dci_get_option('ck_portalesoloperusoesterno') === 'true';
     $external_home = trim((string) dci_get_option('url_homesoloesterno'));
 
+    if ($is_external_only && !empty($external_home)) {
+        if (!preg_match('#^https?://#i', $external_home)) {
+            $external_home = 'https://' . ltrim($external_home, '/');
+        }
+    }
+
     if ($is_external_only && !empty($external_home) && filter_var($external_home, FILTER_VALIDATE_URL)) {
-        $normalized_external = trailingslashit($external_home);
         $current_home = trailingslashit(home_url('/'));
+        $external_parts = wp_parse_url($external_home);
+
+        $candidate_homes = array();
+        $candidate_homes[] = trailingslashit($external_home);
+        if (!empty($external_parts['scheme']) && !empty($external_parts['host'])) {
+            $root_home = $external_parts['scheme'] . '://' . $external_parts['host'] . '/';
+            $candidate_homes[] = $root_home;
+        }
+        $candidate_homes = array_values(array_unique(array_filter($candidate_homes)));
 
         // Evita loop su stesso host.
-        if (parse_url($normalized_external, PHP_URL_HOST) !== parse_url($current_home, PHP_URL_HOST)) {
-            $external_api = $normalized_external . 'wp-json/wp/v2/footer/rendered/';
+        $current_host = parse_url($current_home, PHP_URL_HOST);
+        foreach ($candidate_homes as $candidate_home) {
+            if (parse_url($candidate_home, PHP_URL_HOST) === $current_host) {
+                continue;
+            }
+
+            $external_api = trailingslashit($candidate_home) . 'wp-json/wp/v2/footer/rendered/';
             $api_response = wp_remote_get($external_api, array('timeout' => 12));
 
             if (!is_wp_error($api_response) && wp_remote_retrieve_response_code($api_response) === 200) {
@@ -131,9 +150,15 @@ function dci_get_rendered_footer() {
                     return $payload;
                 }
             }
+        }
 
-            // Fallback: prova a leggere direttamente homepage esterna ed estrarre il footer.
-            $home_response = wp_remote_get($normalized_external, array('timeout' => 12));
+        // Fallback: prova a leggere direttamente homepage esterna ed estrarre il footer.
+        foreach ($candidate_homes as $candidate_home) {
+            if (parse_url($candidate_home, PHP_URL_HOST) === $current_host) {
+                continue;
+            }
+
+            $home_response = wp_remote_get($candidate_home, array('timeout' => 12));
             if (!is_wp_error($home_response) && wp_remote_retrieve_response_code($home_response) === 200) {
                 $external_html = wp_remote_retrieve_body($home_response);
                 $footer_html = dci_extract_footer_html($external_html);
@@ -142,7 +167,7 @@ function dci_get_rendered_footer() {
                         'success' => true,
                         'generated_at' => current_time('c'),
                         'html' => $footer_html,
-                        'source' => $normalized_external,
+                        'source' => $candidate_home,
                         'assets' => array(
                             'css' => array(),
                             'js' => array(),
