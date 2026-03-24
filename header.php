@@ -14,9 +14,16 @@ $current_group = dci_get_current_group();
 <!doctype html>
 <html lang="it">
 <head>
+    <?php
+    $external_head_html = function_exists('dci_get_external_head_html') ? dci_get_external_head_html() : '';
+    if (!empty($external_head_html)) {
+        echo $external_head_html;
+    } else {
+    ?>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<?php wp_head(); ?>
+		<?php wp_head(); ?>
+    <?php } ?>
 </head>
 <body <?php body_class(); ?>>
 
