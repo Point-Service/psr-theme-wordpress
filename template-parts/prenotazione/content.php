@@ -1,7 +1,19 @@
 <?php
     $uffici = get_posts(array(
         'posts_per_page' => -1,
-        'post_type' => 'unita_organizzativa'
+        'post_type' => 'unita_organizzativa',
+        'meta_query' => array(
+            'relation' => 'AND',
+            array(
+                'key' => '_dci_unita_organizzativa_orario_uo',
+                'compare' => 'EXISTS',
+            ),
+            array(
+                'key' => '_dci_unita_organizzativa_orario_uo',
+                'value' => '',
+                'compare' => '!=',
+            ),
+        ),
     ));
 
     $months = array();
@@ -13,6 +25,18 @@
         $currentMonth++;
     }
 ?>
+
+<style>
+    #radio-appointment {
+        max-height: 420px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #radio-appointment .radio-body label {
+        overflow-wrap: anywhere;
+    }
+</style>
 
 <div class="it-page-sections-container">
 
