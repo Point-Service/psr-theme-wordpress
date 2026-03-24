@@ -352,21 +352,27 @@ if(!is_user_logged_in())
     get_template_part("template-parts/common/access-modal");
 ?>
 <script>
-document.addEventListener('click', function(event) {
-  var searchTrigger = event.target.closest('#search-home');
-  if (!searchTrigger) return;
+document.addEventListener('DOMContentLoaded', function() {
+  var originalSearchTrigger = document.getElementById('search-home');
+  if (!originalSearchTrigger) return;
 
-  event.preventDefault();
-  event.stopPropagation();
-  if (typeof event.stopImmediatePropagation === 'function') {
-    event.stopImmediatePropagation();
-  }
+  // Rimuove eventuali listener pre-esistenti clonando il bottone.
+  var cleanSearchTrigger = originalSearchTrigger.cloneNode(true);
+  originalSearchTrigger.parentNode.replaceChild(cleanSearchTrigger, originalSearchTrigger);
 
-  var modalEl = document.getElementById('search-modal');
-  if (modalEl && window.bootstrap && window.bootstrap.Modal) {
-    window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
-  }
-}, true);
+  cleanSearchTrigger.addEventListener('click', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (typeof event.stopImmediatePropagation === 'function') {
+      event.stopImmediatePropagation();
+    }
+
+    var modalEl = document.getElementById('search-modal');
+    if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+      window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    }
+  }, true);
+});
 </script>
 		
 <style>
