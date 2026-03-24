@@ -282,7 +282,10 @@ function dci_extract_head_html($html) {
     }
 
     if (preg_match('/<head[^>]*>([\\s\\S]*?)<\\/head>/i', $html, $matches)) {
-        return trim($matches[1]);
+        $head_inner = $matches[1];
+        // Evita di importare script inline/esterni del portale sorgente che possono alterare il comportamento locale (es. prompt sul cerca).
+        $head_inner = preg_replace('/<script\\b[^>]*>[\\s\\S]*?<\\/script>/i', '', $head_inner);
+        return trim($head_inner);
     }
 
     return '';
