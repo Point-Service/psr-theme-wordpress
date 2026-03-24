@@ -323,6 +323,17 @@ function dci_admin_bar_customize_header() {
         );
     }
 
+    if (current_user_can('edit_posts') && post_type_exists('richiesta_assistenza')) {
+        $wp_admin_bar->add_menu(
+            array(
+                'parent' => 'design-comuni',
+                'id'     => 'dci-segnalazioni-disservizio',
+                'title'  => __('Segnalazioni disservizio', 'design_comuni_italia'),
+                'href'   => admin_url('edit.php?post_type=richiesta_assistenza'),
+            )
+        );
+    }
+
 }
 add_action( 'admin_bar_menu', 'dci_admin_bar_customize_header', -10 );
 
@@ -412,5 +423,4 @@ function dci_edit_permission_check() {
 
 }
 add_filter( 'admin_head', 'dci_edit_permission_check', 1, 4 );
-
 
