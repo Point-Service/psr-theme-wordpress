@@ -62,7 +62,20 @@ $current_group = dci_get_current_group();
           var trigger = event.target.closest('.search-link, [data-bs-target="#search-modal"]');
           if (!trigger) return;
           event.preventDefault();
-          window.location.href = '<?php echo esc_js(trailingslashit($external_home_redirect)); ?>';
+          var modalEl = document.querySelector('#search-modal');
+          if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+            window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+            return;
+          }
+
+          var query = window.prompt('Cosa vuoi cercare?');
+          if (query === null) return;
+          query = query.trim();
+          var destination = '<?php echo esc_js(trailingslashit($external_home_redirect)); ?>';
+          if (query) {
+            destination += '?s=' + encodeURIComponent(query);
+          }
+          window.location.href = destination;
         }, true);
         </script>
     <?php endif; ?>
