@@ -353,6 +353,17 @@ if(!is_user_logged_in())
 ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  if (typeof window.prompt === 'function' && !window.__dciPromptGuardApplied) {
+    var originalPrompt = window.prompt.bind(window);
+    window.prompt = function(message, defaultValue) {
+      if (typeof message === 'string' && message.toLowerCase().indexOf('cosa vuoi cercare') !== -1) {
+        return null;
+      }
+      return originalPrompt(message, defaultValue);
+    };
+    window.__dciPromptGuardApplied = true;
+  }
+
   var originalSearchTrigger = document.getElementById('search-home');
   if (!originalSearchTrigger) return;
 
