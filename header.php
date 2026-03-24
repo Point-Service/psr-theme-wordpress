@@ -42,6 +42,10 @@ $current_group = dci_get_current_group();
         $external_home_redirect = 'https://' . ltrim($external_home_redirect, '/');
     }
     if ($external_home_redirect !== '' && filter_var($external_home_redirect, FILTER_VALIDATE_URL)) :
+        $external_home_parts = wp_parse_url($external_home_redirect);
+        if (!empty($external_home_parts['scheme']) && !empty($external_home_parts['host'])) {
+            $external_home_redirect = $external_home_parts['scheme'] . '://' . $external_home_parts['host'] . '/';
+        }
     ?>
         <script>
         document.addEventListener('submit', function(event) {
@@ -78,6 +82,18 @@ $current_group = dci_get_current_group();
           window.location.href = destination;
         }, true);
         </script>
+        <style>
+        .it-header-wrapper a,
+        .it-header-slim-wrapper a,
+        .it-header-wrapper a:hover,
+        .it-header-slim-wrapper a:hover,
+        .it-header-wrapper a:focus,
+        .it-header-slim-wrapper a:focus,
+        .it-header-wrapper a:active,
+        .it-header-slim-wrapper a:active {
+          color: #fff !important;
+        }
+        </style>
     <?php endif; ?>
 <?php else : ?>
 

@@ -188,6 +188,11 @@ function dci_redirect_external_search_to_main_portal() {
         return;
     }
 
+    $external_parts = wp_parse_url($external_home);
+    if (!empty($external_parts['scheme']) && !empty($external_parts['host'])) {
+        $external_home = $external_parts['scheme'] . '://' . $external_parts['host'] . '/';
+    }
+
     $target_url = add_query_arg('s', $search_term, trailingslashit($external_home));
     if (!empty($_GET['type'])) {
         $target_url = add_query_arg('type', sanitize_text_field(wp_unslash($_GET['type'])), $target_url);
