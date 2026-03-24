@@ -63,18 +63,31 @@ $current_group = dci_get_current_group();
         }, true);
 
         document.addEventListener('click', function(event) {
-          var trigger = event.target.closest('.search-link, [data-bs-target="#search-modal"]');
+          var trigger = event.target.closest('.search-link, [data-bs-target="#search-modal"], .it-search-wrapper button, .it-search-wrapper a, [aria-label*="Cerca"]');
           if (!trigger) return;
           event.preventDefault();
-          var modalEl = document.querySelector('#search-modal');
-          if (modalEl && window.bootstrap && window.bootstrap.Modal) {
-            window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
-            return;
+
+          var query = '';
+          var nearestForm = trigger.closest('form');
+          if (nearestForm) {
+            var formInput = nearestForm.querySelector('input[name="s"], input[type="search"]');
+            if (formInput) {
+              query = (formInput.value || '').trim();
+            }
           }
 
-          var query = window.prompt('Cosa vuoi cercare?');
+          if (!query) {
+            var modalInput = document.querySelector('#search-modal input[name="s"], #search-modal input[type="search"]');
+            if (modalInput) {
+              query = (modalInput.value || '').trim();
+            }
+          }
+
+          if (!query) {
+            query = window.prompt('Cosa vuoi cercare?');
+          }
           if (query === null) return;
-          query = query.trim();
+          query = (query || '').trim();
           var destination = '<?php echo esc_js(trailingslashit($external_home_redirect)); ?>';
           if (query) {
             destination += '?s=' + encodeURIComponent(query);
