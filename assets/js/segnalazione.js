@@ -1,146 +1,155 @@
 (function () {
-  const content = document.querySelector('.section-wrapper');
+  var content = document.querySelector('.section-wrapper');
   if (!content) return;
 
-  const steps = Array.from(content.querySelectorAll('[data-steps]'));
-  const btnNext = content.querySelector('.btn-next-step');
-  const btnBack = content.querySelector('.btn-back-step');
-  const alertMessage = document.getElementById('alert-message');
+  var steps = Array.prototype.slice.call(content.querySelectorAll('[data-steps]'));
+  var btnNext = content.querySelector('.btn-next-step');
+  var btnBack = content.querySelector('.btn-back-step');
+  var alertMessage = document.getElementById('alert-message');
+  var currentStep = 1;
 
-  let currentStep = 1;
+  function getEl(id) {
+    return document.getElementById(id);
+  }
 
-  const getProgressNode = () =>
-    document.querySelector(`[data-progress="${currentStep}"]`);
+  function getValue(id) {
+    var el = getEl(id);
+    return el ? (el.value || '').trim() : '';
+  }
 
-  const hideStep = (stepNumber) => {
-    const node = content.querySelector(`[data-steps="${stepNumber}"]`);
-    if (!node) return;
-    node.classList.add('d-none');
-    node.classList.remove('active');
-  };
+  function setProgress() {
+    var progresses = document.querySelectorAll('[data-progress]');
+    for (var i = 0; i < progresses.length; i++) {
+      progresses[i].classList.add('d-none');
+    }
+    var currentProgress = document.querySelector('[data-progress="' + currentStep + '"]');
+    if (currentProgress) currentProgress.classList.remove('d-none');
+  }
 
-  const showStep = (stepNumber) => {
-    const node = content.querySelector(`[data-steps="${stepNumber}"]`);
+  function showStep(stepNumber) {
+    var node = content.querySelector('[data-steps="' + stepNumber + '"]');
     if (!node) return;
     node.classList.remove('d-none');
     node.classList.add('active');
-  };
+  }
 
-  const updateProgress = () => {
-    document
-      .querySelectorAll('[data-progress]')
-      .forEach((node) => node.classList.add('d-none'));
+  function hideStep(stepNumber) {
+    var node = content.querySelector('[data-steps="' + stepNumber + '"]');
+    if (!node) return;
+    node.classList.add('d-none');
+    node.classList.remove('active');
+  }
 
-    const progress = getProgressNode();
-    if (progress) progress.classList.remove('d-none');
-  };
-
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function validateEmail(email) {
+    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
-  };
+  }
 
-  const checkMandatoryFields = () => {
+  function updateNextState() {
     if (!btnNext) return;
 
-    switch (currentStep) {
-      case 1: {
-        btnNext.disabled = !document.getElementById('privacy')?.checked;
-        break;
-      }
-      case 2: {
-        const place = document.getElementById('luogo-disservizio')?.value;
-        const type = document.getElementById('motivo-appuntamento')?.value;
-        const title = document.getElementById('title')?.value?.trim();
-        const details = document.getElementById('details')?.value?.trim();
-        btnNext.disabled = !(place && type && title && details);
-        break;
-      }
-      case 3: {
-        // Step 3 nel template storico è informativo: consenti avanzamento.
-        btnNext.disabled = false;
-        break;
-      }
-      case 4: {
-        const name = document.getElementById('name')?.value?.trim();
-        const surname = document.getElementById('surname')?.value?.trim();
-        const email = document.getElementById('email')?.value?.trim();
-        btnNext.disabled = !(name && surname && email && validateEmail(email));
-        break;
-      }
-      default:
-        btnNext.disabled = false;
+    if (currentStep === 1) {
+      var privacy = getEl('privacy');
+      btnNext.disabled = !(privacy && privacy.checked);
+      return;
     }
-  };
 
-  const submitReport = async () => {
-    const placeSelect = document.getElementById('luogo-disservizio');
-    const serviceSelect = document.getElementById('motivo-appuntamento');
-    const title = document.getElementById('title')?.value?.trim() || '';
-    const details = document.getElementById('details')?.value?.trim() || '';
-    const name = document.getElementById('name')?.value?.trim() || '';
-    const surname = document.getElementById('surname')?.value?.trim() || '';
-    const email = document.getElementById('email')?.value?.trim() || '';
+    if (currentStep === 2) {
+      var place = getValue('luogo-disservizio');
+      var service = getValue('motivo-appuntamento');
+      var title = getValue('title');
+      var details = getValue('details');
+      btnNext.disabled = !(place && service && title && details);
+      return;
+    }
 
-    const selectedPlace = placeSelect?.options?.[placeSelect.selectedIndex]?.text || '';
-    const selectedService = serviceSelect?.options?.[serviceSelect.selectedIndex]?.text || '';
+    if (currentStep === 3) {
+      btnNext.disabled = false;
+      return;
+    }
 
-    const fullDetails = [
-      `Titolo: ${title}`,
-      `Luogo: ${selectedPlace}`,
-      `Tipologia disservizio: ${selectedService}`,
-      `Dettagli: ${details}`,
+    if (currentStep === 4) {
+      var name = getValue('name');
+      var surname = getValue('surname');
+      var email = getValue('email');
+      btnNext.disabled = !(name && surname && email && validateEmail(email));
+      return;
+    }
+
+    btnNext.disabled = false;
+  }
+
+  function getSelectedText(selectId) {
+    var select = getEl(selectId);
+    if (!select || select.selectedIndex < 0) return '';
+    return select.options[select.selectedIndex].text || '';
+  }
+
+  function submitReport() {
+    var title = getValue('title');
+    var details = getValue('details');
+    var name = getValue('name');
+    var surname = getValue('surname');
+    var email = getValue('email');
+    var placeText = getSelectedText('luogo-disservizio');
+    var serviceText = getSelectedText('motivo-appuntamento');
+
+    var fullDetails = [
+      'Titolo: ' + title,
+      'Luogo: ' + placeText,
+      'Tipologia disservizio: ' + serviceText,
+      'Dettagli: ' + details
     ].join('\n');
 
-    const url = Array.isArray(urlConfirm) ? urlConfirm[0] : urlConfirm;
-    const body = new URLSearchParams({
-      action: 'save_richiesta_assistenza',
-      nome: name,
-      cognome: surname,
-      email,
-      categoria_servizio: '',
-      servizio: selectedService,
-      dettagli: fullDetails,
-      privacyChecked: document.getElementById('privacy')?.checked ? 'true' : 'false',
-    });
+    var url = (typeof urlConfirm !== 'undefined' && Array.isArray(urlConfirm)) ? urlConfirm[0] : urlConfirm;
+    var body = new URLSearchParams();
+    body.append('action', 'save_richiesta_assistenza');
+    body.append('nome', name);
+    body.append('cognome', surname);
+    body.append('email', email);
+    body.append('categoria_servizio', '');
+    body.append('servizio', serviceText);
+    body.append('dettagli', fullDetails);
+    body.append('privacyChecked', (getEl('privacy') && getEl('privacy').checked) ? 'true' : 'false');
 
-    const response = await fetch(url, {
+    return fetch(url, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Cache-Control': 'no-cache',
+        'Cache-Control': 'no-cache'
       },
-      body,
+      body: body
+    }).then(function (response) {
+      if (!response.ok) {
+        throw new Error('HTTP error ' + response.status);
+      }
+      return response.json();
+    }).then(function (result) {
+      if (!result || !result.success) {
+        throw new Error('Salvataggio segnalazione non riuscito');
+      }
+
+      var formSteps = getEl('form-steps');
+      if (formSteps) formSteps.classList.add('d-none');
+      if (alertMessage) alertMessage.classList.remove('d-none');
+
+      var mainContainer = document.querySelector('#main-container');
+      if (mainContainer) {
+        mainContainer.scrollIntoView({ behavior: 'smooth' });
+      }
     });
+  }
 
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
-
-    const result = await response.json();
-    if (!result?.success) {
-      throw new Error('Salvataggio segnalazione non riuscito');
-    }
-
-    document.getElementById('form-steps')?.classList.add('d-none');
-    if (alertMessage) alertMessage.classList.remove('d-none');
-
-    const mainContainer = document.querySelector('#main-container');
-    if (mainContainer) mainContainer.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const openNext = async () => {
-    if (!btnBack || !btnNext) return;
+  function openNext() {
+    if (!btnNext || !btnBack) return;
 
     if (currentStep >= steps.length) {
-      try {
-        btnNext.disabled = true;
-        await submitReport();
-      } catch (err) {
+      btnNext.disabled = true;
+      submitReport().catch(function (err) {
         console.error(err);
         btnNext.disabled = false;
-      }
+      });
       return;
     }
 
@@ -149,32 +158,36 @@
     showStep(currentStep);
 
     btnBack.disabled = currentStep === 1;
-    btnNext.querySelector('span').innerHTML =
-      currentStep === steps.length ? 'Invia' : 'Avanti';
 
-    updateProgress();
-    checkMandatoryFields();
-  };
+    var nextLabel = btnNext.querySelector('span');
+    if (nextLabel) {
+      nextLabel.innerHTML = currentStep === steps.length ? 'Invia' : 'Avanti';
+    }
 
-  const backPrevious = () => {
-    if (!btnBack || !btnNext || currentStep === 1) return;
+    setProgress();
+    updateNextState();
+  }
+
+  function backPrevious() {
+    if (!btnNext || !btnBack || currentStep === 1) return;
 
     hideStep(currentStep);
     currentStep -= 1;
     showStep(currentStep);
 
     btnBack.disabled = currentStep === 1;
-    btnNext.querySelector('span').innerHTML = 'Avanti';
 
-    updateProgress();
-    checkMandatoryFields();
-  };
+    var nextLabel = btnNext.querySelector('span');
+    if (nextLabel) nextLabel.innerHTML = 'Avanti';
 
-  // Bind events
-  btnNext?.addEventListener('click', openNext);
-  btnBack?.addEventListener('click', backPrevious);
+    setProgress();
+    updateNextState();
+  }
 
-  [
+  btnNext.addEventListener('click', openNext);
+  btnBack.addEventListener('click', backPrevious);
+
+  var fields = [
     'privacy',
     'luogo-disservizio',
     'motivo-appuntamento',
@@ -182,13 +195,20 @@
     'details',
     'name',
     'surname',
-    'email',
-  ].forEach((id) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener(el.tagName === 'SELECT' || el.type === 'checkbox' ? 'change' : 'input', checkMandatoryFields);
-  });
+    'email'
+  ];
 
-  updateProgress();
-  checkMandatoryFields();
+  for (var i = 0; i < fields.length; i++) {
+    var el = getEl(fields[i]);
+    if (!el) continue;
+
+    if (el.tagName === 'SELECT' || el.type === 'checkbox') {
+      el.addEventListener('change', updateNextState);
+    } else {
+      el.addEventListener('input', updateNextState);
+    }
+  }
+
+  setProgress();
+  updateNextState();
 })();
