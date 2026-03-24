@@ -114,6 +114,8 @@ add_action('rest_api_init', 'dci_register_footer_export_route');
 function dci_get_external_footer_payload() {
     $external_only_raw = dci_get_option('ck_portalesoloperusoesterno');
     $is_external_only = in_array(strtolower((string) $external_only_raw), array('1', 'true', 'yes', 'on'), true);
+    $external_footer_toggle_raw = dci_get_option('ck_richiama_footer_portale_principale', 'dci_options', 'true');
+    $should_fetch_external_footer = in_array(strtolower((string) $external_footer_toggle_raw), array('1', 'true', 'yes', 'on'), true);
     $external_home = trim((string) dci_get_option('url_homesoloesterno'));
 
     if ($is_external_only && !empty($external_home)) {
@@ -122,7 +124,7 @@ function dci_get_external_footer_payload() {
         }
     }
 
-    if ($is_external_only && !empty($external_home) && filter_var($external_home, FILTER_VALIDATE_URL)) {
+    if ($is_external_only && $should_fetch_external_footer && !empty($external_home) && filter_var($external_home, FILTER_VALIDATE_URL)) {
         $current_home = trailingslashit(home_url('/'));
         $external_parts = wp_parse_url($external_home);
         $request_args = array(
