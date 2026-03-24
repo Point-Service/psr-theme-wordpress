@@ -84,13 +84,6 @@
 
 
                     
-                    <?php	
-                    // Se il portale gestisce solo la nostra Trasparenza in modo esterno, non mostra i risultati di ricerca
-                    $portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
-                    
-                    if ($portalesoloperusoesterno !== 'true') :
-                    ?>
-            
                   <div class="row variable-gutters p-4">
                       <div class="col-lg-5">    
                         <a href="<?php echo esc_url( home_url( '/?s=' ) ); ?>" class="chip chip-simple chip-lg" data-focus-mouse="false">
@@ -178,11 +171,6 @@
                       <?php } ?>
                       </div> <!-- TAGS -->
                     
-                    <?php endif; ?>
-
-
-            
-
                   </div>   
                         
           </div>
@@ -193,4 +181,3 @@
 </div>
 
 <!-- End Search Modal -->
-
