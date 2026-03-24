@@ -18,6 +18,7 @@ $current_group = dci_get_current_group();
     $external_head_html = function_exists('dci_get_external_head_html') ? dci_get_external_head_html() : '';
     if (!empty($external_head_html)) {
         echo $external_head_html;
+        wp_head();
     } else {
     ?>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -55,6 +56,13 @@ $current_group = dci_get_current_group();
             destination += '?s=' + encodeURIComponent(query);
           }
           window.location.href = destination;
+        }, true);
+
+        document.addEventListener('click', function(event) {
+          var trigger = event.target.closest('.search-link, [data-bs-target="#search-modal"]');
+          if (!trigger) return;
+          event.preventDefault();
+          window.location.href = '<?php echo esc_js(trailingslashit($external_home_redirect)); ?>';
         }, true);
         </script>
     <?php endif; ?>
