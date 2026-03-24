@@ -95,6 +95,55 @@ function dci_register_appuntamenti_ufficio_route() {
 add_action('rest_api_init', 'dci_register_appuntamenti_ufficio_route');
 
 /**
+ * Espone l'HTML del footer per integrazioni esterne.
+ */
+function dci_register_footer_export_route() {
+    register_rest_route('wp/v2', '/footer/rendered/', array(
+        'methods' => 'GET',
+        'callback' => 'dci_get_rendered_footer',
+        'permission_callback' => '__return_true',
+    ));
+}
+add_action('rest_api_init', 'dci_register_footer_export_route');
+
+/**
+ * Restituisce uno snapshot HTML del footer del tema.
+ *
+ * @return array
+ */
+function dci_get_rendered_footer() {
+    ob_start();
+    locate_template('footer.php', true, false);
+    $raw = ob_get_clean();
+
+    $footer_html = '';
+    if (preg_match('/<section class="cookiebar[\\s\\S]*?<\\/footer>/i', $raw, $matches)) {
+        $footer_html = $matches[0];
+    } elseif (preg_match('/<footer[\\s\\S]*?<\\/footer>/i', $raw, $matches)) {
+        $footer_html = $matches[0];
+    } else {
+        $footer_html = $raw;
+    }
+
+    return array(
+        'success' => true,
+        'generated_at' => current_time('c'),
+        'html' => $footer_html,
+        'assets' => array(
+            'css' => array(
+                get_template_directory_uri() . '/assets/css/bootstrap-italia-comuni.min.css',
+                get_template_directory_uri() . '/assets/css/comuni.css',
+                get_stylesheet_uri(),
+            ),
+            'js' => array(
+                get_template_directory_uri() . '/assets/js/bootstrap-italia.bundle.min.js',
+                get_template_directory_uri() . '/assets/js/comuni.js',
+            ),
+        ),
+    );
+}
+
+/**
  * Genera gli slot appuntamento del mese richiesto a partire dall'orario UO.
  *
  * @param WP_REST_Request $request
