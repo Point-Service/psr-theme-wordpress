@@ -464,6 +464,8 @@ add_action("wp_ajax_nopriv_save_richiesta_assistenza" , "dci_save_richiesta_assi
 function dci_save_appuntamento(){
 
     $params = json_decode(json_encode($_POST), true);
+    $postId = 0;
+    $appuntamento_title = '';
 
     date_default_timezone_set('Europe/Rome');
     $data = date('Y-m-d\TH:i:s');
@@ -520,6 +522,8 @@ function dci_save_appuntamento(){
         update_post_meta($postId, '_dci_appuntamento_data_ora_fine_appuntamento',  $endDate);
     }
 
+    dci_send_appuntamento_notification($postId, $params, $data);
+
     echo json_encode(array(
         "success" => true,
         "message" => 'Contenuto creato con successo: '.$postId,
@@ -534,3 +538,69 @@ function dci_save_appuntamento(){
 
 add_action("wp_ajax_save_appuntamento" , "dci_save_appuntamento");
 add_action("wp_ajax_nopriv_save_appuntamento" , "dci_save_appuntamento");
+
+/**
+ * Invia una notifica e-mail alla creazione di una richiesta appuntamento.
+ *
+ * @param int   $postId
+ * @param array $params
+ * @param string $data
+ */
+function dci_send_appuntamento_notification($postId, $params, $data) {
+    if (empty($postId)) {
+        return;
+    }
+
+    $to = dci_get_option('email_prenota_appuntamento');
+    if (empty($to)) {
+        $to = dci_get_option('email_principale');
+    }
+    if (empty($to)) {
+        $to = get_option('admin_email');
+    }
+    if (!is_email($to)) {
+        return;
+    }
+
+    $service_name = '';
+    if (array_key_exists('service', $params) && $params['service'] != "null") {
+        $service_obj = json_decode(stripslashes($params['service']), true);
+        $service_name = $service_obj['name'] ?? '';
+    }
+
+    $office_name = '';
+    if (array_key_exists('office', $params) && $params['office'] != "null") {
+        $office_obj = json_decode(stripslashes($params['office']), true);
+        $office_name = $office_obj['name'] ?? '';
+    }
+
+    $appointment_start = '';
+    $appointment_end = '';
+    if (array_key_exists('appointment', $params) && $params['appointment'] != "null") {
+        $appointment_obj = json_decode(stripslashes($params['appointment']), true);
+        $appointment_start = $appointment_obj['startDate'] ?? '';
+        $appointment_end = $appointment_obj['endDate'] ?? '';
+    }
+
+    $subject = sprintf('[%s] Nuova richiesta prenotazione appuntamento', wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES));
+    $message_lines = array(
+        'È stata creata una nuova richiesta di prenotazione appuntamento.',
+        '',
+        'ID richiesta: ' . $postId,
+        'Data richiesta: ' . $data,
+        'Nome: ' . ($params['name'] ?? ''),
+        'Cognome: ' . ($params['surname'] ?? ''),
+        'Email richiedente: ' . ($params['email'] ?? ''),
+        'Ufficio: ' . $office_name,
+        'Servizio: ' . $service_name,
+        'Dettagli: ' . ($params['moreDetails'] ?? ''),
+        'Inizio appuntamento: ' . $appointment_start,
+        'Fine appuntamento: ' . $appointment_end,
+        '',
+        'Link nel pannello admin: ' . admin_url('post.php?post=' . $postId . '&action=edit'),
+    );
+    $message = implode("\n", $message_lines);
+    $headers = array('Content-Type: text/plain; charset=UTF-8');
+
+    wp_mail($to, $subject, $message, $headers);
+}
