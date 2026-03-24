@@ -14,9 +14,17 @@ $current_group = dci_get_current_group();
 <!doctype html>
 <html lang="it">
 <head>
+    <?php
+    $external_head_html = function_exists('dci_get_external_head_html') ? dci_get_external_head_html() : '';
+    if (!empty($external_head_html)) {
+        echo $external_head_html;
+        wp_head();
+    } else {
+    ?>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<?php wp_head(); ?>
+		<?php wp_head(); ?>
+    <?php } ?>
 </head>
 <body <?php body_class(); ?>>
 
@@ -264,7 +272,41 @@ $current_group = dci_get_current_group();
 if(!is_user_logged_in())
     get_template_part("template-parts/common/access-modal");
 ?>
-	
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof window.prompt === 'function' && !window.__dciPromptGuardApplied) {
+    var originalPrompt = window.prompt.bind(window);
+    window.prompt = function(message, defaultValue) {
+      if (typeof message === 'string' && message.toLowerCase().indexOf('cosa vuoi cercare') !== -1) {
+        return null;
+      }
+      return originalPrompt(message, defaultValue);
+    };
+    window.__dciPromptGuardApplied = true;
+  }
+
+  var originalSearchTrigger = document.getElementById('search-home');
+  if (!originalSearchTrigger) return;
+
+  // Rimuove eventuali listener pre-esistenti clonando il bottone.
+  var cleanSearchTrigger = originalSearchTrigger.cloneNode(true);
+  originalSearchTrigger.parentNode.replaceChild(cleanSearchTrigger, originalSearchTrigger);
+
+  cleanSearchTrigger.addEventListener('click', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (typeof event.stopImmediatePropagation === 'function') {
+      event.stopImmediatePropagation();
+    }
+
+    var modalEl = document.getElementById('search-modal');
+    if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+      window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    }
+  }, true);
+});
+</script>
+		
 <style>
 @media (max-width: 767.98px) {
   /* Riduce margine e padding tra voci menu mobile */
