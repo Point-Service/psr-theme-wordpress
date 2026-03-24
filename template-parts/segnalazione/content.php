@@ -2,6 +2,7 @@
 <?php
 
     $disservizi = dci_get_disservizi_names();
+    $privacy_url = dci_get_template_page_url('page-templates/privacy.php') ?: home_url('/page-templates/privacy');
 
     $uffici = get_posts(array(
         'posts_per_page' => -1,
@@ -35,7 +36,7 @@
             </p>
             <p class="text-paragraph mb-0">
               Per i dettagli sul trattamento dei dati personali consulta l’
-              <a href="#" class="t-primary">informativa sulla privacy.</a>
+              <a href="<?php echo esc_url($privacy_url); ?>" class="t-primary">informativa sulla privacy.</a>
             </p>
     
             <div class="form-check mt-4 mb-3 mt-md-40 mb-lg-40">

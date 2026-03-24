@@ -24,6 +24,7 @@ get_header();
 			the_post();
 
 			$description = dci_get_meta('descrizione','_dci_page_',$post->ID);
+            $privacy_url = dci_get_template_page_url('page-templates/privacy.php') ?: home_url('/page-templates/privacy');
             $categorie_servizio = get_terms(array (
                 'taxonomy' => 'categorie_servizio',
                 'orderby' => 'name',
@@ -215,7 +216,7 @@ get_header();
                             <div class="privacy-wrapper">
                                 <p class="text-paragraph mb-3">
                                     Per i dettagli sul trattamento dei dati personali consulta l’
-                                    <a href="#" class="t-primary">informativa sulla privacy.</a>
+                                    <a href="<?php echo esc_url($privacy_url); ?>" class="t-primary">informativa sulla privacy.</a>
                                 </p>
 
                                 <div class="form-check mb-2">

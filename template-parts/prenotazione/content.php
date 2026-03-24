@@ -24,6 +24,7 @@
         if($currentMonth >= 12) $currentMonth = 0;
         $currentMonth++;
     }
+    $privacy_url = dci_get_template_page_url('page-templates/privacy.php') ?: home_url('/page-templates/privacy');
 ?>
 
 <style>
@@ -184,6 +185,10 @@
 
     <!-- Step 4 -->
     <section class="d-none page-step it-page-section" data-steps="4">
+        <p class="text-paragraph mb-3">
+            Per i dettagli sul trattamento dei dati personali consulta l’
+            <a href="<?php echo esc_url($privacy_url); ?>" class="t-primary">informativa sulla privacy.</a>
+        </p>
         <p class="subtitle-small pb-40 mb-0 d-lg-none">
             Hai un’identità digitale SPID o CIE?
             <a class="title-small-semi-bold t-primary underline"
