@@ -203,6 +203,11 @@ function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
  * @return bool
  */
 function dci_is_festivo_nazionale(DateTime $date) {
+    // Tutte le domeniche sono giorni festivi a livello nazionale.
+    if ((int) $date->format('N') === 7) {
+        return true;
+    }
+
     $fixed_holidays = array(
         '01-01', // Capodanno
         '01-06', // Epifania
@@ -215,8 +220,13 @@ function dci_is_festivo_nazionale(DateTime $date) {
         '12-25', // Natale
         '12-26', // Santo Stefano
     );
+    $day_month = $date->format('m-d');
+    if (in_array($day_month, $fixed_holidays, true)) {
+        return true;
+    }
 
-    if (in_array($date->format('m-d'), $fixed_holidays, true)) {
+    // Festività regionale applicata solo ai comuni con regione impostata su Sicilia.
+    if (dci_is_regione_sicilia() && $day_month === '05-15') {
         return true;
     }
 
@@ -227,6 +237,20 @@ function dci_is_festivo_nazionale(DateTime $date) {
 
     return $date->format('Y-m-d') === $easter->format('Y-m-d') ||
         $date->format('Y-m-d') === $easter_monday->format('Y-m-d');
+}
+
+/**
+ * Verifica se il comune configurato appartiene alla Regione Sicilia.
+ *
+ * @return bool
+ */
+function dci_is_regione_sicilia() {
+    $nome_regione = dci_get_option('nome_regione');
+    if (!is_string($nome_regione)) {
+        return false;
+    }
+
+    return sanitize_title($nome_regione) === 'sicilia';
 }
 
 /**
