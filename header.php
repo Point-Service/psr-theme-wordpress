@@ -35,6 +35,29 @@ $current_group = dci_get_current_group();
 
 <?php if (!empty($external_header_html)) : ?>
     <?php echo $external_header_html; ?>
+    <?php
+    $external_home_redirect = trim((string) dci_get_option('url_homesoloesterno'));
+    if ($external_home_redirect !== '' && !preg_match('#^https?://#i', $external_home_redirect)) {
+        $external_home_redirect = 'https://' . ltrim($external_home_redirect, '/');
+    }
+    if ($external_home_redirect !== '' && filter_var($external_home_redirect, FILTER_VALIDATE_URL)) :
+    ?>
+        <script>
+        document.addEventListener('submit', function(event) {
+          var form = event.target;
+          if (!form || !form.querySelector) return;
+          var searchInput = form.querySelector('input[name="s"]');
+          if (!searchInput) return;
+          event.preventDefault();
+          var query = (searchInput.value || '').trim();
+          var destination = '<?php echo esc_js(trailingslashit($external_home_redirect)); ?>';
+          if (query) {
+            destination += '?s=' + encodeURIComponent(query);
+          }
+          window.location.href = destination;
+        }, true);
+        </script>
+    <?php endif; ?>
 <?php else : ?>
 
 <header

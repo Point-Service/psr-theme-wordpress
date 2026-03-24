@@ -161,6 +161,43 @@ function custom_menu_order($menu_ord) {
 add_filter('custom_menu_order', 'custom_menu_order');
 add_filter('menu_order', 'custom_menu_order');
 
+/**
+ * In modalità portale esterno inoltra sempre la ricerca verso il portale principale.
+ */
+function dci_redirect_external_search_to_main_portal() {
+    if (is_admin()) {
+        return;
+    }
+
+    $search_term = get_query_var('s');
+    if (!is_string($search_term) || trim($search_term) === '') {
+        return;
+    }
+
+    $external_only_raw = dci_get_option('ck_portalesoloperusoesterno');
+    $is_external_only = in_array(strtolower((string) $external_only_raw), array('1', 'true', 'yes', 'on'), true);
+    if (!$is_external_only) {
+        return;
+    }
+
+    $external_home = trim((string) dci_get_option('url_homesoloesterno'));
+    if ($external_home !== '' && !preg_match('#^https?://#i', $external_home)) {
+        $external_home = 'https://' . ltrim($external_home, '/');
+    }
+    if ($external_home === '' || !filter_var($external_home, FILTER_VALIDATE_URL)) {
+        return;
+    }
+
+    $target_url = add_query_arg('s', $search_term, trailingslashit($external_home));
+    if (!empty($_GET['type'])) {
+        $target_url = add_query_arg('type', sanitize_text_field(wp_unslash($_GET['type'])), $target_url);
+    }
+
+    wp_safe_redirect($target_url, 302);
+    exit;
+}
+add_action('template_redirect', 'dci_redirect_external_search_to_main_portal', 1);
+
 
 /**
  * filter for search
@@ -423,4 +460,3 @@ function dci_edit_permission_check() {
 
 }
 add_filter( 'admin_head', 'dci_edit_permission_check', 1, 4 );
-
