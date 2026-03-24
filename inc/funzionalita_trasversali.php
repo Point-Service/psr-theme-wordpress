@@ -84,6 +84,183 @@ function dci_register_servizi_ufficio_route() {
 add_action('rest_api_init', 'dci_register_servizi_ufficio_route');
 
 /**
+ * Espone gli slot prenotabili costruiti dall'orario associato all'Unità organizzativa.
+ */
+function dci_register_appuntamenti_ufficio_route() {
+    register_rest_route('wp/v2', '/appuntamenti/ufficio/', array(
+        'methods' => 'GET',
+        'callback' => 'dci_get_appuntamenti_ufficio'
+    ));
+}
+add_action('rest_api_init', 'dci_register_appuntamenti_ufficio_route');
+
+/**
+ * Genera gli slot appuntamento del mese richiesto a partire dall'orario UO.
+ *
+ * @param WP_REST_Request $request
+ * @return array
+ */
+function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
+    $office_id = absint($request->get_param('id'));
+    $month = absint($request->get_param('month'));
+    $year = absint($request->get_param('year'));
+
+    if ($office_id <= 0) {
+        return array(
+            "error" => array(
+                "code" => 400,
+                "message" => "Parametro id mancante o non valido."
+            )
+        );
+    }
+
+    if ($month < 1 || $month > 12) {
+        $month = (int) wp_date('n');
+    }
+    if ($year < 1) {
+        $year = (int) wp_date('Y');
+    }
+
+    $orario_id = absint(dci_get_meta('orario_uo', '_dci_unita_organizzativa_', $office_id));
+    if ($orario_id <= 0) {
+        return array();
+    }
+
+    $prefix = '_dci_orario_';
+    $data_inizio_raw = get_post_meta($orario_id, $prefix . 'data_inizio', true);
+    $data_fine_raw = get_post_meta($orario_id, $prefix . 'data_fine', true);
+
+    $data_inizio = DateTime::createFromFormat('d-m-Y', $data_inizio_raw) ?: null;
+    $data_fine = DateTime::createFromFormat('d-m-Y', $data_fine_raw) ?: null;
+    if (!$data_inizio || !$data_fine) {
+        return array();
+    }
+
+    $first_day = DateTime::createFromFormat('Y-n-j H:i:s', $year . '-' . $month . '-1 00:00:00');
+    $last_day = clone $first_day;
+    $last_day->modify('last day of this month')->setTime(23, 59, 59);
+
+    $slot_duration = 45; // minuti
+    $giorni_map = array(
+        1 => 'lun',
+        2 => 'mar',
+        3 => 'mer',
+        4 => 'gio',
+        5 => 'ven',
+        6 => 'sab',
+        7 => 'dom',
+    );
+
+    $slots = array();
+    $cursor = clone $first_day;
+    $now = new DateTime('now', wp_timezone());
+
+    while ($cursor <= $last_day) {
+        if ($cursor >= $data_inizio && $cursor <= $data_fine && !dci_is_festivo_nazionale($cursor)) {
+            $weekday = (int) $cursor->format('N');
+            $day_prefix = $giorni_map[$weekday];
+
+            $mattina = get_post_meta($orario_id, $prefix . $day_prefix . '_mattina', true);
+            $pomeriggio = get_post_meta($orario_id, $prefix . $day_prefix . '_pomeriggio', true);
+
+            $fasce = array_filter(array($mattina, $pomeriggio));
+            foreach ($fasce as $fascia) {
+                $parsed = dci_parse_orario_range($fascia);
+                if (!$parsed) {
+                    continue;
+                }
+
+                list($start_h, $start_m, $end_h, $end_m) = $parsed;
+                $slot_start = (clone $cursor)->setTime($start_h, $start_m, 0);
+                $slot_end_limit = (clone $cursor)->setTime($end_h, $end_m, 0);
+
+                while ((clone $slot_start)->modify('+' . $slot_duration . ' minutes') <= $slot_end_limit) {
+                    $slot_end = (clone $slot_start)->modify('+' . $slot_duration . ' minutes');
+                    if ($slot_start <= $now) {
+                        $slot_start = $slot_end;
+                        continue;
+                    }
+
+                    $slots[] = array(
+                        'startDate' => $slot_start->format('Y-m-d\TH:i'),
+                        'endDate' => $slot_end->format('Y-m-d\TH:i'),
+                    );
+                    $slot_start = $slot_end;
+                }
+            }
+        }
+
+        $cursor->modify('+1 day')->setTime(0, 0, 0);
+    }
+
+    return $slots;
+}
+
+/**
+ * Verifica se una data ricade in un giorno festivo nazionale.
+ *
+ * @param DateTime $date
+ * @return bool
+ */
+function dci_is_festivo_nazionale(DateTime $date) {
+    $fixed_holidays = array(
+        '01-01', // Capodanno
+        '01-06', // Epifania
+        '04-25', // Liberazione
+        '05-01', // Festa del Lavoro
+        '06-02', // Festa della Repubblica
+        '08-15', // Ferragosto
+        '11-01', // Ognissanti
+        '12-08', // Immacolata
+        '12-25', // Natale
+        '12-26', // Santo Stefano
+    );
+
+    if (in_array($date->format('m-d'), $fixed_holidays, true)) {
+        return true;
+    }
+
+    $year = (int) $date->format('Y');
+    $easter_timestamp = easter_date($year);
+    $easter = (new DateTime('@' . $easter_timestamp))->setTimezone(wp_timezone());
+    $easter_monday = (clone $easter)->modify('+1 day');
+
+    return $date->format('Y-m-d') === $easter->format('Y-m-d') ||
+        $date->format('Y-m-d') === $easter_monday->format('Y-m-d');
+}
+
+/**
+ * Parsing range orario "08:30 - 12:30".
+ *
+ * @param string $range
+ * @return array|null
+ */
+function dci_parse_orario_range($range) {
+    if (!is_string($range) || trim($range) === '') {
+        return null;
+    }
+
+    if (!preg_match('/^\s*(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})\s*$/', $range, $matches)) {
+        return null;
+    }
+
+    $start_h = (int) $matches[1];
+    $start_m = (int) $matches[2];
+    $end_h = (int) $matches[3];
+    $end_m = (int) $matches[4];
+
+    if ($start_h > 23 || $end_h > 23 || $start_m > 59 || $end_m > 59) {
+        return null;
+    }
+
+    if ($end_h < $start_h || ($end_h === $start_h && $end_m <= $start_m)) {
+        return null;
+    }
+
+    return array($start_h, $start_m, $end_h, $end_m);
+}
+
+/**
  * restituisce i servizi che sono disponibili presso l'Unità Organizzativa passata come parametro (id o title)
  * @param WP_REST_Request $request
  * @return array[]
