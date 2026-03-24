@@ -112,7 +112,8 @@ add_action('rest_api_init', 'dci_register_footer_export_route');
  * @return array
  */
 function dci_get_rendered_footer() {
-    $is_external_only = dci_get_option('ck_portalesoloperusoesterno') === 'true';
+    $external_only_raw = dci_get_option('ck_portalesoloperusoesterno');
+    $is_external_only = in_array(strtolower((string) $external_only_raw), array('1', 'true', 'yes', 'on'), true);
     $external_home = trim((string) dci_get_option('url_homesoloesterno'));
 
     if ($is_external_only && !empty($external_home)) {
@@ -130,6 +131,23 @@ function dci_get_rendered_footer() {
         if (!empty($external_parts['scheme']) && !empty($external_parts['host'])) {
             $root_home = $external_parts['scheme'] . '://' . $external_parts['host'] . '/';
             $candidate_homes[] = $root_home;
+
+            if (!empty($external_parts['path'])) {
+                $path = '/' . ltrim($external_parts['path'], '/');
+                $candidate_homes[] = trailingslashit($external_parts['scheme'] . '://' . $external_parts['host'] . untrailingslashit($path));
+
+                if (strpos($path, '/index.php/') !== false) {
+                    $before_index = strstr($path, '/index.php/', true);
+                    if ($before_index !== false && $before_index !== '') {
+                        $candidate_homes[] = trailingslashit($external_parts['scheme'] . '://' . $external_parts['host'] . $before_index);
+                    }
+                }
+
+                $dirname_path = untrailingslashit(wp_normalize_path(dirname($path)));
+                if ($dirname_path !== '' && $dirname_path !== '.' && $dirname_path !== '/') {
+                    $candidate_homes[] = trailingslashit($external_parts['scheme'] . '://' . $external_parts['host'] . $dirname_path);
+                }
+            }
         }
         $candidate_homes = array_values(array_unique(array_filter($candidate_homes)));
 
