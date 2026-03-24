@@ -14,15 +14,88 @@ $current_group = dci_get_current_group();
 <!doctype html>
 <html lang="it">
 <head>
+    <?php
+    $external_head_html = function_exists('dci_get_external_head_html') ? dci_get_external_head_html() : '';
+    if (!empty($external_head_html)) {
+        echo $external_head_html;
+        wp_head();
+    } else {
+    ?>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<?php wp_head(); ?>
+		<?php wp_head(); ?>
+    <?php } ?>
 </head>
 <body <?php body_class(); ?>>
 
 <?php get_template_part("template-parts/common/svg"); ?>
 <?php get_template_part("template-parts/common/sprites"); ?>
 <?php get_template_part("template-parts/common/skiplink"); ?>
+
+<?php $external_header_html = function_exists('dci_get_external_header_html') ? dci_get_external_header_html() : ''; ?>
+
+<?php if (!empty($external_header_html)) : ?>
+    <?php echo $external_header_html; ?>
+    <?php
+    $external_home_redirect = trim((string) dci_get_option('url_homesoloesterno'));
+    if ($external_home_redirect !== '' && !preg_match('#^https?://#i', $external_home_redirect)) {
+        $external_home_redirect = 'https://' . ltrim($external_home_redirect, '/');
+    }
+    if ($external_home_redirect !== '' && filter_var($external_home_redirect, FILTER_VALIDATE_URL)) :
+        $external_home_parts = wp_parse_url($external_home_redirect);
+        if (!empty($external_home_parts['scheme']) && !empty($external_home_parts['host'])) {
+            $external_home_redirect = $external_home_parts['scheme'] . '://' . $external_home_parts['host'] . '/';
+        }
+    ?>
+        <script>
+        document.addEventListener('submit', function(event) {
+          var form = event.target;
+          if (!form || !form.querySelector) return;
+          var searchInput = form.querySelector('input[name="s"]');
+          if (!searchInput) return;
+          event.preventDefault();
+          var query = (searchInput.value || '').trim();
+          var destination = '<?php echo esc_js(trailingslashit($external_home_redirect)); ?>';
+          if (query) {
+            destination += '?s=' + encodeURIComponent(query);
+          }
+          window.location.href = destination;
+        }, true);
+
+        document.addEventListener('click', function(event) {
+          var trigger = event.target.closest('.search-link, [data-bs-target="#search-modal"]');
+          if (!trigger) return;
+          event.preventDefault();
+          var modalEl = document.querySelector('#search-modal');
+          if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+            window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+            return;
+          }
+
+          var query = window.prompt('Cosa vuoi cercare?');
+          if (query === null) return;
+          query = query.trim();
+          var destination = '<?php echo esc_js(trailingslashit($external_home_redirect)); ?>';
+          if (query) {
+            destination += '?s=' + encodeURIComponent(query);
+          }
+          window.location.href = destination;
+        }, true);
+        </script>
+        <style>
+        .it-header-wrapper a,
+        .it-header-slim-wrapper a,
+        .it-header-wrapper a:hover,
+        .it-header-slim-wrapper a:hover,
+        .it-header-wrapper a:focus,
+        .it-header-slim-wrapper a:focus,
+        .it-header-wrapper a:active,
+        .it-header-slim-wrapper a:active {
+          color: #fff !important;
+        }
+        </style>
+    <?php endif; ?>
+<?php else : ?>
 
 <header
     class="it-header-wrapper"
@@ -258,6 +331,7 @@ $current_group = dci_get_current_group();
     </div>
   </div>
 </header>
+<?php endif; ?>
 
 <?php get_template_part("template-parts/common/search-modal"); ?>
 <?php
