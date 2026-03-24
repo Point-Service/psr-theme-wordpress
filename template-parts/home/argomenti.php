@@ -14,6 +14,7 @@ $check_immagini = dci_get_option('ch_show_sfondo_argomenti','homepage');
 
 $img_default = get_template_directory_uri() . '/assets/img/bg_placeholder-blu.png';
 $img_ricavata = dci_get_option('immagine-argomenti','homepage');
+$has_custom_bg = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null);
 $img = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null)
     ? $img_ricavata
     : $img_default;
@@ -110,6 +111,12 @@ $img = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null)
 /* Sfondo sezione Argomenti in Evidenza (dinamico sul colore tema primaria) */
 .argomenti-evidenza-bg {
     background-color: var(--bs-primary, #026e64);
+    <?php if ($has_custom_bg) { ?>
+    background-image: url('<?php echo esc_url($img); ?>');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    <?php } ?>
     position: relative;
     padding: 60px 0;
     overflow: hidden;
@@ -123,8 +130,10 @@ $img = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null)
     inset: 0;
     z-index: 1;
     background:
+        <?php if (!$has_custom_bg) { ?>
         linear-gradient(160deg, rgba(255, 255, 255, 0.08) 8%, transparent 8%) 0 0 / 42% 100% no-repeat,
         linear-gradient(20deg, rgba(255, 255, 255, 0.09) 10%, transparent 10%) 100% 0 / 48% 100% no-repeat,
+        <?php } ?>
         linear-gradient(120deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.1));
 }
 
