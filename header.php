@@ -353,7 +353,7 @@ if(!is_user_logged_in())
 ?>
 <script>
 document.addEventListener('click', function(event) {
-  var searchTrigger = event.target.closest('#search-home, .search-link[data-bs-target="#search-modal"]');
+  var searchTrigger = event.target.closest('#search-home');
   if (!searchTrigger) return;
 
   event.preventDefault();

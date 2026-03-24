@@ -103,6 +103,15 @@
                                     )
                                 );
 
+                                if (!(is_array($popular_posts->posts) && count($popular_posts->posts) > 0)) {
+                                    $popular_posts = new WP_Query( array(
+                                        'post_type'      => dci_get_sercheable_tipologie(),
+                                        'posts_per_page' => 7,
+                                        'orderby'        => 'date',
+                                        'order'          => 'DESC',
+                                    ) );
+                                }
+
                                 if (is_array($popular_posts->posts) && count($popular_posts->posts)>0) {
                                     foreach ($popular_posts->posts as $post) {
                                     $group = dci_get_group($post->post_type);
@@ -120,7 +129,7 @@
                                 }} else { ?>
                                     <li>Nessun risultato</li>
                                 <?php };
-                                wp_reset_query();
+                                wp_reset_postdata();
                                 ?>
                             </ul>
                           </div>
