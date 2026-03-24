@@ -261,7 +261,20 @@ function dci_register_comune_options(){
             'name'    => __('Richiama footer da Url Home', 'design_comuni_italia'),
             'desc'    => __('Abilita/disabilita il recupero del footer dal portale principale indicato nel campo Url Home Page Personalizzato.', 'design_comuni_italia'),
             'type'    => 'radio_inline',
-            'default' => 'true',
+            'default' => 'false',
+            'options' => array(
+                'true'  => __('Sì', 'design_comuni_italia'),
+                'false' => __('No', 'design_comuni_italia'),
+            ),
+            'show_on_cb' => 'dci_show_only_super_admin_field',
+        ));
+
+        $header_options->add_field( array(
+            'id'      => $prefix . 'ck_richiama_head_portale_principale',
+            'name'    => __('Richiama head da Url Home', 'design_comuni_italia'),
+            'desc'    => __('Abilita/disabilita il recupero del blocco head dal portale principale indicato nel campo Url Home Page Personalizzato.', 'design_comuni_italia'),
+            'type'    => 'radio_inline',
+            'default' => 'false',
             'options' => array(
                 'true'  => __('Sì', 'design_comuni_italia'),
                 'false' => __('No', 'design_comuni_italia'),
