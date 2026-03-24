@@ -151,6 +151,12 @@ function dci_register_comune_options(){
         'desc' => __( 'Utilizzare questo campo per specificare il link alla pagina prenota appuntamento'),
         'type' => 'text'
     ));
+    $header_options->add_field( array(
+        'id'    => $prefix . 'email_prenota_appuntamento',
+        'name' => __('E-mail notifiche prenota appuntamento', 'design_comuni_italia' ),
+        'desc' => __( 'Indirizzo e-mail che riceve le notifiche delle nuove richieste di prenotazione appuntamento (se vuoto, viene usata la e-mail principale).'),
+        'type' => 'text_email'
+    ));
 
 
     
