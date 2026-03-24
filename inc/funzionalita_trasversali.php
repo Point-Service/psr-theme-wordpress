@@ -109,9 +109,9 @@ add_action('rest_api_init', 'dci_register_footer_export_route');
 /**
  * Restituisce uno snapshot HTML del footer del tema.
  *
- * @return array
+ * @return array|null
  */
-function dci_get_rendered_footer() {
+function dci_get_external_footer_payload() {
     $external_only_raw = dci_get_option('ck_portalesoloperusoesterno');
     $is_external_only = in_array(strtolower((string) $external_only_raw), array('1', 'true', 'yes', 'on'), true);
     $external_home = trim((string) dci_get_option('url_homesoloesterno'));
@@ -205,6 +205,20 @@ function dci_get_rendered_footer() {
                 }
             }
         }
+    }
+
+    return null;
+}
+
+/**
+ * Restituisce uno snapshot HTML del footer del tema.
+ *
+ * @return array
+ */
+function dci_get_rendered_footer() {
+    $external_payload = dci_get_external_footer_payload();
+    if (is_array($external_payload) && !empty($external_payload['html'])) {
+        return $external_payload;
     }
 
     ob_start();
