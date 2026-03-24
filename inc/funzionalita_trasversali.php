@@ -522,11 +522,12 @@ function dci_save_appuntamento(){
         update_post_meta($postId, '_dci_appuntamento_data_ora_fine_appuntamento',  $endDate);
     }
 
-    dci_send_appuntamento_notification($postId, $params, $data);
+    $mail_sent = dci_send_appuntamento_notification($postId, $params, $data);
 
     echo json_encode(array(
         "success" => true,
         "message" => 'Contenuto creato con successo: '.$postId,
+        "mail_sent" => $mail_sent,
         "appuntamento" => array(
             "id" => $postId),
         "title" => $appuntamento_title
@@ -542,13 +543,14 @@ add_action("wp_ajax_nopriv_save_appuntamento" , "dci_save_appuntamento");
 /**
  * Invia una notifica e-mail alla creazione di una richiesta appuntamento.
  *
- * @param int   $postId
- * @param array $params
+ * @param int    $postId
+ * @param array  $params
  * @param string $data
+ * @return bool
  */
 function dci_send_appuntamento_notification($postId, $params, $data) {
     if (empty($postId)) {
-        return;
+        return false;
     }
 
     $to = dci_get_option('email_prenota_appuntamento');
@@ -559,7 +561,7 @@ function dci_send_appuntamento_notification($postId, $params, $data) {
         $to = get_option('admin_email');
     }
     if (!is_email($to)) {
-        return;
+        return false;
     }
 
     $service_name = '';
@@ -602,5 +604,15 @@ function dci_send_appuntamento_notification($postId, $params, $data) {
     $message = implode("\n", $message_lines);
     $headers = array('Content-Type: text/plain; charset=UTF-8');
 
-    wp_mail($to, $subject, $message, $headers);
+    $from = dci_get_option('email_principale');
+    if (is_email($from)) {
+        $headers[] = 'From: ' . wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES) . ' <' . $from . '>';
+    }
+
+    $requester_email = $params['email'] ?? '';
+    if (is_email($requester_email)) {
+        $headers[] = 'Reply-To: ' . $requester_email;
+    }
+
+    return wp_mail($to, $subject, $message, $headers);
 }
