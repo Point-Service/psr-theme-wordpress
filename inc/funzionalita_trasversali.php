@@ -288,6 +288,23 @@ function dci_extract_head_html($html) {
     return '';
 }
 
+/**
+ * Estrae il blocco <header> da una pagina completa.
+ *
+ * @param string $html
+ * @return string
+ */
+function dci_extract_header_html($html) {
+    if (!is_string($html) || $html === '') {
+        return '';
+    }
+
+    if (preg_match('/<header[\\s\\S]*?<\\/header>/i', $html, $matches)) {
+        return trim($matches[0]);
+    }
+
+    return '';
+}
 
 /**
  * Recupera il blocco head del portale principale (se configurato).
@@ -352,6 +369,59 @@ function dci_get_external_head_html() {
             $head_html = dci_extract_head_html(wp_remote_retrieve_body($response));
             if (!empty($head_html)) {
                 return $head_html;
+            }
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Recupera il blocco header del portale principale (se configurato).
+ *
+ * @return string
+ */
+function dci_get_external_header_html() {
+    $external_only_raw = dci_get_option('ck_portalesoloperusoesterno');
+    $is_external_only = in_array(strtolower((string) $external_only_raw), array('1', 'true', 'yes', 'on'), true);
+    $external_head_toggle_raw = dci_get_option('ck_richiama_head_portale_principale', 'dci_options', 'false');
+    $should_fetch_external_header = in_array(strtolower((string) $external_head_toggle_raw), array('1', 'true', 'yes', 'on'), true);
+    $external_home = trim((string) dci_get_option('url_homesoloesterno'));
+
+    if (!$is_external_only || !$should_fetch_external_header) {
+        return '';
+    }
+
+    if (!empty($external_home) && !preg_match('#^https?://#i', $external_home)) {
+        $external_home = 'https://' . ltrim($external_home, '/');
+    }
+    if (empty($external_home) || !filter_var($external_home, FILTER_VALIDATE_URL)) {
+        return '';
+    }
+
+    $external_parts = wp_parse_url($external_home);
+    if (empty($external_parts['scheme']) || empty($external_parts['host'])) {
+        return '';
+    }
+
+    $candidate_homes = array();
+    $candidate_homes[] = trailingslashit($external_home);
+    $candidate_homes[] = $external_parts['scheme'] . '://' . $external_parts['host'] . '/';
+    $candidate_homes = array_values(array_unique(array_filter($candidate_homes)));
+
+    $request_args = array(
+        'timeout' => 12,
+        'redirection' => 5,
+        'user-agent' => 'PSR-Theme-Header-Fetch/1.0 (+'. home_url('/') .')',
+        'sslverify' => false,
+    );
+
+    foreach ($candidate_homes as $candidate_home) {
+        $response = wp_remote_get($candidate_home, $request_args);
+        if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+            $header_html = dci_extract_header_html(wp_remote_retrieve_body($response));
+            if (!empty($header_html)) {
+                return $header_html;
             }
         }
     }
