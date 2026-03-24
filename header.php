@@ -31,6 +31,12 @@ $current_group = dci_get_current_group();
 <?php get_template_part("template-parts/common/sprites"); ?>
 <?php get_template_part("template-parts/common/skiplink"); ?>
 
+<?php $external_header_html = function_exists('dci_get_external_header_html') ? dci_get_external_header_html() : ''; ?>
+
+<?php if (!empty($external_header_html)) : ?>
+    <?php echo $external_header_html; ?>
+<?php else : ?>
+
 <header
     class="it-header-wrapper"
     data-bs-target="#header-nav-wrapper"
@@ -265,6 +271,7 @@ $current_group = dci_get_current_group();
     </div>
   </div>
 </header>
+<?php endif; ?>
 
 <?php get_template_part("template-parts/common/search-modal"); ?>
 <?php
