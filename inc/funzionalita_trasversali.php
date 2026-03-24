@@ -125,6 +125,13 @@ function dci_get_rendered_footer() {
     if ($is_external_only && !empty($external_home) && filter_var($external_home, FILTER_VALIDATE_URL)) {
         $current_home = trailingslashit(home_url('/'));
         $external_parts = wp_parse_url($external_home);
+        $request_args = array(
+            'timeout' => 12,
+            'redirection' => 5,
+            'user-agent' => 'PSR-Theme-Footer-Fetch/1.0 (+'. home_url('/') .')',
+            'sslverify' => false,
+        );
+        $attempted_sources = array();
 
         $candidate_homes = array();
         $candidate_homes[] = trailingslashit($external_home);
@@ -159,12 +166,14 @@ function dci_get_rendered_footer() {
             }
 
             $external_api = trailingslashit($candidate_home) . 'wp-json/wp/v2/footer/rendered/';
-            $api_response = wp_remote_get($external_api, array('timeout' => 12));
+            $attempted_sources[] = $external_api;
+            $api_response = wp_remote_get($external_api, $request_args);
 
             if (!is_wp_error($api_response) && wp_remote_retrieve_response_code($api_response) === 200) {
                 $payload = json_decode(wp_remote_retrieve_body($api_response), true);
                 if (is_array($payload) && !empty($payload['html'])) {
                     $payload['source'] = $external_api;
+                    $payload['attempted_sources'] = $attempted_sources;
                     return $payload;
                 }
             }
@@ -176,7 +185,8 @@ function dci_get_rendered_footer() {
                 continue;
             }
 
-            $home_response = wp_remote_get($candidate_home, array('timeout' => 12));
+            $attempted_sources[] = $candidate_home;
+            $home_response = wp_remote_get($candidate_home, $request_args);
             if (!is_wp_error($home_response) && wp_remote_retrieve_response_code($home_response) === 200) {
                 $external_html = wp_remote_retrieve_body($home_response);
                 $footer_html = dci_extract_footer_html($external_html);
@@ -186,6 +196,7 @@ function dci_get_rendered_footer() {
                         'generated_at' => current_time('c'),
                         'html' => $footer_html,
                         'source' => $candidate_home,
+                        'attempted_sources' => $attempted_sources,
                         'assets' => array(
                             'css' => array(),
                             'js' => array(),
@@ -206,6 +217,7 @@ function dci_get_rendered_footer() {
         'success' => true,
         'generated_at' => current_time('c'),
         'html' => $footer_html,
+        'source' => home_url('/'),
         'assets' => array(
             'css' => array(
                 get_template_directory_uri() . '/assets/css/bootstrap-italia-comuni.min.css',
