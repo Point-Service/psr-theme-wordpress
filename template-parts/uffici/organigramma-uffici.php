@@ -407,22 +407,23 @@ $posts = $the_query->posts;
 $organi_indirizzo = [];
 $organi_gestione = [];
 $articolazioni = [];
+$aree = [];
 $seen_indirizzo = [];
 $seen_gestione = [];
 $seen_articolazioni = [];
 
 foreach ($posts as $post) {
-    $terms = wp_get_post_terms($post->ID, 'tipi_unita_organizzativa');
-    $term_slugs = [];
 
-    if (!empty($terms) && !is_wp_error($terms)) {
-        $term_slugs = array_map(
-            static function ($term) {
-                return sanitize_title($term->slug);
-            },
-            $terms
-        );
+    $parent_id = wp_get_post_parent_id($post->ID);
+
+    if ($parent_id) {
+        // è un ufficio → lo metto sotto l'area
+        $aree[$parent_id][] = $post;
+    } else {
+        // è un'area
+        $aree[$post->ID] = $aree[$post->ID] ?? [];
     }
+}
 
     if (
         in_array('ufficio', $term_slugs, true) ||
@@ -560,6 +561,19 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
         color: #0066cc;
     }
 
+    .dci-at-area-block {
+    margin-bottom: 2.5rem;
+    }
+    
+    .dci-at-area-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #17324d;
+        border-left: 4px solid #0066cc;
+        padding-left: .75rem;
+    }
+
     /* RESPONSIVE */
     @media (max-width: 991px) {
         .dci-at-office-grid {
@@ -581,6 +595,8 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
             padding: 1rem;
         }
     }
+
+    
 </style>
 
 <div class="container">
@@ -628,17 +644,33 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
                 <section id="articolazione-uffici" class="dci-at-section">
                     <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
 
-                    <div class="dci-at-office-grid">
-                        <?php if (!empty($articolazioni_paged)) {
-                            foreach ($articolazioni_paged as $post) {
-                                dci_articolazione_render_office_card($post);
-                            }
-                        } else { ?>
-                            <div class="dci-at-office-cell">
-                                <p>Nessun ufficio disponibile.</p>
-                            </div>
-                        <?php } ?>
-                    </div>
+                            <?php foreach ($aree as $area_id => $uffici) {
+                            
+                                $area = get_post($area_id);
+                                if (!$area) continue;
+                            ?>
+                            
+                                <div class="dci-at-area-block">
+                            
+                                    <!-- TITOLO AREA -->
+                                    <h3 class="dci-at-area-title">
+                                        <?php echo esc_html($area->post_title); ?>
+                                    </h3>
+                            
+                                    <!-- GRID UFFICI -->
+                                    <div class="dci-at-office-grid">
+                                        <?php if (!empty($uffici)) {
+                                            foreach ($uffici as $post) {
+                                                dci_articolazione_render_office_card($post);
+                                            }
+                                        } else { ?>
+                                            <p>Nessun ufficio disponibile.</p>
+                                        <?php } ?>
+                                    </div>
+                            
+                                </div>
+                            
+                            <?php } ?>
 
                     <!-- PAGINAZIONE -->
                     <?php if ($articolazioni_total_pages > 1) { ?>
