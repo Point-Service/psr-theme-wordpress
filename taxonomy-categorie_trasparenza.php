@@ -455,9 +455,9 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 								} ?>
 							</div>
 
-							<?php if ($pagination_markup) { ?>
+							<?php if ($pagination_markup !== '') { ?>
 							<div class="row my-4">
-								<nav class="pagination-wrapper justify-content-center col-12">
+								<nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
 									<?php echo $pagination_markup; ?>
 								</nav>
 							</div>
@@ -514,3 +514,4 @@ get_footer();
         }, 100);
     });
 </script>
+
