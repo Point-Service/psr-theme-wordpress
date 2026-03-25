@@ -1,10 +1,4 @@
 <?php
-/* Template Name: Uffici Organigramma
- *
- * Uffici Organigramma
- *
- * @package Design_Comuni_Italia
- */
 global $post, $with_shadow;
 
 get_header();
@@ -34,6 +28,4 @@ get_header();
 <?php
 get_footer(); ?>
 
-
-<?php get_footer(); ?>
 
