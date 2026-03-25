@@ -290,7 +290,6 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 }
 
 
-
 $the_query = new WP_Query($args);
 
 $pagination_links = paginate_links([
@@ -302,19 +301,7 @@ $pagination_links = paginate_links([
     'next_text'  => '»',
 ]);
 
-if ($pagination_links) : ?>
-    <nav class="pagination-wrapper">
-        <ul class="pagination justify-content-center">
 
-            <?php foreach ($pagination_links as $link) : ?>
-                <li class="page-item">
-                    <?php echo str_replace('page-numbers', 'page-link', $link); ?>
-                </li>
-            <?php endforeach; ?>
-
-        </ul>
-    </nav>
-<?php endif; ?>
 
 
 
@@ -477,6 +464,24 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 								} ?>
 							</div>
 
+						
+								<?php if (!empty($pagination_links)) : ?>
+								    <div class="row my-4">
+								        <nav class="pagination-wrapper justify-content-center col-12">
+								            <ul class="pagination justify-content-center">
+								
+								                <?php foreach ($pagination_links as $link) : ?>
+								                    <li class="page-item <?php echo strpos($link, 'current') !== false ? 'active' : ''; ?>">
+								                        <?php echo str_replace('page-numbers', 'page-link', $link); ?>
+								                    </li>
+								                <?php endforeach; ?>
+								
+								            </ul>
+								        </nav>
+								    </div>
+								<?php endif; ?>
+
+						
 							<?php if ($pagination_markup) { ?>
 							<div class="row my-4">
 								<nav class="pagination-wrapper justify-content-center col-12">
