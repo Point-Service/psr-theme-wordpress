@@ -310,13 +310,15 @@ if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
 // 🔥 COSTRUZIONE BASE URL CORRETTA
 $big = 999999999;
 
-$base = str_replace(
-    $big,
-    '%#%',
-    esc_url(get_pagenum_link($big))
-);
+// 🔥 BASE CORRETTA PER TAXONOMY
+$base = trailingslashit(get_term_link($obj)) . 'page/%#%/';
 
-// 🔥 PARAMETRI EXTRA PULITI
+// 🔥 FIX permalink non attivi
+if (get_option('permalink_structure') == '') {
+    $base = add_query_arg('paged', '%#%');
+}
+
+// 🔥 PARAMETRI EXTRA
 $add_args = [];
 
 if (!empty($query)) {
@@ -332,7 +334,7 @@ $pagination_links = paginate_links([
     'base'      => $base,
     'format'    => '',
     'current'   => $paged,
-    'total'     => $the_query->max_num_pages,
+    'total'     => max(1, $the_query->max_num_pages),
     'mid_size'  => 2,
     'end_size'  => 1,
     'type'      => 'array',
