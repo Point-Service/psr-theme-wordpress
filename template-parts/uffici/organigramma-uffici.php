@@ -6,7 +6,7 @@ $count = 0;
 $max_posts = isset($_GET['max_posts']) ? (int) $_GET['max_posts'] : 1000000;
 $load_posts = 6;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-$siti_tematici = !empty(dci_get_option('siti_tematici', 'trasparenza')) ? dci_get_option('siti_tematici', 'trasparenza') : [];
+
 $dci_amm_sidebar_embedded = true;
 $dci_amm_sidebar_sections = [
     ['id' => 'organi-indirizzo', 'label' => 'Organi di indirizzo politico'],
