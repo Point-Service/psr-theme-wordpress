@@ -256,28 +256,23 @@ if (!function_exists('dci_render_trasparenza_light_bg_style')) {
         <?php
     }
 }
-
 dci_render_trasparenza_light_bg_style();
 
-// Recupera il numero di pagina corrente.
+// Recupera il numero di pagina corrente (robusto)
 $paged = max(1, get_query_var('paged'), get_query_var('page'));
 
+// Parametri
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
-$load_posts = -1;
-$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+$query     = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : '';
+$order     = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc';
 
-$prefix = '_dci_elemento_trasparenza_';
-
-// Gestione dell'ordinamento
-$order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc'; // Default è data_desc
-
+// Query base
 $args = array(
-    's' => $query,
+    's'              => $query,
     'posts_per_page' => $max_posts,
-    'post_type' => 'elemento_trasparenza',
-    'paged' => $paged,
-
-    'tax_query' => array(
+    'post_type'      => 'elemento_trasparenza',
+    'paged'          => $paged,
+    'tax_query'      => array(
         array(
             'taxonomy' => 'tipi_cat_amm_trasp',
             'field'    => 'slug',
@@ -286,22 +281,51 @@ $args = array(
     ),
 );
 
-// Gestione dell'ordinamento
+// Ordinamento
 if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
     $args['orderby'] = 'title';
-    $args['order'] = ($order === 'alfabetico_desc') ? 'DESC' : 'ASC';
+    $args['order']   = ($order === 'alfabetico_desc') ? 'DESC' : 'ASC';
 } else {
-    // Ordinamento per data di pubblicazione del post (post_date)
     $args['orderby'] = 'date';
-    $args['order'] = ($order === 'data_desc') ? 'DESC' : 'ASC';
+    $args['order']   = ($order === 'data_desc') ? 'DESC' : 'ASC';
 }
 
-
+// Esegui query
 $the_query = new WP_Query($args);
 
+// 🔥 REDIRECT PAGINA FUORI RANGE (prima della paginazione)
+if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
 
-$base = add_query_arg('paged', '%#%');
+    $redirect_args = array_filter([
+        'paged'      => $the_query->max_num_pages,
+        'search'     => $query,
+        'order_type' => $order,
+    ]);
 
+    $url = add_query_arg($redirect_args, get_term_link($obj));
+
+    wp_redirect($url);
+    exit;
+}
+
+// 🔥 BASE PAGINAZIONE CORRETTA (senza duplicazioni)
+$big = 999999999;
+
+$base = remove_query_arg(['paged'], get_pagenum_link($big));
+$base = str_replace($big, '%#%', esc_url($base));
+
+// 🔥 PARAMETRI GET PULITI
+$add_args = [];
+
+if (!empty($query)) {
+    $add_args['search'] = $query;
+}
+
+if (!empty($order)) {
+    $add_args['order_type'] = $order;
+}
+
+// 🔥 PAGINAZIONE FINALE
 $pagination_links = paginate_links([
     'base'      => $base,
     'format'    => '',
@@ -311,29 +335,8 @@ $pagination_links = paginate_links([
     'type'      => 'array',
     'prev_text' => '«',
     'next_text' => '»',
-    'add_args'  => [
-        'search' => $query,
-        'order_type' => $order,
-    ],
+    'add_args'  => $add_args,
 ]);
-
-
-if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
-
-    $url = add_query_arg([
-        'paged' => $the_query->max_num_pages,
-        'search' => $query,
-        'order_type' => $order,
-    ], get_term_link($obj));
-
-    wp_redirect($url);
-    exit;
-}
-
-
-
-
-
 
 
 
