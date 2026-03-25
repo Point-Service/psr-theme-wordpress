@@ -298,6 +298,16 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 
 
 $the_query = new WP_Query($args);
+global $wp_query;
+
+// sincronizza pagine
+$wp_query->max_num_pages = $the_query->max_num_pages;
+
+// 🔥 QUESTO È IL FIX VERO
+if ($the_query->have_posts()) {
+    $wp_query->is_404 = false;
+    status_header(200);
+}
 
 $base = str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999)));
 
@@ -333,14 +343,6 @@ if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
 }
 
 wp_reset_postdata();
-
-echo '<pre>';
-echo 'Totale post: ' . $the_query->found_posts . "\n";
-echo 'Post per pagina: ' . $max_posts . "\n";
-echo 'Max pagine: ' . $the_query->max_num_pages . "\n";
-echo 'Pagina attuale: ' . $paged . "\n";
-echo '</pre>';
-
 
 
 
