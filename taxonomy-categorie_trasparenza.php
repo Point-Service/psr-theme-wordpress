@@ -384,95 +384,100 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
             </div>
    <?php } else { ?>
         
-       <form role="search" id="search-form" method="get" class="search-form">
-    <button type="submit" class="d-none"></button>
+        <form role="search" id="search-form" method="get" class="search-form">
+            <button type="submit" class="d-none"></button>
+            <div class="container">
+                <div class="row">
+                    <h2 class="visually-hidden">Esplora tutti i documenti della trasparenza</h2>
 
-    <div class="container">
-        <div class="row">
-            <h2 class="visually-hidden">Esplora tutti i documenti della trasparenza</h2>
+                    <!-- Colonna sinistra: risultati -->
+                    <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
+                        <div class="dci-at-tools" aria-label="Strumenti di ricerca e ordinamento">
+                            <h3 class="dci-at-tools__title text-decoration-none">Cerca e ordina i contenuti</h3>
+                            <p class="dci-at-tools__intro text-decoration-none">Usa la ricerca per trovare rapidamente un documento e scegli l'ordinamento che preferisci.</p>
 
-            <!-- COLONNA SINISTRA -->
-            <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
-
-                <div class="dci-at-tools" aria-label="Strumenti di ricerca e ordinamento">
-                    <h3 class="dci-at-tools__title">Cerca e ordina i contenuti</h3>
-                    <p class="dci-at-tools__intro">Usa la ricerca per trovare rapidamente un documento e scegli l'ordinamento che preferisci.</p>
-
-                    <div class="cmp-input-search">
-                        <div class="form-group autocomplete-wrapper mb-2 mb-lg-3">
-                            <div class="input-group dci-at-search-row">
-                                <label for="autocomplete-two" class="visually-hidden">Cerca una parola chiave</label>
-
-                                <input type="search"
-                                       class="autocomplete form-control"
-                                       placeholder="Cerca una parola chiave"
-                                       id="autocomplete-two"
-                                       name="search"
-                                       value="<?php echo esc_attr($query); ?>"
-                                       data-bs-autocomplete="[]">
-
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">Cerca</button>
+                            <div class="cmp-input-search">
+                                <div class="form-group autocomplete-wrapper mb-2 mb-lg-3">
+                                    <div class="input-group dci-at-search-row">
+                                        <label for="autocomplete-two" class="visually-hidden">Cerca una parola chiave</label>
+                                        <input type="search" class="autocomplete form-control"
+                                            placeholder="Cerca una parola chiave" id="autocomplete-two" name="search"
+                                            value="<?php echo $query; ?>" data-bs-autocomplete="[]">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit" id="button-3">Cerca</button>
+                                        </div>
+                                        <span class="autocomplete-icon" aria-hidden="true">
+                                            <svg class="icon icon-sm icon-primary" role="img" aria-labelledby="autocomplete-label">
+                                                <use href="#it-search"></use>
+                                            </svg>
+                                        </span>
+                                    </div>
                                 </div>
+                                <p id="autocomplete-label" class="dci-at-tools__count text-decoration-none">
+                                    <strong class="text-decoration-none"><?php echo $the_query->found_posts; ?></strong> elementi trovati in ordine
+                                    <?php echo ($order == 'alfabetico_asc' || $order == 'alfabetico_desc') ? "alfabetico" : "di pubblicazione"; ?>
+                                    <?php echo ($order == 'desc' || $order == 'alfabetico_desc') ? "(Discendente)" : "(Ascendente)"; ?>
+                                </p>
+                            </div>
+
+                            <div class="form-group mb-0 dci-at-order">
+                                <label for="order-select" class="dci-at-order__label text-decoration-none">Ordina per</label>
+                                <select id="order-select" name="order_type" class="form-control">
+                                    <option value="data_desc" <?php echo ($order == 'data_desc') ? 'selected' : ''; ?>>Data (Descendente)</option>
+                                    <option value="data_asc" <?php echo ($order == 'data_asc') ? 'selected' : ''; ?>>Data (Ascendente)</option>
+                                    <option value="alfabetico_asc" <?php echo ($order == 'alfabetico_asc') ? 'selected' : ''; ?>>Alfabetico (Ascendente)</option>
+                                    <option value="alfabetico_desc" <?php echo ($order == 'alfabetico_desc') ? 'selected' : ''; ?>>Alfabetico (Discendente)</option>
+                                </select>
                             </div>
                         </div>
 
-                        <p class="dci-at-tools__count">
-                            <strong><?php echo $the_query->found_posts; ?></strong> elementi trovati
-                        </p>
+                        <!-- Risultati della ricerca -->
+                        <?php if ($the_query->found_posts != 0) { ?>
+                            <?php $categoria = $the_query->posts; ?>
+                            <div class="row g-4" id="load-more">
+                                <?php foreach ($categoria as $elemento) {
+                                    $load_card_type = "elemento_trasparenza";
+                                    get_template_part("template-parts/amministrazione-trasparente/card");
+                                } ?>
+                            </div>
+							
+							<div class="row g-4" id="load-more">
+								<?php foreach ($categoria as $elemento) {
+									$load_card_type = "elemento_trasparenza";
+									get_template_part("template-parts/amministrazione-trasparente/card");
+								} ?>
+							</div>
+
+							<?php if ($pagination_markup !== '') { ?>
+							<div class="row my-4">
+								<nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+									<?php echo $pagination_markup; ?>
+								</nav>
+							</div>
+							<?php } ?>
+
+                        <?php } else { ?>
+                            <div class="dci-at-empty text-decoration-none" role="status" aria-live="polite">
+                                <span class="dci-at-empty__icon" aria-hidden="true">
+                                    <svg class="icon icon-sm">
+                                        <use href="#it-info-circle"></use>
+                                    </svg>
+                                </span>
+                                <div class="dci-at-empty__content">
+                                    <p class="dci-at-empty__title text-decoration-none">Nessun contenuto disponibile</p>
+                                    <p class="dci-at-empty__text text-decoration-none">Non ci sono elementi o post da mostrare con i filtri attuali. Prova a cambiare ricerca o ordinamento.</p>
+                                </div>
+                            </div>
+                        <?php } ?>
                     </div>
 
-                    <div class="form-group mb-0 dci-at-order">
-                        <label for="order-select" class="dci-at-order__label">Ordina per</label>
+                    <!-- Colonna destra: link utili -->
+                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
 
-                        <select id="order-select" name="order_type" class="form-control">
-                            <option value="data_desc" <?php selected($order, 'data_desc'); ?>>Data (Desc)</option>
-                            <option value="data_asc" <?php selected($order, 'data_asc'); ?>>Data (Asc)</option>
-                            <option value="alfabetico_asc" <?php selected($order, 'alfabetico_asc'); ?>>Alfabetico (A-Z)</option>
-                            <option value="alfabetico_desc" <?php selected($order, 'alfabetico_desc'); ?>>Alfabetico (Z-A)</option>
-                        </select>
-                    </div>
+                    
                 </div>
-
-                <!-- RISULTATI -->
-                <?php if ($the_query->have_posts()) : ?>
-
-                    <div class="row g-4" id="load-more">
-                        <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
-                            <?php
-                                $elemento = get_post();
-                                $load_card_type = "elemento_trasparenza";
-                                get_template_part("template-parts/amministrazione-trasparente/card");
-                            ?>
-                        <?php endwhile; ?>
-                    </div>
-
-                    <!-- ✅ PAGINAZIONE QUI (FIX) -->
-                    <?php if ($pagination_markup !== '') : ?>
-                        <nav class="pagination-wrapper justify-content-center mt-4" aria-label="Navigazione pagine">
-                            <?php echo $pagination_markup; ?>
-                        </nav>
-                    <?php endif; ?>
-
-                    <?php wp_reset_postdata(); ?>
-
-                <?php else : ?>
-
-                    <div class="dci-at-empty">
-                        <p class="dci-at-empty__title">Nessun contenuto disponibile</p>
-                        <p class="dci-at-empty__text">Prova a cambiare i filtri di ricerca.</p>
-                    </div>
-
-                <?php endif; ?>
-
             </div>
-
-            <!-- COLONNA DESTRA -->
-            <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
-
-        </div>
-    </div>
-</form>
+        </form>
     <?php } ?>
     </div>
 </main>
@@ -502,4 +507,5 @@ get_footer();
         }, 100);
     });
 </script>
+
 
