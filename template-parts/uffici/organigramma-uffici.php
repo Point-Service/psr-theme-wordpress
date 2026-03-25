@@ -414,38 +414,23 @@ $seen_articolazioni = [];
 
 
 
+
+
 foreach ($posts as $post) {
 
     $terms = wp_get_post_terms($post->ID, 'tipi_unita_organizzativa');
-    $term_slugs = [];
 
-    if (!empty($terms) && !is_wp_error($terms)) {
-        $term_slugs = array_map(function ($term) {
-            return sanitize_title($term->slug);
-        }, $terms);
-    }
+    if (empty($terms) || is_wp_error($terms)) continue;
 
-    // ORGANI
-    if (dci_articolazione_post_matches($post, $terms, ['consiglio', 'consiglio-comunale'])) {
-        $organi_indirizzo[] = $post;
-        continue;
-    }
+    foreach ($terms as $term) {
 
-    if (dci_articolazione_post_matches($post, $terms, ['giunta', 'sindaco'])) {
-        $organi_gestione[] = $post;
-        continue;
-    }
+        $slug = sanitize_title($term->slug);
 
-    // 👇 GERARCHIA AREE / UFFICI
-    $parent_id = wp_get_post_parent_id($post->ID);
+        // consideriamo solo le aree
+        if (in_array($slug, ['area', 'ufficio'])) {
 
-    if ($parent_id) {
-        // ufficio
-        $aree[$parent_id][] = $post;
-    } else {
-        // area
-        if (!isset($aree[$post->ID])) {
-            $aree[$post->ID] = [];
+            $aree[$term->term_id]['name'] = $term->name;
+            $aree[$term->term_id]['posts'][] = $post;
         }
     }
 }
@@ -651,7 +636,7 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
                 <section id="articolazione-uffici" class="dci-at-section">
                     <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
 
-                            <?php foreach ($aree as $area_id => $uffici) {
+                            <?php foreach ($aree as $area) {
                             
                                 $area = get_post($area_id);
                                 if (!$area) continue;
@@ -660,19 +645,14 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
                                 <div class="dci-at-area-block">
                             
                                     <!-- TITOLO AREA -->
-                                    <h3 class="dci-at-area-title">
-                                        <?php echo esc_html($area->post_title); ?>
+                                   <h3 class="dci-at-area-title">
+                                        <?php echo esc_html($area['name']); ?>
                                     </h3>
-                            
-                                    <!-- GRID UFFICI -->
+                                    
                                     <div class="dci-at-office-grid">
-                                        <?php if (!empty($uffici)) {
-                                            foreach ($uffici as $post) {
-                                                dci_articolazione_render_office_card($post);
-                                            }
-                                        } else { ?>
-                                            <p>Nessun ufficio disponibile.</p>
-                                        <?php } ?>
+                                        <?php foreach ($area['posts'] as $post) {
+                                            dci_articolazione_render_office_card($post);
+                                        } ?>
                                     </div>
                             
                                 </div>
