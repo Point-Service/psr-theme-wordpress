@@ -212,5 +212,19 @@
   background: #ccc;
   border-radius: 3px;
 }  
+  .badges-wrapper {
+  position: relative;
+}
+
+.badges-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, white);
+  pointer-events: none;
+}
 </style>
 <!-- End Search Modal -->
