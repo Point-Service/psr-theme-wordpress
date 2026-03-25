@@ -289,10 +289,20 @@ $pagination_markup = paginate_links([
     'total'   => $the_query->max_num_pages,
     'current' => $paged,
     'mid_size'=> 2,
-    'type'    => 'list',
+    'type'    => 'array',
     'prev_text' => '«',
     'next_text' => '»',
 ]);
+
+if ($pagination_markup) {
+    echo '<nav class="pagination-wrapper"><ul class="pagination justify-content-center">';
+
+    foreach ($pagination_markup as $link) {
+        echo '<li class="page-item">' . str_replace('page-numbers', 'page-link', $link) . '</li>';
+    }
+
+    echo '</ul></nav>';
+}
 
 
 
