@@ -463,7 +463,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 <?php $pagination_markup = trim((string) dci_bootstrap_pagination($the_query, false)); ?>
                 <?php if ($pagination_markup !== '') { ?>
                 <div class="row my-4">
-                    <div class="col-12 d-flex justify-content-center">
+                    <div class="col-12 d-flex">
                         <nav class="pagination-wrapper" aria-label="Navigazione pagine">
                             <?php echo $pagination_markup; ?>
                         </nav>
