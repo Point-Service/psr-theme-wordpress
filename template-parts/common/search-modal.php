@@ -9,222 +9,186 @@
     tabindex="-1"
     role="dialog"
     aria-hidden="true"
-  >
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content perfect-scrollbar">
       <div class="modal-body">
         <form role="search" id="search-form-modal" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
           <div class="container">
+
+            <!-- HEADER -->
             <div class="row variable-gutters">
               <div class="col">
                 <div class="modal-title">
-                  <button
-                    class="search-link d-md-none"
-                    type="button"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-modal"
-                    aria-label="Cerca nel sito"
-                  >
-                    <svg class="icon icon-md">
-                      <use
-                        href="#it-arrow-left"
-                      ></use>
-                    </svg>
+                  <button class="search-link d-md-none" type="button" data-bs-toggle="modal" data-bs-target="#search-modal">
+                    <svg class="icon icon-md"><use href="#it-arrow-left"></use></svg>
                   </button>
-                  <p><span class="h2"><?php _e("","design_comuni_italia"); ?></span></p>
-                  <button
-                    class="search-link d-none d-md-block"
-                    type="button"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-modal"
-                    data-dismiss="modal" 
-                    aria-label="Chiudi e torna alla pagina precedente"
-                  >
-                    <svg class="icon icon-md">
-                      <use
-                        href="#it-close-big"
-                      ></use>
-                    </svg>
+
+                  <p><span class="h2"></span></p>
+
+                  <button class="search-link d-none d-md-block" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" data-dismiss="modal">
+                    <svg class="icon icon-md"><use href="#it-close-big"></use></svg>
                   </button>
                 </div>
-                  <div class="form-group">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <div class="input-group-text">
-                          <svg class="icon icon-md">
-                            <use
-                              href="#it-search"
-                            ></use>
-                          </svg>
-                        </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <svg class="icon icon-md"><use href="#it-search"></use></svg>
                       </div>
-                      <label for="<?php echo $unique_id; ?>">Con Etichetta</label>
-                      <input
-                        type="search"
-                        class="form-control"
-                        id="<?php echo $unique_id; ?>"
-                        name="s"
-                        placeholder="<?php _e("Cerca nel sito","design_comuni_italia"); ?>"
-                        value="<?php echo get_search_query(); ?>"
-                      />
                     </div>
 
-                    <button
-                      type="submit"
-                      class="btn btn-primary"
-                    >
-                      <span class="">Cerca</span>
-                    </button>   
+                    <label for="<?php echo $unique_id; ?>">Con Etichetta</label>
+                    <input type="search" class="form-control" id="<?php echo $unique_id; ?>" name="s"
+                      placeholder="Cerca nel sito" value="<?php echo get_search_query(); ?>" />
                   </div>
+
+                  <button type="submit" class="btn btn-primary">
+                    <span>Cerca</span>
+                  </button>
+                </div>
               </div>
             </div>
 
+            <!-- CONTENUTO -->
+            <div class="row variable-gutters p-4">
 
+              <!-- SINISTRA -->
+              <div class="col-lg-5">    
 
+                <a href="<?php echo esc_url( home_url( '/?s=' ) ); ?>" class="chip chip-simple chip-lg">
+                  <span class="chip-label">RICERCA PARAMETRICA</span>
+                </a>
 
+                <p></p>
 
-                    
-                  <div class="row variable-gutters p-4">
-                      <div class="col-lg-5">    
-                        <a href="<?php echo esc_url( home_url( '/?s=' ) ); ?>" class="chip chip-simple chip-lg" data-focus-mouse="false">
-                            <span class="chip-label">RICERCA PARAMETRICA</span>
-                        </a>
-                        <p></p>
-                          <div class="h4 other-link-title">Ricerche frequenti</div>
-                          <div class="link-list-wrapper mb-4">
-                            <ul class="link-list">
-                                <?php
-                                $popular_posts = new WP_Query( array(
-                                    'post_type'     => dci_get_sercheable_tipologie(), 
-                                    'posts_per_page' => 7, 
-                                    'meta_key'      => 'views',
-                                    'orderby'       => 'meta_value_num',
-                                    'order'         => 'DESC'
-                                    )
-                                );
+                <!-- RICERCHE FREQUENTI -->
+                <div class="h4 other-link-title">Ricerche frequenti</div>
 
-                                if (!(is_array($popular_posts->posts) && count($popular_posts->posts) > 0)) {
-                                    $popular_posts = new WP_Query( array(
-                                        'post_type'      => dci_get_sercheable_tipologie(),
-                                        'posts_per_page' => 7,
-                                        'orderby'        => 'date',
-                                        'order'          => 'DESC',
-                                    ) );
-                                }
+                <div class="link-list-wrapper mb-4 scroll-frequenti">
+                  <ul class="link-list d-flex flex-nowrap">
 
-                                if (is_array($popular_posts->posts) && count($popular_posts->posts)>0) {
-                                    foreach ($popular_posts->posts as $post) {
-                                    $group = dci_get_group($post->post_type);
-                                ?>
-                                    <li>
-                                        <a class="list-item active large py-1 icon-left"  href="<?php the_permalink(); ?>">
-                                        <span class="list-item-title-icon-wrapper">
-                                          <svg class="icon icon-primary icon-sm"><use href="#it-search"></use></svg>
-                                          <span class="list-item-title"><?php the_title(); ?></span>
-                                        </span>
-                                      </a>
-                                        <!-- <span><?php #echo dsi_get_italian_name_group($group) ?></span> -->
-                                    </li>
-                                <?php
-                                }} else { ?>
-                                    <li>Nessun risultato</li>
-                                <?php };
-                                wp_reset_postdata();
-                                ?>
-                            </ul>
-                          </div>
+                    <?php
+                    $popular_posts = new WP_Query([
+                        'post_type' => dci_get_sercheable_tipologie(),
+                        'posts_per_page' => 7,
+                        'meta_key' => 'views',
+                        'orderby' => 'meta_value_num',
+                        'order' => 'DESC'
+                    ]);
 
-                          <?php if ($links) { ?>
-                                  <div class="h4 other-link-title">Scelti per te</div>
-                                  <div class="link-list-wrapper mb-4">
-                                    <ul class="link-list">
-                                    <?php foreach ($links as $link_id) { 
-                                      $link = get_post($link_id);  
-                                    ?>
-                                      <li>
-                                          <a class="list-item active ps-0" href="<?php echo get_permalink($link_id); ?>" aria-label="Vai alla pagina <?php echo $link->post_title; ?>" title="Vai alla pagina <?php echo $link->post_title; ?>"
-                                          ><span class="text-button-normal"
-                                              ><?php echo $link->post_title; ?></span
-                                          ></a
-                                          >
-                                      </li>
-                                  <?php } ?>
-                                    </ul>
-                                    </div>
-                            <?php } ?>
-                      </div> 
-                      <div class="col-lg-6">
-                      <?php
-                      $argomenti = get_terms(array(
-                          'taxonomy' => 'argomenti',
-                          'orderby' => 'count',
-                          'order'   => 'DESC',
-                          'hide_empty'   => 1,
-                          'number' => "20"
-                      ));
-                      if(!empty($argomenti)) { ?>
-                      <div class="row variable-gutters">
-                          <div class="col-lg-12">
-                              <div class="badges-wrapper">
-                                  <div class="h4 other-link-title"><?php _e("Potrebbero interessarti","design_comuni_italia"); ?></div>
-                                  <div class="badges badges-scroll">
-                                      <?php
-                                      foreach ($argomenti as $argomento){
-                                          $taglink = get_tag_link($argomento);  ?>
-                                          <a href="<?php echo $taglink; ?>" class="chip chip-simple chip-lg"><span class="chip-label"><?php echo $argomento->name; ?></span></a>
-                                      <?php } ?>
-                                  </div><!-- /badges -->
-                              </div><!-- /badges-wrapper -->
-                          </div>
-                      </div>
+                    if (empty($popular_posts->posts)) {
+                        $popular_posts = new WP_Query([
+                            'post_type' => dci_get_sercheable_tipologie(),
+                            'posts_per_page' => 7,
+                            'orderby' => 'date',
+                            'order' => 'DESC',
+                        ]);
+                    }
+
+                    if (!empty($popular_posts->posts)) {
+                      foreach ($popular_posts->posts as $post) { ?>
+                        <li>
+                          <a class="list-item" href="<?php echo get_permalink($post); ?>">
+                            <?php echo get_the_title($post); ?>
+                          </a>
+                        </li>
+                    <?php } } else { ?>
+                        <li>Nessun risultato</li>
+                    <?php } wp_reset_postdata(); ?>
+
+                  </ul>
+                </div>
+
+                <!-- SCELTI PER TE -->
+                <?php if ($links) { ?>
+                  <div class="h4 other-link-title">Scelti per te</div>
+                  <div class="link-list-wrapper mb-4">
+                    <ul class="link-list">
+                      <?php foreach ($links as $link_id) {
+                        $link = get_post($link_id); ?>
+                        <li>
+                          <a class="list-item" href="<?php echo get_permalink($link_id); ?>">
+                            <?php echo $link->post_title; ?>
+                          </a>
+                        </li>
                       <?php } ?>
-                      </div> <!-- TAGS -->
-                    
-                  </div>   
-                        
+                    </ul>
+                  </div>
+                <?php } ?>
+
+              </div>
+
+              <!-- DESTRA (NON TOCCATA) -->
+              <div class="col-lg-6">
+                <?php
+                $argomenti = get_terms([
+                    'taxonomy' => 'argomenti',
+                    'orderby' => 'count',
+                    'order'   => 'DESC',
+                    'hide_empty' => 1,
+                    'number' => 20
+                ]);
+
+                if(!empty($argomenti)) { ?>
+                  <div class="badges-wrapper">
+                    <div class="h4 other-link-title">Potrebbero interessarti</div>
+                    <div class="badges">
+                      <?php foreach ($argomenti as $argomento){
+                        $taglink = get_tag_link($argomento); ?>
+                        <a href="<?php echo $taglink; ?>" class="chip chip-simple chip-lg">
+                          <span class="chip-label"><?php echo $argomento->name; ?></span>
+                        </a>
+                      <?php } ?>
+                    </div>
+                  </div>
+                <?php } ?>
+              </div>
+
+            </div>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<!-- CSS -->
 <style>
-.badges-scroll {
+.scroll-frequenti {
+  overflow-x: auto;
+  padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-frequenti .link-list {
   display: flex;
   flex-wrap: nowrap;
-  overflow-x: auto;
   gap: 10px;
-  padding-bottom: 10px;
-  scroll-behavior: smooth;
 }
 
-.badges-scroll a {
+.scroll-frequenti .link-list li {
   flex: 0 0 auto;
-  white-space: nowrap;
+  list-style: none;
 }
 
-/* scrollbar più carina */
-.badges-scroll::-webkit-scrollbar {
+.scroll-frequenti .list-item {
+  white-space: nowrap;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 6px 12px;
+  background: #fff;
+}
+
+.scroll-frequenti::-webkit-scrollbar {
   height: 6px;
 }
 
-.badges-scroll::-webkit-scrollbar-thumb {
+.scroll-frequenti::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 3px;
-}  
-  .badges-wrapper {
-  position: relative;
-}
-
-.badges-wrapper::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 40px;
-  height: 100%;
-  background: linear-gradient(to right, transparent, white);
-  pointer-events: none;
 }
 </style>
+
 <!-- End Search Modal -->
