@@ -412,51 +412,44 @@ $seen_gestione = [];
 $seen_articolazioni = [];
 
 $aree = [];
-$seen_indirizzo = [];
-$seen_gestione = [];
+$uffici = [];
 
 foreach ($posts as $post) {
-
     $terms = wp_get_post_terms($post->ID, 'tipi_unita_organizzativa');
-    $term_slugs = [];
 
-    if (!empty($terms) && !is_wp_error($terms)) {
-        $term_slugs = array_map(function ($term) {
-            return sanitize_title($term->slug);
-        }, $terms);
-    }
-
-    // 🔵 ORGANI (lasciamo uguale)
-    if (dci_articolazione_post_matches($post, $terms, ['consiglio'])) {
-        dci_articolazione_add_unique($organi_indirizzo, $seen_indirizzo, $post);
+    if (empty($terms) || is_wp_error($terms)) {
         continue;
     }
 
-    if (dci_articolazione_post_matches($post, $terms, ['giunta', 'sindaco'])) {
-        dci_articolazione_add_unique($organi_gestione, $seen_gestione, $post);
+    $term_slugs = array_map(function ($term) {
+        return sanitize_title($term->slug);
+    }, $terms);
+
+    // 👉 AREA
+    if (in_array('area', $term_slugs, true)) {
+        $aree[$post->ID] = [
+            'post' => $post,
+            'uffici' => []
+        ];
         continue;
     }
 
-    // 🟢 SOLO UFFICI
+    // 👉 UFFICIO
     if (in_array('ufficio', $term_slugs, true)) {
-
-        $area_name = 'Altri uffici';
-
-        foreach ($terms as $term) {
-            $slug = sanitize_title($term->slug);
-
-            if ($slug !== 'ufficio') {
-                $area_name = $term->name;
-            }
-        }
-
-        if (!isset($aree[$area_name])) {
-            $aree[$area_name] = [];
-        }
-
-        $aree[$area_name][] = $post;
+        $uffici[] = $post;
     }
 }
+
+foreach ($uffici as $ufficio) {
+
+    // campo relazione (CAMBIA SE DIVERSO)
+    $area_id = dci_get_meta('area_riferimento', '_dci_unita_organizzativa_', $ufficio->ID);
+
+    if (!empty($area_id) && isset($aree[$area_id])) {
+        $aree[$area_id]['uffici'][] = $ufficio;
+    }
+}
+
 
 $articolazioni_per_page = 10;
 $articolazioni_page = isset($_GET['uffici_page']) ? max(1, (int) $_GET['uffici_page']) : 1;
@@ -628,44 +621,41 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
 
                 <!-- UFFICI -->
                 <section id="articolazione-uffici" class="dci-at-section">
-                    <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
+    <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
 
-                    <?php foreach ($aree as $area_name => $uffici) { ?>
-                    
-                        <div class="dci-at-area-block">
-                    
-                            <h3 class="dci-at-area-title">
-                                <?php echo esc_html($area_name); ?>
-                            </h3>
-                    
-                            <div class="dci-at-office-grid">
-                                <?php foreach ($uffici as $post) {
-                                    dci_articolazione_render_office_card($post);
-                                } ?>
-                            </div>
-                    
-                        </div>
-                    
+    <?php if (!empty($aree)) { ?>
+
+        <?php foreach ($aree as $area) { ?>
+            
+            <div class="dci-at-area-block mb-5">
+
+                <!-- TITOLO AREA -->
+                <h3 class="h4 mb-4">
+                    <?php echo esc_html($area['post']->post_title); ?>
+                </h3>
+
+                <!-- UFFICI DELL’AREA -->
+                <div class="dci-at-office-grid">
+
+                    <?php if (!empty($area['uffici'])) { ?>
+                        <?php foreach ($area['uffici'] as $post) {
+                            dci_articolazione_render_office_card($post);
+                        } ?>
+                    <?php } else { ?>
+                        <p>Nessun ufficio associato.</p>
                     <?php } ?>
 
-                    <!-- PAGINAZIONE -->
-                    <?php if ($articolazioni_total_pages > 1) { ?>
-                        <nav class="dci-at-pagination">
-                            <?php for ($page = 1; $page <= $articolazioni_total_pages; $page++) {
-                                $page_url = add_query_arg('uffici_page', $page) . '#articolazione-uffici';
+                </div>
 
-                                if ($page === $articolazioni_page) { ?>
-                                    <span class="dci-at-pagination-current"><?php echo $page; ?></span>
-                                <?php } else { ?>
-                                    <a class="dci-at-pagination-link" href="<?php echo esc_url($page_url); ?>">
-                                        <?php echo $page; ?>
-                                    </a>
-                                <?php }
-                            } ?>
-                        </nav>
-                    <?php } ?>
+            </div>
 
-                </section>
+        <?php } ?>
+
+    <?php } else { ?>
+        <p>Nessuna area disponibile.</p>
+    <?php } ?>
+
+</section>
 
             </div>
 
