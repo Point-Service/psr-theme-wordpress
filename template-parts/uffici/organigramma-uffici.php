@@ -442,16 +442,20 @@ foreach ($posts as $post) {
 
 foreach ($uffici as $ufficio) {
 
-    // prende il genitore WP
-    $area_id = wp_get_post_parent_id($ufficio->ID);
+    $raw = dci_get_meta('unita_organizzativa_genitore', '_dci_unita_organizzativa_', $ufficio->ID);
 
-    if (!empty($area_id) && isset($aree[$area_id])) {
-        $aree[$area_id]['uffici'][] = $ufficio;
+    // normalizza (gestisce array / serializzato / singolo)
+    $genitori = maybe_unserialize($raw);
+
+    if (!is_array($genitori)) {
+        $genitori = [$genitori];
     }
 
-    var_dump(get_post_meta($ufficio->ID));
-die();
-    
+    foreach ($genitori as $area_id) {
+        if (!empty($area_id) && isset($aree[$area_id])) {
+            $aree[$area_id]['uffici'][] = $ufficio;
+        }
+    }
 }
 
 
