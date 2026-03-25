@@ -115,8 +115,13 @@
                       <?php foreach ($links as $link_id) { 
                         $link = get_post($link_id); ?>
                         <li>
-                          <a class="list-item active ps-0" href="<?php echo get_permalink($link_id); ?>">
-                            <span class="text-button-normal"><?php echo $link->post_title; ?></span>
+                          <a class="list-item active large py-1 icon-left" href="<?php echo get_permalink($link_id); ?>">
+                            <span class="list-item-title-icon-wrapper">
+                              <svg class="icon icon-primary icon-sm">
+                                <use href="#it-link"></use>
+                              </svg>
+                              <span class="list-item-title"><?php echo $link->post_title; ?></span>
+                            </span>
                           </a>
                         </li>
                       <?php } ?>
