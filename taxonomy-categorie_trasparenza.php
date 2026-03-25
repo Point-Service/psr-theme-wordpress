@@ -259,29 +259,30 @@ if (!function_exists('dci_render_trasparenza_light_bg_style')) {
 dci_render_trasparenza_light_bg_style();
 
 // Recupera il numero di pagina corrente (robusto)
+// PAGINA CORRENTE
 $paged = max(1, get_query_var('paged'), get_query_var('page'));
 
-// Parametri
+// PARAMETRI
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $query     = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : '';
 $order     = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc';
 
-// Query base
-$args = array(
-    's'              => $query,
-    'posts_per_page' => $max_posts,
+// QUERY
+$args = [
     'post_type'      => 'elemento_trasparenza',
+    'posts_per_page' => $max_posts,
     'paged'          => $paged,
-    'tax_query'      => array(
-        array(
+    's'              => $query,
+    'tax_query'      => [
+        [
             'taxonomy' => 'tipi_cat_amm_trasp',
             'field'    => 'slug',
             'terms'    => $obj->slug,
-        ),
-    ),
-);
+        ],
+    ],
+];
 
-// Ordinamento
+// ORDINAMENTO
 if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
     $args['orderby'] = 'title';
     $args['order']   = ($order === 'alfabetico_desc') ? 'DESC' : 'ASC';
@@ -290,10 +291,10 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
     $args['order']   = ($order === 'data_desc') ? 'DESC' : 'ASC';
 }
 
-// Esegui query
+// ESEGUI QUERY
 $the_query = new WP_Query($args);
 
-// 🔥 REDIRECT PAGINA FUORI RANGE (prima della paginazione)
+// 🔥 REDIRECT PAGINE FUORI RANGE
 if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
 
     $redirect_args = array_filter([
@@ -302,19 +303,20 @@ if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
         'order_type' => $order,
     ]);
 
-    $url = add_query_arg($redirect_args, get_term_link($obj));
-
-    wp_redirect($url);
+    wp_redirect(add_query_arg($redirect_args, get_term_link($obj)));
     exit;
 }
 
-// 🔥 BASE PAGINAZIONE CORRETTA (senza duplicazioni)
+// 🔥 COSTRUZIONE BASE URL CORRETTA
 $big = 999999999;
 
-$base = remove_query_arg(['paged'], get_pagenum_link($big));
-$base = str_replace($big, '%#%', esc_url($base));
+$base = str_replace(
+    $big,
+    '%#%',
+    esc_url(get_pagenum_link($big))
+);
 
-// 🔥 PARAMETRI GET PULITI
+// 🔥 PARAMETRI EXTRA PULITI
 $add_args = [];
 
 if (!empty($query)) {
@@ -325,13 +327,14 @@ if (!empty($order)) {
     $add_args['order_type'] = $order;
 }
 
-// 🔥 PAGINAZIONE FINALE
+// 🔥 PAGINAZIONE
 $pagination_links = paginate_links([
     'base'      => $base,
     'format'    => '',
     'current'   => $paged,
     'total'     => $the_query->max_num_pages,
     'mid_size'  => 2,
+    'end_size'  => 1,
     'type'      => 'array',
     'prev_text' => '«',
     'next_text' => '»',
@@ -483,39 +486,35 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                         </div>
 
                         <!-- Risultati della ricerca -->
-                        <?php if ($the_query->found_posts != 0) { ?>
-																 
-                            <?php $categoria = $the_query->posts; ?>
-                            <div class="row g-4" id="load-more">
-                                <?php foreach ($categoria as $elemento) {
-                                    $load_card_type = "elemento_trasparenza";
-                                    get_template_part("template-parts/amministrazione-trasparente/card");
-                                } ?>
-                            </div>
+                       <?php if ($the_query->have_posts()) : ?>
+
+							    <div class="row g-4">
+							        <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
+							            <?php
+							            $elemento = get_post();
+							            $load_card_type = "elemento_trasparenza";
+							            get_template_part("template-parts/amministrazione-trasparente/card");
+							            ?>
+							        <?php endwhile; ?>
+							    </div>
 							
-
-
-						
-								<?php if (!empty($pagination_links)) : ?>
-								    <div class="row my-4">
-								        <nav class="pagination-wrapper justify-content-center col-12">
-								            <ul class="pagination justify-content-center">
-								
-								                <?php foreach ($pagination_links as $link) : ?>
-								                    <li class="page-item <?php echo strpos($link, 'current') !== false ? 'active' : ''; ?>">
-								                        <?php echo str_replace('page-numbers', 'page-link', $link); ?>
-								                    </li>
-								                <?php endforeach; ?>
-								
-								            </ul>
-								        </nav>
-								    </div>
-								<?php endif; ?>
-
-						
-
-
-                        <?php } else { ?>
+							    <?php if (!empty($pagination_links)) : ?>
+							        <div class="row my-4">
+							            <nav class="pagination-wrapper col-12">
+							                <ul class="pagination justify-content-center">
+							
+							                    <?php foreach ($pagination_links as $link) : ?>
+							                        <li class="page-item <?php echo strpos($link, 'current') !== false ? 'active' : ''; ?>">
+							                            <?php echo str_replace('page-numbers', 'page-link', $link); ?>
+							                        </li>
+							                    <?php endforeach; ?>
+							
+							                </ul>
+							            </nav>
+							        </div>
+							    <?php endif; ?>
+							
+							<?php else : ?>
                             <div class="dci-at-empty text-decoration-none" role="status" aria-live="polite">
                                 <span class="dci-at-empty__icon" aria-hidden="true">
                                     <svg class="icon icon-sm">
