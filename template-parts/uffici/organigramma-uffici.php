@@ -416,6 +416,10 @@ $seen_articolazioni = [];
 
 
 
+$organi_indirizzo = [];
+$organi_gestione = [];
+$aree = [];
+
 foreach ($posts as $post) {
 
     $terms = wp_get_post_terms($post->ID, 'tipi_unita_organizzativa');
@@ -449,16 +453,23 @@ foreach ($posts as $post) {
         }
     }
 
-    // CREA AREA
-    if ($area_name && !isset($aree[$area_name])) {
-        $aree[$area_name] = [];
-    }
+    if ($area_name) {
 
-    // AGGIUNGI UFFICIO ALL'AREA
-    if ($area_name && $is_ufficio) {
-        $aree[$area_name][] = $post;
+        // CREA STRUTTURA CORRETTA
+        if (!isset($aree[$area_name])) {
+            $aree[$area_name] = [
+                'name' => $area_name,
+                'posts' => []
+            ];
+        }
+
+        // AGGIUNGI UFFICIO
+        if ($is_ufficio) {
+            $aree[$area_name]['posts'][] = $post;
+        }
     }
 }
+
 
 $articolazioni_per_page = 10;
 $articolazioni_page = isset($_GET['uffici_page']) ? max(1, (int) $_GET['uffici_page']) : 1;
