@@ -488,133 +488,84 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
 ?>
 
 <style>
-    .dci-at-wrap {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 0 15px;
-    }
+  /* WRAP FULL WIDTH */
+.dci-at-wrap {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
 
-    .dci-at-section + .dci-at-section {
-        margin-top: 3rem;
-    }
+/* GRID UFFICI */
+.dci-at-office-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(320px, 1fr));
+    gap: 2rem;
+}
 
-    .dci-at-section-title {
-        margin-bottom: 1.5rem;
-    }
+/* CARD */
+.dci-at-office-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
-    /* GRID UFFICI */
-    .dci-at-office-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.25rem;
-    }
+/* HEAD */
+.dci-at-office-head {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e4eaf1;
+}
 
-    @media (max-width: 991px) {
+/* CONTENUTO */
+.dci-at-office-content {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+/* BLOCCO DETTAGLI */
+.dci-at-detail-block {
+    border-bottom: 1px solid #e9eef4;
+    padding: 1rem 0;
+}
+
+.dci-at-detail-block:last-child {
+    border-bottom: 0;
+}
+
+/* TITOLI */
+.dci-at-detail-label {
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #5c6f82;
+    margin-bottom: 0.5rem;
+}
+
+/* PERSONA */
+.dci-at-person-name {
+    font-weight: 600;
+}
+
+/* AREA TITLE */
+.dci-at-area-block h3 {
+    margin-bottom: 1.5rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
     .dci-at-office-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .dci-at-office-grid {
         grid-template-columns: 1fr;
     }
 }
-    
-    .dci-at-office-cell {
-        min-width: 0;
-    }
-
-    /* CARD */
-    .dci-at-office-card {
-        background: #fff;
-        border-radius: .5rem;
-        overflow: hidden;
-        height: 100%;
-    }
-
-    .dci-at-office-head {
-        padding: 1.2rem;
-        border-bottom: 1px solid #e4eaf1;
-    }
-    
-.dci-at-office-card {
-    padding: 0.5rem;
-}
-    
-    .dci-at-office-content {
-        padding: 1.2rem;
-    }
-
-    .dci-at-detail-block {
-        border-bottom: 1px solid #e9eef4;
-        padding: .8rem 0;
-    }
-
-    .dci-at-detail-block:last-child {
-        border-bottom: 0;
-    }
-
-    .dci-at-detail-label {
-        font-size: .8rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #5c6f82;
-    }
-
-    .dci-at-person-name {
-        font-weight: 600;
-    }
-
-    /* PAGINAZIONE */
-    .dci-at-pagination {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: .5rem;
-        margin-top: 1.5rem;
-    }
-
-    .dci-at-pagination-link,
-    .dci-at-pagination-current {
-        min-width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        border: 1px solid #dbe5ee;
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    .dci-at-pagination-current {
-        border-color: #0066cc;
-        color: #0066cc;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 991px) {
-        .dci-at-office-grid {
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-
-    @media (max-width: 767px) {
-        .dci-at-wrap {
-            padding: 0 10px;
-        }
-
-        .dci-at-office-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .dci-at-office-head,
-        .dci-at-office-content {
-            padding: 1rem;
-        }
-    }
 </style>
 
 <div class="container">
@@ -622,8 +573,8 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
         <div class="row g-4 justify-content-center">
 
             <!-- CONTENUTO PRINCIPALE -->
-            <div class="col-12 col-lg-9 mx-auto dci-at-main-content">
-
+            <div class="col-12 dci-at-main-content">
+                
                 <!-- ORGANI INDIRIZZO -->
                 <section id="organi-indirizzo" class="dci-at-section">
                     <h2 class="title-large dci-at-section-title">Organi di indirizzo politico</h2>
