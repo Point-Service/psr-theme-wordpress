@@ -561,6 +561,11 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
     margin-bottom: 1.5rem;
 }
 
+    .dci-at-area-block h3 {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
 /* RESPONSIVE */
 @media (max-width: 1200px) {
     .dci-at-office-grid {
@@ -619,10 +624,6 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
                 <!-- UFFICI -->
 <section id="articolazione-uffici" class="dci-at-section">
         <h3 class="h4 mb-4">
-            <?php 
-            $count = !empty($area['uffici']) ? count($area['uffici']) : 0;
-            echo mb_strtoupper(esc_html($area['post']->post_title)) . " (" . $count . ")";
-            ?>
         </h3>
 
     <!-- AREE -->
