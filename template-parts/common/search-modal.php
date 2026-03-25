@@ -163,7 +163,7 @@
 <!-- CSS -->
 <style>
 .scroll-frequenti {
-  max-height: 320px;
+  max-height: 220px;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
