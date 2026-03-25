@@ -253,7 +253,7 @@ if (!function_exists('dci_render_trasparenza_light_bg_style')) {
 dci_render_trasparenza_light_bg_style();
 
 // Recupera il numero di pagina corrente.
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$paged = max(1, get_query_var('paged'), get_query_var('page'));
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $load_posts = -1;
@@ -285,7 +285,14 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 
 
 $the_query = new WP_Query($args);
-$pagination_markup = trim((string) dci_bootstrap_pagination());
+$pagination_markup = paginate_links([
+    'total'   => $the_query->max_num_pages,
+    'current' => $paged,
+    'mid_size'=> 2,
+    'type'    => 'list',
+    'prev_text' => '«',
+    'next_text' => '»',
+]);
 
 
 
@@ -448,9 +455,9 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 								} ?>
 							</div>
 
-							<?php if ($pagination_markup !== '') { ?>
+							<?php if ($pagination_markup) { ?>
 							<div class="row my-4">
-								<nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+								<nav class="pagination-wrapper justify-content-center col-12">
 									<?php echo $pagination_markup; ?>
 								</nav>
 							</div>
@@ -507,6 +514,5 @@ get_footer();
         }, 100);
     });
 </script>
-
 
 
