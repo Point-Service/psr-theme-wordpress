@@ -412,34 +412,41 @@ $seen_indirizzo = [];
 $seen_gestione = [];
 $seen_articolazioni = [];
 
+
+
 foreach ($posts as $post) {
 
+    $terms = wp_get_post_terms($post->ID, 'tipi_unita_organizzativa');
+    $term_slugs = [];
+
+    if (!empty($terms) && !is_wp_error($terms)) {
+        $term_slugs = array_map(function ($term) {
+            return sanitize_title($term->slug);
+        }, $terms);
+    }
+
+    // ORGANI
+    if (dci_articolazione_post_matches($post, $terms, ['consiglio', 'consiglio-comunale'])) {
+        $organi_indirizzo[] = $post;
+        continue;
+    }
+
+    if (dci_articolazione_post_matches($post, $terms, ['giunta', 'sindaco'])) {
+        $organi_gestione[] = $post;
+        continue;
+    }
+
+    // 👇 GERARCHIA AREE / UFFICI
     $parent_id = wp_get_post_parent_id($post->ID);
 
     if ($parent_id) {
-        // è un ufficio → lo metto sotto l'area
+        // ufficio
         $aree[$parent_id][] = $post;
     } else {
-        // è un'area
-        $aree[$post->ID] = $aree[$post->ID] ?? [];
-    }
-}
-
-    if (
-        in_array('ufficio', $term_slugs, true) ||
-        in_array('area', $term_slugs, true)
-    ) {
-        dci_articolazione_add_unique($articolazioni, $seen_articolazioni, $post);
-        continue;
-    }
-
-    if (dci_articolazione_post_matches($post, $terms, ['consiglio comunale', 'consiglio-comunale', 'consiglio'])) {
-        dci_articolazione_add_unique($organi_indirizzo, $seen_indirizzo, $post);
-        continue;
-    }
-
-    if (dci_articolazione_post_matches($post, $terms, ['giunta comunale', 'giunta-comunale', 'giunta', 'sindaco'])) {
-        dci_articolazione_add_unique($organi_gestione, $seen_gestione, $post);
+        // area
+        if (!isset($aree[$post->ID])) {
+            $aree[$post->ID] = [];
+        }
     }
 }
 
