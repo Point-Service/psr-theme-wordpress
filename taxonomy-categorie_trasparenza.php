@@ -275,8 +275,15 @@ $args = array(
     's' => $query,
     'posts_per_page' => $max_posts,
     'post_type' => 'elemento_trasparenza',
-    'tipi_cat_amm_trasp' => $obj->slug,
     'paged' => $paged,
+
+    'tax_query' => array(
+        array(
+            'taxonomy' => 'tipi_cat_amm_trasp',
+            'field'    => 'slug',
+            'terms'    => $obj->slug,
+        ),
+    ),
 );
 
 // Gestione dell'ordinamento
