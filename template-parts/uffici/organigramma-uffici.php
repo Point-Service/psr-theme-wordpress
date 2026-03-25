@@ -621,7 +621,7 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
         <h3 class="h4 mb-4">
             <?php 
             $count = !empty($area['uffici']) ? count($area['uffici']) : 0;
-            echo esc_html($area['post']->post_title) . " (" . $count . ")";
+            echo mb_strtoupper(esc_html($area['post']->post_title)) . " (" . $count . ")";
             ?>
         </h3>
 
@@ -633,8 +633,11 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
             <div class="dci-at-area-block mb-5">
 
                 <!-- TITOLO AREA -->
-                <h3 class="h4 mb-4">
-                    <?php echo esc_html($area['post']->post_title); ?>
+                   <h3 class="h4 mb-4">
+                    <?php 
+                    $count = !empty($area['uffici']) ? count($area['uffici']) : 0;
+                    echo mb_strtoupper(esc_html($area['post']->post_title)) . " (" . $count . ")";
+                    ?>
                 </h3>
 
                 <!-- UFFICI DELL’AREA -->
