@@ -427,11 +427,15 @@ foreach ($posts as $post) {
         $slug = sanitize_title($term->slug);
 
         // consideriamo solo le aree
-        if (in_array($slug, ['area', 'ufficio'])) {
-
-            $aree[$term->term_id]['name'] = $term->name;
-            $aree[$term->term_id]['posts'][] = $post;
-        }
+            if ($slug === 'area') {
+                $aree[$term->term_id]['name'] = $term->name;
+                $aree[$term->term_id]['posts'] = $aree[$term->term_id]['posts'] ?? [];
+            }
+            
+            if ($slug === 'ufficio') {
+                $aree[$term->term_id]['name'] = $term->name;
+                $aree[$term->term_id]['posts'][] = $post;
+            }
     }
 }
 
