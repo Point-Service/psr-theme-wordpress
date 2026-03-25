@@ -411,34 +411,50 @@ $seen_indirizzo = [];
 $seen_gestione = [];
 $seen_articolazioni = [];
 
+$aree = [];
+$seen_indirizzo = [];
+$seen_gestione = [];
+
 foreach ($posts as $post) {
+
     $terms = wp_get_post_terms($post->ID, 'tipi_unita_organizzativa');
     $term_slugs = [];
 
     if (!empty($terms) && !is_wp_error($terms)) {
-        $term_slugs = array_map(
-            static function ($term) {
-                return sanitize_title($term->slug);
-            },
-            $terms
-        );
+        $term_slugs = array_map(function ($term) {
+            return sanitize_title($term->slug);
+        }, $terms);
     }
 
-    if (
-        in_array('ufficio', $term_slugs, true) ||
-        in_array('area', $term_slugs, true)
-    ) {
-        dci_articolazione_add_unique($articolazioni, $seen_articolazioni, $post);
-        continue;
-    }
-
-    if (dci_articolazione_post_matches($post, $terms, ['consiglio comunale', 'consiglio-comunale', 'consiglio'])) {
+    // 🔵 ORGANI (lasciamo uguale)
+    if (dci_articolazione_post_matches($post, $terms, ['consiglio'])) {
         dci_articolazione_add_unique($organi_indirizzo, $seen_indirizzo, $post);
         continue;
     }
 
-    if (dci_articolazione_post_matches($post, $terms, ['giunta comunale', 'giunta-comunale', 'giunta', 'sindaco'])) {
+    if (dci_articolazione_post_matches($post, $terms, ['giunta', 'sindaco'])) {
         dci_articolazione_add_unique($organi_gestione, $seen_gestione, $post);
+        continue;
+    }
+
+    // 🟢 SOLO UFFICI
+    if (in_array('ufficio', $term_slugs, true)) {
+
+        $area_name = 'Altri uffici';
+
+        foreach ($terms as $term) {
+            $slug = sanitize_title($term->slug);
+
+            if ($slug !== 'ufficio') {
+                $area_name = $term->name;
+            }
+        }
+
+        if (!isset($aree[$area_name])) {
+            $aree[$area_name] = [];
+        }
+
+        $aree[$area_name][] = $post;
     }
 }
 
@@ -614,17 +630,23 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
                 <section id="articolazione-uffici" class="dci-at-section">
                     <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
 
-                    <div class="dci-at-office-grid">
-                        <?php if (!empty($articolazioni_paged)) {
-                            foreach ($articolazioni_paged as $post) {
-                                dci_articolazione_render_office_card($post);
-                            }
-                        } else { ?>
-                            <div class="dci-at-office-cell">
-                                <p>Nessun ufficio disponibile.</p>
+                    <?php foreach ($aree as $area_name => $uffici) { ?>
+                    
+                        <div class="dci-at-area-block">
+                    
+                            <h3 class="dci-at-area-title">
+                                <?php echo esc_html($area_name); ?>
+                            </h3>
+                    
+                            <div class="dci-at-office-grid">
+                                <?php foreach ($uffici as $post) {
+                                    dci_articolazione_render_office_card($post);
+                                } ?>
                             </div>
-                        <?php } ?>
-                    </div>
+                    
+                        </div>
+                    
+                    <?php } ?>
 
                     <!-- PAGINAZIONE -->
                     <?php if ($articolazioni_total_pages > 1) { ?>
