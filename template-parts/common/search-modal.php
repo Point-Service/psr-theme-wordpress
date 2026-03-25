@@ -3,17 +3,33 @@
   $unique_id = 'search-' . uniqid();
 ?>
 <!-- Search Modal -->
-<div class="modal fade search-modal" id="search-modal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
+<div
+    class="modal fade search-modal"
+    id="search-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content perfect-scrollbar">
       <div class="modal-body">
-
-        <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+        <form role="search" id="search-form-modal" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
           <div class="container">
 
-            <!-- HEADER -->
-            <div class="row">
+            <div class="row variable-gutters">
               <div class="col">
+                <div class="modal-title">
+                  <button class="search-link d-md-none" type="button" data-bs-toggle="modal" data-bs-target="#search-modal">
+                    <svg class="icon icon-md"><use href="#it-arrow-left"></use></svg>
+                  </button>
+
+                  <p><span class="h2"><?php _e("","design_comuni_italia"); ?></span></p>
+
+                  <button class="search-link d-none d-md-block" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" data-dismiss="modal">
+                    <svg class="icon icon-md"><use href="#it-close-big"></use></svg>
+                  </button>
+                </div>
+
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -22,28 +38,40 @@
                       </div>
                     </div>
 
-                    <input type="search" class="form-control" id="<?php echo $unique_id; ?>" name="s"
-                      placeholder="Cerca nel sito" value="<?php echo get_search_query(); ?>" />
+                    <label for="<?php echo $unique_id; ?>">Con Etichetta</label>
+                    <input
+                      type="search"
+                      class="form-control"
+                      id="<?php echo $unique_id; ?>"
+                      name="s"
+                      placeholder="<?php _e("Cerca nel sito","design_comuni_italia"); ?>"
+                      value="<?php echo get_search_query(); ?>"
+                    />
                   </div>
 
-                  <button type="submit" class="btn btn-primary mt-2">
-                    Cerca
-                  </button>
+                  <button type="submit" class="btn btn-primary">
+                    <span>Cerca</span>
+                  </button>   
                 </div>
               </div>
             </div>
 
-            <!-- CONTENUTO -->
-            <div class="row p-4">
+            <div class="row variable-gutters p-4">
 
               <!-- SINISTRA -->
-              <div class="col-lg-5">
+              <div class="col-lg-5">    
 
+                <a href="<?php echo esc_url( home_url( '/?s=' ) ); ?>" class="chip chip-simple chip-lg">
+                  <span class="chip-label">RICERCA PARAMETRICA</span>
+                </a>
+
+                <p></p>
+
+                <!-- RICERCHE FREQUENTI -->
                 <div class="h4 other-link-title">Ricerche frequenti</div>
 
                 <div class="link-list-wrapper mb-4 scroll-frequenti">
                   <ul class="link-list">
-
                     <?php
                     $popular_posts = new WP_Query([
                         'post_type' => dci_get_sercheable_tipologie(),
@@ -63,23 +91,40 @@
                     }
 
                     if (!empty($popular_posts->posts)) {
-                      foreach ($popular_posts->posts as $post) { ?>
+                      foreach ($popular_posts->posts as $post) {
+                        setup_postdata($post); ?>
                         <li>
-                          <a class="list-item active large py-1 icon-left" href="<?php echo get_permalink($post); ?>">
+                          <a class="list-item active large py-1 icon-left" href="<?php the_permalink(); ?>">
                             <span class="list-item-title-icon-wrapper">
                               <svg class="icon icon-primary icon-sm"><use href="#it-search"></use></svg>
-                              <span class="list-item-title"><?php echo get_the_title($post); ?></span>
+                              <span class="list-item-title"><?php the_title(); ?></span>
                             </span>
                           </a>
                         </li>
                     <?php } } else { ?>
                         <li>Nessun risultato</li>
                     <?php } wp_reset_postdata(); ?>
-
                   </ul>
                 </div>
 
-              </div>
+                <!-- SCELTI PER TE -->
+                <?php if ($links) { ?>
+                  <div class="h4 other-link-title">Scelti per te</div>
+                  <div class="link-list-wrapper mb-4">
+                    <ul class="link-list">
+                      <?php foreach ($links as $link_id) { 
+                        $link = get_post($link_id); ?>
+                        <li>
+                          <a class="list-item active ps-0" href="<?php echo get_permalink($link_id); ?>">
+                            <span class="text-button-normal"><?php echo $link->post_title; ?></span>
+                          </a>
+                        </li>
+                      <?php } ?>
+                    </ul>
+                  </div>
+                <?php } ?>
+
+              </div> 
 
               <!-- DESTRA -->
               <div class="col-lg-6">
@@ -94,7 +139,7 @@
 
                 if(!empty($argomenti)) { ?>
                   <div class="badges-wrapper">
-                    <div class="h4 other-link-title">Potrebbero interessarti</div>
+                    <div class="h4 other-link-title"><?php _e("Potrebbero interessarti","design_comuni_italia"); ?></div>
                     <div class="badges">
                       <?php foreach ($argomenti as $argomento){
                         $taglink = get_tag_link($argomento); ?>
@@ -107,10 +152,9 @@
                 <?php } ?>
               </div>
 
-            </div>
+            </div>   
           </div>
         </form>
-
       </div>
     </div>
   </div>
@@ -119,14 +163,13 @@
 <!-- CSS -->
 <style>
 .scroll-frequenti {
-  max-height: 320px; /* circa 10 elementi */
+  max-height: 320px;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   padding-right: 5px;
 }
 
-/* scrollbar */
 .scroll-frequenti::-webkit-scrollbar {
   width: 6px;
 }
@@ -136,3 +179,5 @@
   border-radius: 3px;
 }
 </style>
+
+<!-- End Search Modal -->
