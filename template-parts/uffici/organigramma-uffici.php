@@ -588,7 +588,7 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
         <div class="row g-4 justify-content-center">
 
             <!-- CONTENUTO PRINCIPALE -->
-            <div class="col-12 col-lg-9 mx-auto dci-at-main-content">
+           <div class="col-12 dci-at-main-content">
 
                 <!-- ORGANI INDIRIZZO -->
                 <section id="organi-indirizzo" class="dci-at-section">
