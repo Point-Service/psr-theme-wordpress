@@ -1,18 +1,14 @@
 <?php
 global $the_query, $load_posts;
-global $siti_tematici, $dci_amm_sidebar_embedded, $dci_amm_sidebar_sections;
+
 
 $count = 0;
 $max_posts = isset($_GET['max_posts']) ? (int) $_GET['max_posts'] : 1000000;
 $load_posts = 6;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
-$dci_amm_sidebar_embedded = true;
-$dci_amm_sidebar_sections = [
-    ['id' => 'organi-indirizzo', 'label' => 'Organi di indirizzo politico'],
-    ['id' => 'organi-gestione', 'label' => 'Organi di amministrazione e gestione'],
-    ['id' => 'articolazione-uffici', 'label' => 'Articolazione degli uffici'],
-];
+
+
 
 if (!function_exists('dci_articolazione_normalize_list')) {
     function dci_articolazione_normalize_list($value)
