@@ -414,6 +414,9 @@ $seen_articolazioni = [];
 $aree = [];
 $uffici = [];
 
+$aree = [];
+$uffici = [];
+
 foreach ($posts as $post) {
     $terms = wp_get_post_terms($post->ID, 'tipi_unita_organizzativa');
 
@@ -425,7 +428,19 @@ foreach ($posts as $post) {
         return sanitize_title($term->slug);
     }, $terms);
 
-    // 👉 AREA
+    // ✅ ORGANI INDIRIZZO
+    if (dci_articolazione_post_matches($post, $terms, ['consiglio comunale', 'consiglio-comunale', 'consiglio'])) {
+        dci_articolazione_add_unique($organi_indirizzo, $seen_indirizzo, $post);
+        continue;
+    }
+
+    // ✅ ORGANI GESTIONE
+    if (dci_articolazione_post_matches($post, $terms, ['giunta comunale', 'giunta-comunale', 'giunta', 'sindaco'])) {
+        dci_articolazione_add_unique($organi_gestione, $seen_gestione, $post);
+        continue;
+    }
+
+    // ✅ AREA
     if (in_array('area', $term_slugs, true)) {
         $aree[$post->ID] = [
             'post' => $post,
@@ -434,7 +449,7 @@ foreach ($posts as $post) {
         continue;
     }
 
-    // 👉 UFFICIO
+    // ✅ UFFICIO
     if (in_array('ufficio', $term_slugs, true)) {
         $uffici[] = $post;
     }
@@ -475,7 +490,7 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
 <style>
     .dci-at-wrap {
         width: 100%;
-        max-width: 1140px;
+        max-width: 100%;
         margin: 0 auto;
         padding: 0 15px;
     }
