@@ -640,7 +640,7 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
                     echo mb_strtoupper(esc_html($area['post']->post_title)) . " (" . $count . ")";
                     ?>
                 </h3>
-
+                
                 <!-- UFFICI DELL’AREA -->
                 <?php if (!empty($area['uffici'])) { ?>
                     <div class="dci-at-office-grid">
