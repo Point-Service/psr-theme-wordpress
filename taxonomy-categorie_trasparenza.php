@@ -253,7 +253,7 @@ if (!function_exists('dci_render_trasparenza_light_bg_style')) {
 dci_render_trasparenza_light_bg_style();
 
 // Recupera il numero di pagina corrente.
-$paged = max(1, get_query_var('paged'), get_query_var('page'));
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $load_posts = -1;
@@ -285,14 +285,7 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 
 
 $the_query = new WP_Query($args);
-$pagination_markup = paginate_links([
-    'total'   => $the_query->max_num_pages,
-    'current' => $paged,
-    'mid_size'=> 2,
-    'type'    => 'list',
-    'prev_text' => '«',
-    'next_text' => '»',
-]);
+$pagination_markup = trim((string) dci_bootstrap_pagination());
 
 
 
@@ -447,22 +440,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                     get_template_part("template-parts/amministrazione-trasparente/card");
                                 } ?>
                             </div>
-							
-							<div class="row g-4" id="load-more">
-								<?php foreach ($categoria as $elemento) {
-									$load_card_type = "elemento_trasparenza";
-									get_template_part("template-parts/amministrazione-trasparente/card");
-								} ?>
-							</div>
-
-							<?php if ($pagination_markup !== '') { ?>
-							<div class="row my-4">
-								<nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-									<?php echo $pagination_markup; ?>
-								</nav>
-							</div>
-							<?php } ?>
-
                         <?php } else { ?>
                             <div class="dci-at-empty text-decoration-none" role="status" aria-live="polite">
                                 <span class="dci-at-empty__icon" aria-hidden="true">
@@ -481,7 +458,13 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     <!-- Colonna destra: link utili -->
                     <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
 
-                    
+                    <?php if ($pagination_markup !== '') { ?>
+                    <div class="row my-4">
+                        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
+                            <?php echo $pagination_markup; ?>
+                        </nav>
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </form>
@@ -514,4 +497,5 @@ get_footer();
         }, 100);
     });
 </script>
+
 
