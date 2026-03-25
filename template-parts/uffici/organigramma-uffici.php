@@ -442,12 +442,16 @@ foreach ($posts as $post) {
 
 foreach ($uffici as $ufficio) {
 
-    // campo relazione (CAMBIA SE DIVERSO)
-    $area_id = dci_get_meta('area_riferimento', '_dci_unita_organizzativa_', $ufficio->ID);
+    // prende il genitore WP
+    $area_id = wp_get_post_parent_id($ufficio->ID);
 
     if (!empty($area_id) && isset($aree[$area_id])) {
         $aree[$area_id]['uffici'][] = $ufficio;
     }
+
+    var_dump(get_post_meta($ufficio->ID));
+die();
+    
 }
 
 
