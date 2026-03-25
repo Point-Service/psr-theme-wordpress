@@ -458,384 +458,196 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
 <style>
     .dci-at-wrap {
         width: 100%;
-        max-width: none;
-        padding: 0;
-        background: transparent;
-        box-shadow: none !important;
-        border-radius: 0;
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0 15px;
     }
 
-    .dci-at-wrap .dci-at-section + .dci-at-section {
+    .dci-at-section + .dci-at-section {
         margin-top: 3rem;
     }
 
-    .dci-at-wrap .dci-at-section:last-child,
-    .dci-at-wrap .dci-at-main-content > :last-child {
-        margin-bottom: 0;
-    }
-
-    .dci-at-wrap .dci-at-main-content {
-        min-width: 0;
-    }
-
-    .dci-at-wrap .dci-at-section-title {
+    .dci-at-section-title {
         margin-bottom: 1.5rem;
     }
 
-    .dci-at-wrap .dci-at-office-grid {
+    /* GRID UFFICI */
+    .dci-at-office-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1.25rem;
     }
 
-    .dci-at-wrap .dci-at-office-cell {
+    .dci-at-office-cell {
         min-width: 0;
     }
 
-    .dci-at-wrap .card-body.card-img-none {
-        padding: 1.5rem;
-    }
-
-    .dci-at-wrap .dci-at-card-icon {
-        display: inline-flex;
-        align-items: center;
-    }
-
-    .dci-at-wrap .dci-at-office-card {
-        padding: 0;
+    /* CARD */
+    .dci-at-office-card {
         background: #fff;
+        border-radius: .5rem;
         overflow: hidden;
+        height: 100%;
     }
 
-    .dci-at-wrap .dci-at-office-head {
-        padding: 1.125rem 1.125rem .875rem;
+    .dci-at-office-head {
+        padding: 1.2rem;
         border-bottom: 1px solid #e4eaf1;
     }
 
-    .dci-at-wrap .dci-at-office-content {
-        display: grid;
-        gap: 0;
-        padding: 0 1.125rem 1.125rem;
+    .dci-at-office-content {
+        padding: 1.2rem;
     }
 
-    .dci-at-wrap .dci-at-detail-block {
-        padding: .875rem 0;
-        background: transparent;
-        border: 0;
+    .dci-at-detail-block {
         border-bottom: 1px solid #e9eef4;
-        border-radius: 0;
+        padding: .8rem 0;
     }
 
-    .dci-at-wrap .dci-at-detail-label {
-        margin-bottom: .35rem;
-        font-size: .8125rem;
+    .dci-at-detail-block:last-child {
+        border-bottom: 0;
+    }
+
+    .dci-at-detail-label {
+        font-size: .8rem;
         font-weight: 700;
-        letter-spacing: .02em;
         text-transform: uppercase;
         color: #5c6f82;
     }
 
-    .dci-at-wrap .dci-at-detail-block:last-child {
-        border-bottom: 0;
-        padding-bottom: 0;
-    }
-
-    .dci-at-wrap .dci-at-richtext p:last-child,
-    .dci-at-wrap .dci-at-contact-item:last-child,
-    .dci-at-wrap .dci-at-person:last-child {
-        margin-bottom: 0;
-    }
-
-    .dci-at-wrap .dci-at-richtext p,
-    .dci-at-wrap .dci-at-contact-item,
-    .dci-at-wrap .dci-at-person-role {
-        font-size: .95rem;
-        line-height: 1.5;
-        color: #455a64;
-    }
-
-    .dci-at-wrap .dci-at-person + .dci-at-person,
-    .dci-at-wrap .dci-at-contact-item + .dci-at-contact-item {
-        margin-top: .5rem;
-    }
-
-    .dci-at-wrap .dci-at-person-name {
-        font-weight: 700;
-        color: #17324d;
-    }
-
-    .dci-at-wrap .dci-at-office-card .card-title {
-        font-size: 1.18rem;
-        line-height: 1.25;
-    }
-
-    .dci-at-wrap .dci-at-contact-list a,
-    .dci-at-wrap .dci-at-person a {
-        word-break: break-word;
-    }
-
-    .dci-at-wrap .dci-at-contact-item {
-        display: flex;
-        align-items: flex-start;
-    }
-
-    .dci-at-wrap .dci-at-contact-item .icon {
-        flex: 0 0 auto;
-        margin-top: .15rem;
-        fill: var(--bs-primary, #0066cc);
-    }
-
-    .dci-at-wrap .dci-at-sidebar .link-list li a,
-    .dci-at-wrap .dci-at-back-link {
-        text-decoration: none;
-    }
-
-    .dci-at-wrap .dci-at-sidebar {
-        min-width: 0;
-    }
-
-    .dci-at-wrap .dci-at-sidebar .link-list li a {
-        display: inline-flex;
-        align-items: center;
-        gap: .5rem;
-        width: 100%;
-        line-height: 1.4;
-    }
-
-    .dci-at-wrap .dci-at-sidebar-box {
-        background: #fff;
-        border: 1px solid #e9eef4;
-        border-radius: .5rem;
-        padding: 1.25rem;
-        box-shadow: 0 .125rem .25rem rgba(23, 50, 77, .08);
-    }
-
-    .dci-at-wrap .dci-at-sidebar-box .link-list {
-        margin-bottom: 0;
-    }
-
-    .dci-at-wrap .dci-at-sidebar-box .link-list li:last-child {
-        margin-bottom: 0 !important;
-    }
-
-    .dci-at-wrap .dci-at-sidebar-sticky > :last-child {
-        margin-bottom: 0;
-    }
-
-    .dci-at-wrap .dci-at-sidebar-box + .dci-at-sidebar-box {
-        margin-top: 1rem;
-    }
-
-    .dci-at-wrap .dci-at-back-link {
-        display: inline-flex;
-        align-items: center;
-        gap: .5rem;
+    .dci-at-person-name {
         font-weight: 600;
     }
 
-    .dci-at-wrap .dci-at-theme-list {
-        list-style: none;
-        padding-left: 0;
-        margin: 0;
-    }
-
-    .dci-at-wrap .dci-at-theme-item + .dci-at-theme-item {
-        margin-top: .875rem;
-        padding-top: .875rem;
-        border-top: 1px solid #e9eef4;
-    }
-
-    .dci-at-wrap .dci-at-theme-link {
-        display: block;
-    }
-
-    .dci-at-wrap .dci-at-theme-head {
-        display: flex;
-        align-items: flex-start;
-        gap: .75rem;
-    }
-
-    .dci-at-wrap .dci-at-theme-avatar {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 999px;
-        overflow: hidden;
-        flex: 0 0 auto;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: #fff;
-        border: 1px solid #e9eef4;
-    }
-
-    .dci-at-wrap .dci-at-theme-avatar img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .dci-at-wrap .dci-at-theme-title-wrap {
-        min-width: 0;
-        flex: 1 1 auto;
-    }
-
-    .dci-at-wrap .dci-at-theme-title {
-        display: block;
-        font-weight: 700;
-        line-height: 1.35;
-        color: #17324d;
-    }
-
-    .dci-at-wrap .dci-at-theme-icon {
-        flex: 0 0 auto;
-        margin-top: .1rem;
-        fill: var(--bs-primary, #0066cc);
-    }
-
-    .dci-at-wrap .dci-at-theme-description {
-        display: block;
-        margin-top: .4rem;
-        font-size: .9rem;
-        line-height: 1.5;
-        color: #5c6f82;
-    }
-
-    .dci-at-wrap .dci-at-pagination {
+    /* PAGINAZIONE */
+    .dci-at-pagination {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         gap: .5rem;
         margin-top: 1.5rem;
-        justify-content: center;
     }
 
-    .dci-at-wrap .dci-at-pagination-link,
-    .dci-at-wrap .dci-at-pagination-current {
-        display: inline-flex;
+    .dci-at-pagination-link,
+    .dci-at-pagination-current {
+        min-width: 40px;
+        height: 40px;
+        display: flex;
         align-items: center;
         justify-content: center;
-        min-width: 2.5rem;
-        height: 2.5rem;
-        padding: 0 .875rem;
-        border-radius: .5rem;
+        border-radius: 6px;
         border: 1px solid #dbe5ee;
-        background: #fff;
-        color: #17324d;
-        font-weight: 600;
         text-decoration: none;
+        font-weight: 600;
     }
 
-    .dci-at-wrap .dci-at-pagination-current {
-        border-color: var(--bs-primary, #0066cc);
-        color: var(--bs-primary, #0066cc);
+    .dci-at-pagination-current {
+        border-color: #0066cc;
+        color: #0066cc;
     }
 
-    @media (min-width: 992px) {
-        .dci-at-wrap .dci-at-sidebar-sticky {
-            position: sticky;
-            top: 2rem;
+    /* RESPONSIVE */
+    @media (max-width: 991px) {
+        .dci-at-office-grid {
+            grid-template-columns: 1fr 1fr;
         }
     }
 
-    .dci-at-wrap .dci-at-office-head .card-text {
-        font-size: .96rem;
-        line-height: 1.55;
-        color: #455a64;
-    }
-
-    .dci-at-wrap .dci-at-contact-item + .dci-at-contact-item {
-        margin-top: .35rem;
-    }
-
-    .dci-at-wrap .row.g-4 {
-        --bs-gutter-y: 1.25rem;
-    }
-
-    @media (max-width: 991.98px) {
-        .dci-at-wrap .dci-at-office-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+    @media (max-width: 767px) {
+        .dci-at-wrap {
+            padding: 0 10px;
         }
 
-        .dci-at-wrap .dci-at-sidebar {
-            margin-top: 1.5rem;
-        }
-    }
-
-    @media (max-width: 767.98px) {
-        .dci-at-wrap .dci-at-office-grid {
+        .dci-at-office-grid {
             grid-template-columns: 1fr;
         }
 
-        .dci-at-wrap .dci-at-office-head,
-        .dci-at-wrap .dci-at-office-content {
-            padding-left: 1rem;
-            padding-right: 1rem;
+        .dci-at-office-head,
+        .dci-at-office-content {
+            padding: 1rem;
         }
     }
 </style>
 
-<div class="dci-at-wrap">
-    <div class="row g-4">
-        <div class="col-12 col-lg-9 dci-at-main-content">
-            <section id="organi-indirizzo" class="dci-at-section">
-                <h2 class="title-large dci-at-section-title">Organi di indirizzo politico</h2>
-                <div class="row g-4">
-                    <?php if (!empty($organi_indirizzo)) {
-                        foreach ($organi_indirizzo as $post) {
-                            dci_articolazione_render_simple_card($post);
-                        }
-                    } else { ?>
-                        <div class="col-12">
-                            <p class="mb-0">Nessun organo di indirizzo politico disponibile.</p>
-                        </div>
-                    <?php } ?>
-                </div>
-            </section>
+<div class="container">
+    <div class="dci-at-wrap">
+        <div class="row g-4 justify-content-center">
 
-            <section id="organi-gestione" class="dci-at-section">
-                <h2 class="title-large dci-at-section-title">Organi di amministrazione e gestione</h2>
-                <div class="row g-4">
-                    <?php if (!empty($organi_gestione)) {
-                        foreach ($organi_gestione as $post) {
-                            dci_articolazione_render_simple_card($post);
-                        }
-                    } else { ?>
-                        <div class="col-12">
-                            <p class="mb-0">Nessun organo di amministrazione e gestione disponibile.</p>
-                        </div>
-                    <?php } ?>
-                </div>
-            </section>
+            <!-- CONTENUTO PRINCIPALE -->
+            <div class="col-12 col-lg-9 mx-auto dci-at-main-content">
 
-            <section id="articolazione-uffici" class="dci-at-section">
-                <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
-                <div class="dci-at-office-grid">
-                    <?php if (!empty($articolazioni_paged)) {
-                        foreach ($articolazioni_paged as $post) {
-                            dci_articolazione_render_office_card($post);
-                        }
-                    } else { ?>
-                        <div class="dci-at-office-cell">
-                            <p class="mb-0">Nessun ufficio disponibile.</p>
-                        </div>
+                <!-- ORGANI INDIRIZZO -->
+                <section id="organi-indirizzo" class="dci-at-section">
+                    <h2 class="title-large dci-at-section-title">Organi di indirizzo politico</h2>
+
+                    <div class="row g-4">
+                        <?php if (!empty($organi_indirizzo)) {
+                            foreach ($organi_indirizzo as $post) {
+                                dci_articolazione_render_simple_card($post);
+                            }
+                        } else { ?>
+                            <div class="col-12">
+                                <p>Nessun organo disponibile.</p>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </section>
+
+                <!-- ORGANI GESTIONE -->
+                <section id="organi-gestione" class="dci-at-section">
+                    <h2 class="title-large dci-at-section-title">Organi di amministrazione e gestione</h2>
+
+                    <div class="row g-4">
+                        <?php if (!empty($organi_gestione)) {
+                            foreach ($organi_gestione as $post) {
+                                dci_articolazione_render_simple_card($post);
+                            }
+                        } else { ?>
+                            <div class="col-12">
+                                <p>Nessun organo disponibile.</p>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </section>
+
+                <!-- UFFICI -->
+                <section id="articolazione-uffici" class="dci-at-section">
+                    <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
+
+                    <div class="dci-at-office-grid">
+                        <?php if (!empty($articolazioni_paged)) {
+                            foreach ($articolazioni_paged as $post) {
+                                dci_articolazione_render_office_card($post);
+                            }
+                        } else { ?>
+                            <div class="dci-at-office-cell">
+                                <p>Nessun ufficio disponibile.</p>
+                            </div>
+                        <?php } ?>
+                    </div>
+
+                    <!-- PAGINAZIONE -->
+                    <?php if ($articolazioni_total_pages > 1) { ?>
+                        <nav class="dci-at-pagination">
+                            <?php for ($page = 1; $page <= $articolazioni_total_pages; $page++) {
+                                $page_url = add_query_arg('uffici_page', $page) . '#articolazione-uffici';
+
+                                if ($page === $articolazioni_page) { ?>
+                                    <span class="dci-at-pagination-current"><?php echo $page; ?></span>
+                                <?php } else { ?>
+                                    <a class="dci-at-pagination-link" href="<?php echo esc_url($page_url); ?>">
+                                        <?php echo $page; ?>
+                                    </a>
+                                <?php }
+                            } ?>
+                        </nav>
                     <?php } ?>
-                </div>
-                <?php if ($articolazioni_total_pages > 1) { ?>
-                    <nav class="dci-at-pagination" aria-label="Paginazione uffici">
-                        <?php for ($page = 1; $page <= $articolazioni_total_pages; $page++) {
-                            $page_url = add_query_arg('uffici_page', $page);
-                            $page_url .= '#articolazione-uffici';
-                            if ($page === $articolazioni_page) { ?>
-                                <span class="dci-at-pagination-current"><?php echo (int) $page; ?></span>
-                            <?php } else { ?>
-                                <a class="dci-at-pagination-link" href="<?php echo esc_url($page_url); ?>"><?php echo (int) $page; ?></a>
-                            <?php }
-                        } ?>
-                    </nav>
-                <?php } ?>
-            </section>
+
+                </section>
+
+            </div>
+
         </div>
-
-
     </div>
 </div>
 
