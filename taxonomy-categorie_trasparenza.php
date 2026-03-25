@@ -300,17 +300,27 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 $the_query = new WP_Query($args);
 
 $pagination_links = paginate_links([
-    'total'      => $the_query->max_num_pages,
-    'current'    => $paged,
-    'mid_size'   => 2,
-    'type'       => 'array',
-    'prev_text'  => '«',
-    'next_text'  => '»',
+    'base'      => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
+    'format'    => '?paged=%#%',
+    'current'   => $paged,
+    'total'     => $the_query->max_num_pages,
+    'mid_size'  => 2,
+    'type'      => 'array',
+    'prev_text' => '«',
+    'next_text' => '»',
+    'add_args'  => [
+        'search' => $query,
+        'order_type' => $order,
+    ],
 ]);
 
 
+if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
+    wp_redirect(get_pagenum_link($the_query->max_num_pages));
+    exit;
+}
 
-
+wp_reset_postdata();
 
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
@@ -456,6 +466,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 
                         <!-- Risultati della ricerca -->
                         <?php if ($the_query->found_posts != 0) { ?>
+																 
                             <?php $categoria = $the_query->posts; ?>
                             <div class="row g-4" id="load-more">
                                 <?php foreach ($categoria as $elemento) {
@@ -464,12 +475,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                                 } ?>
                             </div>
 							
-							<div class="row g-4" id="load-more">
-								<?php foreach ($categoria as $elemento) {
-									$load_card_type = "elemento_trasparenza";
-									get_template_part("template-parts/amministrazione-trasparente/card");
-								} ?>
-							</div>
+
 
 						
 								<?php if (!empty($pagination_links)) : ?>
@@ -489,13 +495,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 								<?php endif; ?>
 
 						
-							<?php if ($pagination_markup) { ?>
-							<div class="row my-4">
-								<nav class="pagination-wrapper justify-content-center col-12">
-									<?php echo $pagination_markup; ?>
-								</nav>
-							</div>
-							<?php } ?>
+
 
                         <?php } else { ?>
                             <div class="dci-at-empty text-decoration-none" role="status" aria-live="polite">
