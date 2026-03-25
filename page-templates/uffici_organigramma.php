@@ -21,9 +21,8 @@ get_header();
 				get_template_part("template-parts/hero/hero"); 
 			?>
 
-    <?php get_template_part("template-parts/uffici/organigramma-uffici"); ?>	
+            <?php get_template_part("template-parts/uffici/organigramma-uffici"); ?>	
 			<?php get_template_part("template-parts/argomento/evidenza"); ?>			
-			<?php get_template_part("template-parts/argomento/argomenti"); ?>	
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>	
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>			
 		<?php 
