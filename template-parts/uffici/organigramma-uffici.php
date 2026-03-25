@@ -636,28 +636,25 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
                 <section id="articolazione-uffici" class="dci-at-section">
                     <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
 
-                            <?php foreach ($aree as $area) {
-                            
-                                $area = get_post($area_id);
-                                if (!$area) continue;
-                            ?>
-                            
-                                <div class="dci-at-area-block">
-                            
-                                    <!-- TITOLO AREA -->
-                                   <h3 class="dci-at-area-title">
-                                        <?php echo esc_html($area['name']); ?>
-                                    </h3>
-                                    
-                                    <div class="dci-at-office-grid">
-                                        <?php foreach ($area['posts'] as $post) {
-                                            dci_articolazione_render_office_card($post);
-                                        } ?>
-                                    </div>
-                            
-                                </div>
-                            
-                            <?php } ?>
+                           <?php foreach ($aree as $area) { ?>
+
+    <div class="dci-at-area-block">
+
+        <!-- TITOLO AREA -->
+        <h3 class="dci-at-area-title">
+            <?php echo esc_html($area['name']); ?>
+        </h3>
+
+        <!-- UFFICI -->
+        <div class="dci-at-office-grid">
+            <?php foreach ($area['posts'] as $post) {
+                dci_articolazione_render_office_card($post);
+            } ?>
+        </div>
+
+    </div>
+
+<?php } ?>
 
                     <!-- PAGINAZIONE -->
                     <?php if ($articolazioni_total_pages > 1) { ?>
