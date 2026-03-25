@@ -506,8 +506,12 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
 /* GRID UFFICI */
 .dci-at-office-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(320px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2rem;
+}
+
+body {
+    overflow-x: hidden;
 }
 
 /* CARD */
@@ -623,8 +627,7 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
 
                 <!-- UFFICI -->
 <section id="articolazione-uffici" class="dci-at-section">
-        <h3 class="h4 mb-4">
-        </h3>
+
 
     <!-- AREE -->
     <?php if (!empty($aree)) { ?>
