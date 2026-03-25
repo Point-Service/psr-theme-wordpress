@@ -167,7 +167,7 @@
                           <div class="col-lg-12">
                               <div class="badges-wrapper">
                                   <div class="h4 other-link-title"><?php _e("Potrebbero interessarti","design_comuni_italia"); ?></div>
-                                  <div class="badges">
+                                  <div class="badges badges-scroll">
                                       <?php
                                       foreach ($argomenti as $argomento){
                                           $taglink = get_tag_link($argomento);  ?>
@@ -188,5 +188,29 @@
     </div>
   </div>
 </div>
+<style>
+.badges-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
 
+.badges-scroll a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* scrollbar più carina */
+.badges-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.badges-scroll::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}  
+</style>
 <!-- End Search Modal -->
