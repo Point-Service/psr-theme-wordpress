@@ -75,7 +75,7 @@
                     <?php
                     $popular_posts = new WP_Query([
                         'post_type' => dci_get_sercheable_tipologie(),
-                        'posts_per_page' => 20,
+                        'posts_per_page' => 10,
                         'meta_key' => 'views',
                         'orderby' => 'meta_value_num',
                         'order' => 'DESC'
@@ -84,7 +84,7 @@
                     if (empty($popular_posts->posts)) {
                         $popular_posts = new WP_Query([
                             'post_type' => dci_get_sercheable_tipologie(),
-                            'posts_per_page' => 20,
+                            'posts_per_page' => 10,
                             'orderby' => 'date',
                             'order' => 'DESC',
                         ]);
