@@ -666,6 +666,30 @@ add_action('admin_init', function() {
 
 
 
+// FORZA CREAZIONE PAGINA ORGANIGRAMMA UFFICI
+add_action('init', function () {
+
+    if (get_option('dci_organigramma_created')) {
+        return;
+    }
+
+    $page_slug = 'uffici-organigramma';
+
+    if (!get_page_by_path($page_slug)) {
+
+        wp_insert_post([
+            'post_title'  => 'Uffici Organigramma',
+            'post_name'   => $page_slug,
+            'post_status' => 'publish',
+            'post_type'   => 'page',
+        ]);
+    }
+
+    update_option('dci_organigramma_created', true);
+
+});
+
+
 
 
 
