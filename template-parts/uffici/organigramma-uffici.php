@@ -618,7 +618,12 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
 
                 <!-- UFFICI -->
 <section id="articolazione-uffici" class="dci-at-section">
-    <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
+    <h3 class="h4 mb-4">
+        <?php 
+        $count = !empty($area['uffici']) ? count($area['uffici']) : 0;
+       echo esc_html($area['post']->post_title) . " (" . $count . ($count == 1 ? " ufficio" : " uffici") . ")";
+        ?>
+    </h3>
 
     <!-- AREE -->
     <?php if (!empty($aree)) { ?>
