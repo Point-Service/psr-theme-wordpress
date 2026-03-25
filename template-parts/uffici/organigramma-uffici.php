@@ -538,7 +538,11 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
         padding: 1.2rem;
         border-bottom: 1px solid #e4eaf1;
     }
-
+    
+.dci-at-office-card {
+    padding: 0.5rem;
+}
+    
     .dci-at-office-content {
         padding: 1.2rem;
     }
