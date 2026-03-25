@@ -167,21 +167,103 @@
 
 <!-- CSS -->
 <style>
+/* ===== MODAL GENERALE ===== */
+.search-modal .modal-content {
+  border-radius: 12px;
+  border: none;
+}
+
+.search-modal .modal-body {
+  padding: 30px 25px;
+}
+
+/* ===== INPUT RICERCA ===== */
+.search-modal .form-control {
+  height: 48px;
+  font-size: 16px;
+}
+
+.search-modal .btn-primary {
+  height: 48px;
+  font-size: 15px;
+  padding: 0 20px;
+  margin-top: 10px;
+}
+
+/* ===== TITOLI ===== */
+.other-link-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* ===== LISTE ===== */
+.link-list .list-item {
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 6px 0;
+}
+
+/* icone meglio proporzionate */
+.link-list .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* spazio tra icona e testo */
+.list-item-title-icon-wrapper {
+  gap: 6px;
+}
+
+/* ===== RICERCHE FREQUENTI SCROLL ===== */
 .scroll-frequenti {
   max-height: 220px;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding-right: 5px;
+  padding-right: 6px;
 }
 
+/* scrollbar elegante */
 .scroll-frequenti::-webkit-scrollbar {
   width: 6px;
 }
 
 .scroll-frequenti::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 3px;
+  background: #d0d0d0;
+  border-radius: 6px;
+}
+
+/* ===== SCELTI PER TE ===== */
+.link-list-wrapper .list-item {
+  transition: all 0.15s ease;
+}
+
+/* hover leggero (molto elegante) */
+.link-list-wrapper .list-item:hover {
+  transform: translateX(3px);
+  color: var(--bs-primary);
+}
+
+/* ===== CHIP DESTRA ===== */
+.badges .chip {
+  font-size: 13px;
+  padding: 6px 10px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .search-modal .modal-body {
+    padding: 20px 15px;
+  }
+
+  .other-link-title {
+    font-size: 16px;
+  }
+
+  .link-list .list-item {
+    font-size: 13px;
+  }
 }
 </style>
 
