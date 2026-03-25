@@ -72,7 +72,14 @@ if (!function_exists('dci_render_trasparenza_light_bg_style')) {
                 padding: 1.25rem;
                 margin-bottom: 1.75rem;
             }
-
+			
+			.pagination-wrapper ul {
+			    display: flex;
+			    justify-content: center;
+			    gap: 8px;
+			    list-style: none;
+			    padding: 0;
+			}
             .dci-at-tools__title {
                 margin-bottom: 0.35rem;
                 font-size: 1.35rem;
@@ -285,24 +292,29 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 
 
 $the_query = new WP_Query($args);
-$pagination_markup = paginate_links([
-    'total'   => $the_query->max_num_pages,
-    'current' => $paged,
-    'mid_size'=> 2,
-    'type'    => 'array',
-    'prev_text' => '«',
-    'next_text' => '»',
+
+$pagination_links = paginate_links([
+    'total'      => $the_query->max_num_pages,
+    'current'    => $paged,
+    'mid_size'   => 2,
+    'type'       => 'array',
+    'prev_text'  => '«',
+    'next_text'  => '»',
 ]);
 
-if ($pagination_markup) {
-    echo '<nav class="pagination-wrapper"><ul class="pagination justify-content-center">';
+if ($pagination_links) : ?>
+    <nav class="pagination-wrapper">
+        <ul class="pagination justify-content-center">
 
-    foreach ($pagination_markup as $link) {
-        echo '<li class="page-item">' . str_replace('page-numbers', 'page-link', $link) . '</li>';
-    }
+            <?php foreach ($pagination_links as $link) : ?>
+                <li class="page-item">
+                    <?php echo str_replace('page-numbers', 'page-link', $link); ?>
+                </li>
+            <?php endforeach; ?>
 
-    echo '</ul></nav>';
-}
+        </ul>
+    </nav>
+<?php endif; ?>
 
 
 
