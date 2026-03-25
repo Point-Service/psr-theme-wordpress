@@ -422,20 +422,43 @@ foreach ($posts as $post) {
 
     if (empty($terms) || is_wp_error($terms)) continue;
 
+    // 👉 ORGANI POLITICI (RIPRISTINATI)
+    if (dci_articolazione_post_matches($post, $terms, ['consiglio', 'consiglio-comunale'])) {
+        $organi_indirizzo[] = $post;
+        continue;
+    }
+
+    if (dci_articolazione_post_matches($post, $terms, ['giunta', 'sindaco'])) {
+        $organi_gestione[] = $post;
+        continue;
+    }
+
+    // 👉 UFFICI / AREE
     foreach ($terms as $term) {
 
         $slug = sanitize_title($term->slug);
 
-        // consideriamo solo le aree
-            if ($slug === 'area') {
-                $aree[$term->term_id]['name'] = $term->name;
-                $aree[$term->term_id]['posts'] = $aree[$term->term_id]['posts'] ?? [];
+        // CREA AREA
+        if ($slug === 'area') {
+            if (!isset($aree[$term->term_id])) {
+                $aree[$term->term_id] = [
+                    'name' => $term->name,
+                    'posts' => []
+                ];
             }
-            
-            if ($slug === 'ufficio') {
-                $aree[$term->term_id]['name'] = $term->name;
-                $aree[$term->term_id]['posts'][] = $post;
+        }
+
+        // AGGIUNGI UFFICIO ALLA SUA AREA
+        if ($slug === 'ufficio') {
+            if (!isset($aree[$term->term_id])) {
+                $aree[$term->term_id] = [
+                    'name' => $term->name,
+                    'posts' => []
+                ];
             }
+
+            $aree[$term->term_id]['posts'][] = $post;
+        }
     }
 }
 
