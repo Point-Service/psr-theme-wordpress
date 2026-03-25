@@ -495,23 +495,35 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
 ?>
 
 <style>
-  /* WRAP FULL WIDTH */
+
+/* RESET SICUREZZA */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow-x: hidden;
+}
+
+/* FIX BOOTSTRAP ROW (evita overflow laterale) */
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* WRAP */
 .dci-at-wrap {
     width: 100%;
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 16px;
 }
 
 /* GRID UFFICI */
 .dci-at-office-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem;
-}
-
-body {
-    overflow-x: hidden;
+    gap: 1.5rem;
 }
 
 /* CARD */
@@ -522,37 +534,47 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* HEAD */
 .dci-at-office-head {
-    padding: 1.5rem;
+    padding: 1.25rem;
     border-bottom: 1px solid #e4eaf1;
 }
 
 /* CONTENUTO */
 .dci-at-office-content {
-    padding: 1.5rem;
+    padding: 1.25rem;
     flex: 1;
 }
 
-/* BLOCCO DETTAGLI */
+/* TESTO - evita sforamenti */
+.dci-at-office-card,
+.dci-at-office-head,
+.dci-at-office-content {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* DETTAGLI */
 .dci-at-detail-block {
     border-bottom: 1px solid #e9eef4;
-    padding: 1rem 0;
+    padding: 0.8rem 0;
 }
 
 .dci-at-detail-block:last-child {
     border-bottom: 0;
 }
 
-/* TITOLI */
+/* LABEL */
 .dci-at-detail-label {
-    font-size: .75rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     color: #5c6f82;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 /* PERSONA */
@@ -560,12 +582,9 @@ body {
     font-weight: 600;
 }
 
-/* AREA TITLE */
+/* TITOLO AREA */
 .dci-at-area-block h3 {
-    margin-bottom: 1.5rem;
-}
-
-    .dci-at-area-block h3 {
+    margin-bottom: 1.2rem;
     font-weight: 700;
     letter-spacing: 0.5px;
 }
@@ -578,10 +597,21 @@ body {
 }
 
 @media (max-width: 768px) {
+    .dci-at-wrap {
+        padding: 0 12px;
+    }
+
     .dci-at-office-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .dci-at-office-head,
+    .dci-at-office-content {
+        padding: 1rem;
     }
 }
+
 </style>
 
 <div class="container">
