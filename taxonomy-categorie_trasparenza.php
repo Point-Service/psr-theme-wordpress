@@ -300,7 +300,7 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 $the_query = new WP_Query($args);
 
 $pagination_links = paginate_links([
-    'total'      => $the_query->max_num_pages,
+    'total'      => $the_query->max_num_pages-1,
     'current'    => $paged,
     'mid_size'   => 2,
     'type'       => 'array',
