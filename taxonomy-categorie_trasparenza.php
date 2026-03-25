@@ -298,10 +298,18 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 
 
 $the_query = new WP_Query($args);
+global $wp_query;
+
+$wp_query->max_num_pages = $the_query->max_num_pages;
+
+// blocca il 404 se siamo dentro range valido
+if ($paged <= $the_query->max_num_pages) {
+    $wp_query->is_404 = false;
+}
 
 $pagination_links = paginate_links([
-    'base'      => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
-    'format'    => '?paged=%#%',
+    'base'      => trailingslashit(get_term_link($obj)) . 'page/%#%/',
+    'format'    => '',
     'current'   => $paged,
     'total'     => $the_query->max_num_pages,
     'mid_size'  => 2,
@@ -316,7 +324,7 @@ $pagination_links = paginate_links([
 
 
 if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
-    wp_redirect(get_pagenum_link($the_query->max_num_pages));
+    wp_redirect(trailingslashit(get_term_link($obj)) . 'page/' . $the_query->max_num_pages . '/');
     exit;
 }
 
