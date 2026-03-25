@@ -3,31 +3,17 @@
   $unique_id = 'search-' . uniqid();
 ?>
 <!-- Search Modal -->
-<div class="modal fade search-modal" id="search-modal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade search-modal" id="search-modal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content perfect-scrollbar">
       <div class="modal-body">
 
-        <form role="search" id="search-form-modal" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+        <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
           <div class="container">
 
             <!-- HEADER -->
-            <div class="row variable-gutters">
+            <div class="row">
               <div class="col">
-                <div class="modal-title">
-
-                  <button class="search-link d-md-none" type="button" data-bs-toggle="modal" data-bs-target="#search-modal">
-                    <svg class="icon icon-md"><use href="#it-arrow-left"></use></svg>
-                  </button>
-
-                  <p><span class="h2"></span></p>
-
-                  <button class="search-link d-none d-md-block" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" data-dismiss="modal">
-                    <svg class="icon icon-md"><use href="#it-close-big"></use></svg>
-                  </button>
-
-                </div>
-
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -36,31 +22,23 @@
                       </div>
                     </div>
 
-                    <label for="<?php echo $unique_id; ?>">Con Etichetta</label>
                     <input type="search" class="form-control" id="<?php echo $unique_id; ?>" name="s"
                       placeholder="Cerca nel sito" value="<?php echo get_search_query(); ?>" />
                   </div>
 
-                  <button type="submit" class="btn btn-primary">
-                    <span>Cerca</span>
+                  <button type="submit" class="btn btn-primary mt-2">
+                    Cerca
                   </button>
                 </div>
               </div>
             </div>
 
             <!-- CONTENUTO -->
-            <div class="row variable-gutters p-4">
+            <div class="row p-4">
 
               <!-- SINISTRA -->
               <div class="col-lg-5">
 
-                <a href="<?php echo esc_url( home_url( '/?s=' ) ); ?>" class="chip chip-simple chip-lg">
-                  <span class="chip-label">RICERCA PARAMETRICA</span>
-                </a>
-
-                <p></p>
-
-                <!-- RICERCHE FREQUENTI -->
                 <div class="h4 other-link-title">Ricerche frequenti</div>
 
                 <div class="link-list-wrapper mb-4 scroll-frequenti">
@@ -69,7 +47,7 @@
                     <?php
                     $popular_posts = new WP_Query([
                         'post_type' => dci_get_sercheable_tipologie(),
-                        'posts_per_page' => 12,
+                        'posts_per_page' => 20,
                         'meta_key' => 'views',
                         'orderby' => 'meta_value_num',
                         'order' => 'DESC'
@@ -78,7 +56,7 @@
                     if (empty($popular_posts->posts)) {
                         $popular_posts = new WP_Query([
                             'post_type' => dci_get_sercheable_tipologie(),
-                            'posts_per_page' => 12,
+                            'posts_per_page' => 20,
                             'orderby' => 'date',
                             'order' => 'DESC',
                         ]);
@@ -101,26 +79,9 @@
                   </ul>
                 </div>
 
-                <!-- SCELTI PER TE -->
-                <?php if ($links) { ?>
-                  <div class="h4 other-link-title">Scelti per te</div>
-                  <div class="link-list-wrapper mb-4">
-                    <ul class="link-list">
-                      <?php foreach ($links as $link_id) {
-                        $link = get_post($link_id); ?>
-                        <li>
-                          <a class="list-item active ps-0" href="<?php echo get_permalink($link_id); ?>">
-                            <span class="text-button-normal"><?php echo $link->post_title; ?></span>
-                          </a>
-                        </li>
-                      <?php } ?>
-                    </ul>
-                  </div>
-                <?php } ?>
-
               </div>
 
-              <!-- DESTRA (NON TOCCATA) -->
+              <!-- DESTRA -->
               <div class="col-lg-6">
                 <?php
                 $argomenti = get_terms([
@@ -158,32 +119,20 @@
 <!-- CSS -->
 <style>
 .scroll-frequenti {
-  overflow-x: auto;
+  max-height: 320px; /* circa 10 elementi */
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  padding-right: 5px;
 }
 
-/* MULTI-RIGA (circa 4 righe) */
-.scroll-frequenti .link-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 20px;
-  max-height: 140px;
-  overflow-y: hidden;
+/* scrollbar */
+.scroll-frequenti::-webkit-scrollbar {
+  width: 6px;
 }
 
-/* 2 colonne */
-.scroll-frequenti .link-list li {
-  flex: 0 0 calc(50% - 10px);
-  list-style: none;
-}
-
-/* STILE ORIGINALE (IMPORTANTE) */
-.scroll-frequenti .list-item {
-  white-space: nowrap;
-  border: none;
-  background: transparent;
-  padding: 0;
+.scroll-frequenti::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
 }
 </style>
-
-<!-- End Search Modal -->
