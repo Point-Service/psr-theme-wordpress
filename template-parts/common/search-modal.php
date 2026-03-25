@@ -3,16 +3,11 @@
   $unique_id = 'search-' . uniqid();
 ?>
 <!-- Search Modal -->
-<div
-    class="modal fade search-modal"
-    id="search-modal"
-    tabindex="-1"
-    role="dialog"
-    aria-hidden="true"
->
+<div class="modal fade search-modal" id="search-modal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content perfect-scrollbar">
       <div class="modal-body">
+
         <form role="search" id="search-form-modal" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
           <div class="container">
 
@@ -20,6 +15,7 @@
             <div class="row variable-gutters">
               <div class="col">
                 <div class="modal-title">
+
                   <button class="search-link d-md-none" type="button" data-bs-toggle="modal" data-bs-target="#search-modal">
                     <svg class="icon icon-md"><use href="#it-arrow-left"></use></svg>
                   </button>
@@ -29,6 +25,7 @@
                   <button class="search-link d-none d-md-block" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" data-dismiss="modal">
                     <svg class="icon icon-md"><use href="#it-close-big"></use></svg>
                   </button>
+
                 </div>
 
                 <div class="form-group">
@@ -55,7 +52,7 @@
             <div class="row variable-gutters p-4">
 
               <!-- SINISTRA -->
-              <div class="col-lg-5">    
+              <div class="col-lg-5">
 
                 <a href="<?php echo esc_url( home_url( '/?s=' ) ); ?>" class="chip chip-simple chip-lg">
                   <span class="chip-label">RICERCA PARAMETRICA</span>
@@ -67,12 +64,12 @@
                 <div class="h4 other-link-title">Ricerche frequenti</div>
 
                 <div class="link-list-wrapper mb-4 scroll-frequenti">
-                  <ul class="link-list d-flex flex-nowrap">
+                  <ul class="link-list">
 
                     <?php
                     $popular_posts = new WP_Query([
                         'post_type' => dci_get_sercheable_tipologie(),
-                        'posts_per_page' => 7,
+                        'posts_per_page' => 12,
                         'meta_key' => 'views',
                         'orderby' => 'meta_value_num',
                         'order' => 'DESC'
@@ -81,7 +78,7 @@
                     if (empty($popular_posts->posts)) {
                         $popular_posts = new WP_Query([
                             'post_type' => dci_get_sercheable_tipologie(),
-                            'posts_per_page' => 7,
+                            'posts_per_page' => 12,
                             'orderby' => 'date',
                             'order' => 'DESC',
                         ]);
@@ -90,8 +87,11 @@
                     if (!empty($popular_posts->posts)) {
                       foreach ($popular_posts->posts as $post) { ?>
                         <li>
-                          <a class="list-item" href="<?php echo get_permalink($post); ?>">
-                            <?php echo get_the_title($post); ?>
+                          <a class="list-item active large py-1 icon-left" href="<?php echo get_permalink($post); ?>">
+                            <span class="list-item-title-icon-wrapper">
+                              <svg class="icon icon-primary icon-sm"><use href="#it-search"></use></svg>
+                              <span class="list-item-title"><?php echo get_the_title($post); ?></span>
+                            </span>
                           </a>
                         </li>
                     <?php } } else { ?>
@@ -109,8 +109,8 @@
                       <?php foreach ($links as $link_id) {
                         $link = get_post($link_id); ?>
                         <li>
-                          <a class="list-item" href="<?php echo get_permalink($link_id); ?>">
-                            <?php echo $link->post_title; ?>
+                          <a class="list-item active ps-0" href="<?php echo get_permalink($link_id); ?>">
+                            <span class="text-button-normal"><?php echo $link->post_title; ?></span>
                           </a>
                         </li>
                       <?php } ?>
@@ -149,6 +149,7 @@
             </div>
           </div>
         </form>
+
       </div>
     </div>
   </div>
@@ -158,36 +159,30 @@
 <style>
 .scroll-frequenti {
   overflow-x: auto;
-  padding-bottom: 10px;
   -webkit-overflow-scrolling: touch;
 }
 
+/* MULTI-RIGA (circa 4 righe) */
 .scroll-frequenti .link-list {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  max-height: 140px;
+  overflow-y: hidden;
 }
 
+/* 2 colonne */
 .scroll-frequenti .link-list li {
-  flex: 0 0 auto;
+  flex: 0 0 calc(50% - 10px);
   list-style: none;
 }
 
+/* STILE ORIGINALE (IMPORTANTE) */
 .scroll-frequenti .list-item {
   white-space: nowrap;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 6px 12px;
-  background: #fff;
-}
-
-.scroll-frequenti::-webkit-scrollbar {
-  height: 6px;
-}
-
-.scroll-frequenti::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 3px;
+  border: none;
+  background: transparent;
+  padding: 0;
 }
 </style>
 
