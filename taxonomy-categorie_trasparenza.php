@@ -334,6 +334,19 @@ if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
 
 wp_reset_postdata();
 
+echo '<pre>';
+echo 'Totale post: ' . $the_query->found_posts . "\n";
+echo 'Post per pagina: ' . $max_posts . "\n";
+echo 'Max pagine: ' . $the_query->max_num_pages . "\n";
+echo 'Pagina attuale: ' . $paged . "\n";
+echo '</pre>';
+
+
+
+
+
+
+
 $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_get_option("siti_tematici", "trasparenza") : [];
 ?>
 
