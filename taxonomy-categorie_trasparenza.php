@@ -260,7 +260,7 @@ if (!function_exists('dci_render_trasparenza_light_bg_style')) {
 dci_render_trasparenza_light_bg_style();
 
 // Recupera il numero di pagina corrente.
-$paged = get_query_var('paged') ? get_query_var('paged') : 1;
+$paged = max(1, get_query_var('paged'), get_query_var('page'));
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $load_posts = -1;
@@ -298,18 +298,9 @@ if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
 
 
 $the_query = new WP_Query($args);
-global $wp_query;
 
-// sincronizza pagine
-$wp_query->max_num_pages = $the_query->max_num_pages;
 
-// 🔥 QUESTO È IL FIX VERO
-if ($the_query->have_posts()) {
-    $wp_query->is_404 = false;
-    status_header(200);
-}
-
-$base = str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999)));
+$base = add_query_arg('paged', '%#%');
 
 $pagination_links = paginate_links([
     'base'      => $base,
@@ -328,21 +319,18 @@ $pagination_links = paginate_links([
 
 
 if ($paged > $the_query->max_num_pages && $the_query->max_num_pages > 0) {
-    $url = get_pagenum_link($the_query->max_num_pages);
 
-		if ($query || $order) {
-		    $url = add_query_arg([
-		        'search' => $query,
-		        'order_type' => $order,
-		    ], $url);
-		}
-		
-		wp_redirect($url);
-		exit;
+    $url = add_query_arg([
+        'paged' => $the_query->max_num_pages,
+        'search' => $query,
+        'order_type' => $order,
+    ], get_term_link($obj));
 
+    wp_redirect($url);
+    exit;
 }
 
-wp_reset_postdata();
+
 
 
 
@@ -564,7 +552,7 @@ if ($portalesoloperusoesterno !== 'true') {
             get_template_part("template-parts/common/assistenza-contatti");
 }
 
-
+wp_reset_postdata();
 get_footer();
 ?>
 
