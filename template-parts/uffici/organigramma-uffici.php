@@ -611,7 +611,7 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
 
                 <!-- UFFICI -->
                 <section id="articolazione-uffici" class="dci-at-section">
-    <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
+    <h2 class="title-large dci-at-section-title"></h2>
 
     <?php if (!empty($aree)) { ?>
 
