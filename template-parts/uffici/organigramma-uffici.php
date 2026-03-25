@@ -410,7 +410,7 @@ $articolazioni = [];
 $seen_indirizzo = [];
 $seen_gestione = [];
 $seen_articolazioni = [];
-
+$uffici_senza_area = [];
 $aree = [];
 $uffici = [];
 
@@ -459,17 +459,24 @@ foreach ($uffici as $ufficio) {
 
     $raw = dci_get_meta('unita_organizzativa_genitore', '_dci_unita_organizzativa_', $ufficio->ID);
 
-    // normalizza (gestisce array / serializzato / singolo)
     $genitori = maybe_unserialize($raw);
 
     if (!is_array($genitori)) {
         $genitori = [$genitori];
     }
 
+    $assegnato = false;
+
     foreach ($genitori as $area_id) {
         if (!empty($area_id) && isset($aree[$area_id])) {
             $aree[$area_id]['uffici'][] = $ufficio;
+            $assegnato = true;
         }
+    }
+
+    // 👉 se NON assegnato a nessuna area
+    if (!$assegnato) {
+        $uffici_senza_area[] = $ufficio;
     }
 }
 
@@ -610,9 +617,10 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
                 </section>
 
                 <!-- UFFICI -->
-                <section id="articolazione-uffici" class="dci-at-section">
-    <h2 class="title-large dci-at-section-title"></h2>
+<section id="articolazione-uffici" class="dci-at-section">
+    <h2 class="title-large dci-at-section-title">Articolazione degli uffici</h2>
 
+    <!-- AREE -->
     <?php if (!empty($aree)) { ?>
 
         <?php foreach ($aree as $area) { ?>
@@ -625,24 +633,40 @@ $articolazioni_paged = array_slice($articolazioni, $articolazioni_offset, $artic
                 </h3>
 
                 <!-- UFFICI DELL’AREA -->
-                <div class="dci-at-office-grid">
-
-                    <?php if (!empty($area['uffici'])) { ?>
+                <?php if (!empty($area['uffici'])) { ?>
+                    <div class="dci-at-office-grid">
                         <?php foreach ($area['uffici'] as $post) {
                             dci_articolazione_render_office_card($post);
                         } ?>
-                    <?php } else { ?>
-                        <p>Nessun ufficio associato.</p>
-                    <?php } ?>
-
-                </div>
+                    </div>
+                <?php } ?>
 
             </div>
 
         <?php } ?>
 
-    <?php } else { ?>
-        <p>Nessuna area disponibile.</p>
+    <?php } ?>
+
+    <!-- UFFICI SENZA AREA (SEMPRE VISIBILI SE ESISTONO) -->
+    <?php if (!empty($uffici_senza_area)) { ?>
+
+        <div class="dci-at-area-block mb-5">
+
+            <h3 class="h4 mb-4">Uffici senza area</h3>
+
+            <div class="dci-at-office-grid">
+                <?php foreach ($uffici_senza_area as $post) {
+                    dci_articolazione_render_office_card($post);
+                } ?>
+            </div>
+
+        </div>
+
+    <?php } ?>
+
+    <!-- FALLBACK -->
+    <?php if (empty($aree) && empty($uffici_senza_area)) { ?>
+        <p>Nessun ufficio disponibile.</p>
     <?php } ?>
 
 </section>
