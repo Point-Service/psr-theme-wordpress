@@ -1,202 +1,181 @@
 <?php
-global $wpdb;
+ /*
+    Note:
 
-$max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
-$main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-$selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
+    1. Verificare se il portale è nostro
 
-// Anni disponibili
-$years = $wpdb->get_col("
-    SELECT DISTINCT YEAR(post_date)
-    FROM {$wpdb->posts}
-    WHERE post_type = 'titolare_incarico'
-      AND post_status = 'publish'
-    ORDER BY post_date DESC
-");
+    In questo caso leggo direttamente le persone pubbliche del sito.
+
+    Altrimenti, utilizzo la struttura personalizata simile a quella 'Titolari di incarichi di collaborazione o consulenza'
+*/
+
+$portale_esterno = dci_get_option("ck_portalesoloperusoesterno");
+// var_dump($portale_esterno);
+
+if($portale_esterno === 'false'){
+    // Adesso, mi ricavo le UO politiche
+
+    $parent_term = get_term_by('slug', 'struttura-politica', 'tipi_unita_organizzativa');
+
+    $args = array(
+        'post_type' => 'unita_organizzativa',
+        'posts_per_page' => -1,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'tipi_unita_organizzativa',
+                'field'    => 'term_id',
+                'terms'    => $parent_term ? $parent_term->term_id : 0,
+                'include_children' => true,
+            ),
+        ),
+    );
+
+    $query = new WP_Query($args);
+
+    // var_dump($query);
 
 
-$args = array(
-    'post_type'       => 'titolare_incarico',
-    'posts_per_page'  => $max_posts,
-    'orderby'        => 'meta_value_num',
-    'order'          => 'DESC',
-    'paged'              => $paged,
-    's'               => $main_search_query, // Per la ricerca generica su titolo/contenuto
-);
+    ?>
+    <div class="dci-at-wrap">
+        <div class="row g-4">
+           <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
+                <?php
+                if ($query->have_posts()) {
+                    echo '<div class="row g-4">';
 
-if (!empty($main_search_query)) {
-    $args['s'] = $main_search_query;
-}
+                    while ($query->have_posts()) {
+                        $query->the_post();
 
-if ($selected_year > 0) {
-    $args['date_query'] = [
+                        // Escludi commissioni
+                        $terms = wp_get_post_terms(get_the_ID(), 'tipi_unita_organizzativa');
+                        $term_slugs = array_map(function($term) { return $term->slug; }, $terms);
+                        if (in_array('commissione', $term_slugs, true)) {
+                            continue;
+                        }
+
+                        $prefix = '_dci_unita_organizzativa_';
+                        $description = dci_get_meta('descrizione_breve', $prefix, get_the_ID());
+                        if (empty($description)) {
+                            $description = get_the_excerpt();
+                        }
+                        ?>
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr h-100 dci-at-card-compact">
+                                <div class="card no-after rounded h-100">
+                                    <div class="row g-2 g-md-0 flex-md-column h-100">
+                                        <div class="col-12 order-1 order-md-2 h-100">
+                                            <div class="card-body card-img-none rounded-top h-100 d-flex flex-column">
+                                                <span class="dci-at-card-icon mb-3" aria-hidden="true">
+                                                    <svg class="icon icon-primary icon-sm">
+                                                        <use href="#it-pa"></use>
+                                                    </svg>
+                                                </span>
+                                                <a class="text-decoration-none" href="<?php the_permalink(); ?>">
+                                                    <h3 class="h5 card-title mb-2"><?php the_title(); ?></h3>
+                                                </a>
+                                                <?php if (!empty($description)) { ?>
+                                                    <p class="card-text mb-0"><?php echo esc_html($description); ?></p>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+
+                    echo '</div>';
+                    wp_reset_postdata();
+                } else {
+                    ?>
+                    <p class="mb-0">Nessun titolare di incarico politico disponibile.</p>
+                    <?php
+                }
+                ?>
+            </div>
+             <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+        </div>
+    </div>
+    <?php
+}else{
+    $link_consiglio = dci_get_option('link_consiglio_comunale', 'trasparenza');
+    $link_sindaco = dci_get_option('link_sindaco', 'trasparenza');
+    $link_giunta = dci_get_option('link_giunta_comunale', 'trasparenza');
+
+    $static_offices = [];
+    
+    $static_offices = [
         [
-            'year' => $selected_year,
-        ]
+            'title' => 'Consiglio Comunale',
+            'description' => 'Il consiglio comunale è l’assemblea pubblica rappresentativa del Comune.',
+            'link' => $link_consiglio,
+        ],
+        [
+            'title' => 'Sindaco',
+            'description' => 'Il Sindaco è l’organo rappresentativo dell’ente locale e garante dell’amministrazione.',
+            'link' => $link_sindaco,
+        ],
+        [
+            'title' => 'Giunta Comunale',
+            'description' => 'La Giunta Comunale è organo di indirizzo esecutivo e gestione del Comune.',
+            'link' => $link_giunta,
+        ],
     ];
-}
+    ?>
+    
+ <div class="dci-at-wrap">
+    <div class="row g-4">
+        <div class="col-12 col-lg-8 pt-30 pt-lg-50 pb-lg-50">
 
-$the_query = new WP_Query($args);
-$prefix = "_dci_titolare_incarico_";
+            <?php if (!empty($static_offices)) { ?>
+                
+                <div class="row g-4">
 
-// Query personalizzata
-$the_query = new WP_Query($args);
+                    <?php foreach ($static_offices as $office) { ?>
+                        
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card-wrapper border border-light rounded shadow-sm cmp-list-card-img cmp-list-card-img-hr h-100 dci-at-card-compact">
+                                <div class="card no-after rounded h-100">
+                                    <div class="row g-2 g-md-0 flex-md-column h-100">
+                                        <div class="col-12 order-1 order-md-2 h-100">
+                                            <div class="card-body card-img-none rounded-top h-100 d-flex flex-column">
 
-// Prendi permalink pagina corrente (senza query string)
-$current_url = get_permalink();
+                                                <span class="dci-at-card-icon mb-3" aria-hidden="true">
+                                                    <svg class="icon icon-primary icon-sm">
+                                                        <use href="#it-pa"></use>
+                                                    </svg>
+                                                </span>
 
-// Costruiamo la base URL per paginazione mantenendo tutti i parametri
-$base_url = add_query_arg(array(
-    'search'      => $main_search_query ? $main_search_query : '',
-    'filter_year' => $selected_year > 0 ? $selected_year : 0,
-    'max_posts'   => $max_posts,
-    'page'        => '%#%',
-), $current_url);
+                                                <a class="text-decoration-none" href="<?php echo esc_url($office['link']); ?>">
+                                                    <h3 class="h5 card-title mb-2">
+                                                        <?php echo esc_html($office['title']); ?>
+                                                    </h3>
+                                                </a>
 
+                                                <p class="card-text mb-0">
+                                                    <?php echo esc_html($office['description']); ?>
+                                                </p>
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-// SEARCH BAR
-?>
-<form method="get" class="incarichi-filtro-form">
-    <div class="incarichi-filtro-form__head">
-        <h3 class="incarichi-filtro-form__title text-decoration-none">Filtra i titolari</h3>
-        <p class="incarichi-filtro-form__intro text-decoration-none">Usa i campi qui sotto per trovare più velocemente i contenuti pubblicati.</p>
+                    <?php } ?>
+
+                </div> <!-- ✅ CHIUSURA ROW -->
+
+            <?php } ?>
+
+        </div>
+
+        <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+
     </div>
-    <div class="incarichi-filtro-form__grid">
-    <div class="incarichi-filtro-form__field incarichi-filtro-form__field--search">
-    <label for="search" class="form-label">Cerca</label>
-    <input type="search" id="search" name="search" class="form-control" placeholder="Cerca..." value="<?php echo esc_attr($main_search_query); ?>">
-    </div>
-
-    <div class="incarichi-filtro-form__field">
-    <label for="filter-year" class="form-label">Anno</label>
-    <select id="filter-year" name="filter_year" class="form-select">
-        <option value="0" <?php selected($selected_year, 0); ?>>Tutti gli anni</option>
-        <?php foreach ($years as $y) : ?>
-            <option value="<?php echo esc_attr($y); ?>" <?php selected($selected_year, $y); ?>>
-                <?php echo esc_html($y); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-    </div>
-
-    <div class="incarichi-filtro-form__field">
-    <label for="max-posts" class="form-label">Elementi per pagina</label>
-    <select id="max-posts" name="max_posts" class="form-select">
-        <?php foreach ([5, 10, 20, 50, 100] as $num) : ?>
-            <option value="<?php echo $num; ?>" <?php selected($max_posts, $num); ?>><?php echo $num; ?></option>
-        <?php endforeach; ?>
-    </select>
-    </div>
-
-    <div class="btn-wrapper incarichi-filtro-form__actions">
-        <button type="submit" class="btn btn-primary">Filtra</button>
-    </div>
-    </div>
-</form>
-
-<?php if ($the_query->have_posts()){
-    while ($the_query->have_posts()){
-        $the_query->the_post();
-        get_template_part('template-parts/amministrazione-trasparente/titolare_incarico/card');
-    }
-    wp_reset_postdata();?>
-        <div class="row my-4">
-        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-            <?php echo dci_bootstrap_pagination(); ?>
-        </nav>
-    </div>
-<?php } else{?>
-    <div class="alert alert-info text-center" role="alert">
-        Nessun titolare di incarichi di collaborazione o consulenza trovato.
-    </div>
-<?php } ?>
-<!-- STILE -->
-<style>
-form.incarichi-filtro-form {
-    padding: 1.1rem;
-    background: #fff;
-    border: 1px solid #dfe7f0;
-    border-radius: 8px;
-    box-shadow: 0 10px 24px rgba(23,50,77,.07);
-    max-width: 100%;
-    margin-bottom: 2rem;
-}
-.incarichi-filtro-form__head { margin-bottom: 1rem; }
-.incarichi-filtro-form__title { margin-bottom: .35rem; font-size: 1.2rem; }
-.incarichi-filtro-form__intro { margin-bottom: 0; }
-.incarichi-filtro-form__grid { display: grid; grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(170px, 1fr)) auto; gap: 1rem; align-items: end; }
-form.incarichi-filtro-form label {
-    font-weight: 600;
-    color: #17324d;
-    margin-bottom: .45rem;
-}
-form.incarichi-filtro-form input[type="search"],
-form.incarichi-filtro-form select {
-    border: 1px solid #c7d4e2;
-    min-height: 48px;
-    max-width: none;
-    width: 100%;
-    border-radius: 6px;
-}
-form.incarichi-filtro-form input[type="search"]:focus,
-form.incarichi-filtro-form select:focus {
-    border-color: var(--bs-primary, rgb(6, 62, 138));
-    box-shadow: 0 0 0 .2rem rgba(6, 62, 138, .12);
-    outline: none;
-}
-form.incarichi-filtro-form button.btn-primary {
-    padding: 0.65rem 1.5rem;
-    font-weight: 600;
-    border-radius: 6px;
-    min-height: 48px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* PAGINAZIONE */
-.pagination-wrapper .pagination {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    padding-left: 0;
-    margin-top: 1.5rem;
-    gap: 0.5rem;
-}
-.pagination-wrapper .page-link {
-    display: block;
-    padding: 0.5rem 0.9rem;
-    color: var(--bs-primary, rgb(6, 62, 138));
-    border: 1.5px solid var(--bs-primary, rgb(6, 62, 138));
-    border-radius: 0.4rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-    min-width: 40px;
-    text-align: center;
-}
-.pagination-wrapper .page-link:hover {
-    background-color: var(--bs-primary, rgb(6, 62, 138));
-    color: white;
-    box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
-}
-.pagination-wrapper .page-item.active .page-link {
-    background-color: var(--bs-primary, rgb(6, 62, 138));
-    border-color: var(--bs-primary, rgb(6, 62, 138));
-    color: white;
-    cursor: default;
-    box-shadow: 0 0 12px rgba(13, 110, 253, 0.75);
-}
-@media (max-width: 991.98px) {
-    .incarichi-filtro-form__grid { grid-template-columns: 1fr 1fr; }
-    .incarichi-filtro-form__field--search,
-    .incarichi-filtro-form__actions { grid-column: 1 / -1; }
-}
-@media (max-width: 575.98px) {
-    .incarichi-filtro-form__grid { grid-template-columns: 1fr; }
-}
-</style>
+</div>
 
 
 
