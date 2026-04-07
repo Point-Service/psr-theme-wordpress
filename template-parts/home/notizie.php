@@ -10,24 +10,25 @@ $notizie_home= dci_get_option("numero_notizie_home", "homepage");
 $notizie_evidenziate_automatiche = dci_get_option("ck_notizie_evidenza", "homepage") ?? null;
 $numero_notizie_evidenziate = dci_get_option("numero_notizie_evidenza", "homepage") ?? 0;
 
-if ($post_id) {
-    $post = get_post($post_id);
+$post = get_post($post_id);
+
+if ($post) {
     $typePost = $post->post_type;
-    $prefix = '_dci_' . $typePost . '_';  // Prefix per le funzioni di recupero dei metadati
+    $prefix = '_dci_' . $typePost . '_';
 
     $img = dci_get_meta("immagine", $prefix, $post->ID);
     $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $post->ID);
-    $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+
+    if (!empty($arrdata) && isset($arrdata[1])) {
+        $monthName = date_i18n('M', mktime(0, 0, 0, $arrdata[1], 10));
+    }
+
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
     $argomenti = dci_get_meta("argomenti", $prefix, $post->ID);
     $luogo_notizia = dci_get_meta("luoghi", $prefix, $post->ID);
 
     $tipo_terms = wp_get_post_terms($post->ID, 'tipi_notizia');
-    if ($tipo_terms && !is_wp_error($tipo_terms)) {
-        $tipo = $tipo_terms[0];  // Prendi il primo termine trovato
-    } else {
-        $tipo = null;  // Nessun termine trovato
-    }
+    $tipo = (!empty($tipo_terms) && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
 }
 
 $schede = [];
