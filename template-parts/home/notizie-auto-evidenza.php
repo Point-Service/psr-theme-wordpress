@@ -10,6 +10,7 @@ $hide_notizie_old = dci_get_option("ck_hide_notizie_old", "homepage");
  * - Recupera tutte le notizie evidenziate (schede manuali o automatiche)
  * - Se è attiva l'opzione per nascondere le notizie vecchie, il filtro viene applicato dopo
  */
+
 $args = array(
     'post_type'      => 'notizia',
     'meta_query'     => array(
