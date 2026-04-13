@@ -4,24 +4,88 @@ global $numero_notizie_evidenziate;
 $numero_notizie_evidenziate = max(1, (int) $numero_notizie_evidenziate);
 $prefix = '_dci_notizia_';
 $hide_notizie_old = dci_get_option("ck_hide_notizie_old", "homepage");
+$posts_per_page = ($hide_notizie_old === 'true') ? max($numero_notizie_evidenziate * 5, 20) : $numero_notizie_evidenziate;
+
+/**
+ * Restituisce il timestamp di pubblicazione effettivo:
+ * - usa il meta CMB2 se presente e valido
+ * - altrimenti usa la post_date di WordPress
+ */
+if (!function_exists('dci_get_notizia_pubblicazione_timestamp')) {
+    function dci_get_notizia_pubblicazione_timestamp($post_id, $prefix) {
+        $meta_timestamp = get_post_meta($post_id, $prefix . 'data_pubblicazione', true);
+
+        if (!empty($meta_timestamp) && is_numeric($meta_timestamp)) {
+            return (int) $meta_timestamp;
+        }
+
+        $post_timestamp = get_post_timestamp($post_id);
+        if (!empty($post_timestamp)) {
+            return (int) $post_timestamp;
+        }
+
+        return null;
+    }
+}
+
+/**
+ * Restituisce il timestamp di scadenza se presente e valido
+ */
+if (!function_exists('dci_get_notizia_scadenza_timestamp')) {
+    function dci_get_notizia_scadenza_timestamp($post_id, $prefix) {
+        $meta_timestamp = get_post_meta($post_id, $prefix . 'data_scadenza', true);
+
+        if (!empty($meta_timestamp) && is_numeric($meta_timestamp)) {
+            return (int) $meta_timestamp;
+        }
+
+        return null;
+    }
+}
+
+/**
+ * Restituisce i pezzi della data da stampare
+ */
+if (!function_exists('dci_get_notizia_date_parts')) {
+    function dci_get_notizia_date_parts($timestamp) {
+        if (empty($timestamp) || !is_numeric($timestamp)) {
+            return array(
+                'day'       => '',
+                'month'     => '',
+                'year'      => '',
+                'monthName' => '',
+            );
+        }
+
+        $timestamp = (int) $timestamp;
+
+        return array(
+            'day'       => date_i18n('d', $timestamp),
+            'month'     => date_i18n('m', $timestamp),
+            'year'      => date_i18n('Y', $timestamp),
+            'monthName' => date_i18n('M', $timestamp),
+        );
+    }
+}
 
 /**
  * Query
- * - Recupera tutte le notizie evidenziate (schede manuali o automatiche)
- * - Se è attiva l'opzione per nascondere le notizie vecchie, il filtro viene applicato dopo
+ * - Recupera tutte le notizie evidenziate
+ * - Se è attiva l'opzione per nascondere notizie vecchie, il filtro viene applicato dopo
  */
-
 $args = array(
-    'post_type'      => 'notizia',
-    'meta_query'     => array(
+    'post_type'           => 'notizia',
+    'meta_query'          => array(
         array(
             'key'   => $prefix . 'evidenzia_home',
             'value' => 'on',
         ),
     ),
-    'orderby'        => 'date',
-    'order'          => 'DESC',
-    'posts_per_page' => -1,
+    'orderby'             => 'date',
+    'order'               => 'DESC',
+    'posts_per_page'      => -1,
+    'no_found_rows'       => true,
+    'ignore_sticky_posts' => true,
 );
 
 $query = new WP_Query($args);
@@ -35,71 +99,44 @@ if (!$query->have_posts() || empty($posts)) {
 /*
     Filtro i post validi
     - Se il check nascondi notizie vecchie è attivo, escludo le notizie con data di scadenza precedente a oggi
-      solo se la data di scadenza è diversa dalla data di pubblicazione
-    - Se invece il check non è attivo, includo tutte le notizie evidenziate senza filtrare per data di scadenza
+      solo se la data di scadenza è diversa dalla data di pubblicazione effettiva
+    - Se il check non è attivo, includo tutte le notizie evidenziate
 */
-
 $oggi = new DateTime('today');
-$valid_posts = []; // Array che conterrà i post validi dopo il filtro
+$oggi->setTime(0, 0, 0);
+
+$valid_posts = array();
 
 foreach ($posts as $p) {
 
-    // Controllo 0: verifico se ho già raggiunto il numero di notizie evidenziate da mostrare
     if (count($valid_posts) >= $numero_notizie_evidenziate) {
         break;
     }
 
-    // Primo controllo sul check nascondi notizie vecchie
     if ($hide_notizie_old === 'true') {
 
-        // Data pubblicazione
+        $timestampPubblicazione = dci_get_notizia_pubblicazione_timestamp($p->ID, $prefix);
+        $timestampScadenza      = dci_get_notizia_scadenza_timestamp($p->ID, $prefix);
+
         $dataPubblicazione = null;
-        $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $p->ID);
-
-        if (is_array($arrdata) && count($arrdata) >= 3) {
-            $dayPubblicazione   = trim((string) $arrdata[0]);
-            $monthPubblicazione = trim((string) $arrdata[1]);
-            $yearPubblicazione  = trim((string) $arrdata[2]);
-
-            $yearPubblicazione = strlen($yearPubblicazione) == 2 ? '20' . $yearPubblicazione : $yearPubblicazione;
-
-            $dataPubblicazione = DateTime::createFromFormat(
-                'd/m/Y',
-                sprintf('%02d/%02d/%04d', (int) $dayPubblicazione, (int) $monthPubblicazione, (int) $yearPubblicazione)
-            );
-
-            if ($dataPubblicazione instanceof DateTime) {
-                $dataPubblicazione->setTime(0, 0, 0);
-            }
+        if (!empty($timestampPubblicazione)) {
+            $dataPubblicazione = new DateTime();
+            $dataPubblicazione->setTimestamp((int) $timestampPubblicazione);
+            $dataPubblicazione->setTime(0, 0, 0);
         }
 
-        // Data scadenza
         $dataScadenza = null;
-        $arrdataFine = dci_get_data_pubblicazione_arr("data_scadenza", $prefix, $p->ID);
-
-        if (is_array($arrdataFine) && count($arrdataFine) >= 3) {
-            $dayScadenza   = trim((string) $arrdataFine[0]);
-            $monthScadenza = trim((string) $arrdataFine[1]);
-            $yearScadenza  = trim((string) $arrdataFine[2]);
-
-            $yearScadenza = strlen($yearScadenza) == 2 ? '20' . $yearScadenza : $yearScadenza;
-
-            $dataScadenza = DateTime::createFromFormat(
-                'd/m/Y',
-                sprintf('%02d/%02d/%04d', (int) $dayScadenza, (int) $monthScadenza, (int) $yearScadenza)
-            );
-
-            if ($dataScadenza instanceof DateTime) {
-                $dataScadenza->setTime(0, 0, 0);
-            }
+        if (!empty($timestampScadenza)) {
+            $dataScadenza = new DateTime();
+            $dataScadenza->setTimestamp((int) $timestampScadenza);
+            $dataScadenza->setTime(0, 0, 0);
         }
 
         /**
-         * Controllo:
-         * escludo la notizia se:
+         * Escludo la notizia se:
          * - la data di scadenza esiste
          * - è precedente a oggi
-         * - ed è diversa dalla data di pubblicazione
+         * - ed è diversa dalla data di pubblicazione effettiva
          */
         if (
             $dataScadenza instanceof DateTime &&
@@ -140,41 +177,26 @@ if ($totale === 0) {
             setup_postdata($p);
 
             // Dati principali della notizia
-            $img = dci_get_meta("immagine", $prefix, $p->ID);
+            $img               = dci_get_meta("immagine", $prefix, $p->ID);
             $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $p->ID);
-            $luogo_notizia = dci_get_meta("luoghi", $prefix, $p->ID);
+            $luogo_notizia     = dci_get_meta("luoghi", $prefix, $p->ID);
 
             // Tipo notizia
             $tipo_terms = wp_get_post_terms($p->ID, 'tipi_notizia');
-            $tipo = (!empty($tipo_terms) && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
+            $tipo       = (!empty($tipo_terms) && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
 
             /**
              * DATA PUBBLICAZIONE
+             * - meta CMB2 se presente
+             * - altrimenti post_date WordPress
              */
-            $dataPubblicazione = null;
-            $dayPubblicazione = '';
-            $monthPubblicazione = '';
-            $yearPubblicazione = '';
-            $monthName = '';
+            $timestampPubblicazione = dci_get_notizia_pubblicazione_timestamp($p->ID, $prefix);
+            $date_parts             = dci_get_notizia_date_parts($timestampPubblicazione);
 
-            $arrdata = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $p->ID);
-
-            if (is_array($arrdata) && count($arrdata) >= 3) {
-                $dayPubblicazione   = trim((string) $arrdata[0]);
-                $monthPubblicazione = trim((string) $arrdata[1]);
-                $yearPubblicazione  = trim((string) $arrdata[2]);
-
-                $yearPubblicazione = strlen($yearPubblicazione) == 2 ? '20' . $yearPubblicazione : $yearPubblicazione;
-
-                $dataPubblicazione = DateTime::createFromFormat(
-                    'd/m/Y',
-                    sprintf('%02d/%02d/%04d', (int) $dayPubblicazione, (int) $monthPubblicazione, (int) $yearPubblicazione)
-                );
-
-                if ($dataPubblicazione instanceof DateTime) {
-                    $monthName = date_i18n('M', mktime(0, 0, 0, (int) $monthPubblicazione, 10));
-                }
-            }
+            $dayPubblicazione   = $date_parts['day'];
+            $monthPubblicazione = $date_parts['month'];
+            $yearPubblicazione  = $date_parts['year'];
+            $monthName          = $date_parts['monthName'];
 
             $is_active = ($index === 0);
             ?>
@@ -306,26 +328,19 @@ if ($totale === 0) {
     setup_postdata($p);
 
     $img               = dci_get_meta("immagine", $prefix, $p->ID);
-    $arrdata           = dci_get_data_pubblicazione_arr("data_pubblicazione", $prefix, $p->ID);
     $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $p->ID);
     $luogo_notizia     = dci_get_meta("luoghi", $prefix, $p->ID);
 
     $tipo_terms = wp_get_post_terms($p->ID, 'tipi_notizia');
     $tipo       = (!empty($tipo_terms) && !is_wp_error($tipo_terms)) ? $tipo_terms[0] : null;
 
-    $dayPubblicazione = '';
-    $monthPubblicazione = '';
-    $yearPubblicazione = '';
-    $monthName = '';
+    $timestampPubblicazione = dci_get_notizia_pubblicazione_timestamp($p->ID, $prefix);
+    $date_parts             = dci_get_notizia_date_parts($timestampPubblicazione);
 
-    if (is_array($arrdata) && count($arrdata) >= 3) {
-        $dayPubblicazione   = trim((string) $arrdata[0]);
-        $monthPubblicazione = trim((string) $arrdata[1]);
-        $yearPubblicazione  = trim((string) $arrdata[2]);
-        $yearPubblicazione  = strlen($yearPubblicazione) == 2 ? '20' . $yearPubblicazione : $yearPubblicazione;
-
-        $monthName = date_i18n('M', mktime(0, 0, 0, (int) $monthPubblicazione, 10));
-    }
+    $dayPubblicazione   = $date_parts['day'];
+    $monthPubblicazione = $date_parts['month'];
+    $yearPubblicazione  = $date_parts['year'];
+    $monthName          = $date_parts['monthName'];
 ?>
 
 <div class="row single-news single-news-custom">
@@ -342,7 +357,7 @@ if ($totale === 0) {
             <div class="card mb-0">
                 <div class="card-body pb-2">
                     <div class="category-top d-flex align-items-center mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="icon icon-md me-2"  aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="icon icon-md me-2" aria-hidden="true">
                             <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
                         </svg>
                         <?php if ($tipo) { ?>
@@ -429,7 +444,6 @@ if ($totale === 0) {
 
 <style>
 
-
 /* SOLO per questo componente (carosello + singolo) */
 #carosello-evidenza .icon,
 #carosello-evidenza .icon-md,
@@ -441,17 +455,12 @@ if ($totale === 0) {
     min-height: 18px;
 }
 
-
-
-
 #carosello-evidenza svg[class*="icon"],
 .single-news.single-news-custom svg[class*="icon"] {
     width: 18px !important;
     height: 18px !important;
 }
 
-
-    
 #carosello-evidenza .card-body .read-more,
 .single-news.single-news-custom .card-body .read-more {
     align-self: flex-start;
@@ -613,32 +622,23 @@ if ($totale === 0) {
     #carosello-evidenza .col-img,
     .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 {
         justify-content: center;
-        /* Centra orizzontalmente */
     }
 
     /* Centra l'immagine su mobile */
     #carosello-evidenza img.img-evidenza,
     .single-news.single-news-custom .row .col-lg-6.offset-lg-1.order-1.order-lg-2 img.img-fluid {
         margin: 0 auto;
-        /* Centra l'immagine */
         max-width: 80%;
         height: auto;
     }
 
-     #carosello-evidenza .carousel-item {
+    #carosello-evidenza .carousel-item {
         min-height: 480px;
     }
 
     #carosello-evidenza .card-title {
         -webkit-line-clamp: 4;
     }
-
-    /* #carosello-evidenza .carousel-control-prev-icon,
-    #carosello-evidenza .carousel-control-next-icon {
-        width: 36px;
-        height: 36px;
-        background-size: 16px 16px;
-    } */
 }
 
 </style>
