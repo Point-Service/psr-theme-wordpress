@@ -435,10 +435,10 @@ if ($totale === 0) {
 #carosello-evidenza .icon-md,
 .single-news.single-news-custom .icon,
 .single-news.single-news-custom .icon-md {
-    width: 16px !important;
-    height: 16px !important;
-    min-width: 16px;
-    min-height: 16px;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px;
+    min-height: 18px;
 }
 
 
@@ -446,8 +446,8 @@ if ($totale === 0) {
 
 #carosello-evidenza svg[class*="icon"],
 .single-news.single-news-custom svg[class*="icon"] {
-    width: 16px !important;
-    height: 16px !important;
+    width: 18px !important;
+    height: 18px !important;
 }
 
 
