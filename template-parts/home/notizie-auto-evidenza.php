@@ -427,6 +427,30 @@ if ($totale === 0) {
 <?php wp_reset_postdata(); endif; ?>
 
 <style>
+
+
+/* SOLO per questo componente (carosello + singolo) */
+#carosello-evidenza .icon,
+#carosello-evidenza .icon-md,
+.single-news.single-news-custom .icon,
+.single-news.single-news-custom .icon-md {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px;
+    min-height: 16px;
+}
+
+
+
+
+#carosello-evidenza svg[class*="icon"],
+.single-news.single-news-custom svg[class*="icon"] {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+
+    
 #carosello-evidenza .card-body .read-more,
 .single-news.single-news-custom .card-body .read-more {
     align-self: flex-start;
