@@ -907,41 +907,7 @@ add_action('rest_api_init', function () {
         }
     ]);
 
-
-		 // API FOOTER
-    register_rest_route('comune/v1', '/footer', [
-        'methods' => 'GET',
-        'callback' => function () {
-
-            $data = [
-                "nome" => dci_get_option("nome_comune"),
-                "indirizzo" => dci_get_option("contatti_indirizzo", 'footer'),
-                "cf_piva" => dci_get_option("contatti_CF_PIVA", 'footer'),
-                "telefono" => dci_get_option("centralino_unico", 'footer'),
-                "numero_verde" => dci_get_option("numero_verde", 'footer'),
-                "whatsapp" => dci_get_option("SMS_Whatsapp", 'footer'),
-                "pec" => dci_get_option("contatti_PEC", 'footer'),
-                "iban" => dci_get_option("iban", 'footer'),
-                "codice_fatturazione" => dci_get_option("Codice_Univoco_Fatturazione", 'footer'),
-                "email_dpo" => dci_get_option("dpo_email", 'footer'),
-            ];
-
-            $socials = dci_get_option('link_social', 'socials');
-            $data["social"] = [];
-
-            if (is_array($socials)) {
-                foreach ($socials as $s) {
-                    $data["social"][] = [
-                        "nome" => $s["nome_social"],
-                        "url" => $s["url_social"]
-                    ];
-                }
-            }
-
-            return $data;
-        }
-    ]);
-		
+	
 
 });
 
