@@ -942,9 +942,6 @@ add_filter('rest_luoghi_query', function ($args, $request) {
 }, 10, 2);
 
 
-});
-
-
 
 register_rest_route('comune/v1', '/footer', [
     'methods' => 'GET',
@@ -972,4 +969,13 @@ register_rest_route('comune/v1', '/footer', [
     },
     'permission_callback' => '__return_true'
 ]);
+
+
+
+
+	
+});
+
+
+
 
