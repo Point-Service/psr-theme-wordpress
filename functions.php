@@ -945,3 +945,31 @@ add_filter('rest_luoghi_query', function ($args, $request) {
 });
 
 
+
+register_rest_route('comune/v1', '/footer', [
+    'methods' => 'GET',
+    'callback' => function () {
+
+        $data = [
+            "nome" => dci_get_option("nome_comune"),
+            "indirizzo" => dci_get_option("contatti_indirizzo", 'footer'),
+            "cf_piva" => dci_get_option("contatti_CF_PIVA", 'footer'),
+            "telefono" => dci_get_option("centralino_unico", 'footer'),
+            "numero_verde" => dci_get_option("numero_verde", 'footer'),
+            "whatsapp" => dci_get_option("SMS_Whatsapp", 'footer'),
+            "pec" => dci_get_option("contatti_PEC", 'footer'),
+            "iban" => dci_get_option("iban", 'footer'),
+            "codice_fatturazione" => dci_get_option("Codice_Univoco_Fatturazione", 'footer'),
+            "email_dpo" => dci_get_option("dpo_email", 'footer'),
+        ];
+
+        $data["menu_col1"] = comune_get_menu_links("menu-footer-col-1");
+        $data["menu_col2"] = comune_get_menu_links("menu-footer-col-2");
+        $data["menu_col3_1"] = comune_get_menu_links("menu-footer-col-3-1");
+        $data["menu_col3_2"] = comune_get_menu_links("menu-footer-col-3-2");
+
+        return $data;
+    },
+    'permission_callback' => '__return_true'
+]);
+
