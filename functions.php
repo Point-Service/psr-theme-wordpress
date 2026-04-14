@@ -821,7 +821,9 @@ add_action('rest_api_init', function () {
 
 
 
-add_action('rest_api_init', function () {
+
+
+    add_action('rest_api_init', function () {
 
     /*
     =====================================
@@ -877,6 +879,7 @@ add_action('rest_api_init', function () {
         'get_callback' => function ($post) {
 
             $prefix = '_dci_luogo_';
+
             $gps = get_post_meta($post['id'], $prefix . 'posizione_gps', true);
 
             $tipi = get_the_terms($post['id'], 'tipi_luogo');
@@ -904,13 +907,14 @@ add_action('rest_api_init', function () {
         }
     ]);
 
-}); 
-
+});
 
 
 /*
 =====================================
 FILTRO LUOGHI IN EVIDENZA
+Endpoint:
+wp-json/wp/v2/luogo?in_evidenza=1
 =====================================
 */
 
@@ -923,6 +927,8 @@ add_filter('rest_luoghi_query', function ($args, $request) {
         if (is_array($ids) && !empty($ids)) {
 
             $args['post__in'] = $ids;
+
+            // Se vuoi ultimi prima
             $args['orderby'] = 'date';
             $args['order']   = 'DESC';
 
@@ -935,3 +941,6 @@ add_filter('rest_luoghi_query', function ($args, $request) {
 
 }, 10, 2);
 
+
+
+});
