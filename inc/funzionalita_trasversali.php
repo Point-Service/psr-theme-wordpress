@@ -134,6 +134,12 @@ function dci_get_external_footer_payload() {
     }
 
     if ($is_external_only && $should_fetch_external_footer && !empty($external_home) && filter_var($external_home, FILTER_VALIDATE_URL)) {
+        $cache_key = 'dci_ext_footer_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
+        $cached_payload = get_transient($cache_key);
+        if (is_array($cached_payload)) {
+            return !empty($cached_payload['html']) ? $cached_payload : null;
+        }
+
         $current_home = trailingslashit(home_url('/'));
         $external_parts = wp_parse_url($external_home);
         $request_args = array(
@@ -219,6 +225,9 @@ function dci_get_external_footer_payload() {
                 }
             }
         }
+
+        // Negative cache per evitare timeout ripetuti ad ogni request.
+        set_transient($cache_key, array('html' => ''), 2 * MINUTE_IN_SECONDS);
     }
 
     set_transient($footer_cache_key, array('success' => false, 'html' => ''), MINUTE_IN_SECONDS);
@@ -377,6 +386,46 @@ function dci_get_external_head_html() {
         }
     }
     $candidate_homes = array_values(array_unique(array_filter($candidate_homes)));
+
+    $cache_key = 'dci_ext_head_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
+    $cached_head = get_transient($cache_key);
+    if (is_array($cached_head)) {
+        return !empty($cached_head['html']) ? $cached_head['html'] : '';
+    }
+
+    $external_html = dci_get_external_home_snapshot($external_home, $candidate_homes);
+    if ($external_html === '') {
+        set_transient($cache_key, array('html' => ''), 2 * MINUTE_IN_SECONDS);
+        return '';
+    }
+
+    $head_html = dci_extract_head_html($external_html);
+    if (!empty($head_html)) {
+        set_transient($cache_key, array('html' => $head_html), 10 * MINUTE_IN_SECONDS);
+        return $head_html;
+    }
+
+    set_transient($cache_key, array('html' => ''), 2 * MINUTE_IN_SECONDS);
+    return '';
+}
+
+/**
+ * Recupera uno snapshot HTML della home esterna con cache.
+ *
+ * @param string $external_home
+ * @param array  $candidate_homes
+ * @return string
+ */
+function dci_get_external_home_snapshot($external_home, $candidate_homes = array()) {
+    $cache_key = 'dci_ext_home_html_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
+    $cached_html = get_transient($cache_key);
+    if (is_array($cached_html)) {
+        return !empty($cached_html['html']) ? (string) $cached_html['html'] : '';
+    }
+
+    if (empty($candidate_homes)) {
+        $candidate_homes = array(trailingslashit($external_home));
+    }
 
     $request_args = array(
         'timeout' => 4,
