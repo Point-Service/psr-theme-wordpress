@@ -1059,19 +1059,33 @@ if(!function_exists("dci_get_related_bando")) {
         $servizi =   get_posts( $args );
 
         $result = array();
-        foreach ($bandi as $bando) {
-            foreach ($servizi as $servizio) {
-                $array_servizi =  dci_get_meta('servizi', '_dci_documento_pubblico_', $bando-> ID) ;
-                if (is_array( $array_servizi ) && in_array($servizio,$array_servizi)) {
+        $servizi_lookup = array_fill_keys(array_map('intval', $servizi), true);
 
-                    $result [] = array(
-                        'id' => $bando -> ID,
-                        'titolo' => $bando-> post_title,
-                        'link' => get_permalink($bando -> ID),
-                        'description' =>  dci_get_meta('descrizione_breve', '_dci_documento_pubblico_', $bando-> ID)
-                    );
+        foreach ($bandi as $bando) {
+            $array_servizi = dci_get_meta('servizi', '_dci_documento_pubblico_', $bando->ID);
+
+            if (!is_array($array_servizi) || empty($array_servizi)) {
+                continue;
+            }
+
+            $has_related_servizio = false;
+            foreach ($array_servizi as $servizio_id) {
+                if (isset($servizi_lookup[(int) $servizio_id])) {
+                    $has_related_servizio = true;
+                    break;
                 }
             }
+
+            if (!$has_related_servizio) {
+                continue;
+            }
+
+            $result[] = array(
+                'id' => $bando->ID,
+                'titolo' => $bando->post_title,
+                'link' => get_permalink($bando->ID),
+                'description' => dci_get_meta('descrizione_breve', '_dci_documento_pubblico_', $bando->ID)
+            );
         }
 
        return $result;
