@@ -10,7 +10,12 @@ $notizie_home= dci_get_option("numero_notizie_home", "homepage");
 $notizie_home = max(1, (int) $notizie_home);
 
 // Mantiene abbastanza elementi per popolare la sezione, ma senza esplodere il carico.
-$max_posts = ($requested_max_posts > 0) ? min($requested_max_posts, 300) : max($notizie_home * 8, 60);
+if ($hide_notizie_old === 'true') {
+    $max_posts = ($requested_max_posts > 0) ? min($requested_max_posts, 300) : max($notizie_home * 8, 60);
+} else {
+    // Se non serve filtrare "notizie vecchie", basta caricare il numero richiesto.
+    $max_posts = ($requested_max_posts > 0) ? min($requested_max_posts, 300) : $notizie_home;
+}
 
 $args = array(
     //'s'         => $query,
