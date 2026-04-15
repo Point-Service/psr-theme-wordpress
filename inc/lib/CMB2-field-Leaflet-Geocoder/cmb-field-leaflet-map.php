@@ -137,23 +137,23 @@ class CMB2_Field_Leaflet {
      *
      * @internal param array $args
      */
-    protected function render_input( $field_name = '', ?CMB2_Field $field = null, $field_escaped_value = null, ?CMB2_Types $field_type_object = null ) {
-
-        if (!$field || !$field_type_object) {
-            return;
-        }
+        protected function render_input( $field_name = '', ?CMB2_Field $field = null, $field_escaped_value = null, ?CMB2_Types $field_type_object = null ) {
         
-        $attrs = $field_type_object->concat_attrs( [
-            'id'    => "{$field->args( 'id' )}_{$field_name}",
-            'type'  => 'hidden',
-            'name'  => "{$field->args( '_name' )}[{$field_name}]",
-            'value' => isset( $field_escaped_value[ $field_name ] ) ? $field_escaped_value[ $field_name ] : '',
-            'class' => "leaflet-map__{$field_name}",
-            'desc'  => ''
-        ], [ 'attributes' ] );
-
-        echo sprintf( '<input%s />', $attrs );
-    }
+            if (!$field || !$field_type_object) {
+                return;
+            }
+            
+            $attrs = $field_type_object->concat_attrs( [
+                'id'    => "{$field->args( 'id' )}_{$field_name}",
+                'type'  => 'hidden',
+                'name'  => "{$field->args( '_name' )}[{$field_name}]",
+                'value' => isset( $field_escaped_value[ $field_name ] ) ? $field_escaped_value[ $field_name ] : '',
+                'class' => "leaflet-map__{$field_name}",
+                'desc'  => ''
+            ], [ 'attributes' ] );
+        
+            echo sprintf( '<input%s />', $attrs );
+        }
 }
 
 new CMB2_Field_Leaflet();
