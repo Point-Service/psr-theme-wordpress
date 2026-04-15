@@ -1,24 +1,22 @@
 <?php
 global $the_query, $load_card_type;
 
-get_header();
-
 // Recupero ricerca
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 
 // PAGINAZIONE
 // Se sto cercando → forza pagina 1
-if (!empty($_GET['search'])) {
-    $paged = isset($_GET['paged']) ? intval($_GET['paged']) : 1;
-} else {
-    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-}
+$paged_from_query = get_query_var('paged');
+$paged_from_get = isset($_GET['paged']) ? absint($_GET['paged']) : 0;
+$paged = max(1, (int) ($paged_from_query ? $paged_from_query : $paged_from_get));
 
 // QUERY
 $args = array(
     's'              => $query,
     'posts_per_page' => 9,
     'post_type'      => array('notizia'),
+    'post_status'    => 'publish',
+    'ignore_sticky_posts' => true,
     'paged'          => $paged
 );
 
@@ -102,4 +100,4 @@ $GLOBALS['wp_query'] = $the_query;
 
 </main>
 
-<?php wp_reset_query(); ?>
+<?php wp_reset_postdata(); ?>
