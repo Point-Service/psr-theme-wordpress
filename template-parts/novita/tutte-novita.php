@@ -21,12 +21,7 @@ $args = array(
 );
 
 $the_query = new WP_Query($args);
-
-// 🔥 Serve per far funzionare la paginazione del tema
-$GLOBALS['wp_query'] = $the_query;
 ?>
-
-<main>
 
 <div class="bg-grey-card py-5">
     <form role="search" id="search-form" method="get" class="search-form" action="#search-form">
@@ -84,7 +79,7 @@ $GLOBALS['wp_query'] = $the_query;
                 <!-- PAGINAZIONE -->
                 <div class="row my-4">
                     <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine">
-                        <?php echo dci_bootstrap_pagination(); ?>
+                        <?php echo dci_bootstrap_pagination($the_query, false); ?>
                     </nav>
                 </div>
 
@@ -97,7 +92,5 @@ $GLOBALS['wp_query'] = $the_query;
         </div>
     </form>
 </div>
-
-</main>
 
 <?php wp_reset_postdata(); ?>
