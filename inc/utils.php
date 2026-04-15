@@ -583,7 +583,7 @@ if (!function_exists("dci_get_mapbox_access_token")) {
  *       echo bootstrap_pagination($query);
  *     ?>
  */
-function dci_bootstrap_pagination(\WP_Query $wp_query = null, $echo = true)
+function dci_bootstrap_pagination(?\WP_Query $wp_query = null, $echo = true)
 {
     if (null === $wp_query) {
         global $wp_query;
