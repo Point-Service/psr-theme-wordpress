@@ -441,47 +441,69 @@ function wpc_contatore_homepage() {
     if ( !is_front_page() && !is_home() ) return; 
     if ( is_admin() ) return;
 
-    $today = date('Y-m-d');
-    $count_total = get_option('wpc_home_count', 0);
-    $daily_counts = get_option('wpc_home_daily_counts', array());
-    $daily_visits = get_option('wpc_home_daily_visits', array()); // nuovo array dettagli
-
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'N/A';
     $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'N/A';
+    if ($ip === 'N/A') return;
+
+    // Evita traffico bot/crawler nel contatore visitatori umani.
+    if (preg_match('/bot|crawl|spider|slurp|facebookexternalhit|monitor|uptime/i', $user_agent)) {
+        return;
+    }
+
+    $today = date('Y-m-d');
+    $seen_key = 'wpc_home_seen_' . $today . '_' . md5($ip);
+    if (get_transient($seen_key)) {
+        return;
+    }
+    set_transient($seen_key, 1, 2 * DAY_IN_SECONDS);
+
+    $count_total = (int) get_option('wpc_home_count', 0);
+    $daily_counts = get_option('wpc_home_daily_counts', array());
+    $daily_visits = get_option('wpc_home_daily_visits', array()); // dettagli (limitati)
+
     $time = current_time('H:i:s');
+    $max_detail_rows_per_day = 500;
 
     if (!isset($daily_visits[$today])) {
         $daily_visits[$today] = array();
     }
 
-    // controlla se IP già presente oggi
-    $ip_present = false;
-    foreach ($daily_visits[$today] as $v) {
-        if ($v['ip'] === $ip) {
-            $ip_present = true;
-            break;
+    $count_total++;
+    update_option('wpc_home_count', $count_total);
+
+    $daily_counts[$today] = ($daily_counts[$today] ?? 0) + 1;
+
+    // Salva dettagli solo fino a una soglia giornaliera, per evitare crescita incontrollata dell'opzione.
+    if (count($daily_visits[$today]) < $max_detail_rows_per_day) {
+        $safe_user_agent = (string) $user_agent;
+        if (function_exists('mb_substr')) {
+            $safe_user_agent = mb_substr($safe_user_agent, 0, 255);
+        } else {
+            $safe_user_agent = substr($safe_user_agent, 0, 255);
         }
-    }
-
-    if (!$ip_present) {
-        $count_total++;
-        update_option('wpc_home_count', $count_total);
-
-        $daily_counts[$today] = ($daily_counts[$today] ?? 0) + 1;
 
         $daily_visits[$today][] = array(
             'ip' => $ip,
             'time' => $time,
-            'user_agent' => $user_agent,
+            'user_agent' => $safe_user_agent,
         );
-
-        // Mantieni ultimi 365 giorni
-        $daily_counts = array_filter($daily_counts, fn($date) => strtotime($date) >= strtotime('-1 year', strtotime($today)), ARRAY_FILTER_USE_KEY);
-        $daily_visits = array_filter($daily_visits, fn($date) => strtotime($date) >= strtotime('-1 year', strtotime($today)), ARRAY_FILTER_USE_KEY);
-
-        update_option('wpc_home_daily_counts', $daily_counts);
-        update_option('wpc_home_daily_visits', $daily_visits);
     }
+
+    // Mantieni ultimi 90 giorni (compatibile con PHP < 7.4, senza arrow functions).
+    $cutoff_timestamp = strtotime('-90 days', strtotime($today));
+    foreach (array_keys($daily_counts) as $date_key) {
+        if (strtotime($date_key) < $cutoff_timestamp) {
+            unset($daily_counts[$date_key]);
+        }
+    }
+    foreach (array_keys($daily_visits) as $date_key) {
+        if (strtotime($date_key) < $cutoff_timestamp) {
+            unset($daily_visits[$date_key]);
+        }
+    }
+
+    update_option('wpc_home_daily_counts', $daily_counts);
+    update_option('wpc_home_daily_visits', $daily_visits);
 }
 add_action('wp', 'wpc_contatore_homepage');
 
@@ -992,7 +1014,4 @@ add_filter('rest_luoghi_query', function ($args, $request) {
 
 	
 });
-
-
-
 
