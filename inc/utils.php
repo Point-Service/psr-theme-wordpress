@@ -323,10 +323,47 @@ if(!function_exists("dci_get_highlighted_posts")) {
 //calendario homepage
 if(!function_exists("dci_get_calendar")) {
     function dci_get_calendar($days = 7){
+        $days = max(1, (int) $days);
+        $cache_version = (int) get_option('dci_calendar_cache_version', 1);
+        $cache_key = 'dci_calendar_' . $cache_version . '_' . $days;
+
+        $cached_calendar = get_transient($cache_key);
+        if (is_array($cached_calendar)) {
+            return $cached_calendar;
+        }
+
         $calendar = dci_create_calendar($days);
+        set_transient($cache_key, $calendar, 5 * MINUTE_IN_SECONDS);
         return $calendar;
     }
 }
+
+if (!function_exists('dci_bump_calendar_cache_version')) {
+    function dci_bump_calendar_cache_version($post_id = 0) {
+        if (!empty($post_id) && wp_is_post_revision($post_id)) {
+            return;
+        }
+
+        if (!empty($post_id)) {
+            $post_type = get_post_type($post_id);
+            if ($post_type !== 'evento') {
+                return;
+            }
+        }
+
+        update_option('dci_calendar_cache_version', time());
+    }
+}
+add_action('save_post_evento', 'dci_bump_calendar_cache_version');
+
+if (!function_exists('dci_bump_calendar_cache_version_on_delete')) {
+    function dci_bump_calendar_cache_version_on_delete($post_id) {
+        if (get_post_type($post_id) === 'evento') {
+            dci_bump_calendar_cache_version();
+        }
+    }
+}
+add_action('deleted_post', 'dci_bump_calendar_cache_version_on_delete');
 
 /**
  * get group related to current page

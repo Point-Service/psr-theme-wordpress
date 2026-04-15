@@ -475,10 +475,19 @@ function wpc_contatore_homepage() {
 
     // Salva dettagli solo fino a una soglia giornaliera, per evitare crescita incontrollata dell'opzione.
     if (count($daily_visits[$today]) < $max_detail_rows_per_day) {
+        $safe_user_agent = (string) $user_agent;
+        if (function_exists('mb_substr')) {
+            $safe_user_agent = mb_substr($safe_user_agent, 0, 255);
+        } else {
+            $safe_user_agent = substr($safe_user_agent, 0, 255);
+        }
+
+    // Salva dettagli solo fino a una soglia giornaliera, per evitare crescita incontrollata dell'opzione.
+    if (count($daily_visits[$today]) < $max_detail_rows_per_day) {
         $daily_visits[$today][] = array(
             'ip' => $ip,
             'time' => $time,
-            'user_agent' => mb_substr((string) $user_agent, 0, 255),
+            'user_agent' => $safe_user_agent,
         );
     }
 
@@ -998,6 +1007,5 @@ add_filter('rest_luoghi_query', function ($args, $request) {
 
 	
 });
-
 
 
