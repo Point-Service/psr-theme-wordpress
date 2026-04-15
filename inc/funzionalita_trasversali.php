@@ -377,20 +377,54 @@ function dci_get_external_head_html() {
         return !empty($cached_head['html']) ? $cached_head['html'] : '';
     }
 
+    $external_html = dci_get_external_home_snapshot($external_home, $candidate_homes);
+    if ($external_html === '') {
+        set_transient($cache_key, array('html' => ''), 2 * MINUTE_IN_SECONDS);
+        return '';
+    }
+
+    $head_html = dci_extract_head_html($external_html);
+    if (!empty($head_html)) {
+        set_transient($cache_key, array('html' => $head_html), 10 * MINUTE_IN_SECONDS);
+        return $head_html;
+    }
+
+    set_transient($cache_key, array('html' => ''), 2 * MINUTE_IN_SECONDS);
+    return '';
+}
+
+/**
+ * Recupera uno snapshot HTML della home esterna con cache.
+ *
+ * @param string $external_home
+ * @param array  $candidate_homes
+ * @return string
+ */
+function dci_get_external_home_snapshot($external_home, $candidate_homes = array()) {
+    $cache_key = 'dci_ext_home_html_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
+    $cached_html = get_transient($cache_key);
+    if (is_array($cached_html)) {
+        return !empty($cached_html['html']) ? (string) $cached_html['html'] : '';
+    }
+
+    if (empty($candidate_homes)) {
+        $candidate_homes = array(trailingslashit($external_home));
+    }
+
     $request_args = array(
         'timeout' => 4,
         'redirection' => 3,
-        'user-agent' => 'PSR-Theme-Head-Fetch/1.0 (+'. home_url('/') .')',
+        'user-agent' => 'PSR-Theme-Home-Snapshot/1.0 (+'. home_url('/') .')',
         'sslverify' => false,
     );
 
     foreach ($candidate_homes as $candidate_home) {
         $response = wp_remote_get($candidate_home, $request_args);
         if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
-            $head_html = dci_extract_head_html(wp_remote_retrieve_body($response));
-            if (!empty($head_html)) {
-                set_transient($cache_key, array('html' => $head_html), 10 * MINUTE_IN_SECONDS);
-                return $head_html;
+            $html = (string) wp_remote_retrieve_body($response);
+            if ($html !== '') {
+                set_transient($cache_key, array('html' => $html), 10 * MINUTE_IN_SECONDS);
+                return $html;
             }
         }
     }
@@ -438,22 +472,16 @@ function dci_get_external_header_html() {
         return !empty($cached_header['html']) ? $cached_header['html'] : '';
     }
 
-    $request_args = array(
-        'timeout' => 4,
-        'redirection' => 3,
-        'user-agent' => 'PSR-Theme-Header-Fetch/1.0 (+'. home_url('/') .')',
-        'sslverify' => false,
-    );
+    $external_html = dci_get_external_home_snapshot($external_home, $candidate_homes);
+    if ($external_html === '') {
+        set_transient($cache_key, array('html' => ''), 2 * MINUTE_IN_SECONDS);
+        return '';
+    }
 
-    foreach ($candidate_homes as $candidate_home) {
-        $response = wp_remote_get($candidate_home, $request_args);
-        if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
-            $header_html = dci_extract_header_html(wp_remote_retrieve_body($response));
-            if (!empty($header_html)) {
-                set_transient($cache_key, array('html' => $header_html), 10 * MINUTE_IN_SECONDS);
-                return $header_html;
-            }
-        }
+    $header_html = dci_extract_header_html($external_html);
+    if (!empty($header_html)) {
+        set_transient($cache_key, array('html' => $header_html), 10 * MINUTE_IN_SECONDS);
+        return $header_html;
     }
 
     set_transient($cache_key, array('html' => ''), 2 * MINUTE_IN_SECONDS);

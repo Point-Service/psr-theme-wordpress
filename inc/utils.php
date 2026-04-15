@@ -1156,6 +1156,48 @@ function dci_contains_element_with( $array, $key, $value) {
     return false;
 }
 
+if (!function_exists('dci_get_maggioli_services_data')) {
+    /**
+     * Recupera e mette in cache il feed servizi esterni Maggioli.
+     *
+     * @return array
+     */
+    function dci_get_maggioli_services_data() {
+        $url = trim((string) dci_get_option('servizi_maggioli_url', 'servizi'));
+        if (empty($url) || !filter_var($url, FILTER_VALIDATE_URL)) {
+            return array();
+        }
+
+        $cache_key = 'dci_maggioli_services_' . md5($url);
+        $cached_data = get_transient($cache_key);
+        if (is_array($cached_data)) {
+            return $cached_data;
+        }
+
+        $request_args = array(
+            'timeout' => 4,
+            'redirection' => 2,
+            'sslverify' => false,
+            'user-agent' => 'PSR-Theme-Maggioli/1.0 (+'. home_url('/') .')',
+        );
+
+        $response = wp_remote_get($url, $request_args);
+        if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+            set_transient($cache_key, array(), 2 * MINUTE_IN_SECONDS);
+            return array();
+        }
+
+        $data = json_decode((string) wp_remote_retrieve_body($response), true);
+        if (!is_array($data)) {
+            set_transient($cache_key, array(), 2 * MINUTE_IN_SECONDS);
+            return array();
+        }
+
+        set_transient($cache_key, $data, 5 * MINUTE_IN_SECONDS);
+        return $data;
+    }
+}
+
 // Returns an img tag with appropriate attributes
 
 if(!function_exists("dci_get_img")) {
