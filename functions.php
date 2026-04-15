@@ -482,6 +482,8 @@ function wpc_contatore_homepage() {
             $safe_user_agent = substr($safe_user_agent, 0, 255);
         }
 
+    // Salva dettagli solo fino a una soglia giornaliera, per evitare crescita incontrollata dell'opzione.
+    if (count($daily_visits[$today]) < $max_detail_rows_per_day) {
         $daily_visits[$today][] = array(
             'ip' => $ip,
             'time' => $time,
