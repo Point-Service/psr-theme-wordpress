@@ -22,7 +22,11 @@ $argomento_name = $argomento->name;
                     function get_procedures_data($search_term = null, $argomento_name = null)
                     {
                         $url = dci_get_option('servizi_maggioli_url', 'servizi');
-                        $response = wp_remote_get($url);
+                        $response = wp_remote_get($url, array(
+                            'timeout' => 4,
+                            'redirection' => 2,
+                            'sslverify' => false,
+                        ));
                         $total_services = 0; // Inizializza il contatore
 
                         if (is_array($response) && !is_wp_error($response)) {

@@ -9,9 +9,10 @@
 	
 //Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
 $portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
+$is_external_only = in_array(strtolower((string) $portalesoloperusoesterno), array('1', 'true', 'yes', 'on'), true);
 
 
-if ($portalesoloperusoesterno==='true') {
+if ($is_external_only) {
     wp_redirect(dci_get_option("url_homesoloesterno"));
     exit;
 }
