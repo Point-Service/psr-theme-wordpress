@@ -475,9 +475,18 @@ function wpc_contatore_homepage() {
             'user_agent' => $user_agent,
         );
 
-        // Mantieni ultimi 365 giorni
-        $daily_counts = array_filter($daily_counts, fn($date) => strtotime($date) >= strtotime('-1 year', strtotime($today)), ARRAY_FILTER_USE_KEY);
-        $daily_visits = array_filter($daily_visits, fn($date) => strtotime($date) >= strtotime('-1 year', strtotime($today)), ARRAY_FILTER_USE_KEY);
+        // Mantieni ultimi 365 giorni (senza arrow function, compatibile con PHP < 7.4)
+        $cutoff_timestamp = strtotime('-1 year', strtotime($today));
+        foreach (array_keys($daily_counts) as $date_key) {
+            if (strtotime($date_key) < $cutoff_timestamp) {
+                unset($daily_counts[$date_key]);
+            }
+        }
+        foreach (array_keys($daily_visits) as $date_key) {
+            if (strtotime($date_key) < $cutoff_timestamp) {
+                unset($daily_visits[$date_key]);
+            }
+        }
 
         update_option('wpc_home_daily_counts', $daily_counts);
         update_option('wpc_home_daily_visits', $daily_visits);
