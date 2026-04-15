@@ -414,7 +414,7 @@ function dci_get_external_home_snapshot($external_home, $candidate_homes = array
     $request_args = array(
         'timeout' => 4,
         'redirection' => 3,
-        'user-agent' => 'PSR-Theme-Home-Snapshot/1.0 (+'. home_url('/') .')',
+        'user-agent' => 'PSR-Theme-Head-Fetch/1.0 (+'. home_url('/') .')',
         'sslverify' => false,
     );
 
@@ -466,11 +466,12 @@ function dci_get_external_header_html() {
     $candidate_homes[] = $external_parts['scheme'] . '://' . $external_parts['host'] . '/';
     $candidate_homes = array_values(array_unique(array_filter($candidate_homes)));
 
-    $cache_key = 'dci_ext_header_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
-    $cached_header = get_transient($cache_key);
-    if (is_array($cached_header)) {
-        return !empty($cached_header['html']) ? $cached_header['html'] : '';
-    }
+    $request_args = array(
+        'timeout' => 4,
+        'redirection' => 3,
+        'user-agent' => 'PSR-Theme-Header-Fetch/1.0 (+'. home_url('/') .')',
+        'sslverify' => false,
+    );
 
     $external_html = dci_get_external_home_snapshot($external_home, $candidate_homes);
     if ($external_html === '') {

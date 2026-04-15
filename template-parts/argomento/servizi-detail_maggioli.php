@@ -21,6 +21,12 @@ $argomento_name = $argomento->name;
                     // Funzione per ottenere i dati dal servizio web
                     function get_procedures_data($search_term = null, $argomento_name = null)
                     {
+                        $url = dci_get_option('servizi_maggioli_url', 'servizi');
+                        $response = wp_remote_get($url, array(
+                            'timeout' => 4,
+                            'redirection' => 2,
+                            'sslverify' => false,
+                        ));
                         $total_services = 0; // Inizializza il contatore
                         $data = function_exists('dci_get_maggioli_services_data') ? dci_get_maggioli_services_data() : array();
 

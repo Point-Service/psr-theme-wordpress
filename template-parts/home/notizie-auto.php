@@ -25,18 +25,11 @@ $posts = $the_query->posts;
 
 $posts = array_slice($posts, 0, $max_posts);
 
-$args = array(
-    // 's' => $query,
-    'posts_per_page' => $max_posts,
-    'post_type' => array('notizia')
-);
-
-$the_query = new WP_Query($args);
 $count=0;
 // var_dump($posts);
 foreach ($posts as $post) {
     if($count >= $notizie_home){
-        continue;
+        break;
     }
 
     $load_card_type = 'notizia';
