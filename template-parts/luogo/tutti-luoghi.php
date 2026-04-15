@@ -4,8 +4,11 @@ global $the_query, $load_posts, $load_card_type;
 $per_page = 6;
 $load_posts = $per_page;
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-$paged_from_query = get_query_var('paged');
-$paged_from_get = isset($_GET['paged']) ? absint($_GET['paged']) : 0;
+$paged_from_query = max((int) get_query_var('paged'), (int) get_query_var('page'));
+$paged_from_get = isset($_GET['luoghi_page']) ? absint($_GET['luoghi_page']) : 0;
+if ($paged_from_get < 1 && isset($_GET['paged'])) {
+    $paged_from_get = absint($_GET['paged']);
+}
 $paged = max(1, (int) ($paged_from_query ? $paged_from_query : $paged_from_get));
 
 $args = array(
@@ -71,7 +74,33 @@ $the_query = new WP_Query($args);
             <?php if ($the_query->max_num_pages > 1) : ?>
             <div class="row my-4">
                 <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine luoghi">
-                    <?php echo dci_bootstrap_pagination($the_query, false); ?>
+                    <?php
+                    $pagination_links = paginate_links(array(
+                        'base'         => esc_url(add_query_arg('luoghi_page', '%#%')),
+                        'format'       => '',
+                        'current'      => $paged,
+                        'total'        => $the_query->max_num_pages,
+                        'type'         => 'array',
+                        'show_all'     => false,
+                        'end_size'     => 3,
+                        'mid_size'     => 1,
+                        'prev_next'    => true,
+                        'prev_text'    => __('« '),
+                        'next_text'    => __(' »'),
+                        'add_fragment' => '#search-form',
+                    ));
+                    if ($pagination_links) :
+                    ?>
+                    <div class="pagination">
+                        <ul class="pagination">
+                            <?php foreach ($pagination_links as $link) : ?>
+                                <li class="page-item <?php echo strpos($link, 'current') !== false ? 'active' : ''; ?>">
+                                    <?php echo str_replace('page-numbers', 'page-link', $link); ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
                 </nav>
             </div>
             <?php endif; ?>
