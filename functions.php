@@ -300,6 +300,11 @@ function getFileSizeAndFormat($url) {
 
 
 function my_custom_one_time_function() {
+    // Evita lavoro pesante sulle richieste frontend.
+    if (!is_admin() && !(defined('WP_CLI') && WP_CLI)) {
+        return;
+    }
+
     // Controlla se l'opzione è già stata impostata
     if (!get_option('my_custom_function_executed')) {
         
@@ -326,7 +331,7 @@ function my_custom_one_time_function() {
         update_option('my_custom_function_executed', 1);
     }
 }
-add_action('init', 'my_custom_one_time_function');
+add_action('admin_init', 'my_custom_one_time_function');
 
 
 
@@ -1001,6 +1006,5 @@ add_filter('rest_luoghi_query', function ($args, $request) {
 
 	
 });
-
 
 
