@@ -1059,19 +1059,33 @@ if(!function_exists("dci_get_related_bando")) {
         $servizi =   get_posts( $args );
 
         $result = array();
-        foreach ($bandi as $bando) {
-            foreach ($servizi as $servizio) {
-                $array_servizi =  dci_get_meta('servizi', '_dci_documento_pubblico_', $bando-> ID) ;
-                if (is_array( $array_servizi ) && in_array($servizio,$array_servizi)) {
+        $servizi_lookup = array_fill_keys(array_map('intval', $servizi), true);
 
-                    $result [] = array(
-                        'id' => $bando -> ID,
-                        'titolo' => $bando-> post_title,
-                        'link' => get_permalink($bando -> ID),
-                        'description' =>  dci_get_meta('descrizione_breve', '_dci_documento_pubblico_', $bando-> ID)
-                    );
+        foreach ($bandi as $bando) {
+            $array_servizi = dci_get_meta('servizi', '_dci_documento_pubblico_', $bando->ID);
+
+            if (!is_array($array_servizi) || empty($array_servizi)) {
+                continue;
+            }
+
+            $has_related_servizio = false;
+            foreach ($array_servizi as $servizio_id) {
+                if (isset($servizi_lookup[(int) $servizio_id])) {
+                    $has_related_servizio = true;
+                    break;
                 }
             }
+
+            if (!$has_related_servizio) {
+                continue;
+            }
+
+            $result[] = array(
+                'id' => $bando->ID,
+                'titolo' => $bando->post_title,
+                'link' => get_permalink($bando->ID),
+                'description' => dci_get_meta('descrizione_breve', '_dci_documento_pubblico_', $bando->ID)
+            );
         }
 
        return $result;
@@ -1140,6 +1154,48 @@ function dci_contains_element_with( $array, $key, $value) {
         }
     }
     return false;
+}
+
+if (!function_exists('dci_get_maggioli_services_data')) {
+    /**
+     * Recupera e mette in cache il feed servizi esterni Maggioli.
+     *
+     * @return array
+     */
+    function dci_get_maggioli_services_data() {
+        $url = trim((string) dci_get_option('servizi_maggioli_url', 'servizi'));
+        if (empty($url) || !filter_var($url, FILTER_VALIDATE_URL)) {
+            return array();
+        }
+
+        $cache_key = 'dci_maggioli_services_' . md5($url);
+        $cached_data = get_transient($cache_key);
+        if (is_array($cached_data)) {
+            return $cached_data;
+        }
+
+        $request_args = array(
+            'timeout' => 4,
+            'redirection' => 2,
+            'sslverify' => false,
+            'user-agent' => 'PSR-Theme-Maggioli/1.0 (+'. home_url('/') .')',
+        );
+
+        $response = wp_remote_get($url, $request_args);
+        if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+            set_transient($cache_key, array(), 2 * MINUTE_IN_SECONDS);
+            return array();
+        }
+
+        $data = json_decode((string) wp_remote_retrieve_body($response), true);
+        if (!is_array($data)) {
+            set_transient($cache_key, array(), 2 * MINUTE_IN_SECONDS);
+            return array();
+        }
+
+        set_transient($cache_key, $data, 5 * MINUTE_IN_SECONDS);
+        return $data;
+    }
 }
 
 // Returns an img tag with appropriate attributes
