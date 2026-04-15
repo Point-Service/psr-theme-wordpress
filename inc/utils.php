@@ -583,11 +583,11 @@ if (!function_exists("dci_get_mapbox_access_token")) {
  *       echo bootstrap_pagination($query);
  *     ?>
  */
+
 function dci_bootstrap_pagination(?\WP_Query $wp_query = null, $echo = true)
 {
     if ($wp_query === null) {
-        global $wp_query as $global_wp_query;
-        $wp_query = $global_wp_query;
+        global $wp_query;
     }
     $pages = paginate_links([
             'base' => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
