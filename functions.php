@@ -491,9 +491,18 @@ function wpc_contatore_homepage() {
         );
     }
 
-    // Mantieni ultimi 90 giorni
-    $daily_counts = array_filter($daily_counts, fn($date) => strtotime($date) >= strtotime('-90 days', strtotime($today)), ARRAY_FILTER_USE_KEY);
-    $daily_visits = array_filter($daily_visits, fn($date) => strtotime($date) >= strtotime('-90 days', strtotime($today)), ARRAY_FILTER_USE_KEY);
+    // Mantieni ultimi 90 giorni (compatibile con PHP < 7.4, senza arrow functions).
+    $cutoff_timestamp = strtotime('-90 days', strtotime($today));
+    foreach (array_keys($daily_counts) as $date_key) {
+        if (strtotime($date_key) < $cutoff_timestamp) {
+            unset($daily_counts[$date_key]);
+        }
+    }
+    foreach (array_keys($daily_visits) as $date_key) {
+        if (strtotime($date_key) < $cutoff_timestamp) {
+            unset($daily_visits[$date_key]);
+        }
+    }
 
     update_option('wpc_home_daily_counts', $daily_counts);
     update_option('wpc_home_daily_visits', $daily_visits);
@@ -1007,5 +1016,4 @@ add_filter('rest_luoghi_query', function ($args, $request) {
 
 	
 });
-
 
