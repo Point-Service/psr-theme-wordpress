@@ -128,8 +128,8 @@ function dci_get_external_footer_payload() {
         $current_home = trailingslashit(home_url('/'));
         $external_parts = wp_parse_url($external_home);
         $request_args = array(
-            'timeout' => 12,
-            'redirection' => 5,
+            'timeout' => 4,
+            'redirection' => 3,
             'user-agent' => 'PSR-Theme-Footer-Fetch/1.0 (+'. home_url('/') .')',
             'sslverify' => false,
         );
@@ -360,8 +360,8 @@ function dci_get_external_head_html() {
     $candidate_homes = array_values(array_unique(array_filter($candidate_homes)));
 
     $request_args = array(
-        'timeout' => 12,
-        'redirection' => 5,
+        'timeout' => 4,
+        'redirection' => 3,
         'user-agent' => 'PSR-Theme-Head-Fetch/1.0 (+'. home_url('/') .')',
         'sslverify' => false,
     );
@@ -413,8 +413,8 @@ function dci_get_external_header_html() {
     $candidate_homes = array_values(array_unique(array_filter($candidate_homes)));
 
     $request_args = array(
-        'timeout' => 12,
-        'redirection' => 5,
+        'timeout' => 4,
+        'redirection' => 3,
         'user-agent' => 'PSR-Theme-Header-Fetch/1.0 (+'. home_url('/') .')',
         'sslverify' => false,
     );
