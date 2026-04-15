@@ -1,20 +1,24 @@
 <?php
 global $the_query, $load_posts, $load_card_type;
 
-    $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 6;
-    $load_posts = 6;
-    $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
-    $args = array(
-        's' => $query,
-        'posts_per_page' => $max_posts,
-        'post_type'      => 'luogo',
-		'post_status'    => 'publish',
-        'orderby'        => 'post_title',
-        'order'          => 'ASC'
-    );
-    $the_query = new WP_Query( $args );
+$per_page = 6;
+$load_posts = $per_page;
+$query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
+$paged_from_query = get_query_var('paged');
+$paged_from_get = isset($_GET['paged']) ? absint($_GET['paged']) : 0;
+$paged = max(1, (int) ($paged_from_query ? $paged_from_query : $paged_from_get));
 
-    $posts = $the_query->posts;
+$args = array(
+    's' => $query,
+    'posts_per_page' => $per_page,
+    'post_type'      => 'luogo',
+    'post_status'    => 'publish',
+    'ignore_sticky_posts' => true,
+    'orderby'        => 'post_title',
+    'order'          => 'ASC',
+    'paged'          => $paged,
+);
+$the_query = new WP_Query($args);
 
 ?>
 
@@ -53,14 +57,25 @@ global $the_query, $load_posts, $load_card_type;
             </div>
             <div class="row g-4" id="load-more">
                 <?php
-                foreach ( $posts as $post ) {
-                    $load_card_type = 'luogo';
-                    get_template_part('template-parts/luogo/card-full');
+                if ($the_query->have_posts()) {
+                    while ($the_query->have_posts()) {
+                        $the_query->the_post();
+                        $load_card_type = 'luogo';
+                        get_template_part('template-parts/luogo/card-full');
+                    }
+                } else {
+                    get_template_part('template-parts/content', 'none');
                 }
                 ?>
             </div>
-            <?php get_template_part("template-parts/search/more-results"); ?>
+            <?php if ($the_query->max_num_pages > 1) : ?>
+            <div class="row my-4">
+                <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione pagine luoghi">
+                    <?php echo dci_bootstrap_pagination($the_query, false); ?>
+                </nav>
+            </div>
+            <?php endif; ?>
         </div>
     </form>
 </div>
-<?php wp_reset_query(); ?>
+<?php wp_reset_postdata(); ?>
