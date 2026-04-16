@@ -18,7 +18,6 @@ if ($is_external_only) {
 }
 
 
-
 get_header();
 
 
