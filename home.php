@@ -17,7 +17,6 @@ if ($is_external_only) {
     exit;
 }
 
-
 get_header();
 
 
