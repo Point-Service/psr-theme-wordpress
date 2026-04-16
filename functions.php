@@ -300,11 +300,6 @@ function getFileSizeAndFormat($url) {
 
 
 function my_custom_one_time_function() {
-    // Evita lavoro pesante sulle richieste frontend.
-    if (!is_admin() && !(defined('WP_CLI') && WP_CLI)) {
-        return;
-    }
-
     // Controlla se l'opzione è già stata impostata
     if (!get_option('my_custom_function_executed')) {
         
@@ -331,7 +326,7 @@ function my_custom_one_time_function() {
         update_option('my_custom_function_executed', 1);
     }
 }
-add_action('admin_init', 'my_custom_one_time_function');
+add_action('init', 'my_custom_one_time_function');
 
 
 
@@ -437,10 +432,6 @@ add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 
 
 
-
-
-
-
 // ================================
 // CONTATORE ACCESSI UNIVOCI
 // ================================
@@ -453,7 +444,7 @@ function wpc_contatore_homepage() {
     $today = date('Y-m-d');
     $count_total = get_option('wpc_home_count', 0);
     $daily_counts = get_option('wpc_home_daily_counts', array());
-    $daily_visits = get_option('wpc_home_daily_visits', array());
+    $daily_visits = get_option('wpc_home_daily_visits', array()); // nuovo array dettagli
 
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'N/A';
     $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'N/A';
@@ -463,26 +454,7 @@ function wpc_contatore_homepage() {
         $daily_visits[$today] = array();
     }
 
-    // =========================
-    // 🔥 PULIZIA VECCHI DATI (3 mesi)
-    // =========================
-    $cutoff_timestamp = strtotime('-3 months', strtotime($today));
-
-    foreach (array_keys($daily_counts) as $date_key) {
-        if (strtotime($date_key) < $cutoff_timestamp) {
-            unset($daily_counts[$date_key]);
-        }
-    }
-
-    foreach (array_keys($daily_visits) as $date_key) {
-        if (strtotime($date_key) < $cutoff_timestamp) {
-            unset($daily_visits[$date_key]);
-        }
-    }
-
-    // =========================
-    // CONTROLLO IP
-    // =========================
+    // controlla se IP già presente oggi
     $ip_present = false;
     foreach ($daily_visits[$today] as $v) {
         if ($v['ip'] === $ip) {
@@ -502,14 +474,22 @@ function wpc_contatore_homepage() {
             'time' => $time,
             'user_agent' => $user_agent,
         );
+
+        // Mantieni ultimi 365 giorni
+        $daily_counts = array_filter($daily_counts, fn($date) => strtotime($date) >= strtotime('-1 year', strtotime($today)), ARRAY_FILTER_USE_KEY);
+        $daily_visits = array_filter($daily_visits, fn($date) => strtotime($date) >= strtotime('-1 year', strtotime($today)), ARRAY_FILTER_USE_KEY);
+
+        update_option('wpc_home_daily_counts', $daily_counts);
+        update_option('wpc_home_daily_visits', $daily_visits);
     }
-
-    // ✅ salva SEMPRE (così cancella davvero dal DB)
-    update_option('wpc_home_daily_counts', $daily_counts);
-    update_option('wpc_home_daily_visits', $daily_visits);
 }
-
 add_action('wp', 'wpc_contatore_homepage');
+
+
+
+
+
+
 
 
 
@@ -536,7 +516,6 @@ function wpc_contatore_homepage_shortcode() {
 }
 add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
 require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
-
 
 
 
@@ -687,58 +666,6 @@ add_action('admin_init', function() {
 
 
 
-// FORZA CREAZIONE PAGINA ORGANIGRAMMA UFFICI
-add_action('init', function () {
-
-    $slug  = 'uffici-organigramma';
-    $title = 'Uffici Organigramma';
-
-    $page = get_page_by_path($slug);
-
-    if (!$page) {
-
-        // Creo la pagina
-        wp_insert_post([
-            'post_title'   => $title,
-            'post_name'    => $slug,
-            'post_status'  => 'publish',
-            'post_type'    => 'page',
-            'post_content' => '',
-        ]);
-
-    } else {
-
-        $update = [];
-
-        // Corregge titolo se modificato
-        if ($page->post_title !== $title) {
-            $update['post_title'] = $title;
-        }
-
-        // Corregge slug se modificato
-        if ($page->post_name !== $slug) {
-            $update['post_name'] = $slug;
-        }
-
-        // Assicura che sia pubblicata
-        if ($page->post_status !== 'publish') {
-            $update['post_status'] = 'publish';
-        }
-
-        // Assicura che sia una pagina
-        if ($page->post_type !== 'page') {
-            $update['post_type'] = 'page';
-        }
-
-        if (!empty($update)) {
-            $update['ID'] = $page->ID;
-            wp_update_post($update);
-        }
-    }
-
-});
-
-
 
 
 
@@ -839,6 +766,7 @@ add_action('rest_api_init', function () {
             ];
         }
     ));
+
 
 
 
@@ -959,59 +887,8 @@ add_filter('rest_luoghi_query', function ($args, $request) {
 
     return $args;
 
- }, 10, 2);
+}, 10, 2);
 
 
 
-
-
-
-
-
-    /*
-    =====================================
-    API FOOTER
-    =====================================
-    */
-
-    register_rest_route('comune/v1', '/footer', [
-        'methods' => 'GET',
-        'callback' => function () {
-
-            $data = [
-                "nome" => dci_get_option("nome_comune"),
-                "indirizzo" => dci_get_option("contatti_indirizzo", 'footer'),
-                "cf_piva" => dci_get_option("contatti_CF_PIVA", 'footer'),
-                "telefono" => dci_get_option("centralino_unico", 'footer'),
-                "numero_verde" => dci_get_option("numero_verde", 'footer'),
-                "whatsapp" => dci_get_option("SMS_Whatsapp", 'footer'),
-                "pec" => dci_get_option("contatti_PEC", 'footer'),
-                "iban" => dci_get_option("iban", 'footer'),
-                "codice_fatturazione" => dci_get_option("Codice_Univoco_Fatturazione", 'footer'),
-                "email_dpo" => dci_get_option("dpo_email", 'footer'),
-            ];
-
-            $socials = dci_get_option('link_social', 'socials');
-            $data["social"] = [];
-
-            if (is_array($socials)) {
-                foreach ($socials as $s) {
-                    $data["social"][] = [
-                        "nome" => $s["nome_social"],
-                        "url" => $s["url_social"]
-                    ];
-                }
-            }
-
-            return $data;
-        }
-    ]);
-
-
-
-
-	
 });
-
-
-
