@@ -45,7 +45,7 @@ get_header();
             
             
 	    <p></p>
-            <?php   get_template_part("template-parts/home/notizie"); ?>
+            <?php  // get_template_part("template-parts/home/notizie"); ?>
             <?php //  get_template_part("template-parts/home/calendario"); ?>
 
         </section>
