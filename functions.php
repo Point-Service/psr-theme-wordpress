@@ -441,8 +441,6 @@ add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 
 
 
-
-
 // ================================
 // CONTATORE ACCESSI UNIVOCI
 // ================================
@@ -455,7 +453,7 @@ function wpc_contatore_homepage() {
     $today = date('Y-m-d');
     $count_total = get_option('wpc_home_count', 0);
     $daily_counts = get_option('wpc_home_daily_counts', array());
-    $daily_visits = get_option('wpc_home_daily_visits', array()); // nuovo array dettagli
+    $daily_visits = get_option('wpc_home_daily_visits', array());
 
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'N/A';
     $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'N/A';
@@ -465,7 +463,26 @@ function wpc_contatore_homepage() {
         $daily_visits[$today] = array();
     }
 
-    // controlla se IP già presente oggi
+    // =========================
+    // 🔥 PULIZIA VECCHI DATI (3 mesi)
+    // =========================
+    $cutoff_timestamp = strtotime('-3 months', strtotime($today));
+
+    foreach (array_keys($daily_counts) as $date_key) {
+        if (strtotime($date_key) < $cutoff_timestamp) {
+            unset($daily_counts[$date_key]);
+        }
+    }
+
+    foreach (array_keys($daily_visits) as $date_key) {
+        if (strtotime($date_key) < $cutoff_timestamp) {
+            unset($daily_visits[$date_key]);
+        }
+    }
+
+    // =========================
+    // CONTROLLO IP
+    // =========================
     $ip_present = false;
     foreach ($daily_visits[$today] as $v) {
         if ($v['ip'] === $ip) {
@@ -485,31 +502,14 @@ function wpc_contatore_homepage() {
             'time' => $time,
             'user_agent' => $user_agent,
         );
-
-        // Mantieni ultimi 365 giorni (senza arrow function, compatibile con PHP < 7.4)
-        $cutoff_timestamp = strtotime('-1 year', strtotime($today));
-        foreach (array_keys($daily_counts) as $date_key) {
-            if (strtotime($date_key) < $cutoff_timestamp) {
-                unset($daily_counts[$date_key]);
-            }
-        }
-        foreach (array_keys($daily_visits) as $date_key) {
-            if (strtotime($date_key) < $cutoff_timestamp) {
-                unset($daily_visits[$date_key]);
-            }
-        }
-
-        update_option('wpc_home_daily_counts', $daily_counts);
-        update_option('wpc_home_daily_visits', $daily_visits);
     }
+
+    // ✅ salva SEMPRE (così cancella davvero dal DB)
+    update_option('wpc_home_daily_counts', $daily_counts);
+    update_option('wpc_home_daily_visits', $daily_visits);
 }
+
 add_action('wp', 'wpc_contatore_homepage');
-
-
-
-
-
-
 
 
 
