@@ -54,7 +54,7 @@ get_header();
                 <?php //get_template_part("template-parts/home/servizi"); ?>
             <div class="section py-5 pb-lg-80 px-lg-5 position-relative">
 		        
-                <?php // get_template_part("template-parts/home/siti","tematici"); ?>
+                <?php get_template_part("template-parts/home/siti","tematici"); ?>
             </div>
         </section>
 		   
