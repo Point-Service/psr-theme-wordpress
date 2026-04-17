@@ -442,7 +442,7 @@ add_action('after_setup_theme', 'crea_pagina_sitemap_personalizzata');
 
 
 // ================================
-// CONTATORE ACCESSI UNIVOCI
+// CONTATORE ACCESSI OTTIMIZZATO
 // ================================
 
 function wpc_contatore_homepage() {
@@ -451,65 +451,36 @@ function wpc_contatore_homepage() {
     if ( is_admin() ) return;
 
     $today = date('Y-m-d');
-    $count_total = get_option('wpc_home_count', 0);
+
+    // Se già conteggiato oggi → esci
+    if (isset($_COOKIE['wpc_visited_today'])) {
+        return;
+    }
+
+    // Imposta cookie per 24h
+    setcookie('wpc_visited_today', 1, time() + 86400, COOKIEPATH, COOKIE_DOMAIN);
+
+    // Totale
+    $count_total = (int) get_option('wpc_home_count', 0);
+    $count_total++;
+    update_option('wpc_home_count', $count_total);
+
+    // Giornaliero
     $daily_counts = get_option('wpc_home_daily_counts', array());
-    $daily_visits = get_option('wpc_home_daily_visits', array());
+    $daily_counts[$today] = ($daily_counts[$today] ?? 0) + 1;
 
-    $ip = $_SERVER['REMOTE_ADDR'] ?? 'N/A';
-    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'N/A';
-    $time = current_time('H:i:s');
-
-    if (!isset($daily_visits[$today])) {
-        $daily_visits[$today] = array();
-    }
-
-    // =========================
-    // 🔥 PULIZIA VECCHI DATI (3 mesi)
-    // =========================
-    $cutoff_timestamp = strtotime('-3 months', strtotime($today));
-
-    foreach (array_keys($daily_counts) as $date_key) {
-        if (strtotime($date_key) < $cutoff_timestamp) {
-            unset($daily_counts[$date_key]);
+    // 🔥 pulizia automatica (3 mesi)
+    $cutoff = strtotime('-3 months');
+    foreach ($daily_counts as $date => $value) {
+        if (strtotime($date) < $cutoff) {
+            unset($daily_counts[$date]);
         }
     }
 
-    foreach (array_keys($daily_visits) as $date_key) {
-        if (strtotime($date_key) < $cutoff_timestamp) {
-            unset($daily_visits[$date_key]);
-        }
-    }
-
-    // =========================
-    // CONTROLLO IP
-    // =========================
-    $ip_present = false;
-    foreach ($daily_visits[$today] as $v) {
-        if ($v['ip'] === $ip) {
-            $ip_present = true;
-            break;
-        }
-    }
-
-    if (!$ip_present) {
-        $count_total++;
-        update_option('wpc_home_count', $count_total);
-
-        $daily_counts[$today] = ($daily_counts[$today] ?? 0) + 1;
-
-        $daily_visits[$today][] = array(
-            'ip' => $ip,
-            'time' => $time,
-            'user_agent' => $user_agent,
-        );
-    }
-
-    // ✅ salva SEMPRE (così cancella davvero dal DB)
     update_option('wpc_home_daily_counts', $daily_counts);
-    update_option('wpc_home_daily_visits', $daily_visits);
 }
 
-add_action('wp', 'wpc_contatore_homepage');
+add_action('template_redirect', 'wpc_contatore_homepage');
 
 
 
@@ -518,24 +489,18 @@ add_action('wp', 'wpc_contatore_homepage');
 // SHORTCODE VISUALIZZAZIONE CONTATORE
 // ================================
 function wpc_contatore_homepage_shortcode() {
-    $count_total = get_option('wpc_home_count', 0);
+
+    $count_total = (int) get_option('wpc_home_count', 0);
     $daily_counts = get_option('wpc_home_daily_counts', array());
     $today = date('Y-m-d');
     $count_today = $daily_counts[$today] ?? 0;
 
-    return "<div class='home-counter' style='text-align:left; font-size:14px; color:white; display:flex; flex-direction:column; gap:3px;'>
-                <span style='display:flex; align-items:center; gap:5px;'>
-                    <i class='fas fa-chart-line' style='color:white; font-size:16px;'></i>
-                    <strong>Totale accessi:</strong> $count_total
-                </span>
-                <span style='display:flex; align-items:center; gap:5px;'>
-                    <i class='fas fa-user-clock' style='color:white; font-size:16px;'></i>
-                    <strong>Accessi oggi:</strong> $count_today
-                </span>
-            </div>";
+    return "<div class='home-counter'>
+        <strong>Totale accessi:</strong> $count_total<br>
+        <strong>Accessi oggi:</strong> $count_today
+    </div>";
 }
-add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode');
-require_once get_stylesheet_directory() . '/inc/admin/tipologie/accessi.php';
+add_shortcode('home_counter', 'wpc_contatore_homepage_shortcode'); 
 
 
 
