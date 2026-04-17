@@ -17,7 +17,7 @@ require get_template_directory() . '/inc/funzionalita_trasversali.php';
  */
 require get_template_directory() . '/inc/load_more.php';
 
-/**
+/*
  * Vocabolario
  */
 require get_template_directory() . '/inc/vocabolario.php';
@@ -733,89 +733,11 @@ add_action('init', function() {
 
 add_action('rest_api_init', function () {
 
-    // EVENTO
-    register_rest_field('evento', 'data_inizio', [
-        'get_callback' => function ($post) {
-            return get_post_meta($post['id'], '_dci_evento_data_orario_inizio', true);
-        }
-    ]);
-
-    register_rest_field('evento', 'data_fine', [
-        'get_callback' => function ($post) {
-            return get_post_meta($post['id'], '_dci_evento_data_orario_fine', true);
-        }
-    ]);
-
-    register_rest_field('evento', 'descrizione_breve', [
-        'get_callback' => function ($post) {
-            return get_post_meta($post['id'], '_dci_evento_descrizione_breve', true);
-        }
-    ]);
-
-    // NOTIZIA  👇 QUESTO TI SERVE
-    register_rest_field('notizia', 'descrizione_breve', [
-        'get_callback' => function ($post) {
-            return get_post_meta($post['id'], '_dci_notizia_descrizione_breve', true);
-        }
-    ]);
-
-	register_rest_field('notizia', 'data_scadenza', [
-	    'get_callback' => function ($post) {
-	        return get_post_meta($post['id'], '_dci_notizia_data_scadenza', true);
-	    }
-	]);
-
-
-
-    register_rest_field('luogo', 'meta_luogo', array(
-        'get_callback' => function ($post) {
-
-            $prefix = '_dci_luogo_';
-
-            $img = get_post_meta($post['id'], $prefix . 'immagine', true);
-            $descrizione = get_post_meta($post['id'], $prefix . 'descrizione_breve', true);
-
-            $gps = get_post_meta($post['id'], $prefix . 'posizione_gps', true);
-            $indirizzo = get_post_meta($post['id'], $prefix . 'indirizzo', true);
-            $quartiere = get_post_meta($post['id'], $prefix . 'quartiere', true);
-            $circoscrizione = get_post_meta($post['id'], $prefix . 'circoscrizione', true);
-
-            $tipi = get_the_terms($post['id'], 'tipi_luogo');
-            $tipi_array = [];
-
-            if ($tipi && !is_wp_error($tipi)) {
-                foreach ($tipi as $t) {
-                    $tipi_array[] = [
-                        'name' => $t->name,
-                        'link' => get_term_link($t)
-                    ];
-                }
-            }
-
-            return [
-                'immagine' => $img,
-                'descrizione' => $descrizione,
-                'lat' => isset($gps['lat']) ? $gps['lat'] : '',
-                'lng' => isset($gps['lng']) ? $gps['lng'] : '',
-                'indirizzo' => $indirizzo,
-                'quartiere' => $quartiere,
-                'circoscrizione' => $circoscrizione,
-                'tipi_luogo' => $tipi_array
-            ];
-        }
-    ));
-
-
-
-
-    add_action('rest_api_init', function () {
-
     /*
     =====================================
     EVENTO
     =====================================
     */
-
     register_rest_field('evento', 'data_inizio', [
         'get_callback' => function ($post) {
             return get_post_meta($post['id'], '_dci_evento_data_orario_inizio', true);
@@ -840,7 +762,6 @@ add_action('rest_api_init', function () {
     NOTIZIA
     =====================================
     */
-
     register_rest_field('notizia', 'descrizione_breve', [
         'get_callback' => function ($post) {
             return get_post_meta($post['id'], '_dci_notizia_descrizione_breve', true);
@@ -856,15 +777,20 @@ add_action('rest_api_init', function () {
 
     /*
     =====================================
-    LUOGO - META COMPLETO
+    LUOGO (OTTIMIZZATO CON CACHE)
     =====================================
     */
-
     register_rest_field('luogo', 'meta_luogo', [
         'get_callback' => function ($post) {
 
-            $prefix = '_dci_luogo_';
+            $cache_key = 'luogo_meta_' . $post['id'];
+            $cached = wp_cache_get($cache_key);
 
+            if ($cached !== false) {
+                return $cached;
+            }
+
+            $prefix = '_dci_luogo_';
             $gps = get_post_meta($post['id'], $prefix . 'posizione_gps', true);
 
             $tipi = get_the_terms($post['id'], 'tipi_luogo');
@@ -879,7 +805,7 @@ add_action('rest_api_init', function () {
                 }
             }
 
-            return [
+            $data = [
                 'immagine' => get_post_meta($post['id'], $prefix . 'immagine', true),
                 'descrizione' => get_post_meta($post['id'], $prefix . 'descrizione_breve', true),
                 'lat' => isset($gps['lat']) ? $gps['lat'] : '',
@@ -889,48 +815,13 @@ add_action('rest_api_init', function () {
                 'circoscrizione' => get_post_meta($post['id'], $prefix . 'circoscrizione', true),
                 'tipi_luogo' => $tipi_array
             ];
+
+            // cache 1 ora
+            wp_cache_set($cache_key, $data, '', 3600);
+
+            return $data;
         }
     ]);
-
-});
-
-
-/*
-=====================================
-FILTRO LUOGHI IN EVIDENZA
-Endpoint:
-wp-json/wp/v2/luogo?in_evidenza=1
-=====================================
-*/
-
-add_filter('rest_luoghi_query', function ($args, $request) {
-
-    if ($request->get_param('in_evidenza')) {
-
-        $ids = dci_get_option('luoghi_evidenziati','vivi');
-
-        if (is_array($ids) && !empty($ids)) {
-
-            $args['post__in'] = $ids;
-
-            // Se vuoi ultimi prima
-            $args['orderby'] = 'date';
-            $args['order']   = 'DESC';
-
-        } else {
-            $args['post__in'] = [0];
-        }
-    }
-
-    return $args;
-
- }, 10, 2);
-
-
-
-
-
-
 
 
     /*
@@ -938,7 +829,6 @@ add_filter('rest_luoghi_query', function ($args, $request) {
     API FOOTER
     =====================================
     */
-
     register_rest_route('comune/v1', '/footer', [
         'methods' => 'GET',
         'callback' => function () {
@@ -972,8 +862,4 @@ add_filter('rest_luoghi_query', function ($args, $request) {
         }
     ]);
 
-
-
-
-	
 });
