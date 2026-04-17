@@ -971,9 +971,4 @@ add_filter('rest_luoghi_query', function ($args, $request) {
             return $data;
         }
     ]);
-
-
-
-
-	
 });
