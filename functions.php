@@ -809,13 +809,8 @@ add_action('rest_api_init', function () {
 
 
 
-
-
-
-
-	
 // ================================
-// REST API CUSTOM
+// REST API CUSTOM (UNICO BLOCCO)
 // ================================
 
 add_action('rest_api_init', function () {
@@ -907,7 +902,6 @@ add_action('rest_api_init', function () {
                 'tipi_luogo' => $tipi_array
             ];
 
-            // cache per 1 ora
             wp_cache_set($cache_key, $data, '', 3600);
 
             return $data;
