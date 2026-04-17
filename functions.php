@@ -808,12 +808,7 @@ add_action('rest_api_init', function () {
 
 
 
-
-// ================================
-// REST API CUSTOM (UNICO BLOCCO)
-// ================================
-
-add_action('rest_api_init', function () {
+    add_action('rest_api_init', function () {
 
     /*
     =====================================
@@ -861,19 +856,12 @@ add_action('rest_api_init', function () {
 
     /*
     =====================================
-    LUOGO (OTTIMIZZATO CON CACHE)
+    LUOGO - META COMPLETO
     =====================================
     */
 
     register_rest_field('luogo', 'meta_luogo', [
         'get_callback' => function ($post) {
-
-            $cache_key = 'luogo_meta_' . $post['id'];
-            $cached = wp_cache_get($cache_key);
-
-            if ($cached !== false) {
-                return $cached;
-            }
 
             $prefix = '_dci_luogo_';
 
@@ -891,7 +879,7 @@ add_action('rest_api_init', function () {
                 }
             }
 
-            $data = [
+            return [
                 'immagine' => get_post_meta($post['id'], $prefix . 'immagine', true),
                 'descrizione' => get_post_meta($post['id'], $prefix . 'descrizione_breve', true),
                 'lat' => isset($gps['lat']) ? $gps['lat'] : '',
@@ -901,12 +889,48 @@ add_action('rest_api_init', function () {
                 'circoscrizione' => get_post_meta($post['id'], $prefix . 'circoscrizione', true),
                 'tipi_luogo' => $tipi_array
             ];
-
-            wp_cache_set($cache_key, $data, '', 3600);
-
-            return $data;
         }
     ]);
+
+});
+
+
+/*
+=====================================
+FILTRO LUOGHI IN EVIDENZA
+Endpoint:
+wp-json/wp/v2/luogo?in_evidenza=1
+=====================================
+*/
+
+add_filter('rest_luoghi_query', function ($args, $request) {
+
+    if ($request->get_param('in_evidenza')) {
+
+        $ids = dci_get_option('luoghi_evidenziati','vivi');
+
+        if (is_array($ids) && !empty($ids)) {
+
+            $args['post__in'] = $ids;
+
+            // Se vuoi ultimi prima
+            $args['orderby'] = 'date';
+            $args['order']   = 'DESC';
+
+        } else {
+            $args['post__in'] = [0];
+        }
+    }
+
+    return $args;
+
+ }, 10, 2);
+
+
+
+
+
+
 
 
     /*
@@ -948,4 +972,8 @@ add_action('rest_api_init', function () {
         }
     ]);
 
+
+
+
+	
 });
