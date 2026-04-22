@@ -895,3 +895,55 @@ add_action('save_post_luogo', function($post_id) {
 add_action('update_option_dci_options', function() {
     delete_transient('api_footer');
 });
+
+/**
+ * Allinea la query principale della tassonomia trasparenza ai filtri del template
+ * per evitare mismatch di paginazione (es. ultima pagina in errore/404).
+ */
+add_action('pre_get_posts', function (WP_Query $query) {
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    if (!$query->is_tax('tipi_cat_amm_trasp')) {
+        return;
+    }
+
+    $max_posts = isset($_GET['max_posts']) ? absint($_GET['max_posts']) : 10;
+    if ($max_posts <= 0) {
+        $max_posts = 10;
+    }
+
+    $search = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : '';
+    $order_type = isset($_GET['order_type']) ? sanitize_key($_GET['order_type']) : 'data_desc';
+
+    $query->set('post_type', 'elemento_trasparenza');
+    $query->set('posts_per_page', $max_posts);
+
+    $term_slug = (string) $query->get('tipi_cat_amm_trasp');
+    if ($term_slug !== '') {
+        $term = get_term_by('slug', $term_slug, 'tipi_cat_amm_trasp');
+        if ($term && !is_wp_error($term)) {
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => 'tipi_cat_amm_trasp',
+                    'field' => 'term_id',
+                    'terms' => array((int) $term->term_id),
+                    'include_children' => false,
+                ),
+            ));
+        }
+    }
+
+    if ($search !== '') {
+        $query->set('s', $search);
+    }
+
+    if ($order_type === 'alfabetico_asc' || $order_type === 'alfabetico_desc') {
+        $query->set('orderby', 'title');
+        $query->set('order', $order_type === 'alfabetico_desc' ? 'DESC' : 'ASC');
+    } else {
+        $query->set('orderby', 'date');
+        $query->set('order', $order_type === 'data_asc' ? 'ASC' : 'DESC');
+    }
+});

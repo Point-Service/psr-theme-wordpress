@@ -271,35 +271,8 @@ $prefix = '_dci_elemento_trasparenza_';
 // Gestione dell'ordinamento
 $order = isset($_GET['order_type']) ? $_GET['order_type'] : 'data_desc'; // Default è data_desc
 
-$args = array(
-    's' => $query,
-    'posts_per_page' => $max_posts,
-    'post_type' => 'elemento_trasparenza',
-    'paged' => $paged,
-    'tax_query' => array(
-        array(
-            'taxonomy' => 'tipi_cat_amm_trasp',
-            'field' => 'term_id',
-            'terms' => array($obj->term_id),
-            'include_children' => false,
-        ),
-    ),
-);
-
-// Gestione dell'ordinamento
-if ($order === 'alfabetico_asc' || $order === 'alfabetico_desc') {
-    $args['orderby'] = 'title';
-    $args['order'] = ($order === 'alfabetico_desc') ? 'DESC' : 'ASC';
-} else {
-    // Ordinamento per data di pubblicazione del post (post_date)
-    $args['orderby'] = 'date';
-    $args['order'] = ($order === 'data_desc') ? 'DESC' : 'ASC';
-}
-
-
-
-$the_query = new WP_Query($args);
-// $pagination_markup = trim((string) dci_bootstrap_pagination());
+global $wp_query;
+$the_query = $wp_query;
 
 
 
