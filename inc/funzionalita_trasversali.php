@@ -439,13 +439,13 @@ function dci_get_external_home_snapshot($external_home, $candidate_homes = array
         if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
             $head_html = dci_extract_head_html(wp_remote_retrieve_body($response));
             if (!empty($head_html)) {
-                set_transient($head_cache_key, $head_html, 5 * MINUTE_IN_SECONDS);
+                set_transient($cache_key, array('html' => $head_html), 10 * MINUTE_IN_SECONDS);
                 return $head_html;
             }
         }
     }
 
-    set_transient($head_cache_key, '__empty__', MINUTE_IN_SECONDS);
+    set_transient($cache_key, array('html' => ''), 2 * MINUTE_IN_SECONDS);
     return '';
 }
 
@@ -537,8 +537,15 @@ function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
         $year = (int) wp_date('Y');
     }
 
+    $cache_key = 'dci_slots_uo_' . $office_id . '_' . $year . '_' . $month;
+    $cached_slots = get_transient($cache_key);
+    if (is_array($cached_slots)) {
+        return $cached_slots;
+    }
+
     $orario_id = absint(dci_get_meta('orario_uo', '_dci_unita_organizzativa_', $office_id));
     if ($orario_id <= 0) {
+        set_transient($cache_key, array(), 2 * MINUTE_IN_SECONDS);
         return array();
     }
 
@@ -549,6 +556,7 @@ function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
     $data_inizio = DateTime::createFromFormat('d-m-Y', $data_inizio_raw) ?: null;
     $data_fine = DateTime::createFromFormat('d-m-Y', $data_fine_raw) ?: null;
     if (!$data_inizio || !$data_fine) {
+        set_transient($cache_key, array(), 2 * MINUTE_IN_SECONDS);
         return array();
     }
 
@@ -609,6 +617,7 @@ function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
         $cursor->modify('+1 day')->setTime(0, 0, 0);
     }
 
+    set_transient($cache_key, $slots, 5 * MINUTE_IN_SECONDS);
     return $slots;
 }
 

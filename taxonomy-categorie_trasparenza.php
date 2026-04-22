@@ -254,8 +254,13 @@ if (!function_exists('dci_render_trasparenza_light_bg_style')) {
 
 dci_render_trasparenza_light_bg_style();
 
-// Recupera il numero di pagina corrente.
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+// Recupera il numero di pagina corrente in modo robusto (paged/page/querystring).
+$paged = max(
+    1,
+    (int) get_query_var('paged'),
+    (int) get_query_var('page'),
+    isset($_GET['paged']) ? (int) $_GET['paged'] : 0
+);
 
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $load_posts = -1;
@@ -475,7 +480,43 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 </div>
 
                 
-                <?php $pagination_markup = trim((string) dci_bootstrap_pagination($the_query, false)); ?>
+                <?php
+                $pagination_args = array();
+                if ($query !== null && $query !== '') {
+                    $pagination_args['search'] = $query;
+                }
+                if (!empty($order)) {
+                    $pagination_args['order_type'] = $order;
+                }
+                if (!empty($max_posts)) {
+                    $pagination_args['max_posts'] = (int) $max_posts;
+                }
+
+                $pages = paginate_links(array(
+                    'base' => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
+                    'format' => '?paged=%#%',
+                    'current' => $paged,
+                    'total' => max(1, (int) $the_query->max_num_pages),
+                    'type' => 'array',
+                    'show_all' => false,
+                    'end_size' => 3,
+                    'mid_size' => 1,
+                    'prev_next' => true,
+                    'prev_text' => __('« '),
+                    'next_text' => __(' »'),
+                    'add_args' => $pagination_args,
+                    'add_fragment' => ''
+                ));
+
+                $pagination_markup = '';
+                if (is_array($pages)) {
+                    $pagination_markup = '<div class="pagination"><ul class="pagination">';
+                    foreach ($pages as $page_link) {
+                        $pagination_markup .= '<li class="page-item' . (strpos($page_link, 'current') !== false ? ' active' : '') . '">' . str_replace('page-numbers', 'page-link', $page_link) . '</li>';
+                    }
+                    $pagination_markup .= '</ul></div>';
+                }
+                ?>
                 <?php if ($pagination_markup !== '') { ?>
                 <div class="row my-4">
                     <div class="col-12 d-flex">

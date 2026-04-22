@@ -1211,8 +1211,14 @@ if (!function_exists('dci_get_maggioli_services_data')) {
             return $cached_data;
         }
 
+        $lock_key = $cache_key . '_lock';
+        if (get_transient($lock_key)) {
+            return array();
+        }
+        set_transient($lock_key, 1, 20);
+
         $request_args = array(
-            'timeout' => 4,
+            'timeout' => 3,
             'redirection' => 2,
             'sslverify' => false,
             'user-agent' => 'PSR-Theme-Maggioli/1.0 (+'. home_url('/') .')',
@@ -1221,16 +1227,19 @@ if (!function_exists('dci_get_maggioli_services_data')) {
         $response = wp_remote_get($url, $request_args);
         if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
             set_transient($cache_key, array(), 2 * MINUTE_IN_SECONDS);
+            delete_transient($lock_key);
             return array();
         }
 
         $data = json_decode((string) wp_remote_retrieve_body($response), true);
         if (!is_array($data)) {
             set_transient($cache_key, array(), 2 * MINUTE_IN_SECONDS);
+            delete_transient($lock_key);
             return array();
         }
 
         set_transient($cache_key, $data, 5 * MINUTE_IN_SECONDS);
+        delete_transient($lock_key);
         return $data;
     }
 }
