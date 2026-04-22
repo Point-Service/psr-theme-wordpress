@@ -20,7 +20,13 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
     }
 }
 ?>
-
+<style>
+@media (max-width: 768px) {
+  .cookiebar {
+    display: none !important;
+  }
+}	
+</style>
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
   <p>COOKIES - Si usano i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.
     <a href="/privacy/" class="cookiebar-btn">Info Privacy<span class="visually-hidden">cookies</span></a>
