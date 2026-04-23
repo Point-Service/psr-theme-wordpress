@@ -1004,7 +1004,17 @@ if (!function_exists('dci_get_evento_rest_payload')) {
             return $cached_payload;
         }
 
-        $thumbnail_id = get_post_thumbnail_id($post_id);
+        $meta = get_post_meta($post_id);
+        $meta_image = $meta['_dci_evento_immagine'][0] ?? '';
+
+        $thumbnail_id = 0;
+        if (!empty($meta_image) && is_string($meta_image)) {
+            $thumbnail_id = attachment_url_to_postid($meta_image);
+        }
+        if (!$thumbnail_id) {
+            $thumbnail_id = get_post_thumbnail_id($post_id);
+        }
+
         $immagine = null;
         if ($thumbnail_id) {
             $img_url = wp_get_attachment_image_url($thumbnail_id, 'full');
@@ -1016,9 +1026,15 @@ if (!function_exists('dci_get_evento_rest_payload')) {
                     'title' => get_the_title($thumbnail_id) ?: '',
                 );
             }
+        } elseif (!empty($meta_image) && is_string($meta_image)) {
+            $immagine = array(
+                'id' => 0,
+                'url' => $meta_image,
+                'alt' => '',
+                'title' => '',
+            );
         }
 
-        $meta = get_post_meta($post_id);
         $payload = array(
             'data_inizio' => $meta['_dci_evento_data_orario_inizio'][0] ?? '',
             'data_fine' => $meta['_dci_evento_data_orario_fine'][0] ?? '',
