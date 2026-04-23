@@ -933,24 +933,60 @@ if (!function_exists('dci_get_notizia_rest_payload')) {
 
 
 
-
-		$thumbnail_id = get_post_thumbnail_id($post_id);
-
 $immagine = null;
+
+// 1️⃣ FEATURED IMAGE
+$thumbnail_id = get_post_thumbnail_id($post_id);
 
 if ($thumbnail_id) {
     $img_url = wp_get_attachment_image_url($thumbnail_id, 'full');
 
     if ($img_url) {
-        $immagine = array(
+        $immagine = [
             'id' => (int) $thumbnail_id,
             'url' => $img_url,
             'alt' => get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true) ?: '',
             'title' => get_the_title($thumbnail_id) ?: '',
-        );
+        ];
     }
 }
 
+// 2️⃣ FALLBACK CMB2
+if (!$immagine) {
+    $meta_img = get_post_meta($post_id, '_dci_notizia_immagine', true);
+
+    if (!empty($meta_img)) {
+
+        if (is_numeric($meta_img)) {
+            $img_url = wp_get_attachment_image_url($meta_img, 'full');
+
+            if ($img_url) {
+                $immagine = [
+                    'id' => (int) $meta_img,
+                    'url' => $img_url,
+                    'alt' => get_post_meta($meta_img, '_wp_attachment_image_alt', true) ?: '',
+                    'title' => get_the_title($meta_img) ?: '',
+                ];
+            }
+        }
+        elseif (is_array($meta_img) && isset($meta_img['url'])) {
+            $immagine = [
+                'id' => 0,
+                'url' => $meta_img['url'],
+                'alt' => '',
+                'title' => '',
+            ];
+        }
+        elseif (is_string($meta_img)) {
+            $immagine = [
+                'id' => 0,
+                'url' => $meta_img,
+                'alt' => '',
+                'title' => '',
+            ];
+        }
+    }
+}
 
 
 
