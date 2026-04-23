@@ -794,6 +794,14 @@ add_action('rest_api_init', function () {
         }
     ]);
 
+
+	register_rest_field('notizia', 'immagine', [
+    'get_callback' => function ($post) {
+        $payload = dci_get_notizia_rest_payload($post['id']);
+        return $payload['immagine'];
+    }
+	]);
+	
     /*
     =====================================
     LUOGO (CACHE)
@@ -915,11 +923,40 @@ if (!function_exists('dci_get_notizia_rest_payload')) {
             );
         }
 
+
+
         $cache_key = 'dci_notizia_rest_' . $post_id;
         $cached_payload = get_transient($cache_key);
         if (is_array($cached_payload)) {
             return $cached_payload;
         }
+
+
+
+
+		$thumbnail_id = get_post_thumbnail_id($post_id);
+
+$immagine = null;
+
+if ($thumbnail_id) {
+    $img_url = wp_get_attachment_image_url($thumbnail_id, 'full');
+
+    if ($img_url) {
+        $immagine = array(
+            'id' => (int) $thumbnail_id,
+            'url' => $img_url,
+            'alt' => get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true) ?: '',
+            'title' => get_the_title($thumbnail_id) ?: '',
+        );
+    }
+}
+
+
+
+
+
+
+		
 
         $meta = get_post_meta($post_id);
         $full_text = $meta['_dci_notizia_testo_completo'][0] ?? '';
@@ -967,6 +1004,7 @@ if (!function_exists('dci_get_notizia_rest_payload')) {
             'data_scadenza' => $meta['_dci_notizia_data_scadenza'][0] ?? '',
             'descrizione_completa' => $full_text,
             'allegati' => $allegati,
+			'immagine' => $immagine,
         );
 
         set_transient($cache_key, $payload, 5 * MINUTE_IN_SECONDS);
