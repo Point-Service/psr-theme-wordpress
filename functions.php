@@ -779,12 +779,6 @@ add_action('rest_api_init', function () {
         }
     ]);
 
-    register_rest_field('notizia', 'allegati', [
-        'get_callback' => function ($post) {
-            $payload = dci_get_notizia_rest_payload($post['id']);
-            return $payload['data_scadenza'];
-        }
-    ]);
 
     register_rest_field('notizia', 'descrizione_completa', [
         'get_callback' => function ($post) {
