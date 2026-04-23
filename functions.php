@@ -741,31 +741,29 @@ add_action('rest_api_init', function () {
     */
     register_rest_field('evento', 'data_inizio', [
         'get_callback' => function ($post) {
-            static $cache = [];
-            if (!isset($cache[$post['id']])) {
-                $cache[$post['id']] = get_post_meta($post['id']);
-            }
-            return $cache[$post['id']]['_dci_evento_data_orario_inizio'][0] ?? '';
+            $payload = dci_get_evento_rest_payload($post['id']);
+            return $payload['data_inizio'];
         }
     ]);
 
     register_rest_field('evento', 'data_fine', [
         'get_callback' => function ($post) {
-            static $cache = [];
-            if (!isset($cache[$post['id']])) {
-                $cache[$post['id']] = get_post_meta($post['id']);
-            }
-            return $cache[$post['id']]['_dci_evento_data_orario_fine'][0] ?? '';
+            $payload = dci_get_evento_rest_payload($post['id']);
+            return $payload['data_fine'];
         }
     ]);
 
     register_rest_field('evento', 'descrizione_breve', [
         'get_callback' => function ($post) {
-            static $cache = [];
-            if (!isset($cache[$post['id']])) {
-                $cache[$post['id']] = get_post_meta($post['id']);
-            }
-            return $cache[$post['id']]['_dci_evento_descrizione_breve'][0] ?? '';
+            $payload = dci_get_evento_rest_payload($post['id']);
+            return $payload['descrizione_breve'];
+        }
+    ]);
+
+    register_rest_field('evento', 'immagine', [
+        'get_callback' => function ($post) {
+            $payload = dci_get_evento_rest_payload($post['id']);
+            return $payload['immagine'];
         }
     ]);
 
@@ -781,7 +779,7 @@ add_action('rest_api_init', function () {
         }
     ]);
 
-    register_rest_field('notizia', 'data_scadenza', [
+    register_rest_field('notizia', 'allegati', [
         'get_callback' => function ($post) {
             $payload = dci_get_notizia_rest_payload($post['id']);
             return $payload['data_scadenza'];
@@ -799,70 +797,6 @@ add_action('rest_api_init', function () {
         'get_callback' => function ($post) {
             $payload = dci_get_notizia_rest_payload($post['id']);
             return $payload['allegati'];
-        }
-    ]);
-
-    register_rest_field('notizia', 'descrizione_completa', [
-        'get_callback' => function ($post) {
-            static $cache = [];
-            if (!isset($cache[$post['id']])) {
-                $cache[$post['id']] = get_post_meta($post['id']);
-            }
-
-            $full_text = $cache[$post['id']]['_dci_notizia_testo_completo'][0] ?? '';
-            if ($full_text === '') {
-                $post_obj = get_post($post['id']);
-                $full_text = $post_obj ? (string) $post_obj->post_content : '';
-            }
-
-            return $full_text;
-        }
-    ]);
-
-    register_rest_field('notizia', 'allegati', [
-        'get_callback' => function ($post) {
-            static $cache = [];
-            if (!isset($cache[$post['id']])) {
-                $cache[$post['id']] = get_post_meta($post['id']);
-            }
-
-            $raw_attachments = $cache[$post['id']]['_dci_notizia_allegati'][0] ?? [];
-            $attachments = maybe_unserialize($raw_attachments);
-            if (!is_array($attachments)) {
-                return [];
-            }
-
-            $result = [];
-            foreach ($attachments as $file_id => $file_data) {
-                $attachment_id = 0;
-                if (is_array($file_data) && isset($file_data['id'])) {
-                    $attachment_id = absint($file_data['id']);
-                } else {
-                    $attachment_id = absint($file_id);
-                }
-
-                $file_url = $attachment_id > 0 ? wp_get_attachment_url($attachment_id) : '';
-                if (empty($file_url) && is_string($file_data)) {
-                    $file_url = $file_data;
-                }
-                if (empty($file_url)) {
-                    continue;
-                }
-
-                $file_name = $attachment_id > 0 ? get_the_title($attachment_id) : basename((string) $file_url);
-                if (empty($file_name)) {
-                    $file_name = basename((string) $file_url);
-                }
-
-                $result[] = [
-                    'id' => $attachment_id,
-                    'nome' => $file_name,
-                    'url_download' => $file_url,
-                    'mime_type' => $attachment_id > 0 ? get_post_mime_type($attachment_id) : '',
-                ];
-            }
-
-            return $result;
         }
     ]);
 
@@ -1046,8 +980,63 @@ if (!function_exists('dci_get_notizia_rest_payload')) {
     }
 }
 
+if (!function_exists('dci_get_evento_rest_payload')) {
+    /**
+     * Payload REST evento con cache breve per ridurre latenza sotto carico.
+     *
+     * @param int $post_id
+     * @return array
+     */
+    function dci_get_evento_rest_payload($post_id) {
+        $post_id = absint($post_id);
+        if ($post_id <= 0) {
+            return array(
+                'data_inizio' => '',
+                'data_fine' => '',
+                'descrizione_breve' => '',
+                'immagine' => null,
+            );
+        }
+
+        $cache_key = 'dci_evento_rest_' . $post_id;
+        $cached_payload = get_transient($cache_key);
+        if (is_array($cached_payload)) {
+            return $cached_payload;
+        }
+
+        $thumbnail_id = get_post_thumbnail_id($post_id);
+        $immagine = null;
+        if ($thumbnail_id) {
+            $img_url = wp_get_attachment_image_url($thumbnail_id, 'full');
+            if ($img_url) {
+                $immagine = array(
+                    'id' => (int) $thumbnail_id,
+                    'url' => $img_url,
+                    'alt' => get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true) ?: '',
+                    'title' => get_the_title($thumbnail_id) ?: '',
+                );
+            }
+        }
+
+        $meta = get_post_meta($post_id);
+        $payload = array(
+            'data_inizio' => $meta['_dci_evento_data_orario_inizio'][0] ?? '',
+            'data_fine' => $meta['_dci_evento_data_orario_fine'][0] ?? '',
+            'descrizione_breve' => $meta['_dci_evento_descrizione_breve'][0] ?? '',
+            'immagine' => $immagine,
+        );
+
+        set_transient($cache_key, $payload, 5 * MINUTE_IN_SECONDS);
+        return $payload;
+    }
+}
+
 add_action('save_post_notizia', function ($post_id) {
     delete_transient('dci_notizia_rest_' . absint($post_id));
+});
+
+add_action('save_post_evento', function ($post_id) {
+    delete_transient('dci_evento_rest_' . absint($post_id));
 });
 
 add_action('save_post_luogo', function($post_id) {
