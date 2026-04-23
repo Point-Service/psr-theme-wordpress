@@ -802,6 +802,70 @@ add_action('rest_api_init', function () {
         }
     ]);
 
+    register_rest_field('notizia', 'descrizione_completa', [
+        'get_callback' => function ($post) {
+            static $cache = [];
+            if (!isset($cache[$post['id']])) {
+                $cache[$post['id']] = get_post_meta($post['id']);
+            }
+
+            $full_text = $cache[$post['id']]['_dci_notizia_testo_completo'][0] ?? '';
+            if ($full_text === '') {
+                $post_obj = get_post($post['id']);
+                $full_text = $post_obj ? (string) $post_obj->post_content : '';
+            }
+
+            return $full_text;
+        }
+    ]);
+
+    register_rest_field('notizia', 'allegati', [
+        'get_callback' => function ($post) {
+            static $cache = [];
+            if (!isset($cache[$post['id']])) {
+                $cache[$post['id']] = get_post_meta($post['id']);
+            }
+
+            $raw_attachments = $cache[$post['id']]['_dci_notizia_allegati'][0] ?? [];
+            $attachments = maybe_unserialize($raw_attachments);
+            if (!is_array($attachments)) {
+                return [];
+            }
+
+            $result = [];
+            foreach ($attachments as $file_id => $file_data) {
+                $attachment_id = 0;
+                if (is_array($file_data) && isset($file_data['id'])) {
+                    $attachment_id = absint($file_data['id']);
+                } else {
+                    $attachment_id = absint($file_id);
+                }
+
+                $file_url = $attachment_id > 0 ? wp_get_attachment_url($attachment_id) : '';
+                if (empty($file_url) && is_string($file_data)) {
+                    $file_url = $file_data;
+                }
+                if (empty($file_url)) {
+                    continue;
+                }
+
+                $file_name = $attachment_id > 0 ? get_the_title($attachment_id) : basename((string) $file_url);
+                if (empty($file_name)) {
+                    $file_name = basename((string) $file_url);
+                }
+
+                $result[] = [
+                    'id' => $attachment_id,
+                    'nome' => $file_name,
+                    'url_download' => $file_url,
+                    'mime_type' => $attachment_id > 0 ? get_post_mime_type($attachment_id) : '',
+                ];
+            }
+
+            return $result;
+        }
+    ]);
+
     /*
     =====================================
     LUOGO (CACHE)
