@@ -776,21 +776,29 @@ add_action('rest_api_init', function () {
     */
     register_rest_field('notizia', 'descrizione_breve', [
         'get_callback' => function ($post) {
-            static $cache = [];
-            if (!isset($cache[$post['id']])) {
-                $cache[$post['id']] = get_post_meta($post['id']);
-            }
-            return $cache[$post['id']]['_dci_notizia_descrizione_breve'][0] ?? '';
+            $payload = dci_get_notizia_rest_payload($post['id']);
+            return $payload['descrizione_breve'];
         }
     ]);
 
     register_rest_field('notizia', 'data_scadenza', [
         'get_callback' => function ($post) {
-            static $cache = [];
-            if (!isset($cache[$post['id']])) {
-                $cache[$post['id']] = get_post_meta($post['id']);
-            }
-            return $cache[$post['id']]['_dci_notizia_data_scadenza'][0] ?? '';
+            $payload = dci_get_notizia_rest_payload($post['id']);
+            return $payload['data_scadenza'];
+        }
+    ]);
+
+    register_rest_field('notizia', 'descrizione_completa', [
+        'get_callback' => function ($post) {
+            $payload = dci_get_notizia_rest_payload($post['id']);
+            return $payload['descrizione_completa'];
+        }
+    ]);
+
+    register_rest_field('notizia', 'allegati', [
+        'get_callback' => function ($post) {
+            $payload = dci_get_notizia_rest_payload($post['id']);
+            return $payload['allegati'];
         }
     ]);
 
@@ -888,10 +896,152 @@ add_action('rest_api_init', function () {
 
 });
 
+add_filter('rest_notizia_query', function ($args, $request) {
+    $id = absint($request->get_param('id'));
+    if ($id > 0) {
+        $args['p'] = $id;
+    }
+
+    return $args;
+}, 10, 2);
+
+if (!function_exists('dci_get_notizia_rest_payload')) {
+    /**
+     * Payload REST notizia con cache breve per alleggerire richieste ripetute.
+     *
+     * @param int $post_id
+     * @return array
+     */
+    function dci_get_notizia_rest_payload($post_id) {
+        $post_id = absint($post_id);
+        if ($post_id <= 0) {
+            return array(
+                'descrizione_breve' => '',
+                'data_scadenza' => '',
+                'descrizione_completa' => '',
+                'allegati' => array(),
+            );
+        }
+
+        $cache_key = 'dci_notizia_rest_' . $post_id;
+        $cached_payload = get_transient($cache_key);
+        if (is_array($cached_payload)) {
+            return $cached_payload;
+        }
+
+        $meta = get_post_meta($post_id);
+        $full_text = $meta['_dci_notizia_testo_completo'][0] ?? '';
+        if ($full_text === '') {
+            $post_obj = get_post($post_id);
+            $full_text = $post_obj ? (string) $post_obj->post_content : '';
+        }
+
+        $raw_attachments = $meta['_dci_notizia_allegati'][0] ?? [];
+        $attachments = maybe_unserialize($raw_attachments);
+        $allegati = array();
+        if (is_array($attachments)) {
+            foreach ($attachments as $file_id => $file_data) {
+                $attachment_id = 0;
+                if (is_array($file_data) && isset($file_data['id'])) {
+                    $attachment_id = absint($file_data['id']);
+                } else {
+                    $attachment_id = absint($file_id);
+                }
+
+                $file_url = $attachment_id > 0 ? wp_get_attachment_url($attachment_id) : '';
+                if (empty($file_url) && is_string($file_data)) {
+                    $file_url = $file_data;
+                }
+                if (empty($file_url)) {
+                    continue;
+                }
+
+                $file_name = $attachment_id > 0 ? get_the_title($attachment_id) : basename((string) $file_url);
+                if (empty($file_name)) {
+                    $file_name = basename((string) $file_url);
+                }
+
+                $allegati[] = array(
+                    'id' => $attachment_id,
+                    'nome' => $file_name,
+                    'url_download' => $file_url,
+                    'mime_type' => $attachment_id > 0 ? get_post_mime_type($attachment_id) : '',
+                );
+            }
+        }
+
+        $payload = array(
+            'descrizione_breve' => $meta['_dci_notizia_descrizione_breve'][0] ?? '',
+            'data_scadenza' => $meta['_dci_notizia_data_scadenza'][0] ?? '',
+            'descrizione_completa' => $full_text,
+            'allegati' => $allegati,
+        );
+
+        set_transient($cache_key, $payload, 5 * MINUTE_IN_SECONDS);
+        return $payload;
+    }
+}
+
+add_action('save_post_notizia', function ($post_id) {
+    delete_transient('dci_notizia_rest_' . absint($post_id));
+});
+
 add_action('save_post_luogo', function($post_id) {
     delete_transient('luogo_meta_' . $post_id);
 });
 
 add_action('update_option_dci_options', function() {
     delete_transient('api_footer');
+});
+
+/**
+ * Allinea la query principale della tassonomia trasparenza ai filtri del template
+ * per evitare mismatch di paginazione (es. ultima pagina in errore/404).
+ */
+add_action('pre_get_posts', function (WP_Query $query) {
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    if (!$query->is_tax('tipi_cat_amm_trasp')) {
+        return;
+    }
+
+    $max_posts = isset($_GET['max_posts']) ? absint($_GET['max_posts']) : 10;
+    if ($max_posts <= 0) {
+        $max_posts = 10;
+    }
+
+    $search = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : '';
+    $order_type = isset($_GET['order_type']) ? sanitize_key($_GET['order_type']) : 'data_desc';
+
+    $query->set('post_type', 'elemento_trasparenza');
+    $query->set('posts_per_page', $max_posts);
+
+    $term_slug = (string) $query->get('tipi_cat_amm_trasp');
+    if ($term_slug !== '') {
+        $term = get_term_by('slug', $term_slug, 'tipi_cat_amm_trasp');
+        if ($term && !is_wp_error($term)) {
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => 'tipi_cat_amm_trasp',
+                    'field' => 'term_id',
+                    'terms' => array((int) $term->term_id),
+                    'include_children' => false,
+                ),
+            ));
+        }
+    }
+
+    if ($search !== '') {
+        $query->set('s', $search);
+    }
+
+    if ($order_type === 'alfabetico_asc' || $order_type === 'alfabetico_desc') {
+        $query->set('orderby', 'title');
+        $query->set('order', $order_type === 'alfabetico_desc' ? 'DESC' : 'ASC');
+    } else {
+        $query->set('orderby', 'date');
+        $query->set('order', $order_type === 'data_asc' ? 'ASC' : 'DESC');
+    }
 });
