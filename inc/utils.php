@@ -626,10 +626,21 @@ function dci_bootstrap_pagination(?\WP_Query $wp_query = null, $echo = true)
     if ($wp_query === null) {
         global $wp_query;
     }
+
+    $current_page = max(1, (int) get_query_var('paged'));
+    if ($current_page < 2 && isset($_GET['paged'])) {
+        $current_page = max(1, absint($_GET['paged']));
+    }
+
+    $add_args = [];
+    if (isset($_GET['search']) && $_GET['search'] !== '') {
+        $add_args['search'] = dci_removeslashes($_GET['search']);
+    }
+
     $pages = paginate_links([
             'base' => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
             'format' => '?paged=%#%',
-            'current' => max(1, get_query_var('paged')),
+            'current' => $current_page,
             'total' => $wp_query->max_num_pages,
             'type' => 'array',
             'show_all' => false,
@@ -638,7 +649,7 @@ function dci_bootstrap_pagination(?\WP_Query $wp_query = null, $echo = true)
             'prev_next' => true,
             'prev_text' => __('« '),
             'next_text' => __(' »'),
-            'add_args' => false,
+            'add_args' => $add_args,
             'add_fragment' => ''
         ]
     );
