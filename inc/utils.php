@@ -627,14 +627,24 @@ function dci_bootstrap_pagination(?\WP_Query $wp_query = null, $echo = true)
         global $wp_query;
     }
 
-    $current_page = max(1, (int) get_query_var('paged'));
+    $current_page = max(1, (int) get_query_var('paged'), (int) get_query_var('page'));
     if ($current_page < 2 && isset($_GET['paged'])) {
         $current_page = max(1, absint($_GET['paged']));
     }
+    if ($current_page < 2 && isset($_GET['page'])) {
+        $current_page = max(1, absint($_GET['page']));
+    }
 
     $add_args = [];
-    if (isset($_GET['search']) && $_GET['search'] !== '') {
-        $add_args['search'] = dci_removeslashes($_GET['search']);
+    if (!empty($_GET) && is_array($_GET)) {
+        foreach ($_GET as $key => $value) {
+            if (in_array($key, ['paged', 'page'], true)) {
+                continue;
+            }
+            if (is_scalar($value) && $value !== '') {
+                $add_args[$key] = dci_removeslashes((string) $value);
+            }
+        }
     }
 
     $pages = paginate_links([
