@@ -1182,3 +1182,23 @@ add_action('pre_get_posts', function (WP_Query $query) {
         $query->set('order', $order_type === 'data_asc' ? 'ASC' : 'DESC');
     }
 });
+
+
+
+//IN modalità APP blocca Cookies e altro per la pubblicazione
+
+if (isset($_GET['app'])) {
+
+    // disabilita cookie WordPress
+    define('DONOTCACHEPAGE', true);
+
+    // blocca eventuali plugin tracking
+    add_action('init', function () {
+        remove_action('wp_head', 'wp_generator');
+    });
+
+    // blocca script analytics (se presenti)
+    add_filter('script_loader_tag', function($tag, $handle) {
+        return '';
+    }, 10, 2);
+}
