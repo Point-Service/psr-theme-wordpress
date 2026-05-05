@@ -537,10 +537,14 @@ function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
         $year = (int) wp_date('Y');
     }
 
+    $is_current_month = ((int) wp_date('n') === $month && (int) wp_date('Y') === $year);
     $cache_key = 'dci_slots_uo_' . $office_id . '_' . $year . '_' . $month;
-    $cached_slots = get_transient($cache_key);
-    if (is_array($cached_slots)) {
-        return $cached_slots;
+
+    if (!$is_current_month) {
+        $cached_slots = get_transient($cache_key);
+        if (is_array($cached_slots)) {
+            return $cached_slots;
+        }
     }
 
     $orario_id = absint(dci_get_meta('orario_uo', '_dci_unita_organizzativa_', $office_id));
@@ -617,7 +621,10 @@ function dci_get_appuntamenti_ufficio(WP_REST_Request $request) {
         $cursor->modify('+1 day')->setTime(0, 0, 0);
     }
 
-    set_transient($cache_key, $slots, 5 * MINUTE_IN_SECONDS);
+    if (!$is_current_month) {
+        set_transient($cache_key, $slots, 5 * MINUTE_IN_SECONDS);
+    }
+
     return $slots;
 }
 

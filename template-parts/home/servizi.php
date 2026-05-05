@@ -144,6 +144,16 @@ if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) {
                 ?>
 
                 </div>
+
+
+                <div class="row mt-4">
+                    <div class="col-12 text-center">
+                        <a class="btn btn-primary" href="<?php echo esc_url(get_post_type_archive_link('servizio') ?: home_url('/servizi/')); ?>" data-element="all-services">
+                            Visualizza tutti i servizi
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
