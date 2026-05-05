@@ -1183,6 +1183,30 @@ add_action('pre_get_posts', function (WP_Query $query) {
     }
 });
 
+// ===============================
+// Privacy via Api
+// ===============================
+
+
+add_action('rest_api_init', function () {
+
+    register_rest_route('comune/v1', '/privacy', [
+        'methods' => 'GET',
+        'callback' => function () {
+
+            // puoi anche prendere da pagina WP
+            $page = get_page_by_path('privacy-policy');
+
+            return [
+                "titolo" => "Privacy Policy",
+                "url" => get_permalink($page),
+                "contenuto" => apply_filters('the_content', $page->post_content)
+            ];
+        }
+    ]);
+
+});
+
 
 
 
