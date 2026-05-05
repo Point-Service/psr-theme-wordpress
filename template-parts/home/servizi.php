@@ -144,6 +144,18 @@ if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) {
                 ?>
 
                 </div>
+
+                <div class="row my-2 justify-content-md-center">
+                    <a class="read-more pb-3" href="<?php echo esc_url(get_post_type_archive_link('servizio') ?: home_url('/servizi/')); ?>" data-element="all-services">
+                        <button type="button" class="btn btn-outline-primary">
+                            Tutti i servizi
+                            <svg class="icon">
+                                <use xlink:href="#it-arrow-right"></use>
+                            </svg>
+                        </button>
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
