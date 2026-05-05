@@ -1194,14 +1194,27 @@ add_action('rest_api_init', function () {
         'methods' => 'GET',
         'callback' => function () {
 
-            // puoi anche prendere da pagina WP
+            // 🔥 CACHE
+            $cached = get_transient('api_privacy');
+            if ($cached !== false) return $cached;
+
             $page = get_page_by_path('privacy-policy');
 
-            return [
-                "titolo" => "Privacy Policy",
-                "url" => get_permalink($page),
+            if (!$page) {
+                return [
+                    "titolo" => "Privacy Policy",
+                    "contenuto" => ""
+                ];
+            }
+
+            $data = [
+                "titolo" => get_the_title($page->ID),
                 "contenuto" => apply_filters('the_content', $page->post_content)
             ];
+
+            set_transient('api_privacy', $data, HOUR_IN_SECONDS);
+
+            return $data;
         }
     ]);
 
