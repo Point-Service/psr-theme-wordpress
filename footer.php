@@ -309,12 +309,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const acceptButton = document.querySelector(".acceptAllCookie");
   const denyButton   = document.querySelector(".denyAllCookie");
 
-  // 🔥 BLOCCA SU MOBILE + TABLET
+  // 🔥 MOBILE + TABLET → niente banner ma NO tracking
   if (isTouchDevice) {
+    localStorage.setItem("cookieChoice", "denied");
+
     if (cookieBar) cookieBar.remove();
+
+    // 👉 blocca eventuali script di tracking
+    window.disableTracking = true;
+
     return;
   }
 
+  // DESKTOP → comportamento normale
   if (localStorage.getItem("cookieChoice")) {
     if (cookieBar) cookieBar.style.display = "none";
   }
@@ -322,6 +329,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (acceptButton) {
     acceptButton.addEventListener("click", function () {
       localStorage.setItem("cookieChoice", "accepted");
+      window.disableTracking = false;
       if (cookieBar) cookieBar.style.display = "none";
     });
   }
@@ -329,6 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (denyButton) {
     denyButton.addEventListener("click", function () {
       localStorage.setItem("cookieChoice", "denied");
+      window.disableTracking = true;
       if (cookieBar) cookieBar.style.display = "none";
     });
   }
