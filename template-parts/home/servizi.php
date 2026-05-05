@@ -8,8 +8,15 @@ if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) {
 <section id="servizi" aria-describedby="servizi-in-evidenzia">
     <div class="section-content">
         <div class="container">
-            <div class="row">
-                <h2 class="text-black title-xlarge mb-3">Servizi in Evidenza</h2>
+            <div class="row align-items-center mb-3">
+                <div class="col-12 col-lg-8">
+                    <h2 class="text-black title-xlarge mb-0">Servizi in Evidenza</h2>
+                </div>
+                <div class="col-12 col-lg-4 mt-3 mt-lg-0 text-lg-end">
+                    <a class="btn btn-primary" href="<?php echo esc_url(get_post_type_archive_link('servizio') ?: home_url('/servizi/')); ?>" data-element="all-services">
+                        Visualizza tutti
+                    </a>
+                </div>
             </div>
             <div class="py-4">
                 <div class="row g-4">
@@ -144,6 +151,8 @@ if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) {
                 ?>
 
                 </div>
+
+
             </div>
         </div>
     </div>
