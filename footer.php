@@ -301,24 +301,24 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-  const isMobile = window.innerWidth <= 768;
+  const isTouchDevice = 
+    'ontouchstart' in window || 
+    navigator.maxTouchPoints > 0;
 
   const cookieBar = document.querySelector(".cookiebar");
   const acceptButton = document.querySelector(".acceptAllCookie");
   const denyButton   = document.querySelector(".denyAllCookie");
 
-  // 👉 BLOCCA COMPLETAMENTE SU MOBILE
-  if (isMobile) {
+  // 🔥 BLOCCA SU MOBILE + TABLET
+  if (isTouchDevice) {
     if (cookieBar) cookieBar.remove();
     return;
   }
 
-  // Se l'utente ha già scelto, nascondi la barra
   if (localStorage.getItem("cookieChoice")) {
     if (cookieBar) cookieBar.style.display = "none";
   }
 
-  // ACCETTA
   if (acceptButton) {
     acceptButton.addEventListener("click", function () {
       localStorage.setItem("cookieChoice", "accepted");
@@ -326,7 +326,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // NEGA
   if (denyButton) {
     denyButton.addEventListener("click", function () {
       localStorage.setItem("cookieChoice", "denied");
