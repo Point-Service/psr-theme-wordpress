@@ -1185,20 +1185,47 @@ add_action('pre_get_posts', function (WP_Query $query) {
 
 
 
-//IN modalità APP blocca Cookies e altro per la pubblicazione
 
-if (isset($_GET['app'])) {
+// ===============================
+// MODALITÀ APP (no tracking Apple)
+// ===============================
+add_action('init', function () {
 
-    // disabilita cookie WordPress
-    define('DONOTCACHEPAGE', true);
+    $isApp = isset($_GET['app']);
 
-    // blocca eventuali plugin tracking
-    add_action('init', function () {
-        remove_action('wp_head', 'wp_generator');
+    // fallback SOLO Android
+    if (!$isApp && !empty($_SERVER['HTTP_USER_AGENT'])) {
+        $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+        if (strpos($ua, 'wv') !== false) {
+            $isApp = true;
+        }
+    }
+
+    if (!$isApp) return;
+
+    if (!defined('DONOTCACHEPAGE')) {
+        define('DONOTCACHEPAGE', true);
+    }
+
+    add_filter('script_loader_src', function ($src) {
+
+        if (empty($src)) return $src;
+
+        $blocked = [
+            'googletagmanager',
+            'google-analytics',
+            'gtag/js',
+            'doubleclick',
+            'facebook'
+        ];
+
+        foreach ($blocked as $b) {
+            if (stripos($src, $b) !== false) {
+                return '';
+            }
+        }
+
+        return $src;
     });
 
-    // blocca script analytics (se presenti)
-    add_filter('script_loader_tag', function($tag, $handle) {
-        return '';
-    }, 10, 2);
-}
+});
