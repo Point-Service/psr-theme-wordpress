@@ -21,7 +21,7 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 }
 ?>
 <style>
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .cookiebar {
     display: none !important;
   }
