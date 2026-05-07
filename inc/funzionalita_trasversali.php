@@ -923,6 +923,8 @@ function dci_get_uffici_responsabili(WP_REST_Request $request) {
             'id' => $ufficio->ID,
             'nome' => $ufficio->post_title,
             'url' => get_permalink($ufficio->ID),
+            'descrizione_breve' => dci_get_meta('descrizione_breve', '_dci_unita_organizzativa_', $ufficio->ID),
+            'orari_ufficio' => dci_get_ufficio_orari_payload($ufficio->ID),
             'contatti' => dci_get_ufficio_contatti_payload($ufficio->ID),
             'responsabili' => $responsabili,
         );
@@ -991,6 +993,53 @@ function dci_get_contatti_da_punti_ids($contact_ids) {
     }
 
     return $contacts;
+}
+
+/**
+ * Restituisce gli orari dell'ufficio a partire da sede principale/altre sedi.
+ *
+ * @param int $ufficio_id
+ * @return array[]
+ */
+function dci_get_ufficio_orari_payload($ufficio_id) {
+    $sede_principale = (int) dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio_id);
+    $altre_sedi = dci_normalize_meta_ids(dci_get_meta('altre_sedi', '_dci_unita_organizzativa_', $ufficio_id));
+
+    $sedi_ids = array();
+    if ($sede_principale > 0) {
+        $sedi_ids[] = $sede_principale;
+    }
+
+    foreach ($altre_sedi as $sede_id) {
+        if (!in_array($sede_id, $sedi_ids, true)) {
+            $sedi_ids[] = $sede_id;
+        }
+    }
+
+    $orari = array();
+    foreach ($sedi_ids as $sede_id) {
+        $sede = get_post($sede_id);
+        if (!$sede instanceof WP_Post || $sede->post_status !== 'publish') {
+            continue;
+        }
+
+        $orario_pubblico = dci_get_wysiwyg_field('orario_pubblico', '_dci_luogo_', $sede_id);
+        $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $sede_id);
+
+        if (empty($orario_pubblico) && empty($indirizzo)) {
+            continue;
+        }
+
+        $orari[] = array(
+            'sede_id' => $sede_id,
+            'sede_nome' => get_the_title($sede_id),
+            'sede_indirizzo' => $indirizzo,
+            'orario_pubblico' => $orario_pubblico,
+            'is_sede_principale' => ($sede_id === $sede_principale),
+        );
+    }
+
+    return $orari;
 }
 
 
