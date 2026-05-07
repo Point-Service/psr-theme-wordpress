@@ -842,6 +842,9 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
         }
 
         $thumbnail_id = get_post_thumbnail_id($person->ID);
+        $contatti = dci_get_contatti_da_punti_ids(
+            dci_normalize_meta_ids(dci_get_meta('punti_contatto', '_dci_persona_pubblica_', $person->ID))
+        );
 
         $response[] = array(
             'id' => $person->ID,
@@ -850,6 +853,7 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             'ruoli' => array_values(array_unique($ruoli)),
             'descrizione_breve' => dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $person->ID),
             'immagine' => $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null,
+            'contatti' => $contatti,
         );
     }
 
@@ -937,6 +941,30 @@ function dci_get_uffici_responsabili(WP_REST_Request $request) {
  */
 function dci_get_ufficio_contatti_payload($ufficio_id) {
     $contact_ids = dci_normalize_meta_ids(dci_get_meta('contatti', '_dci_unita_organizzativa_', $ufficio_id));
+    $contacts = dci_get_contatti_da_punti_ids($contact_ids);
+
+    $sede_principale = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio_id);
+    if (!empty($sede_principale)) {
+        $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $sede_principale);
+        if (!empty($indirizzo)) {
+            array_unshift($contacts['indirizzo'], $indirizzo);
+        }
+    }
+
+    foreach ($contacts as $key => $values) {
+        $contacts[$key] = array_values(array_unique(array_filter($values)));
+    }
+
+    return $contacts;
+}
+
+/**
+ * Aggrega i contatti a partire dagli ID dei punti di contatto.
+ *
+ * @param int[] $contact_ids
+ * @return array
+ */
+function dci_get_contatti_da_punti_ids($contact_ids) {
     $contacts = array(
         'telefono' => array(),
         'email' => array(),
@@ -955,14 +983,6 @@ function dci_get_ufficio_contatti_payload($ufficio_id) {
             if (!empty($full_contact[$key]) && is_array($full_contact[$key])) {
                 $contacts[$key] = array_merge($contacts[$key], array_filter($full_contact[$key]));
             }
-        }
-    }
-
-    $sede_principale = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio_id);
-    if (!empty($sede_principale)) {
-        $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $sede_principale);
-        if (!empty($indirizzo)) {
-            array_unshift($contacts['indirizzo'], $indirizzo);
         }
     }
 
