@@ -795,6 +795,9 @@ function dci_get_servizi_attivi_rest_payload(WP_REST_Request $request) {
             'descrizione_breve' => (string) get_post_meta($servizio->ID, '_dci_servizio_descrizione_breve', true),
             'data_inizio_servizio' => (string) get_post_meta($servizio->ID, '_dci_servizio_data_inizio_servizio', true),
             'data_fine_servizio' => (string) get_post_meta($servizio->ID, '_dci_servizio_data_fine_servizio', true),
+            'richiedi_online_attivo' => !empty(get_post_meta($servizio->ID, '_dci_servizio_canale_digitale_link', true)),
+            'accedi_al_servizio_label' => (string) get_post_meta($servizio->ID, '_dci_servizio_canale_digitale_label', true),
+            'accedi_al_servizio_link' => (string) get_post_meta($servizio->ID, '_dci_servizio_canale_digitale_link', true),
         ];
     }
 
