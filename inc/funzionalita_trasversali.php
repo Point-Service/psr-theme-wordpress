@@ -793,11 +793,21 @@ function dci_normalize_meta_ids($value) {
         return array();
     }
 
-    if (!is_array($value)) {
-        $value = array($value);
+    $flat_values = array();
+    $stack = is_array($value) ? $value : array($value);
+
+    while (!empty($stack)) {
+        $current = array_pop($stack);
+        if (is_array($current)) {
+            foreach ($current as $item) {
+                $stack[] = $item;
+            }
+            continue;
+        }
+        $flat_values[] = $current;
     }
 
-    return array_values(array_unique(array_filter(array_map('intval', $value))));
+    return array_values(array_unique(array_filter(array_map('intval', $flat_values))));
 }
 
 /**
@@ -1004,6 +1014,7 @@ function dci_get_contatti_da_punti_ids($contact_ids) {
 function dci_get_ufficio_orari_payload($ufficio_id) {
     $sede_principale = (int) dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio_id);
     $altre_sedi = dci_normalize_meta_ids(dci_get_meta('altre_sedi', '_dci_unita_organizzativa_', $ufficio_id));
+    $orario_uo_id = (int) dci_get_meta('orario_uo', '_dci_unita_organizzativa_', $ufficio_id);
 
     $sedi_ids = array();
     if ($sede_principale > 0) {
@@ -1017,6 +1028,21 @@ function dci_get_ufficio_orari_payload($ufficio_id) {
     }
 
     $orari = array();
+
+    // Orario ufficio configurato direttamente sull'Unità organizzativa (tipologia "orario").
+    if ($orario_uo_id > 0) {
+        $orario_settimanale = dci_get_orario_settimanale_payload($orario_uo_id);
+        if (!empty($orario_settimanale)) {
+            $orari[] = array(
+                'fonte' => 'orario_uo',
+                'orario_id' => $orario_uo_id,
+                'orario_nome' => get_the_title($orario_uo_id),
+                'settimana' => $orario_settimanale,
+            );
+        }
+    }
+
+    // Fallback: orari presenti sui luoghi/sedi associati all'ufficio.
     foreach ($sedi_ids as $sede_id) {
         $sede = get_post($sede_id);
         if (!$sede instanceof WP_Post || $sede->post_status !== 'publish') {
@@ -1031,6 +1057,7 @@ function dci_get_ufficio_orari_payload($ufficio_id) {
         }
 
         $orari[] = array(
+            'fonte' => 'sede',
             'sede_id' => $sede_id,
             'sede_nome' => get_the_title($sede_id),
             'sede_indirizzo' => $indirizzo,
@@ -1040,6 +1067,41 @@ function dci_get_ufficio_orari_payload($ufficio_id) {
     }
 
     return $orari;
+}
+
+/**
+ * Restituisce gli orari settimanali dalla tipologia "orario".
+ *
+ * @param int $orario_id
+ * @return array
+ */
+function dci_get_orario_settimanale_payload($orario_id) {
+    $giorni = array(
+        'lun' => 'Lunedì',
+        'mar' => 'Martedì',
+        'mer' => 'Mercoledì',
+        'gio' => 'Giovedì',
+        'ven' => 'Venerdì',
+        'sab' => 'Sabato',
+        'dom' => 'Domenica',
+    );
+
+    $settimana = array();
+    foreach ($giorni as $abbr => $label) {
+        $mattina = dci_get_meta($abbr . '_mattina', '_dci_orario_', $orario_id);
+        $pomeriggio = dci_get_meta($abbr . '_pomeriggio', '_dci_orario_', $orario_id);
+        if (empty($mattina) && empty($pomeriggio)) {
+            continue;
+        }
+
+        $settimana[] = array(
+            'giorno' => $label,
+            'mattina' => $mattina,
+            'pomeriggio' => $pomeriggio,
+        );
+    }
+
+    return $settimana;
 }
 
 
