@@ -807,6 +807,12 @@ function dci_normalize_meta_ids($value) {
  * @return array[]
  */
 function dci_get_amministrazione_politica(WP_REST_Request $request) {
+    $cache_key = 'dci_api_amministrazione_politica_v2';
+    $cached = get_transient($cache_key);
+    if (is_array($cached)) {
+        return $cached;
+    }
+
     $people = get_posts(array(
         'post_type' => 'persona_pubblica',
         'post_status' => 'publish',
@@ -847,6 +853,8 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
         );
     }
 
+    set_transient($cache_key, $response, 5 * MINUTE_IN_SECONDS);
+
     return $response;
 }
 
@@ -857,6 +865,12 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
  * @return array[]
  */
 function dci_get_uffici_responsabili(WP_REST_Request $request) {
+    $cache_key = 'dci_api_uffici_responsabili_v2';
+    $cached = get_transient($cache_key);
+    if (is_array($cached)) {
+        return $cached;
+    }
+
     $uffici = get_posts(array(
         'post_type' => 'unita_organizzativa',
         'post_status' => 'publish',
@@ -905,11 +919,58 @@ function dci_get_uffici_responsabili(WP_REST_Request $request) {
             'id' => $ufficio->ID,
             'nome' => $ufficio->post_title,
             'url' => get_permalink($ufficio->ID),
+            'contatti' => dci_get_ufficio_contatti_payload($ufficio->ID),
             'responsabili' => $responsabili,
         );
     }
 
+    set_transient($cache_key, $response, 5 * MINUTE_IN_SECONDS);
+
     return $response;
+}
+
+/**
+ * Raccoglie i contatti associati all'ufficio.
+ *
+ * @param int $ufficio_id
+ * @return array
+ */
+function dci_get_ufficio_contatti_payload($ufficio_id) {
+    $contact_ids = dci_normalize_meta_ids(dci_get_meta('contatti', '_dci_unita_organizzativa_', $ufficio_id));
+    $contacts = array(
+        'telefono' => array(),
+        'email' => array(),
+        'pec' => array(),
+        'indirizzo' => array(),
+        'url' => array(),
+    );
+
+    foreach ($contact_ids as $contact_id) {
+        $full_contact = dci_get_full_punto_contatto($contact_id);
+        if (!is_array($full_contact)) {
+            continue;
+        }
+
+        foreach ($contacts as $key => $values) {
+            if (!empty($full_contact[$key]) && is_array($full_contact[$key])) {
+                $contacts[$key] = array_merge($contacts[$key], array_filter($full_contact[$key]));
+            }
+        }
+    }
+
+    $sede_principale = dci_get_meta('sede_principale', '_dci_unita_organizzativa_', $ufficio_id);
+    if (!empty($sede_principale)) {
+        $indirizzo = dci_get_meta('indirizzo', '_dci_luogo_', $sede_principale);
+        if (!empty($indirizzo)) {
+            array_unshift($contacts['indirizzo'], $indirizzo);
+        }
+    }
+
+    foreach ($contacts as $key => $values) {
+        $contacts[$key] = array_values(array_unique(array_filter($values)));
+    }
+
+    return $contacts;
 }
 
 
