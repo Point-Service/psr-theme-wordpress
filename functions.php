@@ -803,11 +803,6 @@ function dci_get_servizi_attivi_rest_payload(WP_REST_Request $request) {
 add_action('rest_api_init', function () {
 
     
-    register_rest_route('comune/v1', '/servizi-attivi', [
-        'methods'  => WP_REST_Server::READABLE,
-        'callback' => 'dci_get_servizi_attivi_rest_payload',
-        'permission_callback' => '__return_true',
-    ]);
 
     register_rest_route('wp/v2', '/servizi-attivi', [
         'methods'  => WP_REST_Server::READABLE,
@@ -815,12 +810,7 @@ add_action('rest_api_init', function () {
         'permission_callback' => '__return_true',
     ]);
 
-    // Alias per compatibilità con integrazioni che usano namespace wp/v1.
-    register_rest_route('wp/v1', '/servizi-attivi', [
-        'methods'  => WP_REST_Server::READABLE,
-        'callback' => 'dci_get_servizi_attivi_rest_payload',
-        'permission_callback' => '__return_true',
-    ]);
+
 
 /*
     =====================================
