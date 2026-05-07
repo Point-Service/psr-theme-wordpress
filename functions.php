@@ -732,9 +732,91 @@ add_action('init', function() {
 });
 
 
+
+
+/**
+ * Restituisce i servizi attivi per integrazioni esterne (es. APP Comuni).
+ */
+function dci_is_servizio_attivo($post_id) {
+    $prefix = '_dci_servizio_';
+    $stato = get_post_meta($post_id, $prefix . 'stato', true);
+
+    if ($stato === 'false') {
+        return false;
+    }
+
+    $today = current_time('Y-m-d');
+
+    $data_inizio_raw = trim((string) get_post_meta($post_id, $prefix . 'data_inizio_servizio', true));
+    if ($data_inizio_raw !== '') {
+        $data_inizio = DateTime::createFromFormat('d/m/Y', $data_inizio_raw);
+        if ($data_inizio instanceof DateTime && $data_inizio->format('Y-m-d') > $today) {
+            return false;
+        }
+    }
+
+    $data_fine_raw = trim((string) get_post_meta($post_id, $prefix . 'data_fine_servizio', true));
+    if ($data_fine_raw !== '') {
+        $data_fine = DateTime::createFromFormat('d/m/Y', $data_fine_raw);
+        if ($data_fine instanceof DateTime && $data_fine->format('Y-m-d') < $today) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function dci_get_servizi_attivi_rest_payload(WP_REST_Request $request) {
+    $limit = (int) $request->get_param('per_page');
+    if ($limit <= 0 || $limit > 200) {
+        $limit = 100;
+    }
+
+    $servizi = get_posts([
+        'post_type' => 'servizio',
+        'post_status' => 'publish',
+        'posts_per_page' => $limit,
+        'orderby' => 'title',
+        'order' => 'ASC',
+    ]);
+
+    $response = [];
+
+    foreach ($servizi as $servizio) {
+        if (!dci_is_servizio_attivo($servizio->ID)) {
+            continue;
+        }
+
+        $response[] = [
+            'id' => $servizio->ID,
+            'titolo' => get_the_title($servizio->ID),
+            'slug' => $servizio->post_name,
+            'link' => get_permalink($servizio->ID),
+            'descrizione_breve' => (string) get_post_meta($servizio->ID, '_dci_servizio_descrizione_breve', true),
+            'data_inizio_servizio' => (string) get_post_meta($servizio->ID, '_dci_servizio_data_inizio_servizio', true),
+            'data_fine_servizio' => (string) get_post_meta($servizio->ID, '_dci_servizio_data_fine_servizio', true),
+        ];
+    }
+
+    return rest_ensure_response($response);
+}
 add_action('rest_api_init', function () {
 
-    /*
+    
+    register_rest_route('comune/v1', '/servizi-attivi', [
+        'methods'  => WP_REST_Server::READABLE,
+        'callback' => 'dci_get_servizi_attivi_rest_payload',
+        'permission_callback' => '__return_true',
+    ]);
+
+    // Alias per compatibilità con integrazioni che usano namespace wp/v1.
+    register_rest_route('wp/v1', '/servizi-attivi', [
+        'methods'  => WP_REST_Server::READABLE,
+        'callback' => 'dci_get_servizi_attivi_rest_payload',
+        'permission_callback' => '__return_true',
+    ]);
+
+/*
     =====================================
     EVENTO (OTTIMIZZATO)
     =====================================
