@@ -906,25 +906,7 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
         $immagine = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null;
 
         if (empty($immagine)) {
-            $foto_meta = dci_get_meta('foto', '_dci_persona_pubblica_', $person->ID);
-            if (is_string($foto_meta) && filter_var($foto_meta, FILTER_VALIDATE_URL)) {
-                $immagine = $foto_meta;
-            } elseif (is_numeric($foto_meta)) {
-                $immagine = wp_get_attachment_image_url((int) $foto_meta, 'full');
-            } elseif (is_array($foto_meta)) {
-                foreach ($foto_meta as $foto_value) {
-                    if (is_string($foto_value) && filter_var($foto_value, FILTER_VALIDATE_URL)) {
-                        $immagine = $foto_value;
-                        break;
-                    }
-                    if (is_numeric($foto_value)) {
-                        $immagine = wp_get_attachment_image_url((int) $foto_value, 'full');
-                        if (!empty($immagine)) {
-                            break;
-                        }
-                    }
-                }
-            }
+            $immagine = dci_get_meta('foto', '_dci_persona_pubblica_', $person->ID);
         }
 
         $contatti = dci_get_contatti_da_punti_ids(
