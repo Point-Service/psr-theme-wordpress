@@ -864,9 +864,18 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
         'posts_per_page' => -1,
         'orderby' => 'title',
         'order' => 'ASC',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'tipi_incarico',
+                'field' => 'slug',
+                'terms' => array('politico'),
+            ),
+        ),
     ));
 
-    $response = array();
+    $persone_per_id = array();
+    $ruoli_per_persona = array();
+    $today_ts = current_time('timestamp');
 
     foreach ($people as $person) {
         $data_conclusione_persona = dci_get_meta('data_conclusione_incarico', '_dci_persona_pubblica_', $person->ID);
@@ -887,13 +896,30 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             if (isset($incarichi_politici_attivi[$incarico_id])) {
                 $ruoli[] = $incarichi_politici_attivi[$incarico_id];
             }
-        }
 
         $ruoli = array_values(array_unique($ruoli));
         if (empty($ruoli)) {
             continue;
         }
+    }
 
+    if (empty($persone_per_id)) {
+        set_transient($cache_key, array(), 5 * MINUTE_IN_SECONDS);
+        return array();
+    }
+
+    $people = get_posts(array(
+        'post_type' => 'persona_pubblica',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC',
+        'post__in' => array_keys($persone_per_id),
+    ));
+
+    $response = array();
+
+    foreach ($people as $person) {
         $thumbnail_id = get_post_thumbnail_id($person->ID);
         $immagine_url = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null;
 
@@ -909,6 +935,11 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
         $contatti = dci_get_contatti_da_punti_ids(
             dci_normalize_meta_ids(dci_get_meta('punti_contatto', '_dci_persona_pubblica_', $person->ID))
         );
+
+        $ruoli = array_values(array_unique($ruoli_per_persona[$person->ID] ?? array()));
+        if (empty($ruoli)) {
+            continue;
+        }
 
         $response[] = array(
             'id' => $person->ID,
