@@ -902,7 +902,7 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             continue;
         }
 
-        $thumbnail_id = get_post_thumbnail_id($person->ID);
+        $img_url = dci_get_meta('foto', '_dci_persona_pubblica_', $person->ID);
         $contatti = dci_get_contatti_da_punti_ids(
             dci_normalize_meta_ids(dci_get_meta('punti_contatto', '_dci_persona_pubblica_', $person->ID))
         );
