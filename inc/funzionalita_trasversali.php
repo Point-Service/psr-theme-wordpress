@@ -817,7 +817,7 @@ function dci_normalize_meta_ids($value) {
  * @return array[]
  */
 function dci_get_amministrazione_politica(WP_REST_Request $request) {
-    $cache_key = 'dci_api_amministrazione_politica_v4';
+    $cache_key = 'dci_api_amministrazione_politica_v5';
     $cached = get_transient($cache_key);
     if (is_array($cached)) {
         return $cached;
@@ -838,9 +838,8 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
         ),
     ));
 
-    $persone_per_id = array();
-    $ruoli_per_persona = array();
     $today_ts = current_time('timestamp');
+    $incarichi_politici_attivi = array();
 
     foreach ($incarichi_politici as $incarico) {
         $data_fine_incarico = dci_get_meta('data_conclusione_incarico', '_dci_incarico_', $incarico->ID);
@@ -851,22 +850,56 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             }
         }
 
-        $persone_ids = dci_normalize_meta_ids(get_post_meta($incarico->ID, '_dci_incarico_persona'));
+        $incarichi_politici_attivi[$incarico->ID] = $incarico->post_title;
+    }
 
-        foreach ($persone_ids as $persona_id) {
-            $data_conclusione_persona = dci_get_meta('data_conclusione_incarico', '_dci_persona_pubblica_', $persona_id);
-            if (!empty($data_conclusione_persona)) {
-                $data_conclusione_persona_ts = is_numeric($data_conclusione_persona) ? intval($data_conclusione_persona) : strtotime($data_conclusione_persona);
-                if ($data_conclusione_persona_ts && $data_conclusione_persona_ts < $today_ts) {
-                    continue;
-                }
+    if (empty($incarichi_politici_attivi)) {
+        set_transient($cache_key, array(), 5 * MINUTE_IN_SECONDS);
+        return array();
+    }
+
+    $people = get_posts(array(
+        'post_type' => 'persona_pubblica',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'tipi_incarico',
+                'field' => 'slug',
+                'terms' => array('politico'),
+            ),
+        ),
+    ));
+
+    $persone_per_id = array();
+    $ruoli_per_persona = array();
+    $today_ts = current_time('timestamp');
+
+    foreach ($people as $person) {
+        $data_conclusione_persona = dci_get_meta('data_conclusione_incarico', '_dci_persona_pubblica_', $person->ID);
+        if (!empty($data_conclusione_persona)) {
+            $data_conclusione_persona_ts = is_numeric($data_conclusione_persona) ? intval($data_conclusione_persona) : strtotime($data_conclusione_persona);
+            if ($data_conclusione_persona_ts && $data_conclusione_persona_ts < $today_ts) {
+                continue;
+            }
+        }
+
+        $incarichi_persona = dci_normalize_meta_ids(dci_get_meta('incarichi', '_dci_persona_pubblica_', $person->ID));
+        if (empty($incarichi_persona)) {
+            continue;
+        }
+
+        $ruoli = array();
+        foreach ($incarichi_persona as $incarico_id) {
+            if (isset($incarichi_politici_attivi[$incarico_id])) {
+                $ruoli[] = $incarichi_politici_attivi[$incarico_id];
             }
 
-            if (!isset($ruoli_per_persona[$persona_id])) {
-                $ruoli_per_persona[$persona_id] = array();
-            }
-            $ruoli_per_persona[$persona_id][] = $incarico->post_title;
-            $persone_per_id[$persona_id] = true;
+        $ruoli = array_values(array_unique($ruoli));
+        if (empty($ruoli)) {
+            continue;
         }
     }
 
