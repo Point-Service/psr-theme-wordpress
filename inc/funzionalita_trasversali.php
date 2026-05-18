@@ -817,52 +817,94 @@ function dci_normalize_meta_ids($value) {
  * @return array[]
  */
 function dci_get_amministrazione_politica(WP_REST_Request $request) {
-    $cache_key = 'dci_api_amministrazione_politica_v2';
+    $cache_key = 'dci_api_amministrazione_politica_v4';
     $cached = get_transient($cache_key);
     if (is_array($cached)) {
         return $cached;
     }
 
+    $incarichi_politici = get_posts(array(
+        'post_type' => 'incarico',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'tipi_incarico',
+                'field' => 'slug',
+                'terms' => array('politico'),
+            ),
+        ),
+    ));
+
+    $persone_per_id = array();
+    $ruoli_per_persona = array();
+    $today_ts = current_time('timestamp');
+
+    foreach ($incarichi_politici as $incarico) {
+        $data_fine_incarico = dci_get_meta('data_conclusione_incarico', '_dci_incarico_', $incarico->ID);
+        if (!empty($data_fine_incarico)) {
+            $data_fine_ts = is_numeric($data_fine_incarico) ? intval($data_fine_incarico) : strtotime($data_fine_incarico);
+            if ($data_fine_ts && $data_fine_ts < $today_ts) {
+                continue;
+            }
+        }
+
+        $persone_ids = dci_normalize_meta_ids(get_post_meta($incarico->ID, '_dci_incarico_persona'));
+
+        foreach ($persone_ids as $persona_id) {
+            $data_conclusione_persona = dci_get_meta('data_conclusione_incarico', '_dci_persona_pubblica_', $persona_id);
+            if (!empty($data_conclusione_persona)) {
+                $data_conclusione_persona_ts = is_numeric($data_conclusione_persona) ? intval($data_conclusione_persona) : strtotime($data_conclusione_persona);
+                if ($data_conclusione_persona_ts && $data_conclusione_persona_ts < $today_ts) {
+                    continue;
+                }
+            }
+
+            if (!isset($ruoli_per_persona[$persona_id])) {
+                $ruoli_per_persona[$persona_id] = array();
+            }
+            $ruoli_per_persona[$persona_id][] = $incarico->post_title;
+            $persone_per_id[$persona_id] = true;
+        }
+    }
+
+    if (empty($persone_per_id)) {
+        set_transient($cache_key, array(), 5 * MINUTE_IN_SECONDS);
+        return array();
+    }
+
     $people = get_posts(array(
         'post_type' => 'persona_pubblica',
         'post_status' => 'publish',
-        'numberposts' => -1,
+        'posts_per_page' => -1,
         'orderby' => 'title',
         'order' => 'ASC',
+        'post__in' => array_keys($persone_per_id),
     ));
 
     $response = array();
 
     foreach ($people as $person) {
-        $incarichi_ids = dci_normalize_meta_ids(dci_get_meta('incarichi', '_dci_persona_pubblica_', $person->ID));
-        if (empty($incarichi_ids)) {
-            continue;
-        }
-
-        $ruoli = array();
-        foreach ($incarichi_ids as $incarico_id) {
-            $incarico = get_post($incarico_id);
-            if ($incarico instanceof WP_Post && $incarico->post_status === 'publish') {
-                $ruoli[] = $incarico->post_title;
-            }
-        }
-
-        if (empty($ruoli)) {
-            continue;
-        }
-
         $thumbnail_id = get_post_thumbnail_id($person->ID);
         $contatti = dci_get_contatti_da_punti_ids(
             dci_normalize_meta_ids(dci_get_meta('punti_contatto', '_dci_persona_pubblica_', $person->ID))
         );
 
+        $ruoli = array_values(array_unique($ruoli_per_persona[$person->ID] ?? array()));
+        if (empty($ruoli)) {
+            continue;
+        }
+
         $response[] = array(
             'id' => $person->ID,
             'nome' => get_the_title($person->ID),
             'url' => get_permalink($person->ID),
-            'ruoli' => array_values(array_unique($ruoli)),
+            'ruoli' => $ruoli,
             'descrizione_breve' => dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $person->ID),
             'immagine' => $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null,
+            'url_foto' => $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null,
             'contatti' => $contatti,
         );
     }
