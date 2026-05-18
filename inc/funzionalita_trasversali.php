@@ -921,6 +921,17 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
 
     foreach ($people as $person) {
         $thumbnail_id = get_post_thumbnail_id($person->ID);
+        $immagine_url = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null;
+
+        if (empty($immagine_url)) {
+            $foto_meta = dci_get_meta('foto', '_dci_persona_pubblica_', $person->ID);
+            if (is_string($foto_meta) && filter_var($foto_meta, FILTER_VALIDATE_URL)) {
+                $immagine_url = $foto_meta;
+            } elseif (is_numeric($foto_meta)) {
+                $immagine_url = wp_get_attachment_image_url((int) $foto_meta, 'full');
+            }
+        }
+
         $contatti = dci_get_contatti_da_punti_ids(
             dci_normalize_meta_ids(dci_get_meta('punti_contatto', '_dci_persona_pubblica_', $person->ID))
         );
@@ -936,8 +947,8 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             'url' => get_permalink($person->ID),
             'ruoli' => $ruoli,
             'descrizione_breve' => dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $person->ID),
-            'immagine' => $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null,
-            'url_foto' => $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null,
+            'immagine' => $immagine_url,
+            'url_foto' => $immagine_url,
             'contatti' => $contatti,
         );
     }
