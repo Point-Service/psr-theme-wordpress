@@ -902,7 +902,31 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             continue;
         }
 
-        $img_url = dci_get_meta('foto', '_dci_persona_pubblica_', $person->ID);
+        $thumbnail_id = get_post_thumbnail_id($person->ID);
+        $immagine = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null;
+
+        if (empty($immagine)) {
+            $foto_meta = dci_get_meta('foto', '_dci_persona_pubblica_', $person->ID);
+            if (is_string($foto_meta) && filter_var($foto_meta, FILTER_VALIDATE_URL)) {
+                $immagine = $foto_meta;
+            } elseif (is_numeric($foto_meta)) {
+                $immagine = wp_get_attachment_image_url((int) $foto_meta, 'full');
+            } elseif (is_array($foto_meta)) {
+                foreach ($foto_meta as $foto_value) {
+                    if (is_string($foto_value) && filter_var($foto_value, FILTER_VALIDATE_URL)) {
+                        $immagine = $foto_value;
+                        break;
+                    }
+                    if (is_numeric($foto_value)) {
+                        $immagine = wp_get_attachment_image_url((int) $foto_value, 'full');
+                        if (!empty($immagine)) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         $contatti = dci_get_contatti_da_punti_ids(
             dci_normalize_meta_ids(dci_get_meta('punti_contatto', '_dci_persona_pubblica_', $person->ID))
         );
@@ -913,8 +937,8 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             'url' => get_permalink($person->ID),
             'ruoli' => $ruoli,
             'descrizione_breve' => dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $person->ID),
-            'immagine' => $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null,
-            'url_foto' => $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null,
+            'immagine' => $immagine,
+            'url_foto' => $immagine,
             'contatti' => $contatti,
         );
     }
