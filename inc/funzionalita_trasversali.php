@@ -817,16 +817,44 @@ function dci_normalize_meta_ids($value) {
  * @return array[]
  */
 function dci_get_amministrazione_politica(WP_REST_Request $request) {
-    $cache_key = 'dci_api_amministrazione_politica_v2';
+    $cache_key = 'dci_api_amministrazione_politica_v3';
     $cached = get_transient($cache_key);
     if (is_array($cached)) {
         return $cached;
+    }
+
+    $incarichi_politici = get_posts(array(
+        'post_type' => 'incarico',
+        'post_status' => 'publish',
+        'numberposts' => -1,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'tipi_incarico',
+                'field' => 'slug',
+                'terms' => array('politico'),
+            ),
+        ),
+    ));
+
+    $persone_ids = array();
+    foreach ($incarichi_politici as $incarico) {
+        $linked_people = get_post_meta($incarico->ID, '_dci_incarico_persona');
+        foreach (dci_normalize_meta_ids($linked_people) as $person_id) {
+            $persone_ids[] = $person_id;
+        }
+    }
+
+    $persone_ids = array_values(array_unique(array_filter(array_map('intval', $persone_ids))));
+    if (empty($persone_ids)) {
+        set_transient($cache_key, array(), 5 * MINUTE_IN_SECONDS);
+        return array();
     }
 
     $people = get_posts(array(
         'post_type' => 'persona_pubblica',
         'post_status' => 'publish',
         'numberposts' => -1,
+        'post__in' => $persone_ids,
         'orderby' => 'title',
         'order' => 'ASC',
     ));
@@ -842,7 +870,12 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
         $ruoli = array();
         foreach ($incarichi_ids as $incarico_id) {
             $incarico = get_post($incarico_id);
-            if ($incarico instanceof WP_Post && $incarico->post_status === 'publish') {
+            if (!($incarico instanceof WP_Post) || $incarico->post_status !== 'publish') {
+                continue;
+            }
+
+            $is_politico = has_term('politico', 'tipi_incarico', $incarico_id);
+            if ($is_politico) {
                 $ruoli[] = $incarico->post_title;
             }
         }
@@ -851,7 +884,7 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             continue;
         }
 
-        $thumbnail_id = get_post_thumbnail_id($person->ID);
+        $img_url = dci_get_meta('foto', '_dci_persona_pubblica_', $person->ID);
         $contatti = dci_get_contatti_da_punti_ids(
             dci_normalize_meta_ids(dci_get_meta('punti_contatto', '_dci_persona_pubblica_', $person->ID))
         );
@@ -862,7 +895,7 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             'url' => get_permalink($person->ID),
             'ruoli' => array_values(array_unique($ruoli)),
             'descrizione_breve' => dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $person->ID),
-            'immagine' => $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : null,
+            'immagine' => !empty($img_url) ? $img_url : null,
             'contatti' => $contatti,
         );
     }
