@@ -838,6 +838,13 @@ add_action('rest_api_init', function () {
         }
     ]);
 
+    register_rest_field('evento', 'descrizione_completa', [
+        'get_callback' => function ($post) {
+            $payload = dci_get_evento_rest_payload($post['id']);
+            return $payload['descrizione_completa'];
+        }
+    ]);
+
     register_rest_field('evento', 'immagine', [
         'get_callback' => function ($post) {
             $payload = dci_get_evento_rest_payload($post['id']);
@@ -885,10 +892,18 @@ add_action('rest_api_init', function () {
     LUOGO (CACHE)
     =====================================
     */
+
+    register_rest_field('luogo', 'descrizione_completa', [
+        'get_callback' => function ($post) {
+            $payload = get_post_meta($post['id']);
+            return $payload['_dci_luogo_descrizione_estesa'][0] ?? '';
+        }
+    ]);
+
     register_rest_field('luogo', 'meta_luogo', [
         'get_callback' => function ($post) {
 
-            $cache_key = 'luogo_meta_' . $post['id'];
+            $cache_key = 'luogo_meta_v2_' . $post['id'];
 
             $cached = get_transient($cache_key);
             if ($cached !== false) return $cached;
@@ -915,6 +930,7 @@ add_action('rest_api_init', function () {
             $data = [
                 'immagine' => $all_meta[$prefix . 'immagine'][0] ?? '',
                 'descrizione' => $all_meta[$prefix . 'descrizione_breve'][0] ?? '',
+                'descrizione_completa' => $all_meta[$prefix . 'descrizione_estesa'][0] ?? '',
                 'lat' => $gps['lat'] ?? '',
                 'lng' => $gps['lng'] ?? '',
                 'indirizzo' => $all_meta[$prefix . 'indirizzo'][0] ?? '',
@@ -1140,6 +1156,7 @@ if (!function_exists('dci_get_evento_rest_payload')) {
                 'data_inizio' => '',
                 'data_fine' => '',
                 'descrizione_breve' => '',
+                'descrizione_completa' => '',
                 'immagine' => null,
             );
         }
@@ -1185,6 +1202,7 @@ if (!function_exists('dci_get_evento_rest_payload')) {
             'data_inizio' => $meta['_dci_evento_data_orario_inizio'][0] ?? '',
             'data_fine' => $meta['_dci_evento_data_orario_fine'][0] ?? '',
             'descrizione_breve' => $meta['_dci_evento_descrizione_breve'][0] ?? '',
+            'descrizione_completa' => $meta['_dci_evento_descrizione_completa'][0] ?? '',
             'immagine' => $immagine,
         );
 
