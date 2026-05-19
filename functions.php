@@ -892,10 +892,18 @@ add_action('rest_api_init', function () {
     LUOGO (CACHE)
     =====================================
     */
+
+    register_rest_field('luogo', 'descrizione_completa', [
+        'get_callback' => function ($post) {
+            $payload = get_post_meta($post['id']);
+            return $payload['_dci_luogo_descrizione_estesa'][0] ?? '';
+        }
+    ]);
+
     register_rest_field('luogo', 'meta_luogo', [
         'get_callback' => function ($post) {
 
-            $cache_key = 'luogo_meta_' . $post['id'];
+            $cache_key = 'luogo_meta_v2_' . $post['id'];
 
             $cached = get_transient($cache_key);
             if ($cached !== false) return $cached;
@@ -922,6 +930,7 @@ add_action('rest_api_init', function () {
             $data = [
                 'immagine' => $all_meta[$prefix . 'immagine'][0] ?? '',
                 'descrizione' => $all_meta[$prefix . 'descrizione_breve'][0] ?? '',
+                'descrizione_completa' => $all_meta[$prefix . 'descrizione_estesa'][0] ?? '',
                 'lat' => $gps['lat'] ?? '',
                 'lng' => $gps['lng'] ?? '',
                 'indirizzo' => $all_meta[$prefix . 'indirizzo'][0] ?? '',
