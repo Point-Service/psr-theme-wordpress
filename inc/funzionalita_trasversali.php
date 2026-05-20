@@ -972,6 +972,11 @@ function dci_get_uffici_responsabili(WP_REST_Request $request) {
     $response = array();
 
     foreach ($uffici as $ufficio) {
+        $tipi_ufficio = get_the_terms($ufficio, 'tipi_unita_organizzativa');
+        if (!is_array($tipi_ufficio) || empty($tipi_ufficio) || !isset($tipi_ufficio[0]->slug) || $tipi_ufficio[0]->slug !== 'ufficio') {
+            continue;
+        }
+
         $responsabili_ids = dci_normalize_meta_ids(dci_get_meta('responsabile', '_dci_unita_organizzativa_', $ufficio->ID));
         $responsabili = array();
 
