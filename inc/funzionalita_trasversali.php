@@ -874,6 +874,48 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
 
     $response = array();
 
+
+    $role_rank = function ($role_title) {
+        $normalized = sanitize_title((string) $role_title);
+
+        $priority_map = array(
+            'sindaco' => 0,
+            'vicesindaco' => 1,
+            'vice-sindaco' => 1,
+            'assessore' => 2,
+            'giunta-comunale' => 2,
+            'presidente-del-consiglio' => 3,
+            'vicepresidente-del-consiglio' => 4,
+            'consigliere' => 5,
+            'consigliere-comunale' => 5,
+        );
+
+        if (isset($priority_map[$normalized])) {
+            return $priority_map[$normalized];
+        }
+
+        if (strpos($normalized, 'sindaco') !== false) {
+            return 0;
+        }
+        if (strpos($normalized, 'vice') !== false && strpos($normalized, 'sindaco') !== false) {
+            return 1;
+        }
+        if (strpos($normalized, 'assessore') !== false || strpos($normalized, 'giunta') !== false) {
+            return 2;
+        }
+        if (strpos($normalized, 'presidente-del-consiglio') !== false) {
+            return 3;
+        }
+        if (strpos($normalized, 'vicepresidente-del-consiglio') !== false) {
+            return 4;
+        }
+        if (strpos($normalized, 'consigliere') !== false) {
+            return 5;
+        }
+
+        return 99;
+    };
+
     foreach (array_keys($candidate_person_ids) as $person_id) {
         $person = get_post($person_id);
         if (!$person instanceof WP_Post || $person->post_type !== 'persona_pubblica' || $person->post_status !== 'publish') {
@@ -935,18 +977,36 @@ function dci_get_amministrazione_politica(WP_REST_Request $request) {
             dci_normalize_meta_ids(dci_get_meta('punti_contatto', '_dci_persona_pubblica_', $person_id))
         );
 
+        $ruoli_unici = array_values(array_unique($ruoli));
+        usort($ruoli_unici, function ($a, $b) use ($role_rank) {
+            $rank_cmp = $role_rank($a) <=> $role_rank($b);
+            if ($rank_cmp !== 0) {
+                return $rank_cmp;
+            }
+
+            return strcasecmp((string) $a, (string) $b);
+        });
+
         $response[] = array(
             'id' => $person_id,
             'nome' => get_the_title($person_id),
             'url' => get_permalink($person_id),
-            'ruoli' => array_values(array_unique($ruoli)),
+            'ruoli' => $ruoli_unici,
             'descrizione_breve' => dci_get_meta('descrizione_breve', '_dci_persona_pubblica_', $person_id),
             'immagine' => $immagine,
             'contatti' => $contatti,
         );
     }
 
-    usort($response, function ($a, $b) {
+    usort($response, function ($a, $b) use ($role_rank) {
+        $a_primary = isset($a['ruoli'][0]) ? $role_rank($a['ruoli'][0]) : 99;
+        $b_primary = isset($b['ruoli'][0]) ? $role_rank($b['ruoli'][0]) : 99;
+
+        $rank_cmp = $a_primary <=> $b_primary;
+        if ($rank_cmp !== 0) {
+            return $rank_cmp;
+        }
+
         return strcasecmp((string) $a['nome'], (string) $b['nome']);
     });
 
