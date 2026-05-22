@@ -85,10 +85,24 @@ function dci_get_sanitized_image_text_from_post( $post_id ) {
  * @return array
  */
 function dci_enforce_image_alt_and_title_attributes( $attr, $attachment, $size ) {
-    $related_post_id = get_post_thumbnail_id() === (int) $attachment->ID ? get_the_ID() : 0;
+    if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+        return $attr;
+    }
 
-    if ( ! $related_post_id && ! empty( $attr['class'] ) && strpos( $attr['class'], 'wp-post-image' ) !== false ) {
-        $related_post_id = get_the_ID();
+    // In produzione tocchiamo solo le immagini contenuto (featured), evitando asset tecnici/icons.
+    if ( empty( $attr['class'] ) || strpos( $attr['class'], 'wp-post-image' ) === false ) {
+        return $attr;
+    }
+
+    $related_post_id = get_the_ID();
+
+    if ( ! $related_post_id ) {
+        $queried_object_id = get_queried_object_id();
+        $related_post_id   = $queried_object_id ? $queried_object_id : 0;
+    }
+
+    if ( $related_post_id && get_post_thumbnail_id( $related_post_id ) !== (int) $attachment->ID ) {
+        $related_post_id = 0;
     }
 
     $fallback_text = dci_get_sanitized_image_text_from_post( $related_post_id );
