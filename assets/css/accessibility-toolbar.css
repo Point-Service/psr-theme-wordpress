@@ -1,0 +1,8 @@
+.dci-accessibility-toolbar{position:fixed;top:12px;left:12px;z-index:9999;display:flex;gap:8px;flex-wrap:wrap;background:#eef1f7;border-radius:8px;padding:8px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.dci-a11y-btn{border:0;background:#dfe4ef;color:#14315f;padding:10px 12px;border-radius:6px;font-weight:700;cursor:pointer}
+.dci-a11y-btn.is-active{background:#0d3b79;color:#fff}
+.dci-a11y-btn-reset{background:#0d3b79;color:#fff}
+body.dci-a11y-links a{text-decoration:underline!important;text-decoration-thickness:2px!important}
+body.dci-a11y-cursor,* .dci-a11y-cursor{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M5 3l12 8l-5 1l3 7l-2 1l-3-7l-3 3z'/%3E%3C/svg%3E") 2 2,auto!important}
+body.dci-a11y-dyslexia{font-family:Verdana,Arial,sans-serif!important;letter-spacing:.02em;word-spacing:.06em;line-height:1.7}
+@media (max-width:991px){.dci-accessibility-toolbar{position:static;margin:8px auto;max-width:95%}}

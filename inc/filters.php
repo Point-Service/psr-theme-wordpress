@@ -117,7 +117,7 @@ function dci_enforce_image_alt_and_title_attributes( $attr, $attachment, $size )
         }
 
         if ( empty( $attr['title'] ) ) {
-            $attr['title'] = $fallback_text;
+            $attr['title'] = ! empty( $attr['alt'] ) ? $attr['alt'] : $fallback_text;
         }
     }
 
