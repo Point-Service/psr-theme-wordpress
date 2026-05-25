@@ -89,20 +89,11 @@ function dci_enforce_image_alt_and_title_attributes( $attr, $attachment, $size )
         return $attr;
     }
 
-    // In produzione tocchiamo solo le immagini contenuto (featured), evitando asset tecnici/icons.
-    if ( empty( $attr['class'] ) || strpos( $attr['class'], 'wp-post-image' ) === false ) {
-        return $attr;
-    }
-
     $related_post_id = get_the_ID();
 
     if ( ! $related_post_id ) {
         $queried_object_id = get_queried_object_id();
         $related_post_id   = $queried_object_id ? $queried_object_id : 0;
-    }
-
-    if ( $related_post_id && get_post_thumbnail_id( $related_post_id ) !== (int) $attachment->ID ) {
-        $related_post_id = 0;
     }
 
     $fallback_text = dci_get_sanitized_image_text_from_post( $related_post_id );
@@ -111,14 +102,13 @@ function dci_enforce_image_alt_and_title_attributes( $attr, $attachment, $size )
         $fallback_text = dci_get_sanitized_image_text_from_post( $attachment->post_parent );
     }
 
-    if ( ! empty( $fallback_text ) ) {
-        if ( empty( $attr['alt'] ) ) {
-            $attr['alt'] = $fallback_text;
-        }
+    if ( empty( $fallback_text ) ) {
+        $fallback_text = dci_get_sanitized_image_text_from_post( $attachment->ID );
+    }
 
-        if ( empty( $attr['title'] ) ) {
-            $attr['title'] = ! empty( $attr['alt'] ) ? $attr['alt'] : $fallback_text;
-        }
+    if ( ! empty( $fallback_text ) ) {
+        $attr['alt']   = ! empty( $attr['alt'] ) ? $attr['alt'] : $fallback_text;
+        $attr['title'] = ! empty( $attr['title'] ) ? $attr['title'] : $attr['alt'];
     }
 
     return $attr;
