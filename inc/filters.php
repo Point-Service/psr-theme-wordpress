@@ -36,3 +36,174 @@ function dci_vivere_il_comune_post_link( $post_link, $id = 0 ){
     return $post_link;
 }
 add_filter( 'post_type_link', 'dci_vivere_il_comune_post_link', 1, 3 );
+/**
+ * Build sanitized alt/title text for images based on related post title.
+ *
+ * Removes special characters, normalizes whitespace and limits length.
+ *
+ * @param int $post_id
+ * @return string
+ */
+function dci_get_sanitized_image_text_from_post( $post_id ) {
+    $max_length = 90;
+    $title = '';
+
+    if ( $post_id ) {
+        $title = get_the_title( $post_id );
+    }
+
+    if ( empty( $title ) && is_singular() ) {
+        $title = get_the_title();
+    }
+
+    if ( empty( $title ) ) {
+        return '';
+    }
+
+    $title = wp_strip_all_tags( $title );
+    $title = preg_replace( '/[^\p{L}\p{N}\s\-]/u', ' ', $title );
+    $title = preg_replace( '/\s+/u', ' ', $title );
+    $title = trim( $title );
+
+    if ( function_exists( 'mb_strlen' ) && function_exists( 'mb_substr' ) ) {
+        if ( mb_strlen( $title ) > $max_length ) {
+            $title = rtrim( mb_substr( $title, 0, $max_length - 1 ) ) . '…';
+        }
+    } elseif ( strlen( $title ) > $max_length ) {
+        $title = rtrim( substr( $title, 0, $max_length - 1 ) ) . '…';
+    }
+
+    return $title;
+}
+
+/**
+ * Ensure attachment images have meaningful alt and title attributes.
+ *
+ * @param array        $attr
+ * @param WP_Post      $attachment
+ * @param string|array $size
+ * @return array
+ */
+function dci_enforce_image_alt_and_title_attributes( $attr, $attachment, $size ) {
+    if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+        return $attr;
+    }
+
+    $related_post_id = get_the_ID();
+
+    if ( ! $related_post_id ) {
+        $queried_object_id = get_queried_object_id();
+        $related_post_id   = $queried_object_id ? $queried_object_id : 0;
+    }
+
+    $fallback_text = dci_get_sanitized_image_text_from_post( $related_post_id );
+
+    if ( empty( $fallback_text ) ) {
+        $fallback_text = dci_get_sanitized_image_text_from_post( $attachment->post_parent );
+    }
+
+    if ( empty( $fallback_text ) ) {
+        $fallback_text = dci_get_sanitized_image_text_from_post( $attachment->ID );
+    }
+
+    if ( ! empty( $fallback_text ) ) {
+        $attr['alt']   = ! empty( $attr['alt'] ) ? $attr['alt'] : $fallback_text;
+        $attr['title'] = ! empty( $attr['title'] ) ? $attr['title'] : $attr['alt'];
+    }
+
+    return $attr;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'dci_enforce_image_alt_and_title_attributes', 10, 3 );
+
+/**
+ * Add missing title attributes to links/buttons and enforce alt/title on img tags in frontend HTML output.
+ * This supports institutional accessibility checklists requiring explicit attributes.
+ */
+function dci_accessibility_enhance_frontend_markup( $html ) {
+    if ( empty( $html ) || stripos( $html, '<html' ) === false ) {
+        return $html;
+    }
+
+    if ( ! class_exists( 'DOMDocument' ) ) {
+        return $html;
+    }
+
+    libxml_use_internal_errors( true );
+    $dom = new DOMDocument();
+    $loaded = $dom->loadHTML( $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+    if ( ! $loaded ) {
+        libxml_clear_errors();
+        return $html;
+    }
+
+    // IMG: ensure both alt and title are present.
+    $imgs = $dom->getElementsByTagName( 'img' );
+    foreach ( $imgs as $img ) {
+        $alt   = trim( (string) $img->getAttribute( 'alt' ) );
+        $title = trim( (string) $img->getAttribute( 'title' ) );
+
+        if ( empty( $title ) ) {
+            $title = $alt;
+        }
+
+        if ( empty( $alt ) && ! empty( $title ) ) {
+            $alt = $title;
+        }
+
+        if ( empty( $alt ) || empty( $title ) ) {
+            $src = (string) $img->getAttribute( 'src' );
+            if ( ! empty( $src ) ) {
+                $file_label = trim( preg_replace( '/[-_]+/', ' ', pathinfo( $src, PATHINFO_FILENAME ) ) );
+                if ( empty( $alt ) ) {
+                    $alt = $file_label;
+                }
+                if ( empty( $title ) ) {
+                    $title = $file_label;
+                }
+            }
+        }
+
+        if ( ! empty( $alt ) ) {
+            $img->setAttribute( 'alt', $alt );
+        }
+        if ( ! empty( $title ) ) {
+            $img->setAttribute( 'title', $title );
+        }
+    }
+
+    // A, BUTTON: add title if missing from aria-label or visible text.
+    foreach ( array( 'a', 'button' ) as $tag ) {
+        $nodes = $dom->getElementsByTagName( $tag );
+        foreach ( $nodes as $node ) {
+            $title = trim( (string) $node->getAttribute( 'title' ) );
+            if ( ! empty( $title ) ) {
+                continue;
+            }
+
+            $label = trim( (string) $node->getAttribute( 'aria-label' ) );
+            if ( empty( $label ) ) {
+                $label = trim( preg_replace( '/\s+/u', ' ', $node->textContent ) );
+            }
+
+            if ( ! empty( $label ) ) {
+                $node->setAttribute( 'title', $label );
+            }
+        }
+    }
+
+    $result = $dom->saveHTML();
+    libxml_clear_errors();
+
+    return ! empty( $result ) ? $result : $html;
+}
+
+function dci_accessibility_start_output_buffer() {
+    if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+        return;
+    }
+
+    if ( ! ob_get_level() ) {
+        ob_start( 'dci_accessibility_enhance_frontend_markup' );
+    }
+}
+add_action( 'template_redirect', 'dci_accessibility_start_output_buffer', 0 );
