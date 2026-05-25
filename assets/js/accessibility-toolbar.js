@@ -15,7 +15,7 @@
   function save(){localStorage.setItem(KEY,JSON.stringify(prefs));}
 
   function isActiveAction(a){
-    return (a==='links'&&prefs.links)||(a==='dyslexia'&&prefs.dyslexia)||(a==='cursor'&&prefs.cursor)||(a==='invert'&&prefs.invert)||(a==='brightness'&&prefs.brightness>0)||(a==='contrast'&&prefs.contrast>0)||(a==='grayscale'&&prefs.grayscale>0)||(a==='saturation'&&prefs.saturation>0)||(a==='readable-font'&&prefs.readableFont)||(a==='highlight-all'&&prefs.highlightAll)||(a==='highlight-titles'&&prefs.highlightTitles)||(a==='hide-images'&&prefs.hideImages)||(a==='mute'&&prefs.mute)||(a==='stop-animations'&&prefs.stopAnimations)||(a==='keyboard'&&prefs.keyboard)||(a==='line-height'&&prefs.lineHeight>0)||(a==='letter-spacing'&&prefs.letterSpacing>0;
+    return (a==='links'&&prefs.links)||(a==='dyslexia'&&prefs.dyslexia)||(a==='cursor'&&prefs.cursor)||(a==='invert'&&prefs.invert)||(a==='brightness'&&prefs.brightness>0)||(a==='contrast'&&prefs.contrast>0)||(a==='grayscale'&&prefs.grayscale>0)||(a==='saturation'&&prefs.saturation>0)||(a==='readable-font'&&prefs.readableFont)||(a==='highlight-all'&&prefs.highlightAll)||(a==='highlight-titles'&&prefs.highlightTitles)||(a==='hide-images'&&prefs.hideImages)||(a==='mute'&&prefs.mute)||(a==='stop-animations'&&prefs.stopAnimations)||(a==='keyboard'&&prefs.keyboard)||(a==='line-height'&&prefs.lineHeight>0)||(a==='letter-spacing'&&prefs.letterSpacing>0);
   }
 
   function apply(){
