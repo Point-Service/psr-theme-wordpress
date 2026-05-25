@@ -120,7 +120,7 @@ add_filter( 'wp_get_attachment_image_attributes', 'dci_enforce_image_alt_and_tit
  * This supports institutional accessibility checklists requiring explicit attributes.
  */
 function dci_accessibility_enhance_frontend_markup( $html ) {
-    if ( empty( $html ) || stripos( $html, '<html' ) === false ) {
+    if ( empty( $html ) ) {
         return $html;
     }
 
@@ -183,6 +183,18 @@ function dci_accessibility_enhance_frontend_markup( $html ) {
             $label = trim( (string) $node->getAttribute( 'aria-label' ) );
             if ( empty( $label ) ) {
                 $label = trim( preg_replace( '/\s+/u', ' ', $node->textContent ) );
+            }
+
+            if ( empty( $label ) && $tag === 'a' ) {
+                $href = trim( (string) $node->getAttribute( 'href' ) );
+                if ( ! empty( $href ) ) {
+                    $path = parse_url( $href, PHP_URL_PATH );
+                    $label = trim( preg_replace( '/[-_]+/', ' ', basename( (string) $path ) ) );
+                }
+            }
+
+            if ( empty( $label ) && $tag === 'button' ) {
+                $label = trim( (string) $node->getAttribute( 'value' ) );
             }
 
             if ( ! empty( $label ) ) {
