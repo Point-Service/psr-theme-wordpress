@@ -5,7 +5,7 @@
   var target=document.querySelector('main')||document.getElementById('main')||body;
   target.setAttribute('data-dci-a11y-target','1');
 
-  var levels={brightness:[100,115,130],contrast:[100,115,130],saturation:[100,80,120],grayscale:[0,40,100],lineHeight:[1.5,1.8,2.1],letterSpacing:[0,0.04,0.08],cursor:[0,1,2,3]};
+  var levels={brightness:[100,108,116,124],contrast:[100,108,116,124],saturation:[100,90,110,125],grayscale:[0,35,70,100],lineHeight:[1.5,1.7,1.9,2.1],letterSpacing:[0,0.03,0.06,0.09],cursor:[0,1,2,3]};
   var prefs={font:100,cursor:0,links:false,dyslexia:false,invert:false,brightness:0,contrast:0,saturation:0,grayscale:0,readableFont:false,highlightAll:false,highlightTitles:false,hideImages:false,mute:false,stopAnimations:false,keyboard:false,lineHeight:0,letterSpacing:0};
 
   try{prefs=Object.assign(prefs,JSON.parse(localStorage.getItem(KEY)||'{}'));}catch(e){}
