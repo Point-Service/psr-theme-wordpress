@@ -5,8 +5,8 @@
   var target=document.querySelector('main')||document.getElementById('main')||body;
   target.setAttribute('data-dci-a11y-target','1');
 
-  var levels={brightness:[100,115,130],contrast:[100,115,130],saturation:[100,80,120],grayscale:[0,100],lineHeight:[1.5,1.8,2.1],letterSpacing:[0,0.04,0.08]};
-  var prefs={font:100,cursor:false,links:false,dyslexia:false,invert:false,brightness:0,contrast:0,saturation:0,grayscale:0,readableFont:false,highlightAll:false,highlightTitles:false,hideImages:false,mute:false,stopAnimations:false,keyboard:false,lineHeight:0,letterSpacing:0};
+  var levels={brightness:[100,115,130],contrast:[100,115,130],saturation:[100,80,120],grayscale:[0,40,100],lineHeight:[1.5,1.8,2.1],letterSpacing:[0,0.04,0.08],cursor:[0,1,2,3]};
+  var prefs={font:100,cursor:0,links:false,dyslexia:false,invert:false,brightness:0,contrast:0,saturation:0,grayscale:0,readableFont:false,highlightAll:false,highlightTitles:false,hideImages:false,mute:false,stopAnimations:false,keyboard:false,lineHeight:0,letterSpacing:0};
 
   try{prefs=Object.assign(prefs,JSON.parse(localStorage.getItem(KEY)||'{}'));}catch(e){}
 
@@ -21,12 +21,13 @@
     if(action==='saturation') return {current:prefs.saturation,max:levels.saturation.length-1};
     if(action==='grayscale') return {current:prefs.grayscale,max:levels.grayscale.length-1};
     if(action==='line-height') return {current:prefs.lineHeight,max:levels.lineHeight.length-1};
+    if(action==='cursor') return {current:prefs.cursor,max:levels.cursor.length-1};
     if(action==='letter-spacing') return {current:prefs.letterSpacing,max:levels.letterSpacing.length-1};
     return null;
   }
 
   function isActiveAction(a){
-    return (a==='links'&&prefs.links)||(a==='dyslexia'&&prefs.dyslexia)||(a==='cursor'&&prefs.cursor)||(a==='invert'&&prefs.invert)||(a==='brightness'&&prefs.brightness>0)||(a==='contrast'&&prefs.contrast>0)||(a==='grayscale'&&prefs.grayscale>0)||(a==='saturation'&&prefs.saturation>0)||(a==='readable-font'&&prefs.readableFont)||(a==='highlight-all'&&prefs.highlightAll)||(a==='highlight-titles'&&prefs.highlightTitles)||(a==='hide-images'&&prefs.hideImages)||(a==='mute'&&prefs.mute)||(a==='stop-animations'&&prefs.stopAnimations)||(a==='keyboard'&&prefs.keyboard)||(a==='line-height'&&prefs.lineHeight>0)||(a==='letter-spacing'&&prefs.letterSpacing>0);
+    return (a==='links'&&prefs.links)||(a==='dyslexia'&&prefs.dyslexia)||(a==='cursor'&&prefs.cursor>0)||(a==='invert'&&prefs.invert)||(a==='brightness'&&prefs.brightness>0)||(a==='contrast'&&prefs.contrast>0)||(a==='grayscale'&&prefs.grayscale>0)||(a==='saturation'&&prefs.saturation>0)||(a==='readable-font'&&prefs.readableFont)||(a==='highlight-all'&&prefs.highlightAll)||(a==='highlight-titles'&&prefs.highlightTitles)||(a==='hide-images'&&prefs.hideImages)||(a==='mute'&&prefs.mute)||(a==='stop-animations'&&prefs.stopAnimations)||(a==='keyboard'&&prefs.keyboard)||(a==='line-height'&&prefs.lineHeight>0)||(a==='letter-spacing'&&prefs.letterSpacing>0);
   }
 
   function apply(){
@@ -39,7 +40,8 @@
     body.classList.toggle('dci-a11y-hide-images',!!prefs.hideImages);
     body.classList.toggle('dci-a11y-stop-animations',!!prefs.stopAnimations);
     body.classList.toggle('dci-a11y-keyboard',!!prefs.keyboard);
-    body.classList.toggle('dci-a11y-cursor',!!prefs.cursor);
+    body.classList.remove('dci-a11y-cursor-1','dci-a11y-cursor-2','dci-a11y-cursor-3');
+    if(prefs.cursor>0){body.classList.add('dci-a11y-cursor-'+prefs.cursor);}
 
     target.style.lineHeight=levels.lineHeight[prefs.lineHeight];
     target.style.letterSpacing=levels.letterSpacing[prefs.letterSpacing]+'em';
@@ -71,7 +73,7 @@
   function handleAction(a){
     if(a==='font-up') prefs.font=clamp(prefs.font+10,90,130);
     if(a==='font-down') prefs.font=clamp(prefs.font-10,90,130);
-    if(a==='cursor') prefs.cursor=!prefs.cursor;
+    if(a==='cursor') cycle('cursor');
     if(a==='links') prefs.links=!prefs.links;
     if(a==='dyslexia') prefs.dyslexia=!prefs.dyslexia;
     if(a==='readable-font') prefs.readableFont=!prefs.readableFont;
@@ -90,7 +92,7 @@
     if(a==='letter-spacing') cycle('letterSpacing');
     if(a==='read') speak();
     if(a==='reset'){
-      prefs={font:100,cursor:false,links:false,dyslexia:false,invert:false,brightness:0,contrast:0,saturation:0,grayscale:0,readableFont:false,highlightAll:false,highlightTitles:false,hideImages:false,mute:false,stopAnimations:false,keyboard:false,lineHeight:0,letterSpacing:0};
+      prefs={font:100,cursor:0,links:false,dyslexia:false,invert:false,brightness:0,contrast:0,saturation:0,grayscale:0,readableFont:false,highlightAll:false,highlightTitles:false,hideImages:false,mute:false,stopAnimations:false,keyboard:false,lineHeight:0,letterSpacing:0};
       if(window.speechSynthesis) window.speechSynthesis.cancel();
     }
     save(); apply();
