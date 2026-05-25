@@ -1,5 +1,5 @@
 <?php
-global $wpdb;
+global $wpdb, $wp;
 
 // Lettura parametri da URL
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
@@ -77,17 +77,16 @@ if ($selected_year > 0) {
 
 $the_query = new WP_Query($args);
 
-// Prendi permalink pagina corrente (senza query string)
-$current_url = get_permalink();
+// Base URL robusta: resta sempre sulla pagina elenco corrente (non sui permalink dei singoli elementi)
+$current_url = home_url( add_query_arg( array(), $wp->request ) );
 
-// Costruiamo la base URL per paginazione mantenendo tutti i parametri
-$base_url = add_query_arg(array(
+$query_args = array(
     'search'      => $main_search_query ? $main_search_query : '',
     'filter_year' => $selected_year > 0 ? $selected_year : 0,
     'max_posts'   => $max_posts,
-    'paged'       => '%#%',
-), $current_url);
+);
 
+$base_url = add_query_arg( array_merge( $query_args, array( 'paged' => '%#%' ) ), $current_url );
 
 ?>
 
