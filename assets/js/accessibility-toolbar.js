@@ -28,7 +28,7 @@
     body.classList.toggle('dci-a11y-hide-images',!!prefs.hideImages);
     body.classList.toggle('dci-a11y-stop-animations',!!prefs.stopAnimations);
     body.classList.toggle('dci-a11y-keyboard',!!prefs.keyboard);
-    body.style.cursor=prefs.cursor?'zoom-in':'';
+    body.classList.toggle('dci-a11y-cursor',!!prefs.cursor);
 
     target.style.lineHeight=levels.lineHeight[prefs.lineHeight];
     target.style.letterSpacing=levels.letterSpacing[prefs.letterSpacing]+'em';
