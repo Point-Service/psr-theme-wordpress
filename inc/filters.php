@@ -214,3 +214,51 @@ function dci_accessibility_start_output_buffer() {
     return;
 }
 add_action( 'template_redirect', 'dci_accessibility_start_output_buffer', 0 );
+
+
+/**
+ * Redirect legacy template-like legal notes paths to the actual page permalink.
+ */
+function dci_redirect_legacy_note_legali_path() {
+    if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+        return;
+    }
+
+    $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) $_SERVER['REQUEST_URI'] : '';
+    if ( stripos( $request_uri, '/page-templates/note-legali' ) === false ) {
+        return;
+    }
+
+    $target = dci_get_template_page_url( 'page-templates/note-legali.php' );
+    if ( empty( $target ) ) {
+        $target = home_url( '/note-legali/' );
+    }
+
+    wp_safe_redirect( $target, 301 );
+    exit;
+}
+add_action( 'template_redirect', 'dci_redirect_legacy_note_legali_path', 1 );
+
+
+/**
+ * Redirect legacy template-like privacy path to canonical privacy page permalink.
+ */
+function dci_redirect_legacy_privacy_path() {
+    if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+        return;
+    }
+
+    $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) $_SERVER['REQUEST_URI'] : '';
+    if ( stripos( $request_uri, '/page-templates/privacy' ) === false ) {
+        return;
+    }
+
+    $target = dci_get_template_page_url( 'page-templates/privacy.php' );
+    if ( empty( $target ) ) {
+        $target = home_url( '/privacy/' );
+    }
+
+    wp_safe_redirect( $target, 301 );
+    exit;
+}
+add_action( 'template_redirect', 'dci_redirect_legacy_privacy_path', 1 );
