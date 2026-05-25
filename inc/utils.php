@@ -1269,14 +1269,31 @@ if (!function_exists('dci_get_maggioli_services_data')) {
 
 if(!function_exists("dci_get_img")) {
     function dci_get_img( $url, $classes = '') {
-        $img_post = get_post( attachment_url_to_postid($url) );
-        $image_alt = get_post_meta( $img_post->ID, '_wp_attachment_image_alt', true);
-        $image_title = get_the_title( $img_post->ID );
+        $attachment_id = attachment_url_to_postid($url);
+        $img_post = $attachment_id ? get_post( $attachment_id ) : null;
 
-        $img = '<img src="'.$url.'" ';        
-        if ($classes) $img .= 'class="'.$classes.'" ';
-        if ($image_alt) $img .= 'alt="'.$image_alt.'" ';
-        if ($image_title) $img .= 'title="'.$image_title.'" ';
+        $image_title = '';
+        $image_alt = '';
+
+        if ( $img_post && isset( $img_post->ID ) ) {
+            $image_alt   = (string) get_post_meta( $img_post->ID, '_wp_attachment_image_alt', true );
+            $image_title = (string) get_the_title( $img_post->ID );
+        }
+
+        if ( empty( $image_title ) ) {
+            $image_title = trim( preg_replace('/[-_]+/', ' ', pathinfo( (string) $url, PATHINFO_FILENAME ) ) );
+        }
+
+        if ( empty( $image_alt ) ) {
+            $image_alt = $image_title;
+        }
+
+        $img = '<img src="' . esc_url( $url ) . '" ';
+        if ($classes) {
+            $img .= 'class="' . esc_attr( $classes ) . '" ';
+        }
+        $img .= 'alt="' . esc_attr( $image_alt ) . '" ';
+        $img .= 'title="' . esc_attr( $image_title ) . '" ';
         $img .= '/>';
 
         echo $img;

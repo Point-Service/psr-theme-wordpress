@@ -1,13 +1,13 @@
 <?php
-global $wpdb;
+global $wpdb, $wp;
 
 // Lettura parametri da URL
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
 $main_search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
-$paged = max(1, (int) get_query_var('paged'));
-if ($paged < 2) {
-    $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : (isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1);
-}
+$paged_from_query = max(1, (int) get_query_var('paged'));
+$paged_from_page  = max(1, (int) get_query_var('page'));
+$paged_from_get   = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : (isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1);
+$paged = max($paged_from_query, $paged_from_page, $paged_from_get);
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
 
 // Anni disponibili
@@ -19,6 +19,40 @@ $years = $wpdb->get_col("
     ORDER BY post_date DESC
 ");
 
+
+$search_post_ids = array();
+if (!empty($main_search_query)) {
+    $search_like = '%' . $wpdb->esc_like($main_search_query) . '%';
+
+    $meta_keys = array(
+        '_dci_atto_concessione_ragione_sociale',
+        '_dci_atto_concessione_codice_fiscale',
+        '_dci_atto_concessione_responsabile',
+        '_dci_atto_concessione_rag_incarico',
+        '_dci_atto_concessione_importo',
+    );
+
+    $meta_placeholders = implode(',', array_fill(0, count($meta_keys), '%s'));
+
+    $sql = "SELECT DISTINCT p.ID
+            FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID
+            WHERE p.post_type = 'atto_concessione'
+              AND p.post_status = 'publish'
+              AND (p.post_title LIKE %s OR p.post_content LIKE %s OR (pm.meta_key IN ($meta_placeholders) AND pm.meta_value LIKE %s))";
+
+    $prepared = $wpdb->prepare(
+        $sql,
+        array_merge(array($search_like, $search_like), $meta_keys, array($search_like))
+    );
+
+    $search_post_ids = array_map('intval', (array) $wpdb->get_col($prepared));
+
+    if (empty($search_post_ids)) {
+        $search_post_ids = array(0);
+    }
+}
+
 // Costruzione argomenti WP_Query
 $args = [
     'post_type'      => 'atto_concessione',
@@ -26,10 +60,11 @@ $args = [
     'orderby'        => 'meta_value_num',
     'order'          => 'DESC',
     'paged'          => $paged,
+    'no_found_rows'  => false,
 ];
 
 if (!empty($main_search_query)) {
-    $args['s'] = $main_search_query;
+    $args['post__in'] = $search_post_ids;
 }
 
 if ($selected_year > 0) {
@@ -42,17 +77,16 @@ if ($selected_year > 0) {
 
 $the_query = new WP_Query($args);
 
-// Prendi permalink pagina corrente (senza query string)
-$current_url = get_permalink();
+// Base URL robusta: resta sempre sulla pagina elenco corrente (non sui permalink dei singoli elementi)
+$current_url = home_url( add_query_arg( array(), $wp->request ) );
 
-// Costruiamo la base URL per paginazione mantenendo tutti i parametri
-$base_url = add_query_arg(array(
+$query_args = array(
     'search'      => $main_search_query ? $main_search_query : '',
     'filter_year' => $selected_year > 0 ? $selected_year : 0,
     'max_posts'   => $max_posts,
-    'paged'       => '%#%',
-), $current_url);
+);
 
+$base_url = add_query_arg( array_merge( $query_args, array( 'paged' => '%#%' ) ), $current_url );
 
 ?>
 
