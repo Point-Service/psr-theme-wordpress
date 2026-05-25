@@ -1,5 +1,8 @@
 <?php
-global $wpdb, $wp;
+// Evita redirect canonici che possono trasformare URL filtri/paginazione in route tassonomia non valide
+remove_filter('template_redirect', 'redirect_canonical');
+
+global $wpdb;
 
 // Lettura parametri da URL
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
@@ -91,7 +94,7 @@ $query_args = array(
     'max_posts'   => $max_posts,
 );
 
-$base_url = add_query_arg( array_merge( $query_args, array( 'paged' => '%#%' ) ), $current_url );
+$base_url = add_query_arg( $query_args, $current_url );
 
 ?>
 
@@ -146,7 +149,7 @@ $base_url = add_query_arg( array_merge( $query_args, array( 'paged' => '%#%' ) )
             <?php
             $pagination_links = paginate_links(array(
                 'base'      => $base_url,
-                'format'    => '',
+                'format'    => '?paged=%#%',
                 'current'   => $paged,
                 'total'     => $the_query->max_num_pages,
                 'prev_text' => __('&laquo; Precedente'),
