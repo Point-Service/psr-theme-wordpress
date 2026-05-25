@@ -77,8 +77,13 @@ if ($selected_year > 0) {
 
 $the_query = new WP_Query($args);
 
-// Base URL robusta: resta sempre sulla pagina elenco corrente (non sui permalink dei singoli elementi)
-$current_url = home_url( add_query_arg( array(), $wp->request ) );
+// Base URL robusta: usa sempre la pagina contenitore (elemento_trasparenza) quando disponibile.
+$current_page_id = get_queried_object_id();
+$current_url     = $current_page_id ? get_permalink( $current_page_id ) : get_permalink();
+
+if ( empty( $current_url ) ) {
+    $current_url = home_url( strtok( (string) $_SERVER['REQUEST_URI'], '?' ) );
+}
 
 $query_args = array(
     'search'      => $main_search_query ? $main_search_query : '',
