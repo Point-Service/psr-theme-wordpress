@@ -210,12 +210,7 @@ function dci_accessibility_enhance_frontend_markup( $html ) {
 }
 
 function dci_accessibility_start_output_buffer() {
-    if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
-        return;
-    }
-
-    if ( ! ob_get_level() ) {
-        ob_start( 'dci_accessibility_enhance_frontend_markup' );
-    }
+    // Safety switch: disabled in produzione to avoid side effects on full-page rendering.
+    return;
 }
 add_action( 'template_redirect', 'dci_accessibility_start_output_buffer', 0 );
