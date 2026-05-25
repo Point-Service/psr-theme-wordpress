@@ -14,6 +14,17 @@
   function cycle(name){prefs[name]=(prefs[name]+1)%levels[name].length;}
   function save(){localStorage.setItem(KEY,JSON.stringify(prefs));}
 
+
+  function levelInfo(action){
+    if(action==='brightness') return {current:prefs.brightness,max:levels.brightness.length-1};
+    if(action==='contrast') return {current:prefs.contrast,max:levels.contrast.length-1};
+    if(action==='saturation') return {current:prefs.saturation,max:levels.saturation.length-1};
+    if(action==='grayscale') return {current:prefs.grayscale,max:levels.grayscale.length-1};
+    if(action==='line-height') return {current:prefs.lineHeight,max:levels.lineHeight.length-1};
+    if(action==='letter-spacing') return {current:prefs.letterSpacing,max:levels.letterSpacing.length-1};
+    return null;
+  }
+
   function isActiveAction(a){
     return (a==='links'&&prefs.links)||(a==='dyslexia'&&prefs.dyslexia)||(a==='cursor'&&prefs.cursor)||(a==='invert'&&prefs.invert)||(a==='brightness'&&prefs.brightness>0)||(a==='contrast'&&prefs.contrast>0)||(a==='grayscale'&&prefs.grayscale>0)||(a==='saturation'&&prefs.saturation>0)||(a==='readable-font'&&prefs.readableFont)||(a==='highlight-all'&&prefs.highlightAll)||(a==='highlight-titles'&&prefs.highlightTitles)||(a==='hide-images'&&prefs.hideImages)||(a==='mute'&&prefs.mute)||(a==='stop-animations'&&prefs.stopAnimations)||(a==='keyboard'&&prefs.keyboard)||(a==='line-height'&&prefs.lineHeight>0)||(a==='letter-spacing'&&prefs.letterSpacing>0);
   }
@@ -41,6 +52,11 @@
       var active=isActiveAction(a);
       btn.classList.toggle('is-active',active);
       btn.setAttribute('aria-pressed',active?'true':'false');
+      var lvl=levelInfo(a);
+      var dots=btn.querySelectorAll('.dci-a11y-level i');
+      if(dots.length&&lvl){
+        dots.forEach(function(d,i){ d.classList.toggle('is-on', i < lvl.current); });
+      }
     });
   }
 
