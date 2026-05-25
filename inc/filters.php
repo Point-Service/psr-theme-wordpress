@@ -36,3 +36,91 @@ function dci_vivere_il_comune_post_link( $post_link, $id = 0 ){
     return $post_link;
 }
 add_filter( 'post_type_link', 'dci_vivere_il_comune_post_link', 1, 3 );
+/**
+ * Build sanitized alt/title text for images based on related post title.
+ *
+ * Removes special characters, normalizes whitespace and limits length.
+ *
+ * @param int $post_id
+ * @return string
+ */
+function dci_get_sanitized_image_text_from_post( $post_id ) {
+    $max_length = 90;
+    $title = '';
+
+    if ( $post_id ) {
+        $title = get_the_title( $post_id );
+    }
+
+    if ( empty( $title ) && is_singular() ) {
+        $title = get_the_title();
+    }
+
+    if ( empty( $title ) ) {
+        return '';
+    }
+
+    $title = wp_strip_all_tags( $title );
+    $title = preg_replace( '/[^\p{L}\p{N}\s\-]/u', ' ', $title );
+    $title = preg_replace( '/\s+/u', ' ', $title );
+    $title = trim( $title );
+
+    if ( function_exists( 'mb_strlen' ) && function_exists( 'mb_substr' ) ) {
+        if ( mb_strlen( $title ) > $max_length ) {
+            $title = rtrim( mb_substr( $title, 0, $max_length - 1 ) ) . '…';
+        }
+    } elseif ( strlen( $title ) > $max_length ) {
+        $title = rtrim( substr( $title, 0, $max_length - 1 ) ) . '…';
+    }
+
+    return $title;
+}
+
+/**
+ * Ensure attachment images have meaningful alt and title attributes.
+ *
+ * @param array        $attr
+ * @param WP_Post      $attachment
+ * @param string|array $size
+ * @return array
+ */
+function dci_enforce_image_alt_and_title_attributes( $attr, $attachment, $size ) {
+    if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+        return $attr;
+    }
+
+    // In produzione tocchiamo solo le immagini contenuto (featured), evitando asset tecnici/icons.
+    if ( empty( $attr['class'] ) || strpos( $attr['class'], 'wp-post-image' ) === false ) {
+        return $attr;
+    }
+
+    $related_post_id = get_the_ID();
+
+    if ( ! $related_post_id ) {
+        $queried_object_id = get_queried_object_id();
+        $related_post_id   = $queried_object_id ? $queried_object_id : 0;
+    }
+
+    if ( $related_post_id && get_post_thumbnail_id( $related_post_id ) !== (int) $attachment->ID ) {
+        $related_post_id = 0;
+    }
+
+    $fallback_text = dci_get_sanitized_image_text_from_post( $related_post_id );
+
+    if ( empty( $fallback_text ) ) {
+        $fallback_text = dci_get_sanitized_image_text_from_post( $attachment->post_parent );
+    }
+
+    if ( ! empty( $fallback_text ) ) {
+        if ( empty( $attr['alt'] ) ) {
+            $attr['alt'] = $fallback_text;
+        }
+
+        if ( empty( $attr['title'] ) ) {
+            $attr['title'] = ! empty( $attr['alt'] ) ? $attr['alt'] : $fallback_text;
+        }
+    }
+
+    return $attr;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'dci_enforce_image_alt_and_title_attributes', 10, 3 );
