@@ -9,8 +9,8 @@ if ( ! $enabled ) {
 <div class="dci-a11y" data-dci-a11y>
     <button type="button" class="dci-a11y-toggle" data-a11y-action="toggle" aria-expanded="false" aria-controls="dci-a11y-panel">⚙️ Accessibilità</button>
     <div id="dci-a11y-panel" class="dci-a11y-panel" hidden>
-        <button type="button" class="dci-a11y-btn" data-a11y-action="font-up"><span class="dci-a11y-ico">🔎</span><span>Aumenta testo</span></button>
-        <button type="button" class="dci-a11y-btn" data-a11y-action="font-down"><span class="dci-a11y-ico">🔍</span><span>Riduci testo</span></button>
+        <button type="button" class="dci-a11y-btn" data-a11y-action="font-up" data-level-control="font"><span class="dci-a11y-ico">🔎</span><span class="dci-a11y-label">Aumenta testo</span><span class="dci-a11y-level" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+        <button type="button" class="dci-a11y-btn" data-a11y-action="font-down" data-level-control="font"><span class="dci-a11y-ico">🔍</span><span class="dci-a11y-label">Riduci testo</span><span class="dci-a11y-level" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
         <button type="button" class="dci-a11y-btn" data-a11y-action="line-height" data-level-control="1"><span class="dci-a11y-ico">↕️</span><span class="dci-a11y-label">Interlinea</span><span class="dci-a11y-level" aria-hidden="true"><i></i><i></i><i></i></span></button>
         <button type="button" class="dci-a11y-btn" data-a11y-action="letter-spacing" data-level-control="1"><span class="dci-a11y-ico">↔️</span><span class="dci-a11y-label">Spaziatura</span><span class="dci-a11y-level" aria-hidden="true"><i></i><i></i><i></i></span></button>
         <button type="button" class="dci-a11y-btn" data-a11y-action="readable-font"><span class="dci-a11y-ico">🔤</span><span>Font leggibile</span></button>

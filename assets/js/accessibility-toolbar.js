@@ -23,6 +23,7 @@
     if(action==='line-height') return {current:prefs.lineHeight,max:levels.lineHeight.length-1};
     if(action==='cursor') return {current:prefs.cursor,max:levels.cursor.length-1};
     if(action==='letter-spacing') return {current:prefs.letterSpacing,max:levels.letterSpacing.length-1};
+    if(action==='font-up'||action==='font-down') return {current:Math.max(0,Math.round((prefs.font-90)/10)),max:4};
     return null;
   }
 
