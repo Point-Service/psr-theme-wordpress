@@ -1,5 +1,5 @@
 <?php
-global $wpdb;
+global $wpdb, $wp;
 
 // Lettura parametri da URL
 $max_posts = isset($_GET['max_posts']) ? intval($_GET['max_posts']) : 10;
