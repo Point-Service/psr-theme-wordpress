@@ -81,7 +81,7 @@ $img = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null)
                         $url = get_term_link($argomento->term_id, 'argomenti');
                 ?>
                 
-                <a href="<?php echo esc_url($url); ?>" class="btn-argomento" style="display: inline-flex; align-items: center; gap: 8px;">
+                <a href="<?php echo esc_url($url); ?>" class="btn-argomento" title="Vai all'argomento" style="display: inline-flex; align-items: center; gap: 8px;">
                   <svg class="icon text-primary" style="width:20px; height:30px; display:inline-block; vertical-align:middle;">
                     <use xlink:href="#it-bookmark"></use>
                   </svg>
@@ -93,7 +93,7 @@ $img = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null)
                 }
                 ?>
 
-                <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>"  class="btn btn-primary" style="margin-left: 40px;">
+                <a href="<?php echo dci_get_template_page_url('page-templates/argomenti.php'); ?>"  class="btn btn-primary" title="Vai a tutti gli argomenti" style="margin-left: 40px;">
                     Mostra tutti
                 </a>
 
