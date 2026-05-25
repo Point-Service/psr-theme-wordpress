@@ -1,8 +1,15 @@
 .dci-a11y{position:fixed;left:12px;bottom:12px;z-index:9998}
 .dci-a11y-toggle{border:0;background:#0d3b79;color:#fff;border-radius:20px;padding:10px 14px;font-weight:700}
-.dci-a11y-panel{margin-top:8px;background:#eef1f7;border-radius:8px;padding:8px;display:flex;gap:6px;flex-wrap:wrap;max-width:320px;box-shadow:0 2px 8px rgba(0,0,0,.14)}
-.dci-a11y-btn{border:0;background:#dfe4ef;color:#14315f;padding:8px 10px;border-radius:6px;font-weight:700}
-.dci-a11y-btn.is-active{background:#0d3b79;color:#fff}
+.dci-a11y-panel{margin-top:8px;background:#eef1f7;border-radius:8px;padding:8px;display:grid;grid-template-columns:repeat(2,minmax(140px,1fr));gap:6px;max-width:380px;box-shadow:0 2px 8px rgba(0,0,0,.14)}
+.dci-a11y-btn{border:1px solid #c4cad4;background:#dfe4ef;color:#14315f;padding:10px;border-radius:6px;font-weight:700;min-height:48px}
+.dci-a11y-btn.is-active{background:#0d3b79;color:#fff;border-color:#0d3b79}
 body.dci-a11y-links a{text-decoration:underline!important;text-decoration-thickness:2px!important}
 body.dci-a11y-dyslexia{font-family:Verdana,Arial,sans-serif!important;letter-spacing:.02em;word-spacing:.06em;line-height:1.7}
-@media (max-width:767px){.dci-a11y{left:8px;bottom:8px}.dci-a11y-panel{max-width:260px}}
+body.dci-a11y-readable-font{font-family:Arial,Helvetica,sans-serif!important}
+body.dci-a11y-highlight-all p,body.dci-a11y-highlight-all li,body.dci-a11y-highlight-all span{background:#fff4a3!important}
+body.dci-a11y-highlight-titles h1,body.dci-a11y-highlight-titles h2,body.dci-a11y-highlight-titles h3,body.dci-a11y-highlight-titles h4{background:#fff4a3!important}
+body.dci-a11y-hide-images img{visibility:hidden!important}
+body.dci-a11y-stop-animations *,body.dci-a11y-stop-animations *::before,body.dci-a11y-stop-animations *::after{animation:none!important;transition:none!important}
+body.dci-a11y-keyboard *:focus{outline:3px solid #0d3b79!important;outline-offset:2px!important}
+[data-dci-a11y-target='1']{filter:var(--dci-a11y-filter,none)}
+@media (max-width:767px){.dci-a11y{left:8px;bottom:8px}.dci-a11y-panel{max-width:300px;grid-template-columns:1fr 1fr}}
