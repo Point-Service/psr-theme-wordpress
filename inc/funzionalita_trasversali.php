@@ -148,7 +148,7 @@ function dci_get_external_footer_payload() {
         }
     }
 
-    $footer_cache_key = 'dci_ext_footer_' . md5((string) $external_home);
+    $footer_cache_key = 'dci_ext_footer_v2_' . md5((string) $external_home);
     $footer_cached = get_transient($footer_cache_key);
     if (is_array($footer_cached)) {
         if (!empty($footer_cached['html'])) {
@@ -158,7 +158,7 @@ function dci_get_external_footer_payload() {
     }
 
     if ($is_external_only && $should_fetch_external_footer && !empty($external_home) && filter_var($external_home, FILTER_VALIDATE_URL)) {
-        $cache_key = 'dci_ext_footer_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
+        $cache_key = 'dci_ext_footer_v2_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
         $cached_payload = get_transient($cache_key);
         if (is_array($cached_payload)) {
             return !empty($cached_payload['html']) ? $cached_payload : null;
@@ -213,6 +213,7 @@ function dci_get_external_footer_payload() {
             if (!is_wp_error($api_response) && wp_remote_retrieve_response_code($api_response) === 200) {
                 $payload = json_decode(wp_remote_retrieve_body($api_response), true);
                 if (is_array($payload) && !empty($payload['html'])) {
+                    $payload['html'] = dci_absolutize_external_footer_links($payload['html'], $external_home);
                     $payload['source'] = $external_api;
                     $payload['attempted_sources'] = $attempted_sources;
                     set_transient($footer_cache_key, $payload, 5 * MINUTE_IN_SECONDS);
@@ -233,6 +234,7 @@ function dci_get_external_footer_payload() {
                 $external_html = wp_remote_retrieve_body($home_response);
                 $footer_html = dci_extract_footer_html($external_html);
                 if (!empty($footer_html)) {
+                    $footer_html = dci_absolutize_external_footer_links($footer_html, $external_home);
                     $result = array(
                         'success' => true,
                         'generated_at' => current_time('c'),
@@ -314,6 +316,40 @@ function dci_extract_footer_html($html) {
     }
 
     return $html;
+}
+
+
+/**
+ * Converte in assoluti i link relativi del footer recuperato dal portale principale.
+ *
+ * @param string $html
+ * @param string $external_home
+ * @return string
+ */
+function dci_absolutize_external_footer_links($html, $external_home) {
+    if (!is_string($html) || $html === '' || empty($external_home)) {
+        return $html;
+    }
+
+    if (!preg_match('#^https?://#i', $external_home)) {
+        $external_home = 'https://' . ltrim($external_home, '/');
+    }
+
+    if (!filter_var($external_home, FILTER_VALIDATE_URL)) {
+        return $html;
+    }
+
+    $base_url = untrailingslashit($external_home);
+
+    return preg_replace_callback('/\b(href|src|action)=(\"|\')([^\"\']+)\2/i', function ($matches) use ($base_url) {
+        $url = trim($matches[3]);
+
+        if ($url === '' || strpos($url, '/') !== 0 || strpos($url, '//') === 0) {
+            return $matches[0];
+        }
+
+        return $matches[1] . '=' . $matches[2] . esc_url($base_url . $url) . $matches[2];
+    }, $html);
 }
 
 /**
