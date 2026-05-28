@@ -131,15 +131,61 @@ function dci_register_footer_export_route() {
 add_action('rest_api_init', 'dci_register_footer_export_route');
 
 /**
+ * Verifica valori booleani salvati dalle opzioni CMB2/radio del tema.
+ *
+ * @param mixed $value
+ * @return bool
+ */
+function dci_is_truthy_option_value($value) {
+    return in_array(strtolower((string) $value), array('1', 'true', 'yes', 'on'), true);
+}
+
+/**
+ * Verifica se il portale esterno è abilitato.
+ *
+ * @return bool
+ */
+function dci_is_external_portal_enabled() {
+    return dci_is_truthy_option_value(dci_get_option('ck_portalesoloperusoesterno'));
+}
+
+/**
+ * Verifica il check "Richiama head da Url Home".
+ *
+ * @return bool
+ */
+function dci_should_fetch_external_head() {
+    return dci_is_truthy_option_value(dci_get_option('ck_richiama_head_portale_principale', 'dci_options', 'false'));
+}
+
+/**
+ * Verifica il check "Richiama footer da Url Home".
+ *
+ * @return bool
+ */
+function dci_should_fetch_external_footer() {
+    return dci_is_truthy_option_value(dci_get_option('ck_richiama_footer_portale_principale', 'dci_options', 'false'));
+}
+
+/**
+ * Stampa nel <head> locale le risorse recuperate dal portale principale, se abilitate.
+ */
+function dci_print_external_head_html() {
+    $head_html = dci_get_external_head_html();
+    if ($head_html !== '') {
+        echo "\n" . $head_html . "\n";
+    }
+}
+add_action('wp_head', 'dci_print_external_head_html', 20);
+
+/**
  * Restituisce uno snapshot HTML del footer del tema.
  *
  * @return array|null
  */
 function dci_get_external_footer_payload() {
-    $external_only_raw = dci_get_option('ck_portalesoloperusoesterno');
-    $is_external_only = in_array(strtolower((string) $external_only_raw), array('1', 'true', 'yes', 'on'), true);
-    $external_footer_toggle_raw = dci_get_option('ck_richiama_footer_portale_principale', 'dci_options', 'true');
-    $should_fetch_external_footer = in_array(strtolower((string) $external_footer_toggle_raw), array('1', 'true', 'yes', 'on'), true);
+    $is_external_only = dci_is_external_portal_enabled();
+    $should_fetch_external_footer = dci_should_fetch_external_footer();
     $external_home = trim((string) dci_get_option('url_homesoloesterno'));
 
     if ($is_external_only && !empty($external_home)) {
@@ -213,7 +259,7 @@ function dci_get_external_footer_payload() {
             if (!is_wp_error($api_response) && wp_remote_retrieve_response_code($api_response) === 200) {
                 $payload = json_decode(wp_remote_retrieve_body($api_response), true);
                 if (is_array($payload) && !empty($payload['html'])) {
-                    $payload['html'] = dci_absolutize_external_footer_links($payload['html'], $external_home);
+                    $payload['html'] = dci_absolutize_external_html_urls($payload['html'], $external_home);
                     $payload['source'] = $external_api;
                     $payload['attempted_sources'] = $attempted_sources;
                     set_transient($footer_cache_key, $payload, 5 * MINUTE_IN_SECONDS);
@@ -234,7 +280,7 @@ function dci_get_external_footer_payload() {
                 $external_html = wp_remote_retrieve_body($home_response);
                 $footer_html = dci_extract_footer_html($external_html);
                 if (!empty($footer_html)) {
-                    $footer_html = dci_absolutize_external_footer_links($footer_html, $external_home);
+                    $footer_html = dci_absolutize_external_html_urls($footer_html, $external_home);
                     $result = array(
                         'success' => true,
                         'generated_at' => current_time('c'),
@@ -320,13 +366,13 @@ function dci_extract_footer_html($html) {
 
 
 /**
- * Converte in assoluti i link relativi del footer recuperato dal portale principale.
+ * Converte in assoluti gli URL relativi dei frammenti HTML recuperati dal portale principale.
  *
  * @param string $html
  * @param string $external_home
  * @return string
  */
-function dci_absolutize_external_footer_links($html, $external_home) {
+function dci_absolutize_external_html_urls($html, $external_home) {
     if (!is_string($html) || $html === '' || empty($external_home)) {
         return $html;
     }
@@ -397,10 +443,8 @@ function dci_extract_header_html($html) {
  * @return string
  */
 function dci_get_external_head_html() {
-    $external_only_raw = dci_get_option('ck_portalesoloperusoesterno');
-    $is_external_only = in_array(strtolower((string) $external_only_raw), array('1', 'true', 'yes', 'on'), true);
-    $external_head_toggle_raw = dci_get_option('ck_richiama_head_portale_principale', 'dci_options', 'false');
-    $should_fetch_external_head = in_array(strtolower((string) $external_head_toggle_raw), array('1', 'true', 'yes', 'on'), true);
+    $is_external_only = dci_is_external_portal_enabled();
+    $should_fetch_external_head = dci_should_fetch_external_head();
     $external_home = trim((string) dci_get_option('url_homesoloesterno'));
 
     if (!$is_external_only || !$should_fetch_external_head) {
@@ -415,7 +459,7 @@ function dci_get_external_head_html() {
         return '';
     }
 
-    $head_cache_key = 'dci_ext_head_' . md5((string) $external_home);
+    $head_cache_key = 'dci_ext_head_v2_' . md5((string) $external_home);
     $head_cached = get_transient($head_cache_key);
     if (is_string($head_cached)) {
         return ($head_cached === '__empty__') ? '' : $head_cached;
@@ -447,7 +491,7 @@ function dci_get_external_head_html() {
     }
     $candidate_homes = array_values(array_unique(array_filter($candidate_homes)));
 
-    $cache_key = 'dci_ext_head_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
+    $cache_key = 'dci_ext_head_v2_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
     $cached_head = get_transient($cache_key);
     if (is_array($cached_head)) {
         return !empty($cached_head['html']) ? $cached_head['html'] : '';
@@ -461,6 +505,7 @@ function dci_get_external_head_html() {
 
     $head_html = dci_extract_head_html($external_html);
     if (!empty($head_html)) {
+        $head_html = dci_absolutize_external_html_urls($head_html, $external_home);
         set_transient($cache_key, array('html' => $head_html), 10 * MINUTE_IN_SECONDS);
         return $head_html;
     }
@@ -477,7 +522,7 @@ function dci_get_external_head_html() {
  * @return string
  */
 function dci_get_external_home_snapshot($external_home, $candidate_homes = array()) {
-    $cache_key = 'dci_ext_home_html_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
+    $cache_key = 'dci_ext_home_html_v2_' . md5(strtolower((string) $external_home) . '|' . home_url('/'));
     $cached_html = get_transient($cache_key);
     if (is_array($cached_html)) {
         return !empty($cached_html['html']) ? (string) $cached_html['html'] : '';
@@ -497,10 +542,10 @@ function dci_get_external_home_snapshot($external_home, $candidate_homes = array
     foreach ($candidate_homes as $candidate_home) {
         $response = wp_remote_get($candidate_home, $request_args);
         if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
-            $head_html = dci_extract_head_html(wp_remote_retrieve_body($response));
-            if (!empty($head_html)) {
-                set_transient($cache_key, array('html' => $head_html), 10 * MINUTE_IN_SECONDS);
-                return $head_html;
+            $html = wp_remote_retrieve_body($response);
+            if (!empty($html)) {
+                set_transient($cache_key, array('html' => $html), 10 * MINUTE_IN_SECONDS);
+                return $html;
             }
         }
     }
@@ -515,10 +560,8 @@ function dci_get_external_home_snapshot($external_home, $candidate_homes = array
  * @return string
  */
 function dci_get_external_header_html() {
-    $external_only_raw = dci_get_option('ck_portalesoloperusoesterno');
-    $is_external_only = in_array(strtolower((string) $external_only_raw), array('1', 'true', 'yes', 'on'), true);
-    $external_head_toggle_raw = dci_get_option('ck_richiama_head_portale_principale', 'dci_options', 'false');
-    $should_fetch_external_header = in_array(strtolower((string) $external_head_toggle_raw), array('1', 'true', 'yes', 'on'), true);
+    $is_external_only = dci_is_external_portal_enabled();
+    $should_fetch_external_header = dci_should_fetch_external_head();
     $external_home = trim((string) dci_get_option('url_homesoloesterno'));
 
     if (!$is_external_only || !$should_fetch_external_header) {
@@ -532,7 +575,7 @@ function dci_get_external_header_html() {
         return '';
     }
 
-    $header_cache_key = 'dci_ext_header_' . md5((string) $external_home);
+    $header_cache_key = 'dci_ext_header_v2_' . md5((string) $external_home);
     $header_cached = get_transient($header_cache_key);
     if (is_string($header_cached)) {
         return ($header_cached === '__empty__') ? '' : $header_cached;
@@ -560,6 +603,7 @@ function dci_get_external_header_html() {
         if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
             $header_html = dci_extract_header_html(wp_remote_retrieve_body($response));
             if (!empty($header_html)) {
+                $header_html = dci_absolutize_external_html_urls($header_html, $external_home);
                 set_transient($header_cache_key, $header_html, 5 * MINUTE_IN_SECONDS);
                 return $header_html;
             }
