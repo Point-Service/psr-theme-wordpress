@@ -27,7 +27,7 @@ get_header();
 					<div class="img-responsive-wrapper">
 						<div class="img-responsive">
 							<div class="img-wrapper">
-								<?php dci_get_img($img); ?>
+								<?php dci_get_deferred_img($img); ?>
 							</div>
 						</div>
 					</div>
@@ -39,8 +39,8 @@ get_header();
 					</div>
 				</div>
 			</section>
-			<?php get_template_part("template-parts/vivere-comune/eventi"); ?>
-			<?php get_template_part("template-parts/vivere-comune/luoghi"); ?>
+			<?php dci_get_template_part_async("vivere-eventi"); ?>
+			<?php dci_get_template_part_async("vivere-luoghi"); ?>
 			<?php get_template_part("template-parts/vivere-comune/argomenti"); ?>
 			
 			<?php 
@@ -50,10 +50,10 @@ get_header();
 				$stile_galleria = dci_get_option('stile_galleria','galleria') ?: null;
 				if($stile_galleria === "solo-foto" || $stile_galleria ==="Solo foto"){
 					// Vecchia Galleria fotografica
-					get_template_part("template-parts/vivere-comune/galleria-foto");
+					dci_get_template_part_async("home-gallery-photo");
 				}else if($stile_galleria === "foto-gallery" || $stile_galleria ==="foto-gallery"){
 					// Nuova galleria
-					get_template_part("template-parts/galleria/home-gallery");
+					dci_get_template_part_async("home-gallery");
 				}
 		    }?>
 
