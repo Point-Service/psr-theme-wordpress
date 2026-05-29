@@ -621,6 +621,29 @@ if (!function_exists("dci_get_mapbox_access_token")) {
  *     ?>
  */
 
+function dci_get_async_public_url($fallback_url = '')
+{
+    if (wp_doing_ajax() && isset($_POST['current_url'])) {
+        $current_url = esc_url_raw(wp_unslash($_POST['current_url']));
+        if ($current_url !== '') {
+            return $current_url;
+        }
+    }
+
+    return $fallback_url;
+}
+
+function dci_get_pagination_base_url($page_arg = 'paged', $fallback_url = '')
+{
+    $current_url = dci_get_async_public_url($fallback_url);
+    if ($current_url !== '') {
+        $current_url = remove_query_arg(array('paged', 'page', $page_arg), $current_url);
+        return str_replace('%25%23%25', '%#%', esc_url(add_query_arg($page_arg, '%#%', $current_url)));
+    }
+
+    return str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999)));
+}
+
 function dci_bootstrap_pagination(?\WP_Query $wp_query = null, $echo = true)
 {
     if ($wp_query === null) {
@@ -647,9 +670,12 @@ function dci_bootstrap_pagination(?\WP_Query $wp_query = null, $echo = true)
         }
     }
 
+    $pagination_base = dci_get_pagination_base_url('paged');
+    $pagination_format = wp_doing_ajax() && isset($_POST['current_url']) ? '' : '?paged=%#%';
+
     $pages = paginate_links([
-            'base' => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
-            'format' => '?paged=%#%',
+            'base' => $pagination_base,
+            'format' => $pagination_format,
             'current' => $current_page,
             'total' => $wp_query->max_num_pages,
             'type' => 'array',
@@ -1268,7 +1294,7 @@ if (!function_exists('dci_get_maggioli_services_data')) {
 // Returns an img tag with appropriate attributes
 
 if(!function_exists("dci_get_img")) {
-    function dci_get_img( $url, $classes = '') {
+    function dci_get_img( $url, $classes = '', $attributes = array()) {
         $attachment_id = attachment_url_to_postid($url);
         $img_post = $attachment_id ? get_post( $attachment_id ) : null;
 
@@ -1294,9 +1320,55 @@ if(!function_exists("dci_get_img")) {
         }
         $img .= 'alt="' . esc_attr( $image_alt ) . '" ';
         $img .= 'title="' . esc_attr( $image_title ) . '" ';
+        if (is_array($attributes)) {
+            foreach ($attributes as $attribute => $value) {
+                if ($value === false || $value === null || $value === '') {
+                    continue;
+                }
+                $attribute = sanitize_key($attribute);
+                $img .= esc_attr($attribute) . '="' . esc_attr((string) $value) . '" ';
+            }
+        }
         $img .= '/>';
 
         echo $img;
+    }
+}
+
+if(!function_exists("dci_get_deferred_img")) {
+    function dci_get_deferred_img( $url, $classes = '') {
+        $attachment_id = attachment_url_to_postid($url);
+        $img_post = $attachment_id ? get_post( $attachment_id ) : null;
+        $image_title = '';
+        $image_alt = '';
+
+        if ( $img_post && isset( $img_post->ID ) ) {
+            $image_alt   = (string) get_post_meta( $img_post->ID, '_wp_attachment_image_alt', true );
+            $image_title = (string) get_the_title( $img_post->ID );
+        }
+
+        if ( empty( $image_title ) ) {
+            $image_title = trim( preg_replace('/[-_]+/', ' ', pathinfo( (string) $url, PATHINFO_FILENAME ) ) );
+        }
+
+        if ( empty( $image_alt ) ) {
+            $image_alt = $image_title;
+        }
+
+        $placeholder = get_template_directory_uri() . '/assets/img/placeholder_grey.jpeg';
+        $deferred_classes = trim($classes . ' dci-deferred-img');
+        $img = '<img src="' . esc_url($placeholder) . '" data-dci-src="' . esc_url($url) . '" ';
+        if ($deferred_classes) {
+            $img .= 'class="' . esc_attr($deferred_classes) . '" ';
+        }
+        $img .= 'alt="' . esc_attr($image_alt) . '" ';
+        $img .= 'title="' . esc_attr($image_title) . '" ';
+        $img .= 'loading="lazy" decoding="async" fetchpriority="low" />';
+
+        echo $img;
+        echo '<noscript>';
+        dci_get_img($url, $classes);
+        echo '</noscript>';
     }
 }
 
