@@ -1029,3 +1029,56 @@ body.dci-sticky-header-nav-active .dci-sticky-nav-search .search-link {
     display: none;
   }
 }
+
+/* Loader sezioni caricate in parallelo */
+.dci-async-template {
+  background: #f7f9fa;
+}
+
+.dci-async-loader {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem 1rem;
+  align-items: center;
+  max-width: 38rem;
+}
+
+.dci-async-loader__spinner {
+  grid-row: span 2;
+  width: 2rem;
+  height: 2rem;
+  border: 0.25rem solid rgba(0, 102, 204, 0.2);
+  border-top-color: #06c;
+  border-radius: 50%;
+  animation: dci-async-loader-spin 0.8s linear infinite;
+}
+
+.dci-async-loader__line {
+  display: block;
+  width: 60%;
+  height: 0.75rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #e5eaf0 25%, #f4f6f8 50%, #e5eaf0 75%);
+  background-size: 200% 100%;
+  animation: dci-async-loader-pulse 1.2s ease-in-out infinite;
+}
+
+.dci-async-loader__line--long {
+  width: 100%;
+}
+
+.dci-async-template--error {
+  background: #fff3cd;
+}
+
+@keyframes dci-async-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dci-async-loader-pulse {
+  to {
+    background-position: -200% 0;
+  }
+}
