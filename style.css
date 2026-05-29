@@ -967,6 +967,25 @@ body.dci-sticky-header-nav-active .it-header-wrapper .navbar-collapsable {
 
 body.dci-sticky-header-nav-active .it-header-wrapper .menu-wrapper {
   align-items: center;
+  gap: 0.5rem;
+}
+
+body.dci-sticky-header-nav-active .it-header-wrapper .menu-wrapper nav,
+body.dci-sticky-header-nav-active .it-header-wrapper .menu-wrapper .navbar-nav,
+body.dci-sticky-header-nav-active .it-header-wrapper .menu-wrapper .nav-item {
+  min-width: 0;
+}
+
+body.dci-sticky-header-nav-active .it-header-wrapper .menu-wrapper .navbar-nav {
+  flex-wrap: nowrap;
+}
+
+body.dci-sticky-header-nav-active .it-header-wrapper .menu-wrapper .nav-link {
+  display: block;
+  max-width: clamp(7rem, 10vw, 12rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 body.dci-sticky-header-nav-active .dci-sticky-nav-brand {
@@ -992,7 +1011,7 @@ body.dci-sticky-header-nav-active .dci-sticky-nav-search {
   align-items: center;
   flex: 0 0 auto;
   gap: 0.5rem;
-  margin-left: 1rem;
+  margin-left: 0.75rem;
 }
 
 body.dci-sticky-header-nav-active .dci-sticky-nav-search span {
@@ -1007,6 +1026,11 @@ body.dci-sticky-header-nav-active .dci-sticky-nav-search .search-link {
 }
 
 @media (max-width: 991.98px) {
+  body.dci-sticky-header-nav-active .it-header-wrapper .it-header-navbar-wrapper {
+    position: static;
+    box-shadow: none;
+  }
+
   body.dci-sticky-header-nav-active .dci-sticky-nav-brand,
   body.dci-sticky-header-nav-active .dci-sticky-nav-search {
     display: none;

@@ -10,7 +10,9 @@
 
   var menuWrapper = nav.querySelector('.menu-wrapper');
   var primaryNav = menuWrapper ? menuWrapper.querySelector('nav[aria-label="Principale"]') : null;
+  var secondaryNav = menuWrapper ? menuWrapper.querySelector('nav[aria-label="Secondaria"]') : null;
   var brandSource = document.querySelector('.it-header-center-wrapper .it-brand-wrapper a');
+  var desktopNavMedia = window.matchMedia('(min-width: 992px)');
   var placeholder = document.createElement('div');
   var navOffsetTop = 0;
   var navHeight = 0;
@@ -32,9 +34,10 @@
     }
 
     var compactSearch = document.createElement('div');
+    var searchAnchor = secondaryNav || primaryNav;
     compactSearch.className = 'dci-sticky-nav-search';
     compactSearch.innerHTML = '<span>Cerca</span><button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito"><svg class="icon"><use href="#it-search"></use></svg></button>';
-    primaryNav.insertAdjacentElement('afterend', compactSearch);
+    searchAnchor.insertAdjacentElement('afterend', compactSearch);
   }
 
   addCompactControls();
@@ -63,6 +66,12 @@
       setStickyState(false);
     }
 
+    if (!desktopNavMedia.matches) {
+      setStickyState(false);
+      ticking = false;
+      return;
+    }
+
     var rect = nav.getBoundingClientRect();
     navOffsetTop = rect.top + window.pageYOffset;
     navHeight = nav.offsetHeight || rect.height || 0;
@@ -71,6 +80,12 @@
   }
 
   function update() {
+    if (!desktopNavMedia.matches) {
+      setStickyState(false);
+      ticking = false;
+      return;
+    }
+
     var shouldStick = window.pageYOffset > navOffsetTop - getAdminBarOffset();
     setStickyState(shouldStick);
     ticking = false;
@@ -87,6 +102,12 @@
   window.addEventListener('resize', measure);
   window.addEventListener('orientationchange', measure);
   window.addEventListener('load', measure);
+
+  if (desktopNavMedia.addEventListener) {
+    desktopNavMedia.addEventListener('change', measure);
+  } else if (desktopNavMedia.addListener) {
+    desktopNavMedia.addListener(measure);
+  }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', measure);
