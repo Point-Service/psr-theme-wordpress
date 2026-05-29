@@ -36,7 +36,7 @@
     var compactSearch = document.createElement('div');
     var searchAnchor = secondaryNav || primaryNav;
     compactSearch.className = 'dci-sticky-nav-search';
-    compactSearch.innerHTML = '<span>Cerca</span><button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito"><svg class="icon"><use href="#it-search"></use></svg></button>';
+    compactSearch.innerHTML = '<button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito"><svg class="icon"><use href="#it-search"></use></svg></button>';
     searchAnchor.insertAdjacentElement('afterend', compactSearch);
   }
 

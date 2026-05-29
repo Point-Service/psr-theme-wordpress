@@ -1010,14 +1010,7 @@ body.dci-sticky-header-nav-active .dci-sticky-nav-search {
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
-  gap: 0.5rem;
-  margin-left: 0.75rem;
-}
-
-body.dci-sticky-header-nav-active .dci-sticky-nav-search span {
-  color: #fff;
-  font-size: 0.875rem;
-  font-weight: 600;
+  margin-left: 0.5rem;
 }
 
 body.dci-sticky-header-nav-active .dci-sticky-nav-search .search-link {
