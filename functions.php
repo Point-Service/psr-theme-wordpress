@@ -53,6 +53,26 @@ function dci_async_template_parts_map() {
         'home-notizie' => array('slug' => 'template-parts/home/notizie', 'label' => 'Caricamento novità'),
         'home-calendario' => array('slug' => 'template-parts/home/calendario', 'label' => 'Caricamento eventi'),
         'home-servizi' => array('slug' => 'template-parts/home/servizi', 'label' => 'Caricamento servizi'),
+        'home-argomenti' => array('slug' => 'template-parts/home/argomenti', 'label' => 'Caricamento argomenti in evidenza'),
+        'home-gallery-photo' => array('slug' => 'template-parts/vivere-comune/galleria-foto', 'label' => 'Caricamento galleria'),
+        'home-gallery' => array('slug' => 'template-parts/galleria/home-gallery', 'label' => 'Caricamento galleria'),
+        'amministrazione-evidenza' => array('slug' => 'template-parts/amministrazione/evidenza', 'label' => 'Caricamento amministrazione in evidenza'),
+        'amministrazione-cards' => array('slug' => 'template-parts/amministrazione/cards-list', 'label' => 'Caricamento amministrazione'),
+        'aree-amministrative-tutte' => array('slug' => 'template-parts/aree-amministrative/tutte-aree', 'label' => 'Caricamento aree amministrative'),
+        'uffici-tutti' => array('slug' => 'template-parts/uffici/tutti-uffici', 'label' => 'Caricamento uffici'),
+        'organi-governo-tutti' => array('slug' => 'template-parts/organi-governo/tutti-organi', 'label' => 'Caricamento organi di governo'),
+        'politici-tutti' => array('slug' => 'template-parts/politici/tutti-politici', 'label' => 'Caricamento politici'),
+        'personale-amministrativo-tutti' => array('slug' => 'template-parts/personale-amministrativo/tutto-personale', 'label' => 'Caricamento personale amministrativo'),
+        'enti-fondazioni-tutti' => array('slug' => 'template-parts/enti-e-fondazioni/tutti-enti', 'label' => 'Caricamento enti e fondazioni'),
+        'consigli-tutti' => array('slug' => 'template-parts/consigli/tutti', 'label' => 'Caricamento consiglio'),
+        'trasparenza-categorie' => array('slug' => 'template-parts/amministrazione-trasparente/categorie', 'label' => 'Caricamento amministrazione trasparente'),
+        'trasparenza-sidebar' => array('slug' => 'template-parts/amministrazione-trasparente/side-bar', 'label' => 'Caricamento menu amministrazione trasparente'),
+        'trasparenza-atti-concessione' => array('slug' => 'template-parts/amministrazione-trasparente/atto-concessione/tutti-gli-atti', 'label' => 'Caricamento atti di concessione'),
+        'trasparenza-incarichi-autorizzazioni' => array('slug' => 'template-parts/amministrazione-trasparente/incarichi-autorizzazioni/tutti-gli-incarichi', 'label' => 'Caricamento incarichi'),
+        'trasparenza-titolare-incarico' => array('slug' => 'template-parts/amministrazione-trasparente/titolare_incarico/tutti-titolari', 'label' => 'Caricamento titolari incarico'),
+        'trasparenza-contatti' => array('slug' => 'template-parts/amministrazione-trasparente/contatti/tutti-contatti', 'label' => 'Caricamento contatti'),
+        'trasparenza-articolazione-uffici' => array('slug' => 'template-parts/amministrazione-trasparente/articolazione-uffici/tutti-uffici', 'label' => 'Caricamento articolazione uffici'),
+        'trasparenza-titolari-politici' => array('slug' => 'template-parts/amministrazione-trasparente/titolari-incarichi-poilitici/tutti-titolari', 'label' => 'Caricamento titolari politici'),
         'novita-evidenza' => array('slug' => 'template-parts/novita/evidenza', 'label' => 'Caricamento notizie in evidenza'),
         'novita-tutte' => array('slug' => 'template-parts/novita/tutte-novita', 'label' => 'Caricamento lista notizie'),
         'servizi-evidenza' => array('slug' => 'template-parts/servizio/evidenza', 'label' => 'Caricamento servizi in evidenza'),
@@ -72,6 +92,56 @@ function dci_is_async_template_request($template_key) {
         && $template_key === sanitize_key(wp_unslash($_POST['template_key']));
 }
 
+function dci_async_template_parts_disabled() {
+    return isset($_GET['dci_disable_async']) && '1' === sanitize_text_field(wp_unslash($_GET['dci_disable_async']));
+}
+
+function dci_async_template_parts_cache_ttl() {
+    return 60;
+}
+
+function dci_async_template_parts_cache_version() {
+    $version = get_option('dci_async_template_parts_cache_version');
+
+    if (!$version) {
+        $version = str_replace('.', '', (string) microtime(true));
+        update_option('dci_async_template_parts_cache_version', $version, false);
+    }
+
+    return $version;
+}
+
+function dci_bump_async_template_parts_cache_version($option = '') {
+    if (is_string($option) && (
+        $option === 'dci_async_template_parts_cache_version'
+        || strpos($option, '_transient_') === 0
+        || strpos($option, '_site_transient_') === 0
+    )) {
+        return;
+    }
+
+    update_option('dci_async_template_parts_cache_version', str_replace('.', '', (string) microtime(true)), false);
+}
+add_action('save_post', 'dci_bump_async_template_parts_cache_version');
+add_action('deleted_post', 'dci_bump_async_template_parts_cache_version');
+add_action('created_term', 'dci_bump_async_template_parts_cache_version');
+add_action('edited_term', 'dci_bump_async_template_parts_cache_version');
+add_action('delete_term', 'dci_bump_async_template_parts_cache_version');
+add_action('added_option', 'dci_bump_async_template_parts_cache_version');
+add_action('updated_option', 'dci_bump_async_template_parts_cache_version');
+add_action('deleted_option', 'dci_bump_async_template_parts_cache_version');
+
+function dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string) {
+    return 'dci_async_tpl_' . md5(wp_json_encode(array(
+        'version' => dci_async_template_parts_cache_version(),
+        'template_key' => $template_key,
+        'page_id' => (int) $page_id,
+        'term_id' => (int) $term_id,
+        'taxonomy' => $taxonomy,
+        'query_string' => $query_string,
+    )));
+}
+
 function dci_get_template_part_async($template_key) {
     $templates = dci_async_template_parts_map();
 
@@ -79,7 +149,7 @@ function dci_get_template_part_async($template_key) {
         return;
     }
 
-    if (is_admin() || wp_doing_ajax()) {
+    if (is_admin() || wp_doing_ajax() || dci_async_template_parts_disabled()) {
         get_template_part($templates[$template_key]['slug']);
         return;
     }
@@ -92,6 +162,10 @@ function dci_get_template_part_async($template_key) {
         class="dci-async-template"
         data-template-key="<?php echo esc_attr($template_key); ?>"
         data-page-id="<?php echo esc_attr(get_queried_object_id()); ?>"
+        <?php if (is_tax()) { ?>
+            data-term-id="<?php echo esc_attr(get_queried_object_id()); ?>"
+            data-taxonomy="<?php echo esc_attr(get_queried_object()->taxonomy); ?>"
+        <?php } ?>
         role="status"
         aria-live="polite"
         aria-busy="true"
@@ -118,8 +192,44 @@ function dci_load_template_part_ajax() {
         wp_send_json_error(array('message' => 'Template non disponibile.'), 404);
     }
 
+    $query_string = isset($_POST['query_string']) ? (string) wp_unslash($_POST['query_string']) : '';
+    if ($query_string !== '') {
+        parse_str($query_string, $query_args);
+        if (is_array($query_args)) {
+            $_GET = array_merge($_GET, $query_args);
+        }
+    }
+
+    $term_id = isset($_POST['term_id']) ? absint($_POST['term_id']) : 0;
+    $taxonomy = isset($_POST['taxonomy']) ? sanitize_key(wp_unslash($_POST['taxonomy'])) : '';
     $page_id = isset($_POST['page_id']) ? absint($_POST['page_id']) : 0;
-    if ($page_id) {
+
+    global $wp_query;
+    if (isset($_GET['paged'])) {
+        $wp_query->set('paged', max(1, absint($_GET['paged'])));
+    }
+    if (isset($_GET['page'])) {
+        $wp_query->set('page', max(1, absint($_GET['page'])));
+    }
+
+    if ($term_id && $taxonomy) {
+        $term = get_term($term_id, $taxonomy);
+        if ($term && !is_wp_error($term)) {
+            $wp_query->queried_object = $term;
+            $wp_query->queried_object_id = $term_id;
+            $wp_query->is_tax = true;
+        }
+    }
+
+    $cache_key = dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string);
+    if (!is_user_logged_in()) {
+        $cached_html = get_transient($cache_key);
+        if (false !== $cached_html) {
+            wp_send_json_success(array('html' => $cached_html, 'cached' => true));
+        }
+    }
+
+    if ($page_id && !$term_id) {
         global $post;
         $post = get_post($page_id);
         if ($post) {
@@ -131,11 +241,15 @@ function dci_load_template_part_ajax() {
     get_template_part($templates[$template_key]['slug']);
     $html = ob_get_clean();
 
-    if ($page_id) {
+    if ($page_id && !$term_id) {
         wp_reset_postdata();
     }
 
-    wp_send_json_success(array('html' => $html));
+    if (!is_user_logged_in()) {
+        set_transient($cache_key, $html, dci_async_template_parts_cache_ttl());
+    }
+
+    wp_send_json_success(array('html' => $html, 'cached' => false));
 }
 
 
@@ -295,7 +409,9 @@ function dci_scripts() {
 	wp_script_add_data( 'dci-accessibility-toolbar', 'defer', true );
 	wp_enqueue_script( 'dci-async-template-parts', get_template_directory_uri() . '/assets/js/async-template-parts.js', array(), false, true );
 	wp_localize_script( 'dci-async-template-parts', 'dciAsyncTemplateParts', array(
-		'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
+		'maxConcurrent' => 3,
+		'disableParam' => 'dci_disable_async',
 	) );
 	wp_script_add_data( 'dci-async-template-parts', 'defer', true );
 	wp_add_inline_script( 'dci-comuni', 'window.wpRestApi = "' . get_rest_url() . '"', 'before' );
