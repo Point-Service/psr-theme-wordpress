@@ -621,6 +621,29 @@ if (!function_exists("dci_get_mapbox_access_token")) {
  *     ?>
  */
 
+function dci_get_async_public_url($fallback_url = '')
+{
+    if (wp_doing_ajax() && isset($_POST['current_url'])) {
+        $current_url = esc_url_raw(wp_unslash($_POST['current_url']));
+        if ($current_url !== '') {
+            return $current_url;
+        }
+    }
+
+    return $fallback_url;
+}
+
+function dci_get_pagination_base_url($page_arg = 'paged', $fallback_url = '')
+{
+    $current_url = dci_get_async_public_url($fallback_url);
+    if ($current_url !== '') {
+        $current_url = remove_query_arg(array('paged', 'page', $page_arg), $current_url);
+        return str_replace('%25%23%25', '%#%', esc_url(add_query_arg($page_arg, '%#%', $current_url)));
+    }
+
+    return str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999)));
+}
+
 function dci_bootstrap_pagination(?\WP_Query $wp_query = null, $echo = true)
 {
     if ($wp_query === null) {
@@ -647,9 +670,12 @@ function dci_bootstrap_pagination(?\WP_Query $wp_query = null, $echo = true)
         }
     }
 
+    $pagination_base = dci_get_pagination_base_url('paged');
+    $pagination_format = wp_doing_ajax() && isset($_POST['current_url']) ? '' : '?paged=%#%';
+
     $pages = paginate_links([
-            'base' => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
-            'format' => '?paged=%#%',
+            'base' => $pagination_base,
+            'format' => $pagination_format,
             'current' => $current_page,
             'total' => $wp_query->max_num_pages,
             'type' => 'array',
