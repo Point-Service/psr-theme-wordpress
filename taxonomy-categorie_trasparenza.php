@@ -299,7 +299,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                         <div class="col-12 col-lg-8 pt-20 pt-lg-20 pb-lg-20">
                             <?php get_template_part("template-parts/bandi-di-gara/tutti-bandi"); ?>
                         </div>
-                        <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+                        <?php dci_get_template_part_async("trasparenza-sidebar"); ?>
                     </div>
                 </div>
             </div>
@@ -335,7 +335,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     <div class="col-12 col-lg-8 pt-20 pt-lg-20 pb-lg-20">
                         <?php dci_get_template_part_async("trasparenza-titolare-incarico"); ?>
                     </div>
-                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+                    <?php dci_get_template_part_async("trasparenza-sidebar"); ?>
                 </div>
             </div>
         </div>
@@ -349,7 +349,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                             $tipo_personalizzato = get_queried_object()->name;                       
                             get_template_part("template-parts/bandi-di-gara/tipi-personalizzati"); ?>
                         </div>
-                        <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+                        <?php dci_get_template_part_async("trasparenza-sidebar"); ?>
                     </div>
                 </div>
             </div>
@@ -360,7 +360,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                 <div class="col-12 col-lg-8 pt-20 pt-lg-20 pb-lg-20">
                     <?php dci_get_template_part_async("trasparenza-contatti"); ?>
                 </div>
-                <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+                <?php dci_get_template_part_async("trasparenza-sidebar"); ?>
             </div>
         </div>
    <?php } else if($obj->name === "Articolazione uffici" && dci_get_option("ck_portalesoloperusoesterno") !== 'true' ){?>
@@ -449,7 +449,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     </div>
 
                     <!-- Colonna destra: link utili -->
-                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
+                    <?php dci_get_template_part_async("trasparenza-sidebar"); ?>
                 </div>
 
                 
