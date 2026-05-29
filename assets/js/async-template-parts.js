@@ -96,6 +96,7 @@
     body.append('template_key', templateKey);
     body.append('page_id', placeholder.getAttribute('data-page-id') || '0');
     body.append('query_string', window.location.search.replace(/^\?/, ''));
+    body.append('current_url', window.location.href);
     body.append('term_id', placeholder.getAttribute('data-term-id') || '0');
     body.append('taxonomy', placeholder.getAttribute('data-taxonomy') || '');
 

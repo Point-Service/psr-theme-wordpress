@@ -66,7 +66,6 @@ function dci_async_template_parts_map() {
         'enti-fondazioni-tutti' => array('slug' => 'template-parts/enti-e-fondazioni/tutti-enti', 'label' => 'Caricamento enti e fondazioni'),
         'consigli-tutti' => array('slug' => 'template-parts/consigli/tutti', 'label' => 'Caricamento consiglio'),
         'trasparenza-categorie' => array('slug' => 'template-parts/amministrazione-trasparente/categorie', 'label' => 'Caricamento amministrazione trasparente'),
-        'trasparenza-sidebar' => array('slug' => 'template-parts/amministrazione-trasparente/side-bar', 'label' => 'Caricamento menu amministrazione trasparente'),
         'trasparenza-atti-concessione' => array('slug' => 'template-parts/amministrazione-trasparente/atto-concessione/tutti-gli-atti', 'label' => 'Caricamento atti di concessione'),
         'trasparenza-incarichi-autorizzazioni' => array('slug' => 'template-parts/amministrazione-trasparente/incarichi-autorizzazioni/tutti-gli-incarichi', 'label' => 'Caricamento incarichi'),
         'trasparenza-titolare-incarico' => array('slug' => 'template-parts/amministrazione-trasparente/titolare_incarico/tutti-titolari', 'label' => 'Caricamento titolari incarico'),
@@ -131,7 +130,7 @@ add_action('added_option', 'dci_bump_async_template_parts_cache_version');
 add_action('updated_option', 'dci_bump_async_template_parts_cache_version');
 add_action('deleted_option', 'dci_bump_async_template_parts_cache_version');
 
-function dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string) {
+function dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string, $current_url = '') {
     return 'dci_async_tpl_' . md5(wp_json_encode(array(
         'version' => dci_async_template_parts_cache_version(),
         'template_key' => $template_key,
@@ -139,6 +138,7 @@ function dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $
         'term_id' => (int) $term_id,
         'taxonomy' => $taxonomy,
         'query_string' => $query_string,
+        'current_url' => $current_url,
     )));
 }
 
@@ -200,6 +200,14 @@ function dci_load_template_part_ajax() {
         }
     }
 
+    $current_url = isset($_POST['current_url']) ? esc_url_raw(wp_unslash($_POST['current_url'])) : '';
+    if ($current_url !== '') {
+        $current_url_parts = wp_parse_url($current_url);
+        if (is_array($current_url_parts) && !empty($current_url_parts['path'])) {
+            $_SERVER['REQUEST_URI'] = $current_url_parts['path'] . (!empty($current_url_parts['query']) ? '?' . $current_url_parts['query'] : '');
+        }
+    }
+
     $term_id = isset($_POST['term_id']) ? absint($_POST['term_id']) : 0;
     $taxonomy = isset($_POST['taxonomy']) ? sanitize_key(wp_unslash($_POST['taxonomy'])) : '';
     $page_id = isset($_POST['page_id']) ? absint($_POST['page_id']) : 0;
@@ -221,7 +229,7 @@ function dci_load_template_part_ajax() {
         }
     }
 
-    $cache_key = dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string);
+    $cache_key = dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string, $current_url);
     if (!is_user_logged_in()) {
         $cached_html = get_transient($cache_key);
         if (false !== $cached_html) {
