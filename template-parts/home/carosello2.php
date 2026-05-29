@@ -21,7 +21,7 @@ if (is_string($raw_gallery) && !empty($raw_gallery)) {
     <?php if (count($gallery) === 1): ?>
         <?php $url_immagine = array_values($gallery)[0]; ?>
         <div class="bg-image">
-            <?php dci_get_img($url_immagine, 'immagine-home'); ?>
+            <?php dci_get_deferred_img($url_immagine, 'immagine-home'); ?>
         </div>
         <style>
             .bg-image img {
