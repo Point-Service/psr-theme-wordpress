@@ -128,6 +128,7 @@ add_action('deleted_option', 'dci_bump_async_template_parts_cache_version');
 function dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string, $current_url = '') {
     return 'dci_async_tpl_' . md5(wp_json_encode(array(
         'version' => dci_async_template_parts_cache_version(),
+        'schema' => 'pagination-path-v2',
         'template_key' => $template_key,
         'page_id' => (int) $page_id,
         'term_id' => (int) $term_id,
@@ -201,6 +202,10 @@ function dci_load_template_part_ajax() {
         $current_url_parts = wp_parse_url($current_url);
         if (is_array($current_url_parts) && !empty($current_url_parts['path'])) {
             $_SERVER['REQUEST_URI'] = $current_url_parts['path'] . (!empty($current_url_parts['query']) ? '?' . $current_url_parts['query'] : '');
+
+            if (!isset($_GET['paged']) && !isset($_GET['page']) && preg_match('~/page/([0-9]+)/?~', $current_url_parts['path'], $pagination_matches)) {
+                $_GET['paged'] = max(1, absint($pagination_matches[1]));
+            }
         }
     }
 
