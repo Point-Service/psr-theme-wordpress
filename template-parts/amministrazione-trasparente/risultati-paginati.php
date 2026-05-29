@@ -83,9 +83,19 @@ if (!empty($max_posts)) {
     $pagination_args['max_posts'] = (int) $max_posts;
 }
 
+$pagination_base = str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999)));
+$pagination_format = '?paged=%#%';
+if ($current_term instanceof WP_Term && $current_term->taxonomy === 'tipi_cat_amm_trasp') {
+    $term_link = get_term_link($current_term);
+    if (!is_wp_error($term_link)) {
+        $pagination_base = trailingslashit($term_link) . 'page/%#%/';
+        $pagination_format = '';
+    }
+}
+
 $pages = paginate_links(array(
-    'base' => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
-    'format' => '?paged=%#%',
+    'base' => esc_url($pagination_base),
+    'format' => $pagination_format,
     'current' => $paged,
     'total' => max(1, (int) $the_query->max_num_pages),
     'type' => 'array',

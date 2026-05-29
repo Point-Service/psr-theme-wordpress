@@ -65,6 +65,7 @@ function dci_async_template_parts_map() {
         'personale-amministrativo-tutti' => array('slug' => 'template-parts/personale-amministrativo/tutto-personale', 'label' => 'Caricamento personale amministrativo'),
         'enti-fondazioni-tutti' => array('slug' => 'template-parts/enti-e-fondazioni/tutti-enti', 'label' => 'Caricamento enti e fondazioni'),
         'consigli-tutti' => array('slug' => 'template-parts/consigli/tutti', 'label' => 'Caricamento consiglio'),
+        'trasparenza-categorie' => array('slug' => 'template-parts/amministrazione-trasparente/categorie', 'label' => 'Caricamento elenco amministrazione trasparente'),
         'trasparenza-risultati-paginati' => array('slug' => 'template-parts/amministrazione-trasparente/risultati-paginati', 'label' => 'Caricamento contenuti della trasparenza', 'compact' => true),
         'novita-evidenza' => array('slug' => 'template-parts/novita/evidenza', 'label' => 'Caricamento notizie in evidenza'),
         'novita-tutte' => array('slug' => 'template-parts/novita/tutte-novita', 'label' => 'Caricamento lista notizie'),
