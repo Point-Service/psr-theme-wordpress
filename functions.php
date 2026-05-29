@@ -387,7 +387,7 @@ function dci_scripts() {
     wp_enqueue_style( 'dci-comuni', get_template_directory_uri() . '/assets/css/bootstrap-italia-comuni.min.css');
 
     wp_enqueue_style( 'dci-font', get_template_directory_uri() . '/assets/css/fonts.css', array('dci-comuni'));
-    wp_enqueue_style( 'dci-wp-style', get_template_directory_uri()."/style.css", array('dci-comuni'));
+    wp_enqueue_style( 'dci-wp-style', get_template_directory_uri()."/style.css", array('dci-comuni'), filemtime(get_template_directory() . '/style.css'));
     wp_enqueue_style( 'dci-accessibility-toolbar', get_template_directory_uri() . '/assets/css/accessibility-toolbar.css', array('dci-wp-style'), false );
 
 
@@ -414,15 +414,16 @@ function dci_scripts() {
     }
 	wp_enqueue_script( 'dci-comuni', get_template_directory_uri() . '/assets/js/comuni.js', array(), false, true);
 	wp_enqueue_script( 'dci-sticky-header-nav', get_template_directory_uri() . '/assets/js/sticky-header-nav.js', array(), false, true);
-	wp_enqueue_script( 'dci-deferred-images', get_template_directory_uri() . '/assets/js/deferred-images.js', array(), false, true);
+	wp_enqueue_script( 'dci-deferred-images', get_template_directory_uri() . '/assets/js/deferred-images.js', array(), filemtime(get_template_directory() . '/assets/js/deferred-images.js'), true);
 	wp_script_add_data( 'dci-deferred-images', 'defer', true );
 	wp_enqueue_script( 'dci-accessibility-toolbar', get_template_directory_uri() . '/assets/js/accessibility-toolbar.js', array(), false, true);
 	wp_script_add_data( 'dci-accessibility-toolbar', 'defer', true );
-	wp_enqueue_script( 'dci-async-template-parts', get_template_directory_uri() . '/assets/js/async-template-parts.js', array(), false, true );
+	wp_enqueue_script( 'dci-async-template-parts', get_template_directory_uri() . '/assets/js/async-template-parts.js', array(), filemtime(get_template_directory() . '/assets/js/async-template-parts.js'), true );
 	wp_localize_script( 'dci-async-template-parts', 'dciAsyncTemplateParts', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
 		'maxConcurrent' => 3,
 		'disableParam' => 'dci_disable_async',
+		'timeoutMs' => 15000,
 	) );
 	wp_script_add_data( 'dci-async-template-parts', 'defer', true );
 	wp_add_inline_script( 'dci-comuni', 'window.wpRestApi = "' . get_rest_url() . '"', 'before' );

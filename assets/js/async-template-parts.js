@@ -92,6 +92,11 @@
     }
 
     var body = new URLSearchParams();
+    var controller = window.AbortController ? new AbortController() : null;
+    var timeoutMs = parseInt(settings.timeoutMs, 10) || 15000;
+    var timeoutId = null;
+    var fetchOptions;
+
     body.append('action', 'dci_load_template_part');
     body.append('template_key', templateKey);
     body.append('page_id', placeholder.getAttribute('data-page-id') || '0');
@@ -100,7 +105,7 @@
     body.append('term_id', placeholder.getAttribute('data-term-id') || '0');
     body.append('taxonomy', placeholder.getAttribute('data-taxonomy') || '');
 
-    return fetch(getAjaxUrl(), {
+    fetchOptions = {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
@@ -108,8 +113,21 @@
         'Cache-Control': 'no-cache'
       },
       body: body.toString()
-    })
+    };
+
+    if (controller) {
+      fetchOptions.signal = controller.signal;
+      timeoutId = window.setTimeout(function () {
+        controller.abort();
+      }, timeoutMs);
+    }
+
+    return fetch(getAjaxUrl(), fetchOptions)
       .then(function (response) {
+        if (timeoutId) {
+          window.clearTimeout(timeoutId);
+        }
+
         if (!response.ok) {
           throw new Error('HTTP ' + response.status);
         }
@@ -129,6 +147,10 @@
         initInjectedComponents(wrapper);
       })
       .catch(function () {
+        if (timeoutId) {
+          window.clearTimeout(timeoutId);
+        }
+
         if (fallbackToSync()) {
           return;
         }

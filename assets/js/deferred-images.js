@@ -10,8 +10,10 @@
     }
   }
 
-  function loadDeferredImages() {
-    document.querySelectorAll('img[data-dci-src]').forEach(function (image) {
+  function loadDeferredImages(scope) {
+    var root = scope || document;
+
+    root.querySelectorAll('img[data-dci-src]').forEach(function (image) {
       var src = image.getAttribute('data-dci-src');
       if (!src) {
         return;
@@ -36,6 +38,12 @@
   if (document.readyState === 'complete') {
     loadDeferredImages();
   } else {
-    window.addEventListener('load', loadDeferredImages, { once: true });
+    window.addEventListener('load', function () {
+      loadDeferredImages();
+    }, { once: true });
   }
+
+  document.addEventListener('dci:async-template-loaded', function (event) {
+    loadDeferredImages(event.detail && event.detail.container ? event.detail.container : document);
+  });
 }());
