@@ -29,7 +29,7 @@ get_header();
 					<div class="img-responsive-wrapper">
 						<div class="img-responsive">
 							<div class="img-wrapper">
-								<?php dci_get_img($img); ?>
+								<?php dci_get_deferred_img($img); ?>
 							</div>
 						</div>
 					</div>

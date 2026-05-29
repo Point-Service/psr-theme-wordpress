@@ -65,6 +65,7 @@ function dci_async_template_parts_map() {
         'personale-amministrativo-tutti' => array('slug' => 'template-parts/personale-amministrativo/tutto-personale', 'label' => 'Caricamento personale amministrativo'),
         'enti-fondazioni-tutti' => array('slug' => 'template-parts/enti-e-fondazioni/tutti-enti', 'label' => 'Caricamento enti e fondazioni'),
         'consigli-tutti' => array('slug' => 'template-parts/consigli/tutti', 'label' => 'Caricamento consiglio'),
+        'trasparenza-risultati-paginati' => array('slug' => 'template-parts/amministrazione-trasparente/risultati-paginati', 'label' => 'Caricamento contenuti della trasparenza', 'compact' => true),
         'novita-evidenza' => array('slug' => 'template-parts/novita/evidenza', 'label' => 'Caricamento notizie in evidenza'),
         'novita-tutte' => array('slug' => 'template-parts/novita/tutte-novita', 'label' => 'Caricamento lista notizie'),
         'servizi-evidenza' => array('slug' => 'template-parts/servizio/evidenza', 'label' => 'Caricamento servizi in evidenza'),
@@ -149,6 +150,7 @@ function dci_get_template_part_async($template_key) {
 
     $placeholder_id = 'dci-async-' . sanitize_html_class($template_key) . '-' . wp_rand(1000, 9999);
     $label = $templates[$template_key]['label'];
+    $loader_class = !empty($templates[$template_key]['compact']) ? 'py-4' : 'container py-5';
     ?>
     <div
         id="<?php echo esc_attr($placeholder_id); ?>"
@@ -163,7 +165,7 @@ function dci_get_template_part_async($template_key) {
         aria-live="polite"
         aria-busy="true"
     >
-        <div class="container py-5">
+        <div class="<?php echo esc_attr($loader_class); ?>">
             <div class="dci-async-loader" aria-hidden="true">
                 <span class="dci-async-loader__spinner"></span>
                 <span class="dci-async-loader__line dci-async-loader__line--long"></span>
@@ -406,6 +408,8 @@ function dci_scripts() {
     }
 	wp_enqueue_script( 'dci-comuni', get_template_directory_uri() . '/assets/js/comuni.js', array(), false, true);
 	wp_enqueue_script( 'dci-sticky-header-nav', get_template_directory_uri() . '/assets/js/sticky-header-nav.js', array(), false, true);
+	wp_enqueue_script( 'dci-deferred-images', get_template_directory_uri() . '/assets/js/deferred-images.js', array(), false, true);
+	wp_script_add_data( 'dci-deferred-images', 'defer', true );
 	wp_enqueue_script( 'dci-accessibility-toolbar', get_template_directory_uri() . '/assets/js/accessibility-toolbar.js', array(), false, true);
 	wp_script_add_data( 'dci-accessibility-toolbar', 'defer', true );
 	wp_enqueue_script( 'dci-async-template-parts', get_template_directory_uri() . '/assets/js/async-template-parts.js', array(), false, true );
