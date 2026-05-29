@@ -26,7 +26,14 @@ get_header();
 				<section class="it-hero-small-size cmp-hero-img-small">
 					<div class="img-responsive-wrapper">
 						<div class="img-responsive">
-							<div class="img-wrapper">
+							<div class="img-wrapper dci-deferred-img-frame dci-vivere-hero-deferred">
+								<div class="dci-deferred-img-frame__loader" aria-hidden="true">
+									<div class="dci-async-loader">
+										<span class="dci-async-loader__spinner"></span>
+										<span class="dci-async-loader__line dci-async-loader__line--long"></span>
+										<span class="dci-async-loader__line"></span>
+									</div>
+								</div>
 								<?php dci_get_deferred_img($img); ?>
 							</div>
 						</div>
