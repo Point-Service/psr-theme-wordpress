@@ -39,8 +39,8 @@ get_header();
 					</div>
 				</div>
 			</section>
-			<?php get_template_part("template-parts/vivere-comune/eventi"); ?>
-			<?php get_template_part("template-parts/vivere-comune/luoghi"); ?>
+			<?php dci_get_template_part_async("vivere-eventi"); ?>
+			<?php dci_get_template_part_async("vivere-luoghi"); ?>
 			<?php get_template_part("template-parts/vivere-comune/argomenti"); ?>
 			
 			<?php 

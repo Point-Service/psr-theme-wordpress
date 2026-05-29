@@ -41,8 +41,8 @@ get_header();
             
             
 	    <p></p>
-            <?php   get_template_part("template-parts/home/notizie"); ?>
-            <?php   get_template_part("template-parts/home/calendario"); ?>
+            <?php dci_get_template_part_async("home-notizie"); ?>
+            <?php dci_get_template_part_async("home-calendario"); ?>
 
         </section>
 
@@ -51,7 +51,7 @@ get_header();
         <section id="evidenza" class="evidence-section">
                 <?php get_template_part("template-parts/home/argomenti"); ?>
                <?php  get_template_part("template-parts/home/strip"); ?>
-                <?php get_template_part("template-parts/home/servizi"); ?>
+                <?php dci_get_template_part_async("home-servizi"); ?>
             <div class="section py-5 pb-lg-80 px-lg-5 position-relative">
 		        
                 <?php  get_template_part("template-parts/home/siti","tematici"); ?>

@@ -46,6 +46,100 @@ if ( ! function_exists ( 'dci_get_tipologia_articoli_options' ) ) {
 require get_template_directory() . '/inc/utils.php';
 
 /**
+ * Async template part loading.
+ */
+function dci_async_template_parts_map() {
+    return array(
+        'home-notizie' => array('slug' => 'template-parts/home/notizie', 'label' => 'Caricamento novità'),
+        'home-calendario' => array('slug' => 'template-parts/home/calendario', 'label' => 'Caricamento eventi'),
+        'home-servizi' => array('slug' => 'template-parts/home/servizi', 'label' => 'Caricamento servizi'),
+        'novita-evidenza' => array('slug' => 'template-parts/novita/evidenza', 'label' => 'Caricamento notizie in evidenza'),
+        'novita-tutte' => array('slug' => 'template-parts/novita/tutte-novita', 'label' => 'Caricamento lista notizie'),
+        'servizi-evidenza' => array('slug' => 'template-parts/servizio/evidenza', 'label' => 'Caricamento servizi in evidenza'),
+        'servizi-tutti' => array('slug' => 'template-parts/servizio/tutti-servizi', 'label' => 'Caricamento lista servizi'),
+        'luoghi-evidenza' => array('slug' => 'template-parts/luogo/evidenza', 'label' => 'Caricamento luoghi in evidenza'),
+        'luoghi-tutti' => array('slug' => 'template-parts/luogo/tutti-luoghi', 'label' => 'Caricamento lista luoghi'),
+        'eventi-tutti' => array('slug' => 'template-parts/vivere-comune/tutti-eventi', 'label' => 'Caricamento eventi'),
+        'vivere-eventi' => array('slug' => 'template-parts/vivere-comune/eventi', 'label' => 'Caricamento eventi in evidenza'),
+        'vivere-luoghi' => array('slug' => 'template-parts/vivere-comune/luoghi', 'label' => 'Caricamento luoghi in evidenza'),
+    );
+}
+
+function dci_is_async_template_request($template_key) {
+    return wp_doing_ajax()
+        && isset($_POST['action'], $_POST['template_key'])
+        && 'dci_load_template_part' === sanitize_key(wp_unslash($_POST['action']))
+        && $template_key === sanitize_key(wp_unslash($_POST['template_key']));
+}
+
+function dci_get_template_part_async($template_key) {
+    $templates = dci_async_template_parts_map();
+
+    if (!isset($templates[$template_key])) {
+        return;
+    }
+
+    if (is_admin() || wp_doing_ajax()) {
+        get_template_part($templates[$template_key]['slug']);
+        return;
+    }
+
+    $placeholder_id = 'dci-async-' . sanitize_html_class($template_key) . '-' . wp_rand(1000, 9999);
+    $label = $templates[$template_key]['label'];
+    ?>
+    <div
+        id="<?php echo esc_attr($placeholder_id); ?>"
+        class="dci-async-template"
+        data-template-key="<?php echo esc_attr($template_key); ?>"
+        data-page-id="<?php echo esc_attr(get_queried_object_id()); ?>"
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+    >
+        <div class="container py-5">
+            <div class="dci-async-loader" aria-hidden="true">
+                <span class="dci-async-loader__spinner"></span>
+                <span class="dci-async-loader__line dci-async-loader__line--long"></span>
+                <span class="dci-async-loader__line"></span>
+            </div>
+            <span class="visually-hidden"><?php echo esc_html($label); ?>...</span>
+        </div>
+    </div>
+    <?php
+}
+
+add_action('wp_ajax_dci_load_template_part', 'dci_load_template_part_ajax');
+add_action('wp_ajax_nopriv_dci_load_template_part', 'dci_load_template_part_ajax');
+function dci_load_template_part_ajax() {
+    $template_key = isset($_POST['template_key']) ? sanitize_key(wp_unslash($_POST['template_key'])) : '';
+    $templates = dci_async_template_parts_map();
+
+    if (!isset($templates[$template_key])) {
+        wp_send_json_error(array('message' => 'Template non disponibile.'), 404);
+    }
+
+    $page_id = isset($_POST['page_id']) ? absint($_POST['page_id']) : 0;
+    if ($page_id) {
+        global $post;
+        $post = get_post($page_id);
+        if ($post) {
+            setup_postdata($post);
+        }
+    }
+
+    ob_start();
+    get_template_part($templates[$template_key]['slug']);
+    $html = ob_get_clean();
+
+    if ($page_id) {
+        wp_reset_postdata();
+    }
+
+    wp_send_json_success(array('html' => $html));
+}
+
+
+/**
  * Breadcrumb class
  */
 require get_template_directory() . '/inc/breadcrumb.php';
@@ -196,8 +290,14 @@ function dci_scripts() {
         wp_enqueue_script( 'dci-boostrap-italia-min-js', get_template_directory_uri() . '/assets/js/bootstrap-italia.bundle.min.js', array(), false, true);
     }
 	wp_enqueue_script( 'dci-comuni', get_template_directory_uri() . '/assets/js/comuni.js', array(), false, true);
+	wp_enqueue_script( 'dci-sticky-header-nav', get_template_directory_uri() . '/assets/js/sticky-header-nav.js', array(), false, true);
 	wp_enqueue_script( 'dci-accessibility-toolbar', get_template_directory_uri() . '/assets/js/accessibility-toolbar.js', array(), false, true);
 	wp_script_add_data( 'dci-accessibility-toolbar', 'defer', true );
+	wp_enqueue_script( 'dci-async-template-parts', get_template_directory_uri() . '/assets/js/async-template-parts.js', array(), false, true );
+	wp_localize_script( 'dci-async-template-parts', 'dciAsyncTemplateParts', array(
+		'ajaxurl' => admin_url( 'admin-ajax.php' ),
+	) );
+	wp_script_add_data( 'dci-async-template-parts', 'defer', true );
 	wp_add_inline_script( 'dci-comuni', 'window.wpRestApi = "' . get_rest_url() . '"', 'before' );
 
 	wp_enqueue_script( 'dci-jquery-easing', get_template_directory_uri() . '/assets/js/components/jquery-easing/jquery.easing.js', array(), false, true);

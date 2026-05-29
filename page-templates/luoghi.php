@@ -40,8 +40,8 @@ get_header();
 			</section>
 		<?php } ?>
 
-			<?php get_template_part("template-parts/luogo/evidenza"); ?>
-			<?php get_template_part("template-parts/luogo/tutti-luoghi"); ?>
+			<?php dci_get_template_part_async("luoghi-evidenza"); ?>
+			<?php dci_get_template_part_async("luoghi-tutti"); ?>
 			<?php get_template_part("template-parts/luogo/tipologie");?>
 			<?php get_template_part("template-parts/common/valuta-servizio"); ?>
 			<?php get_template_part("template-parts/common/assistenza-contatti"); ?>
