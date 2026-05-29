@@ -75,6 +75,7 @@ if (!function_exists('dci_get_notizia_date_parts')) {
  */
 $args = array(
     'post_type'           => 'notizia',
+    'post_status'         => 'publish',
     'meta_query'          => array(
         array(
             'key'   => $prefix . 'evidenzia_home',
@@ -108,6 +109,10 @@ $oggi->setTime(0, 0, 0);
 $valid_posts = array();
 
 foreach ($posts as $p) {
+
+    if (get_post_status($p) !== 'publish') {
+        continue;
+    }
 
     if (count($valid_posts) >= $numero_notizie_evidenziate) {
         break;
