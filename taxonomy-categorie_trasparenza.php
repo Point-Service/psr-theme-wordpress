@@ -311,7 +311,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     <div class="col-12 col-lg-8 pt-20 pt-lg-20 pb-lg-20">
                         <?php get_template_part("template-parts/amministrazione-trasparente/atto-concessione/tutti-gli-atti"); ?>
                     </div>
-                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?> 
+                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
                 </div>
             </div>
         </div>
@@ -322,7 +322,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
                     <div class="col-12 col-lg-8 pt-20 pt-lg-20 pb-lg-20">
                         <?php get_template_part("template-parts/amministrazione-trasparente/incarichi-autorizzazioni/tutti-gli-incarichi"); ?>
                     </div>
-                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?> 
+                    <?php get_template_part("template-parts/amministrazione-trasparente/side-bar"); ?>
                 </div>
             </div>
         </div>		    
