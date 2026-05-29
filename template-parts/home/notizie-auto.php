@@ -20,6 +20,7 @@ if ($hide_notizie_old === 'true') {
 $args = array(
     //'s'         => $query,
     'post_type' => 'notizia',
+    'post_status' => 'publish',
     'meta_type' => 'text_date_timestamp',
     'orderby'   => 'meta_value_num',
     'order'     => 'desc',
@@ -38,6 +39,10 @@ $posts = $the_query->posts;
 $count=0;
 // var_dump($posts);
 foreach ($posts as $post) {
+    if (get_post_status($post) !== 'publish') {
+        continue;
+    }
+
     if($count >= $notizie_home){
         break;
     }

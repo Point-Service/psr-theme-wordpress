@@ -1268,7 +1268,7 @@ if (!function_exists('dci_get_maggioli_services_data')) {
 // Returns an img tag with appropriate attributes
 
 if(!function_exists("dci_get_img")) {
-    function dci_get_img( $url, $classes = '') {
+    function dci_get_img( $url, $classes = '', $attributes = array()) {
         $attachment_id = attachment_url_to_postid($url);
         $img_post = $attachment_id ? get_post( $attachment_id ) : null;
 
@@ -1294,9 +1294,55 @@ if(!function_exists("dci_get_img")) {
         }
         $img .= 'alt="' . esc_attr( $image_alt ) . '" ';
         $img .= 'title="' . esc_attr( $image_title ) . '" ';
+        if (is_array($attributes)) {
+            foreach ($attributes as $attribute => $value) {
+                if ($value === false || $value === null || $value === '') {
+                    continue;
+                }
+                $attribute = sanitize_key($attribute);
+                $img .= esc_attr($attribute) . '="' . esc_attr((string) $value) . '" ';
+            }
+        }
         $img .= '/>';
 
         echo $img;
+    }
+}
+
+if(!function_exists("dci_get_deferred_img")) {
+    function dci_get_deferred_img( $url, $classes = '') {
+        $attachment_id = attachment_url_to_postid($url);
+        $img_post = $attachment_id ? get_post( $attachment_id ) : null;
+        $image_title = '';
+        $image_alt = '';
+
+        if ( $img_post && isset( $img_post->ID ) ) {
+            $image_alt   = (string) get_post_meta( $img_post->ID, '_wp_attachment_image_alt', true );
+            $image_title = (string) get_the_title( $img_post->ID );
+        }
+
+        if ( empty( $image_title ) ) {
+            $image_title = trim( preg_replace('/[-_]+/', ' ', pathinfo( (string) $url, PATHINFO_FILENAME ) ) );
+        }
+
+        if ( empty( $image_alt ) ) {
+            $image_alt = $image_title;
+        }
+
+        $placeholder = get_template_directory_uri() . '/assets/img/placeholder_grey.jpeg';
+        $deferred_classes = trim($classes . ' dci-deferred-img');
+        $img = '<img src="' . esc_url($placeholder) . '" data-dci-src="' . esc_url($url) . '" ';
+        if ($deferred_classes) {
+            $img .= 'class="' . esc_attr($deferred_classes) . '" ';
+        }
+        $img .= 'alt="' . esc_attr($image_alt) . '" ';
+        $img .= 'title="' . esc_attr($image_title) . '" ';
+        $img .= 'loading="lazy" decoding="async" fetchpriority="low" />';
+
+        echo $img;
+        echo '<noscript>';
+        dci_get_img($url, $classes);
+        echo '</noscript>';
     }
 }
 
