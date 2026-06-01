@@ -4,7 +4,7 @@ global $numero_notizie_evidenziate;
 $numero_notizie_evidenziate = max(1, (int) $numero_notizie_evidenziate);
 $prefix = '_dci_notizia_';
 $hide_notizie_old = dci_get_option("ck_hide_notizie_old", "homepage");
-$posts_per_page = ($hide_notizie_old === 'true') ? max($numero_notizie_evidenziate * 5, 20) : $numero_notizie_evidenziate;
+$posts_per_page = ($hide_notizie_old === 'true') ? min(max($numero_notizie_evidenziate * 5, 20), 100) : min($numero_notizie_evidenziate, 100);
 
 /**
  * Restituisce il timestamp di pubblicazione effettivo:
