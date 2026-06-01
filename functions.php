@@ -781,6 +781,26 @@ function wpc_contatore_homepage() {
 
 add_action('template_redirect', 'wpc_contatore_homepage');
 
+/**
+ * Reindirizza eventuali richieste a /home verso la vera homepage del portale.
+ */
+function dci_redirect_home_slug_to_front_page() {
+    if ( is_admin() || wp_doing_ajax() ) {
+        return;
+    }
+
+    $request_path = isset($_SERVER['REQUEST_URI']) ? wp_parse_url(wp_unslash($_SERVER['REQUEST_URI']), PHP_URL_PATH) : '';
+    $home_path = wp_parse_url(home_url('/home/'), PHP_URL_PATH);
+
+    if ( untrailingslashit($request_path) !== untrailingslashit($home_path) ) {
+        return;
+    }
+
+    wp_safe_redirect(home_url('/'), 301);
+    exit;
+}
+add_action('template_redirect', 'dci_redirect_home_slug_to_front_page', 0);
+
 
 
 
