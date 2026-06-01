@@ -277,9 +277,10 @@ function dci_get_feed_rss_page_content() {
     $feed_notizie = esc_url(dci_get_rss_feed_url('notizia'));
     $feed_eventi = esc_url(dci_get_rss_feed_url('evento'));
 
-    return '<h2>Feed Rss</h2>'
-        . '<p>Questo sito offre i suoi contenuti con il sistema RSS (Really Simple Syndication), un modo semplice e comodo per restare informati in tempo reale sulle informazioni pubblicate.</p>'
-        . '<p>Per accedere ai contenuti RSS è sufficiente disporre di una connessione internet e di un aggregatore di feed, un software da scaricare sul proprio computer o da usare attraverso il web. Molti aggregatori si integrano perfettamente con i principali browser e con i più comuni programmi di posta elettronica.</p>'
+    return '<h2>Feed RSS</h2>'
+        . '<p>I feed RSS permettono di seguire gli aggiornamenti del sito senza dover controllare manualmente ogni pagina. Iscrivendoti a un feed, puoi ricevere in un unico lettore le nuove pubblicazioni appena vengono rese disponibili.</p>'
+        . '<p>Puoi usare un programma, una app o un servizio online compatibile con RSS. Dopo aver copiato il link del feed che ti interessa, il lettore mostrerà automaticamente i nuovi contenuti pubblicati dal Comune.</p>'
+        . '<p>Scegli il feed che vuoi seguire:</p>'
         . '<ul>'
         . '<li><a href="' . $feed_notizie . '">Feed RSS notizie</a></li>'
         . '<li><a href="' . $feed_eventi . '">Feed RSS eventi</a></li>'
@@ -303,6 +304,13 @@ function dci_ensure_feed_rss_page() {
 
     $page = get_page_by_path('feed-rss');
     if ($page instanceof WP_Post) {
+        if (get_post_meta($page->ID, '_dci_auto_feed_rss_page', true) === '1' && $page->post_content !== dci_get_feed_rss_page_content()) {
+            wp_update_post(array(
+                'ID' => $page->ID,
+                'post_content' => dci_get_feed_rss_page_content(),
+            ));
+        }
+
         return;
     }
 
