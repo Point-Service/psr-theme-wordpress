@@ -277,8 +277,7 @@ function dci_get_feed_rss_page_content() {
     $feed_notizie = esc_url(dci_get_rss_feed_url('notizia'));
     $feed_eventi = esc_url(dci_get_rss_feed_url('evento'));
 
-    return '<h2>Feed RSS</h2>'
-        . '<p>I feed RSS permettono di seguire gli aggiornamenti del sito senza dover controllare manualmente ogni pagina. Iscrivendoti a un feed, puoi ricevere in un unico lettore le nuove pubblicazioni appena vengono rese disponibili.</p>'
+    return '<p>I feed RSS permettono di seguire gli aggiornamenti del sito senza dover controllare manualmente ogni pagina. Iscrivendoti a un feed, puoi ricevere in un unico lettore le nuove pubblicazioni appena vengono rese disponibili.</p>'
         . '<p>Puoi usare un programma, una app o un servizio online compatibile con RSS. Dopo aver copiato il link del feed che ti interessa, il lettore mostrerà automaticamente i nuovi contenuti pubblicati dal Comune.</p>'
         . '<p>Scegli il feed che vuoi seguire:</p>'
         . '<ul>'

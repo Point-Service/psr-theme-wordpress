@@ -92,7 +92,7 @@ $the_query = new WP_Query($args);
                     </div>
                     <div class="col-12 col-lg-4">
                         <div class="form-group mb-0">
-                            <label for="categoria-notizia" class="fw-bold">Categoria</label>
+                            <label for="categoria-notizia" class="visually-hidden">Categoria</label>
                             <select id="categoria-notizia" name="categoria" class="form-control">
                                 <option value="0">Seleziona categoria</option>
                                 <?php if (!is_wp_error($notizia_terms)) { ?>
@@ -107,7 +107,7 @@ $the_query = new WP_Query($args);
                     </div>
                     <div class="col-12 col-md-4 col-lg-3">
                         <div class="form-group mb-0">
-                            <label for="mese-notizia" class="fw-bold">Mese</label>
+                            <label for="mese-notizia" class="visually-hidden">Mese</label>
                             <select id="mese-notizia" name="mese" class="form-control">
                                 <option value="0">Seleziona mese</option>
                                 <?php for ($month = 1; $month <= 12; $month++) { ?>
@@ -120,7 +120,7 @@ $the_query = new WP_Query($args);
                     </div>
                     <div class="col-12 col-md-4 col-lg-3">
                         <div class="form-group mb-0">
-                            <label for="anno-notizia" class="fw-bold">Anno</label>
+                            <label for="anno-notizia" class="visually-hidden">Anno</label>
                             <select id="anno-notizia" name="anno" class="form-control">
                                 <option value="0">Seleziona anno</option>
                                 <?php foreach ($available_years as $year) { ?>
