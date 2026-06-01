@@ -89,12 +89,12 @@ get_header();
          <?php 
             $show_map = dci_get_option( "ck_show_map", "homepage" );
             if($show_map === 'true'){
-              get_template_part("template-parts/vivere-comune/mappa");
+              dci_get_template_part_async("home-map");
             }
 
         ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
-        <?php get_template_part("template-parts/home/meteo"); ?>
+        <?php dci_get_template_part_async("home-meteo"); ?>
         <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
     </main>
 <?php
