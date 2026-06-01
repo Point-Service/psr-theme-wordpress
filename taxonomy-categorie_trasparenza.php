@@ -6,6 +6,7 @@
  * @package Design_Comuni_Italia
  */
 
+
 global $title, $description, $data_element, $elemento, $sito_tematico_id, $siti_tematici, $tipo_personalizzato, $dci_amm_sidebar_column_classes;
 
 $obj = get_queried_object();
