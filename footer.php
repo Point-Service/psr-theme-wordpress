@@ -21,15 +21,125 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 }
 ?>
 <style>
+.cookiebar {
+  right: auto;
+  bottom: 24px;
+  left: 50%;
+  width: calc(100% - 48px);
+  max-width: 1100px;
+  margin: 0;
+  box-sizing: border-box;
+  transform: translateX(-50%);
+  align-items: center;
+  gap: 28px;
+  padding: 24px 28px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1f3b57 0%, #2f5f80 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(10, 33, 54, 0.28);
+}
+
+.cookiebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.18), transparent 28%),
+    radial-gradient(circle at 85% 90%, rgba(255, 255, 255, 0.10), transparent 26%);
+}
+
+.cookiebar.show {
+  display: flex;
+}
+
+.cookiebar p,
+.cookiebar .cookiebar-buttons {
+  position: relative;
+  z-index: 1;
+}
+
+.cookiebar p {
+  width: auto;
+  max-width: 720px;
+  margin: 0;
+  color: #ffffff;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.cookiebar-title {
+  display: block;
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cookiebar .cookiebar-btn:not(.cookiebar-confirm) {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.cookiebar .cookiebar-buttons {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 0;
+}
+
+.cookiebar .cookiebar-btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.cookiebar .cookiebar-btn:hover {
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.cookiebar .cookiebar-confirm {
+  min-width: 112px;
+  padding: 13px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 18px rgba(14, 36, 55, 0.18);
+}
+
+.cookiebar .cookiebar-confirm:last-child {
+  margin-left: 0;
+}
+
+.cookiebar .acceptAllCookie {
+  color: #17324d;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+.cookiebar .acceptAllCookie:hover {
+  color: #17324d;
+  box-shadow: 0 12px 24px rgba(255, 255, 255, 0.22);
+}
+
+.cookiebar .denyAllCookie:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
 @media (max-width: 1024px) {
   .cookiebar {
     display: none !important;
   }
-}	
+}
 </style>
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
-  <p>COOKIES - Si usano i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.
-    <a href="/privacy/" class="cookiebar-btn">Info Privacy<span class="visually-hidden">cookies</span></a>
+  <p><strong class="cookiebar-title">Cookies</strong> Si usano i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.
+    <a href="/privacy/" class="cookiebar-btn">Info Privacy<span class="visually-hidden"> cookies</span></a>
   </p>
   <div class="cookiebar-buttons">
     <button data-bs-accept="cookiebar" class="cookiebar-btn cookiebar-confirm acceptAllCookie">Accetto<span class="visually-hidden"> i cookies</span></button>

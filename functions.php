@@ -46,6 +46,29 @@ if ( ! function_exists ( 'dci_get_tipologia_articoli_options' ) ) {
 require get_template_directory() . '/inc/utils.php';
 
 /**
+ * Normalizza il numero di contenuti per pagina nelle query frontend.
+ *
+ * Evita valori non validi o troppo alti passati via query string che possono
+ * far caricare migliaia di contenuti in memoria su portali molto popolati.
+ *
+ * @param mixed $value Valore richiesto.
+ * @param int   $default Valore di fallback.
+ * @param int   $max Limite massimo consentito.
+ * @return int
+ */
+function dci_sanitize_posts_per_page($value, $default = 10, $max = 100) {
+    $default = max(1, absint($default));
+    $max = max(1, absint($max));
+    $value = is_numeric($value) ? (int) $value : 0;
+
+    if ($value <= 0) {
+        $value = $default;
+    }
+
+    return min($value, $max);
+}
+
+/**
  * Async template part loading.
  */
 function dci_async_template_parts_map() {
@@ -781,6 +804,26 @@ function wpc_contatore_homepage() {
 
 add_action('template_redirect', 'wpc_contatore_homepage');
 
+/**
+ * Reindirizza eventuali richieste a /home verso la vera homepage del portale.
+ */
+function dci_redirect_home_slug_to_front_page() {
+    if ( is_admin() || wp_doing_ajax() ) {
+        return;
+    }
+
+    $request_path = isset($_SERVER['REQUEST_URI']) ? wp_parse_url(wp_unslash($_SERVER['REQUEST_URI']), PHP_URL_PATH) : '';
+    $home_path = wp_parse_url(home_url('/home/'), PHP_URL_PATH);
+
+    if ( untrailingslashit($request_path) !== untrailingslashit($home_path) ) {
+        return;
+    }
+
+    wp_safe_redirect(home_url('/'), 301);
+    exit;
+}
+add_action('template_redirect', 'dci_redirect_home_slug_to_front_page', 0);
+
 
 
 
@@ -1515,6 +1558,7 @@ add_action('save_post_notizia', function ($post_id) {
 
 add_action('save_post_evento', function ($post_id) {
     delete_transient('dci_evento_rest_' . absint($post_id));
+    delete_transient('dci_eventi_calendar_array');
 });
 
 add_action('save_post_luogo', function($post_id) {
@@ -1538,10 +1582,7 @@ add_action('pre_get_posts', function (WP_Query $query) {
         return;
     }
 
-    $max_posts = isset($_GET['max_posts']) ? absint($_GET['max_posts']) : 10;
-    if ($max_posts <= 0) {
-        $max_posts = 10;
-    }
+    $max_posts = dci_sanitize_posts_per_page(isset($_GET['max_posts']) ? $_GET['max_posts'] : 10, 10, 50);
 
     $search = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : '';
     $order_type = isset($_GET['order_type']) ? sanitize_key($_GET['order_type']) : 'data_desc';
