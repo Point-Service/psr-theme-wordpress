@@ -262,6 +262,66 @@ function dci_load_template_part_ajax() {
 }
 
 
+
+function dci_get_rss_feed_url($post_type) {
+    $feed_url = get_post_type_archive_feed_link($post_type);
+
+    if (empty($feed_url)) {
+        $feed_url = add_query_arg('post_type', $post_type, get_feed_link('rss2'));
+    }
+
+    return $feed_url;
+}
+
+function dci_get_feed_rss_page_content() {
+    $feed_notizie = esc_url(dci_get_rss_feed_url('notizia'));
+    $feed_eventi = esc_url(dci_get_rss_feed_url('evento'));
+
+    return '<h2>Feed Rss</h2>'
+        . '<p>Questo sito offre i suoi contenuti con il sistema RSS (Really Simple Syndication), un modo semplice e comodo per restare informati in tempo reale sulle informazioni pubblicate.</p>'
+        . '<p>Per accedere ai contenuti RSS è sufficiente disporre di una connessione internet e di un aggregatore di feed, un software da scaricare sul proprio computer o da usare attraverso il web. Molti aggregatori si integrano perfettamente con i principali browser e con i più comuni programmi di posta elettronica.</p>'
+        . '<ul>'
+        . '<li><a href="' . $feed_notizie . '">Feed RSS notizie</a></li>'
+        . '<li><a href="' . $feed_eventi . '">Feed RSS eventi</a></li>'
+        . '</ul>';
+}
+
+function dci_get_feed_rss_page_url() {
+    $page = get_page_by_path('feed-rss');
+
+    if ($page instanceof WP_Post) {
+        return get_permalink($page->ID);
+    }
+
+    return home_url('/feed-rss/');
+}
+
+function dci_ensure_feed_rss_page() {
+    if (wp_installing()) {
+        return;
+    }
+
+    $page = get_page_by_path('feed-rss');
+    if ($page instanceof WP_Post) {
+        return;
+    }
+
+    $page_id = wp_insert_post(array(
+        'post_title' => 'Feed RSS',
+        'post_name' => 'feed-rss',
+        'post_type' => 'page',
+        'post_status' => 'publish',
+        'post_content' => dci_get_feed_rss_page_content(),
+        'comment_status' => 'closed',
+        'ping_status' => 'closed',
+    ), true);
+
+    if (!is_wp_error($page_id)) {
+        update_post_meta($page_id, '_dci_auto_feed_rss_page', '1');
+    }
+}
+add_action('init', 'dci_ensure_feed_rss_page', 20);
+
 /**
  * Breadcrumb class
  */
