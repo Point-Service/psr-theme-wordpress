@@ -22,12 +22,14 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 ?>
 <style>
 .cookiebar {
-  right: 24px;
+  right: auto;
   bottom: 24px;
-  left: 24px;
-  width: auto;
+  left: 50%;
+  width: calc(100% - 48px);
   max-width: 1100px;
-  margin: 0 auto;
+  margin: 0;
+  box-sizing: border-box;
+  transform: translateX(-50%);
   align-items: center;
   gap: 28px;
   padding: 24px 28px;
