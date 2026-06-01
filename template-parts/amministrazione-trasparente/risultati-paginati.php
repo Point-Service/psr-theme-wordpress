@@ -8,10 +8,7 @@ $paged = max(
     (int) get_query_var('page'),
     isset($_GET['paged']) ? absint($_GET['paged']) : 0
 );
-$max_posts = isset($_GET['max_posts']) ? absint($_GET['max_posts']) : 10;
-if ($max_posts <= 0) {
-    $max_posts = 10;
-}
+$max_posts = dci_sanitize_posts_per_page(isset($_GET['max_posts']) ? $_GET['max_posts'] : 10, 10, 50);
 $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $order = isset($_GET['order_type']) ? sanitize_key($_GET['order_type']) : 'data_desc';
 
