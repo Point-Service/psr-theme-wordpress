@@ -259,6 +259,10 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 							    $has_custom_sitemap = strlen(trim($custom_sitemap_url)) > 3;
 							    ?>
 							    
+							    <a href="<?php echo esc_url(dci_get_feed_rss_page_url()); ?>">
+							        Feed RSS
+							    </a>
+
 							    <a target="_blank" href="<?php echo esc_url($has_custom_sitemap ? $custom_sitemap_url : home_url('/page-sitemap')); ?>">
 							        Mappa del sito
 							    </a>
