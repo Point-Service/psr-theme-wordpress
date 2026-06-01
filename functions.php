@@ -79,6 +79,8 @@ function dci_async_template_parts_map() {
         'home-argomenti' => array('slug' => 'template-parts/home/argomenti', 'label' => 'Caricamento argomenti in evidenza'),
         'home-gallery-photo' => array('slug' => 'template-parts/vivere-comune/galleria-foto', 'label' => 'Caricamento galleria'),
         'home-gallery' => array('slug' => 'template-parts/galleria/home-gallery', 'label' => 'Caricamento galleria'),
+        'home-map' => array('slug' => 'template-parts/vivere-comune/mappa', 'label' => 'Caricamento mappa'),
+        'home-meteo' => array('slug' => 'template-parts/home/meteo', 'label' => 'Caricamento meteo', 'compact' => true),
         'amministrazione-evidenza' => array('slug' => 'template-parts/amministrazione/evidenza', 'label' => 'Caricamento amministrazione in evidenza'),
         'amministrazione-cards' => array('slug' => 'template-parts/amministrazione/cards-list', 'label' => 'Caricamento amministrazione'),
         'aree-amministrative-tutte' => array('slug' => 'template-parts/aree-amministrative/tutte-aree', 'label' => 'Caricamento aree amministrative'),
@@ -511,7 +513,7 @@ function dci_scripts() {
 	wp_enqueue_script( 'dci-async-template-parts', get_template_directory_uri() . '/assets/js/async-template-parts.js', array(), filemtime(get_template_directory() . '/assets/js/async-template-parts.js'), true );
 	wp_localize_script( 'dci-async-template-parts', 'dciAsyncTemplateParts', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
-		'maxConcurrent' => 3,
+		'maxConcurrent' => 2,
 		'disableParam' => 'dci_disable_async',
 		'timeoutMs' => 15000,
 	) );
