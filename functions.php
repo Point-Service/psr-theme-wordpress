@@ -69,6 +69,46 @@ function dci_sanitize_posts_per_page($value, $default = 10, $max = 100) {
 }
 
 /**
+ * Imposta una micro-cache HTTP per pagine pubbliche anonime.
+ *
+ * Non salva HTML lato server: suggerisce solo a browser/proxy di riusare per poco
+ * tempo pagine GET senza parametri, evitando aree dinamiche o sensibili.
+ */
+function dci_send_light_frontend_cache_headers() {
+    if (
+        is_admin()
+        || wp_doing_ajax()
+        || is_user_logged_in()
+        || (defined('REST_REQUEST') && REST_REQUEST)
+        || (defined('DONOTCACHEPAGE') && DONOTCACHEPAGE)
+        || strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET')) !== 'GET'
+        || !empty($_GET)
+        || is_search()
+        || is_404()
+        || is_preview()
+        || is_customize_preview()
+    ) {
+        return;
+    }
+
+    $sensitive_templates = array(
+        'page-templates/assistenza.php',
+        'page-templates/prenota-appuntamento.php',
+        'page-templates/segnala-disservizio.php',
+    );
+
+    foreach ($sensitive_templates as $template) {
+        if (is_page_template($template)) {
+            return;
+        }
+    }
+
+    header('Cache-Control: public, max-age=60, s-maxage=60, stale-while-revalidate=120');
+    header('Pragma: cache');
+}
+add_action('send_headers', 'dci_send_light_frontend_cache_headers', 20);
+
+/**
  * Async template part loading.
  */
 function dci_async_template_parts_map() {

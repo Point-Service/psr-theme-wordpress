@@ -154,7 +154,6 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
   </svg>
 </div>
 
-<?php get_template_part("template-parts/common/search-modal"); ?>
 <footer class="it-footer" id="footer">
     <div class="it-footer-main">
         <div class="container">
