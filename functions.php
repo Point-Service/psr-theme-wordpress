@@ -171,8 +171,15 @@ function dci_async_template_parts_cache_version() {
 }
 
 function dci_bump_async_template_parts_cache_version($option = '') {
+    $ignored_options = array(
+        'dci_async_template_parts_cache_version',
+        'wpc_home_count',
+        'wpc_home_daily_counts',
+        'dci_calendar_cache_version',
+    );
+
     if (is_string($option) && (
-        $option === 'dci_async_template_parts_cache_version'
+        in_array($option, $ignored_options, true)
         || strpos($option, '_transient_') === 0
         || strpos($option, '_site_transient_') === 0
     )) {
