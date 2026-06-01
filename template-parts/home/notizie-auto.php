@@ -2,7 +2,7 @@
 global $the_query, $load_posts, $load_card_type;
 
 // Limite massimo hard per evitare query troppo grandi via parametro GET.
-$requested_max_posts = isset($_GET['max_posts']) ? absint($_GET['max_posts']) : 0;
+$requested_max_posts = isset($_GET['max_posts']) ? dci_sanitize_posts_per_page($_GET['max_posts'], 1, 100) : 0;
 $load_posts = -1;
 // $query = isset($_GET['search']) ? dci_removeslashes($_GET['search']) : null;
 $hide_notizie_old = dci_get_option("ck_hide_notizie_old", "homepage");
@@ -11,10 +11,10 @@ $notizie_home = max(1, (int) $notizie_home);
 
 // Mantiene abbastanza elementi per popolare la sezione, ma senza esplodere il carico.
 if ($hide_notizie_old === 'true') {
-    $max_posts = ($requested_max_posts > 0) ? min($requested_max_posts, 300) : max($notizie_home * 8, 60);
+    $max_posts = ($requested_max_posts > 0) ? $requested_max_posts : min(max($notizie_home * 8, 60), 100);
 } else {
     // Se non serve filtrare "notizie vecchie", basta caricare il numero richiesto.
-    $max_posts = ($requested_max_posts > 0) ? min($requested_max_posts, 300) : $notizie_home;
+    $max_posts = ($requested_max_posts > 0) ? $requested_max_posts : min($notizie_home, 100);
 }
 
 $args = array(
