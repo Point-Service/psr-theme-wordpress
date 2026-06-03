@@ -193,6 +193,28 @@ function dci_should_fetch_external_footer() {
 }
 
 
+
+/**
+ * Restituisce la base pubblica da usare negli HTML header/footer esportati via API.
+ *
+ * @return string
+ */
+function dci_get_api_fragment_public_base_url() {
+    $public_home = trim((string) dci_get_option('url_homesoloesterno'));
+
+    if (dci_is_external_portal_enabled() && $public_home !== '') {
+        if (!preg_match('#^https?://#i', $public_home)) {
+            $public_home = 'https://' . ltrim($public_home, '/');
+        }
+
+        if (filter_var($public_home, FILTER_VALIDATE_URL)) {
+            return trailingslashit($public_home);
+        }
+    }
+
+    return home_url('/');
+}
+
 /**
  * Verifica se la firma Point Service deve essere visibile nel footer locale.
  *
@@ -457,7 +479,7 @@ function dci_get_rendered_header() {
     locate_template('header.php', true, false);
     $raw = ob_get_clean();
     $header_html = dci_extract_header_html($raw);
-    $header_html = dci_absolutize_external_html_urls($header_html, home_url('/'));
+    $header_html = dci_absolutize_external_html_urls($header_html, dci_get_api_fragment_public_base_url(), home_url('/'));
 
     return array(
         'success' => true,
@@ -507,9 +529,10 @@ function dci_extract_footer_html($html) {
  *
  * @param string $html
  * @param string $external_home
+ * @param string $source_home Base locale da sostituire quando l'HTML API contiene URL assoluti del sito tecnico.
  * @return string
  */
-function dci_absolutize_external_html_urls($html, $external_home) {
+function dci_absolutize_external_html_urls($html, $external_home, $source_home = '') {
     if (!is_string($html) || $html === '' || empty($external_home)) {
         return $html;
     }
@@ -523,10 +546,32 @@ function dci_absolutize_external_html_urls($html, $external_home) {
     }
 
     $base_url = untrailingslashit($external_home);
-    $make_absolute = static function ($url) use ($base_url) {
+    $source_base_url = '';
+    if (!empty($source_home)) {
+        if (!preg_match('#^https?://#i', $source_home)) {
+            $source_home = 'https://' . ltrim($source_home, '/');
+        }
+        if (filter_var($source_home, FILTER_VALIDATE_URL)) {
+            $source_base_url = untrailingslashit($source_home);
+        }
+    }
+
+    $make_absolute = static function ($url) use ($base_url, $source_base_url) {
         $url = trim((string) $url);
 
-        if ($url === '' || strpos($url, '/') !== 0 || strpos($url, '//') === 0) {
+        if ($url === '') {
+            return $url;
+        }
+
+        if ($source_base_url !== '' && strcasecmp($url, $source_base_url) === 0) {
+            return esc_url($base_url);
+        }
+
+        if ($source_base_url !== '' && stripos($url, $source_base_url . '/') === 0) {
+            return esc_url($base_url . substr($url, strlen($source_base_url)));
+        }
+
+        if (strpos($url, '/') !== 0 || strpos($url, '//') === 0) {
             return $url;
         }
 
