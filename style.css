@@ -947,8 +947,17 @@ svg.leaflet-image-layer.leaflet-interactive path {
   background-color: #ffffff !important;
 }
 
+#backToTop .icon,
+#backToTop .icon use,
 .back-to-top .icon,
 .back-to-top .icon use {
+  color: #000000 !important;
+  fill: #000000 !important;
+  stroke: none !important;
+}
+
+#backToTop .icon *,
+.back-to-top .icon * {
   color: #000000 !important;
   fill: #000000 !important;
 }

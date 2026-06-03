@@ -164,8 +164,8 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 
 
 <div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show" style="overflow-hidden; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); background-color: white; transition: background-color 0.3s;">
-  <svg class="icon" aria-label="Torna a inizio pagina">
-    <use href="#it-collapse"></use>
+  <svg class="icon" aria-label="Torna a inizio pagina" style="color: #000000; fill: #000000;">
+    <use href="#it-collapse" style="color: #000000; fill: #000000;"></use>
   </svg>
 </div>
 <script>
