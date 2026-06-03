@@ -936,6 +936,32 @@ svg.leaflet-image-layer.leaflet-interactive path {
   fill: #333 !important;
 }
 
+
+/* Back to top: override Bootstrap Italia default green button. */
+.back-to-top,
+.back-to-top.back-to-top-small,
+.back-to-top.back-to-top-show,
+.back-to-top:hover,
+.back-to-top:focus {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+#backToTop .icon,
+#backToTop .icon use,
+.back-to-top .icon,
+.back-to-top .icon use {
+  color: #000000 !important;
+  fill: #000000 !important;
+  stroke: none !important;
+}
+
+#backToTop .icon *,
+.back-to-top .icon * {
+  color: #000000 !important;
+  fill: #000000 !important;
+}
+
 /* Sticky main navigation: keeps only the header menu visible while scrolling. */
 :root {
   --dci-sticky-header-nav-height: 0px;
@@ -1028,6 +1054,25 @@ body.dci-sticky-header-nav-active .dci-sticky-nav-search .search-link {
   body.dci-sticky-header-nav-active .dci-sticky-nav-search {
     display: none;
   }
+}
+
+
+/* Loader for header/footer fragments consumed through the REST API. */
+.dci-api-fragment-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  padding: 16px;
+}
+
+.dci-api-fragment-loader__spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(0, 102, 204, 0.2);
+  border-top-color: #06c;
+  border-radius: 50%;
+  animation: dci-async-loader-spin 0.8s linear infinite;
 }
 
 /* Loader sezioni caricate in parallelo */
