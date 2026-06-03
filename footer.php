@@ -136,6 +136,36 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
     display: none !important;
   }
 }
+
+:root {
+  --dci-back-to-top-bg: #17324d;
+}
+
+.back-to-top,
+.back-to-top.back-to-top-small,
+.back-to-top.back-to-top-show {
+  background: var(--dci-back-to-top-bg) !important;
+  background-color: var(--dci-back-to-top-bg) !important;
+  color: #ffffff !important;
+}
+
+.back-to-top:hover,
+.back-to-top:focus {
+  background: var(--dci-back-to-top-bg) !important;
+  background-color: var(--dci-back-to-top-bg) !important;
+}
+
+.back-to-top .icon,
+.back-to-top .icon-light {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+.back-to-top .icon use,
+.back-to-top .icon-light use {
+  color: #ffffff !important;
+  fill: currentColor !important;
+}
 </style>
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
   <p><strong class="cookiebar-title">Cookies</strong> Si usano i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.
@@ -148,11 +178,69 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 </section>
 
 
-<div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show back-to-top-show" style="overflow-hidden; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); background-color: white; transition: background-color 0.3s;">
-  <svg class="icon">
+<div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show back-to-top-show" style="overflow-hidden; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: background-color 0.3s;">
+  <svg class="icon icon-light" aria-label="Torna a inizio pagina">
     <use href="#it-collapse"></use>
   </svg>
 </div>
+<script>
+(function() {
+  function isSolidColor(color) {
+    if (!color || color === 'transparent') {
+      return false;
+    }
+
+    var rgbaMatch = color.match(/^rgba?\(([^)]+)\)$/);
+    if (!rgbaMatch) {
+      return true;
+    }
+
+    var parts = rgbaMatch[1].split(',').map(function(part) {
+      return part.trim();
+    });
+
+    return parts.length < 4 || parseFloat(parts[3]) > 0;
+  }
+
+  function getHeaderColor() {
+    var selectors = [
+      '.it-header-navbar-wrapper',
+      '.it-header-center-wrapper',
+      '.it-header-wrapper'
+    ];
+
+    for (var i = 0; i < selectors.length; i++) {
+      var element = document.querySelector(selectors[i]);
+
+      while (element) {
+        var color = window.getComputedStyle(element).backgroundColor;
+        if (isSolidColor(color)) {
+          return color;
+        }
+
+        element = element.parentElement;
+      }
+    }
+
+    return '';
+  }
+
+  function syncBackToTopColor() {
+    var color = getHeaderColor();
+    if (color) {
+      document.documentElement.style.setProperty('--dci-back-to-top-bg', color);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncBackToTopColor);
+  } else {
+    syncBackToTopColor();
+  }
+
+  window.addEventListener('load', syncBackToTopColor);
+}());
+</script>
 
 <footer class="it-footer" id="footer">
     <div class="it-footer-main">
