@@ -136,6 +136,36 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
     display: none !important;
   }
 }
+
+:root {
+  --dci-back-to-top-bg: #17324d;
+}
+
+.back-to-top,
+.back-to-top.back-to-top-small,
+.back-to-top.back-to-top-show {
+  background: var(--dci-back-to-top-bg) !important;
+  background-color: var(--dci-back-to-top-bg) !important;
+  color: #ffffff !important;
+}
+
+.back-to-top:hover,
+.back-to-top:focus {
+  background: var(--dci-back-to-top-bg) !important;
+  background-color: var(--dci-back-to-top-bg) !important;
+}
+
+.back-to-top .icon,
+.back-to-top .icon-light {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+.back-to-top .icon use,
+.back-to-top .icon-light use {
+  color: #ffffff !important;
+  fill: currentColor !important;
+}
 </style>
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
   <p><strong class="cookiebar-title">Cookies</strong> Si usano i cookies e altre tecniche di tracciamento per migliorare la tua esperienza di navigazione nel nostro sito, per mostrarti contenuti personalizzati e annunci mirati, per analizzare il traffico sul nostro sito, e per capire da dove arrivano i nostri visitatori.
@@ -148,11 +178,139 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 </section>
 
 
-<div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show back-to-top-show" style="overflow-hidden; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); background-color: white; transition: background-color 0.3s;">
-  <svg class="icon">
+<div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show back-to-top-show" style="overflow-hidden; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: background-color 0.3s;">
+  <svg class="icon icon-light" aria-label="Torna a inizio pagina">
     <use href="#it-collapse"></use>
   </svg>
 </div>
+<script>
+(function() {
+  var headerSelectors = [
+    '.it-header-center-wrapper',
+    '.it-header-navbar-wrapper',
+    '.it-nav-wrapper',
+    '.it-header-wrapper'
+  ];
+
+  function isVisible(element) {
+    return !!(element && element.offsetWidth && element.offsetHeight);
+  }
+
+  function isSolidColor(color) {
+    if (!color || color === 'transparent') {
+      return false;
+    }
+
+    var rgbaMatch = color.match(/^rgba?\(([^)]+)\)$/);
+    if (!rgbaMatch) {
+      return true;
+    }
+
+    var parts = rgbaMatch[1].split(',').map(function(part) {
+      return part.trim();
+    });
+
+    return parts.length < 4 || parseFloat(parts[3]) > 0;
+  }
+
+  function getElementBackground(element) {
+    if (!element || !isVisible(element)) {
+      return '';
+    }
+
+    var style = window.getComputedStyle(element);
+    var backgroundColor = style.backgroundColor;
+
+    if (isSolidColor(backgroundColor)) {
+      return backgroundColor;
+    }
+
+    if (style.backgroundImage && style.backgroundImage !== 'none') {
+      return style.backgroundImage;
+    }
+
+    return '';
+  }
+
+  function getHeaderBackgroundFromPoint() {
+    var header = document.querySelector('.it-header-wrapper');
+    if (!header || typeof document.elementsFromPoint !== 'function') {
+      return '';
+    }
+
+    var rect = header.getBoundingClientRect();
+    if (!rect.width || !rect.height) {
+      return '';
+    }
+
+    var x = rect.left + (rect.width / 2);
+    var y = rect.top + Math.min(rect.height - 1, Math.max(1, rect.height / 2));
+    var elements = document.elementsFromPoint(x, y);
+
+    for (var i = 0; i < elements.length; i++) {
+      if (header.contains(elements[i]) || elements[i] === header) {
+        var background = getElementBackground(elements[i]);
+        if (background) {
+          return background;
+        }
+      }
+    }
+
+    return '';
+  }
+
+  function getHeaderBackground() {
+    var sampledBackground = getHeaderBackgroundFromPoint();
+    if (sampledBackground) {
+      return sampledBackground;
+    }
+
+    for (var i = 0; i < headerSelectors.length; i++) {
+      var element = document.querySelector(headerSelectors[i]);
+      var background = getElementBackground(element);
+      if (background) {
+        return background;
+      }
+    }
+
+    return '';
+  }
+
+  function syncBackToTopColor() {
+    var background = getHeaderBackground();
+    if (background) {
+      document.documentElement.style.setProperty('--dci-back-to-top-bg', background);
+    }
+  }
+
+  function scheduleSync() {
+    syncBackToTopColor();
+    window.requestAnimationFrame(syncBackToTopColor);
+    window.setTimeout(syncBackToTopColor, 250);
+    window.setTimeout(syncBackToTopColor, 1000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleSync);
+  } else {
+    scheduleSync();
+  }
+
+  window.addEventListener('load', scheduleSync);
+
+  if ('MutationObserver' in window) {
+    var header = document.querySelector('.it-header-wrapper');
+    if (header) {
+      new MutationObserver(scheduleSync).observe(header, {
+        attributes: true,
+        attributeFilter: ['class', 'style'],
+        childList: true,
+        subtree: true
+      });
+    }
+  }
+}());
+</script>
 
 <footer class="it-footer" id="footer">
     <div class="it-footer-main">
