@@ -589,7 +589,8 @@ function dci_scripts() {
 	wp_localize_script( 'dci-async-template-parts', 'dciAsyncTemplateParts', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
 		'maxConcurrent' => 2,
-		'timeoutMs' => 15000,
+		'maxRetries' => 4,
+		'timeoutMs' => 20000,
 	) );
 	wp_script_add_data( 'dci-async-template-parts', 'defer', true );
 	wp_add_inline_script( 'dci-comuni', 'window.wpRestApi = "' . get_rest_url() . '"', 'before' );

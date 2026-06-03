@@ -7,9 +7,35 @@
     return '<div class="container py-5"><div class="dci-async-loader" aria-hidden="true"><span class="dci-async-loader__spinner"></span><span class="dci-async-loader__line dci-async-loader__line--long"></span><span class="dci-async-loader__line"></span></div><span class="visually-hidden">' + message + '</span></div>';
   }
 
+  function restartTemplateRetryCycle(placeholder) {
+    placeholder.removeAttribute('data-retry-count');
+    placeholder.classList.remove('dci-async-template--error');
+    placeholder.setAttribute('aria-busy', 'true');
+    placeholder.innerHTML = getLoaderMarkup('Nuovo tentativo di caricamento della sezione');
+    loadTemplate(placeholder);
+  }
+
+  function showTemplateRetryButton(placeholder) {
+    placeholder.setAttribute('aria-busy', 'false');
+    placeholder.classList.add('dci-async-template--error');
+    placeholder.innerHTML = '<div class="container py-5"><p class="mb-2">Non è stato possibile caricare questa sezione.</p><button class="btn btn-primary btn-sm" type="button">Riprova</button></div>';
+    var retry = placeholder.querySelector('button');
+    if (retry) {
+      retry.addEventListener('click', function () {
+        restartTemplateRetryCycle(placeholder);
+      });
+    }
+  }
+
   function scheduleTemplateRetry(placeholder) {
     var retryCount = parseInt(placeholder.getAttribute('data-retry-count') || '0', 10) + 1;
-    var retryDelay = Math.min(30000, 2000 * retryCount);
+    var maxRetries = parseInt(settings.maxRetries, 10) || 4;
+    var retryDelay = Math.min(20000, 2000 * retryCount);
+
+    if (retryCount > maxRetries) {
+      showTemplateRetryButton(placeholder);
+      return;
+    }
 
     placeholder.setAttribute('data-retry-count', retryCount);
     placeholder.setAttribute('aria-busy', 'true');
