@@ -5,11 +5,6 @@
     $privacy_url = dci_get_template_page_url('page-templates/privacy.php') ?: home_url('/page-templates/privacy');
     $area_riservata_url = dci_get_option('area_riservata') ?: wp_login_url();
 
-    $uffici = get_posts(array(
-        'posts_per_page' => -1,
-        'post_type' => 'unita_organizzativa'
-    ));
-
     $luoghi = get_posts(array(
         'posts_per_page' => 300,
         'fields' => 'ids',

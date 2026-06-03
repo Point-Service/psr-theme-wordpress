@@ -170,32 +170,49 @@ function dci_async_template_parts_cache_version() {
     return $version;
 }
 
-function dci_bump_async_template_parts_cache_version($option = '') {
-    $ignored_options = array(
-        'dci_async_template_parts_cache_version',
-        'wpc_home_count',
-        'wpc_home_daily_counts',
-        'dci_calendar_cache_version',
+function dci_bump_async_template_parts_cache_version() {
+    update_option('dci_async_template_parts_cache_version', str_replace('.', '', (string) microtime(true)), false);
+}
+
+function dci_maybe_bump_async_template_parts_cache_version_on_option($option) {
+    $cache_sensitive_options = array(
+        'accesso_rapido',
+        'amministrazione',
+        'argomenti',
+        'assistenza',
+        'dci_options',
+        'documenti',
+        'footer',
+        'Galleria',
+        'galleria',
+        'home_messages',
+        'homepage',
+        'link_utili',
+        'luoghi',
+        'multimedia',
+        'novita',
+        'ricerca',
+        'servizi',
+        'socials',
+        'strip_home',
+        'trasparenza',
+        'vivi',
     );
 
-    if (is_string($option) && (
-        in_array($option, $ignored_options, true)
-        || strpos($option, '_transient_') === 0
-        || strpos($option, '_site_transient_') === 0
-    )) {
+    if (!in_array((string) $option, $cache_sensitive_options, true)) {
         return;
     }
 
-    update_option('dci_async_template_parts_cache_version', str_replace('.', '', (string) microtime(true)), false);
+    dci_bump_async_template_parts_cache_version();
 }
 add_action('save_post', 'dci_bump_async_template_parts_cache_version');
 add_action('deleted_post', 'dci_bump_async_template_parts_cache_version');
 add_action('created_term', 'dci_bump_async_template_parts_cache_version');
 add_action('edited_term', 'dci_bump_async_template_parts_cache_version');
 add_action('delete_term', 'dci_bump_async_template_parts_cache_version');
-add_action('added_option', 'dci_bump_async_template_parts_cache_version');
-add_action('updated_option', 'dci_bump_async_template_parts_cache_version');
-add_action('deleted_option', 'dci_bump_async_template_parts_cache_version');
+add_action('added_option', 'dci_maybe_bump_async_template_parts_cache_version_on_option');
+add_action('updated_option', 'dci_maybe_bump_async_template_parts_cache_version_on_option');
+add_action('deleted_option', 'dci_maybe_bump_async_template_parts_cache_version_on_option');
 
 function dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string, $current_url = '') {
     return 'dci_async_tpl_' . md5(wp_json_encode(array(
@@ -373,8 +390,15 @@ function dci_ensure_feed_rss_page() {
         return;
     }
 
+    $cached_page_id = absint(get_option('dci_feed_rss_page_id', 0));
+    if ($cached_page_id && get_post_status($cached_page_id)) {
+        return;
+    }
+
     $page = get_page_by_path('feed-rss');
     if ($page instanceof WP_Post) {
+        update_option('dci_feed_rss_page_id', $page->ID, false);
+
         if (get_post_meta($page->ID, '_dci_auto_feed_rss_page', true) === '1' && $page->post_content !== dci_get_feed_rss_page_content()) {
             wp_update_post(array(
                 'ID' => $page->ID,
@@ -397,6 +421,7 @@ function dci_ensure_feed_rss_page() {
 
     if (!is_wp_error($page_id)) {
         update_post_meta($page_id, '_dci_auto_feed_rss_page', '1');
+        update_option('dci_feed_rss_page_id', $page_id, false);
     }
 }
 add_action('init', 'dci_ensure_feed_rss_page', 20);
@@ -645,7 +670,11 @@ function get_parent_template () {
 function getFileSizeAndFormat($url) {
     $percorso = parse_url($url);
     $percorso = isset($percorso["path"]) ? substr($percorso["path"], 0, -strlen(pathinfo($url, PATHINFO_BASENAME))) : '';
-    $response = wp_remote_head($url);
+    $response = wp_remote_head($url, array(
+        'timeout' => 4,
+        'redirection' => 2,
+        'reject_unsafe_urls' => true,
+    ));
 
     if (is_wp_error($response)) {
         return 'Errore nel recupero delle informazioni del file';
