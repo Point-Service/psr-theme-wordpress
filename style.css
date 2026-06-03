@@ -936,6 +936,32 @@ svg.leaflet-image-layer.leaflet-interactive path {
   fill: #333 !important;
 }
 
+
+/* Back to top: override Bootstrap Italia default green button. */
+.back-to-top,
+.back-to-top.back-to-top-small,
+.back-to-top.back-to-top-show,
+.back-to-top:hover,
+.back-to-top:focus {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+#backToTop .icon,
+#backToTop .icon use,
+.back-to-top .icon,
+.back-to-top .icon use {
+  color: #000000 !important;
+  fill: #000000 !important;
+  stroke: none !important;
+}
+
+#backToTop .icon *,
+.back-to-top .icon * {
+  color: #000000 !important;
+  fill: #000000 !important;
+}
+
 /* Sticky main navigation: keeps only the header menu visible while scrolling. */
 :root {
   --dci-sticky-header-nav-height: 0px;

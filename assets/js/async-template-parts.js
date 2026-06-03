@@ -4,25 +4,15 @@
   var settings = window.dciAsyncTemplateParts || {};
 
   function fallbackToSync() {
-    var paramName = settings.disableParam || 'dci_disable_async';
-    var currentUrl;
-    var fallbackUrl;
+    var cookieName = settings.disableCookie || 'dci_disable_async';
+    var cookiePattern = new RegExp('(?:^|; )' + cookieName.replace(/[-\/\^$*+?.()|[\]{}]/g, '\\$&') + '=1(?:;|$)');
 
-    try {
-      currentUrl = new URL(window.location.href);
-      if (currentUrl.searchParams.get(paramName) === '1') {
-        return false;
-      }
-      currentUrl.searchParams.set(paramName, '1');
-      fallbackUrl = currentUrl.toString();
-    } catch (error) {
-      if (window.location.search.indexOf(paramName + '=1') !== -1) {
-        return false;
-      }
-      fallbackUrl = window.location.href + (window.location.search ? '&' : '?') + encodeURIComponent(paramName) + '=1';
+    if (cookiePattern.test(document.cookie)) {
+      return false;
     }
 
-    window.location.replace(fallbackUrl);
+    document.cookie = cookieName + '=1; Max-Age=120; Path=/; SameSite=Lax';
+    window.location.replace(window.location.href);
     return true;
   }
 
