@@ -152,7 +152,10 @@ function dci_is_async_template_request($template_key) {
 }
 
 function dci_async_template_parts_disabled() {
-    return isset($_GET['dci_disable_async']) && '1' === sanitize_text_field(wp_unslash($_GET['dci_disable_async']));
+    $disabled_by_query = isset($_GET['dci_disable_async']) && '1' === sanitize_text_field(wp_unslash($_GET['dci_disable_async']));
+    $disabled_by_cookie = isset($_COOKIE['dci_disable_async']) && '1' === sanitize_text_field(wp_unslash($_COOKIE['dci_disable_async']));
+
+    return $disabled_by_query || $disabled_by_cookie;
 }
 
 function dci_async_template_parts_cache_ttl() {
