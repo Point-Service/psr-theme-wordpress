@@ -3,27 +3,19 @@
 
   var settings = window.dciAsyncTemplateParts || {};
 
-  function fallbackToSync() {
-    var paramName = settings.disableParam || 'dci_disable_async';
-    var currentUrl;
-    var fallbackUrl;
-
-    try {
-      currentUrl = new URL(window.location.href);
-      if (currentUrl.searchParams.get(paramName) === '1') {
-        return false;
-      }
-      currentUrl.searchParams.set(paramName, '1');
-      fallbackUrl = currentUrl.toString();
-    } catch (error) {
-      if (window.location.search.indexOf(paramName + '=1') !== -1) {
-        return false;
-      }
-      fallbackUrl = window.location.href + (window.location.search ? '&' : '?') + encodeURIComponent(paramName) + '=1';
+  function showTemplateError(placeholder) {
+    placeholder.setAttribute('aria-busy', 'false');
+    placeholder.classList.add('dci-async-template--error');
+    placeholder.innerHTML = '<div class="container py-5"><p class="mb-2">Non è stato possibile caricare questa sezione.</p><button class="btn btn-primary btn-sm" type="button">Riprova</button></div>';
+    var retry = placeholder.querySelector('button');
+    if (retry) {
+      retry.addEventListener('click', function () {
+        placeholder.classList.remove('dci-async-template--error');
+        placeholder.setAttribute('aria-busy', 'true');
+        placeholder.innerHTML = '<div class="container py-5"><div class="dci-async-loader" aria-hidden="true"><span class="dci-async-loader__spinner"></span><span class="dci-async-loader__line dci-async-loader__line--long"></span><span class="dci-async-loader__line"></span></div></div>';
+        loadTemplate(placeholder);
+      });
     }
-
-    window.location.replace(fallbackUrl);
-    return true;
   }
 
   function getAjaxUrl() {
@@ -43,7 +35,6 @@
   }
 
   if (!settings.ajaxurl || !window.fetch) {
-    fallbackToSync();
     return;
   }
 
@@ -151,19 +142,7 @@
           window.clearTimeout(timeoutId);
         }
 
-        if (fallbackToSync()) {
-          return;
-        }
-
-        placeholder.setAttribute('aria-busy', 'false');
-        placeholder.classList.add('dci-async-template--error');
-        placeholder.innerHTML = '<div class="container py-5"><p class="mb-2">Non è stato possibile caricare questa sezione.</p><button class="btn btn-primary btn-sm" type="button">Riprova</button></div>';
-        var retry = placeholder.querySelector('button');
-        if (retry) {
-          retry.addEventListener('click', function () {
-            window.location.reload();
-          });
-        }
+        showTemplateError(placeholder);
       });
   }
 
