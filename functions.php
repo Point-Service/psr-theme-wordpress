@@ -667,30 +667,81 @@ function get_parent_template () {
 
 
  // Restituisce il formato e le dimensioni di un allegato
+if (!function_exists('dci_format_file_size')) {
+    function dci_format_file_size($bytes) {
+        $bytes = absint($bytes);
+
+        if ($bytes >= 1073741824) {
+            return number_format_i18n($bytes / 1073741824, 2) . ' Gb';
+        }
+
+        if ($bytes >= 1048576) {
+            return number_format_i18n($bytes / 1048576, 2) . ' Mb';
+        }
+
+        if ($bytes >= 1024) {
+            return number_format_i18n($bytes / 1024, 2) . ' Kb';
+        }
+
+        return $bytes . ' byte';
+    }
+}
+
 function getFileSizeAndFormat($url) {
-    $percorso = parse_url($url);
-    $percorso = isset($percorso["path"]) ? substr($percorso["path"], 0, -strlen(pathinfo($url, PATHINFO_BASENAME))) : '';
+    $url = trim((string) $url);
+    if ($url === '') {
+        return 'FILE';
+    }
+
+    if (is_numeric($url)) {
+        $attachment_url = wp_get_attachment_url((int) $url);
+        if ($attachment_url) {
+            $url = $attachment_url;
+        }
+    }
+
+    $filetype = wp_check_filetype($url);
+    $file_format = !empty($filetype['ext']) ? strtoupper($filetype['ext']) : strtoupper(pathinfo((string) wp_parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
+    if ($file_format === '') {
+        $file_format = 'FILE';
+    }
+
+    $attachment_id = attachment_url_to_postid($url);
+    if ($attachment_id) {
+        $local_file = get_attached_file($attachment_id);
+        if ($local_file && file_exists($local_file) && is_readable($local_file)) {
+            $local_size = filesize($local_file);
+            if ($local_size !== false && $local_size > 0) {
+                return $file_format . ' ' . dci_format_file_size($local_size);
+            }
+        }
+    }
+
+    $cache_key = 'dci_file_info_' . md5($url);
+    $cached = get_transient($cache_key);
+    if (is_array($cached) && isset($cached['label'])) {
+        return (string) $cached['label'];
+    }
+
+    $label = $file_format;
     $response = wp_remote_head($url, array(
         'timeout' => 4,
         'redirection' => 2,
         'reject_unsafe_urls' => true,
     ));
 
-    if (is_wp_error($response)) {
-        return 'Errore nel recupero delle informazioni del file';
+    if (!is_wp_error($response)) {
+        $headers = wp_remote_retrieve_headers($response);
+        $content_length = isset($headers['content-length']) ? absint($headers['content-length']) : 0;
+
+        if ($content_length > 0) {
+            $label = $file_format . ' ' . dci_format_file_size($content_length);
+        }
     }
 
-    $headers = wp_remote_retrieve_headers($response);
-    $content_length = isset($headers['content-length']) ? intval($headers['content-length']) : 0;
+    set_transient($cache_key, array('label' => $label), 12 * HOUR_IN_SECONDS);
 
-    $base = log($content_length, 1024);
-    $suffixes = array('', 'Kb', 'Mb', 'Gb', 'Tb');
-    $size_formatted = round(pow(1024, $base - floor($base)), 2) . ' ' . $suffixes[floor($base)];
-
-    $info_file = pathinfo($url);
-    $file_format = strtoupper(isset($info_file['extension']) ? $info_file['extension'] : '');
-
-    return $file_format . ' ' . $size_formatted;
+    return $label;
 }
 
 
