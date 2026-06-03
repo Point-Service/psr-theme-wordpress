@@ -424,6 +424,7 @@ function dci_get_rendered_footer() {
     $raw = ob_get_clean();
 
     $footer_html = dci_extract_footer_html($raw);
+    $footer_html = dci_absolutize_external_html_urls($footer_html, home_url('/'));
 
     return array(
         'success' => true,
@@ -455,11 +456,13 @@ function dci_get_rendered_header() {
     ob_start();
     locate_template('header.php', true, false);
     $raw = ob_get_clean();
+    $header_html = dci_extract_header_html($raw);
+    $header_html = dci_absolutize_external_html_urls($header_html, home_url('/'));
 
     return array(
         'success' => true,
         'generated_at' => current_time('c'),
-        'html' => dci_extract_header_html($raw),
+        'html' => $header_html,
         'source' => home_url('/'),
         'assets' => array(
             'css' => array(
