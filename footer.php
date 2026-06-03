@@ -137,34 +137,19 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
   }
 }
 
-:root {
-  --dci-back-to-top-bg: #17324d;
-}
-
 .back-to-top,
 .back-to-top.back-to-top-small,
-.back-to-top.back-to-top-show {
-  background: var(--dci-back-to-top-bg) !important;
-  background-color: var(--dci-back-to-top-bg) !important;
-  color: #ffffff !important;
-}
-
+.back-to-top.back-to-top-show,
 .back-to-top:hover,
 .back-to-top:focus {
-  background: var(--dci-back-to-top-bg) !important;
-  background-color: var(--dci-back-to-top-bg) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 .back-to-top .icon,
-.back-to-top .icon-light {
-  color: #ffffff !important;
-  fill: #ffffff !important;
-}
-
-.back-to-top .icon use,
-.back-to-top .icon-light use {
-  color: #ffffff !important;
-  fill: currentColor !important;
+.back-to-top .icon use {
+  color: #000000 !important;
+  fill: #000000 !important;
 }
 </style>
 <section class="cookiebar fade" aria-label="Gestione dei cookies" aria-live="polite">
@@ -178,8 +163,8 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 </section>
 
 
-<div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show back-to-top-show" style="overflow-hidden; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: background-color 0.3s;">
-  <svg class="icon icon-light" aria-label="Torna a inizio pagina">
+<div id="backToTop" data-bs-toggle="backtotop" class="back-to-top back-to-top-show" style="overflow-hidden; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); background-color: white; transition: background-color 0.3s;">
+  <svg class="icon" aria-label="Torna a inizio pagina">
     <use href="#it-collapse"></use>
   </svg>
 </div>
