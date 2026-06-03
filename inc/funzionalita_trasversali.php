@@ -151,7 +151,7 @@ add_action('rest_api_init', 'dci_register_header_export_route');
 function dci_get_external_fragment_loader_html($label = 'Caricamento contenuto') {
     return '<div class="dci-api-fragment-loader" role="status" aria-live="polite">'
         . '<span class="dci-api-fragment-loader__spinner" aria-hidden="true"></span>'
-        . '<span class="visually-hidden">' . esc_html($label) . '</span>'
+        . '<span class="dci-api-fragment-loader__text">' . esc_html($label) . '</span>'
         . '</div>';
 }
 
@@ -205,16 +205,20 @@ function dci_should_show_footer_signature() {
 /**
  * Restituisce la firma Point Service usata dal footer standard.
  *
+ * @param string $text_color Colore testo firma, utile per footer API su sfondo chiaro.
  * @return string
  */
-function dci_get_footer_signature_html() {
+function dci_get_footer_signature_html($text_color = '#fff') {
     if (!dci_should_show_footer_signature()) {
         return '';
     }
 
-    return '&nbsp;&nbsp;-&nbsp;&nbsp;Sviluppato da '
-        . '<a class="text-primary" style="text-decoration:none;" target="_blank" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">'
-        . '<span id="footerCompanyLabel" style="color: #fff">'
+    $text_color = in_array(strtolower((string) $text_color), array('#000', '#000000'), true) ? '#000000' : '#fff';
+    $signature_style = 'color: ' . $text_color . ' !important;';
+
+    return '&nbsp;&nbsp;-&nbsp;&nbsp;<span style="' . esc_attr($signature_style) . '">Sviluppato da </span>'
+        . '<a class="text-primary" style="text-decoration:none; ' . esc_attr($signature_style) . '" target="_blank" href="https://www.p-service.it/" title="Point Service S.r.l" aria-label="Point Service S.r.l" aria-labelledby="footerCompanyLabel">'
+        . '<span id="footerCompanyLabel" style="' . esc_attr($signature_style) . '">'
         . '&nbsp;Point Service S.r.l'
         . '</span>'
         . '</a>';
@@ -235,7 +239,7 @@ function dci_apply_local_footer_signature($html) {
         return $html;
     }
 
-    $signature_html = dci_get_footer_signature_html();
+    $signature_html = dci_get_footer_signature_html('#000000');
     if ($signature_html === '') {
         return $html;
     }
@@ -447,6 +451,7 @@ function dci_get_rendered_footer() {
  * @return array
  */
 function dci_get_rendered_header() {
+    // L'endpoint API deve esportare l'header del sito corrente, non proxyare menu/pulsanti del portale esterno.
     ob_start();
     locate_template('header.php', true, false);
     $raw = ob_get_clean();
@@ -734,7 +739,7 @@ function dci_get_external_header_html() {
         return '';
     }
 
-    $header_cache_key = 'dci_ext_header_v2_' . md5((string) $external_home);
+    $header_cache_key = 'dci_ext_header_v3_' . md5((string) $external_home);
     $header_cached = get_transient($header_cache_key);
     if (is_string($header_cached)) {
         return ($header_cached === '__empty__') ? '' : $header_cached;

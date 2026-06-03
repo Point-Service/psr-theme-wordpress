@@ -1075,6 +1075,12 @@ body.dci-sticky-header-nav-active .dci-sticky-nav-search .search-link {
   animation: dci-async-loader-spin 0.8s linear infinite;
 }
 
+.dci-api-fragment-loader__text {
+  margin-left: 0.75rem;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
 /* Loader sezioni caricate in parallelo */
 .dci-async-template {
   background: #f7f9fa;
