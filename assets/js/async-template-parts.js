@@ -3,17 +3,19 @@
 
   var settings = window.dciAsyncTemplateParts || {};
 
-  function fallbackToSync() {
-    var cookieName = settings.disableCookie || 'dci_disable_async';
-    var cookiePattern = new RegExp('(?:^|; )' + cookieName.replace(/[-\/\^$*+?.()|[\]{}]/g, '\\$&') + '=1(?:;|$)');
-
-    if (cookiePattern.test(document.cookie)) {
-      return false;
+  function showTemplateError(placeholder) {
+    placeholder.setAttribute('aria-busy', 'false');
+    placeholder.classList.add('dci-async-template--error');
+    placeholder.innerHTML = '<div class="container py-5"><p class="mb-2">Non è stato possibile caricare questa sezione.</p><button class="btn btn-primary btn-sm" type="button">Riprova</button></div>';
+    var retry = placeholder.querySelector('button');
+    if (retry) {
+      retry.addEventListener('click', function () {
+        placeholder.classList.remove('dci-async-template--error');
+        placeholder.setAttribute('aria-busy', 'true');
+        placeholder.innerHTML = '<div class="container py-5"><div class="dci-async-loader" aria-hidden="true"><span class="dci-async-loader__spinner"></span><span class="dci-async-loader__line dci-async-loader__line--long"></span><span class="dci-async-loader__line"></span></div></div>';
+        loadTemplate(placeholder);
+      });
     }
-
-    document.cookie = cookieName + '=1; Max-Age=120; Path=/; SameSite=Lax';
-    window.location.replace(window.location.href);
-    return true;
   }
 
   function getAjaxUrl() {
@@ -33,7 +35,6 @@
   }
 
   if (!settings.ajaxurl || !window.fetch) {
-    fallbackToSync();
     return;
   }
 
@@ -141,19 +142,7 @@
           window.clearTimeout(timeoutId);
         }
 
-        if (fallbackToSync()) {
-          return;
-        }
-
-        placeholder.setAttribute('aria-busy', 'false');
-        placeholder.classList.add('dci-async-template--error');
-        placeholder.innerHTML = '<div class="container py-5"><p class="mb-2">Non è stato possibile caricare questa sezione.</p><button class="btn btn-primary btn-sm" type="button">Riprova</button></div>';
-        var retry = placeholder.querySelector('button');
-        if (retry) {
-          retry.addEventListener('click', function () {
-            window.location.reload();
-          });
-        }
+        showTemplateError(placeholder);
       });
   }
 

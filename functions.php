@@ -589,7 +589,6 @@ function dci_scripts() {
 	wp_localize_script( 'dci-async-template-parts', 'dciAsyncTemplateParts', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
 		'maxConcurrent' => 2,
-		'disableCookie' => 'dci_disable_async',
 		'timeoutMs' => 15000,
 	) );
 	wp_script_add_data( 'dci-async-template-parts', 'defer', true );
@@ -709,42 +708,24 @@ function getFileSizeAndFormat($url) {
         $file_format = 'FILE';
     }
 
-    $attachment_id = attachment_url_to_postid($url);
-    if ($attachment_id) {
-        $local_file = get_attached_file($attachment_id);
-        if ($local_file && file_exists($local_file) && is_readable($local_file)) {
-            $local_size = filesize($local_file);
-            if ($local_size !== false && $local_size > 0) {
-                return $file_format . ' ' . dci_format_file_size($local_size);
+    $url_host = wp_parse_url($url, PHP_URL_HOST);
+    $site_host = wp_parse_url(home_url('/'), PHP_URL_HOST);
+    $is_local_url = !$url_host || !$site_host || strtolower((string) $url_host) === strtolower((string) $site_host);
+
+    if ($is_local_url) {
+        $attachment_id = attachment_url_to_postid($url);
+        if ($attachment_id) {
+            $local_file = get_attached_file($attachment_id);
+            if ($local_file && file_exists($local_file) && is_readable($local_file)) {
+                $local_size = filesize($local_file);
+                if ($local_size !== false && $local_size > 0) {
+                    return $file_format . ' ' . dci_format_file_size($local_size);
+                }
             }
         }
     }
 
-    $cache_key = 'dci_file_info_' . md5($url);
-    $cached = get_transient($cache_key);
-    if (is_array($cached) && isset($cached['label'])) {
-        return (string) $cached['label'];
-    }
-
-    $label = $file_format;
-    $response = wp_remote_head($url, array(
-        'timeout' => 4,
-        'redirection' => 2,
-        'reject_unsafe_urls' => true,
-    ));
-
-    if (!is_wp_error($response)) {
-        $headers = wp_remote_retrieve_headers($response);
-        $content_length = isset($headers['content-length']) ? absint($headers['content-length']) : 0;
-
-        if ($content_length > 0) {
-            $label = $file_format . ' ' . dci_format_file_size($content_length);
-        }
-    }
-
-    set_transient($cache_key, array('label' => $label), 12 * HOUR_IN_SECONDS);
-
-    return $label;
+    return $file_format;
 }
 
 
