@@ -185,6 +185,17 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
 </div>
 <script>
 (function() {
+  var headerSelectors = [
+    '.it-header-center-wrapper',
+    '.it-header-navbar-wrapper',
+    '.it-nav-wrapper',
+    '.it-header-wrapper'
+  ];
+
+  function isVisible(element) {
+    return !!(element && element.offsetWidth && element.offsetHeight);
+  }
+
   function isSolidColor(color) {
     if (!color || color === 'transparent') {
       return false;
@@ -202,23 +213,63 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
     return parts.length < 4 || parseFloat(parts[3]) > 0;
   }
 
-  function getHeaderColor() {
-    var selectors = [
-      '.it-header-navbar-wrapper',
-      '.it-header-center-wrapper',
-      '.it-header-wrapper'
-    ];
+  function getElementBackground(element) {
+    if (!element || !isVisible(element)) {
+      return '';
+    }
 
-    for (var i = 0; i < selectors.length; i++) {
-      var element = document.querySelector(selectors[i]);
+    var style = window.getComputedStyle(element);
+    var backgroundColor = style.backgroundColor;
 
-      while (element) {
-        var color = window.getComputedStyle(element).backgroundColor;
-        if (isSolidColor(color)) {
-          return color;
+    if (isSolidColor(backgroundColor)) {
+      return backgroundColor;
+    }
+
+    if (style.backgroundImage && style.backgroundImage !== 'none') {
+      return style.backgroundImage;
+    }
+
+    return '';
+  }
+
+  function getHeaderBackgroundFromPoint() {
+    var header = document.querySelector('.it-header-wrapper');
+    if (!header || typeof document.elementsFromPoint !== 'function') {
+      return '';
+    }
+
+    var rect = header.getBoundingClientRect();
+    if (!rect.width || !rect.height) {
+      return '';
+    }
+
+    var x = rect.left + (rect.width / 2);
+    var y = rect.top + Math.min(rect.height - 1, Math.max(1, rect.height / 2));
+    var elements = document.elementsFromPoint(x, y);
+
+    for (var i = 0; i < elements.length; i++) {
+      if (header.contains(elements[i]) || elements[i] === header) {
+        var background = getElementBackground(elements[i]);
+        if (background) {
+          return background;
         }
+      }
+    }
 
-        element = element.parentElement;
+    return '';
+  }
+
+  function getHeaderBackground() {
+    var sampledBackground = getHeaderBackgroundFromPoint();
+    if (sampledBackground) {
+      return sampledBackground;
+    }
+
+    for (var i = 0; i < headerSelectors.length; i++) {
+      var element = document.querySelector(headerSelectors[i]);
+      var background = getElementBackground(element);
+      if (background) {
+        return background;
       }
     }
 
@@ -226,19 +277,38 @@ if ($is_external_only && function_exists('dci_get_external_footer_payload')) {
   }
 
   function syncBackToTopColor() {
-    var color = getHeaderColor();
-    if (color) {
-      document.documentElement.style.setProperty('--dci-back-to-top-bg', color);
+    var background = getHeaderBackground();
+    if (background) {
+      document.documentElement.style.setProperty('--dci-back-to-top-bg', background);
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', syncBackToTopColor);
-  } else {
+  function scheduleSync() {
     syncBackToTopColor();
+    window.requestAnimationFrame(syncBackToTopColor);
+    window.setTimeout(syncBackToTopColor, 250);
+    window.setTimeout(syncBackToTopColor, 1000);
   }
 
-  window.addEventListener('load', syncBackToTopColor);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleSync);
+  } else {
+    scheduleSync();
+  }
+
+  window.addEventListener('load', scheduleSync);
+
+  if ('MutationObserver' in window) {
+    var header = document.querySelector('.it-header-wrapper');
+    if (header) {
+      new MutationObserver(scheduleSync).observe(header, {
+        attributes: true,
+        attributeFilter: ['class', 'style'],
+        childList: true,
+        subtree: true
+      });
+    }
+  }
 }());
 </script>
 
