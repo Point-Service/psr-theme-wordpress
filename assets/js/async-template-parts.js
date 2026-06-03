@@ -3,27 +3,22 @@
 
   var settings = window.dciAsyncTemplateParts || {};
 
-  function fallbackToSync() {
-    var paramName = settings.disableParam || 'dci_disable_async';
-    var currentUrl;
-    var fallbackUrl;
+  function getLoaderMarkup(message) {
+    return '<div class="container py-5"><div class="dci-async-loader" aria-hidden="true"><span class="dci-async-loader__spinner"></span><span class="dci-async-loader__line dci-async-loader__line--long"></span><span class="dci-async-loader__line"></span></div><span class="visually-hidden">' + message + '</span></div>';
+  }
 
-    try {
-      currentUrl = new URL(window.location.href);
-      if (currentUrl.searchParams.get(paramName) === '1') {
-        return false;
-      }
-      currentUrl.searchParams.set(paramName, '1');
-      fallbackUrl = currentUrl.toString();
-    } catch (error) {
-      if (window.location.search.indexOf(paramName + '=1') !== -1) {
-        return false;
-      }
-      fallbackUrl = window.location.href + (window.location.search ? '&' : '?') + encodeURIComponent(paramName) + '=1';
-    }
+  function scheduleTemplateRetry(placeholder) {
+    var retryCount = parseInt(placeholder.getAttribute('data-retry-count') || '0', 10) + 1;
+    var retryDelay = Math.min(30000, 2000 * retryCount);
 
-    window.location.replace(fallbackUrl);
-    return true;
+    placeholder.setAttribute('data-retry-count', retryCount);
+    placeholder.setAttribute('aria-busy', 'true');
+    placeholder.classList.remove('dci-async-template--error');
+    placeholder.innerHTML = getLoaderMarkup('Nuovo tentativo di caricamento della sezione');
+
+    window.setTimeout(function () {
+      loadTemplate(placeholder);
+    }, retryDelay);
   }
 
   function getAjaxUrl() {
@@ -43,7 +38,6 @@
   }
 
   if (!settings.ajaxurl || !window.fetch) {
-    fallbackToSync();
     return;
   }
 
@@ -139,6 +133,7 @@
           throw new Error('Risposta non valida');
         }
 
+        placeholder.removeAttribute('data-retry-count');
         var wrapper = document.createElement('div');
         wrapper.innerHTML = payload.data.html;
         wrapper.className = 'dci-async-template__content';
@@ -151,19 +146,7 @@
           window.clearTimeout(timeoutId);
         }
 
-        if (fallbackToSync()) {
-          return;
-        }
-
-        placeholder.setAttribute('aria-busy', 'false');
-        placeholder.classList.add('dci-async-template--error');
-        placeholder.innerHTML = '<div class="container py-5"><p class="mb-2">Non è stato possibile caricare questa sezione.</p><button class="btn btn-primary btn-sm" type="button">Riprova</button></div>';
-        var retry = placeholder.querySelector('button');
-        if (retry) {
-          retry.addEventListener('click', function () {
-            window.location.reload();
-          });
-        }
+        scheduleTemplateRetry(placeholder);
       });
   }
 
