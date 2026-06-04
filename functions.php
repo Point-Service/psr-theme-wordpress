@@ -179,6 +179,29 @@ function dci_async_template_parts_cache_group() {
     return 'dci_async_template_parts';
 }
 
+
+/**
+ * Impostazioni conservative per i caricamenti asincroni.
+ *
+ * Sono filtrabili per poter intervenire rapidamente in produzione senza cambiare
+ * template o JavaScript se un hosting condiviso richiede valori ancora più bassi.
+ *
+ * @return array
+ */
+function dci_async_template_parts_frontend_settings() {
+    $settings = apply_filters('dci_async_template_parts_frontend_settings', array(
+        'maxConcurrent' => 1,
+        'maxRetries' => 4,
+        'timeoutMs' => 12000,
+    ));
+
+    return array(
+        'maxConcurrent' => max(1, min(3, absint($settings['maxConcurrent'] ?? 1))),
+        'maxRetries' => max(0, min(4, absint($settings['maxRetries'] ?? 4))),
+        'timeoutMs' => max(5000, min(30000, absint($settings['timeoutMs'] ?? 12000))),
+    );
+}
+
 function dci_async_template_parts_cache_version() {
     $version = get_option('dci_async_template_parts_cache_version');
 
@@ -605,11 +628,12 @@ function dci_scripts() {
 	wp_enqueue_script( 'dci-accessibility-toolbar', get_template_directory_uri() . '/assets/js/accessibility-toolbar.js', array(), false, true);
 	wp_script_add_data( 'dci-accessibility-toolbar', 'defer', true );
 	wp_enqueue_script( 'dci-async-template-parts', get_template_directory_uri() . '/assets/js/async-template-parts.js', array(), filemtime(get_template_directory() . '/assets/js/async-template-parts.js'), true );
+	$async_template_parts_settings = dci_async_template_parts_frontend_settings();
 	wp_localize_script( 'dci-async-template-parts', 'dciAsyncTemplateParts', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
-		'maxConcurrent' => 1,
-		'maxRetries' => 1,
-		'timeoutMs' => 12000,
+		'maxConcurrent' => $async_template_parts_settings['maxConcurrent'],
+		'maxRetries' => $async_template_parts_settings['maxRetries'],
+		'timeoutMs' => $async_template_parts_settings['timeoutMs'],
 	) );
 	wp_script_add_data( 'dci-async-template-parts', 'defer', true );
 	wp_add_inline_script( 'dci-comuni', 'window.wpRestApi = "' . get_rest_url() . '"', 'before' );
