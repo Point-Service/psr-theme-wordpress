@@ -29,8 +29,8 @@
 
   function scheduleTemplateRetry(placeholder) {
     var retryCount = parseInt(placeholder.getAttribute('data-retry-count') || '0', 10) + 1;
-    var maxRetries = parseInt(settings.maxRetries, 10) || 4;
-    var retryDelay = Math.min(20000, 2000 * retryCount);
+    var maxRetries = parseInt(settings.maxRetries, 10) || 1;
+    var retryDelay = Math.min(15000, 5000 * retryCount);
 
     if (retryCount > maxRetries) {
       showTemplateRetryButton(placeholder);
