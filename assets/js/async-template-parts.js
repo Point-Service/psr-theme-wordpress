@@ -7,44 +7,20 @@
     return '<div class="container py-5"><div class="dci-async-loader" aria-hidden="true"><span class="dci-async-loader__spinner"></span><span class="dci-async-loader__line dci-async-loader__line--long"></span><span class="dci-async-loader__line"></span></div><span class="visually-hidden">' + message + '</span></div>';
   }
 
-  function restartTemplateRetryCycle(placeholder) {
-    placeholder.removeAttribute('data-retry-count');
-    placeholder.classList.remove('dci-async-template--error');
-    placeholder.setAttribute('aria-busy', 'true');
-    placeholder.innerHTML = getLoaderMarkup('Nuovo tentativo di caricamento della sezione');
-    loadTemplate(placeholder);
-  }
-
-  function showTemplateRetryButton(placeholder) {
-    placeholder.setAttribute('aria-busy', 'false');
-    placeholder.classList.add('dci-async-template--error');
-    placeholder.innerHTML = '<div class="container py-5"><p class="mb-2">Non è stato possibile caricare questa sezione.</p><button class="btn btn-primary btn-sm" type="button">Riprova</button></div>';
-    var retry = placeholder.querySelector('button');
-    if (retry) {
-      retry.addEventListener('click', function () {
-        restartTemplateRetryCycle(placeholder);
-      });
-    }
-  }
-
   function scheduleTemplateRetry(placeholder) {
     var retryCount = parseInt(placeholder.getAttribute('data-retry-count') || '0', 10) + 1;
-    var maxRetries = parseInt(settings.maxRetries, 10) || 4;
     var retryDelay = Math.min(20000, 2000 * retryCount);
-
-    if (retryCount > maxRetries) {
-      showTemplateRetryButton(placeholder);
-      return;
-    }
 
     placeholder.setAttribute('data-retry-count', retryCount);
     placeholder.setAttribute('aria-busy', 'true');
     placeholder.classList.remove('dci-async-template--error');
     placeholder.innerHTML = getLoaderMarkup('Nuovo tentativo di caricamento della sezione');
 
-    window.setTimeout(function () {
-      loadTemplate(placeholder);
-    }, retryDelay);
+    return new Promise(function (resolve) {
+      window.setTimeout(function () {
+        resolve(loadTemplate(placeholder));
+      }, retryDelay);
+    });
   }
 
   function getAjaxUrl() {
@@ -113,7 +89,7 @@
 
     var body = new URLSearchParams();
     var controller = window.AbortController ? new AbortController() : null;
-    var timeoutMs = parseInt(settings.timeoutMs, 10) || 15000;
+    var timeoutMs = parseInt(settings.timeoutMs, 10) || 12000;
     var timeoutId = null;
     var fetchOptions;
 
@@ -172,13 +148,13 @@
           window.clearTimeout(timeoutId);
         }
 
-        scheduleTemplateRetry(placeholder);
+        return scheduleTemplateRetry(placeholder);
       });
   }
 
   function boot() {
     var placeholders = Array.prototype.slice.call(document.querySelectorAll('.dci-async-template[data-template-key]'));
-    var maxConcurrent = parseInt(settings.maxConcurrent, 10) || 3;
+    var maxConcurrent = parseInt(settings.maxConcurrent, 10) || 2;
     var active = 0;
     var index = 0;
 
