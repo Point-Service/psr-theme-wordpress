@@ -29,12 +29,12 @@
 
   function scheduleTemplateRetry(placeholder) {
     var retryCount = parseInt(placeholder.getAttribute('data-retry-count') || '0', 10) + 1;
-    var maxRetries = parseInt(settings.maxRetries, 10) || 4;
-    var retryDelay = Math.min(20000, 2000 * retryCount);
+    var maxRetries = parseInt(settings.maxRetries, 10) || 1;
+    var retryDelay = Math.min(15000, 5000 * retryCount);
 
     if (retryCount > maxRetries) {
       showTemplateRetryButton(placeholder);
-      return;
+      return Promise.resolve();
     }
 
     placeholder.setAttribute('data-retry-count', retryCount);
@@ -42,9 +42,11 @@
     placeholder.classList.remove('dci-async-template--error');
     placeholder.innerHTML = getLoaderMarkup('Nuovo tentativo di caricamento della sezione');
 
-    window.setTimeout(function () {
-      loadTemplate(placeholder);
-    }, retryDelay);
+    return new Promise(function (resolve) {
+      window.setTimeout(function () {
+        resolve(loadTemplate(placeholder));
+      }, retryDelay);
+    });
   }
 
   function getAjaxUrl() {
@@ -113,7 +115,7 @@
 
     var body = new URLSearchParams();
     var controller = window.AbortController ? new AbortController() : null;
-    var timeoutMs = parseInt(settings.timeoutMs, 10) || 15000;
+    var timeoutMs = parseInt(settings.timeoutMs, 10) || 12000;
     var timeoutId = null;
     var fetchOptions;
 
@@ -172,13 +174,13 @@
           window.clearTimeout(timeoutId);
         }
 
-        scheduleTemplateRetry(placeholder);
+        return scheduleTemplateRetry(placeholder);
       });
   }
 
   function boot() {
     var placeholders = Array.prototype.slice.call(document.querySelectorAll('.dci-async-template[data-template-key]'));
-    var maxConcurrent = parseInt(settings.maxConcurrent, 10) || 3;
+    var maxConcurrent = parseInt(settings.maxConcurrent, 10) || 1;
     var active = 0;
     var index = 0;
 
