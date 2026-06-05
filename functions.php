@@ -192,11 +192,13 @@ function dci_async_template_parts_frontend_settings() {
     $settings = apply_filters('dci_async_template_parts_frontend_settings', array(
         'maxConcurrent' => 2,
         'timeoutMs' => 12000,
+        'retryTimeoutMs' => 10 * MINUTE_IN_SECONDS * 1000,
     ));
 
     return array(
         'maxConcurrent' => max(1, min(3, absint($settings['maxConcurrent'] ?? 2))),
         'timeoutMs' => max(5000, min(30000, absint($settings['timeoutMs'] ?? 12000))),
+        'retryTimeoutMs' => max(60000, min(30 * MINUTE_IN_SECONDS * 1000, absint($settings['retryTimeoutMs'] ?? 10 * MINUTE_IN_SECONDS * 1000))),
     );
 }
 
@@ -631,6 +633,7 @@ function dci_scripts() {
 		'ajaxurl' => admin_url( 'admin-ajax.php', 'relative' ),
 		'maxConcurrent' => $async_template_parts_settings['maxConcurrent'],
 		'timeoutMs' => $async_template_parts_settings['timeoutMs'],
+		'retryTimeoutMs' => $async_template_parts_settings['retryTimeoutMs'],
 	) );
 	wp_script_add_data( 'dci-async-template-parts', 'defer', true );
 	wp_add_inline_script( 'dci-comuni', 'window.wpRestApi = "' . get_rest_url() . '"', 'before' );

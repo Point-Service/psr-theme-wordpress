@@ -7,9 +7,31 @@
     return '<div class="container py-5"><div class="dci-async-loader" aria-hidden="true"><span class="dci-async-loader__spinner"></span><span class="dci-async-loader__line dci-async-loader__line--long"></span><span class="dci-async-loader__line"></span></div><span class="visually-hidden">' + message + '</span></div>';
   }
 
+  function showTemplateTimeout(placeholder) {
+    placeholder.setAttribute('aria-busy', 'false');
+    placeholder.classList.add('dci-async-template--error');
+    placeholder.innerHTML = '<div class="container py-5"><p class="mb-0">Non è stato possibile caricare questa sezione. Ricarica la pagina più tardi.</p></div>';
+  }
+
   function scheduleTemplateRetry(placeholder) {
     var retryCount = parseInt(placeholder.getAttribute('data-retry-count') || '0', 10) + 1;
-    var retryDelay = Math.min(20000, 2000 * retryCount);
+    var retryTimeoutMs = parseInt(settings.retryTimeoutMs, 10) || 600000;
+    var retryStartedAt = parseInt(placeholder.getAttribute('data-retry-started-at') || '0', 10);
+    var elapsedMs;
+    var retryDelay;
+
+    if (!retryStartedAt) {
+      retryStartedAt = Date.now();
+      placeholder.setAttribute('data-retry-started-at', retryStartedAt);
+    }
+
+    elapsedMs = Date.now() - retryStartedAt;
+    if (elapsedMs >= retryTimeoutMs) {
+      showTemplateTimeout(placeholder);
+      return Promise.resolve();
+    }
+
+    retryDelay = Math.min(20000, 2000 * retryCount, retryTimeoutMs - elapsedMs);
 
     placeholder.setAttribute('data-retry-count', retryCount);
     placeholder.setAttribute('aria-busy', 'true');
@@ -136,6 +158,7 @@
         }
 
         placeholder.removeAttribute('data-retry-count');
+        placeholder.removeAttribute('data-retry-started-at');
         var wrapper = document.createElement('div');
         wrapper.innerHTML = payload.data.html;
         wrapper.className = 'dci-async-template__content';
