@@ -190,13 +190,13 @@ function dci_async_template_parts_cache_group() {
  */
 function dci_async_template_parts_frontend_settings() {
     $settings = apply_filters('dci_async_template_parts_frontend_settings', array(
-        'maxConcurrent' => 2,
+        'maxConcurrent' => 4,
         'timeoutMs' => 12000,
         'retryTimeoutMs' => 10 * MINUTE_IN_SECONDS * 1000,
     ));
 
     return array(
-        'maxConcurrent' => max(1, min(3, absint($settings['maxConcurrent'] ?? 2))),
+        'maxConcurrent' => max(1, min(6, absint($settings['maxConcurrent'] ?? 4))),
         'timeoutMs' => max(5000, min(30000, absint($settings['timeoutMs'] ?? 12000))),
         'retryTimeoutMs' => max(60000, min(30 * MINUTE_IN_SECONDS * 1000, absint($settings['retryTimeoutMs'] ?? 10 * MINUTE_IN_SECONDS * 1000))),
     );
