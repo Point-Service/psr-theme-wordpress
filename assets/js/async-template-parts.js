@@ -7,42 +7,44 @@
     return '<div class="container py-5"><div class="dci-async-loader" aria-hidden="true"><span class="dci-async-loader__spinner"></span><span class="dci-async-loader__line dci-async-loader__line--long"></span><span class="dci-async-loader__line"></span></div><span class="visually-hidden">' + message + '</span></div>';
   }
 
-  function showTemplateTimeout(placeholder) {
+  function restartTemplateRetryCycle(placeholder) {
+    placeholder.removeAttribute('data-retry-count');
+    placeholder.classList.remove('dci-async-template--error');
+    placeholder.setAttribute('aria-busy', 'true');
+    placeholder.innerHTML = getLoaderMarkup('Nuovo tentativo di caricamento della sezione');
+    loadTemplate(placeholder);
+  }
+
+  function showTemplateRetryButton(placeholder) {
     placeholder.setAttribute('aria-busy', 'false');
     placeholder.classList.add('dci-async-template--error');
-    placeholder.innerHTML = '<div class="container py-5"><p class="mb-0">Non è stato possibile caricare questa sezione. Ricarica la pagina più tardi.</p></div>';
+    placeholder.innerHTML = '<div class="container py-5"><p class="mb-2">Non è stato possibile caricare questa sezione.</p><button class="btn btn-primary btn-sm" type="button">Riprova</button></div>';
+    var retry = placeholder.querySelector('button');
+    if (retry) {
+      retry.addEventListener('click', function () {
+        restartTemplateRetryCycle(placeholder);
+      });
+    }
   }
 
   function scheduleTemplateRetry(placeholder) {
     var retryCount = parseInt(placeholder.getAttribute('data-retry-count') || '0', 10) + 1;
-    var retryTimeoutMs = parseInt(settings.retryTimeoutMs, 10) || 600000;
-    var retryStartedAt = parseInt(placeholder.getAttribute('data-retry-started-at') || '0', 10);
-    var elapsedMs;
-    var retryDelay;
+    var maxRetries = parseInt(settings.maxRetries, 10) || 4;
+    var retryDelay = Math.min(20000, 2000 * retryCount);
 
-    if (!retryStartedAt) {
-      retryStartedAt = Date.now();
-      placeholder.setAttribute('data-retry-started-at', retryStartedAt);
+    if (retryCount > maxRetries) {
+      showTemplateRetryButton(placeholder);
+      return;
     }
-
-    elapsedMs = Date.now() - retryStartedAt;
-    if (elapsedMs >= retryTimeoutMs) {
-      showTemplateTimeout(placeholder);
-      return Promise.resolve();
-    }
-
-    retryDelay = Math.min(20000, 2000 * retryCount, retryTimeoutMs - elapsedMs);
 
     placeholder.setAttribute('data-retry-count', retryCount);
     placeholder.setAttribute('aria-busy', 'true');
     placeholder.classList.remove('dci-async-template--error');
     placeholder.innerHTML = getLoaderMarkup('Nuovo tentativo di caricamento della sezione');
 
-    return new Promise(function (resolve) {
-      window.setTimeout(function () {
-        resolve(loadTemplate(placeholder));
-      }, retryDelay);
-    });
+    window.setTimeout(function () {
+      loadTemplate(placeholder);
+    }, retryDelay);
   }
 
   function getAjaxUrl() {
@@ -111,7 +113,7 @@
 
     var body = new URLSearchParams();
     var controller = window.AbortController ? new AbortController() : null;
-    var timeoutMs = parseInt(settings.timeoutMs, 10) || 12000;
+    var timeoutMs = parseInt(settings.timeoutMs, 10) || 15000;
     var timeoutId = null;
     var fetchOptions;
 
@@ -158,7 +160,6 @@
         }
 
         placeholder.removeAttribute('data-retry-count');
-        placeholder.removeAttribute('data-retry-started-at');
         var wrapper = document.createElement('div');
         wrapper.innerHTML = payload.data.html;
         wrapper.className = 'dci-async-template__content';
@@ -171,13 +172,13 @@
           window.clearTimeout(timeoutId);
         }
 
-        return scheduleTemplateRetry(placeholder);
+        scheduleTemplateRetry(placeholder);
       });
   }
 
   function boot() {
     var placeholders = Array.prototype.slice.call(document.querySelectorAll('.dci-async-template[data-template-key]'));
-    var maxConcurrent = parseInt(settings.maxConcurrent, 10) || 4;
+    var maxConcurrent = parseInt(settings.maxConcurrent, 10) || 3;
     var active = 0;
     var index = 0;
 
