@@ -58,7 +58,9 @@ aria-labelledby="modalrightTitle"
                                     <label
                                         for="mobile-<?php echo $type_slug; ?>" 
                                         class="subtitle-small_semi-bold mb-0 category-list__list"
-                                        ><?php echo COMUNI_TIPOLOGIE[$type_slug]['plural_name']; ?>
+                                        ><?php
+                                            echo COMUNI_TIPOLOGIE[$type_slug]['plural_name'] ?? $type_slug;
+                                            ?>
                                         </label
                                     >
                                     </div>
