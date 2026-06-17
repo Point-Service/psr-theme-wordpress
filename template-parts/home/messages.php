@@ -12,7 +12,7 @@ foreach($messages as $message): ?>
     <div class="p-3 home-message <?php echo $message['colore_message'] ?>">
         <div class="home-message-content">
             <p class="msg">
-                <?php if($message['icona_message']): ?>
+                <?php if(isset($message['icona_message']) && $message['icona_message']): ?>
                 <svg id="alert" viewBox="0 0 492.963 492.963">
                     <path d="M246.458,169.582c-11.5,0-19.1,9.6-19.1,19.1v114.8c0,11.5,7.6,19.101,19.1,19.101s19.101-9.601,19.101-19.101v-114.8C265.559,177.182,257.958,169.582,246.458,169.582z"/>
                     <circle cx="246.458" cy="379.982" r="19.1"/>
