@@ -9,16 +9,9 @@ global $post, $with_shadow, $url_img;
 
 $search_url = esc_url( home_url( '/' ));
 $link_amministrazione = dci_get_option("link_ammtrasparente");
-$trasparenza_attiva = dci_get_option("ck_abilita_trasparenza", "false");
+$trasparenza_attiva = dci_get_option("ck_abilita_trasparenza");
 $url_img = "https://saassipa.cultura.gov.it/wp-content/uploads/2020/04/amm_trasp-1024x381.png";
 
-echo '<pre>';
-
-$options = get_option('dci_options');
-var_dump($options);
-
-echo '</pre>';
-exit;
 
 
 
@@ -71,11 +64,36 @@ get_header();
 
 <main>
 
-<?php if ($trasparenza_attiva !== 'true') : ?>
+<?php if ($trasparenza_attiva == 'true') : ?>
+
+    <?php
+    while ( have_posts() ) :
+        the_post();
+
+        $with_shadow = true;
+    ?>
+
+        <?php get_template_part("template-parts/single/hero-custom"); ?>
+
+        <?php info(); ?>
+
+        <?php dci_get_template_part_async("trasparenza-categorie"); ?>
+
+        <?php
+        $portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
+
+        if ($portalesoloperusoesterno !== 'true') {
+            get_template_part("template-parts/common/valuta-servizio");
+            get_template_part("template-parts/common/assistenza-contatti");
+        }
+        ?>
+
+    <?php endwhile; ?>
+
+<?php else : ?>
 
     <section class="section py-5">
         <div class="container">
-
             <div class="row justify-content-center">
                 <div class="col-lg-8">
 
@@ -97,39 +115,8 @@ get_header();
 
                 </div>
             </div>
-
         </div>
     </section>
-
-<?php else : ?>
-
-    <?php
-    while ( have_posts() ) :
-        the_post();
-
-        $with_shadow = true;
-    ?>
-
-        <?php get_template_part("template-parts/single/hero-custom"); ?>
-
-        <?php info(); ?>
-
-        <?php dci_get_template_part_async("trasparenza-categorie"); ?>
-
-        <?php
-        // Se il portale gestisce solo la nostra Trasparenza in modo esterno,
-        // indirizza all'home del comune.
-        $portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
-
-        // Se è attiva la trasparenza esterna, non visualizzare questi elementi
-        if ($portalesoloperusoesterno !== 'true') {
-
-            get_template_part("template-parts/common/valuta-servizio");
-            get_template_part("template-parts/common/assistenza-contatti");
-        }
-        ?>
-
-    <?php endwhile; ?>
 
 <?php endif; ?>
 
