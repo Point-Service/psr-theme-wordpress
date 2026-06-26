@@ -22,7 +22,7 @@ exit;
 // Indirizza se c'è un link personalizzato, ma ignora il redirect se riporta
 // all'amministrazione trasparente interna al sito.
 if (
-    $trasparenza_attiva === 'true' &&
+    $trasparenza_attiva === 'false' &&
     isset($link_amministrazione) &&
     !empty($link_amministrazione) &&
     $link_amministrazione != null
