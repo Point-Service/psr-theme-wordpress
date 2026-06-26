@@ -12,6 +12,12 @@ $link_amministrazione = dci_get_option("link_ammtrasparente");
 $trasparenza_attiva = dci_get_option("ck_abilita_trasparenza", "false");
 $url_img = "https://saassipa.cultura.gov.it/wp-content/uploads/2020/04/amm_trasp-1024x381.png";
 
+echo '<pre>';
+var_dump(dci_get_option("ck_abilita_trasparenza"));
+echo '</pre>';
+exit;
+
+
 
 // Indirizza se c'è un link personalizzato, ma ignora il redirect se riporta
 // all'amministrazione trasparente interna al sito.
