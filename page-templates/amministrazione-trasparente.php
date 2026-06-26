@@ -10,13 +10,14 @@ global $post, $with_shadow, $url_img;
 $search_url = esc_url( home_url( '/' ));
 $link_amministrazione=dci_get_option("link_ammtrasparente");
 $url_img="https://saassipa.cultura.gov.it/wp-content/uploads/2020/04/amm_trasp-1024x381.png";
-
+$trasparenza_attiva = dci_get_option("ck_abilita_trasparenza");
 
 //Indirizza se c'è un link personalizzato, ma ignora il redirect se riporta all'amministrazione trasparente interna al sito.
+// Indirizza se c'è un link personalizzato, ma ignora il redirect se riporta all'amministrazione trasparente interna al sito.
 if (
+    $trasparenza_attiva == 'true' &&
     isset($link_amministrazione) &&
-    !empty($link_amministrazione) &&
-    $link_amministrazione != null
+    !empty($link_amministrazione)
 ) {
     // Rimuove lo slash finale, se presente
     $normalized_link = rtrim($link_amministrazione, '/');
@@ -24,10 +25,9 @@ if (
     // Costruisce dinamicamente il link da ignorare (senza slash finale)
     $link_da_ignorare = rtrim(home_url('/amministrazione-trasparente'), '/');
 
-    // Confronto
     if ($normalized_link !== $link_da_ignorare) {
         header("Location: $link_amministrazione");
-       exit;
+        exit;
     }
 }
 
@@ -61,35 +61,71 @@ function info(){?>
 get_header();
 ?>
 	<main>
-		<?php
-		while ( have_posts() ) :
-			the_post();
-			
-			$with_shadow = true;
-			?>
-			<?php get_template_part("template-parts/single/hero-custom"); ?>
-                        <?php info();?>
-			<?php dci_get_template_part_async("trasparenza-categorie"); ?>
 
-           <?php 
-				//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
-				$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
-			
-			// Se è attiva la trasparenza esterna, non visualizzare questi elementi
-			if ($portalesoloperusoesterno !== 'true') {				
-			
-			            get_template_part("template-parts/common/valuta-servizio");
-			            get_template_part("template-parts/common/assistenza-contatti");
-			 } ?>
-		
+<?php if ($trasparenza_attiva == 'true') { ?>
 
+    <?php
+    while ( have_posts() ) :
+        the_post();
 
+        $with_shadow = true;
+    ?>
 
-		
-		<?php 
-			endwhile; // End of the loop.
-		?>
-	</main>
+        <?php get_template_part("template-parts/single/hero-custom"); ?>
+
+        <?php info(); ?>
+
+        <?php dci_get_template_part_async("trasparenza-categorie"); ?>
+
+        <?php
+        // Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
+        $portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
+
+        // Se è attiva la trasparenza esterna, non visualizzare questi elementi
+        if ($portalesoloperusoesterno !== 'true') {
+
+            get_template_part("template-parts/common/valuta-servizio");
+            get_template_part("template-parts/common/assistenza-contatti");
+        }
+        ?>
+
+    <?php endwhile; ?>
+
+<?php } else { ?>
+
+    <section class="section py-5">
+        <div class="container">
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+
+                    <div class="alert alert-warning p-5">
+
+                        <h2 class="mb-4">
+                            Amministrazione Trasparente non disponibile
+                        </h2>
+
+                        <p>
+                            La licenza attualmente installata su questo portale
+                            <strong>non prevede la sezione Amministrazione Trasparente.</strong>
+                        </p>
+
+                        <p class="mb-0">
+                            Se ritieni che la funzionalità debba essere disponibile,
+                            contatta il fornitore del portale.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+<?php } ?>
+
+</main>
 
 <?php
 get_footer();?>
