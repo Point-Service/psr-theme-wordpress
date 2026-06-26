@@ -8,17 +8,12 @@
 global $post, $with_shadow, $url_img;
 
 $search_url = esc_url( home_url( '/' ));
-$link_amministrazione = dci_get_option("link_ammtrasparente");
-$trasparenza_attiva = dci_get_option("ck_abilita_trasparenza");
-$url_img = "https://saassipa.cultura.gov.it/wp-content/uploads/2020/04/amm_trasp-1024x381.png";
+$link_amministrazione=dci_get_option("link_ammtrasparente");
+$url_img="https://saassipa.cultura.gov.it/wp-content/uploads/2020/04/amm_trasp-1024x381.png";
 
 
-
-
-// Indirizza se c'è un link personalizzato, ma ignora il redirect se riporta
-// all'amministrazione trasparente interna al sito.
+//Indirizza se c'è un link personalizzato, ma ignora il redirect se riporta all'amministrazione trasparente interna al sito.
 if (
-    $trasparenza_attiva === 'true' &&
     isset($link_amministrazione) &&
     !empty($link_amministrazione) &&
     $link_amministrazione != null
@@ -32,22 +27,24 @@ if (
     // Confronto
     if ($normalized_link !== $link_da_ignorare) {
         header("Location: $link_amministrazione");
-        exit;
+       exit;
     }
 }
 
-function info(){ ?>
+
+
+function info(){?>
 
 <section class="hero-img mb-20 mb-lg-50">
     <div class="container">
         <div class="row">
             <p class="text-justify">Benvenuti nella sezione dedicata all’Amministrazione Trasparente.</p>
             <p class="text-justify">
-                Questa area è realizzata in ottemperanza al Decreto Legislativo 14 marzo 2013, n. 33, e successive modificazioni,
+                Questa area è realizzata in ottemperanza al Decreto Legislativo 14 marzo 2013, n. 33, e successive modificazioni, 
                 con l’obiettivo di garantire la massima accessibilità alle informazioni concernenti l’organizzazione, l’attività e l’utilizzo delle risorse pubbliche da parte dell’amministrazione.
             </p>
             <p class="text-justify">
-                La trasparenza è un principio cardine del nostro operato, volto a promuovere la legalità, l’efficienza e la partecipazione attiva dei cittadini.
+                La trasparenza è un principio cardine del nostro operato, volto a promuovere la legalità, l’efficienza e la partecipazione attiva dei cittadini. 
                 Tutti i dati e i documenti pubblicati sono consultabili in maniera chiara, ordinata e facilmente reperibile, nel rispetto dei criteri di completezza, aggiornamento e semplicità d’accesso.
             </p>
             <p class="text-justify">
@@ -57,75 +54,45 @@ function info(){ ?>
     </div>
 </section>
 
+
+
 <?php }
 
 get_header();
 ?>
+	<main>
+		<?php
+		while ( have_posts() ) :
+			the_post();
+			
+			$with_shadow = true;
+			?>
+			<?php get_template_part("template-parts/single/hero-custom"); ?>
+                        <?php info();?>
+			<?php dci_get_template_part_async("trasparenza-categorie"); ?>
 
-<main>
+           <?php 
+				//Se il portale gestisce solo la nostra Trasparenza in modo esterno, indirizza all'home del comune.
+				$portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
+			
+			// Se è attiva la trasparenza esterna, non visualizzare questi elementi
+			if ($portalesoloperusoesterno !== 'true') {				
+			
+			            get_template_part("template-parts/common/valuta-servizio");
+			            get_template_part("template-parts/common/assistenza-contatti");
+			 } ?>
+		
 
-<?php if ($trasparenza_attiva == 'true') : ?>
 
-    <?php
-    while ( have_posts() ) :
-        the_post();
 
-        $with_shadow = true;
-    ?>
-
-        <?php get_template_part("template-parts/single/hero-custom"); ?>
-
-        <?php info(); ?>
-
-        <?php dci_get_template_part_async("trasparenza-categorie"); ?>
-
-        <?php
-        $portalesoloperusoesterno = dci_get_option("ck_portalesoloperusoesterno");
-
-        if ($portalesoloperusoesterno !== 'true') {
-            get_template_part("template-parts/common/valuta-servizio");
-            get_template_part("template-parts/common/assistenza-contatti");
-        }
-        ?>
-
-    <?php endwhile; ?>
-
-<?php else : ?>
-
-    <section class="section py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-
-                    <div class="alert alert-warning p-5">
-
-                        <h2 class="mb-4">Amministrazione Trasparente non disponibile</h2>
-
-                        <p>
-                            La licenza attualmente installata su questo portale
-                            <strong>non prevede la sezione Amministrazione Trasparente</strong>.
-                        </p>
-
-                        <p class="mb-0">
-                            Per informazioni sull'attivazione del servizio è possibile
-                            contattare il proprio referente tecnico o il fornitore del portale.
-                        </p>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-<?php endif; ?>
-
-</main>
+		
+		<?php 
+			endwhile; // End of the loop.
+		?>
+	</main>
 
 <?php
-get_footer();
-?>
-
+get_footer();?>
 
 
 
