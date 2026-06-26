@@ -13,7 +13,10 @@ $trasparenza_attiva = dci_get_option("ck_abilita_trasparenza", "false");
 $url_img = "https://saassipa.cultura.gov.it/wp-content/uploads/2020/04/amm_trasp-1024x381.png";
 
 echo '<pre>';
-var_dump(dci_get_option("ck_abilita_trasparenza"));
+
+$options = get_option('dci_options');
+var_dump($options);
+
 echo '</pre>';
 exit;
 
