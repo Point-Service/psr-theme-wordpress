@@ -99,7 +99,7 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
 }
 
 .content {
-    display: none;
+    display: block;
     padding: 4px 14px;
     font-size: 18px;
     line-height: 1.6;
@@ -108,6 +108,10 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     border-left: 3px solid var(--main-color-trasparenza);
     border-radius: 0 6px 6px 0;
     margin-bottom: 6px;
+}
+
+.content:not(.js-category-content) {
+    display: none;
 }
 
 .content a {
@@ -175,6 +179,60 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     font-weight: 700;
     line-height: 1;
     opacity: 0.9;
+}
+
+.content .list-marker-toggle {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.05rem;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.1rem;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background: transparent;
+    color: var(--main-color-trasparenza);
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.2s ease;
+}
+
+.content .list-marker-toggle:hover {
+    color: var(--main-color-light-trasparenza);
+}
+
+.content .list-marker-toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.content .list-marker-toggle__icon {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.content .list-marker-toggle::after {
+    content: '+';
+    align-self: flex-start;
+    margin-top: 0.1rem;
+    font-size: 0.65rem;
+    font-weight: 400;
+    line-height: 1;
+    opacity: 0.8;
+}
+
+.content .list-marker-toggle.is-open .list-marker-toggle__icon {
+    transform: rotate(90deg);
+}
+
+.content .list-marker-toggle.is-open::after {
+    content: '−';
 }
 
 .content .list-marker--dash {
@@ -313,48 +371,6 @@ $siti_tematici = !empty(dci_get_option("siti_tematici", "trasparenza")) ? dci_ge
     display: none;
 }
 
-.content .subcat-toggle,
-.content .sub-sub-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.85rem;
-    height: 1.85rem;
-    padding: 0;
-    border: 1px solid color-mix(in srgb, var(--main-color-trasparenza) 28%, white);
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--main-color-trasparenza) 10%, white);
-    color: var(--main-color-trasparenza);
-    flex: 0 0 auto;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-    transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.content .subcat-toggle:hover,
-.content .sub-sub-toggle:hover {
-    color: var(--main-color-trasparenza);
-    background: color-mix(in srgb, var(--main-color-trasparenza) 18%, white);
-    border-color: color-mix(in srgb, var(--main-color-trasparenza) 45%, white);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-}
-
-.content .subcat-toggle .icon,
-.content .sub-sub-toggle .icon {
-    width: 1rem;
-    height: 1rem;
-    transition: transform 0.25s ease;
-}
-
-.content .subcat-toggle.is-open .icon,
-.content .sub-sub-toggle.is-open .icon {
-    transform: rotate(180deg);
-}
-
-.content .subcat-toggle.is-open,
-.content .sub-sub-toggle.is-open {
-    color: var(--main-color-trasparenza);
-}
-
 .sub-sub-list .sub-sub-item-head {
     display: flex;
     align-items: flex-start;
@@ -428,34 +444,24 @@ if (slimWrapper) {
 
 <script>
 function toggleContent(id) {
-    var allContents = document.querySelectorAll('.content');
-    var allTitles = document.querySelectorAll('.title-custom');
-    allContents.forEach(function(content) {
-        if (content.id === id) {
-            content.style.display = (content.style.display === "block") ? "none" : "block";
-        } else {
-            content.style.display = "none";
-        }
-    });
-    allTitles.forEach(function(title) {
-        var targetId = title.getAttribute('data-target');
-        if (title.classList.contains('no-children')) {
-            title.classList.remove('is-open');
-            return;
-        }
-        if (targetId === id) {
-            title.classList.toggle('is-open');
-        } else {
-            title.classList.remove('is-open');
-        }
-    });
+    var content = document.getElementById(id);
+    var title = document.querySelector('.title-custom[data-target="' + id + '"]');
+
+    if (!content || !title || title.classList.contains('no-children')) {
+        return;
+    }
+
+    var isOpen = window.getComputedStyle(content).display !== 'none';
+    content.style.display = isOpen ? 'none' : 'block';
+    title.classList.toggle('is-open', !isOpen);
+    title.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
     updateToggleAllButton();
 }
 
 function toggleAllCategories() {
-    var allContents = document.querySelectorAll('.content');
+    var allContents = document.querySelectorAll('.js-category-content');
     var toggleAllBtn = document.getElementById('toggle-all-btn');
-    var anyClosed = Array.from(allContents).some(content => content.style.display !== 'block');
+    var anyClosed = Array.from(allContents).some(content => window.getComputedStyle(content).display === 'none');
     var nestedToggles = document.querySelectorAll('.js-subcat-toggle');
     var nestedPanels = document.querySelectorAll('.js-subcat-children');
 
@@ -464,6 +470,7 @@ function toggleAllCategories() {
         document.querySelectorAll('.title-custom').forEach(title => {
             if (!title.classList.contains('no-children')) {
                 title.classList.add('is-open');
+                title.setAttribute('aria-expanded', 'true');
             }
         });
         nestedPanels.forEach(function(panel) {
@@ -476,7 +483,12 @@ function toggleAllCategories() {
         toggleAllBtn.textContent = 'Chiudi tutte le Voci';
     } else {
         allContents.forEach(content => content.style.display = 'none');
-        document.querySelectorAll('.title-custom').forEach(title => title.classList.remove('is-open'));
+        document.querySelectorAll('.title-custom').forEach(title => {
+            title.classList.remove('is-open');
+            if (!title.classList.contains('no-children')) {
+                title.setAttribute('aria-expanded', 'false');
+            }
+        });
         nestedPanels.forEach(function(panel) {
             panel.hidden = true;
         });
@@ -489,13 +501,19 @@ function toggleAllCategories() {
 }
 
 function updateToggleAllButton() {
-    var allContents = document.querySelectorAll('.content');
+    var allContents = document.querySelectorAll('.js-category-content');
     var toggleAllBtn = document.getElementById('toggle-all-btn');
-    var allOpen = Array.from(allContents).every(content => content.style.display === 'block');
+    var allOpen = Array.from(allContents).every(content => window.getComputedStyle(content).display !== 'none');
     toggleAllBtn.textContent = allOpen ? 'Chiudi tutte' : 'Espandi tutte le Voci';
 }
 
 document.addEventListener('click', function(event) {
+    var categoryTitle = event.target.closest('.title-custom:not(.no-children)');
+    if (categoryTitle) {
+        toggleContent(categoryTitle.getAttribute('data-target'));
+        return;
+    }
+
     var toggle = event.target.closest('.js-subcat-toggle');
     if (!toggle) {
         return;
@@ -507,10 +525,27 @@ document.addEventListener('click', function(event) {
         return;
     }
 
-    var isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
-    toggle.classList.toggle('is-open', !isExpanded);
-    panel.hidden = isExpanded;
+    var nextExpanded = panel.hidden;
+    panel.hidden = !nextExpanded;
+
+    document.querySelectorAll('.js-subcat-toggle').forEach(function(candidate) {
+        if (candidate.getAttribute('aria-controls') !== controlsId) {
+            return;
+        }
+
+        candidate.setAttribute('aria-expanded', nextExpanded ? 'true' : 'false');
+        candidate.classList.toggle('is-open', nextExpanded);
+    });
+});
+
+document.addEventListener('keydown', function(event) {
+    var categoryTitle = event.target.closest('.title-custom:not(.no-children)');
+    if (!categoryTitle || (event.key !== 'Enter' && event.key !== ' ')) {
+        return;
+    }
+
+    event.preventDefault();
+    toggleContent(categoryTitle.getAttribute('data-target'));
 });
 </script>
 
@@ -528,7 +563,7 @@ document.addEventListener('click', function(event) {
                                 <div>Elenco di tutte le voci</div>
                                 <div id="toggle-all-container" class="d-flex justify-content-end mb-3">
                                     <button type="button" id="toggle-all-btn" class="btn btn-outline-primary py-1 px-3" style="font-size:14px; height: 30px;" onclick="toggleAllCategories()">
-                                        Espandi tutte le Voci
+                                        Chiudi tutte le Voci
                                     </button>
                                 </div>
                             </div>
@@ -548,7 +583,17 @@ document.addEventListener('click', function(event) {
                                 });
                                 $genitore_has_children = !empty($genitore_children);
                             ?>
-                                <h2 class="title-custom<?= !$genitore_has_children ? ' no-children' : ''; ?>" data-target="<?= $id_genitore ?>" onclick="<?= $genitore_has_children ? "toggleContent('{$id_genitore}')" : 'void(0)' ?>">
+                                <h2
+                                    class="title-custom<?= $genitore_has_children ? ' is-open' : ' no-children'; ?>"
+                                    data-target="<?= esc_attr($id_genitore); ?>"
+                                    <?php if ($genitore_has_children) { ?>
+                                        role="button"
+                                        tabindex="0"
+                                        aria-expanded="true"
+                                        aria-controls="<?= esc_attr($id_genitore); ?>"
+                                        aria-label="<?= esc_attr(sprintf('Apri o chiudi la categoria %s', $genitore->name)); ?>"
+                                    <?php } ?>
+                                >
                                     <span class="title-custom__inner">
                                         <span><?= $nome_genitore ?></span>
                                         <?php if ($genitore_is_external) { ?>
@@ -559,7 +604,7 @@ document.addEventListener('click', function(event) {
                                     </span>
                                 </h2>
 
-                                <div id="<?= $id_genitore ?>" class="content">
+                                <div id="<?= esc_attr($id_genitore); ?>" class="content<?= $genitore_has_children ? ' js-category-content' : ''; ?>">
                                     <?php
                                     $sottocategorie = get_terms('tipi_cat_amm_trasp', [
                                         'hide_empty' => false,
@@ -600,10 +645,11 @@ document.addEventListener('click', function(event) {
                                                 return $visible == 1;
                                             });
                                             $has_children = !empty($child_terms);
+                                            $toggle_id = $has_children ? 'subcat-children-' . $sotto->term_id : '';
 
                                             if (!empty($term_url)) {
                                                 $link = $term_url;
-                                                $target = $open_new_window ? ' target="_blank"' : '';
+                                                $target = $open_new_window ? ' target="_blank" rel="noopener noreferrer"' : '';
                                                 $is_external = true;
                                             } else {
                                                 $target = '';
@@ -611,10 +657,15 @@ document.addEventListener('click', function(event) {
                                         ?>
                                             <li class="mb-3 mt-3">
                                                 <div class="subcat-item-head">
-                                                    <a class="list-item ps-0 title-medium underline<?= $is_external ? ' is-external' : ''; ?><?= $has_children ? ' has-children' : ' no-children'; ?>" style="text-decoration:none;" href="<?= esc_url($link); ?>"<?= $target; ?>>
-                                                        <?php if ($has_children) { ?>
-                                                            <span class="list-marker list-marker--arrow" aria-hidden="true">›</span>
-                                                        <?php } else { ?>
+                                                    <?php if ($has_children) { ?>
+                                                        <button class="list-marker-toggle js-subcat-toggle" type="button" aria-expanded="false" aria-controls="<?= esc_attr($toggle_id); ?>" title="<?= esc_attr(sprintf('Mostra o nascondi le sottovoci di %s', $sotto->name)); ?>">
+                                                            <span class="list-marker-toggle__icon" aria-hidden="true">›</span>
+                                                            <span class="visually-hidden">Mostra o nascondi le sottovoci di <?= esc_html($sotto->name); ?></span>
+                                                        </button>
+                                                    <?php } ?>
+
+                                                    <a class="list-item ps-0 title-medium underline<?= $is_external ? ' is-external' : ''; ?><?= $has_children ? ' has-children' : ' no-children'; ?>" style="text-decoration:none;" href="<?= esc_url($link); ?>" aria-label="<?= esc_attr($sotto->name); ?>"<?= $target; ?>>
+                                                        <?php if (!$has_children) { ?>
                                                             <span class="list-marker list-marker--dash" aria-hidden="true">-</span>
                                                         <?php } ?>
                                                         <span><?= $nome_sotto; ?></span>
@@ -625,16 +676,6 @@ document.addEventListener('click', function(event) {
                                                         <?php } ?>
                                                     </a>
 
-                                                    <?php if ($has_children) {
-                                                        $toggle_id = 'subcat-children-' . $sotto->term_id;
-                                                        ?>
-                                                        <button class="subcat-toggle js-subcat-toggle" type="button" aria-expanded="false" aria-controls="<?= esc_attr($toggle_id); ?>">
-                                                            <svg class="icon icon-xs" aria-hidden="true">
-                                                                <use href="#it-expand"></use>
-                                                            </svg>
-                                                            <span class="visually-hidden">Mostra o nascondi le sottovoci di <?= esc_html($sotto->name); ?></span>
-                                                        </button>
-                                                    <?php } ?>
                                                 </div>
 
                                                 <?php if ($has_children) { ?>
