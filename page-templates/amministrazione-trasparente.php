@@ -76,7 +76,7 @@ get_header();
 
         <?php info(); ?>
 
-        <?php // dci_get_template_part_server_cached("trasparenza-categorie"); // ripistino il vecchio sistema?>
+        <?php  dci_get_template_part_server_cached("trasparenza-categorie"); // ripistino il vecchio sistema?>
 
         <?php get_template_part("template-parts/amministrazione-trasparente/categorie"); ?>
         <?php
