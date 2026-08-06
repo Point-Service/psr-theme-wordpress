@@ -337,11 +337,14 @@ function dci_trasparenza_transfer_create_media_zip($content_data, $path) {
     return true;
 }
 
-function dci_trasparenza_transfer_download($path, $filename, $content_type) {
+function dci_trasparenza_transfer_download($path, $filename, $content_type, $headers = array()) {
     nocache_headers();
     header('Content-Type: ' . $content_type);
     header('Content-Disposition: attachment; filename="' . sanitize_file_name($filename) . '"');
     header('Content-Length: ' . filesize($path));
+    foreach ((array) $headers as $name => $value) {
+        header(sanitize_key($name) . ': ' . sanitize_text_field($value));
+    }
     readfile($path);
     @unlink($path);
     exit;
@@ -390,7 +393,7 @@ function dci_trasparenza_transfer_export_media() {
         $requested_term_ids
     );
     $attachment_ids = array_values((array) $data['attachment_ids']);
-    $media_parts = dci_trasparenza_transfer_media_parts($attachment_ids, 100 * MB_IN_BYTES);
+    $media_parts = dci_trasparenza_transfer_media_parts($attachment_ids, 600 * MB_IN_BYTES);
     $total_parts = count($media_parts);
     $part = max(1, absint($_POST['media_part'] ?? 1));
     if ($part > $total_parts) {
@@ -407,7 +410,11 @@ function dci_trasparenza_transfer_export_media() {
     dci_trasparenza_transfer_download(
         $path,
         sprintf('trasparenza-file-parte-%1$d-di-%2$d-%3$s.zip', $part, $total_parts, gmdate('Ymd-His')),
-        'application/zip'
+        'application/zip',
+        array(
+            'X-DCI-Media-Part'        => $part,
+            'X-DCI-Media-Total-Parts' => $total_parts,
+        )
     );
 }
 add_action('admin_post_dci_trasparenza_export_media', 'dci_trasparenza_transfer_export_media');
@@ -878,12 +885,12 @@ function dci_trasparenza_transfer_admin_page() {
                 </p>
                 <p>
                     <label>
-                        <?php esc_html_e('Parte file da esportare:', 'design_comuni_italia'); ?>
+                        <?php esc_html_e('Inizia dalla parte:', 'design_comuni_italia'); ?>
                         <input type="number" name="media_part" value="1" min="1" step="1" style="width:75px">
                     </label>
-                    <button class="button" formaction="<?php echo esc_url(admin_url('admin-post.php?action=dci_trasparenza_export_media')); ?>"><?php esc_html_e('Esporta file ZIP', 'design_comuni_italia'); ?></button>
+                    <button id="dci-trasparenza-export-media" class="button" formaction="<?php echo esc_url(admin_url('admin-post.php?action=dci_trasparenza_export_media')); ?>"><?php esc_html_e('Esporta e scarica tutti gli ZIP', 'design_comuni_italia'); ?></button>
                 </p>
-                <p class="description"><?php esc_html_e('Per evitare errori 500 e timeout, gli allegati vengono suddivisi in ZIP da circa 100 MB. Un singolo allegato più grande rimane nel proprio ZIP. Il nome del file indica quante parti esistono: scaricale tutte impostando 1, 2, 3 e così via.', 'design_comuni_italia'); ?></p>
+                <p id="dci-trasparenza-media-progress" class="description"><?php esc_html_e('Gli allegati vengono suddivisi in ZIP da circa 600 MB. Il pulsante crea e scarica automaticamente tutte le parti, una dopo l’altra. Un singolo allegato più grande rimane nel proprio ZIP.', 'design_comuni_italia'); ?></p>
             </form>
         </div>
 
@@ -915,7 +922,55 @@ function dci_trasparenza_transfer_admin_page() {
     (function () {
         const input = document.getElementById('dci-trasparenza-content-package');
         const scope = document.getElementById('dci-trasparenza-import-scope');
+        const mediaButton = document.getElementById('dci-trasparenza-export-media');
+        const mediaProgress = document.getElementById('dci-trasparenza-media-progress');
         const labels = <?php echo wp_json_encode($post_type_labels); ?>;
+        if (mediaButton && typeof fetch === 'function') {
+            mediaButton.addEventListener('click', async function (event) {
+                event.preventDefault();
+                const form = mediaButton.form;
+                const partInput = form ? form.querySelector('[name="media_part"]') : null;
+                let part = Math.max(1, Number(partInput ? partInput.value : 1) || 1);
+                let totalParts = part;
+                mediaButton.disabled = true;
+
+                try {
+                    do {
+                        if (partInput) partInput.value = part;
+                        mediaProgress.textContent = '<?php echo esc_js(__('Creazione della parte', 'design_comuni_italia')); ?> ' + part + '…';
+                        const response = await fetch(mediaButton.formAction, {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            body: new FormData(form)
+                        });
+                        const contentType = response.headers.get('Content-Type') || '';
+                        if (!response.ok || contentType.indexOf('application/zip') === -1) {
+                            throw new Error('<?php echo esc_js(__('Il server non ha completato la creazione dello ZIP.', 'design_comuni_italia')); ?>');
+                        }
+
+                        totalParts = Math.max(part, Number(response.headers.get('X-DCI-Media-Total-Parts')) || part);
+                        const disposition = response.headers.get('Content-Disposition') || '';
+                        const filenameMatch = disposition.match(/filename="?([^";]+)"?/i);
+                        const filename = filenameMatch ? filenameMatch[1] : 'trasparenza-file-parte-' + part + '-di-' + totalParts + '.zip';
+                        const blobUrl = URL.createObjectURL(await response.blob());
+                        const download = document.createElement('a');
+                        download.href = blobUrl;
+                        download.download = filename;
+                        document.body.appendChild(download);
+                        download.click();
+                        download.remove();
+                        setTimeout(function () { URL.revokeObjectURL(blobUrl); }, 60000);
+                        mediaProgress.textContent = '<?php echo esc_js(__('Scaricata la parte', 'design_comuni_italia')); ?> ' + part + ' <?php echo esc_js(__('di', 'design_comuni_italia')); ?> ' + totalParts + '.';
+                        part++;
+                    } while (part <= totalParts);
+                    mediaProgress.textContent = '<?php echo esc_js(__('Esportazione completata: tutte le parti sono state scaricate.', 'design_comuni_italia')); ?>';
+                } catch (error) {
+                    mediaProgress.textContent = error.message + ' <?php echo esc_js(__('Puoi riprendere dal numero di parte mostrato nel campo.', 'design_comuni_italia')); ?>';
+                } finally {
+                    mediaButton.disabled = false;
+                }
+            });
+        }
         document.addEventListener('click', function (event) {
             const button = event.target.closest('.dci-trasparenza-check-all');
             if (!button) return;
