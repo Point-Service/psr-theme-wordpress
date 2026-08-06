@@ -33,6 +33,38 @@ function dci_trasparenza_transfer_post_type_labels() {
     );
 }
 
+function dci_trasparenza_transfer_order_terms_hierarchically($terms) {
+    $terms_by_parent = array();
+    $known_ids = array();
+    foreach ((array) $terms as $term) {
+        $known_ids[(int) $term->term_id] = true;
+    }
+    foreach ((array) $terms as $term) {
+        $parent_id = (int) $term->parent;
+        if ($parent_id && !isset($known_ids[$parent_id])) {
+            $parent_id = 0;
+        }
+        $terms_by_parent[$parent_id][] = $term;
+    }
+    foreach ($terms_by_parent as &$siblings) {
+        usort($siblings, static function ($first, $second) {
+            return strcasecmp($first->name, $second->name);
+        });
+    }
+    unset($siblings);
+
+    $ordered = array();
+    $append_branch = static function ($parent_id, $depth) use (&$append_branch, &$ordered, $terms_by_parent) {
+        foreach ($terms_by_parent[$parent_id] ?? array() as $term) {
+            $ordered[] = array('term' => $term, 'depth' => $depth);
+            $append_branch((int) $term->term_id, $depth + 1);
+        }
+    };
+    $append_branch(0, 0);
+
+    return $ordered;
+}
+
 function dci_trasparenza_transfer_dir($child = '') {
     $uploads = wp_upload_dir();
     $base = trailingslashit($uploads['basedir']) . 'dci-trasparenza-transfer';
@@ -750,6 +782,7 @@ function dci_trasparenza_transfer_admin_page() {
         'orderby'    => 'name',
     ));
     $terms = is_wp_error($terms) ? array() : $terms;
+    $terms = dci_trasparenza_transfer_order_terms_hierarchically($terms);
     ?>
     <div class="wrap">
         <h1><?php esc_html_e('Trasferimento Amministrazione Trasparente', 'design_comuni_italia'); ?></h1>
@@ -776,8 +809,8 @@ function dci_trasparenza_transfer_admin_page() {
                 <h3><?php esc_html_e('Categorie degli elementi generici', 'design_comuni_italia'); ?></h3>
                 <p class="description"><?php esc_html_e('Se selezioni una categoria padre vengono inclusi anche tutti i suoi discendenti.', 'design_comuni_italia'); ?></p>
                 <fieldset style="max-height:300px;overflow:auto;border:1px solid #dcdcde;padding:12px">
-                    <?php foreach ($terms as $term) : ?>
-                        <?php $depth = count(get_ancestors($term->term_id, 'tipi_cat_amm_trasp', 'taxonomy')); ?>
+                    <?php foreach ($terms as $term_entry) : ?>
+                        <?php $term = $term_entry['term']; $depth = (int) $term_entry['depth']; ?>
                         <label style="display:block;margin-left:<?php echo esc_attr($depth * 18); ?>px"><input class="dci-trasparenza-term-checkbox" type="checkbox" name="export_term_ids[]" value="<?php echo (int) $term->term_id; ?>" data-term-id="<?php echo (int) $term->term_id; ?>" data-parent-id="<?php echo (int) $term->parent; ?>" checked> <?php echo esc_html($term->name); ?></label>
                     <?php endforeach; ?>
                 </fieldset>
@@ -829,11 +862,21 @@ function dci_trasparenza_transfer_admin_page() {
         });
         function bindTermTree(container) {
             if (!container) return;
+            const checkboxes = Array.from(container.querySelectorAll('.dci-trasparenza-term-checkbox'));
+            const checkboxById = new Map();
+            const childrenByParent = new Map();
+            checkboxes.forEach(checkbox => {
+                const termId = String(checkbox.dataset.termId || '');
+                const parentId = String(checkbox.dataset.parentId || '0');
+                checkboxById.set(termId, checkbox);
+                if (!childrenByParent.has(parentId)) childrenByParent.set(parentId, []);
+                childrenByParent.get(parentId).push(checkbox);
+            });
             function updateAncestors(parentId) {
                 while (parentId && parentId !== '0') {
-                    const parent = container.querySelector('.dci-trasparenza-term-checkbox[data-term-id="' + parentId + '"]');
+                    const parent = checkboxById.get(parentId);
                     if (!parent) break;
-                    const children = Array.from(container.querySelectorAll('.dci-trasparenza-term-checkbox[data-parent-id="' + parentId + '"]'));
+                    const children = childrenByParent.get(parentId) || [];
                     const checkedChildren = children.filter(child => child.checked).length;
                     const partialChildren = children.filter(child => child.indeterminate).length;
                     parent.checked = checkedChildren === children.length && partialChildren === 0;
@@ -841,13 +884,13 @@ function dci_trasparenza_transfer_admin_page() {
                     parentId = String(parent.dataset.parentId || '0');
                 }
             }
-            container.querySelectorAll('.dci-trasparenza-term-checkbox').forEach(checkbox => {
+            checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function () {
                     checkbox.indeterminate = false;
                     const pendingParents = [String(checkbox.dataset.termId || '')];
                     while (pendingParents.length) {
                         const parentId = pendingParents.shift();
-                        container.querySelectorAll('.dci-trasparenza-term-checkbox[data-parent-id="' + parentId + '"]').forEach(child => {
+                        (childrenByParent.get(parentId) || []).forEach(child => {
                             child.checked = checkbox.checked;
                             pendingParents.push(String(child.dataset.termId || ''));
                         });
@@ -879,7 +922,27 @@ function dci_trasparenza_transfer_admin_page() {
                     html += '<h4><?php echo esc_js(__('Categorie degli elementi generici', 'design_comuni_italia')); ?></h4>';
                     const termsById = {};
                     (data.terms || []).forEach(term => { termsById[Number(term.source_id)] = term; });
+                    const selectedTermIds = new Set(termIds);
+                    const childrenByParent = {};
                     termIds.forEach(id => {
+                        const term = termsById[id];
+                        if (!term) return;
+                        const parentId = selectedTermIds.has(Number(term.parent || 0)) ? Number(term.parent || 0) : 0;
+                        if (!childrenByParent[parentId]) childrenByParent[parentId] = [];
+                        childrenByParent[parentId].push(id);
+                    });
+                    Object.keys(childrenByParent).forEach(parentId => {
+                        childrenByParent[parentId].sort((first, second) => String(termsById[first].name).localeCompare(String(termsById[second].name), 'it'));
+                    });
+                    const orderedTermIds = [];
+                    const appendBranch = function (parentId) {
+                        (childrenByParent[parentId] || []).forEach(id => {
+                            orderedTermIds.push(id);
+                            appendBranch(id);
+                        });
+                    };
+                    appendBranch(0);
+                    orderedTermIds.forEach(id => {
                         const term = termsById[id];
                         if (!term) return;
                         let depth = 0, parent = Number(term.parent || 0), guard = 20;
