@@ -22,6 +22,17 @@ function dci_trasparenza_transfer_post_types() {
     );
 }
 
+function dci_trasparenza_transfer_post_type_labels() {
+    return array(
+        'elemento_trasparenza' => __('Elementi generici', 'design_comuni_italia'),
+        'bando'                => __('Atti, documenti e link a BDNCP', 'design_comuni_italia'),
+        'atto_concessione'     => __('Atti di concessione', 'design_comuni_italia'),
+        'titolare_incarico'    => __('Titolari di incarichi', 'design_comuni_italia'),
+        'incarichi_dip'        => __('Incarichi conferiti ai dipendenti', 'design_comuni_italia'),
+        'incarico_dirig'       => __('Incarichi dirigenziali', 'design_comuni_italia'),
+    );
+}
+
 function dci_trasparenza_transfer_dir($child = '') {
     $uploads = wp_upload_dir();
     $base = trailingslashit($uploads['basedir']) . 'dci-trasparenza-transfer';
@@ -54,8 +65,30 @@ function dci_trasparenza_transfer_collect_attachment_ids($value, &$ids) {
     }
 }
 
-function dci_trasparenza_transfer_export_data() {
-    $post_types = dci_trasparenza_transfer_post_types();
+function dci_trasparenza_transfer_expand_term_ids($term_ids) {
+    $expanded = array_map('absint', (array) $term_ids);
+    foreach ($expanded as $term_id) {
+        $children = get_term_children($term_id, 'tipi_cat_amm_trasp');
+        if (!is_wp_error($children)) {
+            $expanded = array_merge($expanded, array_map('absint', $children));
+        }
+    }
+    return array_values(array_unique(array_filter($expanded)));
+}
+
+function dci_trasparenza_transfer_export_data($requested_post_types = array(), $requested_term_ids = array()) {
+    $allowed_post_types = dci_trasparenza_transfer_post_types();
+    $post_types = array_values(array_intersect($allowed_post_types, array_map('sanitize_key', (array) $requested_post_types)));
+    if (empty($post_types)) {
+        $post_types = $allowed_post_types;
+    }
+
+    $all_term_ids = get_terms(array('taxonomy' => 'tipi_cat_amm_trasp', 'hide_empty' => false, 'fields' => 'ids'));
+    $all_term_ids = is_wp_error($all_term_ids) ? array() : array_map('intval', $all_term_ids);
+    $selected_term_ids = dci_trasparenza_transfer_expand_term_ids($requested_term_ids);
+    if (empty($selected_term_ids)) {
+        $selected_term_ids = $all_term_ids;
+    }
     $posts = get_posts(array(
         'post_type'      => $post_types,
         'post_status'    => 'any',
@@ -67,14 +100,28 @@ function dci_trasparenza_transfer_export_data() {
     $export_posts = array();
 
     foreach ($posts as $post) {
+        $post_term_ids = wp_get_object_terms($post->ID, 'tipi_cat_amm_trasp', array('fields' => 'ids'));
+        $post_term_ids = is_wp_error($post_term_ids) ? array() : array_map('intval', $post_term_ids);
+        if ('elemento_trasparenza' === $post->post_type && empty(array_intersect($post_term_ids, $selected_term_ids))) {
+            continue;
+        }
         $meta = get_post_meta($post->ID);
         foreach ($meta as $values) {
             foreach ($values as $value) {
                 dci_trasparenza_transfer_collect_attachment_ids(maybe_unserialize($value), $attachment_ids);
             }
         }
+        foreach (get_attached_media('', $post->ID) as $attached_media) {
+            $attachment_ids[(int) $attached_media->ID] = (int) $attached_media->ID;
+        }
+        if (preg_match_all('/(?:wp-image-|attachment[_-])([0-9]+)/', $post->post_content, $matches)) {
+            foreach ($matches[1] as $content_attachment_id) {
+                if ('attachment' === get_post_type((int) $content_attachment_id)) {
+                    $attachment_ids[(int) $content_attachment_id] = (int) $content_attachment_id;
+                }
+            }
+        }
 
-        $terms = wp_get_object_terms($post->ID, 'tipi_cat_amm_trasp', array('fields' => 'ids'));
         $export_posts[] = array(
             'source_id' => (int) $post->ID,
             'data'      => array_intersect_key((array) $post, array_flip(array(
@@ -86,7 +133,7 @@ function dci_trasparenza_transfer_export_data() {
             'meta'      => array_map(static function ($values) {
                 return array_map('maybe_unserialize', $values);
             }, $meta),
-            'terms'     => is_wp_error($terms) ? array() : array_map('intval', $terms),
+            'terms'     => $post_term_ids,
         );
     }
 
@@ -98,7 +145,15 @@ function dci_trasparenza_transfer_export_data() {
     ));
     $export_terms = array();
     if (!is_wp_error($terms)) {
+        $structural_term_ids = $selected_term_ids;
+        foreach ($selected_term_ids as $selected_term_id) {
+            $structural_term_ids = array_merge($structural_term_ids, get_ancestors($selected_term_id, 'tipi_cat_amm_trasp', 'taxonomy'));
+        }
+        $structural_term_ids = array_unique(array_map('intval', $structural_term_ids));
         foreach ($terms as $term) {
+            if (!in_array((int) $term->term_id, $structural_term_ids, true)) {
+                continue;
+            }
             $export_terms[] = array(
                 'source_id'   => (int) $term->term_id,
                 'name'        => $term->name,
@@ -110,6 +165,11 @@ function dci_trasparenza_transfer_export_data() {
         }
     }
 
+    $attachment_urls = array();
+    foreach ($attachment_ids as $attachment_id) {
+        $attachment_urls[$attachment_id] = wp_get_attachment_url($attachment_id);
+    }
+
     return array(
         'format'         => 'dci-trasparenza-content',
         'version'        => 1,
@@ -117,10 +177,15 @@ function dci_trasparenza_transfer_export_data() {
         'created_at'     => gmdate('c'),
         'source_url'     => home_url('/'),
         'post_types'     => $post_types,
+        'scope'          => array(
+            'post_types' => $post_types,
+            'term_ids'   => $selected_term_ids,
+        ),
         'posts'          => $export_posts,
         'terms'          => $export_terms,
         'options'        => array('trasparenza' => get_option('trasparenza', array())),
         'attachment_ids' => array_values($attachment_ids),
+        'attachment_urls' => $attachment_urls,
     );
 }
 
@@ -228,8 +293,16 @@ function dci_trasparenza_transfer_export_content() {
     if (!dci_trasparenza_transfer_allowed()) {
         wp_die(esc_html__('Operazione non consentita.', 'design_comuni_italia'), '', array('response' => 403));
     }
-    check_admin_referer('dci_trasparenza_export_content');
-    $data = dci_trasparenza_transfer_export_data();
+    check_admin_referer('dci_trasparenza_export');
+    $requested_post_types = (array) wp_unslash($_POST['export_post_types'] ?? array());
+    $requested_term_ids = (array) wp_unslash($_POST['export_term_ids'] ?? array());
+    if (empty($requested_post_types) || (in_array('elemento_trasparenza', $requested_post_types, true) && empty($requested_term_ids))) {
+        dci_trasparenza_transfer_notice('error', __('Seleziona almeno una tipologia e, per gli elementi generici, almeno una categoria.', 'design_comuni_italia'));
+    }
+    $data = dci_trasparenza_transfer_export_data(
+        $requested_post_types,
+        $requested_term_ids
+    );
     $path = wp_tempnam('trasparenza-contenuti.json');
     if (!$path || !dci_trasparenza_transfer_create_content_file($data, $path)) {
         dci_trasparenza_transfer_notice('error', __('Impossibile creare il pacchetto contenuti.', 'design_comuni_italia'));
@@ -242,8 +315,16 @@ function dci_trasparenza_transfer_export_media() {
     if (!dci_trasparenza_transfer_allowed()) {
         wp_die(esc_html__('Operazione non consentita.', 'design_comuni_italia'), '', array('response' => 403));
     }
-    check_admin_referer('dci_trasparenza_export_media');
-    $data = dci_trasparenza_transfer_export_data();
+    check_admin_referer('dci_trasparenza_export');
+    $requested_post_types = (array) wp_unslash($_POST['export_post_types'] ?? array());
+    $requested_term_ids = (array) wp_unslash($_POST['export_term_ids'] ?? array());
+    if (empty($requested_post_types) || (in_array('elemento_trasparenza', $requested_post_types, true) && empty($requested_term_ids))) {
+        dci_trasparenza_transfer_notice('error', __('Seleziona almeno una tipologia e, per gli elementi generici, almeno una categoria.', 'design_comuni_italia'));
+    }
+    $data = dci_trasparenza_transfer_export_data(
+        $requested_post_types,
+        $requested_term_ids
+    );
     $path = wp_tempnam('trasparenza-file.zip');
     $result = $path ? dci_trasparenza_transfer_create_media_zip($data, $path) : new WP_Error('temp', 'Errore file temporaneo');
     if (is_wp_error($result)) {
@@ -265,13 +346,20 @@ function dci_trasparenza_transfer_validate_content($data) {
     return true;
 }
 
-function dci_trasparenza_transfer_remap_meta($value, $attachment_map, $force = false) {
+function dci_trasparenza_transfer_remap_meta($value, $attachment_map, $attachment_urls = array(), $force = false) {
     if (is_array($value)) {
         foreach ($value as $key => $item) {
             $child_force = $force || in_array((string) $key, array('id', 'ID', 'attachment_id'), true);
-            $value[$key] = dci_trasparenza_transfer_remap_meta($item, $attachment_map, $child_force);
+            $value[$key] = dci_trasparenza_transfer_remap_meta($item, $attachment_map, $attachment_urls, $child_force);
         }
         return $value;
+    }
+    if (is_string($value)) {
+        foreach ($attachment_map as $source_id => $destination_id) {
+            if (!empty($attachment_urls[$source_id])) {
+                $value = str_replace($attachment_urls[$source_id], wp_get_attachment_url($destination_id), $value);
+            }
+        }
     }
     if ($force && is_numeric($value) && isset($attachment_map[(int) $value])) {
         return is_string($value) ? (string) $attachment_map[(int) $value] : $attachment_map[(int) $value];
@@ -279,8 +367,42 @@ function dci_trasparenza_transfer_remap_meta($value, $attachment_map, $force = f
     return $value;
 }
 
-function dci_trasparenza_transfer_import_content_data($data) {
+function dci_trasparenza_transfer_package_term_descendants($terms, $term_ids) {
+    $expanded = array_map('absint', (array) $term_ids);
+    do {
+        $changed = false;
+        foreach ($terms as $term) {
+            if (in_array((int) ($term['parent'] ?? 0), $expanded, true) && !in_array((int) $term['source_id'], $expanded, true)) {
+                $expanded[] = (int) $term['source_id'];
+                $changed = true;
+            }
+        }
+    } while ($changed);
+    return array_values(array_unique(array_filter($expanded)));
+}
+
+function dci_trasparenza_transfer_import_content_data($data, $requested_post_types = array(), $requested_term_ids = array()) {
     global $wpdb;
+    $package_post_types = (array) ($data['scope']['post_types'] ?? $data['post_types'] ?? array());
+    $selected_post_types = array_values(array_intersect(
+        dci_trasparenza_transfer_post_types(),
+        $package_post_types,
+        array_map('sanitize_key', (array) $requested_post_types)
+    ));
+    if (empty($selected_post_types)) {
+        return new WP_Error('empty_scope', __('Seleziona almeno una tipologia da importare.', 'design_comuni_italia'));
+    }
+    $package_term_ids = array_map('intval', (array) ($data['scope']['term_ids'] ?? wp_list_pluck($data['terms'], 'source_id')));
+    $selected_term_ids = array_values(array_intersect(
+        $package_term_ids,
+        dci_trasparenza_transfer_package_term_descendants($data['terms'], $requested_term_ids)
+    ));
+    if (in_array('elemento_trasparenza', $selected_post_types, true) && empty($selected_term_ids)) {
+        return new WP_Error('empty_terms', __('Seleziona almeno una categoria per gli elementi generici.', 'design_comuni_italia'));
+    }
+    if (!in_array('elemento_trasparenza', $selected_post_types, true)) {
+        $selected_term_ids = array();
+    }
     $backup_dir = dci_trasparenza_transfer_dir('backups');
     wp_mkdir_p($backup_dir);
     $backup_path = trailingslashit($backup_dir) . 'prima-import-' . gmdate('Ymd-His') . '.json';
@@ -299,18 +421,38 @@ function dci_trasparenza_transfer_import_content_data($data) {
     }
     $wpdb->query('START TRANSACTION');
     try {
-        $existing = get_posts(array(
-            'post_type'      => dci_trasparenza_transfer_post_types(),
+        $selected_slugs = array();
+        foreach ($data['terms'] as $term) {
+            if (in_array((int) $term['source_id'], $selected_term_ids, true)) {
+                $selected_slugs[] = (string) $term['slug'];
+            }
+        }
+        $existing_args = array(
+            'post_type'      => $selected_post_types,
             'post_status'    => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'),
             'posts_per_page' => -1,
             'fields'         => 'ids',
-        ));
+        );
+        if (in_array('elemento_trasparenza', $selected_post_types, true) && 1 === count($selected_post_types)) {
+            $existing_args['tax_query'] = array(array(
+                'taxonomy' => 'tipi_cat_amm_trasp',
+                'field'    => 'slug',
+                'terms'    => $selected_slugs,
+            ));
+        }
+        $existing = get_posts($existing_args);
         foreach ($existing as $post_id) {
+            if ('elemento_trasparenza' === get_post_type($post_id) && count($selected_post_types) > 1) {
+                $existing_post_terms = wp_get_object_terms($post_id, 'tipi_cat_amm_trasp', array('fields' => 'slugs'));
+                if (empty(array_intersect((array) $existing_post_terms, $selected_slugs ?? array()))) {
+                    continue;
+                }
+            }
             if (!wp_delete_post($post_id, true)) {
                 throw new Exception('Impossibile eliminare un contenuto esistente.');
             }
         }
-        $existing_terms = get_terms(array('taxonomy' => 'tipi_cat_amm_trasp', 'hide_empty' => false, 'fields' => 'ids'));
+        $existing_terms = empty($selected_slugs) ? array() : get_terms(array('taxonomy' => 'tipi_cat_amm_trasp', 'hide_empty' => false, 'slug' => $selected_slugs, 'fields' => 'ids'));
         if (!is_wp_error($existing_terms)) {
             foreach (array_reverse($existing_terms) as $term_id) {
                 $deleted_term = wp_delete_term($term_id, 'tipi_cat_amm_trasp');
@@ -323,7 +465,28 @@ function dci_trasparenza_transfer_import_content_data($data) {
         }
 
         $term_map = array();
-        $pending = $data['terms'];
+        $needed_term_ids = $selected_term_ids;
+        foreach ($data['terms'] as $term) {
+            if (!in_array((int) $term['source_id'], $selected_term_ids, true)) {
+                continue;
+            }
+            $parent_id = (int) ($term['parent'] ?? 0);
+            while ($parent_id) {
+                $needed_term_ids[] = $parent_id;
+                $parent_entry = null;
+                foreach ($data['terms'] as $candidate) {
+                    if ((int) $candidate['source_id'] === $parent_id) {
+                        $parent_entry = $candidate;
+                        break;
+                    }
+                }
+                $parent_id = $parent_entry ? (int) ($parent_entry['parent'] ?? 0) : 0;
+            }
+        }
+        $needed_term_ids = array_unique($needed_term_ids);
+        $pending = array_values(array_filter($data['terms'], static function ($term) use ($needed_term_ids) {
+            return in_array((int) $term['source_id'], $needed_term_ids, true);
+        }));
         $guard = count($pending) + 1;
         while ($pending && $guard-- > 0) {
             foreach ($pending as $index => $term) {
@@ -331,19 +494,27 @@ function dci_trasparenza_transfer_import_content_data($data) {
                 if ($parent && !isset($term_map[$parent])) {
                     continue;
                 }
-                $created = wp_insert_term((string) $term['name'], 'tipi_cat_amm_trasp', array(
-                    'slug'        => (string) ($term['slug'] ?? ''),
-                    'description' => (string) ($term['description'] ?? ''),
-                    'parent'      => $parent ? $term_map[$parent] : 0,
-                ));
+                $is_selected_term = in_array((int) $term['source_id'], $selected_term_ids, true);
+                $existing_term = !$is_selected_term ? get_term_by('slug', (string) $term['slug'], 'tipi_cat_amm_trasp') : false;
+                $created = $existing_term ? array('term_id' => $existing_term->term_id) : wp_insert_term(
+                    (string) $term['name'],
+                    'tipi_cat_amm_trasp',
+                    array(
+                        'slug'        => (string) ($term['slug'] ?? ''),
+                        'description' => (string) ($term['description'] ?? ''),
+                        'parent'      => $parent ? $term_map[$parent] : 0,
+                    )
+                );
                 if (is_wp_error($created)) {
                     throw new Exception($created->get_error_message());
                 }
                 $new_term_id = (int) $created['term_id'];
                 $term_map[(int) $term['source_id']] = $new_term_id;
-                foreach ((array) ($term['meta'] ?? array()) as $key => $values) {
-                    foreach ((array) $values as $value) {
-                        add_term_meta($new_term_id, $key, $value);
+                if ($is_selected_term || !$existing_term) {
+                    foreach ((array) ($term['meta'] ?? array()) as $key => $values) {
+                        foreach ((array) $values as $value) {
+                            add_term_meta($new_term_id, $key, $value);
+                        }
                     }
                 }
                 unset($pending[$index]);
@@ -356,6 +527,12 @@ function dci_trasparenza_transfer_import_content_data($data) {
         $post_map = array();
         foreach ($data['posts'] as $entry) {
             $post_data = (array) ($entry['data'] ?? array());
+            if (!in_array($post_data['post_type'] ?? '', $selected_post_types, true)) {
+                continue;
+            }
+            if ('elemento_trasparenza' === $post_data['post_type'] && empty(array_intersect(array_map('intval', (array) ($entry['terms'] ?? array())), $selected_term_ids))) {
+                continue;
+            }
             if (!in_array($post_data['post_type'] ?? '', dci_trasparenza_transfer_post_types(), true)) {
                 throw new Exception('Tipologia contenuto non consentita nel pacchetto.');
             }
@@ -363,6 +540,18 @@ function dci_trasparenza_transfer_import_content_data($data) {
             $post_data['post_parent'] = $post_map[$source_parent] ?? 0;
             if (empty($post_data['post_author']) || !get_user_by('id', (int) $post_data['post_author'])) {
                 $post_data['post_author'] = get_current_user_id();
+            }
+            $post_data['post_content'] = dci_trasparenza_transfer_remap_meta(
+                $post_data['post_content'] ?? '',
+                $attachment_map,
+                (array) ($data['attachment_urls'] ?? array())
+            );
+            foreach ($attachment_map as $source_attachment_id => $destination_attachment_id) {
+                $post_data['post_content'] = str_replace(
+                    array('wp-image-' . $source_attachment_id, 'attachment_' . $source_attachment_id),
+                    array('wp-image-' . $destination_attachment_id, 'attachment_' . $destination_attachment_id),
+                    $post_data['post_content']
+                );
             }
             $new_id = wp_insert_post(wp_slash($post_data), true);
             if (is_wp_error($new_id)) {
@@ -372,20 +561,20 @@ function dci_trasparenza_transfer_import_content_data($data) {
             foreach ((array) ($entry['meta'] ?? array()) as $key => $values) {
                 $is_attachment_field = (bool) preg_match('/attachment|alleg|file|document|curriculum|immagine|thumbnail|media/i', (string) $key);
                 foreach ((array) $values as $value) {
-                    $value = dci_trasparenza_transfer_remap_meta($value, $attachment_map, $is_attachment_field);
+                    $value = dci_trasparenza_transfer_remap_meta($value, $attachment_map, (array) ($data['attachment_urls'] ?? array()), $is_attachment_field);
                     add_post_meta($new_id, $key, $value);
                 }
             }
             $new_terms = array();
             foreach ((array) ($entry['terms'] ?? array()) as $source_term_id) {
-                if (isset($term_map[(int) $source_term_id])) {
+                if (in_array((int) $source_term_id, $selected_term_ids, true) && isset($term_map[(int) $source_term_id])) {
                     $new_terms[] = $term_map[(int) $source_term_id];
                 }
             }
             wp_set_object_terms($new_id, $new_terms, 'tipi_cat_amm_trasp', false);
         }
 
-        if (array_key_exists('trasparenza', $data['options'])) {
+        if (count($selected_post_types) === count(dci_trasparenza_transfer_post_types()) && count($selected_term_ids) === count($package_term_ids) && array_key_exists('trasparenza', $data['options'])) {
             update_option('trasparenza', $data['options']['trasparenza']);
         }
         $wpdb->query('COMMIT');
@@ -394,7 +583,7 @@ function dci_trasparenza_transfer_import_content_data($data) {
         return new WP_Error('import_failed', sprintf(__('Importazione annullata: %s', 'design_comuni_italia'), $error->getMessage()));
     }
 
-    return array('backup' => $backup_path, 'posts' => count($data['posts']), 'terms' => count($data['terms']));
+    return array('backup' => $backup_path, 'posts' => count($post_map), 'terms' => count($selected_term_ids));
 }
 
 function dci_trasparenza_transfer_import_content() {
@@ -417,7 +606,11 @@ function dci_trasparenza_transfer_import_content() {
     if (is_wp_error($valid)) {
         dci_trasparenza_transfer_notice('error', $valid->get_error_message());
     }
-    $result = dci_trasparenza_transfer_import_content_data($data);
+    $result = dci_trasparenza_transfer_import_content_data(
+        $data,
+        wp_unslash($_POST['import_post_types'] ?? array()),
+        wp_unslash($_POST['import_term_ids'] ?? array())
+    );
     if (is_wp_error($result)) {
         dci_trasparenza_transfer_notice('error', $result->get_error_message());
     }
@@ -550,6 +743,13 @@ function dci_trasparenza_transfer_admin_page() {
     }
     $notice = get_transient('dci_trasparenza_transfer_notice_' . get_current_user_id());
     delete_transient('dci_trasparenza_transfer_notice_' . get_current_user_id());
+    $post_type_labels = dci_trasparenza_transfer_post_type_labels();
+    $terms = get_terms(array(
+        'taxonomy'   => 'tipi_cat_amm_trasp',
+        'hide_empty' => false,
+        'orderby'    => 'name',
+    ));
+    $terms = is_wp_error($terms) ? array() : $terms;
     ?>
     <div class="wrap">
         <h1><?php esc_html_e('Trasferimento Amministrazione Trasparente', 'design_comuni_italia'); ?></h1>
@@ -561,10 +761,27 @@ function dci_trasparenza_transfer_admin_page() {
         <div class="card" style="max-width:900px">
             <h2><?php esc_html_e('1. Esporta', 'design_comuni_italia'); ?></h2>
             <p><?php esc_html_e('L’esportazione legge i dati senza modificarli.', 'design_comuni_italia'); ?></p>
-            <p>
-                <a class="button button-primary" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=dci_trasparenza_export_content'), 'dci_trasparenza_export_content')); ?>"><?php esc_html_e('Esporta contenuti JSON', 'design_comuni_italia'); ?></a>
-                <a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=dci_trasparenza_export_media'), 'dci_trasparenza_export_media')); ?>"><?php esc_html_e('Esporta file ZIP', 'design_comuni_italia'); ?></a>
-            </p>
+            <form method="post">
+                <?php wp_nonce_field('dci_trasparenza_export'); ?>
+                <h3><?php esc_html_e('Tipologie', 'design_comuni_italia'); ?></h3>
+                <fieldset style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">
+                    <?php foreach ($post_type_labels as $post_type => $label) : ?>
+                        <label><input type="checkbox" name="export_post_types[]" value="<?php echo esc_attr($post_type); ?>" checked> <?php echo esc_html($label); ?></label>
+                    <?php endforeach; ?>
+                </fieldset>
+                <h3><?php esc_html_e('Categorie degli elementi generici', 'design_comuni_italia'); ?></h3>
+                <p class="description"><?php esc_html_e('Se selezioni una categoria padre vengono inclusi anche tutti i suoi discendenti.', 'design_comuni_italia'); ?></p>
+                <fieldset style="max-height:300px;overflow:auto;border:1px solid #dcdcde;padding:12px">
+                    <?php foreach ($terms as $term) : ?>
+                        <?php $depth = count(get_ancestors($term->term_id, 'tipi_cat_amm_trasp', 'taxonomy')); ?>
+                        <label style="display:block;margin-left:<?php echo esc_attr($depth * 18); ?>px"><input type="checkbox" name="export_term_ids[]" value="<?php echo (int) $term->term_id; ?>" checked> <?php echo esc_html($term->name); ?></label>
+                    <?php endforeach; ?>
+                </fieldset>
+                <p>
+                    <button class="button button-primary" formaction="<?php echo esc_url(admin_url('admin-post.php?action=dci_trasparenza_export_content')); ?>"><?php esc_html_e('Esporta contenuti JSON', 'design_comuni_italia'); ?></button>
+                    <button class="button" formaction="<?php echo esc_url(admin_url('admin-post.php?action=dci_trasparenza_export_media')); ?>"><?php esc_html_e('Esporta file ZIP', 'design_comuni_italia'); ?></button>
+                </p>
+            </form>
         </div>
 
         <div class="card" style="max-width:900px">
@@ -583,11 +800,53 @@ function dci_trasparenza_transfer_admin_page() {
             <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="dci_trasparenza_import_content">
                 <?php wp_nonce_field('dci_trasparenza_import_content'); ?>
-                <p><input type="file" name="content_package" accept=".json,application/json" required></p>
+                <p><input id="dci-trasparenza-content-package" type="file" name="content_package" accept=".json,application/json" required></p>
+                <div id="dci-trasparenza-import-scope"><p class="description"><?php esc_html_e('Seleziona il JSON per scegliere cosa sostituire.', 'design_comuni_italia'); ?></p></div>
                 <p><label><?php esc_html_e('Per confermare scrivi SOSTITUISCI:', 'design_comuni_italia'); ?><br><input type="text" name="confirmation" autocomplete="off" required></label></p>
                 <?php submit_button(__('Sostituisci i contenuti Trasparenza', 'design_comuni_italia'), 'delete', 'submit', false); ?>
             </form>
         </div>
     </div>
+    <script>
+    (function () {
+        const input = document.getElementById('dci-trasparenza-content-package');
+        const scope = document.getElementById('dci-trasparenza-import-scope');
+        const labels = <?php echo wp_json_encode($post_type_labels); ?>;
+        if (!input || !scope || typeof FileReader === 'undefined') return;
+        input.addEventListener('change', function () {
+            scope.innerHTML = '<p><?php echo esc_js(__('Analisi del pacchetto…', 'design_comuni_italia')); ?></p>';
+            if (!input.files.length) return;
+            const reader = new FileReader();
+            reader.onload = function () {
+                try {
+                    const data = JSON.parse(reader.result);
+                    if (data.format !== 'dci-trasparenza-content') throw new Error('invalid');
+                    const packageScope = data.scope || {};
+                    const types = packageScope.post_types || data.post_types || [];
+                    const termIds = (packageScope.term_ids || (data.terms || []).map(term => term.source_id)).map(Number);
+                    let html = '<h3><?php echo esc_js(__('Scegli cosa sostituire', 'design_comuni_italia')); ?></h3>';
+                    html += '<p class="description"><?php echo esc_js(__('Le voci non selezionate resteranno intatte nel sito di destinazione.', 'design_comuni_italia')); ?></p>';
+                    types.forEach(type => {
+                        html += '<label style="display:block"><input type="checkbox" name="import_post_types[]" value="' + type + '" checked> ' + (labels[type] || type) + '</label>';
+                    });
+                    html += '<h4><?php echo esc_js(__('Categorie degli elementi generici', 'design_comuni_italia')); ?></h4>';
+                    const termsById = {};
+                    (data.terms || []).forEach(term => { termsById[Number(term.source_id)] = term; });
+                    termIds.forEach(id => {
+                        const term = termsById[id];
+                        if (!term) return;
+                        let depth = 0, parent = Number(term.parent || 0), guard = 20;
+                        while (parent && termsById[parent] && guard-- > 0) { depth++; parent = Number(termsById[parent].parent || 0); }
+                        html += '<label style="display:block;margin-left:' + (depth * 18) + 'px"><input type="checkbox" name="import_term_ids[]" value="' + id + '" checked> ' + String(term.name).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char])) + '</label>';
+                    });
+                    scope.innerHTML = html;
+                } catch (error) {
+                    scope.innerHTML = '<p style="color:#b32d2e"><?php echo esc_js(__('Il file selezionato non è un pacchetto Trasparenza valido.', 'design_comuni_italia')); ?></p>';
+                }
+            };
+            reader.readAsText(input.files[0]);
+        });
+    }());
+    </script>
     <?php
 }
