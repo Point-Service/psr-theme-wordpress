@@ -5,6 +5,22 @@
 
 get_header();
 
+if (!function_exists('dci_format_trasparenza_section_title')) {
+    function dci_format_trasparenza_section_title($title)
+    {
+        $title = (string) $title;
+
+        if (!preg_match('/\p{Lu}{7,}/u', $title)) {
+            return $title;
+        }
+
+        $lowercase_title = mb_strtolower($title, 'UTF-8');
+
+        return mb_strtoupper(mb_substr($lowercase_title, 0, 1, 'UTF-8'), 'UTF-8')
+            . mb_substr($lowercase_title, 1, null, 'UTF-8');
+    }
+}
+
 function sitemap_is_amministrazione_trasparente_integrata() {
     if (dci_get_option('ck_abilita_trasparenza') !== 'true') {
         return false;
@@ -54,7 +70,11 @@ function sitemap_get_trasparenza_terms($parent_id = 0) {
     return $terms;
 }
 
-function sitemap_render_trasparenza_tree($parent_id = 0) {
+function sitemap_render_trasparenza_tree($parent_id = 0, $depth = 1, $max_depth = 5) {
+    if ($depth > $max_depth) {
+        return;
+    }
+
     $terms = sitemap_get_trasparenza_terms($parent_id);
 
     if (empty($terms)) {
@@ -65,14 +85,22 @@ function sitemap_render_trasparenza_tree($parent_id = 0) {
 
     foreach ($terms as $term) {
         $term_link = get_term_link($term, 'tipi_cat_amm_trasp');
+        $term_url = get_term_meta($term->term_id, 'term_url', true);
+        $open_new_window = get_term_meta($term->term_id, 'open_new_window', true);
+        $target = '';
+
+        if (!empty($term_url)) {
+            $term_link = $term_url;
+            $target = $open_new_window ? ' target="_blank" rel="noopener noreferrer"' : '';
+        }
 
         if (is_wp_error($term_link)) {
             continue;
         }
 
         echo '<li>';
-        echo '<a href="' . esc_url($term_link) . '">' . esc_html($term->name) . '</a>';
-        sitemap_render_trasparenza_tree($term->term_id);
+        echo '<a href="' . esc_url($term_link) . '"' . $target . '>' . esc_html(dci_format_trasparenza_section_title($term->name)) . '</a>';
+        sitemap_render_trasparenza_tree($term->term_id, $depth + 1, $max_depth);
         echo '</li>';
     }
 
