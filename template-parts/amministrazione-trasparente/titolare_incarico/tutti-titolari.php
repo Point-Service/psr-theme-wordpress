@@ -70,6 +70,8 @@ $prefix = "_dci_titolare_incarico_";
 // Query personalizzata
 $the_query = new WP_Query($args);
 
+
+
 // SEARCH BAR
 ?>
 <form method="get" class="incarichi-filtro-form t-primary">
