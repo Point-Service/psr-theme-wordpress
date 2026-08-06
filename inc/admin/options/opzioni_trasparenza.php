@@ -126,21 +126,18 @@ function dci_register_pagina_trasparenza_options()
             'id'         => 'titolo',
             'name'       => __('Titolo', 'design_comuni_italia'),
             'type'       => 'text',
-            'attributes' => array('required' => 'required'),
         ));
 
         $trasparenza_options->add_group_field($atti_link_group_id, array(
             'id'         => 'descrizione',
             'name'       => __('Descrizione', 'design_comuni_italia'),
             'type'       => 'textarea_small',
-            'attributes' => array('required' => 'required'),
         ));
 
         $trasparenza_options->add_group_field($atti_link_group_id, array(
             'id'         => 'url',
             'name'       => __('URL di destinazione', 'design_comuni_italia'),
             'type'       => 'text_url',
-            'attributes' => array('required' => 'required'),
         ));
     }
 
@@ -200,21 +197,18 @@ function dci_register_pagina_trasparenza_options()
             'id'         => 'titolo',
             'name'       => __('Titolo', 'design_comuni_italia'),
             'type'       => 'text',
-            'attributes' => array('required' => 'required'),
         ));
 
         $trasparenza_options->add_group_field($titolari_link_group_id, array(
             'id'         => 'descrizione',
             'name'       => __('Descrizione', 'design_comuni_italia'),
             'type'       => 'textarea_small',
-            'attributes' => array('required' => 'required'),
         ));
 
         $trasparenza_options->add_group_field($titolari_link_group_id, array(
             'id'         => 'url',
             'name'       => __('URL di destinazione', 'design_comuni_italia'),
             'type'       => 'text_url',
-            'attributes' => array('required' => 'required'),
         ));
     }
 
