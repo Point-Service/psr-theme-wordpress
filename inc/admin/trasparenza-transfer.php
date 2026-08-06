@@ -763,6 +763,10 @@ function dci_trasparenza_transfer_admin_page() {
             <p><?php esc_html_e('L’esportazione legge i dati senza modificarli.', 'design_comuni_italia'); ?></p>
             <form id="dci-trasparenza-export-form" method="post">
                 <?php wp_nonce_field('dci_trasparenza_export'); ?>
+                <p>
+                    <button type="button" class="button dci-trasparenza-check-all" data-checkbox-container="dci-trasparenza-export-form" data-checked="1"><?php esc_html_e('Seleziona tutto', 'design_comuni_italia'); ?></button>
+                    <button type="button" class="button dci-trasparenza-check-all" data-checkbox-container="dci-trasparenza-export-form" data-checked="0"><?php esc_html_e('Deseleziona tutto', 'design_comuni_italia'); ?></button>
+                </p>
                 <h3><?php esc_html_e('Tipologie', 'design_comuni_italia'); ?></h3>
                 <fieldset style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">
                     <?php foreach ($post_type_labels as $post_type => $label) : ?>
@@ -812,6 +816,17 @@ function dci_trasparenza_transfer_admin_page() {
         const input = document.getElementById('dci-trasparenza-content-package');
         const scope = document.getElementById('dci-trasparenza-import-scope');
         const labels = <?php echo wp_json_encode($post_type_labels); ?>;
+        document.addEventListener('click', function (event) {
+            const button = event.target.closest('.dci-trasparenza-check-all');
+            if (!button) return;
+            const container = document.getElementById(button.dataset.checkboxContainer || '');
+            if (!container) return;
+            const checked = button.dataset.checked === '1';
+            container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = checked;
+                checkbox.indeterminate = false;
+            });
+        });
         function bindTermTree(container) {
             if (!container) return;
             function updateAncestors(parentId) {
@@ -856,6 +871,8 @@ function dci_trasparenza_transfer_admin_page() {
                     const termIds = (packageScope.term_ids || (data.terms || []).map(term => term.source_id)).map(Number);
                     let html = '<h3><?php echo esc_js(__('Scegli cosa sostituire', 'design_comuni_italia')); ?></h3>';
                     html += '<p class="description"><?php echo esc_js(__('Le voci non selezionate resteranno intatte nel sito di destinazione.', 'design_comuni_italia')); ?></p>';
+                    html += '<p><button type="button" class="button dci-trasparenza-check-all" data-checkbox-container="dci-trasparenza-import-scope" data-checked="1"><?php echo esc_js(__('Seleziona tutto', 'design_comuni_italia')); ?></button> ';
+                    html += '<button type="button" class="button dci-trasparenza-check-all" data-checkbox-container="dci-trasparenza-import-scope" data-checked="0"><?php echo esc_js(__('Deseleziona tutto', 'design_comuni_italia')); ?></button></p>';
                     types.forEach(type => {
                         html += '<label style="display:block"><input type="checkbox" name="import_post_types[]" value="' + type + '" checked> ' + (labels[type] || type) + '</label>';
                     });
