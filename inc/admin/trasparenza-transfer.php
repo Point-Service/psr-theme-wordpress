@@ -761,7 +761,7 @@ function dci_trasparenza_transfer_admin_page() {
         <div class="card" style="max-width:900px">
             <h2><?php esc_html_e('1. Esporta', 'design_comuni_italia'); ?></h2>
             <p><?php esc_html_e('L’esportazione legge i dati senza modificarli.', 'design_comuni_italia'); ?></p>
-            <form method="post">
+            <form id="dci-trasparenza-export-form" method="post">
                 <?php wp_nonce_field('dci_trasparenza_export'); ?>
                 <h3><?php esc_html_e('Tipologie', 'design_comuni_italia'); ?></h3>
                 <fieldset style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">
@@ -774,7 +774,7 @@ function dci_trasparenza_transfer_admin_page() {
                 <fieldset style="max-height:300px;overflow:auto;border:1px solid #dcdcde;padding:12px">
                     <?php foreach ($terms as $term) : ?>
                         <?php $depth = count(get_ancestors($term->term_id, 'tipi_cat_amm_trasp', 'taxonomy')); ?>
-                        <label style="display:block;margin-left:<?php echo esc_attr($depth * 18); ?>px"><input type="checkbox" name="export_term_ids[]" value="<?php echo (int) $term->term_id; ?>" checked> <?php echo esc_html($term->name); ?></label>
+                        <label style="display:block;margin-left:<?php echo esc_attr($depth * 18); ?>px"><input class="dci-trasparenza-term-checkbox" type="checkbox" name="export_term_ids[]" value="<?php echo (int) $term->term_id; ?>" data-term-id="<?php echo (int) $term->term_id; ?>" data-parent-id="<?php echo (int) $term->parent; ?>" checked> <?php echo esc_html($term->name); ?></label>
                     <?php endforeach; ?>
                 </fieldset>
                 <p>
@@ -812,6 +812,36 @@ function dci_trasparenza_transfer_admin_page() {
         const input = document.getElementById('dci-trasparenza-content-package');
         const scope = document.getElementById('dci-trasparenza-import-scope');
         const labels = <?php echo wp_json_encode($post_type_labels); ?>;
+        function bindTermTree(container) {
+            if (!container) return;
+            function updateAncestors(parentId) {
+                while (parentId && parentId !== '0') {
+                    const parent = container.querySelector('.dci-trasparenza-term-checkbox[data-term-id="' + parentId + '"]');
+                    if (!parent) break;
+                    const children = Array.from(container.querySelectorAll('.dci-trasparenza-term-checkbox[data-parent-id="' + parentId + '"]'));
+                    const checkedChildren = children.filter(child => child.checked).length;
+                    const partialChildren = children.filter(child => child.indeterminate).length;
+                    parent.checked = checkedChildren === children.length && partialChildren === 0;
+                    parent.indeterminate = !parent.checked && (checkedChildren > 0 || partialChildren > 0);
+                    parentId = String(parent.dataset.parentId || '0');
+                }
+            }
+            container.querySelectorAll('.dci-trasparenza-term-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    checkbox.indeterminate = false;
+                    const pendingParents = [String(checkbox.dataset.termId || '')];
+                    while (pendingParents.length) {
+                        const parentId = pendingParents.shift();
+                        container.querySelectorAll('.dci-trasparenza-term-checkbox[data-parent-id="' + parentId + '"]').forEach(child => {
+                            child.checked = checkbox.checked;
+                            pendingParents.push(String(child.dataset.termId || ''));
+                        });
+                    }
+                    updateAncestors(String(checkbox.dataset.parentId || '0'));
+                });
+            });
+        }
+        bindTermTree(document.getElementById('dci-trasparenza-export-form'));
         if (!input || !scope || typeof FileReader === 'undefined') return;
         input.addEventListener('change', function () {
             scope.innerHTML = '<p><?php echo esc_js(__('Analisi del pacchetto…', 'design_comuni_italia')); ?></p>';
@@ -837,9 +867,10 @@ function dci_trasparenza_transfer_admin_page() {
                         if (!term) return;
                         let depth = 0, parent = Number(term.parent || 0), guard = 20;
                         while (parent && termsById[parent] && guard-- > 0) { depth++; parent = Number(termsById[parent].parent || 0); }
-                        html += '<label style="display:block;margin-left:' + (depth * 18) + 'px"><input type="checkbox" name="import_term_ids[]" value="' + id + '" checked> ' + String(term.name).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char])) + '</label>';
+                        html += '<label style="display:block;margin-left:' + (depth * 18) + 'px"><input class="dci-trasparenza-term-checkbox" type="checkbox" name="import_term_ids[]" value="' + id + '" data-term-id="' + id + '" data-parent-id="' + Number(term.parent || 0) + '" checked> ' + String(term.name).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char])) + '</label>';
                     });
                     scope.innerHTML = html;
+                    bindTermTree(scope);
                 } catch (error) {
                     scope.innerHTML = '<p style="color:#b32d2e"><?php echo esc_js(__('Il file selezionato non è un pacchetto Trasparenza valido.', 'design_comuni_italia')); ?></p>';
                 }
