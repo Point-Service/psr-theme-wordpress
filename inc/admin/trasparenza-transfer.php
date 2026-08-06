@@ -97,29 +97,19 @@ function dci_trasparenza_transfer_collect_attachment_ids($value, &$ids) {
     }
 }
 
-function dci_trasparenza_transfer_expand_term_ids($term_ids) {
-    $expanded = array_map('absint', (array) $term_ids);
-    foreach ($expanded as $term_id) {
-        $children = get_term_children($term_id, 'tipi_cat_amm_trasp');
-        if (!is_wp_error($children)) {
-            $expanded = array_merge($expanded, array_map('absint', $children));
-        }
-    }
-    return array_values(array_unique(array_filter($expanded)));
-}
-
-function dci_trasparenza_transfer_export_data($requested_post_types = array(), $requested_term_ids = array()) {
+function dci_trasparenza_transfer_export_data($requested_post_types = null, $requested_term_ids = null) {
     $allowed_post_types = dci_trasparenza_transfer_post_types();
-    $post_types = array_values(array_intersect($allowed_post_types, array_map('sanitize_key', (array) $requested_post_types)));
-    if (empty($post_types)) {
-        $post_types = $allowed_post_types;
-    }
+    $post_types = null === $requested_post_types
+        ? $allowed_post_types
+        : array_values(array_intersect($allowed_post_types, array_map('sanitize_key', (array) $requested_post_types)));
 
     $all_term_ids = get_terms(array('taxonomy' => 'tipi_cat_amm_trasp', 'hide_empty' => false, 'fields' => 'ids'));
     $all_term_ids = is_wp_error($all_term_ids) ? array() : array_map('intval', $all_term_ids);
-    $selected_term_ids = dci_trasparenza_transfer_expand_term_ids($requested_term_ids);
-    if (empty($selected_term_ids)) {
-        $selected_term_ids = $all_term_ids;
+    $selected_term_ids = null === $requested_term_ids
+        ? $all_term_ids
+        : array_values(array_unique(array_filter(array_map('absint', (array) $requested_term_ids))));
+    if (!in_array('elemento_trasparenza', $post_types, true)) {
+        $selected_term_ids = array();
     }
     $posts = get_posts(array(
         'post_type'      => $post_types,
@@ -399,20 +389,6 @@ function dci_trasparenza_transfer_remap_meta($value, $attachment_map, $attachmen
     return $value;
 }
 
-function dci_trasparenza_transfer_package_term_descendants($terms, $term_ids) {
-    $expanded = array_map('absint', (array) $term_ids);
-    do {
-        $changed = false;
-        foreach ($terms as $term) {
-            if (in_array((int) ($term['parent'] ?? 0), $expanded, true) && !in_array((int) $term['source_id'], $expanded, true)) {
-                $expanded[] = (int) $term['source_id'];
-                $changed = true;
-            }
-        }
-    } while ($changed);
-    return array_values(array_unique(array_filter($expanded)));
-}
-
 function dci_trasparenza_transfer_import_content_data($data, $requested_post_types = array(), $requested_term_ids = array()) {
     global $wpdb;
     $package_post_types = (array) ($data['scope']['post_types'] ?? $data['post_types'] ?? array());
@@ -427,7 +403,7 @@ function dci_trasparenza_transfer_import_content_data($data, $requested_post_typ
     $package_term_ids = array_map('intval', (array) ($data['scope']['term_ids'] ?? wp_list_pluck($data['terms'], 'source_id')));
     $selected_term_ids = array_values(array_intersect(
         $package_term_ids,
-        dci_trasparenza_transfer_package_term_descendants($data['terms'], $requested_term_ids)
+        array_values(array_unique(array_filter(array_map('absint', (array) $requested_term_ids))))
     ));
     if (in_array('elemento_trasparenza', $selected_post_types, true) && empty($selected_term_ids)) {
         return new WP_Error('empty_terms', __('Seleziona almeno una categoria per gli elementi generici.', 'design_comuni_italia'));
@@ -470,6 +446,7 @@ function dci_trasparenza_transfer_import_content_data($data, $requested_post_typ
                 'taxonomy' => 'tipi_cat_amm_trasp',
                 'field'    => 'slug',
                 'terms'    => $selected_slugs,
+                'include_children' => false,
             ));
         }
         $existing = get_posts($existing_args);
@@ -823,7 +800,7 @@ function dci_trasparenza_transfer_admin_page() {
                     <?php endforeach; ?>
                 </fieldset>
                 <h3><?php esc_html_e('Categorie degli elementi generici', 'design_comuni_italia'); ?></h3>
-                <p class="description"><?php esc_html_e('Se selezioni una categoria padre vengono inclusi anche tutti i suoi discendenti.', 'design_comuni_italia'); ?></p>
+                <p class="description"><?php esc_html_e('Il check del padre seleziona i suoi discendenti; puoi poi escludere singoli figli senza deselezionare il padre e gli elementi pubblicati direttamente in esso.', 'design_comuni_italia'); ?></p>
                 <fieldset style="max-height:300px;overflow:auto;border:1px solid #dcdcde;padding:12px">
                     <?php foreach ($terms as $term_entry) : ?>
                         <?php $term = $term_entry['term']; $depth = (int) $term_entry['depth']; ?>
@@ -879,39 +856,29 @@ function dci_trasparenza_transfer_admin_page() {
         function bindTermTree(container) {
             if (!container) return;
             const checkboxes = Array.from(container.querySelectorAll('.dci-trasparenza-term-checkbox'));
-            const checkboxById = new Map();
             const childrenByParent = new Map();
             checkboxes.forEach(checkbox => {
-                const termId = String(checkbox.dataset.termId || '');
                 const parentId = String(checkbox.dataset.parentId || '0');
-                checkboxById.set(termId, checkbox);
                 if (!childrenByParent.has(parentId)) childrenByParent.set(parentId, []);
                 childrenByParent.get(parentId).push(checkbox);
             });
-            function updateAncestors(parentId) {
-                while (parentId && parentId !== '0') {
-                    const parent = checkboxById.get(parentId);
-                    if (!parent) break;
-                    const children = childrenByParent.get(parentId) || [];
-                    const checkedChildren = children.filter(child => child.checked).length;
-                    const partialChildren = children.filter(child => child.indeterminate).length;
-                    parent.checked = checkedChildren === children.length && partialChildren === 0;
-                    parent.indeterminate = !parent.checked && (checkedChildren > 0 || partialChildren > 0);
-                    parentId = String(parent.dataset.parentId || '0');
+            function setDescendants(termId, checked) {
+                const pendingParents = [String(termId || '')];
+                while (pendingParents.length) {
+                    const parentId = pendingParents.shift();
+                    (childrenByParent.get(parentId) || []).forEach(child => {
+                        child.checked = checked;
+                        child.indeterminate = false;
+                        pendingParents.push(String(child.dataset.termId || ''));
+                    });
                 }
             }
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function () {
                     checkbox.indeterminate = false;
-                    const pendingParents = [String(checkbox.dataset.termId || '')];
-                    while (pendingParents.length) {
-                        const parentId = pendingParents.shift();
-                        (childrenByParent.get(parentId) || []).forEach(child => {
-                            child.checked = checkbox.checked;
-                            pendingParents.push(String(child.dataset.termId || ''));
-                        });
-                    }
-                    updateAncestors(String(checkbox.dataset.parentId || '0'));
+                    // La scelta modifica solo questo ramo: gli antenati possono
+                    // contenere elementi propri e devono restare invariati.
+                    setDescendants(checkbox.dataset.termId, checkbox.checked);
                 });
             });
         }
