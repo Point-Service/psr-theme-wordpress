@@ -474,26 +474,24 @@ function dci_trasparenza_transfer_import_content_data($data, $requested_post_typ
         }
         $existing = get_posts($existing_args);
         foreach ($existing as $post_id) {
-            if ('elemento_trasparenza' === get_post_type($post_id) && count($selected_post_types) > 1) {
+            if ('elemento_trasparenza' === get_post_type($post_id)) {
                 $existing_post_terms = wp_get_object_terms($post_id, 'tipi_cat_amm_trasp', array('fields' => 'slugs'));
-                if (empty(array_intersect((array) $existing_post_terms, $selected_slugs ?? array()))) {
+                $existing_post_terms = is_wp_error($existing_post_terms) ? array() : (array) $existing_post_terms;
+                if (empty(array_intersect($existing_post_terms, $selected_slugs))) {
+                    continue;
+                }
+                $unselected_post_terms = array_diff($existing_post_terms, $selected_slugs);
+                if (!empty($unselected_post_terms)) {
+                    $removed = wp_remove_object_terms($post_id, $selected_slugs, 'tipi_cat_amm_trasp');
+                    if (is_wp_error($removed)) {
+                        throw new Exception($removed->get_error_message());
+                    }
                     continue;
                 }
             }
             if (!wp_delete_post($post_id, true)) {
                 throw new Exception('Impossibile eliminare un contenuto esistente.');
             }
-        }
-        $existing_terms = empty($selected_slugs) ? array() : get_terms(array('taxonomy' => 'tipi_cat_amm_trasp', 'hide_empty' => false, 'slug' => $selected_slugs, 'fields' => 'ids'));
-        if (!is_wp_error($existing_terms)) {
-            foreach (array_reverse($existing_terms) as $term_id) {
-                $deleted_term = wp_delete_term($term_id, 'tipi_cat_amm_trasp');
-                if (is_wp_error($deleted_term) || false === $deleted_term) {
-                    throw new Exception('Impossibile eliminare una categoria Trasparenza esistente.');
-                }
-            }
-        } else {
-            throw new Exception($existing_terms->get_error_message());
         }
 
         $term_map = array();
@@ -527,8 +525,20 @@ function dci_trasparenza_transfer_import_content_data($data, $requested_post_typ
                     continue;
                 }
                 $is_selected_term = in_array((int) $term['source_id'], $selected_term_ids, true);
-                $existing_term = !$is_selected_term ? get_term_by('slug', (string) $term['slug'], 'tipi_cat_amm_trasp') : false;
-                $created = $existing_term ? array('term_id' => $existing_term->term_id) : wp_insert_term(
+                $existing_term = get_term_by('slug', (string) $term['slug'], 'tipi_cat_amm_trasp');
+                if ($existing_term && $is_selected_term) {
+                    $created = wp_update_term(
+                        $existing_term->term_id,
+                        'tipi_cat_amm_trasp',
+                        array(
+                            'name'        => (string) $term['name'],
+                            'slug'        => (string) ($term['slug'] ?? ''),
+                            'description' => (string) ($term['description'] ?? ''),
+                            'parent'      => $parent ? $term_map[$parent] : 0,
+                        )
+                    );
+                } else {
+                    $created = $existing_term ? array('term_id' => $existing_term->term_id) : wp_insert_term(
                     (string) $term['name'],
                     'tipi_cat_amm_trasp',
                     array(
@@ -536,13 +546,19 @@ function dci_trasparenza_transfer_import_content_data($data, $requested_post_typ
                         'description' => (string) ($term['description'] ?? ''),
                         'parent'      => $parent ? $term_map[$parent] : 0,
                     )
-                );
+                    );
+                }
                 if (is_wp_error($created)) {
                     throw new Exception($created->get_error_message());
                 }
                 $new_term_id = (int) $created['term_id'];
                 $term_map[(int) $term['source_id']] = $new_term_id;
                 if ($is_selected_term || !$existing_term) {
+                    if ($is_selected_term && $existing_term) {
+                        foreach (array_keys(get_term_meta($new_term_id)) as $existing_meta_key) {
+                            delete_term_meta($new_term_id, $existing_meta_key);
+                        }
+                    }
                     foreach ((array) ($term['meta'] ?? array()) as $key => $values) {
                         foreach ((array) $values as $value) {
                             add_term_meta($new_term_id, $key, $value);
