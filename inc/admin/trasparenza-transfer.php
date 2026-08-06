@@ -240,6 +240,37 @@ function dci_trasparenza_transfer_attachment_files($attachment_id) {
     return $files;
 }
 
+function dci_trasparenza_transfer_media_parts($attachment_ids, $max_part_bytes = 104857600) {
+    $parts = array();
+    $current_part = array();
+    $current_size = 0;
+
+    foreach ((array) $attachment_ids as $attachment_id) {
+        $attachment_size = 0;
+        foreach (dci_trasparenza_transfer_attachment_files($attachment_id) as $file) {
+            $file_size = filesize($file);
+            if (false !== $file_size) {
+                $attachment_size += (int) $file_size;
+            }
+        }
+
+        if ($current_part && $current_size + $attachment_size > $max_part_bytes) {
+            $parts[] = $current_part;
+            $current_part = array();
+            $current_size = 0;
+        }
+
+        $current_part[] = (int) $attachment_id;
+        $current_size += $attachment_size;
+    }
+
+    if ($current_part || empty($parts)) {
+        $parts[] = $current_part;
+    }
+
+    return $parts;
+}
+
 function dci_trasparenza_transfer_create_media_zip($content_data, $path) {
     if (!class_exists('ZipArchive')) {
         return new WP_Error('zip_missing', __('Estensione PHP ZipArchive non disponibile.', 'design_comuni_italia'));
@@ -255,6 +286,8 @@ function dci_trasparenza_transfer_create_media_zip($content_data, $path) {
         'version'     => 1,
         'transfer_id' => $content_data['transfer_id'],
         'created_at'  => $content_data['created_at'],
+        'part'        => (int) ($content_data['media_part'] ?? 1),
+        'total_parts' => (int) ($content_data['media_total_parts'] ?? 1),
         'attachments' => array(),
     );
 
@@ -277,7 +310,15 @@ function dci_trasparenza_transfer_create_media_zip($content_data, $path) {
         );
         foreach (dci_trasparenza_transfer_attachment_files($attachment_id) as $name => $file) {
             $zip_path = 'media/' . (int) $attachment_id . '/' . sanitize_file_name($name);
-            $zip->addFile($file, $zip_path);
+            if (!$zip->addFile($file, $zip_path)) {
+                $zip->close();
+                return new WP_Error('zip_add', __('Impossibile aggiungere un file al pacchetto.', 'design_comuni_italia'));
+            }
+            // I file multimediali sono normalmente già compressi. CM_STORE evita
+            // lavoro CPU inutile e riduce sensibilmente il rischio di timeout.
+            if (method_exists($zip, 'setCompressionName')) {
+                $zip->setCompressionName($zip_path, ZipArchive::CM_STORE);
+            }
             $entry['files'][] = array(
                 'path'   => $zip_path,
                 'name'   => sanitize_file_name($name),
@@ -290,8 +331,9 @@ function dci_trasparenza_transfer_create_media_zip($content_data, $path) {
         }
     }
 
-    $zip->addFromString('manifest.json', dci_trasparenza_transfer_json($manifest));
-    $zip->close();
+    if (!$zip->addFromString('manifest.json', dci_trasparenza_transfer_json($manifest)) || !$zip->close()) {
+        return new WP_Error('zip_close', __('Impossibile completare il pacchetto dei file.', 'design_comuni_italia'));
+    }
     return true;
 }
 
@@ -347,12 +389,26 @@ function dci_trasparenza_transfer_export_media() {
         $requested_post_types,
         $requested_term_ids
     );
+    $attachment_ids = array_values((array) $data['attachment_ids']);
+    $media_parts = dci_trasparenza_transfer_media_parts($attachment_ids, 100 * MB_IN_BYTES);
+    $total_parts = count($media_parts);
+    $part = max(1, absint($_POST['media_part'] ?? 1));
+    if ($part > $total_parts) {
+        dci_trasparenza_transfer_notice('error', sprintf(__('La parte richiesta non esiste. Parti disponibili: %d.', 'design_comuni_italia'), $total_parts));
+    }
+    $data['attachment_ids'] = $media_parts[$part - 1];
+    $data['media_part'] = $part;
+    $data['media_total_parts'] = $total_parts;
     $path = wp_tempnam('trasparenza-file.zip');
     $result = $path ? dci_trasparenza_transfer_create_media_zip($data, $path) : new WP_Error('temp', 'Errore file temporaneo');
     if (is_wp_error($result)) {
         dci_trasparenza_transfer_notice('error', $result->get_error_message());
     }
-    dci_trasparenza_transfer_download($path, 'trasparenza-file-' . gmdate('Ymd-His') . '.zip', 'application/zip');
+    dci_trasparenza_transfer_download(
+        $path,
+        sprintf('trasparenza-file-parte-%1$d-di-%2$d-%3$s.zip', $part, $total_parts, gmdate('Ymd-His')),
+        'application/zip'
+    );
 }
 add_action('admin_post_dci_trasparenza_export_media', 'dci_trasparenza_transfer_export_media');
 
@@ -688,7 +744,7 @@ function dci_trasparenza_transfer_import_media() {
     $base_dir = dci_trasparenza_transfer_dir('imported/' . $transfer_id);
     wp_mkdir_p($base_dir);
     $uploads = wp_upload_dir();
-    $map = array();
+    $map = (array) get_option('dci_trasparenza_media_map_' . $transfer_id, array());
 
     foreach ((array) $manifest['attachments'] as $attachment) {
         $source_id = (int) ($attachment['source_id'] ?? 0);
@@ -745,7 +801,17 @@ function dci_trasparenza_transfer_import_media() {
     }
     $zip->close();
     update_option('dci_trasparenza_media_map_' . $transfer_id, $map, false);
-    dci_trasparenza_transfer_notice('success', sprintf(__('Importati %d allegati. Ora importa il pacchetto contenuti corrispondente.', 'design_comuni_italia'), count($map)));
+    $part = max(1, (int) ($manifest['part'] ?? 1));
+    $total_parts = max(1, (int) ($manifest['total_parts'] ?? 1));
+    dci_trasparenza_transfer_notice(
+        'success',
+        sprintf(
+            __('Importata la parte %1$d di %2$d. Allegati complessivamente disponibili: %3$d.', 'design_comuni_italia'),
+            $part,
+            $total_parts,
+            count($map)
+        )
+    );
 }
 add_action('admin_post_dci_trasparenza_import_media', 'dci_trasparenza_transfer_import_media');
 
@@ -809,13 +875,21 @@ function dci_trasparenza_transfer_admin_page() {
                 </fieldset>
                 <p>
                     <button class="button button-primary" formaction="<?php echo esc_url(admin_url('admin-post.php?action=dci_trasparenza_export_content')); ?>"><?php esc_html_e('Esporta contenuti JSON', 'design_comuni_italia'); ?></button>
+                </p>
+                <p>
+                    <label>
+                        <?php esc_html_e('Parte file da esportare:', 'design_comuni_italia'); ?>
+                        <input type="number" name="media_part" value="1" min="1" step="1" style="width:75px">
+                    </label>
                     <button class="button" formaction="<?php echo esc_url(admin_url('admin-post.php?action=dci_trasparenza_export_media')); ?>"><?php esc_html_e('Esporta file ZIP', 'design_comuni_italia'); ?></button>
                 </p>
+                <p class="description"><?php esc_html_e('Per evitare errori 500 e timeout, gli allegati vengono suddivisi in ZIP da circa 100 MB. Un singolo allegato più grande rimane nel proprio ZIP. Il nome del file indica quante parti esistono: scaricale tutte impostando 1, 2, 3 e così via.', 'design_comuni_italia'); ?></p>
             </form>
         </div>
 
         <div class="card" style="max-width:900px">
             <h2><?php esc_html_e('2. Importa file', 'design_comuni_italia'); ?></h2>
+            <p><?php esc_html_e('Se l’esportazione ha creato più parti, importale tutte, una alla volta e in qualsiasi ordine, prima di importare il JSON dei contenuti.', 'design_comuni_italia'); ?></p>
             <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="dci_trasparenza_import_media">
                 <?php wp_nonce_field('dci_trasparenza_import_media'); ?>
