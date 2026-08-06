@@ -70,8 +70,7 @@ $prefix = "_dci_titolare_incarico_";
 // Query personalizzata
 $the_query = new WP_Query($args);
 
-// Collegamenti configurati dall'amministratore ID 1, prima dei record manuali.
-get_template_part('template-parts/amministrazione-trasparente/titolare_incarico/link-evidenza');
+
 
 // SEARCH BAR
 ?>
