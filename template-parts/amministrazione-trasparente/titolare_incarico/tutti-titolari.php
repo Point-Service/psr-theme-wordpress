@@ -121,6 +121,11 @@ $the_query = new WP_Query($args);
 </form>
 
 <?php
+// Collegamenti in evidenza sotto la ricerca e prima dei record manuali.
+get_template_part('template-parts/amministrazione-trasparente/titolare_incarico/link-evidenza');
+?>
+
+<?php
 if (function_exists('dci_render_trasparenza_not_applicable_notice')) {
     dci_render_trasparenza_not_applicable_notice();
 }
