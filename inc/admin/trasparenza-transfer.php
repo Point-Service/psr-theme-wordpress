@@ -499,6 +499,51 @@ function dci_trasparenza_transfer_remap_meta($value, $attachment_map, $attachmen
     return $value;
 }
 
+function dci_trasparenza_transfer_recover_attachment_map($transfer_id, $source_attachment_ids, $attachment_map = array()) {
+    $source_attachment_ids = array_values(array_unique(array_filter(array_map('absint', (array) $source_attachment_ids))));
+    $missing_ids = array_values(array_diff($source_attachment_ids, array_map('intval', array_keys((array) $attachment_map))));
+    if (!$missing_ids) {
+        return (array) $attachment_map;
+    }
+
+    $imported_ids = get_posts(array(
+        'post_type'      => 'attachment',
+        'post_status'    => 'inherit',
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+        'orderby'        => 'ID',
+        'order'          => 'DESC',
+        'meta_query'     => array(array(
+            'key'     => '_dci_trasparenza_source_attachment_id',
+            'value'   => $missing_ids,
+            'compare' => 'IN',
+            'type'    => 'NUMERIC',
+        )),
+    ));
+
+    $fallback_map = array();
+    foreach ($imported_ids as $imported_id) {
+        $source_id = absint(get_post_meta($imported_id, '_dci_trasparenza_source_attachment_id', true));
+        if (!$source_id || !in_array($source_id, $missing_ids, true) || !is_file(get_attached_file($imported_id))) {
+            continue;
+        }
+        $imported_transfer_id = (string) get_post_meta($imported_id, '_dci_trasparenza_transfer_id', true);
+        if ((string) $transfer_id === $imported_transfer_id) {
+            $attachment_map[$source_id] = (int) $imported_id;
+        } elseif (!isset($fallback_map[$source_id])) {
+            // Recupero compatibile per ZIP esportati separatamente dal JSON.
+            $fallback_map[$source_id] = (int) $imported_id;
+        }
+    }
+
+    foreach ($fallback_map as $source_id => $imported_id) {
+        if (empty($attachment_map[$source_id])) {
+            $attachment_map[$source_id] = $imported_id;
+        }
+    }
+    return (array) $attachment_map;
+}
+
 function dci_trasparenza_transfer_import_content_data($data, $requested_post_types = array(), $requested_term_ids = array()) {
     global $wpdb;
     $package_post_types = (array) ($data['scope']['post_types'] ?? $data['post_types'] ?? array());
@@ -528,15 +573,11 @@ function dci_trasparenza_transfer_import_content_data($data, $requested_post_typ
         return new WP_Error('backup_failed', __('Backup preventivo non riuscito: importazione annullata.', 'design_comuni_italia'));
     }
 
+    $attachment_ids = array_values(array_unique(array_filter(array_map('absint', (array) ($data['attachment_ids'] ?? array())))));
     $attachment_map = get_option('dci_trasparenza_media_map_' . sanitize_key($data['transfer_id']), array());
-    foreach ((array) ($data['attachment_ids'] ?? array()) as $source_attachment_id) {
-        if (empty($attachment_map[(int) $source_attachment_id])) {
-            return new WP_Error(
-                'media_missing',
-                __('Pacchetto file mancante o incompleto: importa prima lo ZIP generato insieme a questo JSON.', 'design_comuni_italia')
-            );
-        }
-    }
+    $attachment_map = dci_trasparenza_transfer_recover_attachment_map($data['transfer_id'], $attachment_ids, $attachment_map);
+    update_option('dci_trasparenza_media_map_' . sanitize_key($data['transfer_id']), $attachment_map, false);
+    $missing_attachment_ids = array_values(array_diff($attachment_ids, array_map('intval', array_keys($attachment_map))));
     $wpdb->query('START TRANSACTION');
     try {
         $selected_slugs = array();
@@ -718,7 +759,12 @@ function dci_trasparenza_transfer_import_content_data($data, $requested_post_typ
         return new WP_Error('import_failed', sprintf(__('Importazione annullata: %s', 'design_comuni_italia'), $error->getMessage()));
     }
 
-    return array('backup' => $backup_path, 'posts' => count($post_map), 'terms' => count($selected_term_ids));
+    return array(
+        'backup'       => $backup_path,
+        'posts'        => count($post_map),
+        'terms'        => count($selected_term_ids),
+        'missing_media' => count($missing_attachment_ids),
+    );
 }
 
 function dci_trasparenza_transfer_import_content() {
@@ -749,7 +795,20 @@ function dci_trasparenza_transfer_import_content() {
     if (is_wp_error($result)) {
         dci_trasparenza_transfer_notice('error', $result->get_error_message());
     }
-    dci_trasparenza_transfer_notice('success', sprintf(__('Importati %1$d contenuti e %2$d categorie. Backup: %3$s', 'design_comuni_italia'), $result['posts'], $result['terms'], $result['backup']));
+    $missing_media = (int) ($result['missing_media'] ?? 0);
+    $message = sprintf(__('Importati %1$d contenuti e %2$d categorie. Backup: %3$s', 'design_comuni_italia'), $result['posts'], $result['terms'], $result['backup']);
+    if ($missing_media) {
+        $message .= ' ' . sprintf(
+            _n(
+                '%d allegato non è stato trovato: il contenuto è stato comunque importato.',
+                '%d allegati non sono stati trovati: il contenuto è stato comunque importato.',
+                $missing_media,
+                'design_comuni_italia'
+            ),
+            $missing_media
+        );
+    }
+    dci_trasparenza_transfer_notice($missing_media ? 'warning' : 'success', $message);
 }
 add_action('admin_post_dci_trasparenza_import_content', 'dci_trasparenza_transfer_import_content');
 
@@ -860,7 +919,7 @@ function dci_trasparenza_transfer_import_media() {
     dci_trasparenza_transfer_notice(
         'success',
         sprintf(
-            __('Importata la parte %1$d di %2$d. Allegati complessivamente disponibili: %3$d.', 'design_comuni_italia'),
+            __('Importata la parte %1$d di %2$d. Allegati complessivamente disponibili e gestibili dalla Libreria media: %3$d.', 'design_comuni_italia'),
             $part,
             $total_parts,
             count($map)
@@ -868,6 +927,49 @@ function dci_trasparenza_transfer_import_media() {
     );
 }
 add_action('admin_post_dci_trasparenza_import_media', 'dci_trasparenza_transfer_import_media');
+
+function dci_trasparenza_transfer_media_columns($columns) {
+    if (dci_trasparenza_transfer_allowed()) {
+        $columns['dci_trasparenza_transfer'] = __('Trasferimento Trasparenza', 'design_comuni_italia');
+    }
+    return $columns;
+}
+add_filter('manage_upload_columns', 'dci_trasparenza_transfer_media_columns');
+
+function dci_trasparenza_transfer_media_column($column_name, $attachment_id) {
+    if ('dci_trasparenza_transfer' !== $column_name || !dci_trasparenza_transfer_allowed()) {
+        return;
+    }
+    $source_id = absint(get_post_meta($attachment_id, '_dci_trasparenza_source_attachment_id', true));
+    if (!$source_id) {
+        echo '&mdash;';
+        return;
+    }
+    echo '<strong>' . esc_html__('Importato', 'design_comuni_italia') . '</strong><br>';
+    echo esc_html(sprintf(__('ID sorgente: %d', 'design_comuni_italia'), $source_id));
+}
+add_action('manage_media_custom_column', 'dci_trasparenza_transfer_media_column', 10, 2);
+
+function dci_trasparenza_transfer_attachment_fields($fields, $post) {
+    if (!dci_trasparenza_transfer_allowed()) {
+        return $fields;
+    }
+    $source_id = absint(get_post_meta($post->ID, '_dci_trasparenza_source_attachment_id', true));
+    if (!$source_id) {
+        return $fields;
+    }
+    $transfer_id = (string) get_post_meta($post->ID, '_dci_trasparenza_transfer_id', true);
+    $fields['dci_trasparenza_transfer_info'] = array(
+        'label' => __('Trasferimento Trasparenza', 'design_comuni_italia'),
+        'input' => 'html',
+        'html'  => '<p><strong>' . esc_html__('Allegato importato e gestibile dalla Libreria media.', 'design_comuni_italia') . '</strong><br>'
+            . esc_html(sprintf(__('ID sorgente: %d', 'design_comuni_italia'), $source_id))
+            . ($transfer_id ? '<br><code>' . esc_html($transfer_id) . '</code>' : '')
+            . '</p>',
+    );
+    return $fields;
+}
+add_filter('attachment_fields_to_edit', 'dci_trasparenza_transfer_attachment_fields', 10, 2);
 
 function dci_trasparenza_transfer_admin_menu() {
     if (dci_trasparenza_transfer_allowed()) {
