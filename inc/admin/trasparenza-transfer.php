@@ -310,6 +310,12 @@ function dci_trasparenza_transfer_create_media_zip($content_data, $path) {
         );
         foreach (dci_trasparenza_transfer_attachment_files($attachment_id) as $name => $file) {
             $zip_path = 'media/' . (int) $attachment_id . '/' . sanitize_file_name($name);
+            $file_size = filesize($file);
+            $checksum = hash_file('sha256', $file);
+            if (false === $file_size || false === $checksum) {
+                $zip->close();
+                return new WP_Error('zip_source', __('Impossibile leggere un allegato durante la creazione del pacchetto.', 'design_comuni_italia'));
+            }
             if (!$zip->addFile($file, $zip_path)) {
                 $zip->close();
                 return new WP_Error('zip_add', __('Impossibile aggiungere un file al pacchetto.', 'design_comuni_italia'));
@@ -322,7 +328,8 @@ function dci_trasparenza_transfer_create_media_zip($content_data, $path) {
             $entry['files'][] = array(
                 'path'   => $zip_path,
                 'name'   => sanitize_file_name($name),
-                'sha256' => hash_file('sha256', $file),
+                'size'   => (int) $file_size,
+                'sha256' => $checksum,
                 'main'   => get_attached_file($attachment_id) === $file,
             );
         }
@@ -361,7 +368,13 @@ function dci_trasparenza_transfer_validate_media_zip($path, $expected_transfer_i
     foreach ((array) ($manifest['attachments'] ?? array()) as $attachment) {
         foreach ((array) ($attachment['files'] ?? array()) as $file) {
             $zip_path = (string) ($file['path'] ?? '');
-            if (!$zip_path || false === $zip->locateName($zip_path, ZipArchive::FL_NOCASE)) {
+            $entry_index = $zip_path ? $zip->locateName($zip_path, ZipArchive::FL_NOCASE) : false;
+            $entry_stat = false !== $entry_index ? $zip->statIndex($entry_index) : false;
+            if (
+                false === $entry_index
+                || false === $entry_stat
+                || (isset($file['size']) && (int) $file['size'] !== (int) ($entry_stat['size'] ?? -1))
+            ) {
                 $zip->close();
                 return new WP_Error('zip_incomplete', __('Il pacchetto ZIP creato non contiene tutti i file dichiarati.', 'design_comuni_italia'));
             }
@@ -816,6 +829,57 @@ function dci_trasparenza_transfer_safe_zip_path($path) {
     return $path !== '' && false === strpos($path, '..') && 0 !== strpos($path, '/') && false === strpos($path, '\\');
 }
 
+function dci_trasparenza_transfer_extract_zip_entry($zip, $zip_path, $destination, $expected_sha256) {
+    $input = $zip->getStream($zip_path);
+    if (!$input) {
+        return new WP_Error('zip_read', __('Impossibile leggere un file dal pacchetto ZIP.', 'design_comuni_italia'));
+    }
+
+    $temporary = $destination . '.part-' . wp_generate_password(8, false, false);
+    $output = fopen($temporary, 'wb');
+    if (!$output) {
+        fclose($input);
+        return new WP_Error('file_write', __('Impossibile scrivere un allegato nella cartella di importazione.', 'design_comuni_italia'));
+    }
+
+    $hash = hash_init('sha256');
+    $written = 0;
+    while (!feof($input)) {
+        $chunk = fread($input, 1024 * 1024);
+        if (false === $chunk) {
+            fclose($input);
+            fclose($output);
+            @unlink($temporary);
+            return new WP_Error('zip_read', __('Lettura incompleta di un file nel pacchetto ZIP.', 'design_comuni_italia'));
+        }
+        if ('' === $chunk) {
+            continue;
+        }
+        hash_update($hash, $chunk);
+        $length = strlen($chunk);
+        $offset = 0;
+        while ($offset < $length) {
+            $result = fwrite($output, substr($chunk, $offset));
+            if (false === $result || 0 === $result) {
+                fclose($input);
+                fclose($output);
+                @unlink($temporary);
+                return new WP_Error('file_write', __('Scrittura incompleta di un allegato importato.', 'design_comuni_italia'));
+            }
+            $offset += $result;
+            $written += $result;
+        }
+    }
+    fclose($input);
+    fclose($output);
+
+    if (!hash_equals((string) $expected_sha256, hash_final($hash)) || !@rename($temporary, $destination)) {
+        @unlink($temporary);
+        return new WP_Error('checksum', __('Checksum di un file non valido o salvataggio non riuscito.', 'design_comuni_italia'));
+    }
+    return true;
+}
+
 function dci_trasparenza_transfer_media_import_response($type, $message, $data = array()) {
     if (!empty($_POST['dci_media_batch'])) {
         if ('success' === $type) {
@@ -824,6 +888,49 @@ function dci_trasparenza_transfer_media_import_response($type, $message, $data =
         wp_send_json_error(array_merge(array('message' => $message), $data), 400);
     }
     dci_trasparenza_transfer_notice($type, $message);
+}
+
+function dci_trasparenza_transfer_public_media_dir($transfer_id, $source_id) {
+    $uploads = wp_upload_dir();
+    if (!empty($uploads['error'])) {
+        return new WP_Error('uploads', $uploads['error']);
+    }
+    $directory = trailingslashit($uploads['path']) . 'trasparenza-' . substr(sanitize_key($transfer_id), 0, 12) . '-' . absint($source_id);
+    if (!wp_mkdir_p($directory) || !is_writable($directory)) {
+        return new WP_Error('uploads', __('La cartella pubblica degli allegati non è scrivibile.', 'design_comuni_italia'));
+    }
+    return $directory;
+}
+
+function dci_trasparenza_transfer_migrate_attachment_to_media($attachment_id) {
+    $current_file = get_attached_file($attachment_id);
+    if (!$current_file || !is_file($current_file) || false === strpos(wp_normalize_path($current_file), '/dci-trasparenza-transfer/imported/')) {
+        return true;
+    }
+    $transfer_id = (string) get_post_meta($attachment_id, '_dci_trasparenza_transfer_id', true);
+    $source_id = absint(get_post_meta($attachment_id, '_dci_trasparenza_source_attachment_id', true));
+    $destination_dir = dci_trasparenza_transfer_public_media_dir($transfer_id, $source_id);
+    if (is_wp_error($destination_dir)) {
+        return $destination_dir;
+    }
+    $source_dir = dirname($current_file);
+    foreach ((array) glob(trailingslashit($source_dir) . '*') as $source_file) {
+        if (is_file($source_file) && !@rename($source_file, trailingslashit($destination_dir) . basename($source_file))) {
+            return new WP_Error('media_move', __('Impossibile spostare un allegato nella Libreria media.', 'design_comuni_italia'));
+        }
+    }
+    $new_main_file = trailingslashit($destination_dir) . basename($current_file);
+    if (!is_file($new_main_file)) {
+        return new WP_Error('media_move', __('Il file principale dell’allegato non è stato spostato.', 'design_comuni_italia'));
+    }
+    update_attached_file($attachment_id, $new_main_file);
+    $metadata = wp_get_attachment_metadata($attachment_id);
+    if (is_array($metadata)) {
+        $metadata['file'] = _wp_relative_upload_path($new_main_file);
+        wp_update_attachment_metadata($attachment_id, $metadata);
+    }
+    @rmdir($source_dir);
+    return true;
 }
 
 function dci_trasparenza_transfer_import_media() {
@@ -847,9 +954,9 @@ function dci_trasparenza_transfer_import_media() {
         $stat = $zip->statIndex($index);
         $entry_name = (string) ($stat['name'] ?? '');
         $entry_size = (int) ($stat['size'] ?? 0);
-        if (!dci_trasparenza_transfer_safe_zip_path($entry_name) || $entry_size > 512 * MB_IN_BYTES) {
+        if (!dci_trasparenza_transfer_safe_zip_path($entry_name)) {
             $zip->close();
-            dci_trasparenza_transfer_media_import_response('error', __('Il pacchetto contiene un file non sicuro o troppo grande.', 'design_comuni_italia'));
+            dci_trasparenza_transfer_media_import_response('error', __('Il pacchetto contiene un percorso non sicuro.', 'design_comuni_italia'));
         }
         $total_uncompressed += $entry_size;
         if ($total_uncompressed > 2 * GB_IN_BYTES) {
@@ -864,15 +971,23 @@ function dci_trasparenza_transfer_import_media() {
         dci_trasparenza_transfer_media_import_response('error', __('Manifest del pacchetto file non valido.', 'design_comuni_italia'));
     }
     $transfer_id = sanitize_key($manifest['transfer_id']);
-    $base_dir = dci_trasparenza_transfer_dir('imported/' . $transfer_id);
-    wp_mkdir_p($base_dir);
-    $uploads = wp_upload_dir();
     $map = (array) get_option('dci_trasparenza_media_map_' . $transfer_id, array());
 
     foreach ((array) $manifest['attachments'] as $attachment) {
         $source_id = (int) ($attachment['source_id'] ?? 0);
-        $attachment_dir = trailingslashit($base_dir) . $source_id;
-        wp_mkdir_p($attachment_dir);
+        if (!empty($map[$source_id]) && 'attachment' === get_post_type((int) $map[$source_id]) && is_file(get_attached_file((int) $map[$source_id]))) {
+            $migrated = dci_trasparenza_transfer_migrate_attachment_to_media((int) $map[$source_id]);
+            if (is_wp_error($migrated)) {
+                $zip->close();
+                dci_trasparenza_transfer_media_import_response('error', $migrated->get_error_message());
+            }
+            continue;
+        }
+        $attachment_dir = dci_trasparenza_transfer_public_media_dir($transfer_id, $source_id);
+        if (is_wp_error($attachment_dir)) {
+            $zip->close();
+            dci_trasparenza_transfer_media_import_response('error', $attachment_dir->get_error_message());
+        }
         $main_path = '';
         foreach ((array) ($attachment['files'] ?? array()) as $file) {
             $zip_path = (string) ($file['path'] ?? '');
@@ -880,13 +995,12 @@ function dci_trasparenza_transfer_import_media() {
                 $zip->close();
                 dci_trasparenza_transfer_media_import_response('error', __('Il pacchetto contiene un percorso non sicuro.', 'design_comuni_italia'));
             }
-            $contents = $zip->getFromName($zip_path);
-            if (false === $contents || hash('sha256', $contents) !== ($file['sha256'] ?? '')) {
-                $zip->close();
-                dci_trasparenza_transfer_media_import_response('error', __('Checksum di un file non valido.', 'design_comuni_italia'));
-            }
             $destination = trailingslashit($attachment_dir) . sanitize_file_name($file['name']);
-            file_put_contents($destination, $contents);
+            $extracted = dci_trasparenza_transfer_extract_zip_entry($zip, $zip_path, $destination, (string) ($file['sha256'] ?? ''));
+            if (is_wp_error($extracted)) {
+                $zip->close();
+                dci_trasparenza_transfer_media_import_response('error', $extracted->get_error_message());
+            }
             if (!empty($file['main'])) {
                 $main_path = $destination;
             }
@@ -999,8 +1113,29 @@ function dci_trasparenza_transfer_admin_page() {
     if (!dci_trasparenza_transfer_allowed()) {
         wp_die(esc_html__('Operazione non consentita.', 'design_comuni_italia'), '', array('response' => 403));
     }
+    $imported_media_ids = get_posts(array(
+        'post_type'      => 'attachment',
+        'post_status'    => 'inherit',
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+        'meta_key'       => '_dci_trasparenza_source_attachment_id',
+    ));
+    $media_migration_errors = 0;
+    foreach ($imported_media_ids as $imported_media_id) {
+        if (is_wp_error(dci_trasparenza_transfer_migrate_attachment_to_media($imported_media_id))) {
+            $media_migration_errors++;
+        }
+    }
     $notice = get_transient('dci_trasparenza_transfer_notice_' . get_current_user_id());
     delete_transient('dci_trasparenza_transfer_notice_' . get_current_user_id());
+    if (!$notice && $media_migration_errors) {
+        $notice = array('warning', sprintf(_n(
+            '%d allegato importato non è stato spostato nella cartella pubblica dei Media.',
+            '%d allegati importati non sono stati spostati nella cartella pubblica dei Media.',
+            $media_migration_errors,
+            'design_comuni_italia'
+        ), $media_migration_errors));
+    }
     $post_type_labels = dci_trasparenza_transfer_post_type_labels();
     $terms = get_terms(array(
         'taxonomy'   => 'tipi_cat_amm_trasp',
@@ -1108,6 +1243,10 @@ function dci_trasparenza_transfer_admin_page() {
                             credentials: 'same-origin',
                             body: formData
                         });
+                        const responseType = response.headers.get('Content-Type') || '';
+                        if (responseType.indexOf('application/json') === -1) {
+                            throw new Error('<?php echo esc_js(__('Il server ha restituito una pagina HTML invece del risultato JSON. Controlla upload_max_filesize, post_max_size, memoria PHP e log degli errori.', 'design_comuni_italia')); ?>');
+                        }
                         const result = await response.json();
                         if (!response.ok || !result.success) {
                             throw new Error(result.data && result.data.message ? result.data.message : '<?php echo esc_js(__('Importazione ZIP non riuscita.', 'design_comuni_italia')); ?>');
