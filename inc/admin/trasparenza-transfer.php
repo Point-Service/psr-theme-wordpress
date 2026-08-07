@@ -337,7 +337,49 @@ function dci_trasparenza_transfer_create_media_zip($content_data, $path) {
     return true;
 }
 
+function dci_trasparenza_transfer_validate_media_zip($path, $expected_transfer_id = '') {
+    if (!is_file($path) || !is_readable($path) || filesize($path) < 22) {
+        return new WP_Error('zip_invalid', __('Il pacchetto ZIP creato è vuoto o non leggibile.', 'design_comuni_italia'));
+    }
+
+    $zip = new ZipArchive();
+    if (true !== $zip->open($path, ZipArchive::CHECKCONS)) {
+        return new WP_Error('zip_invalid', __('Il controllo di integrità del pacchetto ZIP non è riuscito.', 'design_comuni_italia'));
+    }
+
+    $manifest_raw = $zip->getFromName('manifest.json');
+    $manifest = false !== $manifest_raw ? json_decode($manifest_raw, true) : null;
+    if (
+        !is_array($manifest)
+        || 'dci-trasparenza-media' !== ($manifest['format'] ?? '')
+        || (string) $expected_transfer_id !== (string) ($manifest['transfer_id'] ?? '')
+    ) {
+        $zip->close();
+        return new WP_Error('zip_manifest', __('Il pacchetto ZIP creato non contiene un manifest valido.', 'design_comuni_italia'));
+    }
+
+    foreach ((array) ($manifest['attachments'] ?? array()) as $attachment) {
+        foreach ((array) ($attachment['files'] ?? array()) as $file) {
+            $zip_path = (string) ($file['path'] ?? '');
+            if (!$zip_path || false === $zip->locateName($zip_path, ZipArchive::FL_NOCASE)) {
+                $zip->close();
+                return new WP_Error('zip_incomplete', __('Il pacchetto ZIP creato non contiene tutti i file dichiarati.', 'design_comuni_italia'));
+            }
+        }
+    }
+
+    $zip->close();
+    return true;
+}
+
 function dci_trasparenza_transfer_download($path, $filename, $content_type, $headers = array()) {
+    if (!is_file($path) || !is_readable($path)) {
+        wp_die(esc_html__('Il file da scaricare non è disponibile.', 'design_comuni_italia'), '', array('response' => 500));
+    }
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+    clearstatcache(true, $path);
     nocache_headers();
     header('Content-Type: ' . $content_type);
     header('Content-Disposition: attachment; filename="' . sanitize_file_name($filename) . '"');
@@ -406,6 +448,11 @@ function dci_trasparenza_transfer_export_media() {
     $result = $path ? dci_trasparenza_transfer_create_media_zip($data, $path) : new WP_Error('temp', 'Errore file temporaneo');
     if (is_wp_error($result)) {
         dci_trasparenza_transfer_notice('error', $result->get_error_message());
+    }
+    $validation = dci_trasparenza_transfer_validate_media_zip($path, $data['transfer_id']);
+    if (is_wp_error($validation)) {
+        @unlink($path);
+        dci_trasparenza_transfer_notice('error', $validation->get_error_message());
     }
     dci_trasparenza_transfer_download(
         $path,
@@ -952,7 +999,17 @@ function dci_trasparenza_transfer_admin_page() {
                         const disposition = response.headers.get('Content-Disposition') || '';
                         const filenameMatch = disposition.match(/filename="?([^";]+)"?/i);
                         const filename = filenameMatch ? filenameMatch[1] : 'trasparenza-file-parte-' + part + '-di-' + totalParts + '.zip';
-                        const blobUrl = URL.createObjectURL(await response.blob());
+                        const expectedSize = Number(response.headers.get('Content-Length')) || 0;
+                        const zipBlob = await response.blob();
+                        const signature = new Uint8Array(await zipBlob.slice(0, 4).arrayBuffer());
+                        const hasZipSignature = signature.length >= 4
+                            && signature[0] === 0x50
+                            && signature[1] === 0x4b
+                            && ((signature[2] === 0x03 && signature[3] === 0x04) || (signature[2] === 0x05 && signature[3] === 0x06));
+                        if (!hasZipSignature || (expectedSize && zipBlob.size !== expectedSize)) {
+                            throw new Error('<?php echo esc_js(__('Il download ricevuto è incompleto o non è un archivio ZIP valido.', 'design_comuni_italia')); ?>');
+                        }
+                        const blobUrl = URL.createObjectURL(zipBlob);
                         const download = document.createElement('a');
                         download.href = blobUrl;
                         download.download = filename;
