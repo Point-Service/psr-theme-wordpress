@@ -56,3 +56,91 @@ if (!function_exists('dci_custom_section_card_date')) {
         return $timestamp ? date_i18n('j F Y', $timestamp) : '-';
     }
 }
+
+if (!function_exists('dci_custom_section_attachment_id')) {
+    /**
+     * Risolve anche gli allegati importati che conservano nel file_list il
+     * vecchio ID sorgente e l'URL del pacchetto di trasferimento.
+     */
+    function dci_custom_section_attachment_id($attachment_id = 0, $file_url = '') {
+        static $resolved_ids = array();
+        static $transfer_maps = array();
+
+        $attachment_id = absint($attachment_id);
+        $file_url = is_string($file_url) ? trim($file_url) : '';
+        $cache_key = $attachment_id . '|' . $file_url;
+        if (array_key_exists($cache_key, $resolved_ids)) {
+            return $resolved_ids[$cache_key];
+        }
+
+        if ($file_url !== '' && preg_match(
+            '~/(?:dci-trasparenza-transfer/)?imported/([a-f0-9]{32})/([0-9]+)/~i',
+            (string) wp_parse_url($file_url, PHP_URL_PATH),
+            $matches
+        )) {
+            $transfer_id = sanitize_key($matches[1]);
+            $source_id = absint($matches[2]);
+
+            if (!isset($transfer_maps[$transfer_id])) {
+                $transfer_maps[$transfer_id] = array();
+                $imported_ids = get_posts(array(
+                    'post_type' => 'attachment',
+                    'post_status' => 'inherit',
+                    'posts_per_page' => -1,
+                    'fields' => 'ids',
+                    'no_found_rows' => true,
+                    'suppress_filters' => true,
+                    'meta_key' => '_dci_trasparenza_transfer_id',
+                    'meta_value' => $transfer_id,
+                ));
+                foreach ($imported_ids as $imported_id) {
+                    $imported_source_id = absint(get_post_meta(
+                        $imported_id,
+                        '_dci_trasparenza_source_attachment_id',
+                        true
+                    ));
+                    if ($imported_source_id > 0) {
+                        $transfer_maps[$transfer_id][$imported_source_id] = (int) $imported_id;
+                    }
+                }
+            }
+
+            if (!empty($transfer_maps[$transfer_id][$source_id])) {
+                return $resolved_ids[$cache_key] = $transfer_maps[$transfer_id][$source_id];
+            }
+        }
+
+        if ($attachment_id > 0 && get_post_type($attachment_id) === 'attachment') {
+            return $resolved_ids[$cache_key] = $attachment_id;
+        }
+
+        if ($file_url !== '') {
+            $url_attachment_id = (int) attachment_url_to_postid($file_url);
+            if ($url_attachment_id > 0 && get_post_type($url_attachment_id) === 'attachment') {
+                return $resolved_ids[$cache_key] = $url_attachment_id;
+            }
+        }
+
+        return $resolved_ids[$cache_key] = 0;
+    }
+}
+
+if (!function_exists('dci_custom_section_attachment_title')) {
+    /**
+     * Restituisce il titolo editoriale dell'allegato salvato nella Libreria media.
+     * Il nome fisico del file non viene usato come etichetta se l'allegato e' noto.
+     */
+    function dci_custom_section_attachment_title($attachment_id = 0, $file_url = '', $fallback = '') {
+        $file_url = is_string($file_url) ? trim($file_url) : '';
+        $attachment_id = dci_custom_section_attachment_id($attachment_id, $file_url);
+
+        if ($attachment_id > 0 && get_post_type($attachment_id) === 'attachment') {
+            $attachment_title = trim(wp_strip_all_tags((string) get_the_title($attachment_id)));
+            if ($attachment_title !== '') {
+                return $attachment_title;
+            }
+        }
+
+        return trim(wp_strip_all_tags((string) $fallback));
+    }
+}
