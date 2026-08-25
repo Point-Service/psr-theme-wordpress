@@ -83,24 +83,37 @@ if (!function_exists('dci_custom_section_attachment_id')) {
 
             if (!isset($transfer_maps[$transfer_id])) {
                 $transfer_maps[$transfer_id] = array();
-                $imported_ids = get_posts(array(
-                    'post_type' => 'attachment',
-                    'post_status' => 'inherit',
-                    'posts_per_page' => -1,
-                    'fields' => 'ids',
-                    'no_found_rows' => true,
-                    'suppress_filters' => true,
-                    'meta_key' => '_dci_trasparenza_transfer_id',
-                    'meta_value' => $transfer_id,
-                ));
-                foreach ($imported_ids as $imported_id) {
-                    $imported_source_id = absint(get_post_meta(
-                        $imported_id,
-                        '_dci_trasparenza_source_attachment_id',
-                        true
-                    ));
-                    if ($imported_source_id > 0) {
-                        $transfer_maps[$transfer_id][$imported_source_id] = (int) $imported_id;
+                global $wpdb;
+
+                // Una sola lettura evita il precedente schema N+1 (una query per allegato importato).
+                $imported_attachments = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT source_meta.post_id, source_meta.meta_value
+                        FROM {$wpdb->postmeta} AS transfer_meta
+                        INNER JOIN {$wpdb->postmeta} AS source_meta
+                            ON source_meta.post_id = transfer_meta.post_id
+                            AND source_meta.meta_key = '_dci_trasparenza_source_attachment_id'
+                        INNER JOIN {$wpdb->posts} AS attachment
+                            ON attachment.ID = transfer_meta.post_id
+                            AND attachment.post_type = 'attachment'
+                            AND attachment.post_status = 'inherit'
+                        WHERE transfer_meta.meta_key = '_dci_trasparenza_transfer_id'
+                            AND transfer_meta.meta_value = %s
+                        ORDER BY attachment.post_date DESC, attachment.ID DESC",
+                        $transfer_id
+                    ),
+                    ARRAY_N
+                );
+
+                foreach ($imported_attachments as $imported_attachment) {
+                    $imported_id = absint($imported_attachment[0]);
+                    $imported_source_id = absint($imported_attachment[1]);
+                    if (
+                        $imported_id > 0
+                        && $imported_source_id > 0
+                        && !isset($transfer_maps[$transfer_id][$imported_source_id])
+                    ) {
+                        $transfer_maps[$transfer_id][$imported_source_id] = $imported_id;
                     }
                 }
             }
