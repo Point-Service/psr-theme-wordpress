@@ -40,6 +40,8 @@ while (have_posts()) :
 
     $published_date = get_the_date('j F Y', $id);
     $updated_date = get_the_modified_date('j F Y', $id);
+    $show_updated_date = (int) get_post_modified_time('U', true, $id) > (int) get_post_time('U', true, $id)
+        && get_the_modified_date('Y-m-d', $id) !== get_the_date('Y-m-d', $id);
 
     $status_labels = array(
         'in_corso' => __('In corso', 'design_comuni_italia'),
@@ -166,8 +168,11 @@ while (have_posts()) :
         array('label' => __('Durata', 'design_comuni_italia'), 'value' => $duration),
         array('label' => __('Compenso lordo annuo', 'design_comuni_italia'), 'value' => $free ? __('Incarico gratuito', 'design_comuni_italia') : $compensation),
         array('label' => __('Data pubblicazione', 'design_comuni_italia'), 'value' => $published_date),
-        array('label' => __('Data aggiornamento', 'design_comuni_italia'), 'value' => $updated_date),
     );
+
+    if ($show_updated_date) {
+        $summary_items[] = array('label' => __('Data aggiornamento', 'design_comuni_italia'), 'value' => $updated_date);
+    }
     ?>
 
     <style>
@@ -355,10 +360,12 @@ while (have_posts()) :
                 <small><?php esc_html_e('Data pubblicazione:', 'design_comuni_italia'); ?></small>
                 <p class="fw-semibold font-monospace"><?php echo esc_html($display_value($published_date)); ?></p>
             </div>
-            <div class="col-6">
-                <small><?php esc_html_e('Data aggiornamento:', 'design_comuni_italia'); ?></small>
-                <p class="fw-semibold font-monospace"><?php echo esc_html($display_value($updated_date)); ?></p>
-            </div>
+            <?php if ($show_updated_date) : ?>
+                <div class="col-6">
+                    <small><?php esc_html_e('Data aggiornamento:', 'design_comuni_italia'); ?></small>
+                    <p class="fw-semibold font-monospace"><?php echo esc_html($display_value($updated_date)); ?></p>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 

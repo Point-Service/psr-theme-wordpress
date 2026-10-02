@@ -19,6 +19,9 @@ while ( have_posts() ) :
     // Meta fields
     $descrizione_breve = get_post_meta( $id, $prefix . 'descrizione_breve', true );
     $data_pubbl        = get_the_date( 'j F Y', $id );
+    $data_modifica     = get_the_modified_date( 'j F Y', $id );
+    $mostra_aggiornamento = (int) get_post_modified_time('U', true, $id) > (int) get_post_time('U', true, $id)
+        && get_the_modified_date('Y-m-d', $id) !== get_the_date('Y-m-d', $id);
 
     // Anno conferimento - gestione migliorata
     $anno_conferimento = get_post_meta(get_the_ID(), $prefix . 'anno_conferimento', true);
@@ -94,10 +97,16 @@ while ( have_posts() ) :
         </div>
 
         <div class="row mt-5 mb-4">
-            <div class="col-12">
+            <div class="col-6">
                 <small>Data pubblicazione:</small>
                 <p class="fw-semibold font-monospace"><?php echo esc_html( $data_pubbl ); ?></p>
             </div>
+            <?php if ( $mostra_aggiornamento ) : ?>
+                <div class="col-6">
+                    <small>Data aggiornamento:</small>
+                    <p class="fw-semibold font-monospace"><?php echo esc_html( $data_modifica ); ?></p>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 

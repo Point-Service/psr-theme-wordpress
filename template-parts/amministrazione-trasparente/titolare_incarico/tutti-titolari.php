@@ -12,6 +12,11 @@ if ($paged < 2) {
     );
 }
 $selected_year = isset($_GET['filter_year']) ? intval($_GET['filter_year']) : 0;
+// Storico: pubblicazione anteriore alla soglia e cessazione da oltre tre anni.
+$public_start_year = (int) wp_date('Y') - 3;
+$can_view_archive = function_exists('dci_user_can_view_trasparenza_archive')
+    && dci_user_can_view_trasparenza_archive();
+$archive_paged = isset($_GET['titolari_archive_page']) ? max(1, absint($_GET['titolari_archive_page'])) : 1;
 $allowed_order_types = array('data_desc', 'data_asc', 'alfabetico_asc', 'alfabetico_desc');
 $order_type = isset($_GET['order_type']) ? sanitize_key($_GET['order_type']) : 'data_desc';
 if (!in_array($order_type, $allowed_order_types, true)) {
@@ -19,17 +24,22 @@ if (!in_array($order_type, $allowed_order_types, true)) {
 }
 
 // Anni disponibili
+$years_visibility = $can_view_archive ? '' : ' AND NOT ' . dci_titolare_incarico_archive_sql();
 $years = $wpdb->get_col("
     SELECT DISTINCT YEAR(post_date)
     FROM {$wpdb->posts}
     WHERE post_type = 'titolare_incarico'
       AND post_status = 'publish'
+      {$years_visibility}
     ORDER BY post_date DESC
 ");
 
 
+
 $args = array(
     'post_type'       => 'titolare_incarico',
+    'post_status'     => 'publish',
+    'dci_titolari_visibility' => 'public',
     'posts_per_page'  => $max_posts,
     'orderby'         => array(
         'date' => 'DESC',
@@ -57,18 +67,25 @@ if (!empty($main_search_query)) {
     $args['s'] = $main_search_query;
 }
 
+$args['date_query'] = [];
+
 if ($selected_year > 0) {
-    $args['date_query'] = [
-        [
-            'year' => $selected_year,
-        ]
-    ];
+    $args['date_query'][] = ['year' => $selected_year];
 }
 
 $prefix = "_dci_titolare_incarico_";
 
 // Query personalizzata
 $the_query = new WP_Query($args);
+$archive_query = null;
+
+if ($can_view_archive) {
+    $archive_args = $args;
+    $archive_args['paged'] = $archive_paged;
+    $archive_args['dci_titolari_visibility'] = 'archive';
+
+    $archive_query = new WP_Query($archive_args);
+}
 
 
 
@@ -165,9 +182,48 @@ if (function_exists('dci_render_trasparenza_not_applicable_notice')) {
             ?>
         </nav>
     </div>
-<?php } else{?>
-    <div class="alert alert-info text-center" role="alert">
-        Nessun titolare di incarichi di collaborazione o consulenza trovato.
+<?php } else {
+    get_template_part('template-parts/amministrazione-trasparente/titolare_incarico/nessun-risultato', null, [
+        'start_year' => $public_start_year,
+        'has_filters' => trim($main_search_query) !== '' || $selected_year > 0,
+        'paged' => $paged,
+        'can_view_archive' => $can_view_archive,
+    ]);
+} ?>
+
+<?php if ($archive_query instanceof WP_Query && $archive_query->have_posts()) { ?>
+    <?php
+    get_template_part(
+        'template-parts/amministrazione-trasparente/archivio-amministratori',
+        null,
+        [
+            'start_year' => $public_start_year,
+            'count' => $archive_query->found_posts,
+            'section' => 'titolare_incarico',
+        ]
+    );
+    ?>
+
+    <?php while ($archive_query->have_posts()) {
+        $archive_query->the_post();
+        get_template_part('template-parts/amministrazione-trasparente/titolare_incarico/card');
+    }
+    wp_reset_postdata(); ?>
+
+    <div class="row my-4">
+        <nav class="pagination-wrapper justify-content-center col-12" aria-label="Navigazione contenuti storici">
+            <?php
+            get_template_part(
+                'template-parts/amministrazione-trasparente/paginazione-personalizzata',
+                null,
+                [
+                    'query' => $archive_query,
+                    'current' => $archive_paged,
+                    'page_arg' => 'titolari_archive_page',
+                ]
+            );
+            ?>
+        </nav>
     </div>
 <?php } ?>
 <!-- STILE -->
