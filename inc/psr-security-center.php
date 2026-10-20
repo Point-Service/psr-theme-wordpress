@@ -63,7 +63,7 @@ function psr_center_clean_ip($ip) {
 function psr_center_log_event($event, $severity = 'info', $ip = '', $username = '', $country = '', $source = 'login', $note = '') {
     // Whitelist per impedire inquinamento del registro con dati arbitrari.
     $allowed = array('login_failed','login_blocked','login_success','otp_sent','otp_failed','otp_verified',
-        'otp_delivery_failed','geo_denied','geo_unavailable','manual_ban','manual_unban');
+        'otp_delivery_failed','geo_denied','ip_blacklist_denied','geo_unavailable','manual_ban','manual_unban');
     if (!in_array($event, $allowed, true)) { return false; }
     if (!psr_center_install()) { return false; }
     global $wpdb;
@@ -158,7 +158,7 @@ function psr_center_url($tab = 'overview', $extra = array()) {
 function psr_center_label($type) {
     $labels = array('login_failed'=>'Password errata','login_blocked'=>'Login già bloccato','login_success'=>'Accesso riuscito',
         'otp_sent'=>'OTP email inviato','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato',
-        'otp_delivery_failed'=>'Invio OTP fallito','geo_denied'=>'IP estero bloccato','geo_unavailable'=>'GeoIP non disponibile',
+        'otp_delivery_failed'=>'Invio OTP fallito','geo_denied'=>'IP estero bloccato','ip_blacklist_denied'=>'IP in blacklist bloccato','geo_unavailable'=>'GeoIP non disponibile',
         'manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale');
     return $labels[$type] ?? $type;
 }
@@ -174,7 +174,7 @@ function psr_center_fetch_stats() {
     $now = gmdate('Y-m-d H:i:s');
     return array(
         'failed24'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('login_failed','otp_failed')",$day)),
-        'geo7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type = 'geo_denied'",$week)),
+        'geo7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('geo_denied','ip_blacklist_denied')",$week)),
         'otp7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type='otp_verified'",$week)),
         'blocked'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $ips WHERE blocked_until >= %s",$now)),
         'events7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s",$week)),
@@ -190,7 +190,7 @@ function psr_center_process_action() {
         if (in_array($days,array(7,14,30,60,90),true)) { update_option('_psr_center_retention',$days,false); }
     } elseif (in_array($action, array('ban','unban'), true)) {
         $ip = psr_center_clean_ip(sanitize_text_field(wp_unslash($_POST['ip'] ?? '')));
-        if (!$ip || $ip === (function_exists('psr_login_ip') ? psr_login_ip() : '') || (function_exists('psr_geo_ip_allowlisted') && psr_geo_ip_allowlisted($ip))) {
+        if (!$ip || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip)) || $ip === (function_exists('psr_login_ip') ? psr_login_ip() : '') || (function_exists('psr_geo_ip_allowlisted') && psr_geo_ip_allowlisted($ip))) {
             wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused')));exit;
         }
         if ($action === 'unban') {
@@ -267,7 +267,7 @@ function psr_center_overview() {
     $kpis=array(
         array('Tentativi errati · 24 ore',$s['failed24'],'Password / OTP'),
         array('IP bloccati · adesso',$s['blocked'],'Blocchi non scaduti'),
-        array('Accessi esteri negati · 7 giorni',$s['geo7'],'Campionati per IP e percorso'),
+        array('Accessi GeoIP / blacklist negati · 7 giorni',$s['geo7'],'Campionati per IP e percorso'),
         array('OTP verificati · 7 giorni',$s['otp7'],'Completati dall’ID 1'),
     );
     echo '<div class="psrc-kpis">';foreach($kpis as $k){echo '<div class="psrc-card"><div class="label">'.esc_html($k[0]).'</div><div class="value">'.(int)$k[1].'</div><div class="detail">'.esc_html($k[2]).'</div></div>';}echo '</div>';
@@ -280,7 +280,7 @@ function psr_center_overview() {
     echo '</div><p class="psrc-muted psrc-small">Tutti gli eventi registrati da PSR · la geolocalizzazione estera è limitata a un evento per IP/percorso al minuto.</p></section>';
     echo '<section class="psrc-card"><h2>Stato delle protezioni</h2><table class="psrc-table">';
     $checks=array('OTP email amministratore'=>function_exists('psr_login_email_issue'),'Blocco progressivo IP'=>function_exists('psr_login_rate_failure'),
-        'GeoIP accessi'=>function_exists('psr_geo_enabled') && psr_geo_enabled(),'Registro eventi'=>true,'Protezione web shell'=>function_exists('psr_guard_new_shell_names'));
+        'GeoIP accessi'=>function_exists('psr_geo_enabled') && psr_geo_enabled(),'Blacklist globale IP'=>function_exists('psr_geo_ip_blacklisted'),'Registro eventi'=>true,'Protezione web shell'=>function_exists('psr_guard_new_shell_names'));
     foreach($checks as $name=>$on){echo '<tr><td>'.esc_html($name).'</td><td><span class="psrc-pill '.($on?'ok':'warning').'">'.($on?'Attivo':'Da verificare').'</span></td></tr>';}
     echo '</table><p class="psrc-muted psrc-small">L’indicatore verifica la presenza del modulo, non garantisce che il server sia completamente protetto.</p></section></div>';
     echo '<div class="psrc-card" style="margin-top:18px"><h2>Ultimi eventi</h2>';psr_center_event_table(10, '', '', 1);echo '<p><a class="psrc-btn secondary" href="'.esc_url(psr_center_url('events')).'">Apri il registro completo →</a></p></div>';
@@ -305,7 +305,7 @@ function psr_center_event_table($limit, $event_filter='', $ip_filter='', $page=1
 function psr_center_events(){
     global $wpdb;
     list($events)=psr_center_tables();
-    $types=array(''=>'Tutti gli eventi','login_failed'=>'Password errata','login_blocked'=>'Login bloccato','login_success'=>'Accesso riuscito','otp_sent'=>'OTP richiesto','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato','otp_delivery_failed'=>'Errore invio OTP','geo_denied'=>'Accesso estero negato','geo_unavailable'=>'GeoIP non disponibile','manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale');
+    $types=array(''=>'Tutti gli eventi','login_failed'=>'Password errata','login_blocked'=>'Login bloccato','login_success'=>'Accesso riuscito','otp_sent'=>'OTP richiesto','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato','otp_delivery_failed'=>'Errore invio OTP','geo_denied'=>'Accesso estero negato','ip_blacklist_denied'=>'IP blacklist permanente','geo_unavailable'=>'GeoIP non disponibile','manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale');
     $type=sanitize_key(wp_unslash($_GET['event']??''));if(!array_key_exists($type,$types)){$type='';}
     $ip=psr_center_clean_ip(sanitize_text_field(wp_unslash($_GET['ip']??'')));
     $page=max(1,min(500,(int)($_GET['paged']??1)));
@@ -333,7 +333,12 @@ function psr_center_blocks(){
     global $wpdb;list($events,$ips)=psr_center_tables();
     $now=gmdate('Y-m-d H:i:s');
     $rows=$wpdb->get_results($wpdb->prepare("SELECT s.*, (SELECT e.username FROM $events e WHERE e.ip=s.ip AND e.username <> '' ORDER BY e.id DESC LIMIT 1) AS last_username FROM $ips s WHERE s.blocked_until > %s ORDER BY s.blocked_until DESC LIMIT 250",$now));
-    echo '<div class="psrc-card"><h2>Indirizzi IP attualmente bloccati</h2><p class="psrc-info">Blocchi applicati solo agli accessi WordPress. Il ban scade automaticamente. Gli accessi esteri vengono negati dal filtro GeoIP e non compaiono necessariamente in questa tabella. La lista include gli IP tracciati da questa versione di PSR.</p>';
+    echo '<div class="psrc-card"><h2>Blacklist globale permanente (GitHub)</h2><p class="psrc-info psrc-alert">Questi IP sono bloccati dal modulo Geo Login su tutti i Comuni aggiornati, indipendentemente dal Paese e dai ban temporanei. Non possono essere sbloccati dal pannello: la revoca richiede un aggiornamento controllato del codice o della configurazione.</p><table class="psrc-table"><thead><tr><th>Indirizzo IP</th><th>Regola</th><th>Scadenza</th><th>Stato</th></tr></thead><tbody>';
+    $hard_ips = function_exists('psr_geo_global_deny_ips') ? psr_geo_global_deny_ips() : array();
+    foreach ($hard_ips as $hard_ip) { echo '<tr><td><code>'.esc_html($hard_ip).'</code></td><td>Accessi WordPress</td><td>Non scade</td><td><span class="psrc-pill critical">Bloccato</span></td></tr>'; }
+    if (!$hard_ips) { echo '<tr><td colspan="4">Modulo blacklist non disponibile</td></tr>'; }
+    echo '</tbody></table></div>';
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>Indirizzi IP attualmente bloccati</h2><p class="psrc-info">Blocchi applicati solo agli accessi WordPress. I blocchi temporanei scadono automaticamente. Gli accessi esteri vengono negati dal filtro GeoIP e non compaiono necessariamente in questa tabella. La lista include gli IP tracciati da questa versione di PSR.</p>';
     echo '<table class="psrc-table"><thead><tr><th>IP</th><th>Account tentato</th><th>Tentativi</th><th>Tipo blocco</th><th>Ultima attività</th><th>Scadenza</th><th>Gestione</th></tr></thead><tbody>';
     if(!$rows){echo '<tr><td colspan="7">Nessun IP bloccato in questo momento.</td></tr>';}
     foreach($rows as $r){echo '<tr><td><code>'.esc_html($r->ip).'</code></td><td>'.esc_html($r->last_username ?: '—').'</td><td>'.(int)$r->attempts.'</td><td><span class="psrc-pill warning">'.esc_html($r->origin==='manual'?'Manuale':'Automatico').'</span></td><td>'.psr_center_local_date($r->last_seen).'</td><td>'.psr_center_local_date($r->blocked_until).'</td><td>';psr_center_action_form('unban',$r->ip,'Sblocca');echo '</td></tr>';}

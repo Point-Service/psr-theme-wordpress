@@ -15,8 +15,39 @@ if (!defined('ABSPATH')) { exit; }
 function psr_geo_enabled() {
     return !defined('PSR_GEO_LOGIN_ENABLED') || (bool) PSR_GEO_LOGIN_ENABLED;
 }
+/** Blacklist globale cumulativa: applicata a login e amministrazione di ogni Comune.
+ * L'IP confermato qui non puo' essere sbloccato dall'interfaccia.
+ * E' possibile aggiungere altri indirizzi via PSR_GEO_EXTRA_DENY_IPS in wp-config.php.
+ */
+function psr_geo_global_deny_ips() {
+    $list = array('45.148.232.225');
+    if (defined('PSR_GEO_EXTRA_DENY_IPS')) {
+        $extra = PSR_GEO_EXTRA_DENY_IPS;
+        if (is_string($extra)) { $extra = explode(',', $extra); }
+        if (is_array($extra)) { $list = array_merge($list, $extra); }
+    }
+    $valid = array();
+    foreach ($list as $candidate) {
+        $candidate = trim((string) $candidate);
+        if (filter_var($candidate, FILTER_VALIDATE_IP)) { $valid[$candidate] = true; }
+    }
+    return array_keys($valid);
+}
+function psr_geo_ip_blacklisted($ip) {
+    if (!filter_var($ip, FILTER_VALIDATE_IP)) { return false; }
+    $packed = inet_pton($ip);
+    foreach (psr_geo_global_deny_ips() as $candidate) {
+        if ($packed === inet_pton($candidate)) { return true; }
+    }
+    return false;
+}
 function psr_geo_public_ip() {
     $ip = isset($_SERVER['REMOTE_ADDR']) ? trim((string) $_SERVER['REMOTE_ADDR']) : '';
+    // Compatibilita' con IPv4 mappati in IPv6, senza fidarsi di header HTTP.
+    if (stripos($ip, '::ffff:') === 0) {
+        $v4 = substr($ip, 7);
+        if (filter_var($v4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) { $ip = $v4; }
+    }
     return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) ? $ip : '';
 }
 function psr_geo_ip_allowlisted($ip) {
@@ -81,11 +112,20 @@ function psr_geo_country($ip) {
 function psr_geo_decision() {
     if (!empty($GLOBALS['psr_geo_request_decision'])) { return $GLOBALS['psr_geo_request_decision']; }
     $out = array('blocked'=>false, 'reason'=>'disabled', 'country'=>'', 'ip'=>'');
-    if (!psr_geo_enabled() || (defined('WP_CLI') && WP_CLI) || (defined('DOING_CRON') && DOING_CRON)) {
+    if ((defined('WP_CLI') && WP_CLI) || (defined('DOING_CRON') && DOING_CRON)) {
         return $GLOBALS['psr_geo_request_decision'] = $out;
     }
     $ip = psr_geo_public_ip();
     $out['ip'] = $ip;
+    // Questo blocco ha priorita' su allowlist, GeoIP, cache e disattivazione del filtro paese.
+    if (psr_geo_ip_blacklisted($ip)) {
+        $out['blocked'] = true;
+        $out['reason'] = 'global_blacklist';
+        return $GLOBALS['psr_geo_request_decision'] = $out;
+    }
+    if (!psr_geo_enabled()) {
+        return $GLOBALS['psr_geo_request_decision'] = $out;
+    }
     if ($ip === '') {
         $out['reason'] = 'ip_not_public_or_proxy';
         return $GLOBALS['psr_geo_request_decision'] = $out;
@@ -100,14 +140,17 @@ function psr_geo_decision() {
     $out['blocked'] = $geo['country'] !== '' && $geo['country'] !== 'IT';
     return $GLOBALS['psr_geo_request_decision'] = $out;
 }
+function psr_geo_deny_event($decision) {
+    return isset($decision['reason']) && $decision['reason'] === 'global_blacklist' ? 'ip_blacklist_denied' : 'geo_denied';
+}
 function psr_geo_deny() {
     if (function_exists('psr_center_log_limited')) {
         $d = psr_geo_decision();
-        psr_center_log_limited('geo_denied','critical',(string)$d['ip'],'',(string)$d['country'],'geo','Pannello o login respinto',60);
+        psr_center_log_limited(psr_geo_deny_event($d),'critical',(string)$d['ip'],'',(string)$d['country'],'geo','Pannello o login respinto',60);
     }
     nocache_headers();
     if (function_exists('status_header')) { status_header(403); }
-    wp_die('Accesso amministrativo non consentito dall\'area geografica rilevata. Se ti trovi in Italia, contatta il gestore del portale per la verifica dell\'IP.',
+    wp_die('Accesso amministrativo non consentito da questo indirizzo IP. Contatta il gestore del portale.',
         'PSR - Accesso riservato', array('response'=>403));
 }
 // Login standard e schermata OTP: il blocco avviene prima di chiedere credenziali.
@@ -121,9 +164,9 @@ function psr_geo_authenticate($user, $username, $password) {
     if (psr_geo_decision()['blocked']) {
         if (function_exists('psr_center_log_limited')) {
             $d = psr_geo_decision();
-            psr_center_log_limited('geo_denied','critical',(string)$d['ip'],(string)$username,(string)$d['country'],'authenticate','Tentativo login estero',60);
+            psr_center_log_limited(psr_geo_deny_event($d),'critical',(string)$d['ip'],(string)$username,(string)$d['country'],'authenticate','Tentativo login respinto',60);
         }
-        return new WP_Error('psr_geo_foreign_ip', 'Accesso amministrativo non consentito dall\'area geografica rilevata.');
+        return new WP_Error('psr_geo_foreign_ip', 'Accesso amministrativo non consentito da questo indirizzo IP.');
     }
     return $user;
 }
@@ -146,9 +189,9 @@ function psr_geo_rest_authentication($result) {
     if (is_user_logged_in() && psr_geo_decision()['blocked']) {
         if (function_exists('psr_center_log_limited')) {
             $d = psr_geo_decision();
-            psr_center_log_limited('geo_denied','critical',(string)$d['ip'],'',(string)$d['country'],'rest','API REST autenticata respinta',60);
+            psr_center_log_limited(psr_geo_deny_event($d),'critical',(string)$d['ip'],'',(string)$d['country'],'rest','API REST autenticata respinta',60);
         }
-        return new WP_Error('psr_geo_foreign_ip', 'Accesso amministrativo non consentito dall\'area geografica rilevata.', array('status'=>403));
+        return new WP_Error('psr_geo_foreign_ip', 'Accesso amministrativo non consentito da questo indirizzo IP.', array('status'=>403));
     }
     return $result;
 }
@@ -160,7 +203,7 @@ function psr_geo_xmlrpc_enabled($enabled) {
     if (psr_geo_decision()['blocked']) {
         if (function_exists('psr_center_log_limited')) {
             $d=psr_geo_decision();
-            psr_center_log_limited('geo_denied','critical',(string)$d['ip'],'',(string)$d['country'],'xmlrpc','XML-RPC estero respinto',60);
+            psr_center_log_limited(psr_geo_deny_event($d),'critical',(string)$d['ip'],'',(string)$d['country'],'xmlrpc','XML-RPC estero respinto',60);
         }
         return false;
     }
