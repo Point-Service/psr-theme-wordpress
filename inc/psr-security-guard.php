@@ -2,7 +2,8 @@
 /**
  * PSR Security Guard — contenimento degli indicatori segnalati dal proprietario.
  * Integra la protezione del tema; NON protegge richieste dirette a file PHP.
- * I file isolati vengono spostati FUORI dalla document root, mai cancellati.
+ * I file PHP isolati vengono spostati FUORI dalla document root.
+ * Eccezione esplicita: wpsecurity.log viene eliminato nei percorsi del sito.
  */
 if (!defined('ABSPATH')) { exit; }
 
@@ -170,6 +171,46 @@ function psr_guard_isolate($source, $reason, &$events) {
     return false;
 }
 
+/**
+ * Richiesta esplicita: cancellare il file chiamato esattamente wpsecurity.log.
+ * Solo file REGOLARI situati dentro la directory WordPress; non segue link
+ * simbolici, non cancella cartelle o altri .log, non esegue il contenuto.
+ * Chi vuole conservarlo prima della cancellazione deve salvarne copia da Plesk.
+ */
+function psr_guard_delete_wpsecurity_log($file, &$events, &$detections, &$removed) {
+    if (basename($file) !== 'wpsecurity.log') { return false; }
+    $root = realpath(ABSPATH);
+    $parent = realpath(dirname($file));
+    if (!$root || !$parent || !psr_guard_path_within($parent, $root)) {
+        $events[] = 'LOG NON ELIMINATO (percorso esterno a WordPress): ' . $file;
+        return false;
+    }
+    if (is_link($file)) {
+        $events[] = 'LOG NON ELIMINATO (link simbolico): ' . $file;
+        return false;
+    }
+    clearstatcache(true, $file);
+    $before = @lstat($file);
+    if (!$before || !is_file($file) || (($before['mode'] & 0170000) !== 0100000)) { return false; }
+    $detections++;
+    // Controllo d'identita' del file prima di eliminarlo, senza modificarlo.
+    clearstatcache(true, $file);
+    $after = @lstat($file);
+    if (!$after || is_link($file) || $before['dev'] !== $after['dev'] ||
+        $before['ino'] !== $after['ino'] || $before['size'] !== $after['size'] ||
+        $before['mtime'] !== $after['mtime']) {
+        $events[] = 'LOG NON ELIMINATO (cambiato durante il controllo): ' . $file;
+        return false;
+    }
+    if (@unlink($file)) {
+        $removed++;
+        $events[] = 'ELIMINATO wpsecurity.log (dimensione ' . (int)$before['size'] . ' byte): ' . $file;
+        return true;
+    }
+    $events[] = 'ELIMINAZIONE FALLITA wpsecurity.log (verificare permessi): ' . $file;
+    return false;
+}
+
 function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) {
     if (!is_file($file) || is_link($file) || !is_readable($file)) { return; }
     $size = @filesize($file);
@@ -234,6 +275,10 @@ function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
     foreach ($roots as $root) {
         $realRoot = realpath($root);
         if (!$realRoot || !psr_guard_path_within($realRoot, realpath(ABSPATH))) { continue; }
+        $logPath = $realRoot . DIRECTORY_SEPARATOR . 'wpsecurity.log';
+        if (file_exists($logPath) || is_link($logPath)) {
+            psr_guard_delete_wpsecurity_log($logPath, $events, $detections, $removed);
+        }
         foreach (psr_guard_new_shell_names() as $suspect) {
             $candidate = $realRoot . DIRECTORY_SEPARATOR . $suspect;
             if (is_file($candidate) && !is_link($candidate)) {
@@ -290,7 +335,7 @@ function psr_guard_scan() {
             $checked++;
             $name = strtolower($item->getFilename());
             if ($name === 'wpsecurity.log') {
-                $events[] = 'LOG DA PROTEGGERE E CONSERVARE (NON ELIMINATO): ' . $item->getPathname();
+                psr_guard_delete_wpsecurity_log($item->getPathname(), $events, $detections, $removed);
                 continue;
             }
             if (strtolower(pathinfo($name, PATHINFO_EXTENSION)) !== 'php') { continue; }
