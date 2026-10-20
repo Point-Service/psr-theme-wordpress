@@ -82,7 +82,7 @@ function psr_scli_check($f, $root, $signatures) {
     $size = @filesize($f);
     $extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
     $isPhp = ($extension === 'php' || $extension === 'phtml' || $extension === 'phar');
-    $isText = in_array($extension, ['html','htm','js','txt'], true) || $name === '.htaccess';
+    $isText = in_array($extension, ['html','htm','js','txt'], true) || $name === '.htaccess' || $name === 'feed.xml';
     if (!$isPhp && !$isText && !in_array($name, ['b.zip','wp-link-helper.zip','wpsecurity.log'], true)) { return null; }
     if ($name === 'wpsecurity.log') {
         return ['severity'=>'DA_VERIFICARE','reason'=>'wpsecurity.log: indicatore noto, da verificare prima di cancellarlo'];
@@ -104,6 +104,25 @@ function psr_scli_check($f, $root, $signatures) {
         foreach ($items as $m) { if (strpos($body, $m) === false) { return false; } }
         return true;
     };
+    // Indicatori SEO del caso Comune di Ali': SOLO SEGNALAZIONE.
+    // La verifica Google e i file token possono essere autentici. La loro
+    // presenza non autorizza quarantena o dichiarazione di infezione.
+    if ($name === 'feed.xml' && $markers([
+        '<rss version="2.0"', '<language>id</language>',
+        'Discovery update for crawlers.', '/amministrazione/'])) {
+        return ['severity'=>'DA_VERIFICARE',
+            'reason'=>'RSS anomalo del campione: lingua indonesiana e feed di scoperta crawler, verificare provenienza e timestamp'];
+    }
+    if ($name === 'google9f36808e9fb31ed2.html' &&
+        trim($body) === 'google-site-verification: google9f36808e9fb31ed2.html') {
+        return ['severity'=>'DA_VERIFICARE',
+            'reason'=>'File Google Search Console osservato durante incidente: controllare proprietari e metodo di verifica, non rimuovere automaticamente'];
+    }
+    if ($name === 'dd295d873d45d6f7d4c13dfe51de5987.txt' &&
+        trim($body) === 'dd295d873d45d6f7d4c13dfe51de5987') {
+        return ['severity'=>'DA_VERIFICARE',
+            'reason'=>'File token esadecimale osservato durante incidente: identificare chi lo ha creato, non rimuovere automaticamente'];
+    }
     if ($isPhp) {
         $masked = $markers(['opacity:.03','session_start(','$_SESSION[','$_FILES[',
             'scandir(','rawurldecode(','DIRECTORY_SEPARATOR','htmlspecialchars(',
@@ -129,7 +148,7 @@ function psr_scli_check($f, $root, $signatures) {
         if (preg_match('~/(?:uploads|cache)/.*\.(?:php|phtml|phar)$~i', $f)) {
             return ['severity'=>'DA_VERIFICARE', 'reason'=>'PHP eseguibile in uploads/cache (non necessariamente malware)'];
         }
-        if (preg_match('/^(?:wp-[a-f0-9]{12}|(?:transfraktur|slakersest|overcoqu|aciesest|macroutter|protosnitchy|dismutation|acerbatesed|overcynophi|protomunsif))\.php$/i', $name)) {
+        if (preg_match('/^(?:wp-[a-f0-9]{12}|(?:translanugos|translanugoss|transfraktur|slakersest|overcoqu|aciesest|macroutter|protosnitchy|dismutation|acerbatesed|overcynophi|protomunsif))\.php$/i', $name)) {
             return ['severity'=>'DA_VERIFICARE','reason'=>'Nome associato ai precedenti incidenti, contenuto differente'];
         }
         if (preg_match('/\beval\s*\(\s*(?:base64_decode|gzinflate)\s*\(/i', $body)) {

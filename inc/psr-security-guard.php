@@ -93,7 +93,7 @@ function psr_guard_matches_hidden_filemanager_family($file) {
 
 /** I nuovi indicatori vengono trattati come sospetti finche' il contenuto non e' verificato. */
 function psr_guard_new_shell_names() {
-    return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
+    return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','translanugos.php','translanugoss.php','ultraruruing.php','microbearers.php',
         'morselledism.php','misemace.php','protomunsif.php','slakersest.php','overcoqu.php',
         'overcynophi.php','aciesest.php','acerbatesed.php',
         'wp-link-helper.php','wlh-recovery.php','wlh-config.php',
@@ -357,7 +357,7 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
         $events[] = 'WEB SHELL PROBABILE (nuovo nome, NON isolata): ' . $file;
         return;
     }
-    if (in_array($name, array('translanugos.php','toddlingness.php','prequiche.php','slakersest.php',
+    if (in_array($name, array('translanugos.php','translanugoss.php','toddlingness.php','prequiche.php','slakersest.php',
         'overcoqu.php','wp-e92754ad0d8a.php','wp-b697fed82d65.php',
         'wp-d5086527eae9.php','wp-ce624c7f52b7.php',
         'underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
