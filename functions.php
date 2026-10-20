@@ -14,6 +14,13 @@
 $psr_security_guard_file = get_template_directory() . '/inc/psr-security-guard.php';
 if (is_file($psr_security_guard_file) && is_readable($psr_security_guard_file)) {
     require_once $psr_security_guard_file;
+} else {
+    // La pagina resta raggiungibile, ma l'amministratore ID 1 deve sapere che
+    // la protezione NON e' attiva perche' il file manca dal deploy.
+    add_action('admin_notices', function () {
+        if (get_current_user_id() !== 1 || !current_user_can('manage_options')) { return; }
+        echo '<div class="notice notice-error"><p><strong>PSR Security Guard NON attivo:</strong> manca inc/psr-security-guard.php nel tema. Ripristinare il file tramite GitHub/Plesk.</p></div>';
+    });
 }
 
 /**

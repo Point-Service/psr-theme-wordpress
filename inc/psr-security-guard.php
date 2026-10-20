@@ -10,6 +10,7 @@ if (!defined('ABSPATH')) { exit; }
 function psr_guard_signatures() {
     return array(
         '618493861791064b9f394f06af7e6d538fc46e25555fc398af8e5d6a1f20a483' => 'translanugos.php',
+        '0aeadb135f09028c36e48b8a4bd1098c32b958bfc30a1d0786e96f16b81c8a8d' => 'transfraktur.php',
         '0b97745a9a7218923dc50844cde3bdce28d1efe347d04c3b091e80452ba2871d' => 'overcynophi.php',
         '079b0e4ff820394263e724cd6995dac8315c11a68d28d578c5ff9643703b63b1' => 'aciesest.php',
         'e68659bdf7a18ae32a27faef38ac972b3f17429bb3971de4ac01fda514d401b3' => 'acerbatesed.php',
@@ -347,6 +348,15 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
         if (psr_guard_isolate($file, $reason, $events)) { $removed++; }
         return;
     }
+    // Indicatore euristico in sola segnalazione per nomi NUOVI: il nome non
+    // determina la cancellazione; il codice sospetto non viene mai eseguito.
+    // Una quarantena automatica senza firma certa puo' bloccare siti validi.
+    if (!$newName && (psr_guard_matches_hidden_filemanager_family($file) ||
+        psr_guard_matches_unprotected_filemanager($file) ||
+        psr_guard_matches_command_shell($file))) {
+        $events[] = 'WEB SHELL PROBABILE (nuovo nome, NON isolata): ' . $file;
+        return;
+    }
     if (in_array($name, array('translanugos.php','toddlingness.php','prequiche.php','slakersest.php',
         'overcoqu.php','wp-e92754ad0d8a.php','wp-b697fed82d65.php',
         'wp-d5086527eae9.php','wp-ce624c7f52b7.php',
@@ -360,9 +370,9 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
 }
 
 /**
- * Queste due cartelle plugin sono state indicate come installazioni non
- * autorizzate. Si isola SOLO il percorso esatto dentro plugins, non altri
- * plugin né tutta mu-plugins. overcoqu.php si verifica prima dell'isolamento.
+ * Le cartelle di plugin sospetti richiedono una verifica del contenuto.
+ * Il solo nome NON e' mai sufficiente per una quarantena.
+ * Plesk wp-toolkit non viene toccato.
  * Interruttore di emergenza: define('PSR_GUARD_AUTO_ISOLATE_NAMED_PLUGIN_PATHS', false);
  */
 function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
@@ -399,10 +409,21 @@ function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
         foreach (array('wp-link-helper', 'wordpress-security') as $name) {
             $path = $plugins . DIRECTORY_SEPARATOR . $name;
             if (!is_dir($path) || is_link($path)) { continue; }
+            // Non isolare mai una cartella di plugin basandosi soltanto sul nome.
+            // WP Link Helper viene messo in quarantena solo se il file principale
+            // contiene le firme strutturali verificate del campione malevolo.
+            $verified = $name === 'wp-link-helper' && psr_guard_matches_wlh_main(
+                $path . DIRECTORY_SEPARATOR . 'wp-link-helper.php');
+            if (!$verified) {
+                $events[] = 'CARTELLA PLUGIN DA VERIFICARE (non isolata per solo nome): ' . $path;
+                continue;
+            }
             $detections++;
             if (!defined('PSR_GUARD_AUTO_ISOLATE_NAMED_PLUGIN_PATHS') || PSR_GUARD_AUTO_ISOLATE_NAMED_PLUGIN_PATHS) {
-                if (psr_guard_isolate($path, 'plugin nominato come non autorizzato', $events)) { $removed++; }
-            } else { $events[] = 'PLUGIN SOSPETTO NON ISOLATO (modalità segnalazione): ' . $path; }
+                if (psr_guard_isolate($path, 'WP Link Helper verificato tramite contenuto', $events)) { $removed++; }
+            } else {
+                $events[] = 'PLUGIN MALEVOLO VERIFICATO (isolamento disattivato): ' . $path;
+            }
         }
     }
     // b.zip contiene il codice che installa wp-cache-helper, ma NON il sorgente
