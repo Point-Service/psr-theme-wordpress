@@ -10,6 +10,8 @@ if (!defined('ABSPATH')) { exit; }
 function psr_guard_signatures() {
     return array(
         '618493861791064b9f394f06af7e6d538fc46e25555fc398af8e5d6a1f20a483' => 'translanugos.php',
+        '0b97745a9a7218923dc50844cde3bdce28d1efe347d04c3b091e80452ba2871d' => 'overcynophi.php',
+        '079b0e4ff820394263e724cd6995dac8315c11a68d28d578c5ff9643703b63b1' => 'aciesest.php',
         '65958f829ae60eccbec3d7de8812ac3dbc74d38ef53f217b0a0a1883e343deec' => 'microbearers.php',
         '3b2993596835e2d985a3147e9ce21fe655851f3c303da58ccaf17f9fb05c3358' => 'protomunsif.php',
         '20f91dbe6ded4b46c57f054608379b0e582c4e190277212923c0a37d89b562a7' => 'toddlingness.php',
@@ -87,6 +89,7 @@ function psr_guard_matches_hidden_filemanager_family($file) {
 function psr_guard_new_shell_names() {
     return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
         'morselledism.php','misemace.php','protomunsif.php','slakersest.php','overcoqu.php',
+        'overcynophi.php','aciesest.php',
         'wp-link-helper.php','wlh-recovery.php');
 }
 
@@ -327,7 +330,7 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
         'overcoqu.php','wp-e92754ad0d8a.php','wp-b697fed82d65.php',
         'wp-d5086527eae9.php','wp-ce624c7f52b7.php',
         'underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
-        'morselledism.php','misemace.php','protomunsif.php',
+        'morselledism.php','misemace.php','protomunsif.php','overcynophi.php','aciesest.php',
         'wp-link-helper.php','wlh-recovery.php','wlh-config.php','class-wlh-recovery-installer.php'), true) ||
         ($isMuRootFile && preg_match('/^wp-[a-f0-9]{12}\.php$/i', $name))) {
         $events[] = 'FILE SOSPETTO DA VERIFICARE (non isolato): ' . $file;
