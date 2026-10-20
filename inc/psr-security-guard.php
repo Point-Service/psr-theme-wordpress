@@ -26,6 +26,34 @@ function psr_guard_matches_slakersest($file) {
 }
 
 /**
+ * Famiglia delle web shell PHP camuffate con un login a opacita' 3%.
+ * I nuovi nomi indicati dal proprietario, SENZA campioni allegati, non sono
+ * prova sufficiente per una rimozione: isolare soltanto se il contenuto
+ * presenta contemporaneamente queste caratteristiche molto specifiche.
+ * Non esegue, non include e non valuta codice trovato sul disco.
+ */
+function psr_guard_matches_hidden_filemanager_family($file) {
+    if (!is_file($file) || is_link($file)) { return false; }
+    $bytes = @filesize($file);
+    if ($bytes === false || $bytes < 1500 || $bytes > 1024 * 1024) { return false; }
+    $body = @file_get_contents($file);
+    if (!is_string($body)) { return false; }
+    $markers = array('opacity:.03', 'session_start(', '$_SESSION[',
+        '$_FILES[', 'scandir(', 'rawurldecode(', 'DIRECTORY_SEPARATOR',
+        'htmlspecialchars(', 'fopen(', 'fwrite(', 'rename(', 'unlink(');
+    foreach ($markers as $marker) {
+        if (strpos($body, $marker) === false) { return false; }
+    }
+    // Questi campioni sono volutamente riempiti con istruzioni inattive.
+    return substr_count($body, 'if(false)') >= 4;
+}
+
+/** I nuovi indicatori vengono trattati come sospetti finche' il contenuto non e' verificato. */
+function psr_guard_new_shell_names() {
+    return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php');
+}
+
+/**
  * Firma comportamentale stretta del canale di persistenza MU confermato:
  * NON basata sul nome casuale wp-<hex>.php, che da solo non prova nulla.
  * Applicabile soltanto ai PHP direttamente dentro mu-plugins.
@@ -116,27 +144,31 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
     $signatures = psr_guard_signatures();
     $matched = is_string($hash) && isset($signatures[$hash]);
     $variant = !$matched && $name === 'slakersest.php' && psr_guard_matches_slakersest($file);
+    $newName = in_array($name, psr_guard_new_shell_names(), true);
+    $familyMatch = !$matched && !$variant && $newName && psr_guard_matches_hidden_filemanager_family($file);
     $muRoot = realpath(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins');
     $isMuRootFile = $muRoot && realpath(dirname($file)) === $muRoot;
-    $recovery = !$matched && !$variant && $isMuRootFile && psr_guard_matches_mu_recovery($file);
-    if ($matched || $variant || $recovery) {
+    $recovery = !$matched && !$variant && !$familyMatch && $isMuRootFile && psr_guard_matches_mu_recovery($file);
+    if ($matched || $variant || $familyMatch || $recovery) {
         $detections++;
         $before = @lstat($file);
         $again = @hash_file('sha256', $file);
         $after = @lstat($file);
         if (!$before || !$after || $before['dev'] !== $after['dev'] || $before['ino'] !== $after['ino'] ||
             $again !== $hash || is_link($file) || ($variant && !psr_guard_matches_slakersest($file)) ||
+            ($familyMatch && !psr_guard_matches_hidden_filemanager_family($file)) ||
             ($recovery && !psr_guard_matches_mu_recovery($file))) {
             $events[] = 'FILE CAMBIATO DURANTE LA VERIFICA: ' . $file;
             return;
         }
-        $reason = $matched ? 'SHA256 confermato' : ($recovery ? 'persistenza MU wp-link-helper verificata' : 'variante slakersest confermata');
+        $reason = $matched ? 'SHA256 confermato' : ($recovery ? 'persistenza MU wp-link-helper verificata' : ($familyMatch ? 'firma comportamentale webshell verificata' : 'variante slakersest confermata'));
         if (psr_guard_isolate($file, $reason, $events)) { $removed++; }
         return;
     }
     if (in_array($name, array('translanugos.php','toddlingness.php','prequiche.php','slakersest.php',
         'overcoqu.php','wp-e92754ad0d8a.php','wp-b697fed82d65.php',
-        'wp-d5086527eae9.php','wp-ce624c7f52b7.php'), true) ||
+        'wp-d5086527eae9.php','wp-ce624c7f52b7.php',
+        'underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php'), true) ||
         ($isMuRootFile && preg_match('/^wp-[a-f0-9]{12}\.php$/i', $name))) {
         $events[] = 'FILE SOSPETTO DA VERIFICARE (non isolato): ' . $file;
     }
@@ -151,6 +183,22 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
 function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
     $content = realpath(WP_CONTENT_DIR);
     if (!$content) { return; }
+    // Sondaggio rapido dei 4 indicatori in directory precise, non ricorsivo.
+    // Consente il rilevamento entro il prossimo controllo (WP-Cron non e' garantito
+    // su siti senza traffico) senza rallentare tutte le richieste WordPress.
+    $roots = array(ABSPATH, WP_CONTENT_DIR, WP_PLUGIN_DIR,
+        WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins',
+        WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'uploads');
+    foreach ($roots as $root) {
+        $realRoot = realpath($root);
+        if (!$realRoot || !psr_guard_path_within($realRoot, realpath(ABSPATH))) { continue; }
+        foreach (psr_guard_new_shell_names() as $suspect) {
+            $candidate = $realRoot . DIRECTORY_SEPARATOR . $suspect;
+            if (is_file($candidate) && !is_link($candidate)) {
+                psr_guard_verify_file($candidate, $suspect, $events, $detections, $removed);
+            }
+        }
+    }
     $plugins = realpath(WP_PLUGIN_DIR);
     if ($plugins && psr_guard_path_within($plugins, $content)) {
         foreach (array('wp-link-helper', 'wordpress-security') as $name) {
