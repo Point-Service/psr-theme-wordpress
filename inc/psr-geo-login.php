@@ -12,6 +12,36 @@
  */
 if (!defined('ABSPATH')) { exit; }
 
+/**
+ * XML-RPC completamente disabilitato dal tema, per qualsiasi IP.
+ * L'endpoint xmlrpc.php definisce XMLRPC_REQUEST prima di caricare WordPress:
+ * il controllo avviene all'hook init, prima dell'elaborazione dei metodi XML-RPC.
+ * Per un'eccezione temporanea: define('PSR_XMLRPC_DISABLED', false); in wp-config.php.
+ * Non modifica firewall Plesk/Nginx e non blocca richieste statiche prima di PHP.
+ */
+function psr_geo_xmlrpc_hard_disable() {
+    if (!defined('XMLRPC_REQUEST') || !XMLRPC_REQUEST) { return; }
+    if (defined('PSR_XMLRPC_DISABLED') && !PSR_XMLRPC_DISABLED) { return; }
+
+    // Un solo evento per IP/minuto: protegge il registro da scansioni ripetute.
+    if (function_exists('psr_center_log_limited')) {
+        $ip = psr_geo_public_ip();
+        psr_center_log_limited('xmlrpc_denied', 'warning', $ip, '', '', 'xmlrpc',
+            'Richiesta XML-RPC respinta (endpoint disabilitato)', 60);
+    }
+    if (function_exists('nocache_headers')) { nocache_headers(); }
+    if (function_exists('status_header')) { status_header(403); }
+    else { http_response_code(403); }
+    if (!headers_sent()) {
+        header('Content-Type: text/plain; charset=UTF-8');
+        header('X-Robots-Tag: noindex, nofollow');
+    }
+    exit('XML-RPC disabilitato.');
+}
+if (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
+    add_action('init', 'psr_geo_xmlrpc_hard_disable', -1000);
+}
+
 function psr_geo_enabled() {
     return !defined('PSR_GEO_LOGIN_ENABLED') || (bool) PSR_GEO_LOGIN_ENABLED;
 }

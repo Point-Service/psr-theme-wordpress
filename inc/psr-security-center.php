@@ -63,7 +63,7 @@ function psr_center_clean_ip($ip) {
 function psr_center_log_event($event, $severity = 'info', $ip = '', $username = '', $country = '', $source = 'login', $note = '') {
     // Whitelist per impedire inquinamento del registro con dati arbitrari.
     $allowed = array('login_failed','login_blocked','login_success','otp_sent','otp_failed','otp_verified',
-        'otp_delivery_failed','geo_denied','ip_blacklist_denied','geo_unavailable','manual_ban','manual_unban',
+        'otp_delivery_failed','geo_denied','ip_blacklist_denied','xmlrpc_denied','geo_unavailable','manual_ban','manual_unban',
         'site_ban_denied','user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied','trusted_ip_added','trusted_ip_removed','security_setting_changed','admin_role_denied');
     if (!in_array($event, $allowed, true)) { return false; }
     if (!psr_center_install()) { return false; }
@@ -248,7 +248,7 @@ function psr_center_url($tab = 'overview', $extra = array()) {
 function psr_center_label($type) {
     $labels = array('login_failed'=>'Password errata','login_blocked'=>'Login già bloccato','login_success'=>'Accesso riuscito',
         'otp_sent'=>'OTP email inviato','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato',
-        'otp_delivery_failed'=>'Invio OTP fallito','geo_denied'=>'IP estero bloccato','ip_blacklist_denied'=>'IP in blacklist bloccato','geo_unavailable'=>'GeoIP non disponibile',
+        'otp_delivery_failed'=>'Invio OTP fallito','geo_denied'=>'IP estero bloccato','ip_blacklist_denied'=>'IP in blacklist bloccato','xmlrpc_denied'=>'XML-RPC bloccato','geo_unavailable'=>'GeoIP non disponibile',
         'manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale',
         'site_ban_denied'=>'Sito negato a IP bannato','user_created'=>'Utente creato',
         'role_changed'=>'Ruolo modificato','account_email_changed'=>'Email account modificata',
@@ -433,7 +433,7 @@ function psr_center_event_table($limit, $event_filter='', $ip_filter='', $page=1
 function psr_center_events(){
     global $wpdb;
     list($events)=psr_center_tables();
-    $types=array(''=>'Tutti gli eventi','login_failed'=>'Password errata','login_blocked'=>'Login bloccato','login_success'=>'Accesso riuscito','otp_sent'=>'OTP richiesto','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato','otp_delivery_failed'=>'Errore invio OTP','geo_denied'=>'Accesso estero negato','ip_blacklist_denied'=>'IP blacklist permanente','geo_unavailable'=>'GeoIP non disponibile','manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale',
+    $types=array(''=>'Tutti gli eventi','login_failed'=>'Password errata','login_blocked'=>'Login bloccato','login_success'=>'Accesso riuscito','otp_sent'=>'OTP richiesto','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato','otp_delivery_failed'=>'Errore invio OTP','geo_denied'=>'Accesso estero negato','ip_blacklist_denied'=>'IP blacklist permanente','xmlrpc_denied'=>'XML-RPC bloccato','geo_unavailable'=>'GeoIP non disponibile','manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale',
         'site_ban_denied'=>'Sito bloccato','user_created'=>'Utente creato','role_changed'=>'Ruolo cambiato',
         'account_email_changed'=>'Email modificata','account_password_changed'=>'Password cambiata',
         'user_deleted'=>'Utente eliminato','trusted_ip_added'=>'IP fidato aggiunto',
