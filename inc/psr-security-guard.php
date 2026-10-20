@@ -27,6 +27,21 @@ function psr_guard_matches_slakersest($file) {
     return true;
 }
 
+/** Firma aggiuntiva della web shell overcoqu segnalata, senza esecuzione del PHP. */
+function psr_guard_matches_overcoqu($file) {
+    if (!is_file($file) || is_link($file)) { return false; }
+    $bytes = @filesize($file);
+    if ($bytes === false || $bytes < 1500 || $bytes > 1024 * 1024) { return false; }
+    $body = @file_get_contents($file);
+    if (!is_string($body)) { return false; }
+    foreach (array('fluigrammeed', 'antiammono', 'amphoricit', 'opacity:.03',
+        'function zxirqi(', 'function ztsi(', 'session_start(', '$_FILES[',
+        'fopen(', 'fwrite(', 'rename(', 'unlink(') as $marker) {
+        if (strpos($body, $marker) === false) { return false; }
+    }
+    return true;
+}
+
 /**
  * Famiglia delle web shell PHP camuffate con un login a opacita' 3%.
  * I nuovi nomi indicati dal proprietario, SENZA campioni allegati, non sono
@@ -53,7 +68,7 @@ function psr_guard_matches_hidden_filemanager_family($file) {
 /** I nuovi indicatori vengono trattati come sospetti finche' il contenuto non e' verificato. */
 function psr_guard_new_shell_names() {
     return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
-        'morselledism.php','misemace.php','protomunsif.php');
+        'morselledism.php','misemace.php','protomunsif.php','slakersest.php','overcoqu.php');
 }
 
 /**
@@ -166,26 +181,28 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
     $signatures = psr_guard_signatures();
     $matched = is_string($hash) && isset($signatures[$hash]);
     $variant = !$matched && $name === 'slakersest.php' && psr_guard_matches_slakersest($file);
+    $variantOvercoqu = !$matched && $name === 'overcoqu.php' && psr_guard_matches_overcoqu($file);
     $newName = in_array($name, psr_guard_new_shell_names(), true);
-    $familyMatch = !$matched && !$variant && $newName && psr_guard_matches_hidden_filemanager_family($file);
-    $unprotectedFM = !$matched && !$variant && !$familyMatch && $newName && psr_guard_matches_unprotected_filemanager($file);
+    $familyMatch = !$matched && !$variant && !$variantOvercoqu && $newName && psr_guard_matches_hidden_filemanager_family($file);
+    $unprotectedFM = !$matched && !$variant && !$variantOvercoqu && !$familyMatch && $newName && psr_guard_matches_unprotected_filemanager($file);
     $muRoot = realpath(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins');
     $isMuRootFile = $muRoot && realpath(dirname($file)) === $muRoot;
     $recovery = !$matched && !$variant && !$familyMatch && !$unprotectedFM && $isMuRootFile && psr_guard_matches_mu_recovery($file);
-    if ($matched || $variant || $familyMatch || $unprotectedFM || $recovery) {
+    if ($matched || $variant || $variantOvercoqu || $familyMatch || $unprotectedFM || $recovery) {
         $detections++;
         $before = @lstat($file);
         $again = @hash_file('sha256', $file);
         $after = @lstat($file);
         if (!$before || !$after || $before['dev'] !== $after['dev'] || $before['ino'] !== $after['ino'] ||
             $again !== $hash || is_link($file) || ($variant && !psr_guard_matches_slakersest($file)) ||
+            ($variantOvercoqu && !psr_guard_matches_overcoqu($file)) ||
             ($familyMatch && !psr_guard_matches_hidden_filemanager_family($file)) ||
             ($unprotectedFM && !psr_guard_matches_unprotected_filemanager($file)) ||
             ($recovery && !psr_guard_matches_mu_recovery($file))) {
             $events[] = 'FILE CAMBIATO DURANTE LA VERIFICA: ' . $file;
             return;
         }
-        $reason = $matched ? 'SHA256 confermato' : ($recovery ? 'persistenza MU wp-link-helper verificata' : ($unprotectedFM ? 'file manager PHP privo di autenticazione verificato' : ($familyMatch ? 'firma comportamentale webshell verificata' : 'variante slakersest confermata')));
+        $reason = $matched ? 'SHA256 confermato' : ($recovery ? 'persistenza MU wp-link-helper verificata' : ($unprotectedFM ? 'file manager PHP privo di autenticazione verificato' : ($familyMatch ? 'firma comportamentale webshell verificata' : ($variantOvercoqu ? 'variante overcoqu confermata' : 'variante slakersest confermata'))));
         if (psr_guard_isolate($file, $reason, $events)) { $removed++; }
         return;
     }
@@ -200,15 +217,15 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
 }
 
 /**
- * I nomi di queste 2 cartelle e di overcoqu.php sono stati indicati dal
- * proprietario come installazioni non autorizzate. Si isola SOLO il percorso
- * esatto dentro plugins, mai altri plugin né tutta mu-plugins.
+ * Queste due cartelle plugin sono state indicate come installazioni non
+ * autorizzate. Si isola SOLO il percorso esatto dentro plugins, non altri
+ * plugin né tutta mu-plugins. overcoqu.php si verifica prima dell'isolamento.
  * Interruttore di emergenza: define('PSR_GUARD_AUTO_ISOLATE_NAMED_PLUGIN_PATHS', false);
  */
 function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
     $content = realpath(WP_CONTENT_DIR);
     if (!$content) { return; }
-    // Sondaggio rapido dei 5 indicatori in directory precise, non ricorsivo.
+    // Sondaggio rapido degli indicatori in directory precise, non ricorsivo.
     // Consente il rilevamento entro il prossimo controllo (WP-Cron non e' garantito
     // su siti senza traffico) senza rallentare tutte le richieste WordPress.
     $roots = array(ABSPATH, WP_CONTENT_DIR, WP_PLUGIN_DIR,
@@ -233,13 +250,6 @@ function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
             if (!defined('PSR_GUARD_AUTO_ISOLATE_NAMED_PLUGIN_PATHS') || PSR_GUARD_AUTO_ISOLATE_NAMED_PLUGIN_PATHS) {
                 if (psr_guard_isolate($path, 'plugin nominato come non autorizzato', $events)) { $removed++; }
             } else { $events[] = 'PLUGIN SOSPETTO NON ISOLATO (modalità segnalazione): ' . $path; }
-        }
-        $namedfile = $plugins . DIRECTORY_SEPARATOR . 'overcoqu.php';
-        if (is_file($namedfile) && !is_link($namedfile)) {
-            $detections++;
-            if (!defined('PSR_GUARD_AUTO_ISOLATE_NAMED_PLUGIN_PATHS') || PSR_GUARD_AUTO_ISOLATE_NAMED_PLUGIN_PATHS) {
-                if (psr_guard_isolate($namedfile, 'file nominato come non autorizzato', $events)) { $removed++; }
-            } else { $events[] = 'FILE SOSPETTO NON ISOLATO (modalità segnalazione): ' . $namedfile; }
         }
     }
     $mu = $content . DIRECTORY_SEPARATOR . 'mu-plugins';
