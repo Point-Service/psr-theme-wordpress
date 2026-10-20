@@ -101,6 +101,10 @@ function psr_geo_decision() {
     return $GLOBALS['psr_geo_request_decision'] = $out;
 }
 function psr_geo_deny() {
+    if (function_exists('psr_center_log_limited')) {
+        $d = psr_geo_decision();
+        psr_center_log_limited('geo_denied','critical',(string)$d['ip'],'',(string)$d['country'],'geo','Pannello o login respinto',60);
+    }
     nocache_headers();
     if (function_exists('status_header')) { status_header(403); }
     wp_die('Accesso amministrativo non consentito dall\'area geografica rilevata. Se ti trovi in Italia, contatta il gestore del portale per la verifica dell\'IP.',
@@ -115,6 +119,10 @@ add_action('login_init', 'psr_geo_login_init', 0);
 // Blocca anche i percorsi che invocano wp_authenticate senza usare wp-login.php.
 function psr_geo_authenticate($user, $username, $password) {
     if (psr_geo_decision()['blocked']) {
+        if (function_exists('psr_center_log_limited')) {
+            $d = psr_geo_decision();
+            psr_center_log_limited('geo_denied','critical',(string)$d['ip'],(string)$username,(string)$d['country'],'authenticate','Tentativo login estero',60);
+        }
         return new WP_Error('psr_geo_foreign_ip', 'Accesso amministrativo non consentito dall\'area geografica rilevata.');
     }
     return $user;
@@ -136,6 +144,10 @@ add_action('admin_init', 'psr_geo_admin_init', 0);
 function psr_geo_rest_authentication($result) {
     if (is_wp_error($result)) { return $result; }
     if (is_user_logged_in() && psr_geo_decision()['blocked']) {
+        if (function_exists('psr_center_log_limited')) {
+            $d = psr_geo_decision();
+            psr_center_log_limited('geo_denied','critical',(string)$d['ip'],'',(string)$d['country'],'rest','API REST autenticata respinta',60);
+        }
         return new WP_Error('psr_geo_foreign_ip', 'Accesso amministrativo non consentito dall\'area geografica rilevata.', array('status'=>403));
     }
     return $result;
@@ -145,7 +157,13 @@ add_filter('rest_authentication_errors', 'psr_geo_rest_authentication', 100);
 // XML-RPC puo' offrire un altro percorso di autenticazione non-browser.
 // Non disabilitare XML-RPC per il resto dei visitatori/servizi italiani.
 function psr_geo_xmlrpc_enabled($enabled) {
-    if (psr_geo_decision()['blocked']) { return false; }
+    if (psr_geo_decision()['blocked']) {
+        if (function_exists('psr_center_log_limited')) {
+            $d=psr_geo_decision();
+            psr_center_log_limited('geo_denied','critical',(string)$d['ip'],'',(string)$d['country'],'xmlrpc','XML-RPC estero respinto',60);
+        }
+        return false;
+    }
     return $enabled;
 }
 add_filter('xmlrpc_enabled', 'psr_geo_xmlrpc_enabled', 0);
@@ -168,6 +186,7 @@ function psr_geo_tools_page() {
     if ((int) get_current_user_id() !== 1 || !current_user_can('manage_options')) {
         wp_die('Non autorizzato', '', array('response'=>403));
     }
+    if (function_exists('psr_center_page')) { psr_center_page('geo'); return; }
     $d = psr_geo_decision();
     echo '<div class="wrap"><h1>PSR Geo Login — riservato ID 1</h1>';
     echo '<p>Stato filtro: <strong>' . (psr_geo_enabled() ? 'Attivo' : 'Disattivato da wp-config.php') . '</strong></p>';

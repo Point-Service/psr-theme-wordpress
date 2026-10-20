@@ -27,7 +27,7 @@ function psr_login_rate_blocked($ip) {
     $state = psr_login_rate_state($ip);
     return max(0, (int) ($state['until'] ?? 0) - time());
 }
-function psr_login_rate_failure($ip) {
+function psr_login_rate_failure($ip, $reason = 'password', $username = '') {
     if ($ip === '') { return; }
     $state = psr_login_rate_state($ip);
     $now = time();
@@ -42,11 +42,20 @@ function psr_login_rate_failure($ip) {
     elseif ($count >= 10) { $state['until'] = max((int)$state['until'], $now + HOUR_IN_SECONDS); }
     elseif ($count >= 5) { $state['until'] = max((int)$state['until'], $now + 10 * MINUTE_IN_SECONDS); }
     set_transient(psr_login_ip_key($ip), $state, 8 * DAY_IN_SECONDS);
+    if (function_exists('psr_center_sync_ip')) { psr_center_sync_ip($ip, $state); }
+    if (function_exists('psr_center_log_event')) {
+        psr_center_log_event($reason === 'otp' ? 'otp_failed' : 'login_failed',
+            $count >= 15 ? 'critical' : 'warning', $ip, $username, '', $reason === 'otp' ? 'otp' : 'login',
+            'Tentativo ' . $count . ($state['until'] > $now ? '; blocco fino a ' . gmdate('Y-m-d H:i:s', $state['until']) . ' UTC' : ''));
+    }
 }
 function psr_login_auth_precheck($user, $username, $password) {
     if (defined('WP_CLI') && WP_CLI) { return $user; }
     $remaining = psr_login_rate_blocked(psr_login_ip());
     if ($remaining) {
+        if (function_exists('psr_center_log_limited')) {
+            psr_center_log_limited('login_blocked','warning',psr_login_ip(),(string)$username,'','login','Accesso negato: IP gia bloccato',60);
+        }
         return new WP_Error('psr_login_blocked', 'Troppi tentativi di accesso. Riprova piu\' tardi.');
     }
     return $user;
@@ -61,7 +70,7 @@ function psr_login_failed_password($username, $error = null) {
         // Account inesistente o password errata sono i soli errori conteggiati.
         if (!array_intersect($codes, array('incorrect_password','invalid_username','invalid_email','authentication_failed','invalid_password','invalid_credentials'))) { return; }
     }
-    psr_login_rate_failure(psr_login_ip());
+    psr_login_rate_failure(psr_login_ip(), 'password', $username);
 }
 add_action('wp_login_failed', 'psr_login_failed_password', 10, 2);
 
@@ -197,7 +206,15 @@ function psr_login_start_otp($user, $username, $password) {
         'redirect'=>wp_validate_redirect(isset($_REQUEST['redirect_to']) ? (string)wp_unslash($_REQUEST['redirect_to']) : '', admin_url()),
     );
     $sent = psr_login_email_issue($user, $ticket, $pending);
-    if (is_wp_error($sent)) { return $sent; } // Mai creare sessioni senza OTP inviato.
+    if (is_wp_error($sent)) {
+        if (function_exists('psr_center_log_event')) {
+            psr_center_log_event('otp_delivery_failed','critical',psr_login_ip(),$user->user_login,'','otp', $sent->get_error_code());
+        }
+        return $sent;
+    } // Mai creare sessioni senza OTP inviato.
+    if (function_exists('psr_center_log_event')) {
+        psr_center_log_event('otp_sent','info',psr_login_ip(),$user->user_login,'','otp','OTP richiesto dopo password corretta');
+    }
     set_transient(psr_login_pending_key($ticket), $pending, 5 * MINUTE_IN_SECONDS);
     psr_login_set_pending_cookie($ticket, $pending['code_expires']);
     wp_safe_redirect(add_query_arg('action', 'psr_mfa', wp_login_url()));
@@ -259,12 +276,18 @@ function psr_login_otp_page() {
                 if (!get_option('_psr_login_email_to', '')) {
                     update_option('_psr_login_email_to', psr_login_email_target($user), false);
                 }
-                if (psr_login_ip() !== '') { delete_transient(psr_login_ip_key(psr_login_ip())); }
+                if (psr_login_ip() !== '') {
+                    delete_transient(psr_login_ip_key(psr_login_ip()));
+                    if (function_exists('psr_center_remove_ip')) { psr_center_remove_ip(psr_login_ip()); }
+                }
+                if (function_exists('psr_center_log_event')) {
+                    psr_center_log_event('otp_verified','info',psr_login_ip(),$user->user_login,'','otp','Codice monouso verificato');
+                }
                 psr_login_grant_session($user, $pending);
                 wp_safe_redirect($pending['redirect']); exit;
             }
             $pending['tries'] = (int)$pending['tries'] + 1;
-            psr_login_rate_failure(psr_login_ip());
+            psr_login_rate_failure(psr_login_ip(), 'otp', $user->user_login);
             if ($pending['tries'] >= 5 || psr_login_rate_blocked(psr_login_ip())) {
                 psr_login_cancel_ticket($ticket);
                 wp_die('Troppi codici errati. Ricomincia dal login dopo il blocco.', 'PSR - OTP email', array('response'=>403));
@@ -301,6 +324,7 @@ function psr_login_admin_menu() {
 add_action('admin_menu', 'psr_login_admin_menu');
 function psr_login_admin_page() {
     if ((int)get_current_user_id() !== 1 || !current_user_can('manage_options')) { wp_die('Non autorizzato', '', array('response'=>403)); }
+    if (function_exists('psr_center_page')) { psr_center_page('otp'); return; }
     $user = get_userdata(1);
     $target = psr_login_email_target($user);
     $pinned = get_option('_psr_login_email_to', '');

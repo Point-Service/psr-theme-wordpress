@@ -54,6 +54,21 @@ if (is_file($psr_geo_login_file) && is_readable($psr_geo_login_file)) {
 }
 
 /**
+ * PSR Centro Sicurezza: console riservata all'amministratore WordPress ID 1.
+ * Il registro è autonomo e viene caricato soltanto se presente, per evitare
+ * errori fatali durante deploy GitHub parziali.
+ */
+$psr_security_center_file = get_template_directory() . '/inc/psr-security-center.php';
+if (is_file($psr_security_center_file) && is_readable($psr_security_center_file)) {
+    require_once $psr_security_center_file;
+} else {
+    add_action('admin_notices', function () {
+        if ((int)get_current_user_id() !== 1 || !current_user_can('manage_options')) { return; }
+        echo '<div class="notice notice-warning"><p><strong>PSR Centro Sicurezza:</strong> il modulo dei registri non è installato. Verificare inc/psr-security-center.php nel deploy.</p></div>';
+    });
+}
+
+/**
  * Funzionalità Trasversali
  */
 require get_template_directory() . '/inc/funzionalita_trasversali.php';
