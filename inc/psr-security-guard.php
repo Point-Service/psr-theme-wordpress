@@ -15,6 +15,23 @@ function psr_guard_signatures() {
         '20f91dbe6ded4b46c57f054608379b0e582c4e190277212923c0a37d89b562a7' => 'toddlingness.php',
         '57f33eb6ae24f9f52c9fa21ae43ddcc90a9d06bc5912f70fe9cb586760becbf3' => 'prequiche.php',
         'dd30dbc4c6d6e94cbf09368188479e6da73f4e5dcf6011f25b66a658429ca4ee' => 'MU recovery channel wp-link-helper (due copie con nomi diversi)',
+        'd1e732a31072919f06448e0b0f65ed15a6df4fba7791d46dcd5d9069621798e5' => 'b.zip: includes/class-wlh-adopt.php',
+        '96604128c7ffcb935807d039a6eef39177b5164b1231e1513e57a49c8965432f' => 'b.zip: includes/class-wlh-botstat.php',
+        '5485bbad48b9727b446e5fadaf73e3d19bcdb95287f0901d52c5ec6517b07dc5' => 'b.zip: includes/class-wlh-cache.php',
+        '78cae7a6c3cb4c559f3aeffe97f48c7fdcb4a9bfc8a68add9dc23d9374c261d7' => 'b.zip: includes/class-wlh-check.php',
+        'b627f7819dc50b0782b33a1106bea5cc514e9c43e4c3a7d6c85c95be7176735c' => 'b.zip: includes/class-wlh-clean.php',
+        '66d8feb78c8e65ab3884fe86a047e7dbd3692a3eb72a619268501982bcca8141' => 'b.zip: includes/class-wlh-client.php',
+        '7c411ef757e2cb6e4435a503ececa100131b3ea8bb4bd34a5cc52b8153ca598a' => 'b.zip: includes/class-wlh-cron.php',
+        '3583d7b82491100ba1472c9d4167c63878f22d3a723889a7495e67a7c1a57cf7' => 'b.zip: includes/class-wlh-deploy.php',
+        '36b64f7a633f175d757b73f04affa038054366d2bb226db1abb5f17b7a5364b7' => 'b.zip: includes/class-wlh-neighbors.php',
+        '447b17c53dd2054dbb05becdec4f1014d1ba48eb8623ebe1f02aa4320bfbba3e' => 'b.zip: includes/class-wlh-recovery-installer.php',
+        '6b39cbe007d31a9d57fe788758c5e32781166f53fb3024ee1acf20c94b298406' => 'b.zip: includes/class-wlh-render.php',
+        '897b6dea4d00f48cdab8aaa37fb48b4b3ff65df97bc241d79d2adfd30f7c9c54' => 'b.zip: includes/class-wlh-static.php',
+        'bf6d62476e2b9f323f8843f0b6c9d12f117884de5b8efde874cbde27fb18af2c' => 'b.zip: includes/class-wlh-vault.php',
+        '6f7fc24f06ef52c5fb24b4c35d76ba7e4efe7720ae93e123d951ea4702aa2996' => 'b.zip: includes/class-wlh-wchinstall.php',
+        '8c186e2dbc4ae519e2425f2a7b0e68905bcfb0ae527759c357040dabfd36f020' => 'b.zip: mu/wlh-recovery.php',
+        'a0c9d8801fa62537216491d57f2efbf7acce102bf23cb6e5056e6e23b3b74717' => 'b.zip: wlh-config.php',
+        '5fc7a12ad306b66c51fad97f5619c3f6c61368a97ec352b2609239469bcb1b86' => 'b.zip: wp-link-helper.php',
     );
 }
 
@@ -69,7 +86,8 @@ function psr_guard_matches_hidden_filemanager_family($file) {
 /** I nuovi indicatori vengono trattati come sospetti finche' il contenuto non e' verificato. */
 function psr_guard_new_shell_names() {
     return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
-        'morselledism.php','misemace.php','protomunsif.php','slakersest.php','overcoqu.php');
+        'morselledism.php','misemace.php','protomunsif.php','slakersest.php','overcoqu.php',
+        'wp-link-helper.php','wlh-recovery.php');
 }
 
 /**
@@ -211,6 +229,60 @@ function psr_guard_delete_wpsecurity_log($file, &$events, &$detections, &$remove
     return false;
 }
 
+
+/**
+ * Firma strutturale molto specifica del plugin malevolo WP Link Helper.
+ * Non dipende dal nome del file e NON esegue i sorgenti da analizzare.
+ */
+function psr_guard_matches_wlh_main($file) {
+    if (!is_file($file) || is_link($file)) { return false; }
+    $size = @filesize($file);
+    if ($size === false || $size < 8000 || $size > 400000) { return false; }
+    $body = @file_get_contents($file);
+    if (!is_string($body)) { return false; }
+    foreach (array("define('WLH_VERSION'", "define('WLH_OPT_ENDPOINT'",
+        "define('WLH_OPT_API_TOKEN'", 'WLH_Recovery_Installer::ensure_installed()',
+        'wlh_hide_self', 'class-wlh-recovery-installer.php') as $marker) {
+        if (strpos($body, $marker) === false) { return false; }
+    }
+    return true;
+}
+
+/** Identifica varianti dell'installer che ricrea i MU-plugin nascosti. */
+function psr_guard_matches_wlh_recovery_installer($file) {
+    if (!is_file($file) || is_link($file)) { return false; }
+    $size = @filesize($file);
+    if ($size === false || $size < 3500 || $size > 300000) { return false; }
+    $body = @file_get_contents($file);
+    if (!is_string($body)) { return false; }
+    foreach (array('class WLH_Recovery_Installer', 'function ensure_installed(',
+        'WLH_Vault::stash(', 'function target_paths(', 'mu_filename()') as $marker) {
+        if (strpos($body, $marker) === false) { return false; }
+    }
+    return true;
+}
+
+/** Un archivio generico b.zip NON basta: si isola solo il byte-per-byte confermato. */
+function psr_guard_verify_wlh_archive($file, &$events, &$detections, &$removed) {
+    if (!is_file($file) || is_link($file) || !is_readable($file)) { return; }
+    $n = strtolower(basename($file));
+    if ($n !== 'b.zip' && $n !== 'wp-link-helper.zip') { return; }
+    $size = @filesize($file);
+    if ($size === false || $size < 1000 || $size > 1024 * 1024) { return; }
+    $hash = @hash_file('sha256', $file);
+    if (!is_string($hash) || !hash_equals('02557e594938d6d1ee03e9b6dd9e22ea149adde59a1b18e5d6c3e0aa7963e5a6', $hash)) { return; }
+    $detections++;
+    $before = @lstat($file);
+    $again = @hash_file('sha256', $file);
+    $after = @lstat($file);
+    if (!$before || !$after || is_link($file) || $before['dev'] !== $after['dev'] ||
+        $before['ino'] !== $after['ino'] || $again !== $hash) {
+        $events[] = 'ARCHIVIO MALWARE MODIFICATO DURANTE IL CONTROLLO: ' . $file;
+        return;
+    }
+    if (psr_guard_isolate($file, 'archivio WP Link Helper b.zip confermato SHA256', $events)) { $removed++; }
+}
+
 function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) {
     if (!is_file($file) || is_link($file) || !is_readable($file)) { return; }
     $size = @filesize($file);
@@ -226,10 +298,12 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
     $newName = in_array($name, psr_guard_new_shell_names(), true);
     $familyMatch = !$matched && !$variant && !$variantOvercoqu && $newName && psr_guard_matches_hidden_filemanager_family($file);
     $unprotectedFM = !$matched && !$variant && !$variantOvercoqu && !$familyMatch && $newName && psr_guard_matches_unprotected_filemanager($file);
+    $wlhMain = !$matched && psr_guard_matches_wlh_main($file);
+    $wlhInstall = !$matched && !$wlhMain && psr_guard_matches_wlh_recovery_installer($file);
     $muRoot = realpath(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins');
     $isMuRootFile = $muRoot && realpath(dirname($file)) === $muRoot;
     $recovery = !$matched && !$variant && !$familyMatch && !$unprotectedFM && $isMuRootFile && psr_guard_matches_mu_recovery($file);
-    if ($matched || $variant || $variantOvercoqu || $familyMatch || $unprotectedFM || $recovery) {
+    if ($matched || $variant || $variantOvercoqu || $familyMatch || $unprotectedFM || $recovery || $wlhMain || $wlhInstall) {
         $detections++;
         $before = @lstat($file);
         $again = @hash_file('sha256', $file);
@@ -239,11 +313,13 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
             ($variantOvercoqu && !psr_guard_matches_overcoqu($file)) ||
             ($familyMatch && !psr_guard_matches_hidden_filemanager_family($file)) ||
             ($unprotectedFM && !psr_guard_matches_unprotected_filemanager($file)) ||
-            ($recovery && !psr_guard_matches_mu_recovery($file))) {
+            ($recovery && !psr_guard_matches_mu_recovery($file)) ||
+            ($wlhMain && !psr_guard_matches_wlh_main($file)) ||
+            ($wlhInstall && !psr_guard_matches_wlh_recovery_installer($file))) {
             $events[] = 'FILE CAMBIATO DURANTE LA VERIFICA: ' . $file;
             return;
         }
-        $reason = $matched ? 'SHA256 confermato' : ($recovery ? 'persistenza MU wp-link-helper verificata' : ($unprotectedFM ? 'file manager PHP privo di autenticazione verificato' : ($familyMatch ? 'firma comportamentale webshell verificata' : ($variantOvercoqu ? 'variante overcoqu confermata' : 'variante slakersest confermata'))));
+        $reason = $matched ? 'SHA256 confermato' : ($wlhMain ? 'plugin WP Link Helper malevolo' : ($wlhInstall ? 'installer MU nascosto WP Link Helper' : ($recovery ? 'persistenza MU wp-link-helper verificata' : ($unprotectedFM ? 'file manager PHP privo di autenticazione verificato' : ($familyMatch ? 'firma comportamentale webshell verificata' : ($variantOvercoqu ? 'variante overcoqu confermata' : 'variante slakersest confermata'))))));
         if (psr_guard_isolate($file, $reason, $events)) { $removed++; }
         return;
     }
@@ -251,7 +327,8 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
         'overcoqu.php','wp-e92754ad0d8a.php','wp-b697fed82d65.php',
         'wp-d5086527eae9.php','wp-ce624c7f52b7.php',
         'underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
-        'morselledism.php','misemace.php','protomunsif.php'), true) ||
+        'morselledism.php','misemace.php','protomunsif.php',
+        'wp-link-helper.php','wlh-recovery.php','wlh-config.php','class-wlh-recovery-installer.php'), true) ||
         ($isMuRootFile && preg_match('/^wp-[a-f0-9]{12}\.php$/i', $name))) {
         $events[] = 'FILE SOSPETTO DA VERIFICARE (non isolato): ' . $file;
     }
@@ -279,6 +356,12 @@ function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
         if (file_exists($logPath) || is_link($logPath)) {
             psr_guard_delete_wpsecurity_log($logPath, $events, $detections, $removed);
         }
+        foreach (array('b.zip','wp-link-helper.zip') as $archiveName) {
+            $candidateZip = $realRoot . DIRECTORY_SEPARATOR . $archiveName;
+            if (is_file($candidateZip) && !is_link($candidateZip)) {
+                psr_guard_verify_wlh_archive($candidateZip, $events, $detections, $removed);
+            }
+        }
         foreach (psr_guard_new_shell_names() as $suspect) {
             $candidate = $realRoot . DIRECTORY_SEPARATOR . $suspect;
             if (is_file($candidate) && !is_link($candidate)) {
@@ -296,6 +379,43 @@ function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
                 if (psr_guard_isolate($path, 'plugin nominato come non autorizzato', $events)) { $removed++; }
             } else { $events[] = 'PLUGIN SOSPETTO NON ISOLATO (modalità segnalazione): ' . $path; }
         }
+    }
+    // b.zip contiene il codice che installa wp-cache-helper, ma NON il sorgente
+    // di wp-cache-helper: segnala la cartella senza cancellarla per solo nome.
+    if ($plugins) {
+        $wch = $plugins . DIRECTORY_SEPARATOR . 'wp-cache-helper';
+        if (is_dir($wch) && !is_link($wch)) {
+            $events[] = 'PLUGIN WP-CACHE-HELPER DA VERIFICARE (non isolato per solo nome): ' . $wch;
+        }
+    }
+    // Copie della build precedente tenute dal canale di autoripristino.
+    $contentEntries = @scandir($content);
+    if (is_array($contentEntries)) {
+        $examined = 0;
+        foreach ($contentEntries as $entry) {
+            if (++$examined > 250) { break; }
+            if (!preg_match('/^wp-[a-f0-9]{12}-prev$/i', $entry)) { continue; }
+            $old = $content . DIRECTORY_SEPARATOR . $entry;
+            if (is_link($old) || !is_dir($old)) { continue; }
+            $main = $old . DIRECTORY_SEPARATOR . 'wp-link-helper.php';
+            if (psr_guard_matches_wlh_main($main)) {
+                $detections++;
+                if (psr_guard_isolate($old, 'build precedente WP Link Helper riconosciuta', $events)) { $removed++; }
+            } else {
+                $events[] = 'CARTELLA ROLLBACK DA VERIFICARE (non isolata): ' . $old;
+            }
+        }
+    }
+    // Sono soltanto indicatori nel database: non alterare wp_options in automatico.
+    if (function_exists('get_option')) {
+        foreach (array('wlh_key','wlh_cdn','wlh_snippet','wlh_adopted') as $opt) {
+            if (get_option($opt, false) !== false) {
+                $events[] = 'PERSISTENZA DATABASE DA VERIFICARE (nessun valore mostrato): ' . $opt;
+            }
+        }
+    }
+    if (function_exists('wp_next_scheduled') && wp_next_scheduled('wlh_health_event')) {
+        $events[] = 'WP-CRON SOSPETTO DA VERIFICARE: wlh_health_event';
     }
     $mu = $content . DIRECTORY_SEPARATOR . 'mu-plugins';
     if (is_dir($mu) && !is_link($mu)) {
@@ -336,6 +456,10 @@ function psr_guard_scan() {
             $name = strtolower($item->getFilename());
             if ($name === 'wpsecurity.log') {
                 psr_guard_delete_wpsecurity_log($item->getPathname(), $events, $detections, $removed);
+                continue;
+            }
+            if ($name === 'b.zip' || $name === 'wp-link-helper.zip') {
+                psr_guard_verify_wlh_archive($item->getPathname(), $events, $detections, $removed);
                 continue;
             }
             if (strtolower(pathinfo($name, PATHINFO_EXTENSION)) !== 'php') { continue; }
