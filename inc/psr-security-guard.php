@@ -10,6 +10,7 @@ function psr_guard_signatures() {
     return array(
         '618493861791064b9f394f06af7e6d538fc46e25555fc398af8e5d6a1f20a483' => 'translanugos.php',
         '65958f829ae60eccbec3d7de8812ac3dbc74d38ef53f217b0a0a1883e343deec' => 'microbearers.php',
+        '3b2993596835e2d985a3147e9ce21fe655851f3c303da58ccaf17f9fb05c3358' => 'protomunsif.php',
         '20f91dbe6ded4b46c57f054608379b0e582c4e190277212923c0a37d89b562a7' => 'toddlingness.php',
         '57f33eb6ae24f9f52c9fa21ae43ddcc90a9d06bc5912f70fe9cb586760becbf3' => 'prequiche.php',
         'dd30dbc4c6d6e94cbf09368188479e6da73f4e5dcf6011f25b66a658429ca4ee' => 'MU recovery channel wp-link-helper (due copie con nomi diversi)',
@@ -51,7 +52,27 @@ function psr_guard_matches_hidden_filemanager_family($file) {
 
 /** I nuovi indicatori vengono trattati come sospetti finche' il contenuto non e' verificato. */
 function psr_guard_new_shell_names() {
-    return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php');
+    return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
+        'morselledism.php','misemace.php','protomunsif.php');
+}
+
+/**
+ * Firma stretta per le copie abusive del file manager 4.8 con accesso disattivato.
+ * Viene usata SOLO per i nomi sospetti esplicitamente segnalati, per evitare
+ * falsi positivi su normali plugin e strumenti amministrativi.
+ */
+function psr_guard_matches_unprotected_filemanager($file) {
+    if (!is_file($file) || is_link($file)) { return false; }
+    $bytes = @filesize($file);
+    if ($bytes === false || $bytes < 10000 || $bytes > 1024 * 1024) { return false; }
+    $body = @file_get_contents($file);
+    if (!is_string($body)) { return false; }
+    foreach (array('$dauth = false;', '$global_readonly = false;',
+        '$edit_files = true;', '$ip_ruleset = \'OFF\';',
+        'FM_USE_AUTH', 'FM_ROOT_PATH', 'fm_rdelete(') as $marker) {
+        if (strpos($body, $marker) === false) { return false; }
+    }
+    return true;
 }
 
 /**
@@ -147,10 +168,11 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
     $variant = !$matched && $name === 'slakersest.php' && psr_guard_matches_slakersest($file);
     $newName = in_array($name, psr_guard_new_shell_names(), true);
     $familyMatch = !$matched && !$variant && $newName && psr_guard_matches_hidden_filemanager_family($file);
+    $unprotectedFM = !$matched && !$variant && !$familyMatch && $newName && psr_guard_matches_unprotected_filemanager($file);
     $muRoot = realpath(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins');
     $isMuRootFile = $muRoot && realpath(dirname($file)) === $muRoot;
-    $recovery = !$matched && !$variant && !$familyMatch && $isMuRootFile && psr_guard_matches_mu_recovery($file);
-    if ($matched || $variant || $familyMatch || $recovery) {
+    $recovery = !$matched && !$variant && !$familyMatch && !$unprotectedFM && $isMuRootFile && psr_guard_matches_mu_recovery($file);
+    if ($matched || $variant || $familyMatch || $unprotectedFM || $recovery) {
         $detections++;
         $before = @lstat($file);
         $again = @hash_file('sha256', $file);
@@ -158,18 +180,20 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
         if (!$before || !$after || $before['dev'] !== $after['dev'] || $before['ino'] !== $after['ino'] ||
             $again !== $hash || is_link($file) || ($variant && !psr_guard_matches_slakersest($file)) ||
             ($familyMatch && !psr_guard_matches_hidden_filemanager_family($file)) ||
+            ($unprotectedFM && !psr_guard_matches_unprotected_filemanager($file)) ||
             ($recovery && !psr_guard_matches_mu_recovery($file))) {
             $events[] = 'FILE CAMBIATO DURANTE LA VERIFICA: ' . $file;
             return;
         }
-        $reason = $matched ? 'SHA256 confermato' : ($recovery ? 'persistenza MU wp-link-helper verificata' : ($familyMatch ? 'firma comportamentale webshell verificata' : 'variante slakersest confermata'));
+        $reason = $matched ? 'SHA256 confermato' : ($recovery ? 'persistenza MU wp-link-helper verificata' : ($unprotectedFM ? 'file manager PHP privo di autenticazione verificato' : ($familyMatch ? 'firma comportamentale webshell verificata' : 'variante slakersest confermata')));
         if (psr_guard_isolate($file, $reason, $events)) { $removed++; }
         return;
     }
     if (in_array($name, array('translanugos.php','toddlingness.php','prequiche.php','slakersest.php',
         'overcoqu.php','wp-e92754ad0d8a.php','wp-b697fed82d65.php',
         'wp-d5086527eae9.php','wp-ce624c7f52b7.php',
-        'underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php'), true) ||
+        'underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
+        'morselledism.php','misemace.php','protomunsif.php'), true) ||
         ($isMuRootFile && preg_match('/^wp-[a-f0-9]{12}\.php$/i', $name))) {
         $events[] = 'FILE SOSPETTO DA VERIFICARE (non isolato): ' . $file;
     }
