@@ -50,7 +50,7 @@ function psr_guard_matches_hidden_filemanager_family($file) {
 
 /** I nuovi indicatori vengono trattati come sospetti finche' il contenuto non e' verificato. */
 function psr_guard_new_shell_names() {
-    return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php');
+    return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php');
 }
 
 /**
@@ -168,7 +168,7 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
     if (in_array($name, array('translanugos.php','toddlingness.php','prequiche.php','slakersest.php',
         'overcoqu.php','wp-e92754ad0d8a.php','wp-b697fed82d65.php',
         'wp-d5086527eae9.php','wp-ce624c7f52b7.php',
-        'underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php'), true) ||
+        'underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php'), true) ||
         ($isMuRootFile && preg_match('/^wp-[a-f0-9]{12}\.php$/i', $name))) {
         $events[] = 'FILE SOSPETTO DA VERIFICARE (non isolato): ' . $file;
     }
@@ -183,7 +183,7 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
 function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
     $content = realpath(WP_CONTENT_DIR);
     if (!$content) { return; }
-    // Sondaggio rapido dei 4 indicatori in directory precise, non ricorsivo.
+    // Sondaggio rapido dei 5 indicatori in directory precise, non ricorsivo.
     // Consente il rilevamento entro il prossimo controllo (WP-Cron non e' garantito
     // su siti senza traffico) senza rallentare tutte le richieste WordPress.
     $roots = array(ABSPATH, WP_CONTENT_DIR, WP_PLUGIN_DIR,
