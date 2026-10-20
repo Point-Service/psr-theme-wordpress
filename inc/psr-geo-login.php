@@ -2,7 +2,7 @@
 /**
  * PSR Geo Login — blocca il login e il pannello WordPress quando il server
  * riconosce con sufficiente certezza che l'IP pubblico e' estero (tutti i ruoli).
- * Caricato dal tema, non lavora sulle normali visite al frontend.
+ * Caricato dal tema. Frontend: solo ban IP già confermati, mai geoblocking dei visitatori.
  *
  * Requisiti: WordPress con API HTTP e transients; PHP 7.4+.
  * IP: soltanto REMOTE_ADDR (mai intestazioni proxy non autenticate).
@@ -50,8 +50,31 @@ function psr_geo_public_ip() {
     }
     return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) ? $ip : '';
 }
+/** Hash irreversibile dell'IP fiduciario: non si salva l'indirizzo in chiaro.
+ * La rotazione delle chiavi WordPress invalida le impronte (fail closed).
+ */
+function psr_geo_trusted_digest($ip) {
+    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) { return ''; }
+    $packed = @inet_pton($ip);
+    return $packed === false ? '' : hash_hmac('sha256', 'psr-trusted-v1|' . bin2hex($packed), wp_salt('auth'));
+}
+function psr_geo_trusted_entries() {
+    $entries = get_option('_psr_geo_trusted_ip_hashes', array());
+    return is_array($entries) ? $entries : array();
+}
+function psr_geo_trusted_match($ip) {
+    $digest = psr_geo_trusted_digest($ip);
+    if ($digest === '' || psr_geo_ip_blacklisted($ip)) { return false; }
+    $entries = psr_geo_trusted_entries();
+    foreach ($entries as $candidate => $item) {
+        if (is_string($candidate) && strlen($candidate) === 64 && hash_equals($candidate, $digest)) { return true; }
+    }
+    return false;
+}
 function psr_geo_ip_allowlisted($ip) {
-    if ($ip === '' || !defined('PSR_GEO_ALLOW_IPS')) { return false; }
+    if ($ip === '') { return false; }
+    if (psr_geo_trusted_match($ip)) { return true; }
+    if (!defined('PSR_GEO_ALLOW_IPS')) { return false; }
     $list = PSR_GEO_ALLOW_IPS;
     if (is_string($list)) { $list = explode(',', $list); }
     if (!is_array($list)) { return false; }
@@ -153,6 +176,43 @@ function psr_geo_deny() {
     wp_die('Accesso amministrativo non consentito da questo indirizzo IP. Contatta il gestore del portale.',
         'PSR - Accesso riservato', array('response'=>403));
 }
+/** Ban di sito pubblico solo per IP esplicitamente bloccati, MAI per semplici IP esteri.
+ * Una lettura transient per richiesta WordPress, nessun servizio GeoIP/scan/crawl.
+ * Nginx/Apache deve coprire file statici e PHP indipendenti da WordPress.
+ * Recupero via wp-config.php: define('PSR_SITE_BAN_ENABLED', false);
+ */
+function psr_geo_site_ban_enabled() {
+    if (defined('PSR_SITE_BAN_ENABLED')) { return (bool) PSR_SITE_BAN_ENABLED; }
+    return get_option('_psr_site_ban_enabled', '1') === '1';
+}
+function psr_geo_site_ban_reason($ip) {
+    if ($ip === '') { return ''; }
+    if (psr_geo_ip_blacklisted($ip)) { return 'global_blacklist'; }
+    if (function_exists('psr_login_rate_state')) {
+        $state = psr_login_rate_state($ip);
+        // 5/10 errori: lockout solo login. 15+ errori oppure ban manuale: sito WordPress.
+        if ((int)($state['until'] ?? 0) > time() &&
+            ((int)($state['n'] ?? 0) >= 15 || !empty($state['site_ban']))) { return 'rate_ban'; }
+    }
+    return '';
+}
+function psr_geo_site_ban_gate() {
+    if (!psr_geo_site_ban_enabled() || (defined('WP_CLI') && WP_CLI)
+        || (defined('DOING_CRON') && DOING_CRON)) { return; }
+    $ip = psr_geo_public_ip();
+    $reason = psr_geo_site_ban_reason($ip);
+    if ($reason === '') { return; }
+    if (function_exists('psr_center_log_limited')) {
+        psr_center_log_limited('site_ban_denied','critical',$ip,'','','frontend',
+            $reason === 'global_blacklist' ? 'Richiesta WordPress: blacklist permanente' : 'Richiesta WordPress: ban temporaneo', 300);
+    }
+    nocache_headers();
+    if (function_exists('status_header')) { status_header(403); }
+    if (!defined('DONOTCACHEPAGE')) { define('DONOTCACHEPAGE', true); }
+    wp_die('Accesso non disponibile da questo indirizzo IP.', 'Accesso non consentito', array('response'=>403));
+}
+add_action('init', 'psr_geo_site_ban_gate', 0);
+
 // Login standard e schermata OTP: il blocco avviene prima di chiedere credenziali.
 function psr_geo_login_init() {
     if (psr_geo_decision()['blocked']) { psr_geo_deny(); }
