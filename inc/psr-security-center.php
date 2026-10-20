@@ -187,12 +187,38 @@ function psr_center_menu() {
     remove_submenu_page('tools.php','psr-geo-login');
 }
 add_action('admin_menu', 'psr_center_menu', 999);
-function psr_center_enqueue($hook) {
-    if (!psr_center_is_owner() || strpos((string)$hook, 'psr-security-center') === false) { return; }
-    wp_enqueue_style('psr-security-center', false, array(), '1.0');
-    wp_add_inline_style('psr-security-center', psr_center_css() . psr_center_css_modern());
+/**
+ * Carica un CSS reale (compatibile con cache/CSP) e non un handle vuoto.
+ * Il controllo su page garantisce il caricamento anche se il nome hook varia.
+ * Non esegue nulla sulle pagine pubbliche né sugli altri pannelli WordPress.
+ */
+function psr_center_is_own_screen($hook = '') {
+    if (!psr_center_is_owner()) { return false; }
+    $page = isset($_GET['page']) && is_string($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
+    return $page === 'psr-security-center' || strpos((string)$hook, 'psr-security-center') !== false;
 }
-add_action('admin_enqueue_scripts','psr_center_enqueue');
+function psr_center_enqueue($hook) {
+    if (!psr_center_is_own_screen($hook)) { return; }
+    $relative = '/inc/psr-security-center.css';
+    $local = get_template_directory() . $relative;
+    if (is_file($local)) {
+        // filemtime invalida le cache al prossimo aggiornamento GitHub/Plesk.
+        wp_enqueue_style('psr-security-center', get_template_directory_uri() . $relative,
+            array(), (string) filemtime($local), 'all');
+    }
+}
+add_action('admin_enqueue_scripts', 'psr_center_enqueue');
+/**
+ * Fallback limitato all'area PSR, per gli hosting Plesk che non emettono
+ * correttamente gli stili aggiunti con enqueue o hanno problemi di cache.
+ * Il CSS e' statico: nessun dato utente viene interpolato nello style.
+ */
+function psr_center_css_fallback() {
+    if (!psr_center_is_own_screen()) { return; }
+    echo '<style id="psr-security-center-inline-fallback" type="text/css">',
+        psr_center_css(), "\n", psr_center_css_modern(), "</style>\n";
+}
+add_action('admin_head', 'psr_center_css_fallback', 99);
 function psr_center_css() {
     return '.psrc{max-width:1440px;margin:24px 24px 30px 0;color:#172d42}.psrc *{box-sizing:border-box}.psrc-header{background:linear-gradient(118deg,#092b50,#155b94);color:#fff;border-radius:15px;padding:25px 30px;display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}.psrc-header h1{color:#fff;font-size:27px;line-height:1.2;margin:3px 0 8px}.psrc-header p{margin:0;color:#d8e8f5}.psrc-label{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;font-weight:800;color:#90d5ff}.psrc-chip{padding:9px 15px;border:1px solid #7bb3dd;color:#fff;border-radius:30px;font-weight:700;background:#ffffff16}.psrc-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.psrc-tabs a{text-decoration:none;padding:11px 16px;border-radius:9px;background:white;border:1px solid #d9e3eb;color:#304862;font-weight:650}.psrc-tabs a.active{background:#16548a;color:#fff;border-color:#16548a}.psrc-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px}.psrc-card{background:#fff;border:1px solid #dce5ed;border-radius:13px;padding:19px 20px;box-shadow:0 3px 14px #163b5610}.psrc-card .label{color:#667b8e;font-size:13px;font-weight:700}.psrc-card .value{font-size:29px;color:#102f4d;font-weight:800;margin:7px 0}.psrc-card .detail{color:#738598;font-size:12px}.psrc-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(270px,1fr);gap:18px}.psrc h2{font-size:18px;margin:0 0 18px;color:#183c60}.psrc h3{margin:16px 0 8px}.psrc-bars{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:14px;align-items:end;height:198px;padding-top:15px}.psrc-bar-cell{height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;text-align:center;font-size:12px;color:#667b8e}.psrc-bar{background:linear-gradient(#278bd7,#165b96);min-height:4px;border-radius:7px 7px 3px 3px}.psrc-table{width:100%;border-collapse:collapse}.psrc-table th{text-align:left;color:#647a90;background:#f2f6fa;font-size:12px;letter-spacing:.15px}.psrc-table th,.psrc-table td{border-bottom:1px solid #e5edf3;padding:12px;vertical-align:middle}.psrc-table tr:hover td{background:#fafcff}.psrc-pill{display:inline-block;padding:4px 9px;border-radius:25px;font-size:11px;font-weight:800;background:#eaf0f6;color:#365b7a}.psrc-pill.critical,.psrc-pill.danger{background:#ffe6e6;color:#a31f2b}.psrc-pill.warning{background:#fff3d8;color:#946000}.psrc-pill.ok{background:#e6f6ee;color:#126341}.psrc-toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:0 0 16px}.psrc-toolbar label{font-size:12px;font-weight:700;color:#586d80;display:block;margin:0 0 4px}.psrc-toolbar select,.psrc-toolbar input{min-width:155px;max-width:100%}.psrc-btn{display:inline-block;border:0;background:#165b91;color:#fff!important;padding:8px 14px;text-decoration:none;border-radius:7px;font-weight:700;cursor:pointer}.psrc-btn.secondary{background:#eaf1f7;color:#244e71!important}.psrc-muted{color:#627a8c}.psrc-info{border-left:4px solid #2885c5;background:#edf7ff;border-radius:5px;padding:13px 15px;margin:15px 0}.psrc-alert{border-left-color:#c98227;background:#fff7ea}.psrc-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.psrc-actions form{display:inline-flex;gap:6px;align-items:center;margin:0}.psrc .tablenav-pages{margin:15px 0}.psrc .tablenav-pages a{margin:0 4px}.psrc-small{font-size:12px}.psrc table code{white-space:nowrap}@media(max-width:1050px){.psrc-layout{grid-template-columns:1fr}}@media(max-width:782px){.psrc{margin:12px 10px 20px 0}.psrc-header{padding:20px}.psrc-card{padding:14px}.psrc-table{display:block;overflow-x:auto;white-space:nowrap}}';
 }
