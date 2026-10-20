@@ -196,15 +196,44 @@ function psr_geo_decision() {
 function psr_geo_deny_event($decision) {
     return isset($decision['reason']) && $decision['reason'] === 'global_blacklist' ? 'ip_blacklist_denied' : 'geo_denied';
 }
-function psr_geo_deny() {
+/** Registra SOLO tentativi effettivi di autenticazione su POST, mai visite GET.
+ * Un IP estero viene respinto prima di verificare le credenziali, quindi
+ * si conta come tentativo di autenticazione, non come password errata.
+ * I blocchi temporanei seguono gli stessi livelli 5/10/15/25 di PSR Login.
+ */
+function psr_geo_auth_probe($source = 'login', $username = '') {
+    if (!empty($GLOBALS['psr_geo_probe_counted']) || strtoupper((string)($_SERVER['REQUEST_METHOD'] ?? 'GET')) !== 'POST') { return; }
+    $ip = psr_geo_public_ip();
+    if ($ip === '' || !function_exists('psr_login_rate_failure')) { return; }
+    if (function_exists('psr_login_rate_blocked') && psr_login_rate_blocked($ip) > 0) { return; }
+    $GLOBALS['psr_geo_probe_counted'] = true;
+    psr_login_rate_failure($ip, 'auth_probe', (string)$username, (string)$source);
+}
+function psr_geo_deny($source = 'login', $note = 'Accesso amministrativo negato', $username = '') {
     if (function_exists('psr_center_log_limited')) {
         $d = psr_geo_decision();
-        psr_center_log_limited(psr_geo_deny_event($d),'critical',(string)$d['ip'],'',(string)$d['country'],'geo','Pannello o login respinto',60);
+        psr_center_log_limited(psr_geo_deny_event($d),'critical',(string)$d['ip'],
+            (string)$username,(string)$d['country'],(string)$source,(string)$note,60);
     }
-    nocache_headers();
+    if (function_exists('nocache_headers')) { nocache_headers(); }
     if (function_exists('status_header')) { status_header(403); }
+    else { http_response_code(403); }
+    if (!defined('DONOTCACHEPAGE')) { define('DONOTCACHEPAGE', true); }
     wp_die('Accesso amministrativo non consentito da questo indirizzo IP. Contatta il gestore del portale.',
         'PSR - Accesso riservato', array('response'=>403));
+}
+/** Blocchi per tentativi ripetuti: login non mostra neppure il modulo. */
+function psr_geo_deny_rate_if_blocked($source = 'login') {
+    $ip = psr_geo_public_ip();
+    if ($ip === '' || !function_exists('psr_login_rate_blocked') || psr_login_rate_blocked($ip) <= 0) { return; }
+    if (function_exists('psr_center_log_limited')) {
+        psr_center_log_limited('login_blocked','warning',$ip,'','',(string)$source,
+            'Interfaccia di accesso negata: IP sotto blocco progressivo',60);
+    }
+    if (function_exists('nocache_headers')) { nocache_headers(); }
+    if (function_exists('status_header')) { status_header(403); }
+    else { http_response_code(403); }
+    wp_die('Troppi tentativi di accesso. Riprova piu tardi.', 'PSR - Accesso temporaneamente bloccato', array('response'=>403));
 }
 /** Ban di sito pubblico solo per IP esplicitamente bloccati, MAI per semplici IP esteri.
  * Una lettura transient per richiesta WordPress, nessun servizio GeoIP/scan/crawl.
@@ -243,15 +272,27 @@ function psr_geo_site_ban_gate() {
 }
 add_action('init', 'psr_geo_site_ban_gate', 0);
 
-// Login standard e schermata OTP: il blocco avviene prima di chiedere credenziali.
+// Login standard, recupero password e OTP: nessun modulo per gli IP esteri.
 function psr_geo_login_init() {
-    if (psr_geo_decision()['blocked']) { psr_geo_deny(); }
+    $d = psr_geo_decision();
+    if (!empty($d['blocked'])) {
+        // Contiamo soltanto POST del modulo di accesso, non i GET o i reset password.
+        $action = isset($_REQUEST['action']) ? sanitize_key((string)wp_unslash($_REQUEST['action'])) : 'login';
+        if ($action === '' || $action === 'login') {
+            $username = isset($_POST['log']) && is_string($_POST['log']) ? (string)wp_unslash($_POST['log']) : '';
+            psr_geo_auth_probe('login', $username);
+        }
+        psr_geo_deny('login', 'Login / OTP / recupero password respinto');
+    }
+    psr_geo_deny_rate_if_blocked('login');
 }
 add_action('login_init', 'psr_geo_login_init', 0);
 
 // Blocca anche i percorsi che invocano wp_authenticate senza usare wp-login.php.
 function psr_geo_authenticate($user, $username, $password) {
     if (psr_geo_decision()['blocked']) {
+        // Copre anche i login personalizzati che chiamano wp_authenticate.
+        psr_geo_auth_probe('authenticate', (string)$username);
         if (function_exists('psr_center_log_limited')) {
             $d = psr_geo_decision();
             psr_center_log_limited(psr_geo_deny_event($d),'critical',(string)$d['ip'],(string)$username,(string)$d['country'],'authenticate','Tentativo login respinto',60);
@@ -262,16 +303,80 @@ function psr_geo_authenticate($user, $username, $password) {
 }
 add_filter('authenticate', 'psr_geo_authenticate', 0, 3);
 
-// admin_init include anche admin-ajax.php e admin-post.php. Lascia intatti i form
-// pubblici (nopriv), ma impedisce richieste backend di qualsiasi utente gia'
-// autenticato, comprese quelle AJAX.
+/** Identifica solo le azioni AJAX/POST chiaramente legate al login.
+ * NON bloccare admin-ajax.php o admin-post.php nel loro insieme: appuntamenti,
+ * assistenza, moduli e servizi pubblici del Comune potrebbero dipenderne.
+ * Gli endpoint inventati da plugin terzi vanno censiti e protetti a parte.
+ */
+function psr_geo_sensitive_ajax_action($action) {
+    if (!is_string($action)) { return false; }
+    $action = strtolower(trim($action));
+    return in_array($action, array(
+        'login','ajaxlogin','ajax_login','wp_login','wp_ajax_login','user_login',
+        'login_user','login_ajax','login_with_ajax','user_authenticate',
+        'authenticate','do_login','custom_login','woocommerce_ajax_login',
+        'jwt_login','jwt_auth','token_login','get_auth_token',
+        'lostpassword','lost_password','reset_password','resetpass'
+    ), true);
+}
 function psr_geo_admin_init() {
-    // Vale per QUALSIASI utente autenticato, anche subscriber e contributor.
-    // admin-ajax/admin-post pubblici (nopriv) rimangono operativi.
-    if (!is_user_logged_in()) { return; }
-    if (psr_geo_decision()['blocked']) { psr_geo_deny(); }
+    $script = strtolower(basename((string)($_SERVER['SCRIPT_NAME'] ?? '')));
+    $is_public_dispatcher = in_array($script, array('admin-ajax.php','admin-post.php'), true);
+    $authenticated = is_user_logged_in();
+    $sensitive = $is_public_dispatcher && psr_geo_sensitive_ajax_action(
+        isset($_REQUEST['action']) && is_string($_REQUEST['action']) ? (string)wp_unslash($_REQUEST['action']) : ''
+    );
+    if ($is_public_dispatcher && !$authenticated && !$sensitive) { return; }
+    $d = psr_geo_decision();
+    if (!empty($d['blocked'])) {
+        if ($sensitive) { psr_geo_auth_probe('admin_ajax', ''); }
+        psr_geo_deny($is_public_dispatcher ? 'admin_ajax' : 'admin',
+            $is_public_dispatcher ? 'Endpoint autenticazione AJAX/POST respinto' : 'Pannello amministrativo respinto');
+    }
+    if ($sensitive) { psr_geo_deny_rate_if_blocked('admin_ajax'); }
 }
 add_action('admin_init', 'psr_geo_admin_init', 0);
+
+/** REST pubblica disponibile ai cittadini, solo token/login/API account riservate.
+ * wp-json/wp/v2/pages o pubblici GET non devono essere bloccati per Paese.
+ */
+function psr_geo_rest_auth_route($route, $method) {
+    $route = strtolower('/' . ltrim((string)$route, '/'));
+    $route = preg_replace('~/+~', '/', $route);
+    $method = strtoupper((string)$method);
+    if ($method === 'GET' || $method === 'HEAD' || $method === 'OPTIONS') { return false; }
+    if (preg_match('~^/(?:wp/v2/users(?:/|$)|jwt-auth/v1/token(?:/|$)|simple-jwt-login/v1/auth(?:/|$)|wp-oauth/v1/token(?:/|$))~', $route)) {
+        return true;
+    }
+    // Non bloccare API token di servizi pubblici o endpoint di iscrizione
+    // che non siano inequivocabilmente sistemi di autenticazione.
+    return (bool)preg_match('~/(?:login|authenticate|authentication|auth/token|oauth/token|sign-in|signin)(?:/|$)~', $route);
+}
+function psr_geo_rest_sensitive_gate($result, $server, $request) {
+    if (is_wp_error($result) || !is_object($request) || !method_exists($request, 'get_route') || !method_exists($request, 'get_method')) { return $result; }
+    $route = $request->get_route();
+    $method = $request->get_method();
+    if (!psr_geo_rest_auth_route($route, $method)) { return $result; }
+    $d = psr_geo_decision();
+    if (!empty($d['blocked'])) {
+        psr_geo_auth_probe('rest_auth');
+        if (function_exists('psr_center_log_limited')) {
+            psr_center_log_limited(psr_geo_deny_event($d), 'critical',(string)$d['ip'], '',
+                (string)$d['country'],'rest_auth','REST auth respinta: ' . substr((string)$route, 0, 125),60);
+        }
+        return new WP_Error('psr_geo_rest_auth_denied', 'Operazione di autenticazione non consentita da questo IP.', array('status'=>403));
+    }
+    $ip = psr_geo_public_ip();
+    if ($ip !== '' && function_exists('psr_login_rate_blocked') && psr_login_rate_blocked($ip) > 0) {
+        if (function_exists('psr_center_log_limited')) {
+            psr_center_log_limited('login_blocked','warning',$ip,'','','rest_auth',
+                'REST autenticazione negata: IP già bloccato',60);
+        }
+        return new WP_Error('psr_login_rest_locked','Accesso temporaneamente bloccato.',array('status'=>403));
+    }
+    return $result;
+}
+add_filter('rest_pre_dispatch','psr_geo_rest_sensitive_gate',0,3);
 
 // I client REST gia' autenticati di qualsiasi ruolo non aggirano il gate.
 function psr_geo_rest_authentication($result) {
@@ -287,8 +392,8 @@ function psr_geo_rest_authentication($result) {
 }
 add_filter('rest_authentication_errors', 'psr_geo_rest_authentication', 100);
 
-// XML-RPC puo' offrire un altro percorso di autenticazione non-browser.
-// Non disabilitare XML-RPC per il resto dei visitatori/servizi italiani.
+// XML-RPC rimane disabilitato per tutti con psr_geo_xmlrpc_hard_disable().
+// Il filtro aggiuntivo conserva la protezione se si applica una deroga esplicita.
 function psr_geo_xmlrpc_enabled($enabled) {
     if (psr_geo_decision()['blocked']) {
         if (function_exists('psr_center_log_limited')) {

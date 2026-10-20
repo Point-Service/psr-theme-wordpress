@@ -42,7 +42,7 @@ function psr_login_rate_blocked($ip) {
     $state = psr_login_rate_state($ip);
     return max(0, (int) ($state['until'] ?? 0) - time());
 }
-function psr_login_rate_failure($ip, $reason = 'password', $username = '') {
+function psr_login_rate_failure($ip, $reason = 'password', $username = '', $source = 'login') {
     if ($ip === '') { return; }
     $state = psr_login_rate_state($ip);
     $now = time();
@@ -58,7 +58,17 @@ function psr_login_rate_failure($ip, $reason = 'password', $username = '') {
     elseif ($count >= 5) { $state['until'] = max((int)$state['until'], $now + 10 * MINUTE_IN_SECONDS); }
     set_transient(psr_login_ip_key($ip), $state, 8 * DAY_IN_SECONDS);
     if (function_exists('psr_center_sync_ip')) { psr_center_sync_ip($ip, $state); }
-    if (function_exists('psr_center_log_event')) {
+    if ($reason === 'auth_probe') {
+        // Non attribuire una password errata: GeoIP ha bloccato PRIMA di verificarla.
+        // Campiona gli eventi per evitare migliaia di scritture da un bot.
+        if (function_exists('psr_center_log_limited')) {
+            $d = function_exists('psr_geo_decision') ? psr_geo_decision() : array();
+            psr_center_log_limited('auth_probe', $count >= 15 ? 'critical' : 'warning',
+                $ip, $username, (string)($d['country'] ?? ''), $source,
+                'Tentativo autenticazione estero n. ' . $count
+                . (!empty($state['until']) && $state['until'] > $now ? '; IP bloccato' : ''), 60);
+        }
+    } elseif (function_exists('psr_center_log_event')) {
         psr_center_log_event($reason === 'otp' ? 'otp_failed' : 'login_failed',
             $count >= 15 ? 'critical' : 'warning', $ip, $username, '', $reason === 'otp' ? 'otp' : 'login',
             'Tentativo ' . $count . ($state['until'] > $now ? '; blocco fino a ' . gmdate('Y-m-d H:i:s', $state['until']) . ' UTC' : ''));
