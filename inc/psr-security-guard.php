@@ -565,3 +565,15 @@ function psr_guard_admin_notice() {
     echo '<div class="notice notice-warning"><p><strong>PSR Security Guard:</strong> possibili file non autorizzati rilevati o isolati. Verificare i log PHP e la quarantena su Plesk. Nessun elemento di wp-toolkit è stato rimosso automaticamente.</p></div>';
 }
 add_action('admin_notices', 'psr_guard_admin_notice');
+
+
+/**
+ * Analisi contenuti WordPress solo su richiesta dell'amministratore ID 1.
+ * Nessuna scansione del database sul front-end pubblico.
+ */
+if (function_exists('is_admin') && is_admin()) {
+    $psr_audit_path = __DIR__ . '/psr-content-audit.php';
+    if (is_file($psr_audit_path) && is_readable($psr_audit_path)) {
+        require_once $psr_audit_path;
+    }
+}
