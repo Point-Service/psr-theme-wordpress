@@ -64,7 +64,7 @@ function psr_center_log_event($event, $severity = 'info', $ip = '', $username = 
     // Whitelist per impedire inquinamento del registro con dati arbitrari.
     $allowed = array('login_failed','login_blocked','login_success','otp_sent','otp_failed','otp_verified',
         'otp_delivery_failed','geo_denied','ip_blacklist_denied','geo_unavailable','manual_ban','manual_unban',
-        'site_ban_denied','user_created','role_changed','account_email_changed','account_password_changed','user_deleted','trusted_ip_added','trusted_ip_removed','security_setting_changed');
+        'site_ban_denied','user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied','trusted_ip_added','trusted_ip_removed','security_setting_changed','admin_role_denied');
     if (!in_array($event, $allowed, true)) { return false; }
     if (!psr_center_install()) { return false; }
     global $wpdb;
@@ -254,7 +254,7 @@ function psr_center_label($type) {
         'role_changed'=>'Ruolo modificato','account_email_changed'=>'Email account modificata',
         'account_password_changed'=>'Password account modificata','user_deleted'=>'Utente eliminato',
         'trusted_ip_added'=>'IP fidato aggiunto','trusted_ip_removed'=>'IP fidato revocato',
-        'security_setting_changed'=>'Impostazione di sicurezza modificata');
+        'security_setting_changed'=>'Impostazione di sicurezza modificata','admin_role_denied'=>'Promozione admin respinta');
     return $labels[$type] ?? $type;
 }
 function psr_center_local_date($utc) {
@@ -269,7 +269,7 @@ function psr_center_fetch_stats() {
     $now = gmdate('Y-m-d H:i:s');
     return array(
         'failed24'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('login_failed','otp_failed')",$day)),
-        'admin7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('user_created','role_changed','account_email_changed','account_password_changed','user_deleted')",$week)),
+        'admin7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied')",$week)),
         'geo7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('geo_denied','ip_blacklist_denied')",$week)),
         'otp7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type='otp_verified'",$week)),
         'blocked'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $ips WHERE blocked_until >= %s",$now)),
@@ -367,7 +367,7 @@ function psr_center_page($forced_tab = '') {
     $tab = $forced_tab ?: sanitize_key(wp_unslash($_GET['tab'] ?? 'overview'));
     if (!in_array($tab,array('overview','events','blocks','accounts','trusted','geo','otp','settings'),true)) { $tab='overview'; }
     $ready = psr_center_install();
-    echo '<div class="wrap psrc"><header class="psrc-header"><div class="psrc-hero-copy"><div class="psrc-label">PSR SECURITY SUITE <span style="opacity:.5">/</span> CONTROL CENTER</div><h1><span class="dashicons dashicons-shield-alt" aria-hidden="true"></span>Centro Sicurezza</h1><p>Monitoraggio accessi, difesa degli account e controllo delle minacce. I risultati provengono dagli eventi registrati su questo Comune.</p><div class="psrc-hero-checks"><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>OTP email ID 1</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Filtro Italia</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Ban IP progressivi</span></div></div><div class="psrc-hero-side"><span class="psrc-chip">&#128274; Accesso riservato ID 1</span><span class="psrc-hero-meta">Area di gestione<br><b>Controlli e registri privati</b></span></div></header>';
+    echo '<div class="wrap psrc"><header class="psrc-header"><div class="psrc-hero-copy"><div class="psrc-label">PSR SECURITY SUITE <span style="opacity:.5">/</span> CONTROL CENTER</div><h1><span class="dashicons dashicons-shield-alt" aria-hidden="true"></span>Centro Sicurezza</h1><p>Monitoraggio accessi, difesa degli account e controllo delle minacce. I risultati provengono dagli eventi registrati su questo Comune.</p><div class="psrc-hero-checks"><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>OTP email tutti gli utenti</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Filtro Italia</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Ban IP progressivi</span></div></div><div class="psrc-hero-side"><span class="psrc-chip">&#128274; Accesso riservato ID 1</span><span class="psrc-hero-meta">Area di gestione<br><b>Controlli e registri privati</b></span></div></header>';
     $tabs=array('overview'=>'Panoramica','events'=>'Tentativi e attività','blocks'=>'IP bloccati','accounts'=>'Utenti e privilegi','trusted'=>'IP fidati','geo'=>'Filtro geografico','otp'=>'OTP email','settings'=>'Impostazioni');
     echo '<nav class="psrc-tabs" aria-label="Sezioni centro sicurezza">';
     foreach ($tabs as $key=>$label) { echo '<a class="'.($tab===$key?'active':'').'" href="'.esc_url(psr_center_url($key)).'">'.esc_html($label).'</a>'; }
@@ -394,7 +394,7 @@ function psr_center_overview() {
         array('Tentativi errati · 24 ore',$s['failed24'],'Password / OTP'),
         array('IP bloccati · adesso',$s['blocked'],'Blocchi non scaduti'),
         array('Accessi GeoIP / blacklist negati · 7 giorni',$s['geo7'],'Campionati per IP e percorso'),
-        array('OTP verificati · 7 giorni',$s['otp7'],'Completati dall’ID 1'),
+        array('OTP verificati · 7 giorni',$s['otp7'],'Verifiche di tutti gli utenti'),
         array('Modifiche account · 7 giorni',$s['admin7'],'Creazione, ruoli e credenziali'),
     );
     echo '<div class="psrc-kpis">';foreach($kpis as $k){echo '<div class="psrc-card"><div class="label">'.esc_html($k[0]).'</div><div class="value">'.(int)$k[1].'</div><div class="detail">'.esc_html($k[2]).'</div></div>';}echo '</div>';
@@ -407,7 +407,7 @@ function psr_center_overview() {
     foreach($days as $date=>$v){$h=max(4,round(($v/$max)*156));echo '<div class="psrc-bar-cell"><strong>'.(int)$v.'</strong><div class="psrc-bar" style="height:'.(int)$h.'px" title="'.esc_attr($date.' - '.$v.' eventi').'"></div><span>'.esc_html(date('d/m',strtotime($date))).'</span></div>';}
     echo '</div><p class="psrc-muted psrc-small">Tutti gli eventi registrati da PSR · la geolocalizzazione estera è limitata a un evento per IP/percorso al minuto.</p></section>';
     echo '<section class="psrc-card"><h2>Stato delle protezioni</h2><table class="psrc-table">';
-    $checks=array('OTP email amministratore'=>function_exists('psr_login_email_issue'),'Blocco progressivo IP'=>function_exists('psr_login_rate_failure'),
+    $checks=array('OTP email tutti gli utenti'=>function_exists('psr_login_email_issue'),'Blocco progressivo IP'=>function_exists('psr_login_rate_failure'),
         'GeoIP accessi'=>function_exists('psr_geo_enabled') && psr_geo_enabled(),'Blacklist globale IP'=>function_exists('psr_geo_ip_blacklisted'),'Registro eventi'=>true,'Blocco siti per IP bannati'=>function_exists('psr_geo_site_ban_enabled') && psr_geo_site_ban_enabled(),'Protezione web shell'=>function_exists('psr_guard_new_shell_names'));
     foreach($checks as $name=>$on){echo '<tr><td>'.esc_html($name).'</td><td><span class="psrc-pill '.($on?'ok':'warning').'">'.($on?'Attivo':'Da verificare').'</span></td></tr>';}
     echo '</table><p class="psrc-muted psrc-small">L’indicatore verifica la presenza del modulo, non garantisce che il server sia completamente protetto.</p></section></div>';
@@ -486,7 +486,7 @@ function psr_center_otp(){
     $u=get_userdata(1);$mail=function_exists('psr_login_email_target')?psr_login_email_target($u):'';
     $pinned=(string)get_option('_psr_login_email_to','');
     echo '<div class="psrc-kpis"><div class="psrc-card"><div class="label">Metodo verifica ID 1</div><div class="value" style="font-size:21px">OTP via email</div><div class="detail">8 cifre · monouso · 5 minuti</div></div><div class="psrc-card"><div class="label">Email destinazione</div><div class="value" style="font-size:17px;overflow-wrap:anywhere">'.esc_html($mail?:'NON CONFIGURATA').'</div><div class="detail">'.($pinned?'Vincolata dopo verifica riuscita':'Non ancora vincolata').'</div></div><div class="psrc-card"><div class="label">Protezione login</div><div class="value" style="font-size:21px">Progressiva</div><div class="detail">5 / 10 / 15 / 25 tentativi</div></div></div>';
-    echo '<div class="psrc-card"><h2>Politica OTP e anti brute-force</h2><p>Il codice viene spedito solo <strong>dopo che la password è corretta</strong>. Non viene memorizzato in chiaro e non è mostrato nel registro.</p><p><strong>Blocchi:</strong> 5 errori → 10 min · 10 → 1 ora · 15 → 24 ore · 25 → 7 giorni.</p><p class="psrc-info psrc-alert">Verifica SMTP prima degli aggiornamenti. In caso di mancato recapito OTP, l’accesso ID 1 resta negato; il recupero richiede Plesk/WP-CLI, non un pulsante pubblico.</p><p>Il cambio della casella email vincolata non è permesso da qui, per non consentire la deviazione dei codici in caso di sessione compromessa.</p></div>';
+    echo '<div class="psrc-card"><h2>Politica OTP e anti brute-force</h2><p>Il codice viene spedito solo <strong>dopo che la password è corretta</strong>. Non viene memorizzato in chiaro e non è mostrato nel registro.</p><p><strong>Blocchi:</strong> 5 errori → 10 min · 10 → 1 ora · 15 → 24 ore · 25 → 7 giorni.</p><p class="psrc-info psrc-alert">Verifica SMTP prima degli aggiornamenti. In caso di mancato recapito OTP, l’accesso dell’utente resta negato; il recupero richiede Plesk/WP-CLI, non un pulsante pubblico.</p><p>Il cambio della casella email vincolata non è permesso da qui, per non consentire la deviazione dei codici in caso di sessione compromessa.</p></div>';
 }
 function psr_center_settings(){
     $days=(int)get_option('_psr_center_retention',30);
@@ -515,11 +515,11 @@ function psr_center_accounts() {
     echo '<div class="psrc-table-wrap"><table class="psrc-table"><thead><tr><th>ID</th><th>Account</th><th>Registrazione</th><th>Controllo</th></tr></thead><tbody>';
     if (!$users) { echo '<tr><td colspan="4">Nessun amministratore trovato.</td></tr>'; }
     foreach ($users as $user) {
-        echo '<tr><td><strong>#'.(int)$user->ID.'</strong></td><td>'.esc_html($user->user_login).'</td><td>'.esc_html($user->user_registered).'</td><td><span class="psrc-pill '.((int)$user->ID===1?'ok':'warning').'">'.((int)$user->ID===1?'OTP ID 1':'Verificare autorizzazione').'</span></td></tr>';
+        echo '<tr><td><strong>#'.(int)$user->ID.'</strong></td><td>'.esc_html($user->user_login).'</td><td>'.esc_html($user->user_registered).'</td><td><span class="psrc-pill '.((int)$user->ID===1?'ok':'warning').'">'.'OTP email obbligatorio'.'</span></td></tr>';
     }
-    echo '</tbody></table></div><p class="psrc-info psrc-alert">L’OTP email PSR protegge solo l’ID 1. Gli altri amministratori devono avere una seconda verifica indipendente (es. Wordfence Login Security). Se una password amministrativa viene rubata, un malware può operare con quei permessi.</p></div>';
+    echo '</tbody></table></div><p class="psrc-info psrc-alert">L’OTP email PSR ora protegge tutti gli utenti. La promozione ad amministratore è riservata all’ID 1 con sessione OTP verificata; verifica comunque eventuali account sconosciuti e il corretto recapito delle email.</p></div>';
     echo '<div class="psrc-card" style="margin-top:18px"><h2>Ultimi cambiamenti agli account</h2>';
-    $types="'user_created','role_changed','account_email_changed','account_password_changed','user_deleted'";
+    $types="'user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied'";
     $rows=$wpdb->get_results("SELECT * FROM $events WHERE event_type IN ($types) ORDER BY id DESC LIMIT 40");
     echo '<div class="psrc-table-wrap"><table class="psrc-table"><thead><tr><th>Data / ora</th><th>Evento</th><th>Account</th><th>IP</th><th>Dettaglio</th></tr></thead><tbody>';
     if (!$rows) { echo '<tr><td colspan="5">Nessuna modifica agli account registrata dopo l’installazione.</td></tr>'; }

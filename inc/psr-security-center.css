@@ -17,3 +17,8 @@
 .psrc .notice{margin:16px 0;padding:8px 14px;border-radius:8px}
 @media(max-width:900px){.psrc-header{padding:22px;min-height:0}.psrc-hero-side{display:none}.psrc-tabs{display:flex;overflow-x:auto;flex-wrap:nowrap}.psrc-tabs a{flex:none;white-space:nowrap}.psrc .psrc-layout{grid-template-columns:1fr}}
 @media(max-width:600px){.psrc{margin:13px 8px 35px 0}.psrc-header h1{font-size:25px}.psrc-header h1 .dashicons{font-size:26px}.psrc-card{padding:17px 15px}.psrc-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.psrc-kpis .psrc-card{min-height:116px;padding:16px}.psrc-kpis .psrc-card .value{font-size:27px}.psrc-hero-checks{margin-top:14px}}
+
+/* Fix contrasto avviso giallo nel banner blu PSR */
+.psrc .psrc-header .notice.notice-warning{background:#fff4cf!important;border-left:4px solid #be7b16!important;color:#613e0d!important;box-shadow:0 2px 6px #00000012}
+.psrc .psrc-header .notice.notice-warning p,.psrc .psrc-header .notice.notice-warning strong,.psrc .psrc-header .notice.notice-warning a{color:#613e0d!important;line-height:1.65}
+.psrc .psrc-header .notice.notice-warning a{text-decoration:underline}

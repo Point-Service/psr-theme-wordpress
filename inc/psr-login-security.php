@@ -1,6 +1,6 @@
 <?php
 /**
- * PSR Login Security - OTP via email obbligatorio per WordPress ID 1 e lockout IP progressivo.
+ * PSR Login Security - OTP via email obbligatorio per tutti gli account e lockout IP progressivo.
  * Modulo autonomo caricato dal tema, non esegue scansioni dei file.
  * Richiede PHP 7.4+ e posta WordPress configurata; gli OTP non sono mai salvati in chiaro.
  */
@@ -9,6 +9,21 @@ if (!defined('ABSPATH')) { exit; }
 function psr_login_main_admin($user) {
     return $user instanceof WP_User && (int) $user->ID === 1;
 }
+/** OTP per ogni account. Recupero consentito soltanto da wp-config.php / Plesk. */
+function psr_login_requires_otp($user) {
+    return $user instanceof WP_User && (int)$user->ID > 0
+        && (!defined('PSR_REQUIRE_EMAIL_OTP') || (bool)PSR_REQUIRE_EMAIL_OTP);
+}
+/** Una sessione e' considerata valida solo se creata dopo un OTP corretto. */
+function psr_login_session_verified($user_id) {
+    $user_id=(int)$user_id;
+    if ($user_id <= 0 || !function_exists('wp_get_session_token')) { return false; }
+    $token=wp_get_session_token();
+    if (!is_string($token) || $token === '') { return false; }
+    $sessions=get_user_meta($user_id,'_psr_login_email_sessions',true);
+    return is_array($sessions) && (int)($sessions[psr_login_session_key($token)] ?? 0)>time();
+}
+
 function psr_login_ip() {
     // Non fidarsi mai di X-Forwarded-For/CF-Connecting-IP senza un proxy configurato.
     $ip = isset($_SERVER['REMOTE_ADDR']) ? trim((string) $_SERVER['REMOTE_ADDR']) : '';
@@ -75,11 +90,11 @@ function psr_login_failed_password($username, $error = null) {
 add_action('wp_login_failed', 'psr_login_failed_password', 10, 2);
 
 /**
- * Destinatario bloccato dopo la prima verifica: evitare cambi email silenziosi.
- * Prima della conferma usa la mail dell'utente ID 1 (deve gia' essere controllata).
+ * L'indirizzo dell'ID 1 viene bloccato dopo la prima verifica.
+ * Gli altri utenti ricevono OTP alla mail del proprio profilo (da proteggere).
  */
 function psr_login_email_target($user) {
-    $pinned = get_option('_psr_login_email_to', '');
+    $pinned = psr_login_main_admin($user) ? get_option('_psr_login_email_to', '') : '';
     $email = is_string($pinned) && $pinned !== '' ? $pinned : ($user instanceof WP_User ? $user->user_email : '');
     return is_string($email) && is_email($email) ? $email : '';
 }
@@ -93,17 +108,33 @@ function psr_login_email_matches($pending, $ticket, $code) {
     return is_string($expected) && strlen($expected) === 64
         && hash_equals($expected, psr_login_email_digest($ticket, (string)$code));
 }
-/** Limite condiviso tra nuove richieste e reinvii dell'ID 1 per sito. */
-function psr_login_email_can_send() {
+/** Limiti anti-abuso per ogni account e per IP, senza penalizzare tutti gli utenti. */
+function psr_login_email_can_send($user) {
+    if (!($user instanceof WP_User)) { return false; }
+    $key = '_psr_login_email_limit_' . (int)$user->ID;
+    $ip = psr_login_ip();
+    $ip_key = $ip !== '' ? '_psr_login_mail_ip_' . substr(hash_hmac('sha256',$ip,wp_salt('auth')),0,32) : '';
+    if ($ip_key !== '') {
+        $istate=get_transient($ip_key);
+        if (!is_array($istate) || time()-(int)($istate['start']??0)>=HOUR_IN_SECONDS) {
+            $istate=array('start'=>time(),'n'=>0);
+        }
+        if ((int)$istate['n'] >= 30) { return false; }
+    }
+
     $now = time();
-    $state = get_transient('_psr_login_email_send_limit');
+    $state = get_transient($key);
     if (!is_array($state) || $now - (int)($state['start'] ?? 0) >= HOUR_IN_SECONDS) {
         $state = array('start'=>$now, 'last'=>0, 'n'=>0);
     }
     if ((int)($state['last'] ?? 0) > $now - 60 || (int)($state['n'] ?? 0) >= 10) { return false; }
     $state['last'] = $now;
     $state['n'] = (int)$state['n'] + 1;
-    set_transient('_psr_login_email_send_limit', $state, HOUR_IN_SECONDS);
+    set_transient($key, $state, HOUR_IN_SECONDS);
+    if ($ip_key !== '') {
+        $istate['n']++;
+        set_transient($ip_key, $istate, HOUR_IN_SECONDS);
+    }
     return true;
 }
 /** Emette OTP: salva soltanto HMAC e metadati, non il codice in chiaro. */
@@ -113,7 +144,7 @@ function psr_login_email_issue($user, $ticket, &$pending) {
     if (!function_exists('wp_mail') || !function_exists('random_int')) {
         return new WP_Error('psr_login_email_unavailable', 'Servizio OTP via email non disponibile. Accesso negato.');
     }
-    if (!psr_login_email_can_send()) {
+    if (!psr_login_email_can_send($user)) {
         return new WP_Error('psr_login_email_throttled', 'Troppi invii OTP oppure richiesta troppo ravvicinata. Riprovare piu\' tardi.');
     }
     $now = time();
@@ -140,35 +171,38 @@ function psr_login_session_key($token) {
     return hash_hmac('sha256', $token, wp_salt('logged_in'));
 }
 function psr_login_mark_auth_cookie($auth_cookie, $expire, $expiration, $user_id, $scheme, $token) {
-    if (empty($GLOBALS['psr_login_granting']) || (int) $user_id !== 1 || !is_string($token)) { return; }
-    $sessions = get_user_meta(1, '_psr_login_email_sessions', true);
+    if (empty($GLOBALS['psr_login_granting']) || (int)$user_id <= 0 || !is_string($token)) { return; }
+    $sessions = get_user_meta((int)$user_id, '_psr_login_email_sessions', true);
     if (!is_array($sessions)) { $sessions = array(); }
     $sessions = array_filter($sessions, static function ($expiry) { return (int)$expiry > time(); });
     $sessions[psr_login_session_key($token)] = (int)$expiration;
     // Evitare accumuli a tempo indefinito di sessioni vecchie.
     if (count($sessions) > 25) { asort($sessions, SORT_NUMERIC); $sessions = array_slice($sessions, -25, null, true); }
-    update_user_meta(1, '_psr_login_email_sessions', $sessions);
+    update_user_meta((int)$user_id, '_psr_login_email_sessions', $sessions);
 }
 add_action('set_auth_cookie', 'psr_login_mark_auth_cookie', 10, 6);
 
 function psr_login_force_proved_session() {
-    if (defined('WP_CLI') && WP_CLI) { return; }
-    if (defined('DOING_CRON') && DOING_CRON) { return; }
-    if ((int) get_current_user_id() !== 1) { return; }
-    $token = function_exists('wp_get_session_token') ? wp_get_session_token() : '';
-    $sessions = get_user_meta(1, '_psr_login_email_sessions', true);
-    $valid = is_string($token) && $token !== '' && is_array($sessions)
-        && (int)($sessions[psr_login_session_key($token)] ?? 0) > time();
-    if ($valid) { return; }
-    // Revochiamo le vecchie sessioni (incluse quelle precedenti all'attivazione OTP).
+    if ((defined('WP_CLI') && WP_CLI) || (defined('DOING_CRON') && DOING_CRON)) { return; }
+    if (defined('PSR_REQUIRE_EMAIL_OTP') && !PSR_REQUIRE_EMAIL_OTP) { return; }
+    // Nessun costo DB aggiuntivo per un visitatore anonimo senza cookie WordPress.
+    $has_wp_cookie = false;
+    foreach (array('LOGGED_IN_COOKIE','AUTH_COOKIE','SECURE_AUTH_COOKIE') as $cookie_const) {
+        if (defined($cookie_const) && !empty($_COOKIE[constant($cookie_const)])) { $has_wp_cookie = true; break; }
+    }
+    if (!$has_wp_cookie && empty($GLOBALS['current_user'])) { return; }
+    $uid=(int)get_current_user_id();
+    if ($uid<=0 || psr_login_session_verified($uid)) { return; }
+    // Token precedenti o emessi da altri plugin NON provano l'OTP.
     if (function_exists('wp_destroy_current_session')) { wp_destroy_current_session(); }
     wp_clear_auth_cookie();
     wp_set_current_user(0);
 }
 add_action('init', 'psr_login_force_proved_session', 1);
+add_action('admin_init', 'psr_login_force_proved_session', 1);
 
 function psr_login_disable_app_passwords_for_id1($available, $user) {
-    return psr_login_main_admin($user) ? false : $available;
+    return psr_login_requires_otp($user) ? false : $available;
 }
 add_filter('wp_is_application_passwords_available_for_user', 'psr_login_disable_app_passwords_for_id1', 10, 2);
 
@@ -188,10 +222,10 @@ function psr_login_cancel_ticket($ticket) {
     psr_login_set_pending_cookie('', time()-3600);
 }
 function psr_login_start_otp($user, $username, $password) {
-    if (!psr_login_main_admin($user) || (defined('WP_CLI') && WP_CLI)) { return $user; }
+    if (!psr_login_requires_otp($user) || (defined('WP_CLI') && WP_CLI)) { return $user; }
     // Niente bypass via XML-RPC, REST, application passwords, login alternativi.
     if (!psr_login_interactive()) {
-        return new WP_Error('psr_login_interactive_only', 'Accesso amministrativo disponibile solo tramite login con OTP via email.');
+        return new WP_Error('psr_login_interactive_only', 'Accesso WordPress disponibile solo tramite login con OTP via email.');
     }
     if (!function_exists('random_bytes')) {
         return new WP_Error('psr_login_crypto_missing', 'Generatore crittografico OTP non disponibile. Accesso negato.');
@@ -199,7 +233,8 @@ function psr_login_start_otp($user, $username, $password) {
     $ticket = bin2hex(random_bytes(32));
     $now = time();
     $pending = array(
-        'uid'=>1, 'created'=>$now, 'deadline'=>$now + 900,
+        'uid'=>(int)$user->ID, 'created'=>$now, 'deadline'=>$now + 900,
+        'password_stamp'=>hash_hmac('sha256',(string)$user->user_pass,wp_salt('auth')),
         'ua'=>hash('sha256', (string)($_SERVER['HTTP_USER_AGENT'] ?? '')),
         'ip'=>psr_login_ip(), 'tries'=>0, 'resends'=>0,
         'remember'=>!empty($_POST['rememberme']),
@@ -228,7 +263,7 @@ function psr_login_pending() {
     $p = get_transient(psr_login_pending_key($ticket));
     if (!is_array($p) || (int)($p['code_expires'] ?? 0) < time() || (int)($p['deadline'] ?? 0) < time() ||
         !hash_equals((string)($p['ua'] ?? ''), hash('sha256', (string)($_SERVER['HTTP_USER_AGENT'] ?? ''))) ||
-        (string)($p['ip'] ?? '') !== psr_login_ip() || (int)($p['uid'] ?? 0) !== 1) {
+        (string)($p['ip'] ?? '') !== psr_login_ip() || (int)($p['uid'] ?? 0) <= 0) {
         return array($ticket, false);
     }
     return array($ticket, $p);
@@ -247,7 +282,11 @@ function psr_login_otp_page() {
         wp_die('Verifica scaduta o non valida. <a href="' . esc_url(wp_login_url()) . '">Ricomincia dal login</a>.', 'PSR - OTP email', array('response'=>403));
     }
     $user = get_userdata((int)$pending['uid']);
-    if (!psr_login_main_admin($user)) { psr_login_cancel_ticket($ticket); wp_die('Account non valido.'); }
+    if (!psr_login_requires_otp($user) ||
+        !hash_equals((string)($pending['password_stamp']??''),
+            hash_hmac('sha256',(string)($user instanceof WP_User ? $user->user_pass : ''),wp_salt('auth')))) {
+        psr_login_cancel_ticket($ticket); wp_die('Account o credenziali non piu valide.');
+    }
     $message = '';
     if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         $nonce = (isset($_POST['psr_nonce']) && is_string($_POST['psr_nonce'])) ? sanitize_text_field(wp_unslash($_POST['psr_nonce'])) : '';
@@ -273,7 +312,7 @@ function psr_login_otp_page() {
             if (psr_login_email_matches($pending, $ticket, $input)) {
                 // Usa un token monouso: invalida il ticket PRIMA di creare la sessione.
                 psr_login_cancel_ticket($ticket);
-                if (!get_option('_psr_login_email_to', '')) {
+                if (psr_login_main_admin($user) && !get_option('_psr_login_email_to', '')) {
                     update_option('_psr_login_email_to', psr_login_email_target($user), false);
                 }
                 if (psr_login_ip() !== '') {
@@ -298,7 +337,7 @@ function psr_login_otp_page() {
     }
     nocache_headers();
     login_header('PSR - Verifica email obbligatoria');
-    echo '<p><strong>Verifica obbligatoria per amministratore principale.</strong></p>';
+    echo '<p><strong>Verifica email obbligatoria per tutti gli utenti WordPress.</strong></p>';
     echo '<p>Abbiamo richiesto un codice OTP di 8 cifre via email. Scade dopo 5 minuti ed e\' valido una sola volta.</p>';
     if ($message) { echo '<div class="message" role="alert">' . esc_html($message) . '</div>'; }
     echo '<form method="post" autocomplete="off">';
@@ -347,3 +386,52 @@ function psr_login_admin_page() {
     submit_button('Rimuovi blocco IP', 'secondary', 'submit', false);
     echo '</form><p>Se cambia la casella email o SMTP si interrompe, il recupero richiede accesso amministrativo a Plesk/WP-CLI, non dal login pubblico.</p></div>';
 }
+
+/** XML-RPC con password non supporta il passaggio OTP: negare autenticazioni legacy. */
+function psr_login_xmlrpc_otp_gate($enabled) {
+    if (defined('PSR_REQUIRE_EMAIL_OTP') && !PSR_REQUIRE_EMAIL_OTP) { return $enabled; }
+    return false;
+}
+add_filter('xmlrpc_enabled','psr_login_xmlrpc_otp_gate',50);
+
+/** Vietare a utenti differenti da ID 1 la gestione dei privilegi amministrativi. */
+function psr_login_admin_guard_enabled() {
+    return !defined('PSR_ADMIN_PRIVILEGE_GUARD') || (bool)PSR_ADMIN_PRIVILEGE_GUARD;
+}
+function psr_login_privilege_authorized() {
+    if ((defined('WP_CLI') && WP_CLI)) { return true; }
+    return (int)get_current_user_id() === 1 && current_user_can('manage_options') && psr_login_session_verified(1);
+}
+function psr_login_protect_privilege_caps($caps,$cap,$user_id,$args) {
+    if (!psr_login_admin_guard_enabled() || (defined('WP_CLI') && WP_CLI)) { return $caps; }
+    if (in_array($cap,array('promote_users','promote_user','delete_users','delete_user','remove_user'),true)
+        && !psr_login_privilege_authorized()) { return array('do_not_allow'); }
+    return $caps;
+}
+add_filter('map_meta_cap','psr_login_protect_privilege_caps',20,4);
+/** Protegge anche gli aggiornamenti effettuati da codice che ignora i normali capability check. */
+function psr_login_guard_admin_role($user_id,$role,$old_roles) {
+    static $reverting=false;
+    if ($reverting || !psr_login_admin_guard_enabled() || $role!=='administrator'
+        || in_array('administrator',(array)$old_roles,true) || (int)$user_id===1
+        || psr_login_privilege_authorized()) { return; }
+    $reverting=true;
+    $user=get_userdata((int)$user_id);
+    if ($user instanceof WP_User) {
+        // La nuova creazione resta possibile, ma senza privilegi amministrativi.
+        $previous=array_values(array_filter((array)$old_roles,'is_string'));
+        $user->set_role($previous ? $previous[0] : 'subscriber');
+    }
+    $reverting=false;
+    if (function_exists('psr_center_log_event')) {
+        psr_center_log_event('admin_role_denied','critical',psr_login_ip(),
+            $user instanceof WP_User ? $user->user_login : '','','users',
+            'Promozione ad amministratore annullata; autore ID '.(int)get_current_user_id());
+    }
+}
+add_action('set_user_role','psr_login_guard_admin_role',5,3);
+function psr_login_guard_added_role($user_id,$role) {
+    if ($role!=='administrator') { return; }
+    psr_login_guard_admin_role($user_id,$role,array());
+}
+add_action('add_user_role','psr_login_guard_added_role',5,2);
