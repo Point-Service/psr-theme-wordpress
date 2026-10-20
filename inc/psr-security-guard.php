@@ -11,6 +11,7 @@ function psr_guard_signatures() {
         '618493861791064b9f394f06af7e6d538fc46e25555fc398af8e5d6a1f20a483' => 'translanugos.php',
         '20f91dbe6ded4b46c57f054608379b0e582c4e190277212923c0a37d89b562a7' => 'toddlingness.php',
         '57f33eb6ae24f9f52c9fa21ae43ddcc90a9d06bc5912f70fe9cb586760becbf3' => 'prequiche.php',
+        'dd30dbc4c6d6e94cbf09368188479e6da73f4e5dcf6011f25b66a658429ca4ee' => 'MU recovery channel wp-link-helper (due copie con nomi diversi)',
     );
 }
 
@@ -23,6 +24,40 @@ function psr_guard_matches_slakersest($file) {
     }
     return true;
 }
+
+/**
+ * Firma comportamentale stretta del canale di persistenza MU confermato:
+ * NON basata sul nome casuale wp-<hex>.php, che da solo non prova nulla.
+ * Applicabile soltanto ai PHP direttamente dentro mu-plugins.
+ */
+function psr_guard_matches_mu_recovery($file) {
+    if (!is_file($file) || is_link($file)) { return false; }
+    $bytes = @filesize($file);
+    if ($bytes === false || $bytes > 1024 * 1024) { return false; }
+    $body = @file_get_contents($file);
+    if (!is_string($body)) { return false; }
+    foreach (array('wprc_reinstall(', 'wprc_reclaim(', 'wprc_reactivate(',
+        'wprc_optname(', 'WPRC_SLUG', 'wprc_plugin_dir(') as $marker) {
+        if (strpos($body, $marker) === false) { return false; }
+    }
+    return true;
+}
+
+/** Blocca le chiamate tramite WordPress HTTP API al C2 rilevato nei campioni.
+ * Non è un firewall: non intercetta chiamate cURL/stream eseguite direttamente.
+ */
+function psr_guard_prevent_known_egress($preempt, $args, $url) {
+    if (defined('PSR_GUARD_BLOCK_KNOWN_EGRESS') && !PSR_GUARD_BLOCK_KNOWN_EGRESS) { return $preempt; }
+    if ($preempt !== false || !is_string($url)) { return $preempt; }
+    $host = parse_url($url, PHP_URL_HOST);
+    if (!is_string($host)) { return $preempt; }
+    $host = strtolower(rtrim($host, '.'));
+    if ($host === 'cachelayer.top' || substr($host, -strlen('.cachelayer.top')) === '.cachelayer.top') {
+        return new WP_Error('psr_guard_known_host_blocked', 'Destinazione remota non autorizzata bloccata dal controllo di sicurezza.');
+    }
+    return $preempt;
+}
+add_filter('pre_http_request', 'psr_guard_prevent_known_egress', 1, 3);
 
 function psr_guard_path_within($child, $parent) {
     return $child === $parent || strpos($child, rtrim($parent, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR) === 0;
@@ -81,21 +116,28 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
     $signatures = psr_guard_signatures();
     $matched = is_string($hash) && isset($signatures[$hash]);
     $variant = !$matched && $name === 'slakersest.php' && psr_guard_matches_slakersest($file);
-    if ($matched || $variant) {
+    $muRoot = realpath(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins');
+    $isMuRootFile = $muRoot && realpath(dirname($file)) === $muRoot;
+    $recovery = !$matched && !$variant && $isMuRootFile && psr_guard_matches_mu_recovery($file);
+    if ($matched || $variant || $recovery) {
         $detections++;
         $before = @lstat($file);
         $again = @hash_file('sha256', $file);
         $after = @lstat($file);
         if (!$before || !$after || $before['dev'] !== $after['dev'] || $before['ino'] !== $after['ino'] ||
-            $again !== $hash || is_link($file) || ($variant && !psr_guard_matches_slakersest($file))) {
+            $again !== $hash || is_link($file) || ($variant && !psr_guard_matches_slakersest($file)) ||
+            ($recovery && !psr_guard_matches_mu_recovery($file))) {
             $events[] = 'FILE CAMBIATO DURANTE LA VERIFICA: ' . $file;
             return;
         }
-        if (psr_guard_isolate($file, $matched ? 'SHA256 confermato' : 'variante slakersest confermata', $events)) { $removed++; }
+        $reason = $matched ? 'SHA256 confermato' : ($recovery ? 'persistenza MU wp-link-helper verificata' : 'variante slakersest confermata');
+        if (psr_guard_isolate($file, $reason, $events)) { $removed++; }
         return;
     }
     if (in_array($name, array('translanugos.php','toddlingness.php','prequiche.php','slakersest.php',
-        'overcoqu.php','wp-e92754ad0d8a.php','wp-b697fed82d65.php'), true)) {
+        'overcoqu.php','wp-e92754ad0d8a.php','wp-b697fed82d65.php',
+        'wp-d5086527eae9.php','wp-ce624c7f52b7.php'), true) ||
+        ($isMuRootFile && preg_match('/^wp-[a-f0-9]{12}\.php$/i', $name))) {
         $events[] = 'FILE SOSPETTO DA VERIFICARE (non isolato): ' . $file;
     }
 }
@@ -129,11 +171,21 @@ function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
     }
     $mu = $content . DIRECTORY_SEPARATOR . 'mu-plugins';
     if (is_dir($mu) && !is_link($mu)) {
-        // NON rimuovere mai mu-plugins/wp-toolkit.php o mu-plugins/wp-toolkit/.
-        foreach (array('wp-e92754ad0d8a.php', 'wp-b697fed82d65.php') as $name) {
-            $candidate = $mu . DIRECTORY_SEPARATOR . $name;
-            if (is_file($candidate)) {
-                psr_guard_verify_file($candidate, $name, $events, $detections, $removed);
+        // Solo PHP di primo livello: il contenuto Plesk wp-toolkit/ non viene toccato.
+        // Nomi wp-<hex> variabili: verifica i byte, NON rimuove per nome.
+        $entries = @scandir($mu);
+        if (is_array($entries)) {
+            $count = 0;
+            foreach ($entries as $entry) {
+                if ($entry === '.' || $entry === '..' || !preg_match('/\.php$/i', $entry)) { continue; }
+                if (++$count > 500) {
+                    $events[] = 'SCANSIONE MU PARZIALE: oltre 500 PHP di primo livello';
+                    break;
+                }
+                $candidate = $mu . DIRECTORY_SEPARATOR . $entry;
+                if (is_file($candidate) && !is_link($candidate)) {
+                    psr_guard_verify_file($candidate, strtolower($entry), $events, $detections, $removed);
+                }
             }
         }
     }
@@ -183,6 +235,13 @@ function psr_guard_quick_scan() {
     set_transient('psr_guard_quick_scan_cooldown', 1, 5 * MINUTE_IN_SECONDS);
     $events = array(); $det = 0; $iso = 0;
     psr_guard_targeted_scan($events, $det, $iso);
+    if ($iso > 0) {
+        // Gli MU-plugin hanno gia' eseguito il bootstrap prima del tema.
+        // Un callback malevolo su shutdown potrebbe ripristinare il plugin nello
+        // stesso request: un secondo controllo, registrato DOPO quel callback,
+        // lo isola nuovamente. Non garantisce protezione contro tutte le persistenze.
+        add_action('shutdown', 'psr_guard_post_shutdown_scan', PHP_INT_MAX);
+    }
     if ($events) {
         foreach ($events as $event) { error_log('[PSR GUARD QUICK] ' . $event); }
         if (count($events) > 0) {
@@ -191,6 +250,12 @@ function psr_guard_quick_scan() {
     }
 }
 add_action('init', 'psr_guard_quick_scan', 30);
+
+function psr_guard_post_shutdown_scan() {
+    $events = array(); $det = 0; $iso = 0;
+    psr_guard_targeted_scan($events, $det, $iso);
+    foreach ($events as $event) { error_log('[PSR GUARD SHUTDOWN] ' . $event); }
+}
 
 function psr_guard_admin_notice() {
     if (!current_user_can('manage_options')) { return; }
