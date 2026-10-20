@@ -24,6 +24,21 @@ if (is_file($psr_security_guard_file) && is_readable($psr_security_guard_file)) 
 }
 
 /**
+ * PSR Login Security: OTP obbligatorio amministratore principale ID 1 e
+ * protezione anti brute-force sul login. Modulo indipendente dallo scanner.
+ * Se assente, non causare errori fatali: avviso riservato all'ID 1.
+ */
+$psr_login_security_file = get_template_directory() . '/inc/psr-login-security.php';
+if (is_file($psr_login_security_file) && is_readable($psr_login_security_file)) {
+    require_once $psr_login_security_file;
+} else {
+    add_action('admin_notices', function () {
+        if (get_current_user_id() !== 1 || !current_user_can('manage_options')) { return; }
+        echo '<div class="notice notice-error"><p><strong>PSR Login Security NON attivo:</strong> manca inc/psr-login-security.php nel tema. Verificare il deploy GitHub/Plesk.</p></div>';
+    });
+}
+
+/**
  * Funzionalità Trasversali
  */
 require get_template_directory() . '/inc/funzionalita_trasversali.php';
