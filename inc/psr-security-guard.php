@@ -35,6 +35,10 @@ function psr_guard_signatures() {
         '8c186e2dbc4ae519e2425f2a7b0e68905bcfb0ae527759c357040dabfd36f020' => 'b.zip: mu/wlh-recovery.php',
         'a0c9d8801fa62537216491d57f2efbf7acce102bf23cb6e5056e6e23b3b74717' => 'b.zip: wlh-config.php',
         '5fc7a12ad306b66c51fad97f5619c3f6c61368a97ec352b2609239469bcb1b86' => 'b.zip: wp-link-helper.php',
+        '8b8e098dbb01e5d8125a61b3624be565639a8a5028054e0caf0a7ec4da2f935e' => 'dismutation.php',
+        '196224d7fd65aec3ecd1dc1bd7352d8c4b6d03d477a9d39cbbc45bac53cad702' => 'protosnitchy.php',
+        'd8a06fe5c14bf71b24d9f8218a3a44bf6d8a29bd559b5c0fd65ab1f2eb431765' => '8p8d7zr0.php',
+        '72f150a08c72fc704c702cb3ef209b23ef4964082e3067703a43e3b44b7d499d' => 'macroutter.php',
     );
 }
 
@@ -91,7 +95,8 @@ function psr_guard_new_shell_names() {
     return array('underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
         'morselledism.php','misemace.php','protomunsif.php','slakersest.php','overcoqu.php',
         'overcynophi.php','aciesest.php','acerbatesed.php',
-        'wp-link-helper.php','wlh-recovery.php','wlh-config.php');
+        'wp-link-helper.php','wlh-recovery.php','wlh-config.php',
+        'dismutation.php','protosnitchy.php','8p8d7zr0.php','macroutter.php');
 }
 
 /**
@@ -111,6 +116,18 @@ function psr_guard_matches_unprotected_filemanager($file) {
         if (strpos($body, $marker) === false) { return false; }
     }
     return true;
+}
+
+
+/** La minuscola webshell comandi non contiene la firma del file manager. */
+function psr_guard_matches_command_shell($file) {
+    if (!is_file($file) || is_link($file)) { return false; }
+    $bytes = @filesize($file);
+    if ($bytes === false || $bytes < 60 || $bytes > 8192) { return false; }
+    $body = @file_get_contents($file);
+    if (!is_string($body) || strpos($body, '<?php') === false) { return false; }
+    // Richiede l'uso diretto del parametro HTTP come comando di shell.
+    return (bool) preg_match('~\bshell_exec\s*\(\s*\$_(?:REQUEST|GET|POST)\s*\[\s*[\'"](?:cmd|command|exec)[\'"]\s*\]~i', $body);
 }
 
 /**
@@ -302,12 +319,14 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
     $newName = in_array($name, psr_guard_new_shell_names(), true);
     $familyMatch = !$matched && !$variant && !$variantOvercoqu && $newName && psr_guard_matches_hidden_filemanager_family($file);
     $unprotectedFM = !$matched && !$variant && !$variantOvercoqu && !$familyMatch && $newName && psr_guard_matches_unprotected_filemanager($file);
+    $commandShell = !$matched && !$variant && !$variantOvercoqu && !$familyMatch && !$unprotectedFM
+        && $newName && psr_guard_matches_command_shell($file);
     $wlhMain = !$matched && psr_guard_matches_wlh_main($file);
     $wlhInstall = !$matched && !$wlhMain && psr_guard_matches_wlh_recovery_installer($file);
     $muRoot = realpath(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins');
     $isMuRootFile = $muRoot && realpath(dirname($file)) === $muRoot;
     $recovery = !$matched && !$variant && !$familyMatch && !$unprotectedFM && $isMuRootFile && psr_guard_matches_mu_recovery($file);
-    if ($matched || $variant || $variantOvercoqu || $familyMatch || $unprotectedFM || $recovery || $wlhMain || $wlhInstall) {
+    if ($matched || $variant || $variantOvercoqu || $familyMatch || $unprotectedFM || $commandShell || $recovery || $wlhMain || $wlhInstall) {
         $detections++;
         $before = @lstat($file);
         $again = @hash_file('sha256', $file);
@@ -317,13 +336,14 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
             ($variantOvercoqu && !psr_guard_matches_overcoqu($file)) ||
             ($familyMatch && !psr_guard_matches_hidden_filemanager_family($file)) ||
             ($unprotectedFM && !psr_guard_matches_unprotected_filemanager($file)) ||
+            ($commandShell && !psr_guard_matches_command_shell($file)) ||
             ($recovery && !psr_guard_matches_mu_recovery($file)) ||
             ($wlhMain && !psr_guard_matches_wlh_main($file)) ||
             ($wlhInstall && !psr_guard_matches_wlh_recovery_installer($file))) {
             $events[] = 'FILE CAMBIATO DURANTE LA VERIFICA: ' . $file;
             return;
         }
-        $reason = $matched ? 'SHA256 confermato' : ($wlhMain ? 'plugin WP Link Helper malevolo' : ($wlhInstall ? 'installer MU nascosto WP Link Helper' : ($recovery ? 'persistenza MU wp-link-helper verificata' : ($unprotectedFM ? 'file manager PHP privo di autenticazione verificato' : ($familyMatch ? 'firma comportamentale webshell verificata' : ($variantOvercoqu ? 'variante overcoqu confermata' : 'variante slakersest confermata'))))));
+        $reason = $matched ? 'SHA256 confermato' : ($wlhMain ? 'plugin WP Link Helper malevolo' : ($wlhInstall ? 'installer MU nascosto WP Link Helper' : ($recovery ? 'persistenza MU wp-link-helper verificata' : ($commandShell ? 'webshell comandi da HTTP verificata' : ($unprotectedFM ? 'file manager PHP privo di autenticazione verificato' : ($familyMatch ? 'firma comportamentale webshell verificata' : ($variantOvercoqu ? 'variante overcoqu confermata' : 'variante slakersest confermata')))))));
         if (psr_guard_isolate($file, $reason, $events)) { $removed++; }
         return;
     }
@@ -332,7 +352,8 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
         'wp-d5086527eae9.php','wp-ce624c7f52b7.php',
         'underpenup.php','paltererness.php','semibuxeous.php','transfraktur.php','ultraruruing.php','microbearers.php',
         'morselledism.php','misemace.php','protomunsif.php','overcynophi.php','aciesest.php','acerbatesed.php',
-        'wp-link-helper.php','wlh-recovery.php','wlh-config.php','class-wlh-recovery-installer.php'), true) ||
+        'wp-link-helper.php','wlh-recovery.php','wlh-config.php','class-wlh-recovery-installer.php',
+        'dismutation.php','protosnitchy.php','8p8d7zr0.php','macroutter.php'), true) ||
         ($isMuRootFile && preg_match('/^wp-[a-f0-9]{12}\.php$/i', $name))) {
         $events[] = 'FILE SOSPETTO DA VERIFICARE (non isolato): ' . $file;
     }
