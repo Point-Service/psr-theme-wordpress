@@ -7,8 +7,14 @@
  * @package Design_Comuni_Italia
  */
 
-/** Protezione emergenziale: riconoscimento di tre web shell note. */
-require_once get_template_directory() . '/inc/psr-security-guard.php';
+/**
+ * PSR Security Guard: caricamento opzionale per non interrompere il sito
+ * se il modulo non e' stato ancora distribuito o e' stato rimosso.
+ */
+$psr_security_guard_file = get_template_directory() . '/inc/psr-security-guard.php';
+if (is_file($psr_security_guard_file) && is_readable($psr_security_guard_file)) {
+    require_once $psr_security_guard_file;
+}
 
 /**
  * Funzionalità Trasversali
