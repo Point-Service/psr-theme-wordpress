@@ -39,6 +39,21 @@ if (is_file($psr_login_security_file) && is_readable($psr_login_security_file)) 
 }
 
 /**
+ * PSR Geo Login: accesso a wp-login/wp-admin limitato agli IP
+ * riconosciuti come italiani; le pagine pubbliche restano accessibili.
+ * Il file e' facoltativo per evitare blocchi fatali in caso di deploy incompleto.
+ */
+$psr_geo_login_file = get_template_directory() . '/inc/psr-geo-login.php';
+if (is_file($psr_geo_login_file) && is_readable($psr_geo_login_file)) {
+    require_once $psr_geo_login_file;
+} else {
+    add_action('admin_notices', function () {
+        if ((int) get_current_user_id() !== 1 || !current_user_can('manage_options')) { return; }
+        echo '<div class="notice notice-warning"><p><strong>PSR Geo Login non disponibile:</strong> manca inc/psr-geo-login.php nel tema. Verificare GitHub/Plesk.</p></div>';
+    });
+}
+
+/**
  * Funzionalità Trasversali
  */
 require get_template_directory() . '/inc/funzionalita_trasversali.php';
