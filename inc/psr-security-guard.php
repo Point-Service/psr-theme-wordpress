@@ -307,7 +307,9 @@ function psr_guard_post_shutdown_scan() {
 }
 
 function psr_guard_admin_notice() {
-    if (!current_user_can('manage_options')) { return; }
+    // Avvisi riservati esclusivamente all'amministratore WordPress con ID 1.
+    // Scansioni, quarantena e logging non dipendono dall'utente collegato.
+    if (get_current_user_id() !== 1 || !current_user_can('manage_options')) { return; }
     $report = get_option('psr_guard_last_report');
     $quick = get_option('psr_guard_quick_report');
     if ((!is_array($report) || empty($report['events'])) && (!is_array($quick) || empty($quick['events']))) { return; }
