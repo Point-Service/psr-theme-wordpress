@@ -1149,7 +1149,7 @@ $internal_custom_sections_enabled = function_exists('dci_trasparenza_internal_cu
                         <?php dci_render_trasparenza_not_applicable_notice($obj); ?>
 
                         <!-- Risultati della ricerca -->
-                        <?php dci_get_template_part_async("trasparenza-risultati-paginati"); ?>
+                        <?php get_template_part("template-parts/amministrazione-trasparente/risultati-paginati"); ?>
                     </div>
 
                     <!-- Colonna destra: link utili -->
