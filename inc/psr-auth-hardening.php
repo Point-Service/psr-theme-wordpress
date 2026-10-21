@@ -97,6 +97,13 @@ function psr_auth_protect_admin_data($data, $update, $user_id, $userdata = array
     if (!$update || (int)$user_id !== 1 || psr_auth_email_maintenance()) { return $data; }
     $email = psr_auth_admin_email();
     if ($email !== '') { $data['user_email'] = $email; }
+    // Difesa anche per integrazioni che chiamano wp_update_user senza verificare
+    // edit_user. Il reset nativo e la manutenzione CLI continuano a funzionare.
+    if (!(defined('WP_CLI') && WP_CLI) && !psr_login_privilege_authorized()) {
+        global $wpdb;
+        $previous_hash=$wpdb->get_var("SELECT user_pass FROM $wpdb->users WHERE ID=1");
+        if (is_string($previous_hash) && $previous_hash!=='') { $data['user_pass']=$previous_hash; }
+    }
     return $data;
 }
 add_filter('wp_pre_insert_user_data', 'psr_auth_protect_admin_data', PHP_INT_MAX, 4);

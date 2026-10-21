@@ -355,6 +355,22 @@ function dci_get_template_part_async($template_key) {
 add_action('wp_ajax_dci_load_template_part', 'dci_load_template_part_ajax');
 add_action('wp_ajax_nopriv_dci_load_template_part', 'dci_load_template_part_ajax');
 function dci_load_template_part_ajax() {
+    // Il rendering pubblico non deve accedere a bozze, password o record interni,
+    // neppure recuperando un HTML precedentemente memorizzato in cache.
+    foreach (array('template_key','query_string','current_url','taxonomy','page_id','term_id') as $field) {
+        if (isset($_POST[$field]) && !is_string($_POST[$field])) {
+            wp_send_json_error(array('message'=>'Richiesta non valida.'),400);
+        }
+    }
+    $requested_page=isset($_POST['page_id']) ? absint($_POST['page_id']) : 0;
+    if ($requested_page) {
+        $public_page=get_post($requested_page);
+        if (!$public_page || $public_page->post_status!=='publish' || $public_page->post_password!==''
+            || !is_post_type_viewable($public_page->post_type)
+            || in_array($public_page->post_type,array('appuntamento','richiesta_assistenza','segnala_disservizio','rating'),true)) {
+            wp_send_json_error(array('message'=>'Contenuto non disponibile.'),404);
+        }
+    }
     $template_key = isset($_POST['template_key']) ? sanitize_key(wp_unslash($_POST['template_key'])) : '';
     $templates = dci_async_template_parts_map();
 

@@ -557,6 +557,7 @@ function psr_login_privilege_authorized() {
 }
 function psr_login_protect_privilege_caps($caps,$cap,$user_id,$args) {
     if (!psr_login_admin_guard_enabled() || (defined('WP_CLI') && WP_CLI)) { return $caps; }
+    if ($cap==='edit_user' && (int)($args[0]??0)===1 && !psr_login_privilege_authorized()) { return array('do_not_allow'); }
     if (in_array($cap,array('promote_users','promote_user','delete_users','delete_user','remove_user',
         'install_plugins','upload_plugins','activate_plugins','update_plugins','delete_plugins','edit_plugins',
         'edit_files','switch_themes','edit_themes','install_themes','upload_themes','delete_themes','update_themes','update_core'),true)
