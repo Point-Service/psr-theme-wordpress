@@ -15,7 +15,8 @@
 
   function scheduleTemplateRetry(placeholder) {
     var retryCount = parseInt(placeholder.getAttribute('data-retry-count') || '0', 10) + 1;
-    var retryTimeoutMs = parseInt(settings.retryTimeoutMs, 10) || 600000;
+    var retryTimeoutMs = parseInt(settings.retryTimeoutMs, 10) || 60000;
+    var maxRetries = parseInt(settings.maxRetries, 10) || 4;
     var retryStartedAt = parseInt(placeholder.getAttribute('data-retry-started-at') || '0', 10);
     var elapsedMs;
     var retryDelay;
@@ -26,7 +27,7 @@
     }
 
     elapsedMs = Date.now() - retryStartedAt;
-    if (elapsedMs >= retryTimeoutMs) {
+    if (retryCount > maxRetries || elapsedMs >= retryTimeoutMs) {
       showTemplateTimeout(placeholder);
       return Promise.resolve();
     }
@@ -147,14 +148,22 @@
         }
 
         if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
+          var error = new Error('HTTP ' + response.status);
+          error.httpStatus = response.status;
+          throw error;
         }
 
-        return response.json();
+        return response.json().catch(function () {
+          var error = new Error('Risposta JSON non valida');
+          error.permanent = true;
+          throw error;
+        });
       })
       .then(function (payload) {
         if (!payload || !payload.success || !payload.data || typeof payload.data.html !== 'string') {
-          throw new Error('Risposta non valida');
+          var error = new Error('Risposta AJAX non valida');
+          error.permanent = true;
+          throw error;
         }
 
         placeholder.removeAttribute('data-retry-count');
@@ -166,11 +175,18 @@
         executeInjectedScripts(wrapper);
         initInjectedComponents(wrapper);
       })
-      .catch(function () {
+      .catch(function (error) {
         if (timeoutId) {
           window.clearTimeout(timeoutId);
         }
 
+        // Stop a errori definitivi (inclusi rifiuti della protezione AJAX).
+        // Riprova solo per rete, timeout o errori temporanei, per pochi tentativi.
+        var status = error && error.httpStatus;
+        if ((error && error.permanent) || (status >= 400 && status < 500 && status !== 408 && status !== 429)) {
+          showTemplateTimeout(placeholder);
+          return Promise.resolve();
+        }
         return scheduleTemplateRetry(placeholder);
       });
   }

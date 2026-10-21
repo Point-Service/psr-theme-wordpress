@@ -316,7 +316,7 @@ add_action('deleted_option', 'dci_maybe_bump_async_template_parts_cache_version_
 function dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string, $current_url = '') {
     return 'dci_async_tpl_' . md5(wp_json_encode(array(
         'version' => dci_async_template_parts_cache_version(),
-        'schema' => 'pagination-path-v2',
+        'schema' => 'pagination-context-v3',
         'template_key' => $template_key,
         'page_id' => (int) $page_id,
         'term_id' => (int) $term_id,
@@ -341,15 +341,20 @@ function dci_get_template_part_async($template_key) {
     $placeholder_id = 'dci-async-' . sanitize_html_class($template_key) . '-' . wp_rand(1000, 9999);
     $label = $templates[$template_key]['label'];
     $loader_class = !empty($templates[$template_key]['compact']) ? 'py-4' : 'container py-5';
+    // Un termine non e' un post: evitare di riutilizzare il suo ID come page_id.
+    // Funziona anche per category/tag archive e per la pagina articoli (WP_Post).
+    $dci_queried_object = get_queried_object();
+    $dci_queried_page_id = $dci_queried_object instanceof WP_Post ? (int) $dci_queried_object->ID : 0;
+    $dci_queried_term = $dci_queried_object instanceof WP_Term ? $dci_queried_object : null;
     ?>
     <div
         id="<?php echo esc_attr($placeholder_id); ?>"
         class="dci-async-template"
         data-template-key="<?php echo esc_attr($template_key); ?>"
-        data-page-id="<?php echo esc_attr(get_queried_object_id()); ?>"
-        <?php if (is_tax()) { ?>
-            data-term-id="<?php echo esc_attr(get_queried_object_id()); ?>"
-            data-taxonomy="<?php echo esc_attr(get_queried_object()->taxonomy); ?>"
+        data-page-id="<?php echo esc_attr($dci_queried_page_id); ?>"
+        <?php if ($dci_queried_term) { ?>
+            data-term-id="<?php echo esc_attr($dci_queried_term->term_id); ?>"
+            data-taxonomy="<?php echo esc_attr($dci_queried_term->taxonomy); ?>"
         <?php } ?>
         role="status"
         aria-live="polite"
@@ -377,13 +382,34 @@ function dci_load_template_part_ajax() {
             wp_send_json_error(array('message'=>'Richiesta non valida.'),400);
         }
     }
-    $requested_page=isset($_POST['page_id']) ? absint($_POST['page_id']) : 0;
-    if ($requested_page) {
-        $public_page=get_post($requested_page);
-        if (!$public_page || $public_page->post_status!=='publish' || $public_page->post_password!==''
+    $requested_page = isset($_POST['page_id']) ? absint($_POST['page_id']) : 0;
+    $term_id = isset($_POST['term_id']) ? absint($_POST['term_id']) : 0;
+    $taxonomy = isset($_POST['taxonomy']) ? sanitize_key(wp_unslash($_POST['taxonomy'])) : '';
+    $public_term = null;
+
+    if ($term_id || $taxonomy !== '') {
+        // Gli archivi pubblici sono termini, non WP_Post: validare la tassonomia
+        // e l'esistenza del termine, SENZA allentare i controlli sui post privati.
+        $tax_object = $taxonomy !== '' ? get_taxonomy($taxonomy) : false;
+        if (!$term_id || !$tax_object || empty($tax_object->public)) {
+            wp_send_json_error(array('message' => 'Categoria non disponibile.'), 404);
+        }
+        $public_term = get_term($term_id, $taxonomy);
+        if (!$public_term || is_wp_error($public_term)) {
+            wp_send_json_error(array('message' => 'Categoria non disponibile.'), 404);
+        }
+        // Compatibilita' con i vecchi HTML eventualmente ancora in cache:
+        // accettare solo page_id == term_id, mai un page_id arbitrario.
+        if ($requested_page && $requested_page !== $term_id) {
+            wp_send_json_error(array('message' => 'Contesto non valido.'), 400);
+        }
+        $requested_page = 0;
+    } elseif ($requested_page) {
+        $public_page = get_post($requested_page);
+        if (!$public_page || $public_page->post_status !== 'publish' || $public_page->post_password !== ''
             || !is_post_type_viewable($public_page->post_type)
-            || in_array($public_page->post_type,array('appuntamento','richiesta_assistenza','segnala_disservizio','rating'),true)) {
-            wp_send_json_error(array('message'=>'Contenuto non disponibile.'),404);
+            || in_array($public_page->post_type, array('appuntamento', 'richiesta_assistenza', 'segnala_disservizio', 'rating'), true)) {
+            wp_send_json_error(array('message' => 'Contenuto non disponibile.'), 404);
         }
     }
     $template_key = isset($_POST['template_key']) ? sanitize_key(wp_unslash($_POST['template_key'])) : '';
@@ -413,9 +439,7 @@ function dci_load_template_part_ajax() {
         }
     }
 
-    $term_id = isset($_POST['term_id']) ? absint($_POST['term_id']) : 0;
-    $taxonomy = isset($_POST['taxonomy']) ? sanitize_key(wp_unslash($_POST['taxonomy'])) : '';
-    $page_id = isset($_POST['page_id']) ? absint($_POST['page_id']) : 0;
+    $page_id = $requested_page;
 
     global $wp_query;
     if (isset($_GET['paged'])) {
@@ -425,13 +449,13 @@ function dci_load_template_part_ajax() {
         $wp_query->set('page', max(1, absint($_GET['page'])));
     }
 
-    if ($term_id && $taxonomy) {
-        $term = get_term($term_id, $taxonomy);
-        if ($term && !is_wp_error($term)) {
-            $wp_query->queried_object = $term;
-            $wp_query->queried_object_id = $term_id;
-            $wp_query->is_tax = true;
-        }
+    if ($public_term) {
+        $wp_query->queried_object = $public_term;
+        $wp_query->queried_object_id = $term_id;
+        $wp_query->is_archive = true;
+        $wp_query->is_tax = true;
+        if ($taxonomy === 'category') { $wp_query->is_category = true; }
+        if ($taxonomy === 'post_tag') { $wp_query->is_tag = true; }
     }
 
     $cache_key = dci_async_template_parts_cache_key($template_key, $page_id, $term_id, $taxonomy, $query_string, $current_url);
