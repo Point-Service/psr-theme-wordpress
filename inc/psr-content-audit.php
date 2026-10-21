@@ -95,7 +95,8 @@ function psr_ca_scan_meta($post_id) {
     $hits = array(); $bytes = 0;
     foreach ($rows as $row) {
         $key = (string) $row['meta_key'];
-        if ($key !== '' && $key[0] === '_' && $key !== '_elementor_data') { continue; }
+        // I contenuti editoriali CMB2 del tema sono privati soltanto come meta_key.
+        if ($key !== '' && $key[0] === '_' && $key !== '_elementor_data' && strpos($key, '_dci_') !== 0) { continue; }
         $value = $row['meta_value'];
         if (!is_string($value)) { continue; }
         // Per ogni pagina max 160 KiB di metadati (niente scansione di media/binary).

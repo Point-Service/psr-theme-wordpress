@@ -134,7 +134,7 @@ function psr_geo_country($ip) {
     if (function_exists('wp_remote_get')) {
         try {
             $response = wp_remote_get('https://api.country.is/' . rawurlencode($ip), array(
-                'timeout'=>2, 'redirection'=>0, 'sslverify'=>true,
+                'timeout'=>2, 'redirection'=>0, 'sslverify'=>true, 'limit_response_size'=>1024,
                 'reject_unsafe_urls'=>true, 'headers'=>array('Accept'=>'application/json'),
                 'user-agent'=>'PSR-GeoLogin/1.0',
             ));

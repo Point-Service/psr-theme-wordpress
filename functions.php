@@ -29,13 +29,27 @@ if (is_file($psr_security_guard_file) && is_readable($psr_security_guard_file)) 
  * Se assente, non causare errori fatali: avviso riservato all'ID 1.
  */
 $psr_login_security_file = get_template_directory() . '/inc/psr-login-security.php';
-if (is_file($psr_login_security_file) && is_readable($psr_login_security_file)) {
+if (is_file($psr_login_security_file) && is_readable($psr_login_security_file)
+    && is_readable(get_template_directory() . '/inc/psr-auth-hardening.php')) {
     require_once $psr_login_security_file;
 } else {
     add_action('admin_notices', function () {
         if (get_current_user_id() !== 1 || !current_user_can('manage_options')) { return; }
-        echo '<div class="notice notice-error"><p><strong>PSR Login Security NON attivo:</strong> manca inc/psr-login-security.php nel tema. Verificare il deploy GitHub/Plesk.</p></div>';
+        echo '<div class="notice notice-error"><p><strong>PSR Login Security NON attivo:</strong> verificare inc/psr-login-security.php e inc/psr-auth-hardening.php nel deploy GitHub/Plesk.</p></div>';
     });
+    // Un deploy incompleto non deve aprire login senza OTP o fermare il sito pubblico.
+    $psr_missing_auth_deny = static function () {
+        wp_die('Protezione accessi non disponibile. Ripristinare i file del tema dal server.', '', array('response'=>503));
+    };
+    add_action('login_init', $psr_missing_auth_deny, -100);
+    add_filter('authenticate', static function ($user) { return new WP_Error('psr_auth_unavailable','Protezione accessi non disponibile.'); }, PHP_INT_MAX);
+    add_filter('rest_authentication_errors', static function ($result) {
+        return get_current_user_id()>0 ? new WP_Error('psr_auth_unavailable','Protezione accessi non disponibile.',array('status'=>503)) : $result;
+    }, PHP_INT_MAX);
+    add_action('init', static function () use ($psr_missing_auth_deny) {
+        $dispatcher=in_array(basename((string)($_SERVER['SCRIPT_NAME']??'')),array('admin-ajax.php','admin-post.php'),true);
+        if ((is_admin() && !$dispatcher) || is_user_logged_in()) { $psr_missing_auth_deny(); }
+    }, -100);
 }
 
 /**
@@ -71,6 +85,9 @@ if (is_file($psr_security_center_file) && is_readable($psr_security_center_file)
 /**
  * Funzionalità Trasversali
  */
+$psr_file_manager_installer = get_template_directory() . '/inc/psr-file-manager-policy-installer.php';
+if (is_readable($psr_file_manager_installer)) { require_once $psr_file_manager_installer; }
+
 require get_template_directory() . '/inc/funzionalita_trasversali.php';
 
 /**

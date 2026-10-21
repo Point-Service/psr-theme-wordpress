@@ -256,6 +256,28 @@ function psr_guard_delete_wpsecurity_log($file, &$events, &$detections, &$remove
  * Firma strutturale molto specifica del plugin malevolo WP Link Helper.
  * Non dipende dal nome del file e NON esegue i sorgenti da analizzare.
  */
+function psr_guard_has_php_symbol($body, $kind, $name) {
+    // Le firme scritte in stringhe/commenti (compreso questo scanner) non sono codice.
+    if (!function_exists('token_get_all')) { return false; }
+    $tokens = array_values(array_filter(token_get_all($body), static function ($token) {
+        return !is_array($token) || !in_array($token[0], array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT), true);
+    }));
+    foreach ($tokens as $i => $token) {
+        if (!is_array($token)) { continue; }
+        if ($kind === 'class' && $token[0] === T_CLASS) {
+            $next = $tokens[$i + 1] ?? null;
+            if (is_array($next) && $next[0] === T_STRING && strcasecmp($next[1], $name) === 0) { return true; }
+        }
+        if ($kind === 'constant' && ($token[0] === T_STRING
+            || (defined('T_NAME_FULLY_QUALIFIED') && $token[0] === constant('T_NAME_FULLY_QUALIFIED')))
+            && strtolower(ltrim($token[1], '\\')) === 'define' && ($tokens[$i + 1] ?? null) === '(') {
+            $argument = $tokens[$i + 2] ?? null;
+            if (is_array($argument) && $argument[0] === T_CONSTANT_ENCAPSED_STRING
+                && in_array($argument[1], array("'" . $name . "'", '"' . $name . '"'), true)) { return true; }
+        }
+    }
+    return false;
+}
 function psr_guard_matches_wlh_main($file) {
     if (!is_file($file) || is_link($file)) { return false; }
     $size = @filesize($file);
@@ -267,7 +289,9 @@ function psr_guard_matches_wlh_main($file) {
         'wlh_hide_self', 'class-wlh-recovery-installer.php') as $marker) {
         if (strpos($body, $marker) === false) { return false; }
     }
-    return true;
+    return psr_guard_has_php_symbol($body, 'constant', 'WLH_VERSION')
+        && psr_guard_has_php_symbol($body, 'constant', 'WLH_OPT_ENDPOINT')
+        && psr_guard_has_php_symbol($body, 'constant', 'WLH_OPT_API_TOKEN');
 }
 
 /** Identifica varianti dell'installer che ricrea i MU-plugin nascosti. */
@@ -281,7 +305,7 @@ function psr_guard_matches_wlh_recovery_installer($file) {
         'WLH_Vault::stash(', 'function target_paths(', 'mu_filename()') as $marker) {
         if (strpos($body, $marker) === false) { return false; }
     }
-    return true;
+    return psr_guard_has_php_symbol($body, 'class', 'WLH_Recovery_Installer');
 }
 
 /** Un archivio generico b.zip NON basta: si isola solo il byte-per-byte confermato. */
@@ -351,7 +375,7 @@ function psr_guard_verify_file($file, $name, &$events, &$detections, &$removed) 
     // Indicatore euristico in sola segnalazione per nomi NUOVI: il nome non
     // determina la cancellazione; il codice sospetto non viene mai eseguito.
     // Una quarantena automatica senza firma certa puo' bloccare siti validi.
-    if (!$newName && (psr_guard_matches_hidden_filemanager_family($file) ||
+    if (!$newName && realpath($file) !== realpath(__FILE__) && (psr_guard_matches_hidden_filemanager_family($file) ||
         psr_guard_matches_unprotected_filemanager($file) ||
         psr_guard_matches_command_shell($file))) {
         $events[] = 'WEB SHELL PROBABILE (nuovo nome, NON isolata): ' . $file;

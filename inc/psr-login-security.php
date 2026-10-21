@@ -5,10 +5,35 @@
  * Richiede PHP 7.4+ e posta WordPress configurata; gli OTP non sono mai salvati in chiaro.
  */
 if (!defined('ABSPATH')) { exit; }
+require_once __DIR__ . '/psr-auth-hardening.php';
+
+/** Rifiuta array/oggetti nei campi scalari prima delle funzioni di autenticazione. */
+function psr_login_request_shape_valid($sources) {
+    $fields = array('action','log','pwd','user_login','user_email','redirect_to','wp_lang',
+        'key','login','rp_key','rp_login','pass1','pass2','psr_otp','psr_nonce','psr_reset_nonce');
+    foreach ($sources as $source) {
+        foreach ($fields as $field) {
+            if (isset($source[$field]) && !is_string($source[$field])) { return false; }
+        }
+    }
+    return true;
+}
+function psr_login_validate_request_shape() {
+    if (psr_login_request_shape_valid(array($_GET, $_POST, $_REQUEST))) { return; }
+    nocache_headers();
+    wp_die('Richiesta di accesso non valida.', 'PSR - Richiesta non valida', array('response'=>400));
+}
+function psr_login_validate_request_on_init() {
+    $script = basename((string)($_SERVER['SCRIPT_NAME'] ?? ''));
+    if ($script === 'wp-login.php') { psr_login_validate_request_shape(); }
+}
+add_action('init', 'psr_login_validate_request_on_init', -10);
+add_action('login_init', 'psr_login_validate_request_shape', -10);
 
 /** Difesa del modulo: controlla la rete prima di mostrare form o emettere OTP. */
 function psr_login_access_error() {
     if ((defined('WP_CLI') && WP_CLI) || (defined('DOING_CRON') && DOING_CRON)) { return null; }
+    if (!empty($GLOBALS['psr_auth_password_busy'])) { return new WP_Error('psr_login_busy', 'Accesso gia\' in verifica da questa rete. Riprova tra pochi secondi.'); }
     if (!function_exists('psr_geo_decision') || !empty(psr_geo_decision()['blocked'])) {
         return new WP_Error('psr_login_ip_denied', 'Accesso riservato a connessioni da IP italiani verificati.');
     }
@@ -63,7 +88,7 @@ function psr_login_ip_key($ip) {
 }
 function psr_login_rate_state($ip) {
     if ($ip === '') { return array('n'=>0, 'until'=>0, 'start'=>0); }
-    $state = get_transient(psr_login_ip_key($ip));
+    $state = psr_auth_fresh_transient(psr_login_ip_key($ip));
     return is_array($state) ? $state : array('n'=>0, 'until'=>0, 'start'=>0);
 }
 function psr_login_rate_blocked($ip) {
@@ -73,6 +98,9 @@ function psr_login_rate_blocked($ip) {
 }
 function psr_login_rate_failure($ip, $reason = 'password', $username = '', $source = 'login') {
     if ($ip === '') { return; }
+    $lock = psr_auth_lock('rate|' . psr_login_ip_key($ip));
+    if (!$lock) { return false; }
+    try {
     $state = psr_login_rate_state($ip);
     $now = time();
     if (empty($state['start']) || $now - (int) $state['start'] > 7 * DAY_IN_SECONDS) {
@@ -85,7 +113,7 @@ function psr_login_rate_failure($ip, $reason = 'password', $username = '', $sour
     elseif ($count >= 15) { $state['until'] = max((int)$state['until'], $now + DAY_IN_SECONDS); }
     elseif ($count >= 10) { $state['until'] = max((int)$state['until'], $now + HOUR_IN_SECONDS); }
     elseif ($count >= 5) { $state['until'] = max((int)$state['until'], $now + 10 * MINUTE_IN_SECONDS); }
-    set_transient(psr_login_ip_key($ip), $state, 8 * DAY_IN_SECONDS);
+    if (!set_transient(psr_login_ip_key($ip), $state, 8 * DAY_IN_SECONDS)) { return false; }
     if (function_exists('psr_center_sync_ip')) { psr_center_sync_ip($ip, $state); }
     if ($reason === 'auth_probe') {
         // Non attribuire una password errata: GeoIP ha bloccato PRIMA di verificarla.
@@ -102,9 +130,24 @@ function psr_login_rate_failure($ip, $reason = 'password', $username = '', $sour
             $count >= 15 ? 'critical' : 'warning', $ip, $username, '', $reason === 'otp' ? 'otp' : 'login',
             'Tentativo ' . $count . ($state['until'] > $now ? '; blocco fino a ' . gmdate('Y-m-d H:i:s', $state['until']) . ' UTC' : ''));
     }
+    return true;
+    } finally { psr_auth_unlock($lock); }
 }
 function psr_login_auth_precheck($user, $username, $password) {
     if (defined('WP_CLI') && WP_CLI) { return $user; }
+    $access=psr_login_access_error();
+    if (is_wp_error($access)) { return $access; }
+    if ($username!=='' && $password!=='' && empty($GLOBALS['psr_auth_capacity_lock'])) {
+        $capacity=psr_auth_capacity();
+        if (!$capacity) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy','Servizio accessi occupato. Riprova tra pochi secondi.'); }
+        $GLOBALS['psr_auth_capacity_lock']=$capacity;
+    }
+    // Un solo controllo password per IP alla volta; contesa non equivale a errore o ban.
+    if (psr_login_ip() !== '' && empty($GLOBALS['psr_auth_password_lock'])) {
+        $lock=psr_auth_lock('password|' . psr_login_ip_key(psr_login_ip()), 0);
+        if (!$lock) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy', 'Accesso gia\' in verifica da questa rete. Riprova tra pochi secondi.'); }
+        $GLOBALS['psr_auth_password_lock']=$lock;
+    }
     $remaining = psr_login_rate_blocked(psr_login_ip());
     if ($remaining) {
         if (function_exists('psr_center_log_limited')) {
@@ -133,6 +176,7 @@ add_action('wp_login_failed', 'psr_login_failed_password', 10, 2);
  * Gli altri utenti ricevono OTP alla mail del proprio profilo (da proteggere).
  */
 function psr_login_email_target($user) {
+    if (psr_login_main_admin($user)) { return psr_auth_admin_email(); }
     $pinned = psr_login_main_admin($user) ? get_option('_psr_login_email_to', '') : '';
     $email = is_string($pinned) && $pinned !== '' ? $pinned : ($user instanceof WP_User ? $user->user_email : '');
     return is_string($email) && is_email($email) ? $email : '';
@@ -153,8 +197,15 @@ function psr_login_email_can_send($user) {
     $key = '_psr_login_email_limit_' . (int)$user->ID;
     $ip = psr_login_ip();
     $ip_key = $ip !== '' ? '_psr_login_mail_ip_' . substr(hash_hmac('sha256',$ip,wp_salt('auth')),0,32) : '';
+    $locks=array();
+    try {
+    foreach (array_filter(array($ip_key,$key)) as $resource) {
+        $lock=psr_auth_lock('mail|' . $resource);
+        if (!$lock) { return false; }
+        $locks[]=$lock;
+    }
     if ($ip_key !== '') {
-        $istate=get_transient($ip_key);
+        $istate=psr_auth_fresh_transient($ip_key);
         if (!is_array($istate) || time()-(int)($istate['start']??0)>=HOUR_IN_SECONDS) {
             $istate=array('start'=>time(),'n'=>0);
         }
@@ -162,19 +213,20 @@ function psr_login_email_can_send($user) {
     }
 
     $now = time();
-    $state = get_transient($key);
+    $state = psr_auth_fresh_transient($key);
     if (!is_array($state) || $now - (int)($state['start'] ?? 0) >= HOUR_IN_SECONDS) {
         $state = array('start'=>$now, 'last'=>0, 'n'=>0);
     }
     if ((int)($state['last'] ?? 0) > $now - 60 || (int)($state['n'] ?? 0) >= 10) { return false; }
     $state['last'] = $now;
     $state['n'] = (int)$state['n'] + 1;
-    set_transient($key, $state, HOUR_IN_SECONDS);
+    if (!set_transient($key, $state, HOUR_IN_SECONDS)) { return false; }
     if ($ip_key !== '') {
         $istate['n']++;
-        set_transient($ip_key, $istate, HOUR_IN_SECONDS);
+        if (!set_transient($ip_key, $istate, HOUR_IN_SECONDS)) { return false; }
     }
     return true;
+    } finally { foreach(array_reverse($locks) as $lock) { psr_auth_unlock($lock); } }
 }
 /** Emette OTP: salva soltanto HMAC e metadati, non il codice in chiaro. */
 function psr_login_email_issue($user, $ticket, &$pending) {
@@ -197,8 +249,10 @@ function psr_login_email_issue($user, $ticket, &$pending) {
     $body .= 'Codice OTP: ' . $code . "\n\n";
     $body .= "Scade entro 5 minuti ed e' utilizzabile una sola volta.\n";
     $body .= "Se non sei stato tu, cambia la password e segnala l'evento al responsabile.\n";
+    $GLOBALS['psr_auth_sensitive_mail']=array('to'=>$email,'subject'=>$subject,'message'=>$body,'headers'=>array('Content-Type: text/plain; charset=UTF-8'));
     try { $sent = wp_mail($email, $subject, $body, array('Content-Type: text/plain; charset=UTF-8')); }
     catch (Throwable $e) { $sent = false; }
+    finally { psr_auth_mail_done(); }
     // Restituzione true da wp_mail significa accettazione dal trasporto, NON consegna garantita.
     if (!$sent) {
         unset($pending['digest'], $pending['code_expires']);
@@ -211,13 +265,22 @@ function psr_login_session_key($token) {
 }
 function psr_login_mark_auth_cookie($auth_cookie, $expire, $expiration, $user_id, $scheme, $token) {
     if (empty($GLOBALS['psr_login_granting']) || (int)$user_id <= 0 || !is_string($token)) { return; }
+    $owned=empty($GLOBALS['psr_auth_session_lock']);
+    $lock=$owned ? psr_auth_lock('session|' . (int)$user_id) : $GLOBALS['psr_auth_session_lock'];
+    if (!$lock) { WP_Session_Tokens::get_instance((int)$user_id)->destroy($token); wp_die('Sessione non disponibile. Riprova.', '', array('response'=>503)); }
+    try {
+    wp_cache_delete((int)$user_id, 'user_meta');
     $sessions = get_user_meta((int)$user_id, '_psr_login_email_sessions', true);
     if (!is_array($sessions)) { $sessions = array(); }
     $sessions = array_filter($sessions, static function ($expiry) { return (int)$expiry > time(); });
     $sessions[psr_login_session_key($token)] = (int)$expiration;
     // Evitare accumuli a tempo indefinito di sessioni vecchie.
     if (count($sessions) > 25) { asort($sessions, SORT_NUMERIC); $sessions = array_slice($sessions, -25, null, true); }
-    update_user_meta((int)$user_id, '_psr_login_email_sessions', $sessions);
+    if (update_user_meta((int)$user_id, '_psr_login_email_sessions', $sessions) === false) {
+        WP_Session_Tokens::get_instance((int)$user_id)->destroy($token);
+        wp_die('Impossibile verificare la sessione. Riprova.', '', array('response'=>503));
+    }
+    } finally { if ($owned) { psr_auth_unlock($lock); } }
 }
 add_action('set_auth_cookie', 'psr_login_mark_auth_cookie', 10, 6);
 
@@ -306,7 +369,9 @@ function psr_login_start_otp($user, $username, $password) {
     if (function_exists('psr_center_log_event')) {
         psr_center_log_event('otp_sent','info',psr_login_ip(),$user->user_login,'','otp','OTP richiesto dopo password corretta');
     }
-    set_transient(psr_login_pending_key($ticket), $pending, 5 * MINUTE_IN_SECONDS);
+    if (!set_transient(psr_login_pending_key($ticket), $pending, 5 * MINUTE_IN_SECONDS)) {
+        return new WP_Error('psr_login_storage_failed','Impossibile salvare la verifica OTP. Accesso negato: riprova.');
+    }
     psr_login_set_pending_cookie($ticket, $pending['code_expires']);
     wp_safe_redirect(add_query_arg('action', 'psr_mfa', wp_login_url()));
     exit;
@@ -315,9 +380,9 @@ function psr_login_start_otp($user, $username, $password) {
 add_filter('authenticate', 'psr_login_start_otp', PHP_INT_MAX, 3);
 
 function psr_login_pending() {
-    $ticket = isset($_COOKIE[psr_login_cookie_name()]) ? (string)$_COOKIE[psr_login_cookie_name()] : '';
+    $ticket = isset($_COOKIE[psr_login_cookie_name()]) && is_string($_COOKIE[psr_login_cookie_name()]) ? $_COOKIE[psr_login_cookie_name()] : '';
     if (!preg_match('/^[a-f0-9]{64}$/D', $ticket)) { return array('', false); }
-    $p = get_transient(psr_login_pending_key($ticket));
+    $p = psr_auth_fresh_transient(psr_login_pending_key($ticket));
     if (!is_array($p) || (int)($p['code_expires'] ?? 0) < time() || (int)($p['deadline'] ?? 0) < time() ||
         !hash_equals((string)($p['ua'] ?? ''), hash('sha256', (string)($_SERVER['HTTP_USER_AGENT'] ?? ''))) ||
         (string)($p['ip'] ?? '') !== psr_login_ip() || (int)($p['uid'] ?? 0) <= 0) {
@@ -326,14 +391,29 @@ function psr_login_pending() {
     return array($ticket, $p);
 }
 function psr_login_grant_session($user, $pending) {
+    $lock=psr_auth_lock('session|' . (int)$user->ID);
+    if (!$lock) { wp_die('Creazione sessione gia\' in corso. Riprova.', '', array('response'=>503)); }
+    $GLOBALS['psr_auth_session_lock']=$lock;
+    try {
+    wp_cache_delete((int)$user->ID, 'user_meta');
     $GLOBALS['psr_login_granting'] = true;
     wp_set_auth_cookie($user->ID, !empty($pending['remember']));
     unset($GLOBALS['psr_login_granting']);
     wp_set_current_user($user->ID);
     do_action('wp_login', $user->user_login, $user);
+    } finally {
+        unset($GLOBALS['psr_login_granting'], $GLOBALS['psr_auth_session_lock']);
+        psr_auth_unlock($lock);
+    }
 }
 function psr_login_otp_page() {
     psr_login_require_authorized_ip();
+    $otp_lock=false;
+    $raw_ticket=$_COOKIE[psr_login_cookie_name()]??'';
+    if (($_SERVER['REQUEST_METHOD']??'GET')==='POST' && is_string($raw_ticket) && preg_match('/^[a-f0-9]{64}$/D',$raw_ticket)) {
+        $otp_lock=psr_auth_lock('otp|' . $raw_ticket);
+        if (!$otp_lock) { wp_die('Verifica OTP gia\' in corso. Riprova tra pochi secondi.', '', array('response'=>429)); }
+    }
     list($ticket, $pending) = psr_login_pending();
     if (psr_login_rate_blocked(psr_login_ip())) { psr_login_cancel_ticket($ticket); $pending = false; }
     if (!$pending) {
@@ -360,7 +440,9 @@ function psr_login_otp_page() {
                 $pending['resends'] = (int)($pending['resends'] ?? 0) + 1;
                 $sent = psr_login_email_issue($user, $ticket, $pending);
                 if (!is_wp_error($sent)) {
-                    set_transient(psr_login_pending_key($ticket), $pending, max(1, $pending['code_expires'] - time()));
+                    if (!set_transient(psr_login_pending_key($ticket), $pending, max(1, $pending['code_expires'] - time()))) {
+                        psr_login_cancel_ticket($ticket); wp_die('Verifica non salvata. Ricomincia dal login.', '', array('response'=>503));
+                    }
                     psr_login_set_pending_cookie($ticket, $pending['code_expires']);
                     $message = 'Nuovo codice richiesto: controlla la posta. Il codice precedente non e\' piu\' valido.';
                 } else { $message = $sent->get_error_message(); }
@@ -368,18 +450,28 @@ function psr_login_otp_page() {
         } else {
             $input = (isset($_POST['psr_otp']) && is_string($_POST['psr_otp'])) ? trim(wp_unslash($_POST['psr_otp'])) : '';
             if (psr_login_email_matches($pending, $ticket, $input)) {
+                if (!psr_auth_claim_ticket($ticket, (int)$pending['deadline'])) {
+                    psr_login_cancel_ticket($ticket);
+                    wp_die('Codice gia\' utilizzato o verifica non disponibile. Ricomincia dal login.', '', array('response'=>403));
+                }
                 // Usa un token monouso: invalida il ticket PRIMA di creare la sessione.
                 psr_login_cancel_ticket($ticket);
                 if (psr_login_main_admin($user) && !get_option('_psr_login_email_to', '')) {
                     update_option('_psr_login_email_to', psr_login_email_target($user), false);
                 }
                 if (psr_login_ip() !== '') {
-                    delete_transient(psr_login_ip_key(psr_login_ip()));
-                    if (function_exists('psr_center_remove_ip')) { psr_center_remove_ip(psr_login_ip()); }
+                    $rate_lock=psr_auth_lock('rate|' . psr_login_ip_key(psr_login_ip()));
+                    if ($rate_lock) {
+                        try {
+                            delete_transient(psr_login_ip_key(psr_login_ip()));
+                            if (function_exists('psr_center_remove_ip')) { psr_center_remove_ip(psr_login_ip()); }
+                        } finally { psr_auth_unlock($rate_lock); }
+                    }
                 }
                 if (function_exists('psr_center_log_event')) {
                     psr_center_log_event('otp_verified','info',psr_login_ip(),$user->user_login,'','otp','Codice monouso verificato');
                 }
+                psr_auth_unlock($otp_lock);
                 psr_login_grant_session($user, $pending);
                 wp_safe_redirect($pending['redirect']); exit;
             }
@@ -389,10 +481,13 @@ function psr_login_otp_page() {
                 psr_login_cancel_ticket($ticket);
                 wp_die('Troppi codici errati. Ricomincia dal login dopo il blocco.', 'PSR - OTP email', array('response'=>403));
             }
-            set_transient(psr_login_pending_key($ticket), $pending, max(1, (int)$pending['code_expires'] - time()));
+            if (!set_transient(psr_login_pending_key($ticket), $pending, max(1, (int)$pending['code_expires'] - time()))) {
+                psr_login_cancel_ticket($ticket); wp_die('Verifica non salvata. Ricomincia dal login.', '', array('response'=>503));
+            }
             $message = 'Codice non valido o scaduto.';
         }
     }
+    psr_auth_unlock($otp_lock);
     nocache_headers();
     login_header('PSR - Verifica email obbligatoria');
     echo '<div class="psr-otp-intro"><p><strong>Conferma il tuo accesso</strong></p>';
@@ -462,7 +557,9 @@ function psr_login_privilege_authorized() {
 }
 function psr_login_protect_privilege_caps($caps,$cap,$user_id,$args) {
     if (!psr_login_admin_guard_enabled() || (defined('WP_CLI') && WP_CLI)) { return $caps; }
-    if (in_array($cap,array('promote_users','promote_user','delete_users','delete_user','remove_user'),true)
+    if (in_array($cap,array('promote_users','promote_user','delete_users','delete_user','remove_user',
+        'install_plugins','upload_plugins','activate_plugins','update_plugins','delete_plugins','edit_plugins',
+        'edit_files','switch_themes','edit_themes','install_themes','upload_themes','delete_themes','update_themes','update_core'),true)
         && !psr_login_privilege_authorized()) { return array('do_not_allow'); }
     return $caps;
 }
