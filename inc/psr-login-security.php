@@ -182,31 +182,68 @@ function psr_login_email_target($user) {
     return is_string($email) && is_email($email) ? $email : '';
 }
 /**
- * Privacy OTP: mostra solo parte della casella e il dominio per riconoscere
- * il destinatario. Il valore restituito non deve mai essere usato in wp_mail().
+ * Mascheramento esclusivamente visivo della destinazione OTP.
+ * Su indirizzi lunghi lascia visibili pochi caratteri aggiuntivi; gli
+ * indirizzi corti restano oscurati come nel fix precedente.
+ * Non modifica il destinatario reale degli OTP.
  */
 function psr_login_mask_email_for_display($email) {
     if (!is_string($email) || !is_email($email)) { return ''; }
     $parts = explode('@', $email, 2);
     if (count($parts) !== 2 || $parts[0] === '' || $parts[1] === '') { return ''; }
+
     $local = $parts[0];
     $length = strlen($local);
-    // Il dominio rimane leggibile per riconoscere la casella; mai mostrare
-    // il nome completo prima della @. La mail reale serve solo a wp_mail().
     if ($length === 1) {
         $masked_local = '*';
     } elseif ($length === 2) {
         $masked_local = substr($local, 0, 1) . '*';
-    } elseif ($length <= 4) {
-        $masked_local = substr($local, 0, 1) . str_repeat('*', $length - 2) . substr($local, -1);
-    } elseif ($length <= 7) {
-        $masked_local = substr($local, 0, 2) . str_repeat('*', $length - 3) . substr($local, -1);
-    } elseif ($length === 8) {
-        $masked_local = substr($local, 0, 3) . str_repeat('*', 3) . substr($local, -2);
     } else {
-        $masked_local = substr($local, 0, 3) . str_repeat('*', $length - 6) . substr($local, -3);
+        // Rivelare piu' caratteri soltanto su caselle abbastanza lunghe.
+        $visible = $length >= 18 ? 3 : ($length >= 10 ? 2 : 1);
+        $masked_local = substr($local, 0, $visible)
+            . str_repeat('*', min(6, $length - 2 * $visible))
+            . substr($local, -$visible);
     }
-    return $masked_local . '@' . $parts[1];
+
+    $labels = explode('.', $parts[1]);
+    $last = count($labels) - 1;
+    if ($last < 1) { return ''; }
+    $domain_index = $last - 1;
+
+    // Mantieni oscurati gli eventuali sottodomini, come nel fix precedente.
+    for ($i = 0; $i < $domain_index; $i++) {
+        $labels[$i] = str_repeat('*', min(6, strlen($labels[$i])));
+    }
+
+    $name = $labels[$domain_index];
+    $name_length = strlen($name);
+    if ($name_length <= 2) {
+        $masked_domain = str_repeat('*', $name_length);
+    } elseif ($name_length <= 4) {
+        $masked_domain = substr($name, 0, 1)
+            . str_repeat('*', $name_length - 2)
+            . substr($name, -1);
+    } else {
+        // Esempio indirizzo corto: p-service -> p-******ce (invariato).
+        $hyphen_prefix = substr($name, 1, 1) === '-';
+        $prefix_length = $hyphen_prefix ? 2 : 1;
+        $suffix_length = 2;
+        if ($name_length >= 12) {
+            $prefix_length = $hyphen_prefix ? 3 : 2;
+            $suffix_length = 3;
+        }
+        if ($name_length >= 20) {
+            $prefix_length = $hyphen_prefix ? 4 : 3;
+            $suffix_length = 3;
+        }
+        $masked_domain = substr($name, 0, $prefix_length)
+            . '******'
+            . substr($name, -$suffix_length);
+    }
+    $labels[$domain_index] = $masked_domain;
+
+    return $masked_local . '@' . implode('.', $labels);
 }
 function psr_login_email_digest($ticket, $code) {
     return hash_hmac('sha256', 'psr-login-email-v1|' . $ticket . '|' . $code, wp_salt('secure_auth'));
