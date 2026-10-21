@@ -1,14 +1,14 @@
 <?php
 /**
  * PSR Geo Login — blocca il login e il pannello WordPress quando il server
- * riconosce con sufficiente certezza che l'IP pubblico e' estero (tutti i ruoli).
+ * non riconosce l'IP pubblico come italiano (tutti i ruoli).
  * Caricato dal tema. Frontend: solo ban IP già confermati, mai geoblocking dei visitatori.
  *
  * Requisiti: WordPress con API HTTP e transients; PHP 7.4+.
  * IP: soltanto REMOTE_ADDR (mai intestazioni proxy non autenticate).
  * Servizio di geolocalizzazione: https://api.country.is/{ip}.
- * In caso di GeoIP non disponibile/non conclusivo non effettua blocchi:
- * preferiamo segnalare il problema piuttosto che rendere impossibile il login.
+ * GeoIP non disponibile/non conclusivo: nega le sole aree protette.
+ * Il recupero del gestore resta possibile da Plesk/WP-CLI, mai da header HTTP.
  */
 if (!defined('ABSPATH')) { exit; }
 
@@ -122,7 +122,7 @@ function psr_geo_cache_key($ip) {
 }
 function psr_geo_country($ip) {
     if ($ip === '') { return array('country'=>'', 'source'=>'no_public_ip'); }
-    if (psr_geo_ip_allowlisted($ip)) { return array('country'=>'IT', 'source'=>'allowlist'); }
+    // Un IP fidato non prova il Paese: nessuna whitelist aggira la politica Italia.
     $key = psr_geo_cache_key($ip);
     $cached = get_transient($key);
     if (is_array($cached) && isset($cached['country'], $cached['source'])) { return $cached; }
@@ -139,7 +139,7 @@ function psr_geo_country($ip) {
                 'user-agent'=>'PSR-GeoLogin/1.0',
             ));
         } catch (Throwable $e) {
-            // Errore di plugin/HTTP: lasciare disponibile il portale, avviso all'ID 1.
+            // Il sito pubblico resta disponibile; le aree protette richiedono IT.
             $response = new WP_Error('psr_geo_http_failed', 'GeoIP non disponibile');
         }
         if (!is_wp_error($response) && (int) wp_remote_retrieve_response_code($response) === 200) {
@@ -181,20 +181,18 @@ function psr_geo_decision() {
     }
     if ($ip === '') {
         $out['reason'] = 'ip_not_public_or_proxy';
-        return $GLOBALS['psr_geo_request_decision'] = $out;
-    }
-    if (psr_geo_ip_allowlisted($ip)) {
-        $out['country'] = 'IT'; $out['reason'] = 'explicit_allowlist';
+        $out['blocked'] = true;
         return $GLOBALS['psr_geo_request_decision'] = $out;
     }
     $geo = psr_geo_country($ip);
     $out['country'] = $geo['country'];
     $out['reason'] = $geo['source'];
-    $out['blocked'] = $geo['country'] !== '' && $geo['country'] !== 'IT';
+    $out['blocked'] = $geo['country'] !== 'IT';
     return $GLOBALS['psr_geo_request_decision'] = $out;
 }
 function psr_geo_deny_event($decision) {
-    return isset($decision['reason']) && $decision['reason'] === 'global_blacklist' ? 'ip_blacklist_denied' : 'geo_denied';
+    if (isset($decision['reason']) && $decision['reason'] === 'global_blacklist') { return 'ip_blacklist_denied'; }
+    return empty($decision['country']) ? 'geo_unavailable' : 'geo_denied';
 }
 /** Registra SOLO tentativi effettivi di autenticazione su POST, mai visite GET.
  * Un IP estero viene respinto prima di verificare le credenziali, quindi
@@ -203,6 +201,8 @@ function psr_geo_deny_event($decision) {
  */
 function psr_geo_auth_probe($source = 'login', $username = '') {
     if (!empty($GLOBALS['psr_geo_probe_counted']) || strtoupper((string)($_SERVER['REQUEST_METHOD'] ?? 'GET')) !== 'POST') { return; }
+    // Una verifica GeoIP fallita non dimostra un tentativo estero: niente nuovi ban.
+    if (empty(psr_geo_decision()['country'])) { return; }
     $ip = psr_geo_public_ip();
     if ($ip === '' || !function_exists('psr_login_rate_failure')) { return; }
     if (function_exists('psr_login_rate_blocked') && psr_login_rate_blocked($ip) > 0) { return; }
@@ -337,6 +337,12 @@ function psr_geo_admin_init() {
 }
 add_action('admin_init', 'psr_geo_admin_init', 0);
 
+/** Prima di auth_redirect(): nega anche wp-admin anonimo senza mostrare il login. */
+function psr_geo_early_admin_gate() {
+    if (is_admin()) { psr_geo_admin_init(); }
+}
+add_action('init', 'psr_geo_early_admin_gate', 2);
+
 /** REST pubblica disponibile ai cittadini, solo token/login/API account riservate.
  * wp-json/wp/v2/pages o pubblici GET non devono essere bloccati per Paese.
  */
@@ -344,10 +350,12 @@ function psr_geo_rest_auth_route($route, $method) {
     $route = strtolower('/' . ltrim((string)$route, '/'));
     $route = preg_replace('~/+~', '/', $route);
     $method = strtoupper((string)$method);
-    if ($method === 'GET' || $method === 'HEAD' || $method === 'OPTIONS') { return false; }
-    if (preg_match('~^/(?:wp/v2/users(?:/|$)|jwt-auth/v1/token(?:/|$)|simple-jwt-login/v1/auth(?:/|$)|wp-oauth/v1/token(?:/|$))~', $route)) {
+    if ($method === 'OPTIONS') { return false; }
+    // I token/login restano protetti anche se un plugin li espone tramite GET.
+    if (preg_match('~^/(?:jwt-auth/v1/token(?:/|$)|simple-jwt-login/v1/auth(?:/|$)|wp-oauth/v1/token(?:/|$))~', $route)) {
         return true;
     }
+    if ($method !== 'GET' && $method !== 'HEAD' && preg_match('~^/wp/v2/users(?:/|$)~', $route)) { return true; }
     // Non bloccare API token di servizi pubblici o endpoint di iscrizione
     // che non siano inequivocabilmente sistemi di autenticazione.
     return (bool)preg_match('~/(?:login|authenticate|authentication|auth/token|oauth/token|sign-in|signin)(?:/|$)~', $route);
@@ -411,7 +419,7 @@ function psr_geo_admin_notice() {
     if (!psr_geo_enabled() || (int) get_current_user_id() !== 1 || !current_user_can('manage_options')) { return; }
     $d = psr_geo_decision();
     if ($d['reason'] !== 'geoip_unavailable' && $d['reason'] !== 'ip_not_public_or_proxy') { return; }
-    echo '<div class="notice notice-warning"><p><strong>PSR Geo Login:</strong> impossibile determinare in modo affidabile il Paese dell\'IP (' . esc_html($d['reason']) . '). Il blocco geografico non si applica a questa connessione. Controlla GeoIP e REMOTE_ADDR in Plesk.</p></div>';
+    echo '<div class="notice notice-warning"><p><strong>PSR Geo Login:</strong> impossibile determinare in modo affidabile il Paese dell\'IP (' . esc_html($d['reason']) . '). Le aree protette richiedono un IP italiano verificato. Controlla GeoIP e REMOTE_ADDR in Plesk.</p></div>';
 }
 add_action('admin_notices', 'psr_geo_admin_notice', 2);
 
@@ -430,6 +438,6 @@ function psr_geo_tools_page() {
     echo '<p>Stato filtro: <strong>' . (psr_geo_enabled() ? 'Attivo' : 'Disattivato da wp-config.php') . '</strong></p>';
     echo '<p>IP riconosciuto dal server: <code>' . esc_html($d['ip'] ?: '(non pubblico)') . '</code></p>';
     echo '<p>Paese rilevato: <strong>' . esc_html($d['country'] ?: 'non determinabile') . '</strong>. Origine: <code>' . esc_html($d['reason']) . '</code></p>';
-    echo '<p>Il blocco e\' applicato soltanto quando viene riconosciuto un Paese diverso da IT. Se GeoIP non risponde o REMOTE_ADDR e\' un proxy privato, l\'accesso resta disponibile e viene mostrato un avviso.</p>';
+    echo '<p>Le aree protette sono disponibili soltanto quando il Paese riconosciuto e\' IT. GeoIP non disponibile o REMOTE_ADDR non pubblico: accesso negato. Gli IP fidati non aggirano questo controllo.</p>';
     echo '<p>Per un filtro rigoroso, indipendente da WordPress, configura GeoIP/WAF sul server. Non usare X-Forwarded-For senza un proxy esplicitamente attendibile.</p></div>';
 }

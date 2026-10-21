@@ -195,7 +195,9 @@ add_action('admin_menu', 'psr_center_menu', 999);
 function psr_center_is_own_screen($hook = '') {
     if (!psr_center_is_owner()) { return false; }
     $page = isset($_GET['page']) && is_string($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
-    return $page === 'psr-security-center' || strpos((string)$hook, 'psr-security-center') !== false;
+    return in_array($page, array('psr-security-center','psr-login-security','psr-geo-login'), true)
+        || in_array((string)$hook, array('toplevel_page_psr-security-center',
+            'tools_page_psr-login-security','tools_page_psr-geo-login'), true);
 }
 function psr_center_enqueue($hook) {
     if (!psr_center_is_own_screen($hook)) { return; }
@@ -480,7 +482,7 @@ function psr_center_blocks(){
 function psr_center_geo(){
     $d=function_exists('psr_geo_decision')?psr_geo_decision():array('ip'=>'','country'=>'','reason'=>'missing','blocked'=>false);
     echo '<div class="psrc-kpis"><div class="psrc-card"><div class="label">Filtro Italia</div><div class="value" style="font-size:21px">'.(function_exists('psr_geo_enabled')&&psr_geo_enabled()?'Attivo':'Non disponibile').'</div><div class="detail">Login e pannello di tutti i ruoli</div></div><div class="psrc-card"><div class="label">IP rilevato</div><div class="value" style="font-size:21px">'.esc_html($d['ip']?:'Non pubblico').'</div><div class="detail">REMOTE_ADDR senza header non verificati</div></div><div class="psrc-card"><div class="label">Paese</div><div class="value">'.esc_html($d['country']?:'—').'</div><div class="detail">'.esc_html($d['reason']).'</div></div></div>';
-    echo '<div class="psrc-card"><h2>Protezione geografica degli accessi</h2><p>Le connessioni con IP pubblico identificato come <strong>non italiano</strong> vengono respinte con HTTP 403. La navigazione pubblica non viene filtrata.</p><p class="psrc-info psrc-alert"><strong>Attenzione:</strong> se il servizio GeoIP non risponde o l’indirizzo proviene da un proxy non riconosciuto, l’accesso rimane possibile: non è una garanzia di esclusione assoluta di tutti gli IP esteri.</p><p>Gli IP non sono geolocalizzati in modo affidabile tramite intestazioni HTTP non autenticate. Le modifiche al filtro e le eccezioni sono gestite in <code>wp-config.php</code> e in Plesk, non da questo pannello.</p></div>';
+    echo '<div class="psrc-card"><h2>Protezione geografica degli accessi</h2><p>Login, OTP e amministrazione richiedono un <strong>IP pubblico riconosciuto come italiano</strong>. Gli IP esteri o non verificabili ricevono HTTP 403 prima del modulo. La navigazione pubblica non viene filtrata per Paese.</p><p class="psrc-info psrc-alert"><strong>GeoIP non disponibile:</strong> le aree protette restano chiuse anche per ID 1. Prima del rilascio verifica GeoIP, SMTP e IP reale in Plesk. Il recupero operativo richiede accesso al server.</p><p>Gli IP fidati non aggirano il filtro Italia. Le intestazioni HTTP non autenticate non sono utilizzate per riconoscere l’IP.</p></div>';
 }
 function psr_center_otp(){
     $u=get_userdata(1);$mail=function_exists('psr_login_email_target')?psr_login_email_target($u):'';
@@ -532,7 +534,7 @@ function psr_center_accounts() {
 function psr_center_trusted() {
     $entries=function_exists('psr_geo_trusted_entries')?psr_geo_trusted_entries():array();
     echo '<div class="psrc-card"><span class="psrc-eyebrow">RETE FIDATA</span><h2>IP fidati con impronta crittografica</h2>';
-    echo '<p>Gli indirizzi vengono salvati come <strong>HMAC SHA-256 non reversibile</strong>, mai in chiaro nel database o nel repository GitHub. L’eccezione vale solo per il filtro Italia: OTP email, password, ban e blacklist restano obbligatori.</p>';
+    echo '<p>Le impronte vengono salvate come <strong>HMAC SHA-256</strong>. Le sedi fidate restano protette dai ban manuali involontari, ma <strong>non aggirano il filtro Italia</strong>: anche questi indirizzi devono risultare italiani. OTP, password, ban automatici e blacklist restano obbligatori. Gli eventi di sicurezza possono registrare gli IP in chiaro.</p>';
     echo '<div class="psrc-table-wrap"><table class="psrc-table"><thead><tr><th>Nome</th><th>Impronta (abbreviata)</th><th>Inserito</th><th>Revoca</th></tr></thead><tbody>';
     if (!$entries) { echo '<tr><td colspan="4">Nessun IP fidato configurato.</td></tr>'; }
     foreach($entries as $digest=>$entry){

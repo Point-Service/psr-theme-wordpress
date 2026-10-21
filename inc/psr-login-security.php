@@ -6,6 +6,34 @@
  */
 if (!defined('ABSPATH')) { exit; }
 
+/** Difesa del modulo: controlla la rete prima di mostrare form o emettere OTP. */
+function psr_login_access_error() {
+    if ((defined('WP_CLI') && WP_CLI) || (defined('DOING_CRON') && DOING_CRON)) { return null; }
+    if (!function_exists('psr_geo_decision') || !empty(psr_geo_decision()['blocked'])) {
+        return new WP_Error('psr_login_ip_denied', 'Accesso riservato a connessioni da IP italiani verificati.');
+    }
+    if (psr_login_rate_blocked(psr_login_ip())) {
+        return new WP_Error('psr_login_blocked', 'Troppi tentativi di accesso. Riprova piu\' tardi.');
+    }
+    return null;
+}
+function psr_login_require_authorized_ip() {
+    $error = psr_login_access_error();
+    if (!is_wp_error($error)) { return; }
+    nocache_headers();
+    wp_die(esc_html($error->get_error_message()), 'PSR - Accesso riservato', array('response'=>403));
+}
+add_action('login_init', 'psr_login_require_authorized_ip', 1);
+add_action('login_enqueue_scripts', 'psr_login_require_authorized_ip', -1000);
+
+/** I filtri core/plugin possono sostituire un WP_Error dei controlli iniziali. */
+function psr_login_auth_network_gate($user, $username = '', $password = '') {
+    $error = psr_login_access_error();
+    return is_wp_error($error) ? $error : $user;
+}
+add_filter('authenticate', 'psr_login_auth_network_gate', 98, 3);
+add_filter('authenticate', 'psr_login_auth_network_gate', PHP_INT_MAX, 3);
+
 function psr_login_main_admin($user) {
     return $user instanceof WP_User && (int) $user->ID === 1;
 }
@@ -26,6 +54,7 @@ function psr_login_session_verified($user_id) {
 
 function psr_login_ip() {
     // Non fidarsi mai di X-Forwarded-For/CF-Connecting-IP senza un proxy configurato.
+    if (function_exists('psr_geo_public_ip')) { return psr_geo_public_ip(); }
     $ip = isset($_SERVER['REMOTE_ADDR']) ? trim((string) $_SERVER['REMOTE_ADDR']) : '';
     return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) ? $ip : '';
 }
@@ -211,6 +240,21 @@ function psr_login_force_proved_session() {
 add_action('init', 'psr_login_force_proved_session', 1);
 add_action('admin_init', 'psr_login_force_proved_session', 1);
 
+/** Un provider REST puo' impostare l'utente dopo init: richiedere comunque prova OTP. */
+function psr_login_rest_proved_session($result) {
+    if (is_wp_error($result)) { return $result; }
+    $user = wp_get_current_user();
+    if ($user instanceof WP_User && (int)$user->ID > 0) {
+        $error = psr_login_access_error();
+        if (is_wp_error($error)) { $error->add_data(array('status'=>403)); return $error; }
+    }
+    if (psr_login_requires_otp($user) && !psr_login_session_verified($user->ID)) {
+        return new WP_Error('psr_login_rest_otp_required', 'Sessione OTP richiesta.', array('status'=>403));
+    }
+    return $result;
+}
+add_filter('rest_authentication_errors', 'psr_login_rest_proved_session', PHP_INT_MAX);
+
 function psr_login_disable_app_passwords_for_id1($available, $user) {
     return psr_login_requires_otp($user) ? false : $available;
 }
@@ -232,6 +276,8 @@ function psr_login_cancel_ticket($ticket) {
     psr_login_set_pending_cookie('', time()-3600);
 }
 function psr_login_start_otp($user, $username, $password) {
+    $error = psr_login_access_error();
+    if (is_wp_error($error)) { return $error; }
     if (!psr_login_requires_otp($user) || (defined('WP_CLI') && WP_CLI)) { return $user; }
     // Niente bypass via XML-RPC, REST, application passwords, login alternativi.
     if (!psr_login_interactive()) {
@@ -248,7 +294,7 @@ function psr_login_start_otp($user, $username, $password) {
         'ua'=>hash('sha256', (string)($_SERVER['HTTP_USER_AGENT'] ?? '')),
         'ip'=>psr_login_ip(), 'tries'=>0, 'resends'=>0,
         'remember'=>!empty($_POST['rememberme']),
-        'redirect'=>wp_validate_redirect(isset($_REQUEST['redirect_to']) ? (string)wp_unslash($_REQUEST['redirect_to']) : '', admin_url()),
+        'redirect'=>wp_validate_redirect(isset($_REQUEST['redirect_to']) && is_string($_REQUEST['redirect_to']) ? wp_unslash($_REQUEST['redirect_to']) : '', admin_url()) ?: admin_url(),
     );
     $sent = psr_login_email_issue($user, $ticket, $pending);
     if (is_wp_error($sent)) {
@@ -265,7 +311,8 @@ function psr_login_start_otp($user, $username, $password) {
     wp_safe_redirect(add_query_arg('action', 'psr_mfa', wp_login_url()));
     exit;
 }
-add_filter('authenticate', 'psr_login_start_otp', 99, 3);
+// Dopo i filtri core/plugin ordinari: nessun WP_User restituito tardi salta l'OTP.
+add_filter('authenticate', 'psr_login_start_otp', PHP_INT_MAX, 3);
 
 function psr_login_pending() {
     $ticket = isset($_COOKIE[psr_login_cookie_name()]) ? (string)$_COOKIE[psr_login_cookie_name()] : '';
@@ -286,6 +333,7 @@ function psr_login_grant_session($user, $pending) {
     do_action('wp_login', $user->user_login, $user);
 }
 function psr_login_otp_page() {
+    psr_login_require_authorized_ip();
     list($ticket, $pending) = psr_login_pending();
     if (psr_login_rate_blocked(psr_login_ip())) { psr_login_cancel_ticket($ticket); $pending = false; }
     if (!$pending) {
@@ -347,21 +395,21 @@ function psr_login_otp_page() {
     }
     nocache_headers();
     login_header('PSR - Verifica email obbligatoria');
-    echo '<p><strong>Verifica email obbligatoria per tutti gli utenti WordPress.</strong></p>';
-    echo '<p>Abbiamo richiesto un codice OTP di 8 cifre via email. Scade dopo 5 minuti ed e\' valido una sola volta.</p>';
+    echo '<div class="psr-otp-intro"><p><strong>Conferma il tuo accesso</strong></p>';
+    echo '<p id="psr-otp-instructions">Inserisci il codice di 8 cifre ricevuto via email. Scade dopo 5 minuti ed e\' valido una sola volta.</p></div>';
     if ($message) { echo '<div class="message" role="alert">' . esc_html($message) . '</div>'; }
     echo '<form method="post" autocomplete="off">';
     wp_nonce_field('psr_mfa_' . $ticket, 'psr_nonce');
     echo '<p><label for="psr_otp">Codice ricevuto via email</label>';
-    echo '<input class="input" type="text" id="psr_otp" name="psr_otp" required maxlength="8" pattern="[0-9]{8}" autocomplete="one-time-code" inputmode="numeric"></p>';
+    echo '<input class="input" type="text" id="psr_otp" name="psr_otp" required maxlength="8" pattern="[0-9]{8}" autocomplete="one-time-code" inputmode="numeric" aria-describedby="psr-otp-instructions" autofocus></p>';
     echo '<p class="submit"><input type="submit" class="button button-primary button-large" value="Verifica e accedi"></p>';
     echo '</form>';
-    echo '<form method="post" style="margin-top:12px">';
+    echo '<form method="post" class="psr-otp-resend">';
     wp_nonce_field('psr_mfa_' . $ticket, 'psr_nonce');
     echo '<input type="hidden" name="psr_resend" value="1">';
     echo '<p><button type="submit" class="button">Invia nuovamente il codice (max 3)</button></p></form>';
-    echo '<p>Se la posta non arriva, verificare SMTP dal pannello Plesk; non esiste bypass pubblico.</p>';
-    echo '<p><a href="' . esc_url(wp_login_url()) . '">Annulla e torna al login</a></p>';
+    echo '<p class="psr-otp-help">Se la posta non arriva, contatta il gestore del portale.</p>';
+    echo '<p class="psr-otp-help"><a href="' . esc_url(wp_login_url()) . '">Torna al login</a></p>';
     login_footer(); exit;
 }
 add_action('login_form_psr_mfa', 'psr_login_otp_page');
