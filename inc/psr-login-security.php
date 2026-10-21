@@ -311,6 +311,88 @@ function psr_login_mark_auth_cookie($auth_cookie, $expire, $expiration, $user_id
 }
 add_action('set_auth_cookie', 'psr_login_mark_auth_cookie', 10, 6);
 
+/**
+ * PSR device sessions: ogni accesso OTP crea una sessione distinta per browser.
+ * L'audit e' sempre attivo per ID 1; la seconda prova cookie NON e' attiva di default.
+ * ATTENZIONE: una prova cookie non identifica l'hardware e non resiste al furto di entrambi i cookie.
+ */
+function psr_login_device_binding_enabled() {
+    return defined('PSR_DEVICE_BINDING_ENABLED') && PSR_DEVICE_BINDING_ENABLED === true && is_ssl();
+}
+function psr_login_device_cookie_name() {
+    // Evita collisioni fra siti WordPress differenti sullo stesso dominio.
+    return 'psr_admin_device_' . substr(hash('sha256', site_url('/')), 0, 12);
+}
+function psr_login_attach_device_session($session, $user_id) {
+    if ((int)$user_id !== 1 || empty($GLOBALS['psr_login_granting']) || !is_array($session)) { return $session; }
+    try { $sid = bin2hex(random_bytes(12)); }
+    catch (Throwable $e) { return $session; } // Non alterare mai il login standard per l'audit.
+    $session['psr_device_id'] = $sid;
+    $session['psr_otp_verified_at'] = time();
+    $session['psr_device_ip'] = psr_login_ip();
+    $GLOBALS['psr_device_new_sid'] = $sid;
+    if (psr_login_device_binding_enabled()) {
+        try { $secret = bin2hex(random_bytes(32)); }
+        catch (Throwable $e) { return $session; }
+        $session['psr_device_proof'] = hash_hmac('sha256', $sid . '|' . $secret, wp_salt('logged_in'));
+        $GLOBALS['psr_device_new_secret'] = $secret;
+    }
+    return $session;
+}
+add_filter('attach_session_information', 'psr_login_attach_device_session', 20, 2);
+
+function psr_login_set_device_cookie($value, $expire) {
+    if (headers_sent()) { return false; }
+    $path = defined('COOKIEPATH') && COOKIEPATH ? COOKIEPATH : '/';
+    return setcookie(psr_login_device_cookie_name(), $value, array(
+        'expires'=>max(0,(int)$expire), 'path'=>$path, 'secure'=>true,
+        'httponly'=>true, 'samesite'=>'Lax'
+    ));
+}
+function psr_login_issue_device_cookie($auth_cookie, $expire, $expiration, $user_id, $scheme, $token) {
+    if ((int)$user_id !== 1 || empty($GLOBALS['psr_login_granting']) || !psr_login_device_binding_enabled()) { return; }
+    if (empty($GLOBALS['psr_device_new_sid']) || empty($GLOBALS['psr_device_new_secret'])) { return; }
+    psr_login_set_device_cookie($GLOBALS['psr_device_new_sid'] . '.' . $GLOBALS['psr_device_new_secret'], $expire);
+    unset($GLOBALS['psr_device_new_secret']); // Mai persistere il segreto in opzioni / log.
+}
+add_action('set_auth_cookie', 'psr_login_issue_device_cookie', 30, 6);
+function psr_login_clear_device_cookie() {
+    // L'espirazione del cookie e' innocua anche quando la protezione e' disabilitata.
+    if (is_ssl()) { psr_login_set_device_cookie('', time()-3600); }
+}
+add_action('clear_auth_cookie', 'psr_login_clear_device_cookie');
+
+/**
+ * Solo sessioni nuove con prova emessa durante OTP sono vincolate al cookie separato.
+ * Le sessioni precedenti rimangono valide: migrazione senza disconnessione di massa.
+ */
+function psr_login_enforce_device_cookie() {
+    if (!psr_login_device_binding_enabled() || (defined('WP_CLI') && WP_CLI)
+        || (defined('DOING_CRON') && DOING_CRON) || (int)get_current_user_id() !== 1) { return; }
+    $token=wp_get_session_token();
+    if (!is_string($token) || $token==='') { return; }
+    $session=WP_Session_Tokens::get_instance(1)->get($token);
+    if (!is_array($session) || empty($session['psr_device_proof'])) { return; }
+    $value=$_COOKIE[psr_login_device_cookie_name()] ?? '';
+    $valid=false;
+    if (is_string($value) && strlen($value) < 180 && preg_match('/^([a-f0-9]{24})\.([a-f0-9]{64})$/D', $value, $m)
+        && !empty($session['psr_device_id']) && hash_equals((string)$session['psr_device_id'], $m[1])) {
+        $actual=hash_hmac('sha256', $m[1] . '|' . $m[2], wp_salt('logged_in'));
+        $valid=hash_equals((string)$session['psr_device_proof'], $actual);
+    }
+    if ($valid) { return; }
+    if (function_exists('psr_center_log_limited')) {
+        psr_center_log_limited('device_mismatch','critical',psr_login_ip(),'ID 1','','session',
+            'Prova dispositivo assente o non valida; sessione revocata', 60);
+    }
+    wp_destroy_current_session();
+    wp_clear_auth_cookie();
+    wp_set_current_user(0);
+}
+add_action('init', 'psr_login_enforce_device_cookie', 5);
+add_action('admin_init', 'psr_login_enforce_device_cookie', 5);
+
+
 function psr_login_force_proved_session() {
     if ((defined('WP_CLI') && WP_CLI) || (defined('DOING_CRON') && DOING_CRON)) { return; }
     if (defined('PSR_REQUIRE_EMAIL_OTP') && !PSR_REQUIRE_EMAIL_OTP) { return; }

@@ -64,7 +64,7 @@ function psr_center_log_event($event, $severity = 'info', $ip = '', $username = 
     // Whitelist per impedire inquinamento del registro con dati arbitrari.
     $allowed = array('login_failed','login_blocked','login_success','otp_sent','otp_failed','otp_verified',
         'otp_delivery_failed','auth_probe','geo_denied','ip_blacklist_denied','xmlrpc_denied','geo_unavailable','manual_ban','manual_unban',
-        'site_ban_denied','user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied','trusted_ip_added','trusted_ip_removed','security_setting_changed','admin_role_denied');
+        'site_ban_denied','user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied','trusted_ip_added','trusted_ip_removed','security_setting_changed','admin_role_denied','device_mismatch');
     if (!in_array($event, $allowed, true)) { return false; }
     if (!psr_center_install()) { return false; }
     global $wpdb;
@@ -109,10 +109,34 @@ function psr_center_remove_ip($ip) {
     list(, $ips) = psr_center_tables();
     $wpdb->delete($ips, array('ip'=>$ip), array('%s'));
 }
+/** Etichetta indicativa ricavata dallo User-Agent: NON identifica in modo univoco il PC. */
+function psr_center_device_label($ua) {
+    $ua=(string)$ua;
+    if (stripos($ua,'Android')!==false) { $os='Android'; }
+    elseif (stripos($ua,'iPhone')!==false || stripos($ua,'iPad')!==false) { $os='iOS/iPadOS'; }
+    elseif (stripos($ua,'Windows')!==false) { $os='Windows'; }
+    elseif (stripos($ua,'Macintosh')!==false || stripos($ua,'Mac OS')!==false) { $os='macOS'; }
+    elseif (stripos($ua,'Linux')!==false) { $os='Linux'; }
+    else { $os='Sistema non rilevato'; }
+    if (stripos($ua,'Edg/')!==false || stripos($ua,'Edge/')!==false) { $browser='Edge'; }
+    elseif (stripos($ua,'OPR/')!==false || stripos($ua,'Opera')!==false) { $browser='Opera'; }
+    elseif (stripos($ua,'Firefox/')!==false || stripos($ua,'FxiOS/')!==false) { $browser='Firefox'; }
+    elseif (stripos($ua,'Chrome/')!==false || stripos($ua,'CriOS/')!==false) { $browser='Chrome'; }
+    elseif (stripos($ua,'Safari/')!==false) { $browser='Safari'; }
+    else { $browser='Browser non rilevato'; }
+    return $os . ' · ' . $browser;
+}
+
 function psr_center_on_login($username, $user) {
     if (!($user instanceof WP_User)) { return; }
     $ip = function_exists('psr_login_ip') ? psr_login_ip() : '';
-    psr_center_log_event('login_success', 'info', $ip, $user->user_login, '', 'login', 'Utente ID ' . (int)$user->ID);
+    $note = 'Utente ID ' . (int)$user->ID;
+    // Il token non viene mai mostrato. Questo identificativo casuale NON e' una credenziale.
+    if ((int)$user->ID === 1 && !empty($GLOBALS['psr_device_new_sid'])) {
+        $note .= ' · Sessione ' . substr((string)$GLOBALS['psr_device_new_sid'], 0, 12);
+    }
+    $note .= ' · ' . psr_center_device_label((string)($_SERVER['HTTP_USER_AGENT'] ?? ''));
+    psr_center_log_event('login_success', 'info', $ip, $user->user_login, '', 'login', $note);
 }
 add_action('wp_login', 'psr_center_on_login', 30, 2);
 /** Auditing account (nessun blocco automatico e nessuna query sulle visite pubbliche).
@@ -368,10 +392,10 @@ add_action('admin_post_psr_center_export','psr_center_export_csv');
 function psr_center_page($forced_tab = '') {
     if (!psr_center_is_owner()) { wp_die('Non autorizzato','',array('response'=>403)); }
     $tab = $forced_tab ?: sanitize_key(wp_unslash($_GET['tab'] ?? 'overview'));
-    if (!in_array($tab,array('overview','events','blocks','accounts','trusted','geo','otp','settings'),true)) { $tab='overview'; }
+    if (!in_array($tab,array('overview','events','sessions','blocks','accounts','trusted','geo','otp','settings'),true)) { $tab='overview'; }
     $ready = psr_center_install();
     echo '<div class="wrap psrc"><header class="psrc-header"><div class="psrc-hero-copy"><div class="psrc-label">PSR SECURITY SUITE <span style="opacity:.5">/</span> CONTROL CENTER</div><h1><span class="dashicons dashicons-shield-alt" aria-hidden="true"></span>Centro Sicurezza</h1><p>Monitoraggio accessi, difesa degli account e controllo delle minacce. I risultati provengono dagli eventi registrati su questo Comune.</p><div class="psrc-hero-checks"><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>OTP email tutti gli utenti</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Filtro Italia</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Ban IP progressivi</span></div></div><div class="psrc-hero-side"><span class="psrc-chip">&#128274; Accesso riservato ID 1</span><span class="psrc-hero-meta">Area di gestione<br><b>Controlli e registri privati</b></span></div></header>';
-    $tabs=array('overview'=>'Panoramica','events'=>'Tentativi e attività','blocks'=>'IP bloccati','accounts'=>'Utenti e privilegi','trusted'=>'IP fidati','geo'=>'Filtro geografico','otp'=>'OTP email','settings'=>'Impostazioni');
+    $tabs=array('overview'=>'Panoramica','events'=>'Tentativi e attività','sessions'=>'Accessi riusciti e PC','blocks'=>'IP bloccati','accounts'=>'Utenti e privilegi','trusted'=>'IP fidati','geo'=>'Filtro geografico','otp'=>'OTP email','settings'=>'Impostazioni');
     echo '<nav class="psrc-tabs" aria-label="Sezioni centro sicurezza">';
     foreach ($tabs as $key=>$label) { echo '<a class="'.($tab===$key?'active':'').'" href="'.esc_url(psr_center_url($key)).'">'.esc_html($label).'</a>'; }
     echo '</nav>';
@@ -380,6 +404,7 @@ function psr_center_page($forced_tab = '') {
     switch($tab) {
         case 'overview': psr_center_overview();break;
         case 'events': psr_center_events();break;
+        case 'sessions': psr_center_sessions();break;
         case 'blocks': psr_center_blocks();break;
         case 'accounts': psr_center_accounts();break;
         case 'trusted': psr_center_trusted();break;
@@ -414,7 +439,7 @@ function psr_center_overview() {
         'GeoIP accessi'=>function_exists('psr_geo_enabled') && psr_geo_enabled(),'Blacklist globale IP'=>function_exists('psr_geo_ip_blacklisted'),'Registro eventi'=>true,'Blocco siti per IP bannati'=>function_exists('psr_geo_site_ban_enabled') && psr_geo_site_ban_enabled(),'Protezione web shell'=>function_exists('psr_guard_new_shell_names'));
     foreach($checks as $name=>$on){echo '<tr><td>'.esc_html($name).'</td><td><span class="psrc-pill '.($on?'ok':'warning').'">'.($on?'Attivo':'Da verificare').'</span></td></tr>';}
     echo '</table><p class="psrc-muted psrc-small">L’indicatore verifica la presenza del modulo, non garantisce che il server sia completamente protetto.</p></section></div>';
-    echo '<div class="psrc-card" style="margin-top:18px"><h2>Ultimi eventi</h2>';psr_center_event_table(10, '', '', 1);echo '<p><a class="psrc-btn secondary" href="'.esc_url(psr_center_url('events')).'">Apri il registro completo →</a></p></div>';
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>Ultimi eventi</h2>';psr_center_event_table(10, '', '', 1);echo '<p><a class="psrc-btn secondary" href="'.esc_url(psr_center_url('events')).'">Apri il registro completo →</a> <a class="psrc-btn secondary" href="'.esc_url(psr_center_url('sessions')).'">Accessi riusciti e PC →</a></p></div>';
 }
 function psr_center_event_table($limit, $event_filter='', $ip_filter='', $page=1) {
     global $wpdb;
@@ -485,6 +510,70 @@ function psr_center_geo(){
     echo '<div class="psrc-kpis"><div class="psrc-card"><div class="label">Filtro Italia</div><div class="value" style="font-size:21px">'.(function_exists('psr_geo_enabled')&&psr_geo_enabled()?'Attivo':'Non disponibile').'</div><div class="detail">Login e pannello di tutti i ruoli</div></div><div class="psrc-card"><div class="label">IP rilevato</div><div class="value" style="font-size:21px">'.esc_html($d['ip']?:'Non pubblico').'</div><div class="detail">REMOTE_ADDR senza header non verificati</div></div><div class="psrc-card"><div class="label">Paese</div><div class="value">'.esc_html($d['country']?:'—').'</div><div class="detail">'.esc_html($d['reason']).'</div></div></div>';
     echo '<div class="psrc-card"><h2>Protezione geografica degli accessi</h2><p>Login, OTP e amministrazione richiedono un <strong>IP pubblico riconosciuto come italiano</strong>. Gli IP esteri o non verificabili ricevono HTTP 403 prima del modulo. La navigazione pubblica non viene filtrata per Paese.</p><p class="psrc-info psrc-alert"><strong>GeoIP non disponibile:</strong> le aree protette restano chiuse anche per ID 1. Prima del rilascio verifica GeoIP, SMTP e IP reale in Plesk. Il recupero operativo richiede accesso al server.</p><p>Gli IP fidati non aggirano il filtro Italia. Le intestazioni HTTP non autenticate non sono utilizzate per riconoscere l’IP.</p></div>';
 }
+
+/**
+ * Visualizzazione in sola lettura: sessioni WordPress realmente attive + audit login.
+ * Non modifica cookie, permessi, durata delle sessioni, ne' autorizza altri utenti.
+ */
+function psr_center_sessions() {
+    if (!psr_center_is_owner()) { wp_die('Non autorizzato', '', array('response'=>403)); }
+    global $wpdb;
+    list($events)=psr_center_tables();
+    $manager=WP_Session_Tokens::get_instance(1);
+    $sessions=$manager->get_all();
+    if (!is_array($sessions)) { $sessions=array(); }
+    usort($sessions, static function($a,$b) { return (int)($b['login']??0) - (int)($a['login']??0); });
+    $total_sessions=count($sessions);
+    $sessions=array_slice($sessions, 0, 100);
+    $current=$manager->get(wp_get_session_token());
+    $current_id=is_array($current) ? (string)($current['psr_device_id']??'') : '';
+    $has_proof=0;
+    foreach ($sessions as $one) { if (is_array($one) && !empty($one['psr_device_proof'])) { $has_proof++; } }
+    $enabled=function_exists('psr_login_device_binding_enabled') && psr_login_device_binding_enabled();
+    echo '<div class="psrc-kpis">';
+    echo '<div class="psrc-card"><div class="label">Sessioni attive ID 1</div><div class="value">'.(int)$total_sessions.'</div><div class="detail">Sessioni WordPress non scadute</div></div>';
+    echo '<div class="psrc-card"><div class="label">Sessioni con prova browser</div><div class="value">'.(int)$has_proof.'</div><div class="detail">Solo accessi effettuati dopo attivazione</div></div>';
+    echo '<div class="psrc-card"><div class="label">Vincolo supplementare</div><div class="value" style="font-size:20px">'.($enabled?'ATTIVO':'NON ATTIVO').'</div><div class="detail">'.($enabled?'Cookie aggiuntivo richiesto per le nuove sessioni':'Monitoraggio senza blocchi aggiuntivi').'</div></div>';
+    echo '</div>';
+    echo '<div class="psrc-card"><span class="psrc-eyebrow">ACCOUNT PRINCIPALE · ID 1</span><h2>PC e browser associati alle sessioni</h2>';
+    echo '<p>Ogni browser/dispositivo che supera OTP crea una sessione distinta. Le informazioni su sistema e browser sono <strong>indicative</strong>: derivano dallo User-Agent e non provano quale PC fisico sia in uso. Il codice sessione mostrato non costituisce un token di accesso.</p>';
+    echo '<div class="psrc-table-wrap"><table class="psrc-table"><thead><tr><th>Sessione</th><th>PC / browser</th><th>IP durante accesso</th><th>Accesso</th><th>Scadenza</th><th>Verifica</th></tr></thead><tbody>';
+    if (!$sessions) { echo '<tr><td colspan="6">Nessuna sessione attiva.</td></tr>'; }
+    foreach ($sessions as $s) {
+        if (!is_array($s)) { continue; }
+        $id=(string)($s['psr_device_id']??'');
+        $now=(bool)($id!=='' && $id===$current_id);
+        $name=psr_center_device_label((string)($s['ua']??''));
+        $ip=psr_center_clean_ip((string)($s['psr_device_ip']??($s['ip']??'')));
+        $at=(int)($s['psr_otp_verified_at']??($s['login']??0));
+        $expiry=(int)($s['expiration']??0);
+        $protected=!empty($s['psr_device_proof']);
+        $otp=!empty($s['psr_otp_verified_at']);
+        echo '<tr'.($now?' style="background:#edf7ff"':'').'>';
+        echo '<td><strong>'.($id!==''?esc_html(substr($id,0,12)):'Sessione pre-fix').'</strong> '.($now?'<span class="psrc-pill ok">Questo PC / browser</span>':'').'</td>';
+        echo '<td>'.esc_html($name).'</td><td><code>'.esc_html($ip?:'Non disponibile').'</code></td>';
+        echo '<td>'.($at?esc_html(wp_date('d/m/Y H:i:s',$at)):'—').'</td>';
+        echo '<td>'.($expiry?esc_html(wp_date('d/m/Y H:i:s',$expiry)):'—').'</td>';
+        echo '<td><span class="psrc-pill '.($protected?'ok':'warning').'">'.($protected?'Prova browser':'Senza prova browser').'</span>'.($otp?' <span class="psrc-pill ok">OTP PSR</span>':' <span class="psrc-pill">Pre-fix / non attestata</span>').'</td></tr>';
+    }
+    echo '</tbody></table></div>';
+    if ($total_sessions > 100) { echo '<p class="psrc-muted">Visualizzate le 100 sessioni piu recenti.</p>'; }
+    echo '<p class="psrc-info psrc-alert"><strong>Rilascio prudente:</strong> la prova browser rimane disabilitata finche non viene impostato <code>define(&#39;PSR_DEVICE_BINDING_ENABLED&#39;, true);</code> in <code>wp-config.php</code> su un sito pilota correttamente configurato con HTTPS. Le sessioni aperte prima della attivazione non vengono disconnesse né diventano automaticamente vincolate. Per disattivare: rimuovi la costante o impostala a <code>false</code>. Un furto di entrambi i cookie può comunque compromettere la sessione.</p>';
+    echo '</div>';
+    echo '<div class="psrc-card" style="margin-top:18px"><span class="psrc-eyebrow">REGISTRO ACCESSI</span><h2>Ultimi 50 accessi riusciti</h2><p>Il registro storico mostra utente e IP; i dettagli PC/sessione sono disponibili soltanto per i nuovi accessi effettuati con questa versione. La conservazione segue quella degli eventi PSR.</p>';
+    $rows=$wpdb->get_results($wpdb->prepare("SELECT * FROM $events WHERE event_type=%s ORDER BY id DESC LIMIT %d", 'login_success', 50));
+    echo '<div class="psrc-table-wrap"><table class="psrc-table"><thead><tr><th>Data / ora</th><th>Utente</th><th>IP pubblico</th><th>Esito</th><th>PC / sessione</th></tr></thead><tbody>';
+    if (!$rows) { echo '<tr><td colspan="5">Nessun accesso riuscito registrato.</td></tr>'; }
+    $owner=get_userdata(1);
+    foreach($rows as $r) {
+        $highlight=isset($r->username) && $owner instanceof WP_User && (string)$r->username===(string)$owner->user_login;
+        echo '<tr'.($highlight?' style="background:#f2faf6"':'').'>';
+        echo '<td>'.psr_center_local_date($r->happened_at).'</td><td>'.esc_html((string)$r->username).'</td><td><code>'.esc_html($r->ip?:'—').'</code></td>';
+        echo '<td><span class="psrc-pill ok">Accesso riuscito</span></td><td>'.esc_html((string)$r->note).'</td></tr>';
+    }
+    echo '</tbody></table></div></div>';
+}
+
 function psr_center_otp(){
     $u=get_userdata(1);$mail=function_exists('psr_login_email_target')?psr_login_email_target($u):'';
     $pinned=(string)get_option('_psr_login_email_to','');
