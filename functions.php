@@ -24,6 +24,21 @@ if (is_file($psr_security_guard_file) && is_readable($psr_security_guard_file)) 
 }
 
 /**
+ * Mitigazioni sugli invii anonimi e sui parametri REST dei servizi cittadini.
+ * Non modifica accesso pubblico ai moduli, alle pagine e alle API di lettura.
+ */
+$psr_public_request_guard_file = get_template_directory() . '/inc/psr-public-request-guard.php';
+if (is_file($psr_public_request_guard_file) && is_readable($psr_public_request_guard_file)) {
+    require_once $psr_public_request_guard_file;
+}
+
+/** Editor PHP dal pannello disabilitati; aggiornamenti e deploy Git invariati. */
+$psr_file_editor_lock = get_template_directory() . '/inc/psr-file-editor-lock.php';
+if (is_file($psr_file_editor_lock) && is_readable($psr_file_editor_lock)) {
+    require_once $psr_file_editor_lock;
+}
+
+/**
  * PSR Login Security: OTP obbligatorio amministratore principale ID 1 e
  * protezione anti brute-force sul login. Modulo indipendente dallo scanner.
  * Se assente, non causare errori fatali: avviso riservato all'ID 1.
