@@ -132,7 +132,7 @@ function psr_center_on_login($username, $user) {
     $ip = function_exists('psr_login_ip') ? psr_login_ip() : '';
     $note = 'Utente ID ' . (int)$user->ID;
     // Il token non viene mai mostrato. Questo identificativo casuale NON e' una credenziale.
-    if ((int)$user->ID === 1 && !empty($GLOBALS['psr_device_new_sid'])) {
+    if (!empty($GLOBALS['psr_device_new_sid'])) {
         $note .= ' · Sessione ' . substr((string)$GLOBALS['psr_device_new_sid'], 0, 12);
     }
     $note .= ' · ' . psr_center_device_label((string)($_SERVER['HTTP_USER_AGENT'] ?? ''));
@@ -531,12 +531,12 @@ function psr_center_sessions() {
     foreach ($sessions as $one) { if (is_array($one) && !empty($one['psr_device_proof'])) { $has_proof++; } }
     $enabled=function_exists('psr_login_device_binding_enabled') && psr_login_device_binding_enabled();
     echo '<div class="psrc-kpis">';
-    echo '<div class="psrc-card"><div class="label">Sessioni attive ID 1</div><div class="value">'.(int)$total_sessions.'</div><div class="detail">Sessioni WordPress non scadute</div></div>';
-    echo '<div class="psrc-card"><div class="label">Sessioni con prova browser</div><div class="value">'.(int)$has_proof.'</div><div class="detail">Solo accessi effettuati dopo attivazione</div></div>';
-    echo '<div class="psrc-card"><div class="label">Vincolo supplementare</div><div class="value" style="font-size:20px">'.($enabled?'ATTIVO':'NON ATTIVO').'</div><div class="detail">'.($enabled?'Cookie aggiuntivo richiesto per le nuove sessioni':'Monitoraggio senza blocchi aggiuntivi').'</div></div>';
+    echo '<div class="psrc-card"><div class="label">Sessioni attive ID 1 (dettaglio)</div><div class="value">'.(int)$total_sessions.'</div><div class="detail">Sessioni WordPress non scadute</div></div>';
+    echo '<div class="psrc-card"><div class="label">Sessioni con prova browser</div><div class="value">'.(int)$has_proof.'</div><div class="detail">Conteggio ID 1 · regola applicata a tutti</div></div>';
+    echo '<div class="psrc-card"><div class="label">Vincolo browser (tutti gli utenti)</div><div class="value" style="font-size:20px">'.($enabled?'OBBLIGATORIO':'SOLO RIPRISTINO').'</div><div class="detail">'.($enabled?'Sessioni di tutti gli utenti protette':'Solo prova browser sospesa da wp-config.php').'</div></div>';
     echo '</div>';
     echo '<div class="psrc-card"><span class="psrc-eyebrow">ACCOUNT PRINCIPALE · ID 1</span><h2>PC e browser associati alle sessioni</h2>';
-    echo '<p>Ogni browser/dispositivo che supera OTP crea una sessione distinta. Le informazioni su sistema e browser sono <strong>indicative</strong>: derivano dallo User-Agent e non provano quale PC fisico sia in uso. Il codice sessione mostrato non costituisce un token di accesso.</p>';
+    echo '<p>Il controllo delle sessioni protette e dei relativi limiti si applica a <strong>tutti gli utenti WordPress</strong>; in questa tabella sono mostrati i dettagli riservati dell’amministratore principale. Ogni browser/dispositivo che supera OTP crea una sessione distinta. Le informazioni su sistema e browser sono <strong>indicative</strong>: derivano dallo User-Agent e non provano quale PC fisico sia in uso. Il codice sessione mostrato non costituisce un token di accesso.</p>';
     echo '<div class="psrc-table-wrap"><table class="psrc-table"><thead><tr><th>Sessione</th><th>PC / browser</th><th>IP durante accesso</th><th>Accesso</th><th>Scadenza</th><th>Verifica</th></tr></thead><tbody>';
     if (!$sessions) { echo '<tr><td colspan="6">Nessuna sessione attiva.</td></tr>'; }
     foreach ($sessions as $s) {
@@ -558,7 +558,7 @@ function psr_center_sessions() {
     }
     echo '</tbody></table></div>';
     if ($total_sessions > 100) { echo '<p class="psrc-muted">Visualizzate le 100 sessioni piu recenti.</p>'; }
-    echo '<p class="psrc-info psrc-alert"><strong>Rilascio prudente:</strong> la prova browser rimane disabilitata finche non viene impostato <code>define(&#39;PSR_DEVICE_BINDING_ENABLED&#39;, true);</code> in <code>wp-config.php</code> su un sito pilota correttamente configurato con HTTPS. Le sessioni aperte prima della attivazione non vengono disconnesse né diventano automaticamente vincolate. Per disattivare: rimuovi la costante o impostala a <code>false</code>. Un furto di entrambi i cookie può comunque compromettere la sessione.</p>';
+    echo '<p class="psrc-info psrc-alert"><strong>Protezione obbligatoria per tutti gli account:</strong> al primo avvio della versione v3 le vecchie sessioni WordPress sono revocate e ogni utente deve ripetere password e OTP. Durata massima 12 ore; inattività massima 60 minuti. Ogni PC/browser deve eseguire un login distinto. Per emergenze da Plesk: <code>define(&#39;PSR_DEVICE_BINDING_ENABLED&#39;, false);</code> sospende soltanto il secondo cookie, non il controllo sulla sessione/OTP. Due cookie rubati assieme restano riutilizzabili: non è un vincolo hardware.</p>';
     echo '</div>';
     echo '<div class="psrc-card" style="margin-top:18px"><span class="psrc-eyebrow">REGISTRO ACCESSI</span><h2>Ultimi 50 accessi riusciti</h2><p>Il registro storico mostra utente e IP; i dettagli PC/sessione sono disponibili soltanto per i nuovi accessi effettuati con questa versione. La conservazione segue quella degli eventi PSR.</p>';
     $rows=$wpdb->get_results($wpdb->prepare("SELECT * FROM $events WHERE event_type=%s ORDER BY id DESC LIMIT %d", 'login_success', 50));
