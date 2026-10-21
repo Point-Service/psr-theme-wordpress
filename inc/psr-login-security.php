@@ -181,6 +181,33 @@ function psr_login_email_target($user) {
     $email = is_string($pinned) && $pinned !== '' ? $pinned : ($user instanceof WP_User ? $user->user_email : '');
     return is_string($email) && is_email($email) ? $email : '';
 }
+/**
+ * Privacy OTP: mostra solo parte della casella e il dominio per riconoscere
+ * il destinatario. Il valore restituito non deve mai essere usato in wp_mail().
+ */
+function psr_login_mask_email_for_display($email) {
+    if (!is_string($email) || !is_email($email)) { return ''; }
+    $parts = explode('@', $email, 2);
+    if (count($parts) !== 2 || $parts[0] === '' || $parts[1] === '') { return ''; }
+    $local = $parts[0];
+    $length = strlen($local);
+    // Il dominio rimane leggibile per riconoscere la casella; mai mostrare
+    // il nome completo prima della @. La mail reale serve solo a wp_mail().
+    if ($length === 1) {
+        $masked_local = '*';
+    } elseif ($length === 2) {
+        $masked_local = substr($local, 0, 1) . '*';
+    } elseif ($length <= 4) {
+        $masked_local = substr($local, 0, 1) . str_repeat('*', $length - 2) . substr($local, -1);
+    } elseif ($length <= 7) {
+        $masked_local = substr($local, 0, 2) . str_repeat('*', $length - 3) . substr($local, -1);
+    } elseif ($length === 8) {
+        $masked_local = substr($local, 0, 3) . str_repeat('*', 3) . substr($local, -2);
+    } else {
+        $masked_local = substr($local, 0, 3) . str_repeat('*', $length - 6) . substr($local, -3);
+    }
+    return $masked_local . '@' . $parts[1];
+}
 function psr_login_email_digest($ticket, $code) {
     return hash_hmac('sha256', 'psr-login-email-v1|' . $ticket . '|' . $code, wp_salt('secure_auth'));
 }
@@ -491,7 +518,12 @@ function psr_login_otp_page() {
     nocache_headers();
     login_header('PSR - Verifica email obbligatoria');
     echo '<div class="psr-otp-intro"><p><strong>Conferma il tuo accesso</strong></p>';
-    echo '<p id="psr-otp-instructions">Inserisci il codice di 8 cifre ricevuto via email. Scade dopo 5 minuti ed e\' valido una sola volta.</p></div>';
+    $masked_recipient = psr_login_mask_email_for_display(psr_login_email_target($user));
+    echo '<p id="psr-otp-instructions">Inserisci il codice di 8 cifre ricevuto via email. Scade dopo 5 minuti ed e\' valido una sola volta.</p>';
+    if ($masked_recipient !== '') {
+        echo '<p>Codice inviato a <strong>' . esc_html($masked_recipient) . '</strong></p>';
+    }
+    echo '</div>';
     if ($message) { echo '<div class="message" role="alert">' . esc_html($message) . '</div>'; }
     echo '<form method="post" autocomplete="off">';
     wp_nonce_field('psr_mfa_' . $ticket, 'psr_nonce');
@@ -522,7 +554,7 @@ function psr_login_admin_page() {
     $pinned = get_option('_psr_login_email_to', '');
     echo '<div class="wrap"><h1>PSR Sicurezza accessi (solo ID 1)</h1>';
     echo '<p><strong>OTP obbligatorio via email</strong> (8 cifre, 5 minuti, una sola volta).</p>';
-    echo '<p>Destinatario: <strong>' . esc_html($target ? $target : 'NON CONFIGURATO') . '</strong>'; 
+    echo '<p>Destinatario: <strong>' . esc_html($target ? psr_login_mask_email_for_display($target) : 'NON CONFIGURATO') . '</strong>'; 
     echo $pinned ? ' (bloccato dopo prima verifica)</p>' : ' (sara\' bloccato alla prima verifica riuscita)</p>';
     echo '<p>Verifica che la consegna email WordPress/SMTP funzioni prima di distribuire questo modulo.</p>';
     echo '<p>Blocco IP: 5 tentativi = 10 min; 10 = 1 ora; 15 = 24 ore; 25 = 7 giorni.</p>';
