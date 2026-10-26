@@ -120,11 +120,57 @@ function psr_antispam_extended_evidence($commentdata) {
     );
 }
 
+/**
+ * Riconosce recensioni pubblicitarie camuffate, senza usare blacklist di nomi.
+ * Necessari: dominio del promotore ripetuto nel testo, tema ad alto rischio,
+ * numerosi messaggi elogiativi e coerenza email/sito dell'autore.
+ * Una recensione critica, un link isolato o la sola parola casino non bastano.
+ */
+function psr_antispam_covert_promotion($commentdata) {
+    $body = substr(wp_strip_all_tags((string)($commentdata['comment_content'] ?? '')), 0, 16000);
+    $url = trim((string)($commentdata['comment_author_url'] ?? ''));
+    $email = strtolower(trim((string)($commentdata['comment_author_email'] ?? '')));
+    $host = '';
+    if ($url !== '') {
+        // Alcuni commenti storici contengono URL senza schema.
+        $uri = strpos($url, '://') === false ? 'https://' . ltrim($url, '/') : $url;
+        $parsed_host = parse_url($uri, PHP_URL_HOST);
+        if (is_string($parsed_host)) { $host = strtolower(trim($parsed_host, '.')); }
+    }
+    $host = preg_replace('~^www\.~', '', $host);
+    $brand = explode('.', $host)[0] ?? '';
+    // Non usare etichette troppo brevi o generiche come marca.
+    $brand_repeated = strlen($brand) >= 7
+        && preg_match('~^[a-z0-9-]+$~', $brand) === 1
+        && preg_match('~(?<![a-z0-9])' . preg_quote($brand, '~') . '(?![a-z0-9])~i', $body) === 1;
+    $email_domain = substr(strrchr($email, '@') ?: '', 1);
+    $email_matches = $host !== '' && ($email_domain === $host || $email_domain === 'www.' . $host);
+    $risk_topic = preg_match('~\b(?:casinos?|gambling|betting|slots?|sportsbooks?|roulette|poker|jackpots?|bookmakers?|scommesse|gioco\s+d.azzardo)\b~iu', $body) === 1;
+    $praise_patterns = array(
+        '~\b(?:refreshing|amazing|fantastic|excellent|wonderful|outstanding|great)\s+(?:experience|platform|site|service)\b~iu',
+        '~\bgame\s+library\b~iu',
+        '~\b(?:regularly\s+updated|updated\s+regularly|always\s+find\s+something\s+new)\b~iu',
+        '~\bpayment\s+methods?\s+(?:are|is|feel|seem)\s+(?:flexible|easy|simple|secure)\b~iu',
+        '~\b(?:peace\s+of\s+mind|security\s+checks?\s+give\s+me)\b~iu',
+        '~\b(?:built|designed|made)\s+with\s+(?:the\s+)?players?\s+in\s+mind\b~iu',
+        '~\b(?:highly\s+recommend|would\s+recommend|best\s+(?:casino|betting|gaming)\s+(?:site|platform))\b~iu',
+    );
+    $praise_hits = 0;
+    foreach ($praise_patterns as $pattern) {
+        if (preg_match($pattern, $body) === 1) { $praise_hits++; }
+    }
+    return array(
+        'high_confidence' => $brand_repeated && $risk_topic && $email_matches && $praise_hits >= 2,
+        'very_high_confidence' => $brand_repeated && $risk_topic && $email_matches && $praise_hits >= 3,
+    );
+}
+
 /** Classificazione condivisa fra nuovi commenti e scansione retroattiva. */
 function psr_antispam_classification($commentdata, $existing_approved = false) {
     $legacy_score = psr_antispam_score($commentdata);
     $legacy_promos = psr_antispam_promotional_signals($commentdata);
     $evidence = psr_antispam_extended_evidence($commentdata);
+    $covert = psr_antispam_covert_promotion($commentdata);
     $total = $legacy_score + $evidence['points'];
     // Il vecchio criterio rimane riconosciuto; con i nuovi temi occorrono
     // sempre segnali indipendenti. Gia' approvati: soglia piu' restrittiva.
@@ -134,7 +180,8 @@ function psr_antispam_classification($commentdata, $existing_approved = false) {
         && $evidence['independent'] >= 2
         && $evidence['has_marketing_context']
         && $total >= ($existing_approved ? 12 : 9);
-    $strong = $legacy_strong || $extra_strong;
+    $strong = $legacy_strong || $extra_strong
+        || ($existing_approved ? $covert['very_high_confidence'] : $covert['high_confidence']);
     $moderate = !$strong && (
         ($legacy_promos >= 1 && $total >= 4)
         || ($evidence['topic_count'] >= 1 && $evidence['independent'] >= 2 && $total >= 6)
@@ -187,10 +234,16 @@ function psr_antispam_is_existing_spam($comment) {
         'comment_content' => $comment->comment_content ?? '',
         'comment_author' => $comment->comment_author ?? '',
         'comment_author_url' => $comment->comment_author_url ?? '',
+        'comment_author_email' => $comment->comment_author_email ?? '',
     );
     if (psr_antispam_classification($data, (string)$comment->comment_approved === '1') !== 'spam') {
         return false;
     }
+    // Recensioni-copertura con marchio nel testo, email aziendale,
+    // gioco d'azzardo e piu' frasi elogiative: evidenze indipendenti forti.
+    $covert = psr_antispam_covert_promotion($data);
+    if ((string)$comment->comment_approved === '0' && $covert['high_confidence']) { return true; }
+    if ((string)$comment->comment_approved === '1' && $covert['very_high_confidence']) { return true; }
     // Sul pregresso in attesa restiamo piu' cauti rispetto ai nuovi invii;
     // sugli approvati richiediamo evidenze aggiuntive, gia' sopra verificate.
     $evidence = psr_antispam_extended_evidence($data);
@@ -305,6 +358,8 @@ function psr_antispam_default_setup_once() {
     }
     update_option('_psr_antispam_default_setup_v1', '1', false);
     update_option('_psr_antispam_rules_v2_started', '1', false);
+    // I nuovi siti usano gia' le regole V3 durante la prima scansione.
+    update_option('_psr_antispam_rules_v3_started', '1', false);
 }
 add_action('init', 'psr_antispam_default_setup_once', 100);
 
@@ -325,11 +380,45 @@ function psr_antispam_rescan_rules_v2_once() {
 add_action('init', 'psr_antispam_rescan_rules_v2_once', 110);
 
 
+/**
+ * V3: una sola ripetizione dello storico quando cambiano le regole.
+ * Un passaggio gia' in corso deve concludersi prima di riavviare, per
+ * recuperare anche i nuovi commenti arrivati dopo il suo max_id iniziale.
+ */
+function psr_antispam_rescan_rules_v3_once() {
+    if (!psr_antispam_enabled() || get_option('_psr_antispam_rules_v3_started', '') === '1') { return; }
+    if (get_option('_psr_antispam_default_setup_v1', '') !== '1') { return; }
+    $state = get_option('_psr_antispam_scan_state');
+    if (is_array($state)) { return; }
+    if (psr_antispam_start_scan()) {
+        update_option('_psr_antispam_rules_v3_started', '1', false);
+    }
+}
+add_action('init', 'psr_antispam_rescan_rules_v3_once', 120);
+
 /** Recupero da un evento WP-Cron mancante, solo su visita del pannello ID 1. */
 function psr_antispam_rearm_scan() {
     if (get_current_user_id() === 1) { psr_antispam_schedule_scan(120); }
 }
 add_action('admin_init', 'psr_antispam_rearm_scan', 25);
+
+/**
+ * Recupero prudente: un piccolo lotto, solo quando ID 1 visita PSR > Antispam.
+ * Evita di dipendere esclusivamente dai loopback WP-Cron (talora disabilitati
+ * sull'hosting). Non appesantisce home, AJAX, visitatori o altre pagine admin.
+ */
+function psr_antispam_admin_scan_fallback() {
+    if ((int)get_current_user_id() !== 1 || !current_user_can('manage_options') || !psr_antispam_enabled()) { return; }
+    if ((string)($_GET['page'] ?? '') !== 'psr-security-center' || (string)($_GET['tab'] ?? '') !== 'antispam') { return; }
+    $state = get_option('_psr_antispam_scan_state');
+    if (!is_array($state)) { return; }
+    $updated = (int)($state['updated'] ?? 0);
+    $first_batch = (int)($state['examined'] ?? 0) === 0;
+    if (!$first_batch && $updated > time() - 90) { return; }
+    psr_antispam_scan_existing_batch();
+}
+add_action('admin_init', 'psr_antispam_admin_scan_fallback', 35);
+
 
 function psr_antispam_save() {
     if ((int)get_current_user_id() !== 1 || !current_user_can('manage_options')) {
@@ -401,6 +490,6 @@ function psr_antispam_admin_page() {
         echo '<button type="submit" class="button">Avvia nuova scansione dei commenti esistenti</button></form>';
     }
     echo '<p><a class="button" href="'.esc_url(admin_url('edit-comments.php?comment_status=spam')).'">Apri Spam e recupera eventuali falsi positivi</a></p>';
-    echo '<p class="description">Il filtro riconosce nuove famiglie di messaggi pubblicitari; i messaggi palesemente promozionali finiscono in Spam e restano recuperabili. I casi incerti non sono eliminati. Dopo 20 commenti per 10 minuti dallo stesso IP, i successivi vengono moderati senza impedire l’invio (solo commenti).</p>';
+    echo '<p class="description">Il filtro V3 riconosce anche recensioni pubblicitarie camuffate; i messaggi palesemente promozionali finiscono in Spam e restano recuperabili. I casi incerti non sono eliminati. Dopo 20 commenti per 10 minuti dallo stesso IP, i successivi vengono moderati senza impedire l’invio (solo commenti).</p>';
     echo '</div>';
 }
