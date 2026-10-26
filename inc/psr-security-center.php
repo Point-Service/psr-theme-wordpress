@@ -392,10 +392,10 @@ add_action('admin_post_psr_center_export','psr_center_export_csv');
 function psr_center_page($forced_tab = '') {
     if (!psr_center_is_owner()) { wp_die('Non autorizzato','',array('response'=>403)); }
     $tab = $forced_tab ?: sanitize_key(wp_unslash($_GET['tab'] ?? 'overview'));
-    if (!in_array($tab,array('overview','events','sessions','blocks','accounts','trusted','geo','otp','settings'),true)) { $tab='overview'; }
+    if (!in_array($tab,array('overview','events','sessions','blocks','accounts','trusted','geo','otp','antispam','settings'),true)) { $tab='overview'; }
     $ready = psr_center_install();
     echo '<div class="wrap psrc"><header class="psrc-header"><div class="psrc-hero-copy"><div class="psrc-label">PSR SECURITY SUITE <span style="opacity:.5">/</span> CONTROL CENTER</div><h1><span class="dashicons dashicons-shield-alt" aria-hidden="true"></span>Centro Sicurezza</h1><p>Monitoraggio accessi, difesa degli account e controllo delle minacce. I risultati provengono dagli eventi registrati su questo Comune.</p><div class="psrc-hero-checks"><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>OTP email tutti gli utenti</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Filtro Italia</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Ban IP progressivi</span></div></div><div class="psrc-hero-side"><span class="psrc-chip">&#128274; Accesso riservato ID 1</span><span class="psrc-hero-meta">Area di gestione<br><b>Controlli e registri privati</b></span></div></header>';
-    $tabs=array('overview'=>'Panoramica','events'=>'Tentativi e attività','sessions'=>'Accessi riusciti e PC','blocks'=>'IP bloccati','accounts'=>'Utenti e privilegi','trusted'=>'IP fidati','geo'=>'Filtro geografico','otp'=>'OTP email','settings'=>'Impostazioni');
+    $tabs=array('overview'=>'Panoramica','events'=>'Tentativi e attività','sessions'=>'Accessi riusciti e PC','blocks'=>'IP bloccati','accounts'=>'Utenti e privilegi','trusted'=>'IP fidati','geo'=>'Filtro geografico','otp'=>'OTP email','antispam'=>'Antispam','settings'=>'Impostazioni');
     echo '<nav class="psrc-tabs" aria-label="Sezioni centro sicurezza">';
     foreach ($tabs as $key=>$label) { echo '<a class="'.($tab===$key?'active':'').'" href="'.esc_url(psr_center_url($key)).'">'.esc_html($label).'</a>'; }
     echo '</nav>';
@@ -410,6 +410,7 @@ function psr_center_page($forced_tab = '') {
         case 'trusted': psr_center_trusted();break;
         case 'geo': psr_center_geo();break;
         case 'otp': psr_center_otp();break;
+        case 'antispam': if (function_exists('psr_antispam_admin_page')) { psr_antispam_admin_page(); } break;
         case 'settings': psr_center_settings();break;
     }
     echo '<p class="psrc-muted psrc-small" style="margin:20px 0">I dati sono visibili solo all’ID 1 e riguardano gli eventi PSR successivi all’installazione. L’accesso al database non sostituisce la protezione Plesk/WAF né i report Wordfence.</p></div>';

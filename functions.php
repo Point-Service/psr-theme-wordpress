@@ -97,6 +97,12 @@ if (is_file($psr_security_center_file) && is_readable($psr_security_center_file)
     });
 }
 
+/** PSR Antispam commenti: filtro attivo di default, configurabile da ID 1. */
+$psr_comment_antispam_file = get_template_directory() . '/inc/psr-comment-antispam.php';
+if (is_file($psr_comment_antispam_file) && is_readable($psr_comment_antispam_file)) {
+    require_once $psr_comment_antispam_file;
+}
+
 /**
  * Funzionalità Trasversali
  */
