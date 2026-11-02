@@ -579,3 +579,189 @@ body.login .language-switcher .button { min-height: 39px; border-radius: 8px; }
 /* Le finestre di login temporaneo di WordPress non usano il pannello laterale. */
 body.login.interim-login .psr-login-brand { display: none; }
 body.login.interim-login #login { width: min(100%,420px); }
+
+
+/* Raffinamento del modulo di destra: card piu' curata, campi premium, link piu' ordinati. */
+body.login #login {
+    width: min(100%, 520px);
+}
+body.login #login h1.wp-login-logo {
+    margin-bottom: 22px;
+}
+body.login #login .psr-login-webmail {
+    margin: 0 0 22px;
+}
+body.login #login > form:not(.psr-otp-resend) {
+    position: relative;
+    padding: 34px 34px 30px;
+    border: 1px solid #d4e1ec;
+    border-radius: 22px;
+    box-shadow: 0 22px 60px rgba(20, 54, 84, .11), 0 2px 10px rgba(20, 54, 84, .03);
+}
+body.login #login > form:not(.psr-otp-resend)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 34px;
+    right: 34px;
+    height: 4px;
+    border-radius: 0 0 14px 14px;
+    background: linear-gradient(90deg, #1f7abd 0%, #165f96 100%);
+}
+body.login #login form p {
+    margin-bottom: 20px;
+}
+body.login #login label {
+    color: #496781;
+    font-size: 11px;
+    font-weight: 760;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    line-height: 1.55;
+}
+body.login #login .forgetmenot label,
+body.login #login .psr-login-captcha label,
+body.login #login .psr-otp-intro p,
+body.login #login .psr-otp-help,
+body.login #login .message,
+body.login #login .success,
+body.login #login_error {
+    text-transform: none;
+    letter-spacing: normal;
+}
+body.login #login form .input,
+body.login #login form input[type="text"],
+body.login #login form input[type="password"],
+body.login #login form input[type="email"] {
+    min-height: 52px;
+    margin-top: 8px;
+    padding: 12px 15px;
+    border: 1px solid #c8d7e3;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: inset 0 1px 2px rgba(16, 47, 80, .035);
+}
+body.login #login form .input::placeholder,
+body.login #login form input[type="text"]::placeholder,
+body.login #login form input[type="password"]::placeholder,
+body.login #login form input[type="email"]::placeholder {
+    color: #89a0b5;
+}
+body.login #login form .input:hover,
+body.login #login form input[type="text"]:hover,
+body.login #login form input[type="password"]:hover,
+body.login #login form input[type="email"]:hover {
+    border-color: #96b0c4;
+}
+body.login #login form .input:focus,
+body.login #login form input:focus {
+    border-color: #2477b5;
+    outline: 3px solid rgba(36, 119, 181, .12);
+    outline-offset: 1px;
+    box-shadow: inset 0 1px 2px rgba(16, 47, 80, .03);
+}
+body.login #login .wp-pwd .input {
+    padding-inline-end: 58px;
+}
+body.login #login .button.wp-hide-pw {
+    top: 10px;
+    right: 6px;
+    width: 39px;
+    min-height: 39px;
+    border-radius: 10px;
+    color: #3e709b;
+}
+body.login #login .forgetmenot {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 2px 0 22px;
+}
+body.login #login input[type="checkbox"] {
+    border-radius: 5px;
+}
+body.login #login .psr-login-captcha {
+    margin: 20px 0 22px;
+    padding: 18px 18px 16px;
+    border: 1px solid #d8e6f1;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #f8fbfe 0%, #f1f7fc 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.85);
+}
+body.login #login .psr-captcha-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: #e8f2fa;
+    color: #326d98;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+body.login #login .psr-login-captcha label {
+    color: #244766;
+    font-size: 13px;
+    font-weight: 650;
+}
+body.login #login .psr-login-captcha label strong {
+    color: #155c8d;
+    font-size: 20px;
+}
+body.login #login .psr-captcha-answer input {
+    width: 165px !important;
+    min-height: 45px !important;
+    border-radius: 10px !important;
+}
+body.login #login .psr-captcha-help {
+    margin-top: 10px;
+    color: #61798f;
+}
+body.login #login .button-primary {
+    min-height: 54px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 760;
+    letter-spacing: .01em;
+    box-shadow: 0 10px 22px rgba(22, 102, 158, .18);
+}
+body.login #login .button-primary:hover,
+body.login #login .button-primary:focus {
+    box-shadow: 0 12px 26px rgba(22, 102, 158, .22);
+}
+body.login #login_error,
+body.login #login .message,
+body.login #login .success,
+body.login #login .notice {
+    margin: 0 0 18px;
+    padding: 14px 16px;
+    border-radius: 12px;
+}
+body.login #nav,
+body.login #backtoblog,
+body.login .privacy-policy-page-link {
+    margin-top: 14px;
+    font-size: 13px;
+}
+body.login .language-switcher {
+    width: min(100%, 520px);
+    margin-top: 22px;
+}
+@media (max-width: 480px) {
+    body.login #login > form:not(.psr-otp-resend) {
+        padding: 26px 22px 24px;
+        border-radius: 16px;
+    }
+    body.login #login > form:not(.psr-otp-resend)::before {
+        left: 22px;
+        right: 22px;
+    }
+    body.login #login label {
+        font-size: 10px;
+    }
+    body.login #login .psr-captcha-answer input {
+        width: 100% !important;
+    }
+}
