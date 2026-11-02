@@ -18,7 +18,7 @@ function dci_icon_script() {
     if (!dci_is_theme_admin_screen()) { return; }
 
     wp_register_script( 'dci-icon-script', get_template_directory_uri() . '/inc/admin-js/admin.js', array('jquery'), false, true);
-    
+
     wp_enqueue_script('dci-icon-script');
 
     $dci_data =   array( 'stylesheet_directory_uri' => get_template_directory_uri() );
@@ -69,3 +69,26 @@ add_action( 'login_enqueue_scripts', 'dci_enqueue_stylesheets' );
 add_filter( 'login_headerurl', 'my_login_logo_url' );
 add_filter( 'login_headertext', 'psr_login_logo' );
 add_filter( 'login_message', 'smallenvelop_login_message' );
+
+/**
+ * Sezione istituzionale puramente visiva: non sostituisce i form di WordPress.
+ * login_header stampa questo elemento all'interno del body, prima di #login.
+ * Nessun wrapper aperto, input spostato, script o modifica ai controlli OTP/CAPTCHA.
+ */
+function psr_login_render_brand_panel() {
+    global $interim_login;
+    // I login temporanei incorporati devono mantenere il layout WordPress originale.
+    if (!empty($interim_login)) { return; }
+
+    $site_name = get_bloginfo('name');
+    echo '<aside class="psr-login-brand" aria-label="Informazioni sul portale">';
+    echo '<div class="psr-brand-inner">';
+    echo '<span class="psr-brand-mark" aria-hidden="true"><span class="psr-brand-mark-inner"></span></span>';
+    echo '<span class="psr-brand-eyebrow">PORTALE ISTITUZIONALE</span>';
+    echo '<p class="psr-brand-title">Uno spazio dedicato.<br><span>Un accesso protetto.</span></p>';
+    echo '<p class="psr-brand-description">Accedi all\'area riservata di <strong>' . esc_html($site_name) . '</strong> per gestire le attivit&agrave; amministrative.</p>';
+    echo '<div class="psr-brand-assurance"><span class="psr-assurance-dot" aria-hidden="true"></span> Accesso riservato agli utenti autorizzati</div>';
+    echo '<p class="psr-brand-footer">SERVIZI DIGITALI &middot; AREA AMMINISTRATIVA</p>';
+    echo '</div></aside>';
+}
+add_action('login_header', 'psr_login_render_brand_panel', 20);
