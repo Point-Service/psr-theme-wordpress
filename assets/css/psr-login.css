@@ -765,3 +765,288 @@ body.login .language-switcher {
         width: 100% !important;
     }
 }
+
+/* === PSR Login V3: modulo unico e collegamenti ordinati === */
+body.login #login { width: min(100%, 530px); }
+body.login #login h1.wp-login-logo { margin-bottom: 22px; }
+body.login #login .psr-login-logo { width: 62px; height: 62px; border-radius: 15px; }
+body.login #login .psr-login-portal { font-size: clamp(19px, 2vw, 23px); }
+
+/* La sezione aggiuntiva esiste solo quando lo script di layout e' attivo.
+   In caso contrario il modulo WordPress precedente resta funzionante. */
+body.login #login .psr-login-card {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    margin: 0;
+    border: 1px solid #d5e2ed;
+    border-radius: 21px;
+    background: #fff;
+    box-shadow: 0 22px 56px rgba(23, 58, 87, .12), 0 3px 10px rgba(23,58,87,.035);
+    overflow: hidden;
+}
+body.login #login .psr-login-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #19649a 0%, #2989c5 100%);
+    z-index: 1;
+}
+body.login #login .psr-login-card-head {
+    padding: 27px 31px 21px;
+    text-align: left;
+}
+body.login #login .psr-login-card-head h2 {
+    margin: 0 0 5px;
+    color: #123754;
+    font-size: clamp(22px, 2vw, 25px);
+    font-weight: 760;
+    letter-spacing: -.04em;
+    line-height: 1.25;
+}
+body.login #login .psr-login-card-head p {
+    margin: 0;
+    color: #6a7f92;
+    font-size: 12px;
+    line-height: 1.6;
+}
+body.login #login .psr-login-card > form:not(.psr-otp-resend) {
+    position: static;
+    margin: 0;
+    width: 100%;
+    padding: 0 31px 26px;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+}
+body.login #login .psr-login-card > form:not(.psr-otp-resend)::before { display: none; }
+body.login #login .psr-login-card form p { margin-bottom: 17px; }
+body.login #login .psr-login-card form p.submit { margin-bottom: 0; }
+body.login #login .psr-login-card form label {
+    color: #35536c;
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0;
+    text-transform: none;
+}
+body.login #login .psr-login-card form .input,
+body.login #login .psr-login-card form input[type="text"],
+body.login #login .psr-login-card form input[type="password"],
+body.login #login .psr-login-card form input[type="email"] {
+    min-height: 49px;
+    margin-top: 7px;
+    border-radius: 10px;
+    border-color: #c8d8e5;
+    box-shadow: none;
+    background-color: #fbfdff;
+}
+body.login #login .psr-login-card #loginform input[name="log"],
+body.login #login .psr-login-card #loginform input[name="pwd"] {
+    padding-inline-start: 43px;
+    background-repeat: no-repeat;
+    background-position: 14px center;
+    background-size: 18px 18px;
+}
+body.login #login .psr-login-card #loginform input[name="log"] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%237990a7' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21a8 8 0 0 1 16 0'/%3E%3C/svg%3E");
+}
+body.login #login .psr-login-card #loginform input[name="pwd"] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%237990a7' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='10' width='14' height='11' rx='2'/%3E%3Cpath d='M8 10V7a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E");
+}
+body.login #login .psr-login-card .wp-pwd .input { padding-inline-end: 55px; }
+body.login #login .psr-login-card .button.wp-hide-pw { top: 10px; }
+body.login #login .psr-login-card .psr-login-captcha {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) 132px;
+    column-gap: 15px;
+    align-items: center;
+    margin: 19px 0 18px;
+    padding: 15px 16px;
+    border-radius: 12px;
+    background: #f4f8fc;
+    border: 1px solid #dbe8f1;
+}
+body.login #login .psr-login-card .psr-captcha-eyebrow {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    margin: 0 0 5px;
+    background: transparent;
+    padding: 0;
+    color: #497995;
+    font-size: 10px;
+    letter-spacing: .09em;
+}
+body.login #login .psr-login-card .psr-login-captcha label {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 13px;
+    color: #284a63;
+}
+body.login #login .psr-login-card .psr-login-captcha label strong {
+    font-size: 18px;
+    color: #155f93;
+}
+body.login #login .psr-login-card .psr-captcha-answer {
+    grid-column: 2;
+    grid-row: 1 / 3;
+}
+body.login #login .psr-login-card .psr-captcha-answer input {
+    display: block;
+    width: 100% !important;
+    min-height: 44px !important;
+    margin: 0;
+    text-align: center;
+    font-size: 17px !important;
+    font-variant-numeric: tabular-nums;
+}
+body.login #login .psr-login-card .psr-captcha-help {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 10px;
+    font-size: 11px;
+}
+body.login #login .psr-login-card .forgetmenot { margin-bottom: 18px; }
+body.login #login .psr-login-card .forgetmenot label { font-size: 12px; }
+body.login #login .psr-login-card .button-primary {
+    min-height: 51px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 750;
+    letter-spacing: 0;
+    box-shadow: 0 7px 15px rgba(22,102,158,.15);
+}
+body.login #login .psr-login-card .button-primary:hover {
+    box-shadow: 0 8px 20px rgba(22,102,158,.22);
+}
+body.login #login .psr-login-utilities {
+    border-top: 1px solid #e1eaf1;
+    background: #f7fafd;
+}
+body.login #login .psr-login-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px 16px;
+    padding: 15px 30px 13px;
+}
+body.login #login .psr-login-links #nav,
+body.login #login .psr-login-links #backtoblog {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    text-align: left;
+    line-height: 1.65;
+}
+body.login #login .psr-login-links a {
+    color: #24638d;
+    font-weight: 600;
+    text-decoration: none;
+}
+body.login #login .psr-login-links a:hover { text-decoration: underline; }
+body.login #login .psr-login-extras {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px 24px;
+    padding: 14px 30px 19px;
+    border-top: 1px solid #e5edf4;
+}
+body.login #login .psr-login-extras .psr-login-webmail {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    text-align: left;
+    color: #687f91;
+    font-size: 11px;
+    font-weight: 550;
+}
+body.login #login .psr-login-extras .psr-login-webmail a {
+    font-size: 12px;
+    color: #1b6398;
+    font-weight: 700;
+}
+body.login #login .psr-login-extras .language-switcher {
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    color: #657f93;
+}
+body.login #login .psr-login-extras .language-switcher form {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    gap: 4px 8px;
+    align-items: center;
+}
+body.login #login .psr-login-extras .language-switcher label {
+    grid-column: 1 / -1;
+    display: block;
+    margin: 0;
+    color: #687f91;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
+body.login #login .psr-login-extras .language-switcher select {
+    min-width: 123px;
+    width: 130px;
+    min-height: 35px;
+    max-width: 100%;
+    border: 1px solid #d0dee9;
+    border-radius: 8px;
+    background: #fff;
+    color: #284a65;
+    font-size: 12px;
+}
+body.login #login .psr-login-extras .language-switcher .button {
+    min-height: 35px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+body.login #login .psr-login-extras .privacy-policy-page-link {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    font-size: 11px;
+}
+body.login #login .psr-login-card > form.psr-otp-resend {
+    padding: 0 31px 18px;
+    margin: 0;
+    text-align: center;
+}
+@media (min-width:961px) {
+    body.login:not(.interim-login) #login { padding-top: 15px; }
+}
+@media (max-width:480px) {
+    body.login #login { width: min(100%,530px); padding-inline: 14px; }
+    body.login #login .psr-login-card { border-radius: 17px; }
+    body.login #login .psr-login-card-head { padding: 23px 20px 17px; }
+    body.login #login .psr-login-card > form:not(.psr-otp-resend) { padding: 0 20px 22px; }
+    body.login #login .psr-login-card .psr-login-captcha { grid-template-columns: minmax(0,1fr) 112px; column-gap: 10px; padding: 14px 12px; }
+    body.login #login .psr-login-card .psr-login-captcha label { font-size: 12px; }
+    body.login #login .psr-login-links { padding: 15px 20px 12px; }
+    body.login #login .psr-login-extras { padding: 14px 20px 18px; }
+    body.login #login .psr-login-card > form.psr-otp-resend { padding-inline: 20px; }
+}
+@media (max-width:350px) {
+    body.login #login .psr-login-card .psr-login-captcha { grid-template-columns: 1fr; }
+    body.login #login .psr-login-card .psr-captcha-answer { grid-column: 1; grid-row: 3; margin-top: 8px; }
+    body.login #login .psr-login-card .psr-captcha-answer input { max-width: 140px; }
+    body.login #login .psr-login-card .psr-captcha-help { grid-row: 4; }
+}
+
+@media (max-width:480px) {
+ body.login #login .psr-login-card .psr-captcha-answer input { font-size: 14px !important; padding-inline: 6px !important; }
+}

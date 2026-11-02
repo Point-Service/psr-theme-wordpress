@@ -49,8 +49,8 @@ function psr_login_logo($text = '') {
 }
 function smallenvelop_login_message( $message ) {
     // I messaggi core/plugin (recupero, errori, OTP) devono restare intatti.
-    return $message . '<p class="psr-login-webmail">Posta elettronica del portale: '
-        . '<a href="https://webmailssl.it">accedi alla webmail</a></p>';
+    return $message . '<p class="psr-login-webmail"><span>Webmail istituzionale</span>'
+        . '<a href="https://webmailssl.it">Apri webmail</a></p>';
 }
 function my_login_logo_url() {
     return home_url();
@@ -66,6 +66,21 @@ function dci_enqueue_stylesheets() {
 }
 add_action( 'admin_enqueue_scripts', 'dci_icon_script' );
 add_action( 'login_enqueue_scripts', 'dci_enqueue_stylesheets' );
+/** Il layout mantiene i form WordPress originali e raggruppa solo link e lingua. */
+function psr_login_layout_script() {
+    $relative = '/assets/js/psr-login-layout.js';
+    $local = get_template_directory() . $relative;
+    if (is_readable($local)) {
+        wp_enqueue_script('psr-login-layout', get_template_directory_uri() . $relative,
+            array(), (string) filemtime($local), false);
+    }
+}
+add_action('login_enqueue_scripts', 'psr_login_layout_script');
+
+/** CAPTCHA aggiuntivo opzionale: in sua assenza resta attivo quello esistente. */
+$psr_captcha_upgrade = get_template_directory() . '/inc/psr-captcha-upgrade.php';
+if (is_readable($psr_captcha_upgrade)) { require_once $psr_captcha_upgrade; }
+
 add_filter( 'login_headerurl', 'my_login_logo_url' );
 add_filter( 'login_headertext', 'psr_login_logo' );
 add_filter( 'login_message', 'smallenvelop_login_message' );
