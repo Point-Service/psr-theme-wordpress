@@ -6,6 +6,10 @@
         if (!root || root.querySelector('.psr-login-card')) { return; }
         var form = root.querySelector(':scope > form:not(.psr-otp-resend)');
         if (!form) { return; }
+        // Rimuove anche dal DOM il checkbox nativo "Ricordami".
+        // Il backend ignora comunque i POST che tentano di riattivarlo.
+        var remember = form.querySelector('.forgetmenot');
+        if (remember) { remember.remove(); }
         var card = document.createElement('section');
         card.className = 'psr-login-card';
         card.setAttribute('aria-label', 'Accesso area riservata');

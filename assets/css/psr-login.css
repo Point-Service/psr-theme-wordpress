@@ -1050,3 +1050,9 @@ body.login #login .psr-login-card > form.psr-otp-resend {
 @media (max-width:480px) {
  body.login #login .psr-login-card .psr-captcha-answer input { font-size: 14px !important; padding-inline: 6px !important; }
 }
+
+/* PSR: nessun "Ricordami". Fallback anche senza JavaScript o con JS bloccato. */
+body.login #login .forgetmenot,
+body.login #login form p.forgetmenot {
+    display: none !important;
+}

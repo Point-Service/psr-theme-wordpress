@@ -31,6 +31,17 @@ function dci_icon_script() {
 function psr_individual_core_assets() {
     $GLOBALS['concatenate_scripts'] = false;
 }
+/**
+ * Non consentire sessioni persistenti dal login WordPress.
+ * Prima che wp-login.php e l'OTP PSR leggano il flag ricordami,
+ * lo eliminiamo lato server (anche da richieste POST costruite manualmente).
+ * Non interferisce con i cookie di sessione e con l'OTP obbligatorio.
+ */
+function psr_login_disable_remember_me() {
+    unset($_POST['rememberme'], $_REQUEST['rememberme']);
+}
+add_action('login_init', 'psr_login_disable_remember_me', -1000);
+
 add_action('login_init', 'psr_individual_core_assets', 5);
 add_action('admin_init', 'psr_individual_core_assets', 5);
 
