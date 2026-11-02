@@ -1056,3 +1056,83 @@ body.login #login .forgetmenot,
 body.login #login form p.forgetmenot {
     display: none !important;
 }
+
+
+/* Colori del login sincronizzati con il colore dell'header di ciascun Comune.
+   Le variabili vengono stampate lato server (valori sanificati in esadecimale). */
+body.login {
+    --psr-primary: var(--psr-header-button, #16669e);
+    --psr-primary-dark: var(--psr-header-hover, #104d7d);
+    --psr-focus: var(--psr-header-button, #237dc3);
+    --psr-navy: var(--psr-header-panel, #102f50);
+    background:
+        radial-gradient(ellipse at 92% 10%, var(--psr-header-soft, #eef5fa), transparent 47%),
+        linear-gradient(145deg, #f8fafc, var(--psr-header-soft, #eef5fa));
+}
+body.login .psr-login-brand {
+    background: linear-gradient(155deg,
+        var(--psr-header-panel-light, #1c496e) 0%,
+        var(--psr-header-panel, #123f68) 57%,
+        var(--psr-header-panel-dark, #0b2749) 100%);
+}
+body.login .psr-brand-title span,
+body.login .psr-brand-eyebrow { color: var(--psr-header-highlight, #b0d8f6); }
+body.login .psr-brand-mark-inner { border-color: var(--psr-header-highlight, #c9e8ff); }
+body.login .psr-brand-mark-inner::before { background: var(--psr-header-highlight, #c9e8ff); }
+body.login #login .psr-login-card::before,
+body.login #login > form:not(.psr-otp-resend)::before {
+    background: linear-gradient(90deg,
+        var(--psr-header-button, #16669e),
+        var(--psr-header-original, #2989c5));
+}
+body.login #login .psr-login-card-head h2,
+body.login #login .psr-login-portal { color: var(--psr-header-panel, #102f50); }
+body.login #login .psr-login-card .button-primary,
+body.login #login .button-primary {
+    background: var(--psr-header-button, #16669e);
+    border-color: var(--psr-header-button, #16669e);
+    box-shadow: 0 7px 17px rgba(0,0,0,.12);
+}
+body.login #login .psr-login-card .button-primary:hover,
+body.login #login .psr-login-card .button-primary:focus,
+body.login #login .button-primary:hover,
+body.login #login .button-primary:focus {
+    background: var(--psr-header-hover, #104d7d);
+    border-color: var(--psr-header-hover, #104d7d);
+    box-shadow: 0 9px 22px rgba(0,0,0,.15);
+}
+body.login #login .psr-login-card .psr-login-captcha,
+body.login #login .psr-otp-intro {
+    background: var(--psr-header-soft, #f4f8fc);
+    border-color: var(--psr-header-border, #dbe8f1);
+}
+body.login #login .psr-login-card .psr-captcha-eyebrow,
+body.login #login .psr-login-card .psr-login-captcha label strong,
+body.login #login .psr-login-links a,
+body.login #login .psr-login-extras .psr-login-webmail a,
+body.login #login .psr-login-card .button.wp-hide-pw,
+body.login #login a {
+    color: var(--psr-header-button, #16669e);
+}
+body.login #login .psr-login-captcha .psr-captcha-eyebrow {
+    background: var(--psr-header-soft, #e8f2fa);
+}
+body.login #login .psr-login-card form .input:focus,
+body.login #login .psr-login-card form input:focus {
+    border-color: var(--psr-header-button, #16669e);
+    outline-color: var(--psr-header-border, #dbe8f1);
+}
+body.login #login .psr-login-utilities { background: var(--psr-header-soft, #f7fafd); }
+body.login #login .psr-login-utilities,
+body.login #login .psr-login-extras { border-color: var(--psr-header-border, #e1eaf1); }
+body.login #login .psr-login-extras .language-switcher .button {
+    border-color: var(--psr-header-border, #d0dee9);
+    color: var(--psr-header-button, #16669e);
+}
+body.login #login .psr-otp-kicker,
+body.login #login .psr-otp-email { color: var(--psr-header-button, #16669e); }
+body.login #login .psr-otp-email { background: var(--psr-header-soft, #daecf9); }
+@media (forced-colors: active) {
+    body.login .psr-login-brand,
+    body.login #login .psr-login-card .button-primary { forced-color-adjust: auto; }
+}
