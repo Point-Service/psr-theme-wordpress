@@ -146,55 +146,7 @@ function psr_login_captcha_check($user, $username = '', $password = '') {
 // Prima della verifica della password WordPress; l'OTP rimane obbligatorio.
 add_filter('authenticate', 'psr_login_captcha_check', 12, 3);
 
-/** CSS solo sulle pagine di login, senza JS o risorse esterne. */
-function psr_login_modern_style() {
-    ?>
-    <style id="psr-login-modern-ui">
-    body.login{background:radial-gradient(circle at 15% 10%,#dbeafe 0,transparent 40%),radial-gradient(circle at 95% 90%,#dceeea 0,transparent 38%),linear-gradient(145deg,#f0f5fc,#f8fafc);min-height:100vh;color:#193451;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
-    body.login #login{width:min(430px,calc(100% - 34px));padding:44px 0 32px}
-    body.login h1 a{background:none!important;box-shadow:none!important;font-size:0!important;text-indent:0!important;overflow:visible!important;width:100%!important;height:64px!important;display:flex!important;align-items:center;justify-content:center;flex-direction:column;margin:0 0 24px;color:#123e6e!important;text-decoration:none}
-    body.login h1 a:before{content:"PSR";font-size:32px;font-weight:850;letter-spacing:3px;line-height:1;color:#155c9b}
-    body.login h1 a:after{content:"ACCESSO SICURO";font-size:10px;letter-spacing:2.6px;font-weight:800;margin-top:7px;color:#647b91}
-    body.login #loginform,body.login #lostpasswordform,body.login #registerform,body.login #resetpassform,body.login #login>form{background:#fff;border:1px solid #dae6f0;border-radius:19px;padding:28px 30px;box-shadow:0 16px 46px rgba(20,65,110,.11);overflow:visible}
-    body.login label{font-size:13px;color:#2d4b68;font-weight:650}
-    body.login form .input,body.login input[type=text],body.login input[type=password],body.login input[type=email]{background:#f8fafc;border:1px solid #d6e1eb;border-radius:10px;min-height:46px;padding:10px 13px;color:#173b60;box-shadow:none;font-size:16px;outline:none}
-    body.login input:focus{border-color:#2c7fc3;box-shadow:0 0 0 3px rgba(33,124,193,.13)!important}
-    body.login .button-primary{background:linear-gradient(112deg,#1967a7,#124e86);border:0;border-radius:10px;min-height:45px;padding:7px 21px;font-weight:700;text-shadow:none;box-shadow:0 6px 17px rgba(18,86,145,.16)}
-    body.login .button-primary:hover,body.login .button-primary:focus{background:#0e527f}
-    body.login .button:not(.button-primary){border-color:#c9dbea;border-radius:9px;color:#164e7d;background:#f7fafc}
-    body.login .button:not(.button-primary):hover{background:#eaf4fd;color:#0b476f}
-    body.login #nav,body.login #backtoblog{text-align:center;margin-top:16px}
-    body.login #nav a,body.login #backtoblog a{color:#456983!important;text-decoration:none}
-    body.login .message,body.login #login_error{background:#fff;border-left:4px solid #2d82c4;border-radius:9px;box-shadow:0 6px 20px rgba(20,65,110,.06)}
-    body.login #login_error{border-left-color:#c64f55}
-    body.login .psr-login-captcha{position:relative;clear:both;display:block;border:1px solid #dce8f2;background:#f5f9fd;border-radius:12px;padding:14px 15px;margin:13px 0 18px}
-    body.login .psr-captcha-eyebrow{display:block;font-size:10px;letter-spacing:1.15px;font-weight:800;color:#176aa9;margin-bottom:8px}
-    body.login .psr-login-captcha label{display:block;line-height:1.5}
-    body.login .psr-login-captcha label strong{font-size:18px;color:#0b548d;letter-spacing:.4px}
-    body.login .psr-captcha-answer input{max-width:160px;min-height:42px!important;margin-top:9px;font-size:16px!important}
-    body.login .psr-captcha-help{display:block;margin-top:8px;font-size:11px;line-height:1.5;color:#627c93}
-    body.login .psr-captcha-trap{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
-    body.login .psr-otp-intro{background:linear-gradient(132deg,#123e68,#176ca6);border-radius:17px;margin:0 0 18px;padding:25px 25px 22px;color:#fff;box-shadow:0 10px 25px rgba(16,79,132,.15)}
-    body.login .psr-otp-intro strong{color:#fff}
-    body.login .psr-otp-intro h2{color:#fff;margin:0 0 11px;font-size:22px;line-height:1.2;font-weight:800}
-    body.login .psr-otp-intro p{color:#e3effa;font-size:13px;line-height:1.62;margin:10px 0 0}
-    body.login .psr-otp-intro .psr-otp-kicker{display:inline-block;font-size:10px;letter-spacing:1.2px;font-weight:800;text-transform:uppercase;color:#b8e4ff;margin:0 0 10px}
-    body.login .psr-otp-intro .psr-otp-email{display:inline-block;background:#ffffff1c;border:1px solid #ffffff30;border-radius:7px;padding:6px 10px;font-weight:700;color:#fff;overflow-wrap:anywhere}
-    body.login #psr_otp{width:100%!important;letter-spacing:7px;text-align:center;font-size:24px!important;font-weight:760;height:60px;border-color:#bad4e8}
-    body.login .psr-otp-resend{margin-top:13px!important;background:transparent!important;box-shadow:none!important;border:0!important;padding:0!important;text-align:center}
-    body.login .psr-otp-resend button{width:100%;min-height:42px}
-    body.login .psr-otp-help{text-align:center;font-size:12px;color:#627a90;line-height:1.6}
-    body.login .psr-otp-help a{color:#185e97}
-    body.login #login>form .submit{display:flex;flex-wrap:wrap;justify-content:flex-end}
-    body.login #login>form .submit .button-primary{width:100%}
-    @media(max-width:480px){body.login #login{padding-top:18px}body.login #loginform,body.login #login>form{padding:23px 19px;border-radius:14px}body.login .psr-otp-intro{padding:20px;border-radius:13px}}
-    @media(prefers-reduced-motion:reduce){body.login *,body.login *:before,body.login *:after{transition:none!important}}
-    </style>
-    <?php
-}
-add_action('login_enqueue_scripts', 'psr_login_modern_style', 50);
 add_filter('login_headerurl', static function () { return home_url('/'); });
-add_filter('login_headertext', static function () { return 'Accesso riservato - ' . get_bloginfo('name'); });
 
 function psr_login_main_admin($user) {
     return $user instanceof WP_User && (int) $user->ID === 1;

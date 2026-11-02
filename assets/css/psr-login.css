@@ -1,132 +1,366 @@
-/* Solo wp-login.php: conserva markup, hook e controlli password nativi WordPress. */
+/*
+ * PSR - Accesso WordPress | Layout istituzionale leggero, novembre 2026.
+ * Stili solo per wp-login.php; nessuna modifica a hook, cookie, OTP, CAPTCHA o backend.
+ * Lo stemma, il Comune e il sottotitolo provengono gia' da inc/backend-template.php.
+ */
 body.login {
-    --psr-navy: #0d2546;
-    --psr-blue: #155b94;
-    --psr-stroke: #c7d5e4;
-    background: radial-gradient(ellipse at 15% 0, #d7e9fb, transparent 55%), #f0f5fa;
-    color: #243c55;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --psr-ink: #183b5d;
+    --psr-blue: #195d93;
+    --psr-border: #dbe4ed;
     min-height: 100vh;
+    background: #f3f6fa;
+    background-image: linear-gradient(180deg,#eaf2f9 0,#f3f6fa 225px,#f7f9fc 100%);
+    color: var(--psr-ink);
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
 }
 body.login #login {
     box-sizing: border-box;
-    width: min(100%, 456px);
-    padding: 40px 20px 28px;
+    width: min(100%,432px);
+    padding: 30px 18px 22px;
 }
-body.login h1 a {
-    background: none;
-    box-sizing: border-box;
-    color: var(--psr-navy);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    height: auto;
-    width: 100%;
-    margin: 0 0 26px;
+/* Nessun secondo logo PSR in pseudo-elementi: rispetta l'identita' del Comune. */
+body.login #login h1.wp-login-logo {
+    margin: 0 0 10px;
     padding: 0;
-    text-indent: 0;
+    text-align: center;
+}
+body.login #login h1.wp-login-logo a {
+    box-sizing: border-box;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    border: 0;
+    box-shadow: none !important;
+    color: #123b61 !important;
+    font-size: initial !important;
+    text-indent: 0 !important;
     text-decoration: none;
+    line-height: 1.35;
+    overflow: visible !important;
+}
+body.login #login h1.wp-login-logo a::before,
+body.login #login h1.wp-login-logo a::after {
+    content: none !important;
+    display: none !important;
+}
+body.login #login .psr-login-logo {
+    display: block;
+    flex-shrink: 0;
+    width: 62px;
+    height: 62px;
+    max-width: 100%;
+    margin: 0 auto 4px;
+    object-fit: contain;
+}
+body.login #login .psr-login-portal {
+    display: block;
+    max-width: 100%;
+    color: #153d61;
+    font-size: 21px;
+    font-weight: 760;
+    letter-spacing: -.35px;
+    line-height: 1.3;
     overflow-wrap: anywhere;
 }
-body.login .psr-login-logo { width: 72px; height: 72px; object-fit: contain; }
-body.login .psr-login-portal { font-size: 24px; line-height: 1.3; font-weight: 750; }
-body.login .psr-login-caption { color: #506782; font-size: 14px; font-weight: 400; }
-body.login form {
-    box-sizing: border-box;
-    margin-top: 18px;
-    padding: 28px;
-    background: #fff;
-    border: 1px solid #d6e1ed;
-    border-top: 4px solid var(--psr-blue);
-    border-radius: 14px;
-    box-shadow: 0 12px 32px #173b5d12;
-    overflow: visible;
-}
-body.login label { font-size: 14px; line-height: 1.5; }
-body.login form .input,
-body.login input[type="text"],
-body.login input[type="password"],
-body.login input[type="email"] {
-    box-sizing: border-box;
-    width: 100%;
-    min-height: 48px;
-    margin-top: 6px;
-    padding: 9px 12px;
-    border: 1px solid #879db6;
-    border-radius: 7px;
-    background: #fff;
-    color: var(--psr-navy);
-    font-size: 18px;
+body.login #login .psr-login-caption {
+    display: block;
+    margin: 0;
+    color: #536980;
+    font-size: 12px;
+    font-weight: 500;
     line-height: 1.5;
 }
-body.login .wp-pwd .input { padding-inline-end: 50px; }
-body.login .button.wp-hide-pw { top: 7px; min-height: 46px; width: 46px; color: var(--psr-blue); }
-body.login .button.wp-hide-pw .dashicons { top: 11px; }
-body.login form .forgetmenot { float: none; margin: 0 0 20px; }
-body.login form .forgetmenot label { font-size: 14px; }
-body.login form .submit { margin: 0; }
-body.login .button-primary {
-    float: none;
+body.login #login .psr-login-webmail {
     display: block;
-    width: 100%;
-    min-height: 46px;
-    padding: 9px 16px;
-    background: var(--psr-blue);
-    border: 1px solid var(--psr-blue);
-    border-radius: 7px;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 650;
-    line-height: 1.6;
-    text-shadow: none;
-    box-shadow: none;
-}
-body.login .button-primary:hover { background: #0d4475; border-color: #0d4475; }
-body.login a { color: #15558a; text-decoration: underline; }
-body.login a:hover { color: #0d2546; }
-body.login :is(a, input, button, select):focus-visible {
-    outline: 3px solid #005fcc;
-    outline-offset: 3px;
-    box-shadow: none;
-}
-body.login input[type="checkbox"] { border-color: #647d99; }
-body.login #login_error, body.login .message, body.login .success {
-    box-sizing: border-box;
-    margin: 16px 0;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: none;
-    color: #243c55;
+    margin: 8px 0 16px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #536c82;
     overflow-wrap: anywhere;
 }
-body.login #login_error { border-left-color: #b42336; background: #fff4f4; }
-body.login .message { border-left-color: var(--psr-blue); background: #e9f3ff; }
-body.login .success { border-left-color: #126341; background: #e6f6ee; }
-body.login .psr-login-webmail { font-size: 13px; line-height: 1.6; text-align: center; margin: 0 0 18px; }
-body.login #nav, body.login #backtoblog { padding: 0 8px; text-align: center; }
-body.login #nav a, body.login #backtoblog a { color: #15558a; }
-body.login .language-switcher { padding: 0 20px 24px; }
-body.login .language-switcher form { border: 0; background: none; box-shadow: none; padding: 0; }
-body.login .language-switcher select { max-width: 62vw; min-height: 40px; border-radius: 6px; }
-body.login .language-switcher .button { min-height: 40px; }
-body.login .psr-otp-intro { line-height: 1.65; font-size: 14px; }
-body.login #psr_otp { font-variant-numeric: tabular-nums; letter-spacing: .22em; font-size: 24px; }
-body.login .psr-otp-resend { border: 0; padding: 0; box-shadow: none; background: none; text-align: center; }
-body.login .psr-otp-resend .button { white-space: normal; min-height: 44px; padding: 8px 12px; }
-body.login .psr-otp-help { font-size: 13px; line-height: 1.65; text-align: center; }
-body.login .psr-otp-error { border-left-color: #b42336; background: #fff4f4; }
-@media (max-width: 480px) {
-    body.login #login { padding: 24px 16px; }
-    body.login form { padding: 22px; }
-    body.login .psr-login-portal { font-size: 22px; }
-    body.login .language-switcher form { padding: 0; }
-    body.login form.psr-otp-resend { padding: 0; }
+body.login #login .psr-login-webmail a {
+    color: #1b639b;
+    font-weight: 600;
+    text-underline-offset: 2px;
 }
-@media (prefers-reduced-motion: reduce) {
+/* Modulo pulito, senza fascia superiore pesante o ombre invasive. */
+body.login #login > form:not(.psr-otp-resend) {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 24px 25px 23px;
+    border: 1px solid var(--psr-border);
+    border-top: 1px solid var(--psr-border);
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 8px 26px rgba(24,55,85,.07);
+    overflow: visible;
+}
+body.login #login label {
+    color: #304f6d;
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.4;
+}
+body.login #login form p { margin-bottom: 15px; }
+body.login #login form .input,
+body.login #login form input[type="text"],
+body.login #login form input[type="password"],
+body.login #login form input[type="email"] {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 7px;
+    padding: 9px 12px;
+    border: 1px solid #cad8e6;
+    border-radius: 8px;
+    background: #fff;
+    color: #153b5b;
+    font-size: 15px;
+    line-height: 1.5;
+    box-shadow: none;
+    outline: none;
+}
+body.login #login form .input:focus,
+body.login #login form input:focus {
+    border-color: #347eb8;
+    box-shadow: 0 0 0 3px rgba(39,113,175,.12);
+}
+body.login #login .wp-pwd .input { padding-inline-end: 52px; }
+body.login #login .button.wp-hide-pw {
+    top: 7px;
+    width: 43px;
+    height: 44px;
+    min-height: 44px;
+    border: 0;
+    background: transparent;
+    color: #42698b;
+    box-shadow: none;
+}
+body.login #login .button.wp-hide-pw .dashicons { top: 10px; }
+body.login #login .forgetmenot { float: none; margin: 0 0 15px; }
+body.login #login .forgetmenot label { font-size: 12px; }
+body.login #login p.submit { margin: 0; }
+body.login #login .button-primary {
+    display: block;
+    float: none;
+    width: 100%;
+    min-height: 45px;
+    padding: 10px 15px;
+    border: 1px solid #195e95;
+    border-radius: 9px;
+    background: #195e95;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    text-shadow: none;
+    box-shadow: none;
+    cursor: pointer;
+    transition: background-color .15s ease;
+}
+body.login #login .button-primary:hover { background: #104d7f; border-color: #104d7f; }
+body.login #login .button:not(.button-primary):not(.wp-hide-pw) {
+    border: 1px solid #cddce8;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #205c8a;
+    box-shadow: none;
+}
+body.login #login .button:not(.button-primary):not(.wp-hide-pw):hover { background: #ecf4fa; }
+body.login #login a { color: #206497; }
+body.login #login a:hover { color: #124a78; }
+body.login :is(a,input,button,select):focus-visible {
+    outline: 2px solid #2378b7;
+    outline-offset: 2px;
+}
+body.login #login input[type="checkbox"] { border-color: #96abc0; }
+body.login #login_error,
+body.login #login .message,
+body.login #login .success {
+    box-sizing: border-box;
+    margin: 12px 0;
+    padding: 12px 14px;
+    border-radius: 9px;
+    border-left-width: 3px;
+    background: #fff;
+    box-shadow: none;
+    overflow-wrap: anywhere;
+}
+body.login #login_error { border-left-color: #bd374a; background: #fff6f6; }
+body.login #login .message { border-left-color: #357bb1; background: #f0f7fc; }
+body.login #login .success { border-left-color: #258360; background: #edf9f3; }
+/* CAPTCHA leggibile, compatto e interamente integrato nel modulo. */
+body.login #login .psr-login-captcha {
+    position: relative;
+    display: block;
+    clear: both;
+    margin: 14px 0 16px;
+    padding: 13px 14px 12px;
+    border: 1px solid #dce7ef;
+    border-radius: 10px;
+    background: #f5f9fc;
+}
+body.login #login .psr-captcha-eyebrow {
+    display: block;
+    margin-bottom: 7px;
+    color: #416a90;
+    font-size: 10px;
+    font-weight: 760;
+    letter-spacing: 1px;
+}
+body.login #login .psr-login-captcha label { display: block; }
+body.login #login .psr-login-captcha label strong { color: #135887; font-size: 17px; }
+body.login #login .psr-captcha-answer input {
+    width: 140px !important;
+    max-width: 100%;
+    min-height: 41px !important;
+    margin-top: 8px;
+    font-size: 15px !important;
+}
+body.login #login .psr-captcha-help {
+    display: block;
+    margin-top: 8px;
+    color: #546b81;
+    font-size: 11px;
+    line-height: 1.5;
+}
+body.login #login .psr-captcha-trap {
+    position: absolute !important;
+    left: -10000px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    pointer-events: none;
+}
+/* OTP: informazione discreta e coerente con il login. */
+body.login #login .psr-otp-intro {
+    margin: 0 0 15px;
+    padding: 17px 19px;
+    border: 1px solid #dce8f1;
+    border-radius: 12px;
+    background: #edf5fb;
+    color: #173b5b;
+}
+body.login #login .psr-otp-intro h2 {
+    margin: 0 0 7px;
+    color: #123f62;
+    font-size: 19px;
+    font-weight: 760;
+    line-height: 1.3;
+}
+body.login #login .psr-otp-intro p {
+    margin: 7px 0 0;
+    color: #41617e;
+    font-size: 12px;
+    line-height: 1.6;
+}
+body.login #login .psr-otp-intro strong { color: #14466f; }
+body.login #login .psr-otp-kicker {
+    display: block;
+    margin: 0 0 7px;
+    color: #2d719f;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .75px;
+}
+body.login #login .psr-otp-email {
+    display: inline-block;
+    max-width: 100%;
+    padding: 3px 7px;
+    border-radius: 6px;
+    background: #dfeef8;
+    color: #16527e;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+}
+body.login #login #psr_otp {
+    width: 100%;
+    height: 54px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .23em;
+}
+body.login #login > form.psr-otp-resend {
+    box-sizing: border-box;
+    margin: 10px 0 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    text-align: center;
+}
+body.login #login .psr-otp-resend p { margin: 0; }
+body.login #login .psr-otp-resend .button {
+    width: 100%;
+    min-height: 41px;
+    padding: 8px 12px;
+    white-space: normal;
+}
+body.login #login .psr-otp-help {
+    margin: 12px 0 0;
+    text-align: center;
+    color: #546b81;
+    font-size: 12px;
+    line-height: 1.6;
+}
+/* Collegamenti secondari e selettore lingua. */
+body.login #nav,body.login #backtoblog {
+    margin: 12px 0 0;
+    padding: 0 8px;
+    text-align: center;
+    font-size: 12px;
+}
+body.login #nav a,body.login #backtoblog a { text-decoration: none; }
+body.login #nav a:hover,body.login #backtoblog a:hover { text-decoration: underline; }
+body.login .language-switcher {
+    box-sizing: border-box;
+    max-width: 432px;
+    margin: 19px auto 0;
+    padding: 0 18px 20px;
+    color: #526a7d;
+    font-size: 12px;
+}
+body.login .language-switcher form {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+}
+body.login .language-switcher select { max-width: 65vw; min-height: 38px; border-radius: 7px; }
+body.login .language-switcher .button { min-height: 38px; }
+@media (max-height:800px) and (min-width:600px) {
+    body.login #login { padding-top: 16px; }
+    body.login #login .psr-login-logo { width: 54px; height: 54px; }
+    body.login #login h1.wp-login-logo { margin-bottom: 7px; }
+    body.login #login .psr-login-webmail { margin: 4px 0 10px; }
+    body.login #login > form:not(.psr-otp-resend) { padding-top: 19px; padding-bottom: 19px; }
+    body.login #login .psr-login-captcha { margin: 10px 0 12px; padding: 10px 13px; }
+    body.login .language-switcher { margin-top: 9px; }
+}
+@media (max-width:480px) {
+    body.login #login { padding: 23px 14px 20px; }
+    body.login #login .psr-login-logo { width: 55px; height: 55px; }
+    body.login #login .psr-login-portal { font-size: 19px; }
+    body.login #login > form:not(.psr-otp-resend) { padding: 21px 19px; border-radius: 12px; }
+    body.login .language-switcher { padding-inline: 14px; }
+}
+@media (prefers-reduced-motion:reduce) {
     body.login * { animation: none !important; transition: none !important; }
 }
-@media (forced-colors: active) {
-    body.login form { border: 1px solid CanvasText; }
-    body.login .button-primary { border: 1px solid ButtonText; }
+@media (forced-colors:active) {
+    body.login #login > form:not(.psr-otp-resend) { border: 1px solid CanvasText; }
+    body.login #login .button-primary { border: 1px solid ButtonText; }
 }
