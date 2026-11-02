@@ -59,6 +59,143 @@ function psr_login_auth_network_gate($user, $username = '', $password = '') {
 add_filter('authenticate', 'psr_login_auth_network_gate', 98, 3);
 add_filter('authenticate', 'psr_login_auth_network_gate', PHP_INT_MAX, 3);
 
+
+/**
+ * PSR Login CAPTCHA leggero (solo wp-login.php, azione login).
+ * La soluzione di un'operazione aritmetica e' anti-spam, NON una difesa contro
+ * bot avanzati. Non rimuovere OTP, rate-limit o controlli IP.
+ * Interruttore facoltativo solo sul server: PSR_LOGIN_CAPTCHA_ENABLED=false.
+ */
+function psr_login_captcha_enabled() {
+    return !defined('PSR_LOGIN_CAPTCHA_ENABLED') || (bool) PSR_LOGIN_CAPTCHA_ENABLED;
+}
+function psr_login_captcha_native_login() {
+    $script = basename((string) parse_url((string)($_SERVER['SCRIPT_NAME'] ?? ''), PHP_URL_PATH));
+    $action = $_REQUEST['action'] ?? 'login';
+    return $script === 'wp-login.php' && is_string($action) && ($action === '' || $action === 'login');
+}
+function psr_login_captcha_challenge($a, $b, $timestamp, $random) {
+    $payload = implode(':', array((int)$a, (int)$b, (int)$timestamp, (string)$random));
+    $signature = hash_hmac('sha256', 'psr-login-captcha-v1|' . $payload, wp_salt('auth'));
+    return base64_encode($payload . ':' . $signature);
+}
+function psr_login_captcha_form() {
+    if (!psr_login_captcha_enabled() || !psr_login_captcha_native_login()) { return; }
+    try {
+        $a = random_int(2, 9);
+        $b = random_int(2, 9);
+        $salt = bin2hex(random_bytes(12));
+    } catch (Throwable $e) {
+        // Non offrire un CAPTCHA che il server non puo' firmare.
+        echo '<p class="message">Verifica antispam temporaneamente non disponibile.</p>';
+        return;
+    }
+    $token = psr_login_captcha_challenge($a, $b, time(), $salt);
+    echo '<div class="psr-login-captcha">';
+    echo '<span class="psr-captcha-eyebrow">VERIFICA ANTISPAM</span>';
+    echo '<label for="psr_login_captcha_answer">Quanto fa <strong>' . (int)$a . ' + ' . (int)$b . '</strong>?</label>';
+    echo '<div class="psr-captcha-answer"><input type="text" inputmode="numeric" pattern="[0-9]{1,2}" maxlength="2" name="psr_login_captcha_answer" id="psr_login_captcha_answer" required autocomplete="off" aria-describedby="psr-captcha-help" placeholder="Risultato"></div>';
+    echo '<span id="psr-captcha-help" class="psr-captcha-help">Una semplice verifica per ridurre gli accessi automatici.</span>';
+    echo '<input type="hidden" name="psr_login_captcha_token" value="' . esc_attr($token) . '">';
+    echo '<div class="psr-captcha-trap" aria-hidden="true"><label for="psr_login_captcha_contact">Lascia vuoto questo campo</label><input type="text" tabindex="-1" autocomplete="off" name="psr_login_captcha_contact" id="psr_login_captcha_contact" value=""></div>';
+    echo '</div>';
+}
+add_action('login_form', 'psr_login_captcha_form');
+/** Pure verifier: tokens are bound to this WordPress site's auth salt, not to a spoofable header. */
+function psr_login_captcha_token_valid($token, $answer, $at = null) {
+    if (!is_string($token) || strlen($token) < 90 || strlen($token) > 180
+        || !is_string($answer) || !preg_match('/^[0-9]{1,2}$/D', $answer)) { return false; }
+    $decoded = base64_decode($token, true);
+    if (!is_string($decoded)) { return false; }
+    $parts = explode(':', $decoded);
+    if (count($parts) !== 5) { return false; }
+    list($a, $b, $timestamp, $random, $signature) = $parts;
+    if (!preg_match('/^[2-9]$/D', $a) || !preg_match('/^[2-9]$/D', $b)
+        || !preg_match('/^[0-9]{10,11}$/D', $timestamp)
+        || !preg_match('/^[a-f0-9]{24}$/D', $random)
+        || !preg_match('/^[a-f0-9]{64}$/D', $signature)) { return false; }
+    $now = $at === null ? time() : (int)$at;
+    // 10 minuti di validita', piccola tolleranza per variazioni d'orologio.
+    if ((int)$timestamp > $now + 30 || (int)$timestamp < $now - 600) { return false; }
+    $payload = implode(':', array($a, $b, $timestamp, $random));
+    $expected = hash_hmac('sha256', 'psr-login-captcha-v1|' . $payload, wp_salt('auth'));
+    return hash_equals($expected, $signature) && (int)$answer === ((int)$a + (int)$b);
+}
+function psr_login_captcha_check($user, $username = '', $password = '') {
+    if (!psr_login_captcha_enabled() || !psr_login_captcha_native_login()
+        || strtoupper((string)($_SERVER['REQUEST_METHOD'] ?? 'GET')) !== 'POST'
+        || (defined('WP_CLI') && WP_CLI)) { return $user; }
+    if (is_wp_error($user)) { return $user; }
+    $answer = $_POST['psr_login_captcha_answer'] ?? null;
+    $token = $_POST['psr_login_captcha_token'] ?? null;
+    $trap = $_POST['psr_login_captcha_contact'] ?? '';
+    if (!is_string($answer) || !is_string($token) || !is_string($trap) || $trap !== ''
+        || !psr_login_captcha_token_valid($token, trim($answer))) {
+        return new WP_Error('psr_login_captcha_invalid', 'Verifica antispam non corretta. Risolvi l’operazione e riprova.');
+    }
+    // Un CAPTCHA firmato non puo' essere riutilizzato per molte richieste.
+    $use_key = 'psr_captcha_used_' . hash('sha256', $token);
+    if (get_transient($use_key) !== false) {
+        return new WP_Error('psr_login_captcha_reused', 'Verifica antispam gia\' utilizzata. Ricarica il login e riprova.');
+    }
+    if (!set_transient($use_key, 1, 10 * MINUTE_IN_SECONDS)) {
+        return new WP_Error('psr_login_captcha_unavailable', 'Verifica antispam non disponibile. Riprova.');
+    }
+    return $user;
+}
+// Prima della verifica della password WordPress; l'OTP rimane obbligatorio.
+add_filter('authenticate', 'psr_login_captcha_check', 12, 3);
+
+/** CSS solo sulle pagine di login, senza JS o risorse esterne. */
+function psr_login_modern_style() {
+    ?>
+    <style id="psr-login-modern-ui">
+    body.login{background:radial-gradient(circle at 15% 10%,#dbeafe 0,transparent 40%),radial-gradient(circle at 95% 90%,#dceeea 0,transparent 38%),linear-gradient(145deg,#f0f5fc,#f8fafc);min-height:100vh;color:#193451;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+    body.login #login{width:min(430px,calc(100% - 34px));padding:44px 0 32px}
+    body.login h1 a{background:none!important;box-shadow:none!important;font-size:0!important;text-indent:0!important;overflow:visible!important;width:100%!important;height:64px!important;display:flex!important;align-items:center;justify-content:center;flex-direction:column;margin:0 0 24px;color:#123e6e!important;text-decoration:none}
+    body.login h1 a:before{content:"PSR";font-size:32px;font-weight:850;letter-spacing:3px;line-height:1;color:#155c9b}
+    body.login h1 a:after{content:"ACCESSO SICURO";font-size:10px;letter-spacing:2.6px;font-weight:800;margin-top:7px;color:#647b91}
+    body.login #loginform,body.login #lostpasswordform,body.login #registerform,body.login #resetpassform,body.login #login>form{background:#fff;border:1px solid #dae6f0;border-radius:19px;padding:28px 30px;box-shadow:0 16px 46px rgba(20,65,110,.11);overflow:visible}
+    body.login label{font-size:13px;color:#2d4b68;font-weight:650}
+    body.login form .input,body.login input[type=text],body.login input[type=password],body.login input[type=email]{background:#f8fafc;border:1px solid #d6e1eb;border-radius:10px;min-height:46px;padding:10px 13px;color:#173b60;box-shadow:none;font-size:16px;outline:none}
+    body.login input:focus{border-color:#2c7fc3;box-shadow:0 0 0 3px rgba(33,124,193,.13)!important}
+    body.login .button-primary{background:linear-gradient(112deg,#1967a7,#124e86);border:0;border-radius:10px;min-height:45px;padding:7px 21px;font-weight:700;text-shadow:none;box-shadow:0 6px 17px rgba(18,86,145,.16)}
+    body.login .button-primary:hover,body.login .button-primary:focus{background:#0e527f}
+    body.login .button:not(.button-primary){border-color:#c9dbea;border-radius:9px;color:#164e7d;background:#f7fafc}
+    body.login .button:not(.button-primary):hover{background:#eaf4fd;color:#0b476f}
+    body.login #nav,body.login #backtoblog{text-align:center;margin-top:16px}
+    body.login #nav a,body.login #backtoblog a{color:#456983!important;text-decoration:none}
+    body.login .message,body.login #login_error{background:#fff;border-left:4px solid #2d82c4;border-radius:9px;box-shadow:0 6px 20px rgba(20,65,110,.06)}
+    body.login #login_error{border-left-color:#c64f55}
+    body.login .psr-login-captcha{position:relative;clear:both;display:block;border:1px solid #dce8f2;background:#f5f9fd;border-radius:12px;padding:14px 15px;margin:13px 0 18px}
+    body.login .psr-captcha-eyebrow{display:block;font-size:10px;letter-spacing:1.15px;font-weight:800;color:#176aa9;margin-bottom:8px}
+    body.login .psr-login-captcha label{display:block;line-height:1.5}
+    body.login .psr-login-captcha label strong{font-size:18px;color:#0b548d;letter-spacing:.4px}
+    body.login .psr-captcha-answer input{max-width:160px;min-height:42px!important;margin-top:9px;font-size:16px!important}
+    body.login .psr-captcha-help{display:block;margin-top:8px;font-size:11px;line-height:1.5;color:#627c93}
+    body.login .psr-captcha-trap{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+    body.login .psr-otp-intro{background:linear-gradient(132deg,#123e68,#176ca6);border-radius:17px;margin:0 0 18px;padding:25px 25px 22px;color:#fff;box-shadow:0 10px 25px rgba(16,79,132,.15)}
+    body.login .psr-otp-intro strong{color:#fff}
+    body.login .psr-otp-intro h2{color:#fff;margin:0 0 11px;font-size:22px;line-height:1.2;font-weight:800}
+    body.login .psr-otp-intro p{color:#e3effa;font-size:13px;line-height:1.62;margin:10px 0 0}
+    body.login .psr-otp-intro .psr-otp-kicker{display:inline-block;font-size:10px;letter-spacing:1.2px;font-weight:800;text-transform:uppercase;color:#b8e4ff;margin:0 0 10px}
+    body.login .psr-otp-intro .psr-otp-email{display:inline-block;background:#ffffff1c;border:1px solid #ffffff30;border-radius:7px;padding:6px 10px;font-weight:700;color:#fff;overflow-wrap:anywhere}
+    body.login #psr_otp{width:100%!important;letter-spacing:7px;text-align:center;font-size:24px!important;font-weight:760;height:60px;border-color:#bad4e8}
+    body.login .psr-otp-resend{margin-top:13px!important;background:transparent!important;box-shadow:none!important;border:0!important;padding:0!important;text-align:center}
+    body.login .psr-otp-resend button{width:100%;min-height:42px}
+    body.login .psr-otp-help{text-align:center;font-size:12px;color:#627a90;line-height:1.6}
+    body.login .psr-otp-help a{color:#185e97}
+    body.login #login>form .submit{display:flex;flex-wrap:wrap;justify-content:flex-end}
+    body.login #login>form .submit .button-primary{width:100%}
+    @media(max-width:480px){body.login #login{padding-top:18px}body.login #loginform,body.login #login>form{padding:23px 19px;border-radius:14px}body.login .psr-otp-intro{padding:20px;border-radius:13px}}
+    @media(prefers-reduced-motion:reduce){body.login *,body.login *:before,body.login *:after{transition:none!important}}
+    </style>
+    <?php
+}
+add_action('login_enqueue_scripts', 'psr_login_modern_style', 50);
+add_filter('login_headerurl', static function () { return home_url('/'); });
+add_filter('login_headertext', static function () { return 'Accesso riservato - ' . get_bloginfo('name'); });
+
 function psr_login_main_admin($user) {
     return $user instanceof WP_User && (int) $user->ID === 1;
 }
@@ -292,6 +429,41 @@ function psr_login_email_can_send($user) {
     return true;
     } finally { foreach(array_reverse($locks) as $lock) { psr_auth_unlock($lock); } }
 }
+/** Dati indicativi della richiesta OTP, senza usare header proxy non attendibili. */
+function psr_login_mail_request_details($timestamp, $ip) {
+    $ua = isset($_SERVER['HTTP_USER_AGENT']) && is_string($_SERVER['HTTP_USER_AGENT'])
+        ? substr($_SERVER['HTTP_USER_AGENT'], 0, 600) : '';
+    if (stripos($ua, 'Android') !== false) { $os = 'Android'; }
+    elseif (stripos($ua, 'iPhone') !== false || stripos($ua, 'iPad') !== false) { $os = 'iOS / iPadOS'; }
+    elseif (stripos($ua, 'Windows') !== false) { $os = 'Windows'; }
+    elseif (stripos($ua, 'Mac OS') !== false || stripos($ua, 'Macintosh') !== false) { $os = 'macOS'; }
+    elseif (stripos($ua, 'Linux') !== false) { $os = 'Linux'; }
+    else { $os = 'Non rilevabile'; }
+    if (stripos($ua, 'Edg/') !== false || stripos($ua, 'Edge/') !== false) { $browser = 'Microsoft Edge'; }
+    elseif (stripos($ua, 'OPR/') !== false || stripos($ua, 'Opera') !== false) { $browser = 'Opera'; }
+    elseif (stripos($ua, 'Firefox/') !== false || stripos($ua, 'FxiOS/') !== false) { $browser = 'Mozilla Firefox'; }
+    elseif (stripos($ua, 'Chrome/') !== false || stripos($ua, 'CriOS/') !== false) { $browser = 'Google Chrome'; }
+    elseif (stripos($ua, 'Safari/') !== false) { $browser = 'Safari'; }
+    else { $browser = 'Non rilevabile'; }
+    $device = stripos($ua, 'iPad') !== false || stripos($ua, 'Tablet') !== false ? 'Tablet'
+        : (stripos($ua, 'Mobile') !== false || stripos($ua, 'iPhone') !== false || stripos($ua, 'Android') !== false ? 'Smartphone' : ($os === 'Non rilevabile' ? 'Non rilevabile' : 'Computer'));
+    $country = '';
+    if ($ip !== '' && function_exists('psr_geo_decision')) {
+        $decision = psr_geo_decision(); // gia' in cache per la stessa richiesta di login
+        $country = isset($decision['country']) && is_string($decision['country']) ? $decision['country'] : '';
+    }
+    if ($country === 'IT') { $country = 'Italia (IT)'; }
+    elseif ($country !== '' && preg_match('/^[A-Z]{2}$/D', $country)) { $country = $country . ' (GeoIP)'; }
+    else { $country = 'Non determinabile'; }
+    return array(
+        'Data e ora (sito)' => function_exists('wp_date') ? wp_date('d/m/Y H:i:s T', $timestamp) : gmdate('d/m/Y H:i:s', $timestamp) . ' UTC',
+        'IP pubblico' => $ip !== '' ? $ip : 'Non disponibile (rete locale/proxy)',
+        'Paese stimato (GeoIP)' => $country,
+        'Tipo dispositivo (indicativo)' => $device,
+        'Sistema operativo (indicativo)' => $os,
+        'Browser (indicativo)' => $browser,
+    );
+}
 /** Emette OTP: salva soltanto HMAC e metadati, non il codice in chiaro. */
 function psr_login_email_issue($user, $ticket, &$pending) {
     $email = psr_login_email_target($user);
@@ -308,11 +480,24 @@ function psr_login_email_issue($user, $ticket, &$pending) {
     $pending['code_expires'] = min($now + 300, (int)($pending['deadline'] ?? ($now + 300)));
     $pending['sent_at'] = $now;
     $subject = '[PSR] Codice di accesso WordPress';
-    $body = "E' stato richiesto l'accesso all'amministrazione WordPress.\n\n";
-    $body .= 'Sito: ' . home_url('/') . "\n";
-    $body .= 'Codice OTP: ' . $code . "\n\n";
-    $body .= "Scade entro 5 minuti ed e' utilizzabile una sola volta.\n";
-    $body .= "Se non sei stato tu, cambia la password e segnala l'evento al responsabile.\n";
+    $ip = psr_login_ip();
+    $info = psr_login_mail_request_details($now, $ip);
+    $body = "PSR SECURITY  |  VERIFICA ACCESSO\n";
+    $body .= "========================================\n\n";
+    $body .= "E' stata richiesta una verifica di accesso all'area riservata.\n\n";
+    $body .= "SITO\n" . home_url('/') . "\n\n";
+    $body .= "CODICE DI VERIFICA\n" . $code . "\n";
+    $body .= "Valido 5 minuti, per un solo utilizzo.\n\n";
+    $body .= "----------------------------------------\n";
+    $body .= "DETTAGLI DELLA RICHIESTA\n";
+    foreach ($info as $label => $value) { $body .= $label . ': ' . $value . "\n"; }
+    $body .= "----------------------------------------\n\n";
+    $body .= "NON HAI RICHIESTO QUESTO CODICE?\n";
+    $body .= "Non comunicarlo a nessuno. Se non riconosci la richiesta,\n";
+    $body .= "cambia la password e informa il gestore del portale.\n\n";
+    $body .= "IP e Paese riguardano la connessione, non la persona.\n";
+    $body .= "Browser, sistema e dispositivo sono indicativi (User-Agent).\n";
+    $body .= "Messaggio automatico PSR - non rispondere.\n";
     $GLOBALS['psr_auth_sensitive_mail']=array('to'=>$email,'subject'=>$subject,'message'=>$body,'headers'=>array('Content-Type: text/plain; charset=UTF-8'));
     try { $sent = wp_mail($email, $subject, $body, array('Content-Type: text/plain; charset=UTF-8')); }
     catch (Throwable $e) { $sent = false; }
@@ -718,11 +903,11 @@ function psr_login_otp_page() {
     psr_auth_unlock($otp_lock);
     nocache_headers();
     login_header('PSR - Verifica email obbligatoria');
-    echo '<div class="psr-otp-intro"><p><strong>Conferma il tuo accesso</strong></p>';
+    echo '<div class="psr-otp-intro"><span class="psr-otp-kicker">SECONDO LIVELLO DI SICUREZZA</span><h2>Conferma il tuo accesso</h2>';
     $masked_recipient = psr_login_mask_email_for_display(psr_login_email_target($user));
     echo '<p id="psr-otp-instructions">Inserisci il codice di 8 cifre ricevuto via email. Scade dopo 5 minuti ed e\' valido una sola volta.</p>';
     if ($masked_recipient !== '') {
-        echo '<p>Codice inviato a <strong>' . esc_html($masked_recipient) . '</strong></p>';
+        echo '<p>Codice inviato a <span class="psr-otp-email">' . esc_html($masked_recipient) . '</span></p>';
     }
     echo '</div>';
     if ($message) { echo '<div class="message" role="alert">' . esc_html($message) . '</div>'; }
