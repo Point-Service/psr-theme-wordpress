@@ -6,6 +6,7 @@
  */
 if (!defined('ABSPATH')) { exit; }
 require_once __DIR__ . '/psr-auth-hardening.php';
+require_once __DIR__ . '/psr-account-rate.php';
 
 /** Rifiuta array/oggetti nei campi scalari prima delle funzioni di autenticazione. */
 function psr_login_request_shape_valid($sources) {
@@ -183,9 +184,31 @@ function psr_login_rate_state($ip) {
 function psr_login_rate_blocked($ip) {
     if (!$ip) { return 0; }
     $state = psr_login_rate_state($ip);
-    return max(0, (int) ($state['until'] ?? 0) - time());
+    // v4: soltanto ban manuali ed IP esteri con probe di autenticazione.
+    // I vecchi ban automatici da password NON possono piu' bloccare un ufficio.
+    if (!empty($state['site_ban']) || !empty($state['foreign_probe'])) {
+        return max(0, (int)($state['until'] ?? 0) - time());
+    }
+    if ((int)($state['until'] ?? 0) > 0 && !empty($GLOBALS['psr_geo_request_decision'])
+        && ($GLOBALS['psr_geo_request_decision']['country'] ?? '') === 'IT'
+        && empty($GLOBALS['psr_geo_request_decision']['blocked'])) {
+        // Pulizia opportunistica: una sola scrittura per IP italiano.
+        $lock = psr_auth_lock('rate|' . psr_login_ip_key($ip), 0);
+        if ($lock) {
+            try {
+                $current = psr_login_rate_state($ip);
+                if (empty($current['site_ban']) && empty($current['foreign_probe'])) {
+                    delete_transient(psr_login_ip_key($ip));
+                    if (function_exists('psr_center_remove_ip')) { psr_center_remove_ip($ip); }
+                }
+            } finally { psr_auth_unlock($lock); }
+        }
+    }
+    return 0;
 }
 function psr_login_rate_failure($ip, $reason = 'password', $username = '', $source = 'login') {
+    // Compatibilita': nessun chiamante esterno puo' bannare una sede con password/OTP errati.
+    if ($reason !== 'auth_probe') { return psr_account_rate_failure($ip, (string)$username, $reason); }
     if ($ip === '') { return; }
     $lock = psr_auth_lock('rate|' . psr_login_ip_key($ip));
     if (!$lock) { return false; }
@@ -196,6 +219,7 @@ function psr_login_rate_failure($ip, $reason = 'password', $username = '', $sour
         $state = array('n'=>0,'until'=>0,'start'=>$now);
     }
     $state['n'] = (int) ($state['n'] ?? 0) + 1;
+    if ($reason === 'auth_probe') { $state['foreign_probe'] = true; }
     // 5 errori: 10 minuti; 10: 1 ora; 15: 1 giorno; 25: ban 7 giorni.
     $count = $state['n'];
     if ($count >= 25) { $state['until'] = max((int)$state['until'], $now + 7 * DAY_IN_SECONDS); }
@@ -226,27 +250,36 @@ function psr_login_auth_precheck($user, $username, $password) {
     if (defined('WP_CLI') && WP_CLI) { return $user; }
     $access=psr_login_access_error();
     if (is_wp_error($access)) { return $access; }
+    // Prima esegui CAPTCHA (priority 12): i bot non causano lookup account se sbagliano.
+    if (is_wp_error($user)) { return $user; }
+    $ip = psr_login_ip();
+    $username = is_string($username) ? $username : '';
+    $remaining = psr_login_rate_blocked($ip);
+    if ($remaining || ($username !== '' && (psr_account_rate_blocked($ip, $username)
+        || psr_account_rate_unknown_limited($ip, $username)))) {
+        if (function_exists('psr_center_log_limited')) {
+            psr_center_log_limited('login_blocked','warning',$ip,$username,'','login',
+                $remaining ? 'IP sotto blocco manuale/geografico' : 'Limite account/IP',60);
+        }
+        return new WP_Error('psr_login_blocked', 'Troppi tentativi di accesso. Riprova piu\' tardi.');
+    }
+    // Richieste gia' bloccate non acquisiscono lock o slot di controllo password.
     if ($username!=='' && $password!=='' && empty($GLOBALS['psr_auth_capacity_lock'])) {
         $capacity=psr_auth_capacity();
         if (!$capacity) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy','Servizio accessi occupato. Riprova tra pochi secondi.'); }
         $GLOBALS['psr_auth_capacity_lock']=$capacity;
     }
-    // Un solo controllo password per IP alla volta; contesa non equivale a errore o ban.
-    if (psr_login_ip() !== '' && empty($GLOBALS['psr_auth_password_lock'])) {
-        $lock=psr_auth_lock('password|' . psr_login_ip_key(psr_login_ip()), 0);
-        if (!$lock) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy', 'Accesso gia\' in verifica da questa rete. Riprova tra pochi secondi.'); }
+    // Serializzazione per account/IP, non dell'intera sede. Lo slot globale resta limitato.
+    if ($ip !== '' && $username !== '' && empty($GLOBALS['psr_auth_password_lock'])) {
+        $identity=psr_account_rate_identity($username);
+        $resource='password|' . psr_account_rate_key($ip, $identity['subject']);
+        $lock=psr_auth_lock($resource, 0);
+        if (!$lock) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy', 'Verifica gia\' in corso per questo account. Riprova tra pochi secondi.'); }
         $GLOBALS['psr_auth_password_lock']=$lock;
-    }
-    $remaining = psr_login_rate_blocked(psr_login_ip());
-    if ($remaining) {
-        if (function_exists('psr_center_log_limited')) {
-            psr_center_log_limited('login_blocked','warning',psr_login_ip(),(string)$username,'','login','Accesso negato: IP gia bloccato',60);
-        }
-        return new WP_Error('psr_login_blocked', 'Troppi tentativi di accesso. Riprova piu\' tardi.');
     }
     return $user;
 }
-add_filter('authenticate', 'psr_login_auth_precheck', 1, 3);
+add_filter('authenticate', 'psr_login_auth_precheck', 15, 3);
 
 function psr_login_failed_password($username, $error = null) {
     if ($error instanceof WP_Error) {
@@ -256,7 +289,7 @@ function psr_login_failed_password($username, $error = null) {
         // Account inesistente o password errata sono i soli errori conteggiati.
         if (!array_intersect($codes, array('incorrect_password','invalid_username','invalid_email','authentication_failed','invalid_password','invalid_credentials'))) { return; }
     }
-    psr_login_rate_failure(psr_login_ip(), 'password', $username);
+    psr_account_rate_failure(psr_login_ip(), (string)$username, 'password');
 }
 add_action('wp_login_failed', 'psr_login_failed_password', 10, 2);
 
@@ -362,7 +395,7 @@ function psr_login_email_can_send($user) {
         if (!is_array($istate) || time()-(int)($istate['start']??0)>=HOUR_IN_SECONDS) {
             $istate=array('start'=>time(),'n'=>0);
         }
-        if ((int)$istate['n'] >= 30) { return false; }
+        if ((int)$istate['n'] >= 180) { return false; }
     }
 
     $now = time();
@@ -695,6 +728,9 @@ function psr_login_start_otp($user, $username, $password) {
     $error = psr_login_access_error();
     if (is_wp_error($error)) { return $error; }
     if (!psr_login_requires_otp($user) || (defined('WP_CLI') && WP_CLI)) { return $user; }
+    if (psr_account_rate_blocked(psr_login_ip(), $user->user_login) > 0) {
+        return new WP_Error('psr_login_account_limited', 'Troppi tentativi per questo account. Riprova piu tardi.');
+    }
     // Niente bypass via XML-RPC, REST, application passwords, login alternativi.
     if (!psr_login_interactive()) {
         return new WP_Error('psr_login_interactive_only', 'Accesso WordPress disponibile solo tramite login con OTP via email.');
@@ -790,6 +826,11 @@ function psr_login_otp_page() {
             hash_hmac('sha256',(string)($user instanceof WP_User ? $user->user_pass : ''),wp_salt('auth')))) {
         psr_login_cancel_ticket($ticket); wp_die('Account o credenziali non piu valide.');
     }
+    if (psr_account_rate_blocked(psr_login_ip(), $user->user_login) > 0) {
+        psr_login_cancel_ticket($ticket);
+        wp_die('Troppi tentativi per questo account. Riprova piu tardi.',
+            'PSR - Account temporaneamente limitato', array('response'=>403));
+    }
     $message = '';
     if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         $nonce = (isset($_POST['psr_nonce']) && is_string($_POST['psr_nonce'])) ? sanitize_text_field(wp_unslash($_POST['psr_nonce'])) : '';
@@ -802,14 +843,21 @@ function psr_login_otp_page() {
             } elseif ((int)($pending['sent_at'] ?? 0) > time() - 60) {
                 $message = 'Attendi almeno 60 secondi prima del reinvio.';
             } else {
-                $pending['resends'] = (int)($pending['resends'] ?? 0) + 1;
-                $sent = psr_login_email_issue($user, $ticket, $pending);
+                // Prepara un nuovo OTP senza modificare il ticket salvato se SMTP fallisce.
+                $next_pending = $pending;
+                $sent = psr_login_email_issue($user, $ticket, $next_pending);
                 if (!is_wp_error($sent)) {
-                    if (!set_transient(psr_login_pending_key($ticket), $pending, max(1, $pending['code_expires'] - time()))) {
+                    $next_pending['resends'] = (int)($pending['resends'] ?? 0) + 1;
+                    if (!set_transient(psr_login_pending_key($ticket), $next_pending, max(1, $next_pending['code_expires'] - time()))) {
                         psr_login_cancel_ticket($ticket); wp_die('Verifica non salvata. Ricomincia dal login.', '', array('response'=>503));
                     }
+                    $pending = $next_pending;
                     psr_login_set_pending_cookie($ticket, $pending['code_expires']);
                     $message = 'Nuovo codice richiesto: controlla la posta. Il codice precedente non e\' piu\' valido.';
+                    if (function_exists('psr_center_log_event')) {
+                        psr_center_log_event('otp_resent', 'info', psr_login_ip(), $user->user_login, '', 'otp',
+                            'Reinvio OTP confermato dal trasporto; codice precedente invalidato');
+                    }
                 } else { $message = $sent->get_error_message(); }
             }
         } else {
@@ -824,15 +872,8 @@ function psr_login_otp_page() {
                 if (psr_login_main_admin($user) && !get_option('_psr_login_email_to', '')) {
                     update_option('_psr_login_email_to', psr_login_email_target($user), false);
                 }
-                if (psr_login_ip() !== '') {
-                    $rate_lock=psr_auth_lock('rate|' . psr_login_ip_key(psr_login_ip()));
-                    if ($rate_lock) {
-                        try {
-                            delete_transient(psr_login_ip_key(psr_login_ip()));
-                            if (function_exists('psr_center_remove_ip')) { psr_center_remove_ip(psr_login_ip()); }
-                        } finally { psr_auth_unlock($rate_lock); }
-                    }
-                }
+                // L'OTP valido azzera solo gli errori di questo account/IP, MAI ban di rete manuali.
+                psr_account_rate_clear(psr_login_ip(), $user->user_login);
                 if (function_exists('psr_center_log_event')) {
                     psr_center_log_event('otp_verified','info',psr_login_ip(),$user->user_login,'','otp','Codice monouso verificato');
                 }
@@ -841,8 +882,8 @@ function psr_login_otp_page() {
                 wp_safe_redirect($pending['redirect']); exit;
             }
             $pending['tries'] = (int)$pending['tries'] + 1;
-            psr_login_rate_failure(psr_login_ip(), 'otp', $user->user_login);
-            if ($pending['tries'] >= 5 || psr_login_rate_blocked(psr_login_ip())) {
+            psr_account_rate_failure(psr_login_ip(), $user->user_login, 'otp');
+            if ($pending['tries'] >= 5 || psr_account_rate_blocked(psr_login_ip(), $user->user_login) || psr_login_rate_blocked(psr_login_ip())) {
                 psr_login_cancel_ticket($ticket);
                 wp_die('Troppi codici errati. Ricomincia dal login dopo il blocco.', 'PSR - OTP email', array('response'=>403));
             }

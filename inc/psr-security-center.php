@@ -63,8 +63,8 @@ function psr_center_clean_ip($ip) {
 function psr_center_log_event($event, $severity = 'info', $ip = '', $username = '', $country = '', $source = 'login', $note = '') {
     // Whitelist per impedire inquinamento del registro con dati arbitrari.
     $allowed = array('login_failed','login_blocked','login_success','otp_sent','otp_failed','otp_verified',
-        'otp_delivery_failed','auth_probe','geo_denied','ip_blacklist_denied','xmlrpc_denied','geo_unavailable','manual_ban','manual_unban',
-        'site_ban_denied','user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied','trusted_ip_added','trusted_ip_removed','security_setting_changed','admin_role_denied','device_mismatch');
+        'otp_delivery_failed','otp_resent','legacy_auto_unban','auth_probe','geo_denied','ip_blacklist_denied','xmlrpc_denied','geo_unavailable','manual_ban','manual_unban',
+        'site_ban_denied','account_blocked','account_unblocked','ip_risk','user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied','trusted_ip_added','trusted_ip_removed','security_setting_changed','admin_role_denied','device_mismatch');
     if (!in_array($event, $allowed, true)) { return false; }
     if (!psr_center_install()) { return false; }
     global $wpdb;
@@ -201,6 +201,49 @@ function psr_center_schedule_cleanup() {
 }
 add_action('admin_init', 'psr_center_schedule_cleanup');
 
+/**
+ * Migrazione v4 UNA TANTUM dei vecchi ban automatici per IP verificati IT.
+ * Solo GeoIP gia' in cache: NESSUNA richiesta HTTP, nessuna scansione del sito.
+ * I ban manuali, globali e gli IP esteri NON vengono rimossi.
+ */
+function psr_center_cleanup_legacy_automatic_ips_v4() {
+    if (get_option('_psr_legacy_auto_bans_v4', '') === 'done') { return; }
+    if (!psr_center_install()) { return; }
+    global $wpdb;
+    list(, $ips) = psr_center_tables();
+    $rows = $wpdb->get_results($wpdb->prepare(
+        "SELECT ip FROM $ips WHERE origin=%s AND blocked_until > %s ORDER BY last_seen DESC LIMIT 250",
+        'auto', gmdate('Y-m-d H:i:s')
+    ));
+    foreach ((array)$rows as $row) {
+        $ip = psr_center_clean_ip($row->ip);
+        if (!$ip || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip))) { continue; }
+        // NON interrogare mai il servizio GeoIP durante la migrazione.
+        $geo = function_exists('psr_geo_cache_key') ? get_transient(psr_geo_cache_key($ip)) : false;
+        if (!is_array($geo) || ($geo['country'] ?? '') !== 'IT') { continue; }
+        $state = psr_login_rate_state($ip);
+        if (!empty($state['site_ban']) || !empty($state['foreign_probe'])) { continue; }
+        $lock = psr_auth_lock('rate|' . psr_login_ip_key($ip), 0);
+        if (!$lock) { continue; }
+        try {
+            $latest = psr_login_rate_state($ip);
+            if (empty($latest['site_ban']) && empty($latest['foreign_probe'])) {
+                delete_transient(psr_login_ip_key($ip));
+                psr_center_remove_ip($ip);
+            }
+        } finally { psr_auth_unlock($lock); }
+    }
+    update_option('_psr_legacy_auto_bans_v4', 'done', false);
+}
+add_action('psr_center_legacy_bans_v4', 'psr_center_cleanup_legacy_automatic_ips_v4');
+function psr_center_schedule_legacy_cleanup_v4() {
+    if (get_option('_psr_legacy_auto_bans_v4','') !== 'done'
+        && !wp_next_scheduled('psr_center_legacy_bans_v4')) {
+        wp_schedule_single_event(time()+30, 'psr_center_legacy_bans_v4');
+    }
+}
+add_action('admin_init', 'psr_center_schedule_legacy_cleanup_v4', 20);
+
 function psr_center_menu() {
     if (!psr_center_is_owner()) { return; }
     add_menu_page('PSR Centro Sicurezza', 'PSR Sicurezza', 'manage_options', 'psr-security-center',
@@ -275,8 +318,10 @@ function psr_center_url($tab = 'overview', $extra = array()) {
 function psr_center_label($type) {
     $labels = array('login_failed'=>'Password errata','login_blocked'=>'Login già bloccato','login_success'=>'Accesso riuscito',
         'otp_sent'=>'OTP email inviato','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato',
+        'otp_resent'=>'OTP reinviato','legacy_auto_unban'=>'Vecchio ban italiano azzerato',
         'otp_delivery_failed'=>'Invio OTP fallito','auth_probe'=>'Tentativo login da IP estero','geo_denied'=>'IP estero bloccato','ip_blacklist_denied'=>'IP in blacklist bloccato','xmlrpc_denied'=>'XML-RPC bloccato','geo_unavailable'=>'GeoIP non disponibile',
         'manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale',
+        'account_blocked'=>'Account limitato','account_unblocked'=>'Account sbloccato','ip_risk'=>'IP con rischio elevato',
         'site_ban_denied'=>'Sito negato a IP bannato','user_created'=>'Utente creato',
         'role_changed'=>'Ruolo modificato','account_email_changed'=>'Email account modificata',
         'account_password_changed'=>'Password account modificata','user_deleted'=>'Utente eliminato',
@@ -299,7 +344,7 @@ function psr_center_fetch_stats() {
         'admin7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied')",$week)),
         'geo7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('geo_denied','ip_blacklist_denied')",$week)),
         'otp7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type='otp_verified'",$week)),
-        'blocked'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $ips WHERE blocked_until >= %s",$now)),
+        'blocked'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $ips WHERE blocked_until >= %s AND origin='manual'",$now)),
         'events7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s",$week)),
     );
 }
@@ -316,6 +361,15 @@ function psr_center_process_action() {
         update_option('_psr_site_ban_enabled',$enabled,false);
         psr_center_log_event('security_setting_changed','warning',function_exists('psr_login_ip')?psr_login_ip():'',
             '', '', 'dashboard','Blocco sito IP bannati: '.($enabled==='1'?'attivo':'disattivo'));
+    } elseif ($action === 'account_unban') {
+        $ip = psr_center_clean_ip(sanitize_text_field(wp_unslash($_POST['ip'] ?? '')));
+        $username = sanitize_text_field(wp_unslash($_POST['username'] ?? ''));
+        $user = $username !== '' ? get_user_by('login', $username) : false;
+        if (!$ip || !($user instanceof WP_User) || !function_exists('psr_account_rate_clear')) {
+            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused'))); exit;
+        }
+        psr_account_rate_clear($ip, $user->user_login);
+        psr_center_log_event('account_unblocked','warning',$ip,$user->user_login,'','dashboard','Limite account/IP revocato da ID 1');
     } elseif ($action === 'trusted_add') {
         $ip = psr_center_clean_ip(sanitize_text_field(wp_unslash($_POST['ip'] ?? '')));
         $label = substr(sanitize_text_field(wp_unslash($_POST['label'] ?? 'Sede')),0,64);
@@ -340,25 +394,40 @@ function psr_center_process_action() {
         }
     } elseif (in_array($action, array('ban','unban'), true)) {
         $ip = psr_center_clean_ip(sanitize_text_field(wp_unslash($_POST['ip'] ?? '')));
-        if (!$ip || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip)) || $ip === (function_exists('psr_login_ip') ? psr_login_ip() : '') || (function_exists('psr_geo_ip_allowlisted') && psr_geo_ip_allowlisted($ip))) {
-            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused')));exit;
+        // La blacklist permanente non e' revocabile dal pannello.
+        if (!$ip || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip))) {
+            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused'))); exit;
         }
-        if ($action === 'unban') {
-            delete_transient(psr_login_ip_key($ip));
-            psr_center_remove_ip($ip);
-            psr_center_log_event('manual_unban','warning', $ip, '', '', 'dashboard','Revocato da ID 1');
-        } else {
-            $seconds=(int)($_POST['duration'] ?? 3600);
-            if (!in_array($seconds,array(3600,86400,604800),true)) { $seconds = 3600; }
-            $state=psr_login_rate_state($ip);
-            $now=time();
-            $state['start'] = $state['start'] ?: $now;
-            $state['until']=max((int)$state['until'],$now+$seconds);
-            $state['site_ban'] = true;
-            set_transient(psr_login_ip_key($ip),$state,8*DAY_IN_SECONDS);
-            psr_center_sync_ip($ip,$state,'manual');
-            psr_center_log_event('manual_ban','critical',$ip,'','','dashboard','Durata ' . ($seconds/3600) . ' ore, ID 1');
+        // Impedire l'autoban di un ufficio; NON impedire all'ID 1 di sbloccarlo.
+        if ($action === 'ban' && ($ip === (function_exists('psr_login_ip') ? psr_login_ip() : '')
+            || (function_exists('psr_geo_ip_allowlisted') && psr_geo_ip_allowlisted($ip)))) {
+            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused'))); exit;
         }
+        $lock = psr_auth_lock('rate|' . psr_login_ip_key($ip));
+        if (!$lock) {
+            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'busy'))); exit;
+        }
+        try {
+            if ($action === 'unban') {
+                delete_transient(psr_login_ip_key($ip));
+                psr_center_remove_ip($ip);
+                psr_center_log_event('manual_unban','warning', $ip, '', '', 'dashboard',
+                    'Sblocco richiesto da ID 1; valido anche per il proprio IP o una rete fidata');
+            } else {
+                $seconds=(int)($_POST['duration'] ?? 3600);
+                if (!in_array($seconds,array(3600,86400,604800),true)) { $seconds = 3600; }
+                $state=psr_login_rate_state($ip);
+                $now=time();
+                $state['start'] = !empty($state['start']) ? (int)$state['start'] : $now;
+                $state['until']=max((int)($state['until'] ?? 0),$now+$seconds);
+                $state['site_ban'] = true;
+                if (!set_transient(psr_login_ip_key($ip),$state,8*DAY_IN_SECONDS)) {
+                    wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'failed'))); exit;
+                }
+                psr_center_sync_ip($ip,$state,'manual');
+                psr_center_log_event('manual_ban','critical',$ip,'','','dashboard','Durata ' . ($seconds/3600) . ' ore, ID 1');
+            }
+        } finally { psr_auth_unlock($lock); }
     }
     wp_safe_redirect(psr_center_url($redirect_tab,array('psr_msg'=>'saved'))); exit;
 }
@@ -394,13 +463,24 @@ function psr_center_page($forced_tab = '') {
     $tab = $forced_tab ?: sanitize_key(wp_unslash($_GET['tab'] ?? 'overview'));
     if (!in_array($tab,array('overview','events','sessions','blocks','accounts','trusted','geo','otp','antispam','settings'),true)) { $tab='overview'; }
     $ready = psr_center_install();
-    echo '<div class="wrap psrc"><header class="psrc-header"><div class="psrc-hero-copy"><div class="psrc-label">PSR SECURITY SUITE <span style="opacity:.5">/</span> CONTROL CENTER</div><h1><span class="dashicons dashicons-shield-alt" aria-hidden="true"></span>Centro Sicurezza</h1><p>Monitoraggio accessi, difesa degli account e controllo delle minacce. I risultati provengono dagli eventi registrati su questo Comune.</p><div class="psrc-hero-checks"><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>OTP email tutti gli utenti</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Filtro Italia</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Ban IP progressivi</span></div></div><div class="psrc-hero-side"><span class="psrc-chip">&#128274; Accesso riservato ID 1</span><span class="psrc-hero-meta">Area di gestione<br><b>Controlli e registri privati</b></span></div></header>';
+    echo '<div class="wrap psrc"><header class="psrc-header"><div class="psrc-hero-copy"><div class="psrc-label">PSR SECURITY SUITE <span style="opacity:.5">/</span> CONTROL CENTER</div><h1><span class="dashicons dashicons-shield-alt" aria-hidden="true"></span>Centro Sicurezza</h1><p>Monitoraggio accessi, difesa degli account e controllo delle minacce. I risultati provengono dagli eventi registrati su questo Comune.</p><div class="psrc-hero-checks"><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>OTP email tutti gli utenti</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Filtro Italia</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Blocchi individuali</span></div></div><div class="psrc-hero-side"><span class="psrc-chip">&#128274; Accesso riservato ID 1</span><span class="psrc-hero-meta">Area di gestione<br><b>Controlli e registri privati</b></span></div></header>';
     $tabs=array('overview'=>'Panoramica','events'=>'Tentativi e attività','sessions'=>'Accessi riusciti e PC','blocks'=>'IP bloccati','accounts'=>'Utenti e privilegi','trusted'=>'IP fidati','geo'=>'Filtro geografico','otp'=>'OTP email','antispam'=>'Antispam','settings'=>'Impostazioni');
     echo '<nav class="psrc-tabs" aria-label="Sezioni centro sicurezza">';
     foreach ($tabs as $key=>$label) { echo '<a class="'.($tab===$key?'active':'').'" href="'.esc_url(psr_center_url($key)).'">'.esc_html($label).'</a>'; }
     echo '</nav>';
     if (!$ready) { echo '<div class="notice notice-error"><p><strong>Il database non consente di creare le tabelle PSR.</strong> Verifica i permessi CREATE TABLE dell’utente MySQL e consulta i log Plesk. Il login continua a funzionare, ma il registro eventi non è disponibile.</p></div></div>';return; }
-    if (isset($_GET['psr_msg'])) { echo '<div class="notice notice-'.($_GET['psr_msg']==='saved'?'success':'warning').'"><p>'.($_GET['psr_msg']==='saved'?'Operazione completata.':'Operazione rifiutata: IP non valido, IP attuale o IP in whitelist.').'</p></div>'; }
+    if (isset($_GET['psr_msg']) && is_string($_GET['psr_msg'])) {
+        $messages = array(
+            'saved'=>'Operazione completata.',
+            'refused'=>'Operazione rifiutata: IP non valido oppure presente in blacklist permanente. Non e\' possibile bloccare il proprio IP o una sede autorizzata.',
+            'busy'=>'Un altro controllo di sicurezza sta aggiornando questo IP. Riprova tra pochi secondi.',
+            'failed'=>'Operazione non salvata: controllare la disponibilita\' del database e riprovare.',
+        );
+        $msg = sanitize_key(wp_unslash($_GET['psr_msg']));
+        if (isset($messages[$msg])) {
+            echo '<div class="notice notice-'.($msg==='saved'?'success':'warning').'"><p>'.esc_html($messages[$msg]).'</p></div>';
+        }
+    }
     switch($tab) {
         case 'overview': psr_center_overview();break;
         case 'events': psr_center_events();break;
@@ -462,7 +542,9 @@ function psr_center_event_table($limit, $event_filter='', $ip_filter='', $page=1
 function psr_center_events(){
     global $wpdb;
     list($events)=psr_center_tables();
-    $types=array(''=>'Tutti gli eventi','login_failed'=>'Password errata','login_blocked'=>'Login bloccato','login_success'=>'Accesso riuscito','otp_sent'=>'OTP richiesto','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato','otp_delivery_failed'=>'Errore invio OTP','auth_probe'=>'Tentativo login estero','geo_denied'=>'Accesso estero negato','ip_blacklist_denied'=>'IP blacklist permanente','xmlrpc_denied'=>'XML-RPC bloccato','geo_unavailable'=>'GeoIP non disponibile','manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale',
+    $types=array(''=>'Tutti gli eventi','login_failed'=>'Password errata','login_blocked'=>'Login bloccato','login_success'=>'Accesso riuscito','otp_sent'=>'OTP richiesto','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato',
+        'otp_resent'=>'OTP reinviato','legacy_auto_unban'=>'Vecchio ban italiano azzerato','otp_delivery_failed'=>'Errore invio OTP','auth_probe'=>'Tentativo login estero','geo_denied'=>'Accesso estero negato','ip_blacklist_denied'=>'IP blacklist permanente','xmlrpc_denied'=>'XML-RPC bloccato','geo_unavailable'=>'GeoIP non disponibile','manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale',
+        'account_blocked'=>'Account limitato','account_unblocked'=>'Account sbloccato','ip_risk'=>'IP con rischio elevato',
         'site_ban_denied'=>'Sito bloccato','user_created'=>'Utente creato','role_changed'=>'Ruolo cambiato',
         'account_email_changed'=>'Email modificata','account_password_changed'=>'Password cambiata',
         'user_deleted'=>'Utente eliminato','trusted_ip_added'=>'IP fidato aggiunto',
@@ -493,18 +575,39 @@ function psr_center_action_form($action,$ip,$label,$duration=0) {
 function psr_center_blocks(){
     global $wpdb;list($events,$ips)=psr_center_tables();
     $now=gmdate('Y-m-d H:i:s');
-    $rows=$wpdb->get_results($wpdb->prepare("SELECT s.*, (SELECT e.username FROM $events e WHERE e.ip=s.ip AND e.username <> '' ORDER BY e.id DESC LIMIT 1) AS last_username FROM $ips s WHERE s.blocked_until > %s ORDER BY s.blocked_until DESC LIMIT 250",$now));
+    $rows=$wpdb->get_results($wpdb->prepare("SELECT s.*, (SELECT e.username FROM $events e WHERE e.ip=s.ip AND e.username <> '' ORDER BY e.id DESC LIMIT 1) AS last_username FROM $ips s WHERE s.blocked_until > %s AND s.origin='manual' ORDER BY s.blocked_until DESC LIMIT 250",$now));
     echo '<div class="psrc-card"><h2>Blacklist globale permanente (GitHub)</h2><p class="psrc-info psrc-alert">Questi IP sono bloccati dal modulo Geo Login su tutti i Comuni aggiornati, indipendentemente dal Paese e dai ban temporanei. Non possono essere sbloccati dal pannello: la revoca richiede un aggiornamento controllato del codice o della configurazione.</p><table class="psrc-table"><thead><tr><th>Indirizzo IP</th><th>Regola</th><th>Scadenza</th><th>Stato</th></tr></thead><tbody>';
     $hard_ips = function_exists('psr_geo_global_deny_ips') ? psr_geo_global_deny_ips() : array();
     foreach ($hard_ips as $hard_ip) { echo '<tr><td><code>'.esc_html($hard_ip).'</code></td><td>WordPress (incluso sito pubblico se abilitato)</td><td>Non scade</td><td><span class="psrc-pill critical">Bloccato</span></td></tr>'; }
     if (!$hard_ips) { echo '<tr><td colspan="4">Modulo blacklist non disponibile</td></tr>'; }
     echo '</tbody></table></div>';
-    echo '<div class="psrc-card" style="margin-top:18px"><h2>Indirizzi IP attualmente bloccati</h2><p class="psrc-info">La blacklist permanente, i ban manuali e i ban severi (15+ errori) negano anche le pagine pubbliche elaborate da WordPress, se l’opzione è attiva. I blocchi iniziali (5/10 errori) limitano soltanto il login, per ridurre il rischio di negare servizi ai cittadini. I file statici e PHP indipendenti richiedono una regola Plesk/WAF. I blocchi temporanei scadono automaticamente. Gli accessi esteri vengono negati dal filtro GeoIP e non compaiono necessariamente in questa tabella. La lista include gli IP tracciati da questa versione di PSR.</p>';
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>Indirizzi IP attualmente bloccati</h2><p class="psrc-info">La blacklist permanente e i ban IP manuali restano attivi. Gli errori delle password o degli OTP non bloccano gli altri colleghi né la navigazione pubblica. Gli IP esteri rimangono esclusi dal login tramite GeoIP. I file PHP autonomi richiedono la protezione Plesk/WAF.</p>';
     echo '<table class="psrc-table"><thead><tr><th>IP</th><th>Account tentato</th><th>Tentativi</th><th>Tipo blocco</th><th>Ultima attività</th><th>Scadenza</th><th>Gestione</th></tr></thead><tbody>';
     if(!$rows){echo '<tr><td colspan="7">Nessun IP bloccato in questo momento.</td></tr>';}
     foreach($rows as $r){echo '<tr><td><code>'.esc_html($r->ip).'</code></td><td>'.esc_html($r->last_username ?: '—').'</td><td>'.(int)$r->attempts.'</td><td><span class="psrc-pill warning">'.esc_html($r->origin==='manual'?'Manuale':'Automatico').'</span></td><td>'.psr_center_local_date($r->last_seen).'</td><td>'.psr_center_local_date($r->blocked_until).'</td><td>';psr_center_action_form('unban',$r->ip,'Sblocca');echo '</td></tr>';}
+    echo '</tbody></table></div>';
+    // Limiti individuali: query solo nell'area admin, massimo 120 eventi recenti.
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>Account temporaneamente limitati</h2><p class="psrc-info">Il limite riguarda soltanto la coppia utente/IP. Altri dipendenti dalla stessa sede possono continuare ad accedere.</p>';
+    $account_rows=$wpdb->get_results($wpdb->prepare("SELECT ip,username FROM $events WHERE event_type=%s AND happened_at >= %s ORDER BY id DESC LIMIT 120",
+        'account_blocked',gmdate('Y-m-d H:i:s',time()-2*HOUR_IN_SECONDS)));
+    echo '<table class="psrc-table"><thead><tr><th>Utente</th><th>IP</th><th>Fine limitazione</th><th>Gestione</th></tr></thead><tbody>';
+    $shown=0; $seen=array();
+    foreach((array)$account_rows as $item) {
+        $id=hash('sha256',$item->ip.'|'.$item->username);
+        if(isset($seen[$id])){continue;} $seen[$id]=true;
+        if (!function_exists('psr_account_rate_state')) { continue; }
+        $state=psr_account_rate_state($item->ip,$item->username);
+        $until=(int)($state['until']??0);
+        if ($until<=time()) { continue; }
+        echo '<tr><td>'.esc_html($item->username).'</td><td><code>'.esc_html($item->ip).'</code></td><td>'.esc_html(wp_date('d/m/Y H:i:s',$until)).'</td><td>';
+        echo '<form method="post">';wp_nonce_field('psr_center_action');
+        echo '<input type="hidden" name="psr_center_action" value="account_unban"><input type="hidden" name="ip" value="'.esc_attr($item->ip).'"><input type="hidden" name="username" value="'.esc_attr($item->username).'">';
+        echo '<button type="submit" class="psrc-btn secondary" onclick="return confirm(&quot;Sbloccare questo account da questo IP?&quot;)">Sblocca account</button></form></td></tr>';
+        $shown++;
+    }
+    if (!$shown){ echo '<tr><td colspan="4">Nessun account attualmente limitato.</td></tr>'; }
     echo '</tbody></table></div><div class="psrc-card" style="margin-top:18px"><h2>Blocca o sblocca manualmente un IP</h2><form method="post" class="psrc-toolbar">';wp_nonce_field('psr_center_action');
-    echo '<div><label>IP pubblico</label><input required name="ip" placeholder="Indirizzo IPv4 / IPv6"></div><div><label>Durata ban</label><select name="duration"><option value="3600">1 ora</option><option value="86400">24 ore</option><option value="604800">7 giorni</option></select></div><button class="psrc-btn" name="psr_center_action" value="ban">Blocca IP</button><button class="psrc-btn secondary" name="psr_center_action" value="unban">Sblocca IP</button></form><p class="psrc-muted">Per sicurezza non puoi bloccare il tuo IP corrente o uno autorizzato dalla whitelist GeoIP. Non inserire IP condivisi senza verificarne il proprietario.</p></div>';
+    echo '<div><label>IP pubblico</label><input required name="ip" placeholder="Indirizzo IPv4 / IPv6"></div><div><label>Durata ban</label><select name="duration"><option value="3600">1 ora</option><option value="86400">24 ore</option><option value="604800">7 giorni</option></select></div><button class="psrc-btn" name="psr_center_action" value="ban">Blocca IP</button><button class="psrc-btn secondary" name="psr_center_action" value="unban">Sblocca IP</button></form><p class="psrc-muted">Per sicurezza non puoi bloccare il tuo IP o un IP fidato; puoi invece sbloccarli se necessario. La blacklist permanente resta protetta. Non bannare indiscriminatamente gli IP condivisi degli uffici.</p></div>';
 }
 function psr_center_geo(){
     $d=function_exists('psr_geo_decision')?psr_geo_decision():array('ip'=>'','country'=>'','reason'=>'missing','blocked'=>false);
@@ -590,7 +693,7 @@ function psr_center_settings(){
     echo '<p class="psrc-muted">La conservazione riguarda solo PSR, non i log web del server o Wordfence.</p></div>';
     $enabled = function_exists('psr_geo_site_ban_enabled') && psr_geo_site_ban_enabled();
     $forced=defined('PSR_SITE_BAN_ENABLED');
-    echo '<div class="psrc-card" style="margin-top:18px"><h2>Blocco completo degli IP bannati</h2><p>Gli IP in blacklist permanente, con ban manuale o con almeno 15 errori non possono aprire le pagine elaborate da WordPress. I blocchi iniziali (5/10 errori) limitano solo il login; i semplici IP esteri possono visitare il sito pubblico.</p>';
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>Blocco completo degli IP bannati</h2><p>Solo IP nella blacklist permanente o bloccati manualmente possono essere esclusi dalle pagine pubbliche WordPress. Gli errori di credenziali restano limitati al singolo account/IP; i semplici IP esteri possono visitare il sito pubblico.</p>';
     echo '<div class="psrc-info psrc-alert">Per bloccare anche URL statici, file PHP autonomi e web shell serve una regola <strong>Nginx/Apache/WAF a livello Plesk</strong>. Se il traffico arriva da proxy/CDN, verificare prima che <code>REMOTE_ADDR</code> rappresenti l’IP reale.</div>';
     echo '<form method="post" class="psrc-toolbar">';wp_nonce_field('psr_center_action');
     echo '<input type="hidden" name="psr_center_action" value="site_ban"><label><input type="checkbox" name="site_ban_enabled" value="1" '.checked($enabled,true,false).' '.($forced?'disabled':'').'> Blocca la navigazione WordPress agli IP bannati</label>';

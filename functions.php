@@ -45,7 +45,8 @@ if (is_file($psr_file_editor_lock) && is_readable($psr_file_editor_lock)) {
  */
 $psr_login_security_file = get_template_directory() . '/inc/psr-login-security.php';
 if (is_file($psr_login_security_file) && is_readable($psr_login_security_file)
-    && is_readable(get_template_directory() . '/inc/psr-auth-hardening.php')) {
+    && is_readable(get_template_directory() . '/inc/psr-auth-hardening.php')
+    && is_readable(get_template_directory() . '/inc/psr-account-rate.php')) {
     require_once $psr_login_security_file;
 } else {
     add_action('admin_notices', function () {
