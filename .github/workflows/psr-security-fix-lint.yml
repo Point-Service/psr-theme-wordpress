@@ -1,0 +1,20 @@
+name: PSR Security Fix - PHP lint
+on:
+  push:
+    branches:
+      - "fix/psr-account-aware-rate-20261109"
+  workflow_dispatch:
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify PHP syntax in modified files
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -v
+          for file in functions.php inc/psr-account-rate.php inc/psr-login-security.php inc/psr-geo-login.php inc/psr-security-center.php; do
+            echo "Checking: $file"
+            php -l "$file"
+          done
