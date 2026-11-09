@@ -55,6 +55,9 @@ add_filter('pre_comment_approved', 'psr_native_comments_reject', PHP_INT_MAX, 2)
 /** Esplicita protezione REST sui soli commenti nativi degli articoli/pagine. */
 function psr_native_comments_rest_reject($prepared_comment, $request) {
     if (is_wp_error($prepared_comment) || !is_array($prepared_comment)) { return $prepared_comment; }
+    // Non impedire a un amministratore di moderare o modificare commenti storici.
+    if (is_object($request) && method_exists($request, 'get_param')
+        && (int)$request->get_param('id') > 0) { return $prepared_comment; }
     return psr_native_comments_reject($prepared_comment, $prepared_comment);
 }
 add_filter('rest_pre_insert_comment', 'psr_native_comments_rest_reject', PHP_INT_MAX, 2);
