@@ -343,7 +343,7 @@ function psr_center_fetch_stats() {
         'admin7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied')",$week)),
         'geo7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type IN ('geo_denied','ip_blacklist_denied')",$week)),
         'otp7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s AND event_type='otp_verified'",$week)),
-        'blocked'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $ips WHERE blocked_until >= %s",$now)),
+        'blocked'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $ips WHERE blocked_until >= %s AND origin='manual'",$now)),
         'events7'=>(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $events WHERE happened_at >= %s",$week)),
     );
 }
@@ -547,7 +547,7 @@ function psr_center_action_form($action,$ip,$label,$duration=0) {
 function psr_center_blocks(){
     global $wpdb;list($events,$ips)=psr_center_tables();
     $now=gmdate('Y-m-d H:i:s');
-    $rows=$wpdb->get_results($wpdb->prepare("SELECT s.*, (SELECT e.username FROM $events e WHERE e.ip=s.ip AND e.username <> '' ORDER BY e.id DESC LIMIT 1) AS last_username FROM $ips s WHERE s.blocked_until > %s ORDER BY s.blocked_until DESC LIMIT 250",$now));
+    $rows=$wpdb->get_results($wpdb->prepare("SELECT s.*, (SELECT e.username FROM $events e WHERE e.ip=s.ip AND e.username <> '' ORDER BY e.id DESC LIMIT 1) AS last_username FROM $ips s WHERE s.blocked_until > %s AND s.origin='manual' ORDER BY s.blocked_until DESC LIMIT 250",$now));
     echo '<div class="psrc-card"><h2>Blacklist globale permanente (GitHub)</h2><p class="psrc-info psrc-alert">Questi IP sono bloccati dal modulo Geo Login su tutti i Comuni aggiornati, indipendentemente dal Paese e dai ban temporanei. Non possono essere sbloccati dal pannello: la revoca richiede un aggiornamento controllato del codice o della configurazione.</p><table class="psrc-table"><thead><tr><th>Indirizzo IP</th><th>Regola</th><th>Scadenza</th><th>Stato</th></tr></thead><tbody>';
     $hard_ips = function_exists('psr_geo_global_deny_ips') ? psr_geo_global_deny_ips() : array();
     foreach ($hard_ips as $hard_ip) { echo '<tr><td><code>'.esc_html($hard_ip).'</code></td><td>WordPress (incluso sito pubblico se abilitato)</td><td>Non scade</td><td><span class="psrc-pill critical">Bloccato</span></td></tr>'; }
