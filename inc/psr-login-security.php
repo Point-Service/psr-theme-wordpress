@@ -248,32 +248,36 @@ function psr_login_auth_precheck($user, $username, $password) {
     if (defined('WP_CLI') && WP_CLI) { return $user; }
     $access=psr_login_access_error();
     if (is_wp_error($access)) { return $access; }
+    // Prima esegui CAPTCHA (priority 12): i bot non causano lookup account se sbagliano.
+    if (is_wp_error($user)) { return $user; }
+    $ip = psr_login_ip();
+    $username = is_string($username) ? $username : '';
+    $remaining = psr_login_rate_blocked($ip);
+    if ($remaining || ($username !== '' && (psr_account_rate_blocked($ip, $username)
+        || psr_account_rate_unknown_limited($ip, $username)))) {
+        if (function_exists('psr_center_log_limited')) {
+            psr_center_log_limited('login_blocked','warning',$ip,$username,'','login',
+                $remaining ? 'IP sotto blocco manuale/geografico' : 'Limite account/IP',60);
+        }
+        return new WP_Error('psr_login_blocked', 'Troppi tentativi di accesso. Riprova piu\' tardi.');
+    }
+    // Richieste gia' bloccate non acquisiscono lock o slot di controllo password.
     if ($username!=='' && $password!=='' && empty($GLOBALS['psr_auth_capacity_lock'])) {
         $capacity=psr_auth_capacity();
         if (!$capacity) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy','Servizio accessi occupato. Riprova tra pochi secondi.'); }
         $GLOBALS['psr_auth_capacity_lock']=$capacity;
     }
     // Serializzazione per account/IP, non dell'intera sede. Lo slot globale resta limitato.
-    if (psr_login_ip() !== '' && $username !== '' && empty($GLOBALS['psr_auth_password_lock'])) {
-        $identity=psr_account_rate_identity((string)$username);
-        $resource='password|' . psr_account_rate_key(psr_login_ip(), $identity['subject']);
+    if ($ip !== '' && $username !== '' && empty($GLOBALS['psr_auth_password_lock'])) {
+        $identity=psr_account_rate_identity($username);
+        $resource='password|' . psr_account_rate_key($ip, $identity['subject']);
         $lock=psr_auth_lock($resource, 0);
         if (!$lock) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy', 'Verifica gia\' in corso per questo account. Riprova tra pochi secondi.'); }
         $GLOBALS['psr_auth_password_lock']=$lock;
     }
-    $ip = psr_login_ip();
-    $remaining = psr_login_rate_blocked($ip);
-    if ($remaining || ($username !== '' && (psr_account_rate_blocked($ip, (string)$username)
-        || psr_account_rate_unknown_limited($ip, (string)$username)))) {
-        if (function_exists('psr_center_log_limited')) {
-            psr_center_log_limited('login_blocked','warning',$ip,(string)$username,'','login',
-                $remaining ? 'IP sotto blocco manuale/geografico' : 'Limite account/IP',60);
-        }
-        return new WP_Error('psr_login_blocked', 'Troppi tentativi di accesso. Riprova piu\' tardi.');
-    }
     return $user;
 }
-add_filter('authenticate', 'psr_login_auth_precheck', 1, 3);
+add_filter('authenticate', 'psr_login_auth_precheck', 15, 3);
 
 function psr_login_failed_password($username, $error = null) {
     if ($error instanceof WP_Error) {
