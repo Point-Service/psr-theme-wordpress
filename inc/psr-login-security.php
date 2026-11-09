@@ -207,6 +207,8 @@ function psr_login_rate_blocked($ip) {
     return 0;
 }
 function psr_login_rate_failure($ip, $reason = 'password', $username = '', $source = 'login') {
+    // Compatibilita': nessun chiamante esterno puo' bannare una sede con password/OTP errati.
+    if ($reason !== 'auth_probe') { return psr_account_rate_failure($ip, (string)$username, $reason); }
     if ($ip === '') { return; }
     $lock = psr_auth_lock('rate|' . psr_login_ip_key($ip));
     if (!$lock) { return false; }
@@ -726,6 +728,9 @@ function psr_login_start_otp($user, $username, $password) {
     $error = psr_login_access_error();
     if (is_wp_error($error)) { return $error; }
     if (!psr_login_requires_otp($user) || (defined('WP_CLI') && WP_CLI)) { return $user; }
+    if (psr_account_rate_blocked(psr_login_ip(), $user->user_login) > 0) {
+        return new WP_Error('psr_login_account_limited', 'Troppi tentativi per questo account. Riprova piu tardi.');
+    }
     // Niente bypass via XML-RPC, REST, application passwords, login alternativi.
     if (!psr_login_interactive()) {
         return new WP_Error('psr_login_interactive_only', 'Accesso WordPress disponibile solo tramite login con OTP via email.');
@@ -821,6 +826,11 @@ function psr_login_otp_page() {
             hash_hmac('sha256',(string)($user instanceof WP_User ? $user->user_pass : ''),wp_salt('auth')))) {
         psr_login_cancel_ticket($ticket); wp_die('Account o credenziali non piu valide.');
     }
+    if (psr_account_rate_blocked(psr_login_ip(), $user->user_login) > 0) {
+        psr_login_cancel_ticket($ticket);
+        wp_die('Troppi tentativi per questo account. Riprova piu tardi.',
+            'PSR - Account temporaneamente limitato', array('response'=>403));
+    }
     $message = '';
     if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         $nonce = (isset($_POST['psr_nonce']) && is_string($_POST['psr_nonce'])) ? sanitize_text_field(wp_unslash($_POST['psr_nonce'])) : '';
@@ -844,6 +854,10 @@ function psr_login_otp_page() {
                     $pending = $next_pending;
                     psr_login_set_pending_cookie($ticket, $pending['code_expires']);
                     $message = 'Nuovo codice richiesto: controlla la posta. Il codice precedente non e\' piu\' valido.';
+                    if (function_exists('psr_center_log_event')) {
+                        psr_center_log_event('otp_resent', 'info', psr_login_ip(), $user->user_login, '', 'otp',
+                            'Reinvio OTP confermato dal trasporto; codice precedente invalidato');
+                    }
                 } else { $message = $sent->get_error_message(); }
             }
         } else {
