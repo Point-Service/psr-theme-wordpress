@@ -394,25 +394,40 @@ function psr_center_process_action() {
         }
     } elseif (in_array($action, array('ban','unban'), true)) {
         $ip = psr_center_clean_ip(sanitize_text_field(wp_unslash($_POST['ip'] ?? '')));
-        if (!$ip || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip)) || $ip === (function_exists('psr_login_ip') ? psr_login_ip() : '') || (function_exists('psr_geo_ip_allowlisted') && psr_geo_ip_allowlisted($ip))) {
-            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused')));exit;
+        // La blacklist permanente non e' revocabile dal pannello.
+        if (!$ip || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip))) {
+            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused'))); exit;
         }
-        if ($action === 'unban') {
-            delete_transient(psr_login_ip_key($ip));
-            psr_center_remove_ip($ip);
-            psr_center_log_event('manual_unban','warning', $ip, '', '', 'dashboard','Revocato da ID 1');
-        } else {
-            $seconds=(int)($_POST['duration'] ?? 3600);
-            if (!in_array($seconds,array(3600,86400,604800),true)) { $seconds = 3600; }
-            $state=psr_login_rate_state($ip);
-            $now=time();
-            $state['start'] = $state['start'] ?: $now;
-            $state['until']=max((int)$state['until'],$now+$seconds);
-            $state['site_ban'] = true;
-            set_transient(psr_login_ip_key($ip),$state,8*DAY_IN_SECONDS);
-            psr_center_sync_ip($ip,$state,'manual');
-            psr_center_log_event('manual_ban','critical',$ip,'','','dashboard','Durata ' . ($seconds/3600) . ' ore, ID 1');
+        // Impedire l'autoban di un ufficio; NON impedire all'ID 1 di sbloccarlo.
+        if ($action === 'ban' && ($ip === (function_exists('psr_login_ip') ? psr_login_ip() : '')
+            || (function_exists('psr_geo_ip_allowlisted') && psr_geo_ip_allowlisted($ip)))) {
+            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused'))); exit;
         }
+        $lock = psr_auth_lock('rate|' . psr_login_ip_key($ip));
+        if (!$lock) {
+            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'busy'))); exit;
+        }
+        try {
+            if ($action === 'unban') {
+                delete_transient(psr_login_ip_key($ip));
+                psr_center_remove_ip($ip);
+                psr_center_log_event('manual_unban','warning', $ip, '', '', 'dashboard',
+                    'Sblocco richiesto da ID 1; valido anche per il proprio IP o una rete fidata');
+            } else {
+                $seconds=(int)($_POST['duration'] ?? 3600);
+                if (!in_array($seconds,array(3600,86400,604800),true)) { $seconds = 3600; }
+                $state=psr_login_rate_state($ip);
+                $now=time();
+                $state['start'] = !empty($state['start']) ? (int)$state['start'] : $now;
+                $state['until']=max((int)($state['until'] ?? 0),$now+$seconds);
+                $state['site_ban'] = true;
+                if (!set_transient(psr_login_ip_key($ip),$state,8*DAY_IN_SECONDS)) {
+                    wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'failed'))); exit;
+                }
+                psr_center_sync_ip($ip,$state,'manual');
+                psr_center_log_event('manual_ban','critical',$ip,'','','dashboard','Durata ' . ($seconds/3600) . ' ore, ID 1');
+            }
+        } finally { psr_auth_unlock($lock); }
     }
     wp_safe_redirect(psr_center_url($redirect_tab,array('psr_msg'=>'saved'))); exit;
 }
@@ -454,7 +469,18 @@ function psr_center_page($forced_tab = '') {
     foreach ($tabs as $key=>$label) { echo '<a class="'.($tab===$key?'active':'').'" href="'.esc_url(psr_center_url($key)).'">'.esc_html($label).'</a>'; }
     echo '</nav>';
     if (!$ready) { echo '<div class="notice notice-error"><p><strong>Il database non consente di creare le tabelle PSR.</strong> Verifica i permessi CREATE TABLE dell’utente MySQL e consulta i log Plesk. Il login continua a funzionare, ma il registro eventi non è disponibile.</p></div></div>';return; }
-    if (isset($_GET['psr_msg'])) { echo '<div class="notice notice-'.($_GET['psr_msg']==='saved'?'success':'warning').'"><p>'.($_GET['psr_msg']==='saved'?'Operazione completata.':'Operazione rifiutata: IP non valido, IP attuale o IP in whitelist.').'</p></div>'; }
+    if (isset($_GET['psr_msg']) && is_string($_GET['psr_msg'])) {
+        $messages = array(
+            'saved'=>'Operazione completata.',
+            'refused'=>'Operazione rifiutata: IP non valido oppure presente in blacklist permanente. Non e\' possibile bloccare il proprio IP o una sede autorizzata.',
+            'busy'=>'Un altro controllo di sicurezza sta aggiornando questo IP. Riprova tra pochi secondi.',
+            'failed'=>'Operazione non salvata: controllare la disponibilita\' del database e riprovare.',
+        );
+        $msg = sanitize_key(wp_unslash($_GET['psr_msg']));
+        if (isset($messages[$msg])) {
+            echo '<div class="notice notice-'.($msg==='saved'?'success':'warning').'"><p>'.esc_html($messages[$msg]).'</p></div>';
+        }
+    }
     switch($tab) {
         case 'overview': psr_center_overview();break;
         case 'events': psr_center_events();break;
@@ -581,7 +607,7 @@ function psr_center_blocks(){
     }
     if (!$shown){ echo '<tr><td colspan="4">Nessun account attualmente limitato.</td></tr>'; }
     echo '</tbody></table></div><div class="psrc-card" style="margin-top:18px"><h2>Blocca o sblocca manualmente un IP</h2><form method="post" class="psrc-toolbar">';wp_nonce_field('psr_center_action');
-    echo '<div><label>IP pubblico</label><input required name="ip" placeholder="Indirizzo IPv4 / IPv6"></div><div><label>Durata ban</label><select name="duration"><option value="3600">1 ora</option><option value="86400">24 ore</option><option value="604800">7 giorni</option></select></div><button class="psrc-btn" name="psr_center_action" value="ban">Blocca IP</button><button class="psrc-btn secondary" name="psr_center_action" value="unban">Sblocca IP</button></form><p class="psrc-muted">Per sicurezza non puoi bloccare il tuo IP corrente o uno autorizzato dalla whitelist GeoIP. Non inserire IP condivisi senza verificarne il proprietario.</p></div>';
+    echo '<div><label>IP pubblico</label><input required name="ip" placeholder="Indirizzo IPv4 / IPv6"></div><div><label>Durata ban</label><select name="duration"><option value="3600">1 ora</option><option value="86400">24 ore</option><option value="604800">7 giorni</option></select></div><button class="psrc-btn" name="psr_center_action" value="ban">Blocca IP</button><button class="psrc-btn secondary" name="psr_center_action" value="unban">Sblocca IP</button></form><p class="psrc-muted">Per sicurezza non puoi bloccare il tuo IP o un IP fidato; puoi invece sbloccarli se necessario. La blacklist permanente resta protetta. Non bannare indiscriminatamente gli IP condivisi degli uffici.</p></div>';
 }
 function psr_center_geo(){
     $d=function_exists('psr_geo_decision')?psr_geo_decision():array('ip'=>'','country'=>'','reason'=>'missing','blocked'=>false);
