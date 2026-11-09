@@ -195,10 +195,13 @@ function psr_account_rate_migrate_batch() {
         if (!$lock) { continue; }
         try {
             $state = psr_login_rate_state($ip);
-            if (!empty($state['site_ban']) || ($state['mode'] ?? '') === 'geo') { continue; }
+            if (!empty($state['site_ban']) || !empty($state['foreign_probe']) || ($state['mode'] ?? '') === 'geo') { continue; }
             // Verifica ancora l'origine: un ban manuale concorrente non va rimosso.
             $origin = $wpdb->get_var($wpdb->prepare("SELECT origin FROM $table WHERE ip = %s", $ip));
             if ($origin !== 'auto') { continue; }
+            // Ricontrolla il transient mentre il lock e' posseduto.
+            $latest = psr_login_rate_state($ip);
+            if (!empty($latest['site_ban']) || !empty($latest['foreign_probe']) || ($latest['mode'] ?? '') === 'geo') { continue; }
             delete_transient($key);
             psr_center_remove_ip($ip);
             if (function_exists('psr_center_log_event')) {
