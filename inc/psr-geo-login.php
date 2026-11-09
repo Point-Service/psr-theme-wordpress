@@ -249,9 +249,11 @@ function psr_geo_site_ban_reason($ip) {
     if (psr_geo_ip_blacklisted($ip)) { return 'global_blacklist'; }
     if (function_exists('psr_login_rate_state')) {
         $state = psr_login_rate_state($ip);
-        // 5/10 errori: lockout solo login. 15+ errori oppure ban manuale: sito WordPress.
-        if ((int)($state['until'] ?? 0) > time() &&
-            ((int)($state['n'] ?? 0) >= 15 || !empty($state['site_ban']))) { return 'rate_ban'; }
+        // v4: soltanto i ban manuali possono negare le pagine pubbliche WordPress.
+        // I tentativi password e OTP non impediscono l'accesso ai cittadini.
+        if ((int)($state['until'] ?? 0) > time() && !empty($state['site_ban'])) {
+            return 'rate_ban';
+        }
     }
     return '';
 }
