@@ -98,6 +98,20 @@ if (is_file($psr_security_center_file) && is_readable($psr_security_center_file)
     });
 }
 
+/**
+ * PSR: disabilita i soli commenti/pingback nativi su articoli, pagine e allegati.
+ * Form di segnalazione e tutti i CPT cittadini restano indipendenti e invariati.
+ */
+$psr_native_comments_lock_file = get_template_directory() . '/inc/psr-native-comments-lock.php';
+if (is_file($psr_native_comments_lock_file) && is_readable($psr_native_comments_lock_file)) {
+    require_once $psr_native_comments_lock_file;
+} else {
+    add_action('admin_notices', function () {
+        if ((int)get_current_user_id() !== 1 || !current_user_can('manage_options')) { return; }
+        echo '<div class="notice notice-warning"><p><strong>PSR Commenti:</strong> manca inc/psr-native-comments-lock.php; il blocco dei commenti nativi non e\' attivo.</p></div>';
+    });
+}
+
 /** PSR Antispam commenti: filtro attivo di default, configurabile da ID 1. */
 $psr_comment_antispam_file = get_template_directory() . '/inc/psr-comment-antispam.php';
 if (is_file($psr_comment_antispam_file) && is_readable($psr_comment_antispam_file)) {
