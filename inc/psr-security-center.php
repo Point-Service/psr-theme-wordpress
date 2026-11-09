@@ -64,7 +64,7 @@ function psr_center_log_event($event, $severity = 'info', $ip = '', $username = 
     // Whitelist per impedire inquinamento del registro con dati arbitrari.
     $allowed = array('login_failed','login_blocked','login_success','otp_sent','otp_failed','otp_verified',
         'otp_delivery_failed','auth_probe','geo_denied','ip_blacklist_denied','xmlrpc_denied','geo_unavailable','manual_ban','manual_unban',
-        'site_ban_denied','user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied','trusted_ip_added','trusted_ip_removed','security_setting_changed','admin_role_denied','device_mismatch');
+        'site_ban_denied','account_blocked','account_unblocked','ip_risk','user_created','role_changed','account_email_changed','account_password_changed','user_deleted','admin_role_denied','trusted_ip_added','trusted_ip_removed','security_setting_changed','admin_role_denied','device_mismatch');
     if (!in_array($event, $allowed, true)) { return false; }
     if (!psr_center_install()) { return false; }
     global $wpdb;
@@ -277,6 +277,7 @@ function psr_center_label($type) {
         'otp_sent'=>'OTP email inviato','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato',
         'otp_delivery_failed'=>'Invio OTP fallito','auth_probe'=>'Tentativo login da IP estero','geo_denied'=>'IP estero bloccato','ip_blacklist_denied'=>'IP in blacklist bloccato','xmlrpc_denied'=>'XML-RPC bloccato','geo_unavailable'=>'GeoIP non disponibile',
         'manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale',
+        'account_blocked'=>'Account limitato','account_unblocked'=>'Account sbloccato','ip_risk'=>'IP con rischio elevato',
         'site_ban_denied'=>'Sito negato a IP bannato','user_created'=>'Utente creato',
         'role_changed'=>'Ruolo modificato','account_email_changed'=>'Email account modificata',
         'account_password_changed'=>'Password account modificata','user_deleted'=>'Utente eliminato',
@@ -316,6 +317,15 @@ function psr_center_process_action() {
         update_option('_psr_site_ban_enabled',$enabled,false);
         psr_center_log_event('security_setting_changed','warning',function_exists('psr_login_ip')?psr_login_ip():'',
             '', '', 'dashboard','Blocco sito IP bannati: '.($enabled==='1'?'attivo':'disattivo'));
+    } elseif ($action === 'account_unban') {
+        $ip = psr_center_clean_ip(sanitize_text_field(wp_unslash($_POST['ip'] ?? '')));
+        $username = sanitize_text_field(wp_unslash($_POST['username'] ?? ''));
+        $user = $username !== '' ? get_user_by('login', $username) : false;
+        if (!$ip || !($user instanceof WP_User) || !function_exists('psr_account_rate_clear')) {
+            wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused'))); exit;
+        }
+        psr_account_rate_clear($ip, $user->user_login);
+        psr_center_log_event('account_unblocked','warning',$ip,$user->user_login,'','dashboard','Limite account/IP revocato da ID 1');
     } elseif ($action === 'trusted_add') {
         $ip = psr_center_clean_ip(sanitize_text_field(wp_unslash($_POST['ip'] ?? '')));
         $label = substr(sanitize_text_field(wp_unslash($_POST['label'] ?? 'Sede')),0,64);
@@ -463,6 +473,7 @@ function psr_center_events(){
     global $wpdb;
     list($events)=psr_center_tables();
     $types=array(''=>'Tutti gli eventi','login_failed'=>'Password errata','login_blocked'=>'Login bloccato','login_success'=>'Accesso riuscito','otp_sent'=>'OTP richiesto','otp_failed'=>'OTP errato','otp_verified'=>'OTP verificato','otp_delivery_failed'=>'Errore invio OTP','auth_probe'=>'Tentativo login estero','geo_denied'=>'Accesso estero negato','ip_blacklist_denied'=>'IP blacklist permanente','xmlrpc_denied'=>'XML-RPC bloccato','geo_unavailable'=>'GeoIP non disponibile','manual_ban'=>'Ban manuale','manual_unban'=>'Sblocco manuale',
+        'account_blocked'=>'Account limitato','account_unblocked'=>'Account sbloccato','ip_risk'=>'IP con rischio elevato',
         'site_ban_denied'=>'Sito bloccato','user_created'=>'Utente creato','role_changed'=>'Ruolo cambiato',
         'account_email_changed'=>'Email modificata','account_password_changed'=>'Password cambiata',
         'user_deleted'=>'Utente eliminato','trusted_ip_added'=>'IP fidato aggiunto',
@@ -499,10 +510,31 @@ function psr_center_blocks(){
     foreach ($hard_ips as $hard_ip) { echo '<tr><td><code>'.esc_html($hard_ip).'</code></td><td>WordPress (incluso sito pubblico se abilitato)</td><td>Non scade</td><td><span class="psrc-pill critical">Bloccato</span></td></tr>'; }
     if (!$hard_ips) { echo '<tr><td colspan="4">Modulo blacklist non disponibile</td></tr>'; }
     echo '</tbody></table></div>';
-    echo '<div class="psrc-card" style="margin-top:18px"><h2>Indirizzi IP attualmente bloccati</h2><p class="psrc-info">La blacklist permanente, i ban manuali e i ban severi (15+ errori) negano anche le pagine pubbliche elaborate da WordPress, se l’opzione è attiva. I blocchi iniziali (5/10 errori) limitano soltanto il login, per ridurre il rischio di negare servizi ai cittadini. I file statici e PHP indipendenti richiedono una regola Plesk/WAF. I blocchi temporanei scadono automaticamente. Gli accessi esteri vengono negati dal filtro GeoIP e non compaiono necessariamente in questa tabella. La lista include gli IP tracciati da questa versione di PSR.</p>';
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>Indirizzi IP attualmente bloccati</h2><p class="psrc-info">La blacklist permanente e i ban IP manuali restano attivi. Gli errori delle password o degli OTP non bloccano gli altri colleghi né la navigazione pubblica. Gli IP esteri rimangono esclusi dal login tramite GeoIP. I file PHP autonomi richiedono la protezione Plesk/WAF.</p>';
     echo '<table class="psrc-table"><thead><tr><th>IP</th><th>Account tentato</th><th>Tentativi</th><th>Tipo blocco</th><th>Ultima attività</th><th>Scadenza</th><th>Gestione</th></tr></thead><tbody>';
     if(!$rows){echo '<tr><td colspan="7">Nessun IP bloccato in questo momento.</td></tr>';}
     foreach($rows as $r){echo '<tr><td><code>'.esc_html($r->ip).'</code></td><td>'.esc_html($r->last_username ?: '—').'</td><td>'.(int)$r->attempts.'</td><td><span class="psrc-pill warning">'.esc_html($r->origin==='manual'?'Manuale':'Automatico').'</span></td><td>'.psr_center_local_date($r->last_seen).'</td><td>'.psr_center_local_date($r->blocked_until).'</td><td>';psr_center_action_form('unban',$r->ip,'Sblocca');echo '</td></tr>';}
+    echo '</tbody></table></div>';
+    // Limiti individuali: query solo nell'area admin, massimo 120 eventi recenti.
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>Account temporaneamente limitati</h2><p class="psrc-info">Il limite riguarda soltanto la coppia utente/IP. Altri dipendenti dalla stessa sede possono continuare ad accedere.</p>';
+    $account_rows=$wpdb->get_results($wpdb->prepare("SELECT ip,username FROM $events WHERE event_type=%s AND happened_at >= %s ORDER BY id DESC LIMIT 120",
+        'account_blocked',gmdate('Y-m-d H:i:s',time()-2*HOUR_IN_SECONDS)));
+    echo '<table class="psrc-table"><thead><tr><th>Utente</th><th>IP</th><th>Fine limitazione</th><th>Gestione</th></tr></thead><tbody>';
+    $shown=0; $seen=array();
+    foreach((array)$account_rows as $item) {
+        $id=hash('sha256',$item->ip.'|'.$item->username);
+        if(isset($seen[$id])){continue;} $seen[$id]=true;
+        if (!function_exists('psr_account_rate_state')) { continue; }
+        $state=psr_account_rate_state($item->ip,$item->username);
+        $until=(int)($state['until']??0);
+        if ($until<=time()) { continue; }
+        echo '<tr><td>'.esc_html($item->username).'</td><td><code>'.esc_html($item->ip).'</code></td><td>'.esc_html(wp_date('d/m/Y H:i:s',$until)).'</td><td>';
+        echo '<form method="post">';wp_nonce_field('psr_center_action');
+        echo '<input type="hidden" name="psr_center_action" value="account_unban"><input type="hidden" name="ip" value="'.esc_attr($item->ip).'"><input type="hidden" name="username" value="'.esc_attr($item->username).'">';
+        echo '<button type="submit" class="psrc-btn secondary" onclick="return confirm(&quot;Sbloccare questo account da questo IP?&quot;)">Sblocca account</button></form></td></tr>';
+        $shown++;
+    }
+    if (!$shown){ echo '<tr><td colspan="4">Nessun account attualmente limitato.</td></tr>'; }
     echo '</tbody></table></div><div class="psrc-card" style="margin-top:18px"><h2>Blocca o sblocca manualmente un IP</h2><form method="post" class="psrc-toolbar">';wp_nonce_field('psr_center_action');
     echo '<div><label>IP pubblico</label><input required name="ip" placeholder="Indirizzo IPv4 / IPv6"></div><div><label>Durata ban</label><select name="duration"><option value="3600">1 ora</option><option value="86400">24 ore</option><option value="604800">7 giorni</option></select></div><button class="psrc-btn" name="psr_center_action" value="ban">Blocca IP</button><button class="psrc-btn secondary" name="psr_center_action" value="unban">Sblocca IP</button></form><p class="psrc-muted">Per sicurezza non puoi bloccare il tuo IP corrente o uno autorizzato dalla whitelist GeoIP. Non inserire IP condivisi senza verificarne il proprietario.</p></div>';
 }
@@ -590,7 +622,7 @@ function psr_center_settings(){
     echo '<p class="psrc-muted">La conservazione riguarda solo PSR, non i log web del server o Wordfence.</p></div>';
     $enabled = function_exists('psr_geo_site_ban_enabled') && psr_geo_site_ban_enabled();
     $forced=defined('PSR_SITE_BAN_ENABLED');
-    echo '<div class="psrc-card" style="margin-top:18px"><h2>Blocco completo degli IP bannati</h2><p>Gli IP in blacklist permanente, con ban manuale o con almeno 15 errori non possono aprire le pagine elaborate da WordPress. I blocchi iniziali (5/10 errori) limitano solo il login; i semplici IP esteri possono visitare il sito pubblico.</p>';
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>Blocco completo degli IP bannati</h2><p>Solo IP nella blacklist permanente o bloccati manualmente possono essere esclusi dalle pagine pubbliche WordPress. Gli errori di credenziali restano limitati al singolo account/IP; i semplici IP esteri possono visitare il sito pubblico.</p>';
     echo '<div class="psrc-info psrc-alert">Per bloccare anche URL statici, file PHP autonomi e web shell serve una regola <strong>Nginx/Apache/WAF a livello Plesk</strong>. Se il traffico arriva da proxy/CDN, verificare prima che <code>REMOTE_ADDR</code> rappresenti l’IP reale.</div>';
     echo '<form method="post" class="psrc-toolbar">';wp_nonce_field('psr_center_action');
     echo '<input type="hidden" name="psr_center_action" value="site_ban"><label><input type="checkbox" name="site_ban_enabled" value="1" '.checked($enabled,true,false).' '.($forced?'disabled':'').'> Blocca la navigazione WordPress agli IP bannati</label>';
