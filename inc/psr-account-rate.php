@@ -7,6 +7,8 @@
 if (!defined('ABSPATH')) { exit; }
 
 function psr_account_rate_identity($username) {
+    static $cache = array();
+    if (is_string($username) && isset($cache[$username])) { return $cache[$username]; }
     if (!is_string($username) || trim($username) === '') {
         return array('subject'=>'', 'name'=>'', 'exists'=>false);
     }
@@ -17,10 +19,13 @@ function psr_account_rate_identity($username) {
         $user = get_user_by('email', $input);
     }
     if ($user instanceof WP_User) {
-        return array('subject'=>'user:' . (int)$user->ID, 'name'=>(string)$user->user_login, 'exists'=>true);
+        $identity = array('subject'=>'user:' . (int)$user->ID, 'name'=>(string)$user->user_login, 'exists'=>true);
+    } else {
+        $identity = array('subject'=>'invalid:' . hash('sha256', strtolower($input)),
+            'name'=>substr($input, 0, 80), 'exists'=>false);
     }
-    return array('subject'=>'invalid:' . hash('sha256', strtolower($input)),
-        'name'=>substr($input, 0, 80), 'exists'=>false);
+    if (count($cache) < 64 && is_string($username)) { $cache[$username] = $identity; }
+    return $identity;
 }
 
 function psr_account_rate_key($ip, $subject) {
@@ -82,7 +87,7 @@ function psr_account_rate_note_ip($ip, $identity, $newly_blocked) {
         }
         $state['errors'] = min(10000, (int)($state['errors'] ?? 0) + 1);
         if ($newly_blocked && !empty($identity['exists'])) {
-            $state['blocked'][hash('sha256', $identity['subject'])] = $now;
+            if (count($state['blocked']) < 64) { $state['blocked'][hash('sha256', $identity['subject'])] = $now; }
         } elseif (empty($identity['exists'])) {
             // Mantiene memoria limitata contro username casuali generati dai bot.
             if (count($state['invalid']) < 64) {
@@ -95,7 +100,7 @@ function psr_account_rate_note_ip($ip, $identity, $newly_blocked) {
             $state['suspicious'] = true;
             if (empty($state['alerted'])) { $state['alerted'] = true; $alert = true; }
         }
-        // Finestra mobile approssimata da blocchi di un'ora, senza cron né nuove tabelle.
+        // Finestra di 60 minuti senza nuove tabelle; nessuna query sulle pagine pubbliche.
         set_transient($key, $state, HOUR_IN_SECONDS);
     } finally { psr_auth_unlock($lock); }
     if ($alert && function_exists('psr_center_log_event')) {
@@ -148,3 +153,63 @@ function psr_account_rate_failure($ip, $username, $reason = 'password') {
     psr_account_rate_note_ip($ip, $identity, $newly_blocked);
     return true;
 }
+
+/**
+ * Migrazione non bloccante: elimina solo i vecchi ban IP automatici,
+ * verificati italiani e non riconducibili a protezioni manuali/GeoIP.
+ * Quattro record per esecuzione WP-Cron, mai in una normale visita.
+ */
+function psr_account_rate_migrate_schedule() {
+    if (get_option('_psr_account_rate_migration_v4', '') === 'done') { return; }
+    if (!wp_next_scheduled('psr_account_rate_migration_batch')) {
+        wp_schedule_single_event(time() + MINUTE_IN_SECONDS, 'psr_account_rate_migration_batch');
+    }
+}
+add_action('init', 'psr_account_rate_migrate_schedule', 40);
+function psr_account_rate_migrate_batch() {
+    if (!function_exists('psr_center_install') || !psr_center_install()
+        || !function_exists('psr_geo_country')) { return; }
+    global $wpdb;
+    list(, $table) = psr_center_tables();
+    $cursor = get_option('_psr_account_rate_migration_cursor_v4', '');
+    if (!is_string($cursor)) { $cursor = ''; }
+    $rows = $wpdb->get_results($wpdb->prepare(
+        "SELECT ip FROM $table WHERE origin = 'auto' AND ip > %s
+         AND blocked_until > %s ORDER BY ip ASC LIMIT 4",
+        $cursor, gmdate('Y-m-d H:i:s')
+    ));
+    if (!$rows) {
+        update_option('_psr_account_rate_migration_v4', 'done', false);
+        delete_option('_psr_account_rate_migration_cursor_v4');
+        return;
+    }
+    foreach ($rows as $row) {
+        $ip = (string)$row->ip;
+        update_option('_psr_account_rate_migration_cursor_v4', $ip, false);
+        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)
+            || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip))) { continue; }
+        $geo = psr_geo_country($ip);
+        if (($geo['country'] ?? '') !== 'IT') { continue; }
+        $key = psr_login_ip_key($ip);
+        $lock = psr_auth_lock('rate|' . $key);
+        if (!$lock) { continue; }
+        try {
+            $state = psr_login_rate_state($ip);
+            if (!empty($state['site_ban']) || ($state['mode'] ?? '') === 'geo') { continue; }
+            // Verifica ancora l'origine: un ban manuale concorrente non va rimosso.
+            $origin = $wpdb->get_var($wpdb->prepare("SELECT origin FROM $table WHERE ip = %s", $ip));
+            if ($origin !== 'auto') { continue; }
+            delete_transient($key);
+            psr_center_remove_ip($ip);
+            if (function_exists('psr_center_log_event')) {
+                psr_center_log_event('legacy_auto_unban', 'info', $ip, '', 'IT', 'migration',
+                    'Vecchio blocco automatico IP rimosso; protezioni account ora separate');
+            }
+        } finally { psr_auth_unlock($lock); }
+    }
+    // Job a piccoli lotti: non rallenta le pagine dei cittadini.
+    if (!wp_next_scheduled('psr_account_rate_migration_batch')) {
+        wp_schedule_single_event(time() + 2 * MINUTE_IN_SECONDS, 'psr_account_rate_migration_batch');
+    }
+}
+add_action('psr_account_rate_migration_batch', 'psr_account_rate_migrate_batch');
