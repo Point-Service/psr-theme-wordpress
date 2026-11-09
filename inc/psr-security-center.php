@@ -340,7 +340,7 @@ function psr_center_process_action() {
         }
     } elseif (in_array($action, array('ban','unban'), true)) {
         $ip = psr_center_clean_ip(sanitize_text_field(wp_unslash($_POST['ip'] ?? '')));
-        if (!$ip || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip)) || $ip === (function_exists('psr_login_ip') ? psr_login_ip() : '') || (function_exists('psr_geo_ip_allowlisted') && psr_geo_ip_allowlisted($ip))) {
+        if (!$ip || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip)) || ($action === 'ban' && ($ip === (function_exists('psr_login_ip') ? psr_login_ip() : '') || (function_exists('psr_geo_ip_allowlisted') && psr_geo_ip_allowlisted($ip))))) {
             wp_safe_redirect(psr_center_url('blocks',array('psr_msg'=>'refused')));exit;
         }
         if ($action === 'unban') {
@@ -400,7 +400,7 @@ function psr_center_page($forced_tab = '') {
     foreach ($tabs as $key=>$label) { echo '<a class="'.($tab===$key?'active':'').'" href="'.esc_url(psr_center_url($key)).'">'.esc_html($label).'</a>'; }
     echo '</nav>';
     if (!$ready) { echo '<div class="notice notice-error"><p><strong>Il database non consente di creare le tabelle PSR.</strong> Verifica i permessi CREATE TABLE dell’utente MySQL e consulta i log Plesk. Il login continua a funzionare, ma il registro eventi non è disponibile.</p></div></div>';return; }
-    if (isset($_GET['psr_msg'])) { echo '<div class="notice notice-'.($_GET['psr_msg']==='saved'?'success':'warning').'"><p>'.($_GET['psr_msg']==='saved'?'Operazione completata.':'Operazione rifiutata: IP non valido, IP attuale o IP in whitelist.').'</p></div>'; }
+    if (isset($_GET['psr_msg'])) { echo '<div class="notice notice-'.($_GET['psr_msg']==='saved'?'success':'warning').'"><p>'.($_GET['psr_msg']==='saved'?'Operazione completata.':'Operazione rifiutata: IP non valido, IP in blacklist permanente oppure tentativo di bloccare il proprio IP o una rete fidata.').'</p></div>'; }
     switch($tab) {
         case 'overview': psr_center_overview();break;
         case 'events': psr_center_events();break;
@@ -504,7 +504,7 @@ function psr_center_blocks(){
     if(!$rows){echo '<tr><td colspan="7">Nessun IP bloccato in questo momento.</td></tr>';}
     foreach($rows as $r){echo '<tr><td><code>'.esc_html($r->ip).'</code></td><td>'.esc_html($r->last_username ?: '—').'</td><td>'.(int)$r->attempts.'</td><td><span class="psrc-pill warning">'.esc_html($r->origin==='manual'?'Manuale':'Automatico').'</span></td><td>'.psr_center_local_date($r->last_seen).'</td><td>'.psr_center_local_date($r->blocked_until).'</td><td>';psr_center_action_form('unban',$r->ip,'Sblocca');echo '</td></tr>';}
     echo '</tbody></table></div><div class="psrc-card" style="margin-top:18px"><h2>Blocca o sblocca manualmente un IP</h2><form method="post" class="psrc-toolbar">';wp_nonce_field('psr_center_action');
-    echo '<div><label>IP pubblico</label><input required name="ip" placeholder="Indirizzo IPv4 / IPv6"></div><div><label>Durata ban</label><select name="duration"><option value="3600">1 ora</option><option value="86400">24 ore</option><option value="604800">7 giorni</option></select></div><button class="psrc-btn" name="psr_center_action" value="ban">Blocca IP</button><button class="psrc-btn secondary" name="psr_center_action" value="unban">Sblocca IP</button></form><p class="psrc-muted">Per sicurezza non puoi bloccare il tuo IP corrente o uno autorizzato dalla whitelist GeoIP. Non inserire IP condivisi senza verificarne il proprietario.</p></div>';
+    echo '<div><label>IP pubblico</label><input required name="ip" placeholder="Indirizzo IPv4 / IPv6"></div><div><label>Durata ban</label><select name="duration"><option value="3600">1 ora</option><option value="86400">24 ore</option><option value="604800">7 giorni</option></select></div><button class="psrc-btn" name="psr_center_action" value="ban">Blocca IP</button><button class="psrc-btn secondary" name="psr_center_action" value="unban">Sblocca IP</button></form><p class="psrc-muted">Non puoi bloccare il tuo IP corrente o un IP fidato, ma puoi sbloccarli. La blacklist permanente non puo essere sbloccata dal pannello. Evita ban manuali su reti condivise.</p></div>';
 }
 function psr_center_geo(){
     $d=function_exists('psr_geo_decision')?psr_geo_decision():array('ip'=>'','country'=>'','reason'=>'missing','blocked'=>false);
