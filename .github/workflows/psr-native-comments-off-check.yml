@@ -1,0 +1,22 @@
+name: PSR - commenti nativi disattivati / regressioni segnalazioni
+
+on:
+  push:
+    branches:
+      - "fix/psr-native-comments-off-20261109"
+  workflow_dispatch:
+
+jobs:
+  php-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint PHP modificati
+        run: |
+          set -eu
+          php -l functions.php
+          php -l comments.php
+          php -l inc/psr-native-comments-lock.php
+          php -l tests/psr-native-comments-lock-smoke.php
+      - name: Test commenti vs segnalazioni
+        run: php tests/psr-native-comments-lock-smoke.php
