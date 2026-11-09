@@ -1,0 +1,13 @@
+name: PSR unban hotfix PHP lint
+on:
+  push:
+    branches:
+      - fix/psr-unban-hotfix-20261109
+  workflow_dispatch:
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify PSR security center PHP syntax
+        run: php -l inc/psr-security-center.php
