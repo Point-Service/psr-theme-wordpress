@@ -11,6 +11,14 @@
  */
 
 /*
+ * PSR: non mostrare form e commenti WordPress su articoli e pagine.
+ * Non riguarda le segnalazioni disservizi, gli appuntamenti o altri CPT.
+ */
+if (function_exists('psr_native_comments_target') && psr_native_comments_target(get_the_ID())) {
+    return;
+}
+
+/*
  * If the current post is protected by a password and
  * the visitor has not yet entered the password we will
  * return early without loading the comments.
