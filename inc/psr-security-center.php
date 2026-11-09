@@ -201,6 +201,49 @@ function psr_center_schedule_cleanup() {
 }
 add_action('admin_init', 'psr_center_schedule_cleanup');
 
+/**
+ * Migrazione v4 UNA TANTUM dei vecchi ban automatici per IP verificati IT.
+ * Solo GeoIP gia' in cache: NESSUNA richiesta HTTP, nessuna scansione del sito.
+ * I ban manuali, globali e gli IP esteri NON vengono rimossi.
+ */
+function psr_center_cleanup_legacy_automatic_ips_v4() {
+    if (get_option('_psr_legacy_auto_bans_v4', '') === 'done') { return; }
+    if (!psr_center_install()) { return; }
+    global $wpdb;
+    list(, $ips) = psr_center_tables();
+    $rows = $wpdb->get_results($wpdb->prepare(
+        "SELECT ip FROM $ips WHERE origin=%s AND blocked_until > %s ORDER BY last_seen DESC LIMIT 250",
+        'auto', gmdate('Y-m-d H:i:s')
+    ));
+    foreach ((array)$rows as $row) {
+        $ip = psr_center_clean_ip($row->ip);
+        if (!$ip || (function_exists('psr_geo_ip_blacklisted') && psr_geo_ip_blacklisted($ip))) { continue; }
+        // NON interrogare mai il servizio GeoIP durante la migrazione.
+        $geo = function_exists('psr_geo_cache_key') ? get_transient(psr_geo_cache_key($ip)) : false;
+        if (!is_array($geo) || ($geo['country'] ?? '') !== 'IT') { continue; }
+        $state = psr_login_rate_state($ip);
+        if (!empty($state['site_ban']) || !empty($state['foreign_probe'])) { continue; }
+        $lock = psr_auth_lock('rate|' . psr_login_ip_key($ip), 0);
+        if (!$lock) { continue; }
+        try {
+            $latest = psr_login_rate_state($ip);
+            if (empty($latest['site_ban']) && empty($latest['foreign_probe'])) {
+                delete_transient(psr_login_ip_key($ip));
+                psr_center_remove_ip($ip);
+            }
+        } finally { psr_auth_unlock($lock); }
+    }
+    update_option('_psr_legacy_auto_bans_v4', 'done', false);
+}
+add_action('psr_center_legacy_bans_v4', 'psr_center_cleanup_legacy_automatic_ips_v4');
+function psr_center_schedule_legacy_cleanup_v4() {
+    if (get_option('_psr_legacy_auto_bans_v4','') !== 'done'
+        && !wp_next_scheduled('psr_center_legacy_bans_v4')) {
+        wp_schedule_single_event(time()+30, 'psr_center_legacy_bans_v4');
+    }
+}
+add_action('admin_init', 'psr_center_schedule_legacy_cleanup_v4', 20);
+
 function psr_center_menu() {
     if (!psr_center_is_owner()) { return; }
     add_menu_page('PSR Centro Sicurezza', 'PSR Sicurezza', 'manage_options', 'psr-security-center',
@@ -404,7 +447,7 @@ function psr_center_page($forced_tab = '') {
     $tab = $forced_tab ?: sanitize_key(wp_unslash($_GET['tab'] ?? 'overview'));
     if (!in_array($tab,array('overview','events','sessions','blocks','accounts','trusted','geo','otp','antispam','settings'),true)) { $tab='overview'; }
     $ready = psr_center_install();
-    echo '<div class="wrap psrc"><header class="psrc-header"><div class="psrc-hero-copy"><div class="psrc-label">PSR SECURITY SUITE <span style="opacity:.5">/</span> CONTROL CENTER</div><h1><span class="dashicons dashicons-shield-alt" aria-hidden="true"></span>Centro Sicurezza</h1><p>Monitoraggio accessi, difesa degli account e controllo delle minacce. I risultati provengono dagli eventi registrati su questo Comune.</p><div class="psrc-hero-checks"><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>OTP email tutti gli utenti</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Filtro Italia</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Ban IP progressivi</span></div></div><div class="psrc-hero-side"><span class="psrc-chip">&#128274; Accesso riservato ID 1</span><span class="psrc-hero-meta">Area di gestione<br><b>Controlli e registri privati</b></span></div></header>';
+    echo '<div class="wrap psrc"><header class="psrc-header"><div class="psrc-hero-copy"><div class="psrc-label">PSR SECURITY SUITE <span style="opacity:.5">/</span> CONTROL CENTER</div><h1><span class="dashicons dashicons-shield-alt" aria-hidden="true"></span>Centro Sicurezza</h1><p>Monitoraggio accessi, difesa degli account e controllo delle minacce. I risultati provengono dagli eventi registrati su questo Comune.</p><div class="psrc-hero-checks"><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>OTP email tutti gli utenti</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Filtro Italia</span><span><i class="dashicons dashicons-yes" aria-hidden="true"></i>Blocchi individuali</span></div></div><div class="psrc-hero-side"><span class="psrc-chip">&#128274; Accesso riservato ID 1</span><span class="psrc-hero-meta">Area di gestione<br><b>Controlli e registri privati</b></span></div></header>';
     $tabs=array('overview'=>'Panoramica','events'=>'Tentativi e attività','sessions'=>'Accessi riusciti e PC','blocks'=>'IP bloccati','accounts'=>'Utenti e privilegi','trusted'=>'IP fidati','geo'=>'Filtro geografico','otp'=>'OTP email','antispam'=>'Antispam','settings'=>'Impostazioni');
     echo '<nav class="psrc-tabs" aria-label="Sezioni centro sicurezza">';
     foreach ($tabs as $key=>$label) { echo '<a class="'.($tab===$key?'active':'').'" href="'.esc_url(psr_center_url($key)).'">'.esc_html($label).'</a>'; }
