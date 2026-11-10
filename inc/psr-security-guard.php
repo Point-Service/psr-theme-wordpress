@@ -509,44 +509,233 @@ function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
     }
 }
 
+/**
+ * Scansione notturna a porzioni, con un cursore su disco (wp_options):
+ * - nessuna ricorsione sull'intero albero a ogni esecuzione;
+ * - massimo 400 elementi e circa 0,8 secondi di lavoro per passaggio;
+ * - niente scansione estesa sulle richieste dei cittadini;
+ * - cursore mantenuto fra i passaggi e fra le notti, se necessario;
+ * - niente symlink e nessuna directory fuori dalla root WordPress.
+ * WP-Cron viene richiamato solo nella finestra 01:00-03:00 del fuso del sito.
+ * Senza traffico notturno o cron esterno, WP-Cron non garantisce il completamento.
+ */
+function psr_guard_night_window($timestamp = null) {
+    $time = new DateTimeImmutable('@' . (int)($timestamp === null ? time() : $timestamp));
+    $time = $time->setTimezone(wp_timezone());
+    $hour = (int) $time->format('G');
+    return $hour >= 1 && $hour < 3;
+}
+
+/** Prossimo passaggio; dopo le 03:00 solo la notte successiva. */
+function psr_guard_next_scan_time($now = null, $next_night = false) {
+    $now = $now === null ? time() : (int) $now;
+    if (!$next_night && psr_guard_night_window($now)) {
+        return $now + 60;
+    }
+    $local = (new DateTimeImmutable('@' . $now))->setTimezone(wp_timezone());
+    $target = $local->setTime(1, 0, 0);
+    if ($target->getTimestamp() <= $now) { $target = $target->modify('+1 day'); }
+    return $target->getTimestamp();
+}
+
+function psr_guard_schedule_next($next_night = false) {
+    if (!wp_next_scheduled('psr_guard_scan')) {
+        wp_schedule_single_event(psr_guard_next_scan_time(null, $next_night), 'psr_guard_scan');
+    }
+}
+
+/** Conserva percorsi relativi alla root, senza memorizzare elenchi di migliaia di file. */
+function psr_guard_new_scan_state($root) {
+    return array(
+        'version' => 2,
+        'root' => $root,
+        'started_at' => time(),
+        'day' => '',
+        'stack' => array(array('rel' => '', 'offset' => 0)),
+        'checked' => 0,
+        'visited' => 0,
+        'detections' => 0,
+        'removed' => 0,
+        'unreadable' => 0,
+        'events' => array(),
+        'finished_at' => 0,
+    );
+}
+
+/**
+ * Un solo segmento della scansione. Nessuna funzione del frontend deve chiamarla.
+ * DirectoryIterator::seek riprende dall'offset salvato senza salvare liste di file.
+ * Il tempo e' best-effort: una singola I/O lenta potrebbe superarlo.
+ */
+function psr_guard_scan_batch(&$state, $root, $max_entries = 400, $max_seconds = 0.8) {
+    $started = microtime(true);
+    $visited = 0;
+    $files = 0;
+    $detections = 0;
+    $removed = 0;
+    $events = array();
+    $active_rel = null;
+    $iterator = null;
+    $max_entries = max(1, min(1000, (int)$max_entries));
+    $max_seconds = max(0.1, min(1.5, (float)$max_seconds));
+
+    while (!empty($state['stack']) && $visited < $max_entries
+        && microtime(true) - $started < $max_seconds && count($events) < 24) {
+        $position = count($state['stack']) - 1;
+        $rel = (string)$state['stack'][$position]['rel'];
+        if ($iterator === null || $active_rel !== $rel) {
+            $iterator = null;
+            $active_rel = $rel;
+            $path = $rel === '' ? $root : $root . DIRECTORY_SEPARATOR . $rel;
+            // Ne' symlink ne' path fuori dalla root (inclusi percorsi cambiati).
+            $real = realpath($path);
+            if (!$real || ($rel !== '' && is_link($path)) ||
+                !psr_guard_path_within($real, $root) || !is_dir($real)) {
+                $state['unreadable']++;
+                $events[] = 'CARTELLA NON ANALIZZATA (non disponibile): ' . $path;
+                array_pop($state['stack']);
+                $active_rel = null;
+                continue;
+            }
+            try {
+                $iterator = new DirectoryIterator($real);
+                $offset = max(0, (int)$state['stack'][$position]['offset']);
+                if ($offset) { $iterator->seek($offset); }
+            } catch (Throwable $e) {
+                $state['unreadable']++;
+                $events[] = 'CARTELLA NON ANALIZZATA (accesso): ' . $real;
+                array_pop($state['stack']);
+                $active_rel = null;
+                continue;
+            }
+        }
+
+        if (!$iterator->valid()) {
+            array_pop($state['stack']);
+            $iterator = null;
+            $active_rel = null;
+            continue;
+        }
+
+        try {
+            $name = $iterator->getFilename();
+            $full = $iterator->getPathname();
+            $is_link = $iterator->isLink();
+            $is_dir = !$is_link && $iterator->isDir();
+            $is_file = !$is_link && !$is_dir && $iterator->isFile();
+            $iterator->next();
+            $state['stack'][$position]['offset']++;
+            $visited++;
+            if ($name === '.' || $name === '..' || $is_link) { continue; }
+
+            if ($is_dir) {
+                $child = $rel === '' ? $name : $rel . DIRECTORY_SEPARATOR . $name;
+                if (count($state['stack']) >= 80 || strlen($child) > 2048) {
+                    $state['unreadable']++;
+                    $events[] = 'CARTELLA NON ANALIZZATA (profondita): ' . $full;
+                    continue;
+                }
+                $state['stack'][] = array('rel' => $child, 'offset' => 0);
+                $iterator = null;
+                $active_rel = null;
+                continue;
+            }
+            if (!$is_file) { continue; }
+            $files++;
+            $lower = strtolower($name);
+            if ($lower === 'wpsecurity.log') {
+                psr_guard_delete_wpsecurity_log($full, $events, $detections, $removed);
+            } elseif ($lower === 'b.zip' || $lower === 'wp-link-helper.zip') {
+                psr_guard_verify_wlh_archive($full, $events, $detections, $removed);
+            } elseif (strtolower(pathinfo($lower, PATHINFO_EXTENSION)) === 'php') {
+                psr_guard_verify_file($full, $lower, $events, $detections, $removed);
+            }
+        } catch (Throwable $e) {
+            $state['unreadable']++;
+            $events[] = 'ELEMENTO NON ANALIZZATO (errore I/O): ' . $rel;
+            $iterator = null;
+            $active_rel = null;
+        }
+    }
+    $state['checked'] += $files;
+    $state['visited'] += $visited;
+    $state['detections'] += $detections;
+    $state['removed'] += $removed;
+    $state['events'] = array_slice(array_merge($state['events'], $events), -40);
+    return array('visited' => $visited, 'checked' => $files, 'events' => $events,
+        'seconds' => microtime(true) - $started, 'finished' => empty($state['stack']));
+}
+
 function psr_guard_scan() {
-    if (get_transient('psr_guard_running')) { return; }
-    set_transient('psr_guard_running', 1, 10 * MINUTE_IN_SECONDS);
-    $started = microtime(true); $checked = 0; $detections = 0; $removed = 0; $events = array();
+    // Non esegue il lavoro ricorsivo durante l'uso diurno del portale.
+    if (!psr_guard_night_window()) {
+        psr_guard_schedule_next(true);
+        return;
+    }
+    // Lock atomico condiviso: cron simultanei non esplorano gli stessi file.
+    if (!function_exists('psr_auth_lock') || !function_exists('psr_auth_unlock')) {
+        psr_guard_schedule_next();
+        return;
+    }
+    $lock = psr_auth_lock('guard_progressive_scan', 0);
+    if (!$lock) {
+        psr_guard_schedule_next();
+        return;
+    }
+    $finished_today = false;
     try {
-        psr_guard_targeted_scan($events, $detections, $removed);
         $root = realpath(ABSPATH);
         if (!$root) { throw new RuntimeException('Root WordPress non disponibile'); }
-        $dir = new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS);
-        $it = new RecursiveIteratorIterator($dir, RecursiveIteratorIterator::LEAVES_ONLY);
-        foreach ($it as $item) {
-            if ($checked >= 20000 || microtime(true) - $started >= 12 || count($events) >= 100) { break; }
-            if ($item->isLink() || !$item->isFile()) { continue; }
-            $checked++;
-            $name = strtolower($item->getFilename());
-            if ($name === 'wpsecurity.log') {
-                psr_guard_delete_wpsecurity_log($item->getPathname(), $events, $detections, $removed);
-                continue;
-            }
-            if ($name === 'b.zip' || $name === 'wp-link-helper.zip') {
-                psr_guard_verify_wlh_archive($item->getPathname(), $events, $detections, $removed);
-                continue;
-            }
-            if (strtolower(pathinfo($name, PATHINFO_EXTENSION)) !== 'php') { continue; }
-            psr_guard_verify_file($item->getPathname(), $name, $events, $detections, $removed);
+        $today = wp_date('Y-m-d');
+        $state = get_option('psr_guard_scan_state', array());
+        if (!is_array($state) || ($state['version'] ?? 0) !== 2 ||
+            ($state['root'] ?? '') !== $root || !isset($state['stack'])) {
+            $state = psr_guard_new_scan_state($root);
         }
-    } catch (Throwable $e) { $events[] = 'Scansione interrotta: ' . $e->getMessage(); }
-    $report = array('when' => gmdate('c'), 'checked' => $checked, 'detections' => $detections,
-        'removed' => $removed, 'events' => array_slice($events, 0, 100));
-    update_option('psr_guard_last_report', $report, false);
-    foreach ($report['events'] as $event) { error_log('[PSR GUARD] ' . $event); }
-    delete_transient('psr_guard_running');
+        if (!empty($state['finished_at']) && ($state['day'] ?? '') === $today) {
+            $finished_today = true;
+            return;
+        }
+        if (!empty($state['finished_at'])) { $state = psr_guard_new_scan_state($root); }
+
+        $batch = psr_guard_scan_batch($state, $root);
+        if ($batch['finished']) {
+            $state['finished_at'] = time();
+            $state['day'] = $today;
+            $finished_today = true;
+        }
+        update_option('psr_guard_scan_state', $state, false);
+        $report = array(
+            'when' => gmdate('c'),
+            'started_at' => gmdate('c', (int)$state['started_at']),
+            'finished_at' => $finished_today ? gmdate('c', (int)$state['finished_at']) : '',
+            'complete' => $finished_today && !$state['unreadable'],
+            'in_progress' => !$finished_today,
+            'checked' => $state['checked'],
+            'visited' => $state['visited'],
+            'batch_checked' => $batch['checked'],
+            'unreadable' => $state['unreadable'],
+            'detections' => $state['detections'],
+            'removed' => $state['removed'],
+            'events' => $state['events'],
+        );
+        update_option('psr_guard_last_report', $report, false);
+        foreach ($batch['events'] as $event) { error_log('[PSR GUARD NIGHT] ' . $event); }
+    } catch (Throwable $e) {
+        error_log('[PSR GUARD NIGHT] Scansione rinviata: ' . $e->getMessage());
+    } finally {
+        psr_auth_unlock($lock);
+        psr_guard_schedule_next($finished_today);
+    }
 }
 
 function psr_guard_install_schedule() {
-    if (!wp_next_scheduled('psr_guard_scan')) {
-        wp_schedule_event(time() + 30, 'hourly', 'psr_guard_scan');
+    // Migrazione una tantum: elimina il vecchio evento orario da 12 secondi.
+    if ((int)get_option('psr_guard_scan_schedule_version', 0) !== 2) {
+        wp_clear_scheduled_hook('psr_guard_scan');
+        update_option('psr_guard_scan_schedule_version', 2, false);
     }
+    psr_guard_schedule_next();
 }
 add_action('init', 'psr_guard_install_schedule', 20);
 add_action('psr_guard_scan', 'psr_guard_scan');
