@@ -512,7 +512,7 @@ function psr_guard_targeted_scan(&$events, &$detections, &$removed) {
 /**
  * Scansione notturna a porzioni, con un cursore su disco (wp_options):
  * - nessuna ricorsione sull'intero albero a ogni esecuzione;
- * - massimo 400 elementi e circa 0,8 secondi di lavoro per passaggio;
+ * - massimo 400 elementi e circa 0,4 secondi di lavoro per passaggio;
  * - niente scansione estesa sulle richieste dei cittadini;
  * - cursore mantenuto fra i passaggi e fra le notti, se necessario;
  * - niente symlink e nessuna directory fuori dalla root WordPress.
@@ -541,7 +541,7 @@ function psr_guard_next_scan_time($now = null, $next_night = false) {
     $target = $local->setTime(1, 0, 0)->modify('+' . psr_guard_scan_start_offset() . ' seconds');
     if (!$next_night && psr_guard_night_window($now)) {
         // Non avviare tutte le installazioni alle 01:00 precise.
-        return $now < $target->getTimestamp() ? $target->getTimestamp() : $now + 60;
+        return $now < $target->getTimestamp() ? $target->getTimestamp() : $now + 120;
     }
     if ($target->getTimestamp() <= $now) { $target = $target->modify('+1 day'); }
     return $target->getTimestamp();
@@ -576,7 +576,7 @@ function psr_guard_new_scan_state($root) {
  * DirectoryIterator::seek riprende dall'offset salvato senza salvare liste di file.
  * Il tempo e' best-effort: una singola I/O lenta potrebbe superarlo.
  */
-function psr_guard_scan_batch(&$state, $root, $max_entries = 400, $max_seconds = 0.8) {
+function psr_guard_scan_batch(&$state, $root, $max_entries = 400, $max_seconds = 0.4) {
     $started = microtime(true);
     $visited = 0;
     $files = 0;
