@@ -1,0 +1,87 @@
+name: PSR CMB2 2.13.5 compatibility checks
+
+on:
+  push:
+    branches:
+      - "fix/psr-cmb2-2.13.5-20261110"
+      - master
+    paths:
+      - "inc/lib/CMB2/**"
+      - "tests/psr-cmb2-wordpress-smoke.php"
+      - ".github/workflows/psr-cmb2-compat.yml"
+  workflow_dispatch:
+
+jobs:
+  php-lint:
+    name: PHP syntax - ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.2", "8.3", "8.4"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP lint of all bundled CMB2 source
+        run: |
+          set -eu
+          find inc/lib/CMB2 -name '*.php' -type f -print0 | xargs -0 -n1 php -l
+          php -l inc/cmb2.php
+          php -l tests/psr-cmb2-wordpress-smoke.php
+      - name: Check library version and required security files
+        run: |
+          set -eu
+          grep -q "const VERSION = '2.13.5'" inc/lib/CMB2/init.php
+          test -s inc/lib/CMB2/includes/CMB2_Rest_Read_Permissions_Notice.php
+          test -s inc/lib/CMB2/includes/CMB2_Hookup_Field.php
+
+  wordpress-smoke:
+    name: WordPress real integration smoke
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wp
+          MYSQL_PASSWORD: wp
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mysqli,mbstring,curl,zip
+          coverage: none
+      - name: Install WordPress and WP-CLI in isolated environment
+        run: |
+          set -eu
+          curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /tmp/wp-cli.phar
+          php /tmp/wp-cli.phar --info
+          php /tmp/wp-cli.phar core download --path=/tmp/psr-cmb2-wordpress --skip-content
+          php /tmp/wp-cli.phar config create --path=/tmp/psr-cmb2-wordpress --dbname=wordpress --dbuser=wp --dbpass=wp --dbhost=127.0.0.1:3306
+          php /tmp/wp-cli.phar core install --path=/tmp/psr-cmb2-wordpress --url=http://localhost --title=PSR-CMB2-Test --admin_user=ci_admin --admin_password=ci_dummy_password_only --admin_email=ci@example.invalid
+      - name: Load bundled CMB2 as mu-plugin and register smoke fields
+        run: |
+          set -eu
+          mkdir -p /tmp/psr-cmb2-wordpress/wp-content/mu-plugins
+          cat > /tmp/psr-cmb2-wordpress/wp-content/mu-plugins/psr-cmb2-ci.php <<'PHP'
+          <?php
+          require_once getenv('GITHUB_WORKSPACE') . '/inc/lib/CMB2/init.php';
+          add_action('cmb2_init', static function () {
+              $box = new_cmb2_box(array('id'=>'psr_cmb2_ci','title'=>'PSR Test','object_types'=>array('post')));
+              $box->add_field(array('id'=>'psr_cmb2_ci_text','name'=>'Text','type'=>'text'));
+              $box->add_field(array('id'=>'psr_cmb2_ci_files','name'=>'Attachments','type'=>'file_list'));
+          });
+          PHP
+          php /tmp/wp-cli.phar eval-file "${GITHUB_WORKSPACE}/tests/psr-cmb2-wordpress-smoke.php" --path=/tmp/psr-cmb2-wordpress
