@@ -1,0 +1,52 @@
+name: PSR - audit approfondito 10 novembre
+on:
+  push:
+    branches:
+      - "audit/psr-regressions-20261110"
+  workflow_dispatch:
+jobs:
+  wordpress:
+    name: WP REST comments + real CMB2 file_list
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wp
+          MYSQL_PASSWORD: wp
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mysqli,mbstring,curl,zip
+          coverage: none
+      - name: PHP syntax
+        run: |
+          php -l tests/psr-20261110-deep-regression.php
+          php -l inc/psr-native-comments-lock.php
+          php -l inc/lib/CMB2/init.php
+          php -l inc/psr-public-request-guard.php
+          php -l inc/funzionalita_trasversali.php
+      - name: Fresh isolated WordPress
+        run: |
+          set -eu
+          curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /tmp/wp-cli.phar
+          php /tmp/wp-cli.phar core download --path=/tmp/psr-wp --skip-content
+          php /tmp/wp-cli.phar config create --path=/tmp/psr-wp --dbname=wordpress --dbuser=wp --dbpass=wp --dbhost=127.0.0.1:3306
+          php /tmp/wp-cli.phar core install --path=/tmp/psr-wp --url=http://localhost --title="PSR regression test" --admin_user=ci_admin --admin_password=ci_dummy_password_only --admin_email=ci@example.test
+          ln -s "${GITHUB_WORKSPACE}" /tmp/psr-wp/wp-content/themes/psr-theme-wordpress
+          php /tmp/wp-cli.phar theme activate psr-theme-wordpress --path=/tmp/psr-wp
+      - name: Live core APIs with real theme, database and attachment
+        run: |
+          set -eu
+          php /tmp/wp-cli.phar eval-file "${GITHUB_WORKSPACE}/tests/psr-20261110-deep-regression.php" --path=/tmp/psr-wp
