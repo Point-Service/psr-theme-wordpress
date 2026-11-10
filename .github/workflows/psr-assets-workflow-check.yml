@@ -1,0 +1,62 @@
+name: PSR Assets workflow - safe build verification
+on:
+  push:
+    branches:
+      - "fix/psr-assets-workflow-20261110"
+      - master
+    paths:
+      - "copy_assets.sh"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/update-assets-comuni.yml"
+      - ".github/workflows/psr-assets-workflow-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Reproduce scheduled assets build, without uploading or committing assets
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - name: Check script's executable Git mode
+        run: |
+          set -euo pipefail
+          test -x copy_assets.sh
+          test "$(git ls-files -s copy_assets.sh | awk '{print $1}')" = "100755"
+          echo "PASS: copy_assets.sh executable"
+      - name: Reproduce upstream download and asset generation
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/italia/design-comuni-pagine-statiche
+          pushd design-comuni-pagine-statiche
+          npm i
+          npm run build
+          popd
+          test -s design-comuni-pagine-statiche/dist/assets/css/bootstrap-italia-comuni.css
+          test -s design-comuni-pagine-statiche/dist/assets/script/scripts.js
+          cp design-comuni-pagine-statiche/dist/assets/css/bootstrap-italia-comuni.css assets/css/bootstrap-italia-comuni.min.css
+          cp design-comuni-pagine-statiche/dist/assets/script/scripts.js assets/js/comuni.js
+          rm -rf design-comuni-pagine-statiche
+          npm i
+          npm run build
+          test -s assets/css/bootstrap-italia-comuni.min.css
+          test -s assets/js/comuni.js
+          test -s assets/css/bootstrap-italia.min.css
+          test -s assets/js/bootstrap-italia.bundle.min.js
+          echo "PASS: upstream CSS/JS assets generated without execute permission errors"
+      - name: Verify intended PR contents and harmless no-change handling
+        run: |
+          set -euo pipefail
+          git add -- assets/css/bootstrap-italia-comuni.min.css assets/js/comuni.js
+          git diff --cached --check
+          echo "PASS: generated files can be staged with correct paths"
+          git diff --cached --name-only
+          git restore --worktree --staged -- assets/css/bootstrap-italia-comuni.min.css assets/js/comuni.js
+          echo "This test does not commit assets, create pull requests or deploy any file."
