@@ -42,6 +42,12 @@ try {
     psr_audit_assert(!in_array('post',(array)($public_query['post_type']??array()),true)
         && in_array('segnala_disservizio',(array)($public_query['post_type']??array()),true),
         'REST comment query excludes native posts but keeps civic post types');
+    $restricted = apply_filters('rest_comment_query',array('post_type'=>'segnala_disservizio'),$req);
+    psr_audit_assert(($restricted['post_type']??array())===array('segnala_disservizio'),
+        'Existing REST post-type restriction remains intact');
+    $native_only = apply_filters('rest_comment_query',array('post_type'=>'post'),$req);
+    psr_audit_assert(($native_only['post__in']??array())===array(0),
+        'REST query restricted to native posts becomes empty, never broader');
     $admin = get_user_by('login','ci_admin');
     psr_audit_assert($admin instanceof WP_User, 'WordPress test moderator available');
     wp_set_current_user($admin->ID);
