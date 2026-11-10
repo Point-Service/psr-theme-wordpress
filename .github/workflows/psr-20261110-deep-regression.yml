@@ -3,6 +3,14 @@ on:
   push:
     branches:
       - "audit/psr-regressions-20261110"
+      - master
+    paths:
+      - "inc/psr-native-comments-lock.php"
+      - "inc/lib/CMB2/**"
+      - "inc/psr-public-request-guard.php"
+      - "inc/funzionalita_trasversali.php"
+      - "tests/psr-20261110-deep-regression.php"
+      - ".github/workflows/psr-20261110-deep-regression.yml"
   workflow_dispatch:
 jobs:
   wordpress:
