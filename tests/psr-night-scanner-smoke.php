@@ -23,14 +23,23 @@ $afterNight = (new DateTimeImmutable('2026-11-10 03:01:00', $tz))->getTimestamp(
 psr_night_ci_assert(psr_guard_night_window($atNight), 'Nightly window includes 01:30');
 psr_night_ci_assert(!psr_guard_night_window($beforeNight) && !psr_guard_night_window($afterNight),
     'Deep scan excluded from day and late night');
+$offset = psr_guard_scan_start_offset();
+psr_night_ci_assert($offset>=0 && $offset<1200, 'Nightly starts staggered by a safe 0-20 minute offset');
 psr_night_ci_assert(psr_guard_next_scan_time($atNight) === $atNight + 60,
-    'One short pass scheduled for next minute at night');
+    'One short pass scheduled for next minute after staggered start');
 $next = psr_guard_next_scan_time($afterNight);
-psr_night_ci_assert(wp_date('Y-m-d H:i', $next) === '2026-11-11 01:00',
-    'After 03:00 the following scan starts the next night at 01:00');
+$expected = (new DateTimeImmutable('2026-11-11 01:00:00', $tz))->getTimestamp() + $offset;
+psr_night_ci_assert($next === $expected,
+    'After 03:00 following scan is next night with the same per-site offset');
 $next = psr_guard_next_scan_time($beforeNight);
-psr_night_ci_assert(wp_date('Y-m-d H:i', $next) === '2026-11-10 01:00',
-    'Before 01:00 deep scan waits without day work');
+$expected = (new DateTimeImmutable('2026-11-10 01:00:00', $tz))->getTimestamp() + $offset;
+psr_night_ci_assert($next === $expected,
+    'Before 01:00 deep scan waits for the staggered start');
+$justAfter = (new DateTimeImmutable('2026-11-10 01:00:01', $tz))->getTimestamp();
+if ($offset > 1) {
+    psr_night_ci_assert(psr_guard_next_scan_time($justAfter)===$expected,
+        'A scheduled scan cannot start before its per-site slot');
+}
 
 $root = sys_get_temp_dir() . '/psr-scan-ci-' . bin2hex(random_bytes(6));
 if (!mkdir($root, 0700, true)) { throw new RuntimeException('Temp directory unavailable'); }
