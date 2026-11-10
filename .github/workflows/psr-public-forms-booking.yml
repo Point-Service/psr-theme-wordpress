@@ -1,0 +1,165 @@
+name: PSR public forms and booking compatibility
+
+on:
+  push:
+    branches:
+      - "fix/psr-public-forms-booking-20261110"
+      - master
+    paths:
+      - "inc/psr-public-request-guard.php"
+      - "inc/funzionalita_trasversali.php"
+      - "tests/psr-public-forms-booking-smoke.php"
+      - ".github/workflows/psr-public-forms-booking.yml"
+  workflow_dispatch:
+
+jobs:
+  php-syntax:
+    runs-on: ubuntu-latest
+    name: PHP syntax ${{ matrix.php }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.2","8.3","8.4"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - run: |
+          set -eu
+          php -l inc/psr-public-request-guard.php
+          php -l inc/funzionalita_trasversali.php
+          php -l tests/psr-public-forms-booking-smoke.php
+
+  wordpress-integration:
+    runs-on: ubuntu-latest
+    name: WordPress real integration and public pages
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wp
+          MYSQL_PASSWORD: wp
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mysqli,mbstring,curl,zip
+          coverage: none
+      - name: Prepare isolated WordPress, no municipal data
+        run: |
+          set -eu
+          curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /tmp/wp-cli.phar
+          php /tmp/wp-cli.phar core download --path=/tmp/psr-wordpress --skip-content
+          php /tmp/wp-cli.phar config create --path=/tmp/psr-wordpress --dbname=wordpress --dbuser=wp --dbpass=wp --dbhost=127.0.0.1:3306
+          php /tmp/wp-cli.phar core install --path=/tmp/psr-wordpress --url=http://127.0.0.1:8765 --title=PSR-Security-Test --admin_user=ci_admin --admin_password=ci_dummy_password_only --admin_email=ci@example.test
+          ln -s "${GITHUB_WORKSPACE}" /tmp/psr-wordpress/wp-content/themes/psr-theme-wordpress
+          php /tmp/wp-cli.phar theme activate psr-theme-wordpress --path=/tmp/psr-wordpress
+      - name: Test booking slots and abuse controls inside WordPress
+        run: |
+          set -eu
+          php /tmp/wp-cli.phar eval-file "${GITHUB_WORKSPACE}/tests/psr-public-forms-booking-smoke.php" --path=/tmp/psr-wordpress
+      - name: Render real assistance, booking and disservice pages via HTTP
+        run: |
+          set -eu
+          php -S 127.0.0.1:8765 -t /tmp/psr-wordpress > /tmp/psr-http.log 2>&1 &
+          echo $! > /tmp/psr-http.pid
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -fsS --max-time 5 "http://127.0.0.1:8765/" -o /tmp/psr-home.html; then break; fi
+            sleep 1
+          done
+          test -s /tmp/psr-home.html
+          for spec in "assistenza:page-templates/assistenza.php" "prenotazione:page-templates/prenota-appuntamento.php" "disservizio:page-templates/segnala-disservizio.php"; do
+            slug="${spec%%:*}"
+            template="${spec#*:}"
+            php /tmp/wp-cli.phar eval "\$id=wp_insert_post(array('post_type'=>'page','post_status'=>'publish','post_title'=>'PSR CI ${slug}','post_name'=>'psr-ci-${slug}')); if (is_wp_error(\$id) || !\$id) { throw new Exception('Page creation failed'); } update_post_meta(\$id,'_wp_page_template','${template}');" --path=/tmp/psr-wordpress
+            curl -fsS --max-time 15 "http://127.0.0.1:8765/?pagename=psr-ci-${slug}" -o "/tmp/psr-${slug}.html"
+            test -s "/tmp/psr-${slug}.html"
+            if grep -qE "critical error|Fatal error|Uncaught Error" "/tmp/psr-${slug}.html"; then
+              echo "Page ${slug} has a fatal error"; exit 1
+            fi
+            echo "PASS: ${slug} page HTTP 200 with nonempty response"
+          done
+          test -s /tmp/psr-home.html
+      - name: Check public AJAX rejects tampered booking without breaking other actions
+        run: |
+          set -eu
+          # Invalid dates must fail before inserting a booking.
+          status=$(curl -sS -o /tmp/psr-ajax-invalid.json -w '%{http_code}' \
+            -X POST "http://127.0.0.1:8765/wp-admin/admin-ajax.php" \
+            --data-urlencode "action=save_appuntamento" \
+            --data-urlencode "name=Giulia" \
+            --data-urlencode "surname=Rossi" \
+            --data-urlencode "email=giulia@example.test" \
+            --data-urlencode "moreDetails=Richiesta di prova" \
+            --data-urlencode 'office={"id":0,"name":"Non valido"}' \
+            --data-urlencode 'appointment={"startDate":"2099-01-01T09:00","endDate":"2099-01-01T09:45"}' \
+            --data-urlencode 'service={"id":0,"name":"Prova"}')
+          test "$status" = "422"
+          grep -q '"success":false' /tmp/psr-ajax-invalid.json
+          echo "PASS: booking endpoint rejects unauthorized office/time with HTTP 422"
+      - name: Submit real public forms in isolated WordPress
+        run: |
+          set -eu
+          php -l tests/psr-public-forms-e2e-fixture.php
+          php /tmp/wp-cli.phar eval-file "${GITHUB_WORKSPACE}/tests/psr-public-forms-e2e-fixture.php" --path=/tmp/psr-wordpress
+          test -s /tmp/psr-e2e-fixture.json
+          office=$(php -r '$d=json_decode(file_get_contents("/tmp/psr-e2e-fixture.json"),true);echo $d["office"];')
+          appointment=$(php -r '$d=json_decode(file_get_contents("/tmp/psr-e2e-fixture.json"),true);echo $d["appointment"];')
+          service=$(php -r '$d=json_decode(file_get_contents("/tmp/psr-e2e-fixture.json"),true);echo $d["service"];')
+          nonce=$(php -r '$d=json_decode(file_get_contents("/tmp/psr-e2e-fixture.json"),true);echo $d["nonce"];')
+          status=$(curl -sS -o /tmp/psr-ajax-valid-booking.json -w '%{http_code}' \
+            -X POST "http://127.0.0.1:8765/wp-admin/admin-ajax.php" \
+            --data-urlencode "action=save_appuntamento" \
+            --data-urlencode "privacy=1" \
+            --data-urlencode "name=Giulia" \
+            --data-urlencode "surname=Rossi" \
+            --data-urlencode "email=giulia@example.test" \
+            --data-urlencode "moreDetails=Richiesta di prova" \
+            --data-urlencode "office=$office" \
+            --data-urlencode "appointment=$appointment" \
+            --data-urlencode "service=$service")
+          test "$status" = "200"
+          grep -q '"success":true' /tmp/psr-ajax-valid-booking.json
+          echo "PASS: valid appointment AJAX submission recorded"
+          status=$(curl -sS -o /tmp/psr-ajax-assistance.json -w '%{http_code}' \
+            -X POST "http://127.0.0.1:8765/wp-admin/admin-ajax.php" \
+            --data-urlencode "action=save_richiesta_assistenza" \
+            --data-urlencode "nome=Giulia" \
+            --data-urlencode "cognome=Rossi" \
+            --data-urlencode "email=giulia@example.test" \
+            --data-urlencode "servizio=Servizio di prova" \
+            --data-urlencode "privacyChecked=1")
+          test "$status" = "200"
+          grep -q '"success":true' /tmp/psr-ajax-assistance.json
+          echo "PASS: assistance AJAX submission recorded"
+          status=$(curl -sS -o /tmp/psr-ajax-disservice.json -w '%{http_code}' \
+            -X POST "http://127.0.0.1:8765/wp-admin/admin-ajax.php" \
+            --data-urlencode "action=save_segnalazione_disservizio" \
+            --data-urlencode "nonce=$nonce" \
+            --data-urlencode "nome=Giulia" \
+            --data-urlencode "cognome=Rossi" \
+            --data-urlencode "email=giulia@example.test" \
+            --data-urlencode "luogo_id=altro" \
+            --data-urlencode "luogo=Strada di test" \
+            --data-urlencode "tipologia=Buche o dissesto stradale" \
+            --data-urlencode "motivo=Buche sulla strada" \
+            --data-urlencode "dettagli=Segnalazione isolata di test" \
+            --data-urlencode "privacy=1")
+          test "$status" = "200"
+          grep -q '"success":true' /tmp/psr-ajax-disservice.json
+          echo "PASS: disservice AJAX submission recorded"
+      - name: Print HTTP errors only if failure
+        if: failure()
+        run: tail -n 120 /tmp/psr-http.log || true

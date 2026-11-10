@@ -87,18 +87,60 @@ function psr_public_guard_valid_fields($data, $action, $limits) {
     }
     return true;
 }
-/** Finestra fissa di 10 minuti, per azione e IP pubblico del server. */
-function psr_public_guard_rate_allow($action, $maximum) {
+/**
+ * Quota su invii pubblici: 10 minuti per IP/azione, tetto cumulativo
+ * per gli invii e 1 ora per IP+email (solo richieste con email).
+ * I lock su wp_options evitano che richieste concorrenti aggirino il contatore.
+ * Non usa cookie, CAPTCHA o altri campi nei moduli esistenti.
+ */
+function psr_public_guard_rate_allow($action, $maximum, $email = '') {
     $ip = function_exists('psr_geo_public_ip') ? psr_geo_public_ip() : '';
-    if ($ip === '') { return true; } // Non fidarsi di header X-Forwarded-For.
-    $bucket = (int) floor(time() / 600);
-    $key = 'psr_pf_' . substr(hash_hmac('sha256', $action . '|' . $ip . '|' . $bucket, wp_salt('auth')), 0, 36);
-    $state = get_transient($key);
-    $count = is_numeric($state) ? (int)$state : 0;
-    if ($count >= $maximum) { return false; }
-    // Best effort: il limite applicativo non è atomico su tutti i backend cache.
-    set_transient($key, $count + 1, 1200);
-    return true;
+    $now = time();
+    $limits = array();
+    if ($ip !== '') {
+        $bucket = (int) floor($now / 600);
+        $scope = hash_hmac('sha256', $ip . '|' . $bucket, wp_salt('auth'));
+        $limits['psr_pf_' . substr(hash_hmac('sha256', $action . '|' . $scope, wp_salt('auth')), 0, 36)]
+            = array('maximum' => $maximum, 'ttl' => 1200);
+        // I singoli moduli restano indipendenti, ma lo stesso IP non puo'
+        // eludere ogni limite alternando continuamente i quattro form.
+        $limits['psr_pf_all_' . substr($scope, 0, 35)]
+            = array('maximum' => 80, 'ttl' => 1200);
+    }
+    if (is_string($email) && is_email($email)) {
+        $email_scope = strtolower(trim($email)) . '|' . $ip . '|' . (int) floor($now / HOUR_IN_SECONDS);
+        $limits['psr_pf_mail_' . substr(hash_hmac('sha256', $action . '|' . $email_scope, wp_salt('auth')), 0, 32)]
+            = array('maximum' => 10, 'ttl' => 2 * HOUR_IN_SECONDS);
+    }
+    if (!$limits) { return true; } // Non fidarsi di X-Forwarded-For non configurati.
+
+    ksort($limits);
+    $locks = array();
+    try {
+        if (function_exists('psr_auth_lock')) {
+            foreach (array_keys($limits) as $key) {
+                $lock = psr_auth_lock('public_form|' . $key, 200);
+                if (!$lock) { return false; }
+                $locks[] = $lock;
+            }
+        }
+        $states = array();
+        foreach ($limits as $key => $limit) {
+            $value = function_exists('psr_auth_fresh_transient')
+                ? psr_auth_fresh_transient($key) : get_transient($key);
+            $count = is_numeric($value) ? (int) $value : 0;
+            if ($count >= $limit['maximum']) { return false; }
+            $states[$key] = $count + 1;
+        }
+        foreach ($states as $key => $value) {
+            if (!set_transient($key, $value, $limits[$key]['ttl'])) { return false; }
+        }
+        return true;
+    } finally {
+        if (function_exists('psr_auth_unlock')) {
+            foreach (array_reverse($locks) as $lock) { psr_auth_unlock($lock); }
+        }
+    }
 }
 function psr_public_guard_ajax_init() {
     if (!psr_public_guard_enabled()) { return; }
@@ -116,7 +158,11 @@ function psr_public_guard_ajax_init() {
     if (!psr_public_guard_valid_fields($_POST, $action, $limits)) {
         psr_public_guard_deny($action, 'invalid_fields', 422, 'Controlla i dati inseriti e riprova.');
     }
-    if (!psr_public_guard_rate_allow($action, $limits[$action]['max'])) {
+    $email = '';
+    if (isset($_POST['email']) && is_string($_POST['email'])) {
+        $email = sanitize_email(wp_unslash($_POST['email']));
+    }
+    if (!psr_public_guard_rate_allow($action, $limits[$action]['max'], $email)) {
         psr_public_guard_deny($action, 'rate_limited', 429, 'Troppi invii da questa connessione. Riprova fra qualche minuto.');
     }
 }

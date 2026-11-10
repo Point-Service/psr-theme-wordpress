@@ -2077,6 +2077,42 @@ function dci_send_richiesta_assistenza_notification($postId, $params, $ticket_ti
 /**
  * crea contenuto di tipo Appuntamento
  */
+/**
+ * Controlla lato server lo slot effettivamente esposto dal calendario pubblico.
+ * Nessuna modifica agli orari: si riutilizza la stessa funzione della REST API.
+ */
+function psr_booking_slot_available($office, $appointment) {
+    if (!is_array($office) || !is_array($appointment)) { return false; }
+    $office_id = absint($office['id'] ?? 0);
+    $office_post = $office_id ? get_post($office_id) : null;
+    if (!$office_post || $office_post->post_type !== 'unita_organizzativa'
+        || $office_post->post_status !== 'publish') { return false; }
+
+    $start_raw = $appointment['startDate'] ?? null;
+    $end_raw = $appointment['endDate'] ?? null;
+    if (!is_string($start_raw) || !is_string($end_raw)
+        || !preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/D', $start_raw)
+        || !preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/D', $end_raw)) { return false; }
+
+    $start = DateTime::createFromFormat('!Y-m-d\TH:i', $start_raw, wp_timezone());
+    $end = DateTime::createFromFormat('!Y-m-d\TH:i', $end_raw, wp_timezone());
+    if (!$start || !$end || $start->format('Y-m-d\TH:i') !== $start_raw
+        || $end->format('Y-m-d\TH:i') !== $end_raw || $end <= $start
+        || $start <= new DateTime('now', wp_timezone())) { return false; }
+
+    $request = new WP_REST_Request('GET', '/wp/v2/appuntamenti/ufficio/');
+    $request->set_param('id', $office_id);
+    $request->set_param('month', (int) $start->format('n'));
+    $request->set_param('year', (int) $start->format('Y'));
+    $available = dci_get_appuntamenti_ufficio($request);
+    if (!is_array($available)) { return false; }
+    foreach ($available as $slot) {
+        if (is_array($slot) && ($slot['startDate'] ?? null) === $start_raw
+            && ($slot['endDate'] ?? null) === $end_raw) { return true; }
+    }
+    return false;
+}
+
 function dci_save_appuntamento(){
 
     $params = wp_unslash($_POST);
@@ -2097,6 +2133,14 @@ function dci_save_appuntamento(){
 
     if (array_key_exists('appointment', $params) && $params['appointment'] !== 'null') {
         $appointment_obj = json_decode($params['appointment'], true);
+    }
+
+    $office_obj = isset($params['office']) && is_string($params['office'])
+        ? json_decode($params['office'], true) : null;
+    if (!psr_booking_slot_available($office_obj, $appointment_obj)) {
+        wp_send_json_error(array(
+            'message' => 'L’orario richiesto non è disponibile per l’ufficio selezionato. Aggiorna il calendario e riprova.'
+        ), 422);
     }
 
     $appointment_start = !empty($appointment_obj['startDate'])
