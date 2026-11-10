@@ -93,6 +93,10 @@ function psr_native_comments_rest_query($args, $request) {
     if (!is_array($args) || current_user_can('moderate_comments')) { return $args; }
     $post_types = get_post_types(array(), 'names');
     $permitted = array_values(array_diff((array) $post_types, array('post', 'page', 'attachment')));
+    // Conserva le eventuali restrizioni post_type gia' imposte da plugin terzi.
+    if (isset($args['post_type']) && $args['post_type'] !== '' && $args['post_type'] !== 'any') {
+        $permitted = array_values(array_intersect($permitted, (array) $args['post_type']));
+    }
     if ($permitted) {
         $args['post_type'] = $permitted;
     } else {
