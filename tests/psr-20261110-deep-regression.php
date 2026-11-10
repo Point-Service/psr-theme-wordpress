@@ -62,11 +62,15 @@ try {
     psr_audit_assert(is_string($attachmentUrl) && $attachmentUrl!=='', 'Attachment URL available');
     $box=new_cmb2_box(array('id'=>'psr_ci_file_list','title'=>'File-list','object_types'=>array('post')));
     $box->add_field(array('id'=>'psr_ci_documenti','name'=>'Documenti','type'=>'file_list'));
-    $box->save_fields($post,'post',array('psr_ci_documenti'=>array($attachmentUrl=>$attachment)));
+    // CMB2 file_list stores attachment ID => URL (not URL => ID).
+    $box->save_fields($post,'post',array('psr_ci_documenti'=>array($attachment=>$attachmentUrl)));
     $saved=get_post_meta($post,'psr_ci_documenti',true);
     echo 'OBSERVED: file-list meta saved=' . wp_json_encode($saved) . PHP_EOL;
     psr_audit_assert(is_array($saved) && count($saved)===1
-      && (int)($saved[$attachmentUrl]??0)===(int)$attachment, 'CMB2 file_list attachment preserved with WordPress attachment ID');
+      && ($saved[$attachment]??null)===$attachmentUrl, 'CMB2 file_list attachment preserved with WordPress attachment ID');
+    // Invalid keys in attacker-controlled file-list payloads must not be accepted.
+    $box->save_fields($post,'post',array('psr_ci_documenti'=>array($attachmentUrl=>$attachment)));
+    psr_audit_assert(get_post_meta($post,'psr_ci_documenti',true)==='', 'CMB2 rejects invalid file-list key/value format');
 } finally {
     if($comment)wp_delete_comment($comment,true);
     if($attachment)wp_delete_attachment($attachment,true);
