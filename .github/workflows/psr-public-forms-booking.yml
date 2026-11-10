@@ -109,6 +109,57 @@ jobs:
           test "$status" = "422"
           grep -q '"success":false' /tmp/psr-ajax-invalid.json
           echo "PASS: booking endpoint rejects unauthorized office/time with HTTP 422"
+      - name: Submit real public forms in isolated WordPress
+        run: |
+          set -eu
+          php -l tests/psr-public-forms-e2e-fixture.php
+          php /tmp/wp-cli.phar eval-file "${GITHUB_WORKSPACE}/tests/psr-public-forms-e2e-fixture.php" --path=/tmp/psr-wordpress
+          test -s /tmp/psr-e2e-fixture.json
+          office=$(php -r '$d=json_decode(file_get_contents("/tmp/psr-e2e-fixture.json"),true);echo $d["office"];')
+          appointment=$(php -r '$d=json_decode(file_get_contents("/tmp/psr-e2e-fixture.json"),true);echo $d["appointment"];')
+          service=$(php -r '$d=json_decode(file_get_contents("/tmp/psr-e2e-fixture.json"),true);echo $d["service"];')
+          nonce=$(php -r '$d=json_decode(file_get_contents("/tmp/psr-e2e-fixture.json"),true);echo $d["nonce"];')
+          status=$(curl -sS -o /tmp/psr-ajax-valid-booking.json -w '%{http_code}' \
+            -X POST "http://127.0.0.1:8765/wp-admin/admin-ajax.php" \
+            --data-urlencode "action=save_appuntamento" \
+            --data-urlencode "privacy=1" \
+            --data-urlencode "name=Giulia" \
+            --data-urlencode "surname=Rossi" \
+            --data-urlencode "email=giulia@example.test" \
+            --data-urlencode "moreDetails=Richiesta di prova" \
+            --data-urlencode "office=$office" \
+            --data-urlencode "appointment=$appointment" \
+            --data-urlencode "service=$service")
+          test "$status" = "200"
+          grep -q '"success":true' /tmp/psr-ajax-valid-booking.json
+          echo "PASS: valid appointment AJAX submission recorded"
+          status=$(curl -sS -o /tmp/psr-ajax-assistance.json -w '%{http_code}' \
+            -X POST "http://127.0.0.1:8765/wp-admin/admin-ajax.php" \
+            --data-urlencode "action=save_richiesta_assistenza" \
+            --data-urlencode "nome=Giulia" \
+            --data-urlencode "cognome=Rossi" \
+            --data-urlencode "email=giulia@example.test" \
+            --data-urlencode "servizio=Servizio di prova" \
+            --data-urlencode "privacyChecked=1")
+          test "$status" = "200"
+          grep -q '"success":true' /tmp/psr-ajax-assistance.json
+          echo "PASS: assistance AJAX submission recorded"
+          status=$(curl -sS -o /tmp/psr-ajax-disservice.json -w '%{http_code}' \
+            -X POST "http://127.0.0.1:8765/wp-admin/admin-ajax.php" \
+            --data-urlencode "action=save_segnalazione_disservizio" \
+            --data-urlencode "nonce=$nonce" \
+            --data-urlencode "nome=Giulia" \
+            --data-urlencode "cognome=Rossi" \
+            --data-urlencode "email=giulia@example.test" \
+            --data-urlencode "luogo_id=altro" \
+            --data-urlencode "luogo=Strada di test" \
+            --data-urlencode "tipologia=Buche o dissesto stradale" \
+            --data-urlencode "motivo=Buche sulla strada" \
+            --data-urlencode "dettagli=Segnalazione isolata di test" \
+            --data-urlencode "privacy=1")
+          test "$status" = "200"
+          grep -q '"success":true' /tmp/psr-ajax-disservice.json
+          echo "PASS: disservice AJAX submission recorded"
       - name: Print HTTP errors only if failure
         if: failure()
         run: tail -n 120 /tmp/psr-http.log || true
