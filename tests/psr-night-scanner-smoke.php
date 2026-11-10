@@ -16,6 +16,17 @@ psr_night_ci_assert(wp_next_scheduled('psr_guard_scan') !== false, 'Nightly scan
 psr_night_ci_assert(wp_get_schedule('psr_guard_scan') === false,
     'Old hourly recurring scan replaced with one-off nightly events');
 
+wp_clear_scheduled_hook('psr_guard_scan');
+psr_night_ci_assert(wp_schedule_event(time()+120, 'hourly', 'psr_guard_scan') === true,
+    'Old hourly scan can be recreated in CI only');
+update_option('psr_guard_scan_schedule_version', 1, false);
+psr_guard_install_schedule();
+psr_night_ci_assert((int)get_option('psr_guard_scan_schedule_version') === 2
+    && wp_next_scheduled('psr_guard_scan') !== false
+    && wp_get_schedule('psr_guard_scan') === false,
+    'Existing hourly scan migrates atomically to single overnight event');
+
+
 $tz = wp_timezone();
 $atNight = (new DateTimeImmutable('2026-11-10 01:30:00', $tz))->getTimestamp();
 $beforeNight = (new DateTimeImmutable('2026-11-10 00:20:00', $tz))->getTimestamp();
@@ -83,6 +94,21 @@ try {
     if($linked){psr_night_ci_assert(file_exists($outside), 'Symbolic link target outside root untouched');}
     psr_night_ci_assert(empty($state['events']), 'Clean fixture does not raise malware detections');
     echo "PASS: {$expected} files checked in {$passes} small chunks\n";
+
+    // Benchmark with a large directory: a single pass must never walk it all.
+    $stress = $root.'/stress';
+    mkdir($stress, 0700);
+    for ($i=0;$i<1200;$i++) {
+        file_put_contents($stress.'/entry-'.$i.'.txt', 'test');
+    }
+    $stressState = psr_guard_new_scan_state(realpath($stress));
+    $stressBatch = psr_guard_scan_batch($stressState, realpath($stress));
+    psr_night_ci_assert($stressBatch['visited'] <= 400 && !$stressBatch['finished'],
+        'Large directory scanned in a bounded chunk rather than one heavy operation');
+    psr_night_ci_assert($stressBatch['seconds'] < 2.0,
+        'Large directory pass returns promptly on the isolated test server');
+    for($i=0;$i<1200;$i++){ @unlink($stress.'/entry-'.$i.'.txt'); }
+    @rmdir($stress);
 } finally {
     foreach ($created as $name) { @unlink($name); }
     if ($outside) { @unlink($outside); }
