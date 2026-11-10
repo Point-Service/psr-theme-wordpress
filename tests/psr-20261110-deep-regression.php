@@ -38,6 +38,17 @@ try {
     psr_audit_assert(!is_wp_error($response) && $response->get_status()===200
         && is_array($data) && count($data)===0, 'Historical native comments are hidden from public REST listing');
 
+    $public_query = apply_filters('rest_comment_query',array('number'=>10),$req);
+    psr_audit_assert(!in_array('post',(array)($public_query['post_type']??array()),true)
+        && in_array('segnala_disservizio',(array)($public_query['post_type']??array()),true),
+        'REST comment query excludes native posts but keeps civic post types');
+    $admin = get_user_by('login','ci_admin');
+    psr_audit_assert($admin instanceof WP_User, 'WordPress test moderator available');
+    wp_set_current_user($admin->ID);
+    psr_audit_assert(apply_filters('rest_comment_query',array('number'=>10),$req)===array('number'=>10),
+        'Authenticated moderator has unchanged comment query');
+    psr_audit_assert(get_comment($comment) instanceof WP_Comment,'Historical comment remains in database for moderation');
+    wp_set_current_user(0);
     $single = rest_do_request(new WP_REST_Request('GET','/wp/v2/comments/'.$comment));
     echo 'OBSERVED: public REST single old comment HTTP=' . $single->get_status() . PHP_EOL;
     psr_audit_assert($single->get_status()>=400, 'Historical native comment not reachable by REST ID');
