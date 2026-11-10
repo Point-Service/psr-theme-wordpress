@@ -1,0 +1,85 @@
+name: PSR - scansione progressiva notturna e regressioni
+on:
+  push:
+    branches:
+      - "fix/psr-night-scanner-progressive-20261110"
+      - master
+    paths:
+      - "inc/psr-security-guard.php"
+      - "tests/psr-night-scanner-smoke.php"
+      - ".github/workflows/psr-night-scanner.yml"
+  workflow_dispatch:
+
+jobs:
+  php-lint:
+    name: PHP syntax ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.2","8.3","8.4"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - run: |
+          set -eu
+          php -l inc/psr-security-guard.php
+          php -l tests/psr-night-scanner-smoke.php
+
+  wordpress-regression:
+    name: WordPress full theme - scanner / forms / comments / CMB2
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wp
+          MYSQL_PASSWORD: wp
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mysqli,mbstring,curl,zip
+          coverage: none
+      - name: Fresh isolated WordPress + PSR theme
+        run: |
+          set -eu
+          curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /tmp/wp-cli.phar
+          php /tmp/wp-cli.phar core download --path=/tmp/psr-wp --skip-content
+          php /tmp/wp-cli.phar config create --path=/tmp/psr-wp --dbname=wordpress --dbuser=wp --dbpass=wp --dbhost=127.0.0.1:3306
+          php /tmp/wp-cli.phar core install --path=/tmp/psr-wp --url=http://127.0.0.1:8765 --title=PSR-Night-Test --admin_user=ci_admin --admin_password=ci_dummy_password_only --admin_email=ci@example.invalid
+          ln -s "${GITHUB_WORKSPACE}" /tmp/psr-wp/wp-content/themes/psr-theme-wordpress
+          php /tmp/wp-cli.phar theme activate psr-theme-wordpress --path=/tmp/psr-wp
+      - name: Run progressive scan + existing safety regression tests
+        run: |
+          set -eu
+          php /tmp/wp-cli.phar eval-file "${GITHUB_WORKSPACE}/tests/psr-night-scanner-smoke.php" --path=/tmp/psr-wp
+          php /tmp/wp-cli.phar eval-file "${GITHUB_WORKSPACE}/tests/psr-public-forms-booking-smoke.php" --path=/tmp/psr-wp
+          php /tmp/wp-cli.phar eval-file "${GITHUB_WORKSPACE}/tests/psr-20261110-deep-regression.php" --path=/tmp/psr-wp
+      - name: Check public website remains responsive
+        run: |
+          set -eu
+          php -S 127.0.0.1:8765 -t /tmp/psr-wp > /tmp/psr-http.log 2>&1 &
+          for n in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -fsS --max-time 5 http://127.0.0.1:8765/ -o /tmp/psr-home.html; then break; fi
+            sleep 1
+          done
+          test -s /tmp/psr-home.html
+          echo "PASS: WordPress PSR homepage HTTP 200"
+      - name: Print diagnostics only on failure
+        if: failure()
+        run: |
+          tail -n 120 /tmp/psr-http.log 2>/dev/null || true
