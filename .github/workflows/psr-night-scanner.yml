@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - "fix/psr-night-scanner-progressive-20261110"
+      - "fix/psr-auto-scanner-no-server-cron-20261110"
       - master
     paths:
       - "inc/psr-security-guard.php"

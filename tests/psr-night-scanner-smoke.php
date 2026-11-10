@@ -16,6 +16,16 @@ psr_night_ci_assert(wp_next_scheduled('psr_guard_scan') !== false, 'Nightly scan
 psr_night_ci_assert(wp_get_schedule('psr_guard_scan') === false,
     'Old hourly recurring scan replaced with one-off nightly events');
 
+psr_night_ci_assert(function_exists('psr_guard_catchup')
+    && has_action('psr_guard_catchup', 'psr_guard_catchup') !== false,
+    'No-manual-cron automatic recovery hook registered');
+psr_night_ci_assert(wp_next_scheduled('psr_guard_catchup') !== false
+    && wp_get_schedule('psr_guard_catchup') === false,
+    'WordPress creates automatic one-off recovery event');
+psr_night_ci_assert(has_action('init', 'psr_guard_catchup') === false,
+    'Deep scan is never executed directly inside public page init');
+
+
 wp_clear_scheduled_hook('psr_guard_scan');
 psr_night_ci_assert(wp_schedule_event(time()+120, 'hourly', 'psr_guard_scan') === true,
     'Old hourly scan can be recreated in CI only');
@@ -115,4 +125,36 @@ try {
     foreach (array('a/b/c','a/b','a','d/e','d') as $sub) { @rmdir($root.'/'.$sub); }
     @rmdir($root);
 }
+
+// A site that received no nighttime visits must still make progress after
+// a normal daytime visit launches WordPress pseudo-cron in the background.
+if (!psr_guard_night_window()) {
+    wp_clear_scheduled_hook('psr_guard_catchup'); // mimic WP-Cron consuming event.
+    delete_option('psr_guard_scan_state');
+    psr_guard_catchup();
+    $progress = get_option('psr_guard_scan_state');
+    $report = get_option('psr_guard_last_report');
+    psr_night_ci_assert(is_array($progress) && (int)($progress['visited']??0) > 0,
+        'First daytime recovery pass advances the persisted scan cursor');
+    psr_night_ci_assert((int)($report['batch_checked']??-1) <= 120
+        && ($report['mode']??'') === 'day_catchup',
+        'Daytime scan stays within small 120-entry budget and reports its mode');
+    psr_night_ci_assert(wp_next_scheduled('psr_guard_catchup') > time()+25*MINUTE_IN_SECONDS,
+        'After recovery, next task is deferred by at least 25 minutes');
+    $before = (int)$progress['visited'];
+    wp_clear_scheduled_hook('psr_guard_catchup');
+    psr_guard_catchup();
+    $again = get_option('psr_guard_scan_state');
+    psr_night_ci_assert((int)($again['visited']??0) >= $before,
+        'Second daytime pass resumes the saved progress rather than resetting');
+} else {
+    // Night window: the low-priority daytime task must not scan.
+    wp_clear_scheduled_hook('psr_guard_catchup');
+    $before = get_option('psr_guard_scan_state');
+    psr_guard_catchup();
+    psr_night_ci_assert(get_option('psr_guard_scan_state') === $before,
+        'Daytime fallback stays idle during the night scan window');
+}
+psr_night_ci_assert(wp_next_scheduled('psr_guard_scan') !== false,
+    'The independent primary night scan remains scheduled');
 echo "ALL NIGHT-SCANNER SMOKE TESTS PASSED\n";

@@ -677,20 +677,40 @@ function psr_guard_scan_batch(&$state, $root, $max_entries = 400, $max_seconds =
         'seconds' => microtime(true) - $started, 'finished' => empty($state['stack']));
 }
 
-function psr_guard_scan() {
-    // Non esegue il lavoro ricorsivo durante l'uso diurno del portale.
-    if (!psr_guard_night_window()) {
-        psr_guard_schedule_next(true);
+/**
+ * Recupero leggero per siti senza visite durante la notte.
+ * WP-Cron avvia la richiesta separata in background quando arriva traffico:
+ * mai eseguire questi batch direttamente sul caricamento di una pagina.
+ */
+function psr_guard_schedule_catchup($idle = false) {
+    if (!wp_next_scheduled('psr_guard_catchup')) {
+        // Lavoro ordinario non piu' spesso di 30 minuti; dopo un ciclo finito,
+        // quasi nessuna attivita' fino al prossimo controllo.
+        $delay = $idle ? 12 * HOUR_IN_SECONDS : 30 * MINUTE_IN_SECONDS;
+        $jitter = psr_guard_scan_start_offset() % 300;
+        wp_schedule_single_event(time() + $delay + $jitter, 'psr_guard_catchup');
+    }
+}
+
+function psr_guard_run_progressive($day_catchup = false) {
+    $day_catchup = (bool) $day_catchup;
+    if ($day_catchup === psr_guard_night_window()) {
+        // Sia la scansione principale sia il recupero rispettano la propria
+        // finestra. Nessuna richiesta pubblica esegue direttamente lo scanner.
+        if ($day_catchup) { psr_guard_schedule_catchup(); }
+        else { psr_guard_schedule_next(true); }
         return;
     }
-    // Lock atomico condiviso: cron simultanei non esplorano gli stessi file.
+    // Un lock impedisce che scansione notturna e recupero si sovrappongano.
     if (!function_exists('psr_auth_lock') || !function_exists('psr_auth_unlock')) {
-        psr_guard_schedule_next();
+        if ($day_catchup) { psr_guard_schedule_catchup(); }
+        else { psr_guard_schedule_next(); }
         return;
     }
     $lock = psr_auth_lock('guard_progressive_scan', 0);
     if (!$lock) {
-        psr_guard_schedule_next();
+        if ($day_catchup) { psr_guard_schedule_catchup(); }
+        else { psr_guard_schedule_next(); }
         return;
     }
     $finished_today = false;
@@ -703,13 +723,25 @@ function psr_guard_scan() {
             ($state['root'] ?? '') !== $root || !isset($state['stack'])) {
             $state = psr_guard_new_scan_state($root);
         }
-        if (!empty($state['finished_at']) && ($state['day'] ?? '') === $today) {
-            $finished_today = true;
-            return;
+        if (!empty($state['finished_at'])) {
+            // Recupero diurno: non ricominciare una scansione completa
+            // piu' di una volta ogni 24 ore; di notte mantiene la cadenza
+            // giornaliera originale.
+            $recent = $day_catchup
+                ? (int)$state['finished_at'] > time() - DAY_IN_SECONDS
+                : ($state['day'] ?? '') === $today;
+            if ($recent) {
+                $finished_today = true;
+                return;
+            }
+            $state = psr_guard_new_scan_state($root);
         }
-        if (!empty($state['finished_at'])) { $state = psr_guard_new_scan_state($root); }
 
-        $batch = psr_guard_scan_batch($state, $root);
+        // Giorno: al massimo 120 elementi / ~0,15 s ogni 30 minuti;
+        // notte: 400 / ~0,4 s ogni 2 minuti. Budget best-effort su disco lento.
+        $batch = $day_catchup
+            ? psr_guard_scan_batch($state, $root, 120, 0.15)
+            : psr_guard_scan_batch($state, $root);
         if ($batch['finished']) {
             $state['finished_at'] = time();
             $state['day'] = $today;
@@ -724,6 +756,7 @@ function psr_guard_scan() {
             'in_progress' => !$finished_today,
             'checked' => $state['checked'],
             'visited' => $state['visited'],
+            'mode' => $day_catchup ? 'day_catchup' : 'night',
             'batch_checked' => $batch['checked'],
             'unreadable' => $state['unreadable'],
             'detections' => $state['detections'],
@@ -731,13 +764,23 @@ function psr_guard_scan() {
             'events' => $state['events'],
         );
         update_option('psr_guard_last_report', $report, false);
-        foreach ($batch['events'] as $event) { error_log('[PSR GUARD NIGHT] ' . $event); }
+        foreach ($batch['events'] as $event) {
+            error_log(($day_catchup ? '[PSR GUARD CATCHUP] ' : '[PSR GUARD NIGHT] ') . $event);
+        }
     } catch (Throwable $e) {
-        error_log('[PSR GUARD NIGHT] Scansione rinviata: ' . $e->getMessage());
+        error_log('[PSR GUARD] Scansione progressiva rinviata: ' . $e->getMessage());
     } finally {
         psr_auth_unlock($lock);
-        psr_guard_schedule_next($finished_today);
+        if ($day_catchup) { psr_guard_schedule_catchup($finished_today); }
+        else { psr_guard_schedule_next($finished_today); }
     }
+}
+
+function psr_guard_scan() {
+    psr_guard_run_progressive(false);
+}
+function psr_guard_catchup() {
+    psr_guard_run_progressive(true);
 }
 
 function psr_guard_install_schedule() {
@@ -747,9 +790,11 @@ function psr_guard_install_schedule() {
         update_option('psr_guard_scan_schedule_version', 2, false);
     }
     psr_guard_schedule_next();
+    psr_guard_schedule_catchup();
 }
 add_action('init', 'psr_guard_install_schedule', 20);
 add_action('psr_guard_scan', 'psr_guard_scan');
+add_action('psr_guard_catchup', 'psr_guard_catchup');
 
 /** Breve controllo mirato ogni 5 minuti, senza scansione ricorsiva del sito. */
 function psr_guard_quick_scan() {
@@ -783,6 +828,11 @@ function psr_guard_admin_notice() {
     // Avvisi riservati esclusivamente all'amministratore WordPress con ID 1.
     // Scansioni, quarantena e logging non dipendono dall'utente collegato.
     if (get_current_user_id() !== 1 || !current_user_can('manage_options')) { return; }
+    // Se un pannello hosting ha disattivato WP-Cron, mostrare lo stato
+    // soltanto all'ID 1, senza creare richieste aggiuntive dal frontend.
+    if (defined('DISABLE_WP_CRON') && DISABLE_WP_CRON) {
+        echo '<div class="notice notice-warning"><p><strong>PSR:</strong> WP-Cron risulta disabilitato. Per scansioni automatiche senza cron server, abilita il cron nativo di WordPress.</p></div>';
+    }
     $report = get_option('psr_guard_last_report');
     $quick = get_option('psr_guard_quick_report');
     if ((!is_array($report) || empty($report['events'])) && (!is_array($quick) || empty($quick['events']))) { return; }
