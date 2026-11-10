@@ -25,8 +25,8 @@ psr_night_ci_assert(!psr_guard_night_window($beforeNight) && !psr_guard_night_wi
     'Deep scan excluded from day and late night');
 $offset = psr_guard_scan_start_offset();
 psr_night_ci_assert($offset>=0 && $offset<1200, 'Nightly starts staggered by a safe 0-20 minute offset');
-psr_night_ci_assert(psr_guard_next_scan_time($atNight) === $atNight + 60,
-    'One short pass scheduled for next minute after staggered start');
+psr_night_ci_assert(psr_guard_next_scan_time($atNight) === $atNight + 120,
+    'One short pass scheduled two minutes later after staggered start');
 $next = psr_guard_next_scan_time($afterNight);
 $expected = (new DateTimeImmutable('2026-11-11 01:00:00', $tz))->getTimestamp() + $offset;
 psr_night_ci_assert($next === $expected,
