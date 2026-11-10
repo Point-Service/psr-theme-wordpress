@@ -83,3 +83,46 @@ function psr_native_comments_hide_editor_support() {
     }
 }
 add_action('init', 'psr_native_comments_hide_editor_support', 120);
+
+/**
+ * Le raccolte REST dei commenti non usano comments_array: escludere i
+ * commenti dei soli tipi nativi dalla query pubblica, compresi i risultati
+ * senza filtro ?post=. Non tocca gli altri post type o la moderazione.
+ */
+function psr_native_comments_rest_query($args, $request) {
+    if (!is_array($args) || current_user_can('moderate_comments')) { return $args; }
+    $post_types = get_post_types(array(), 'names');
+    $permitted = array_values(array_diff((array) $post_types, array('post', 'page', 'attachment')));
+    // Conserva le eventuali restrizioni post_type gia' imposte da plugin terzi.
+    if (isset($args['post_type']) && $args['post_type'] !== '' && $args['post_type'] !== 'any') {
+        $permitted = array_values(array_intersect($permitted, (array) $args['post_type']));
+    }
+    if ($permitted) {
+        $args['post_type'] = $permitted;
+    } else {
+        // Valore impossibile: mantiene vuota la raccolta se non esistono CPT.
+        $args['post__in'] = array(0);
+    }
+    return $args;
+}
+add_filter('rest_comment_query', 'psr_native_comments_rest_query', PHP_INT_MAX, 2);
+
+/**
+ * La rotta REST GET/HEAD /wp/v2/comments/{id} usa un lookup diretto,
+ * percio' non passa per rest_comment_query.
+ * Per i non moderatori nascondi i commenti nativi con 404 (senza cancellarli).
+ */
+function psr_native_comments_rest_single($result, $handler, $request) {
+    if (is_wp_error($result) || current_user_can('moderate_comments')
+        || !($request instanceof WP_REST_Request)
+        || !in_array($request->get_method(), array('GET', 'HEAD'), true)
+        || !preg_match('~^/wp/v2/comments/([0-9]+)$~D', $request->get_route(), $matches)) {
+        return $result;
+    }
+    $comment = get_comment((int) $matches[1]);
+    if ($comment instanceof WP_Comment && psr_native_comments_target($comment->comment_post_ID)) {
+        return new WP_Error('psr_native_comment_not_found', 'Commento non disponibile.', array('status' => 404));
+    }
+    return $result;
+}
+add_filter('rest_request_before_callbacks', 'psr_native_comments_rest_single', PHP_INT_MAX, 3);

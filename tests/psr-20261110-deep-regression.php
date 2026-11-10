@@ -1,0 +1,97 @@
+<?php
+/**
+ * PSR deep regression test for 2026-11-10 fixes.
+ * Run via WP-CLI with isolated WordPress, dummy posts and no Comune data.
+ */
+if (!defined('ABSPATH') || !(defined('WP_CLI') && WP_CLI)) { exit(1); }
+function psr_audit_assert($value, $label) {
+    if (!$value) { fwrite(STDERR, "FAIL: {$label}\n"); exit(1); }
+    echo "PASS: {$label}\n";
+}
+psr_audit_assert(defined('CMB2_VERSION') && CMB2_VERSION === '2.13.5', 'CMB2 version');
+psr_audit_assert(function_exists('psr_native_comments_target'), 'Native comment guard loaded');
+psr_audit_assert(function_exists('psr_booking_slot_available'), 'Booking guard loaded');
+psr_audit_assert(function_exists('psr_public_guard_rate_allow'), 'Public form guard loaded');
+psr_audit_assert(post_type_exists('segnala_disservizio'), 'Civic report type available');
+
+$post = wp_insert_post(array('post_type'=>'post','post_title'=>'CI Article','post_status'=>'publish','comment_status'=>'open'),true);
+$custom = wp_insert_post(array('post_type'=>'segnala_disservizio','post_title'=>'CI Civic','post_status'=>'publish','comment_status'=>'open'),true);
+psr_audit_assert(!is_wp_error($post) && !is_wp_error($custom) && $post>0 && $custom>0, 'Test posts created');
+$comment = 0;
+$attachment = 0;
+try {
+    psr_audit_assert(!comments_open($post), 'Native post discussion is closed');
+    psr_audit_assert(comments_open($custom), 'Civic report discussion settings unaffected');
+    $comment = wp_insert_comment(array(
+       'comment_post_ID'=>$post,'comment_content'=>'Old comment that should not be publicly indexed',
+       'comment_author'=>'Historical','comment_author_email'=>'history@example.test',
+       'comment_approved'=>1,
+    ));
+    psr_audit_assert($comment>0, 'Historical comment inserted for test');
+    psr_audit_assert(psr_native_comments_hide_public(array('old'),$post)===array(),'Legacy comment hidden in theme template');
+
+    $req = new WP_REST_Request('GET','/wp/v2/comments');
+    $req->set_param('post',$post);
+    $response = rest_do_request($req);
+    $data = $response->get_data();
+    echo 'OBSERVED: public REST comments listing count=' . (is_array($data) ? count($data) : -1) . PHP_EOL;
+    psr_audit_assert(!is_wp_error($response) && $response->get_status()===200
+        && is_array($data) && count($data)===0, 'Historical native comments are hidden from public REST listing');
+
+    $public_query = apply_filters('rest_comment_query',array('number'=>10),$req);
+    psr_audit_assert(!in_array('post',(array)($public_query['post_type']??array()),true)
+        && in_array('segnala_disservizio',(array)($public_query['post_type']??array()),true),
+        'REST comment query excludes native posts but keeps civic post types');
+    $restricted = apply_filters('rest_comment_query',array('post_type'=>'segnala_disservizio'),$req);
+    psr_audit_assert(($restricted['post_type']??array())===array('segnala_disservizio'),
+        'Existing REST post-type restriction remains intact');
+    $native_only = apply_filters('rest_comment_query',array('post_type'=>'post'),$req);
+    psr_audit_assert(($native_only['post__in']??array())===array(0),
+        'REST query restricted to native posts becomes empty, never broader');
+    $admin = get_user_by('login','ci_admin');
+    psr_audit_assert($admin instanceof WP_User, 'WordPress test moderator available');
+    wp_set_current_user($admin->ID);
+    psr_audit_assert(apply_filters('rest_comment_query',array('number'=>10),$req)===array('number'=>10),
+        'Authenticated moderator has unchanged comment query');
+    psr_audit_assert(get_comment($comment) instanceof WP_Comment,'Historical comment remains in database for moderation');
+    wp_set_current_user(0);
+    $single = rest_do_request(new WP_REST_Request('GET','/wp/v2/comments/'.$comment));
+    echo 'OBSERVED: public REST single old comment HTTP=' . $single->get_status() . PHP_EOL;
+    psr_audit_assert($single->get_status()>=400, 'Historical native comment not reachable by REST ID');
+
+    $create = new WP_REST_Request('POST','/wp/v2/comments');
+    $create->set_param('post',$post);
+    $create->set_param('content','A new spam comment');
+    $create->set_param('author_name','Bot');
+    $create->set_param('author_email','bot@example.test');
+    $rejected = rest_do_request($create);
+    psr_audit_assert($rejected->get_status()>=400, 'New native comment blocked via REST');
+    psr_audit_assert(psr_native_comments_default_closed('open','post','comment')==='closed', 'New native posts default closed');
+
+    $uploaded = wp_upload_bits('psr-cmb2-regression.pdf',null,"%PDF-1.4\n1 0 obj <</Type/Catalog>> endobj\n%%EOF");
+    psr_audit_assert(empty($uploaded['error']) && !empty($uploaded['file']), 'Dummy PDF fixture uploaded');
+    $attachment = wp_insert_attachment(array(
+      'post_title'=>'PSR CMB2 document','post_status'=>'inherit',
+      'post_mime_type'=>'application/pdf',
+    ),$uploaded['file'],$post,true);
+    psr_audit_assert(!is_wp_error($attachment) && $attachment>0,'Native WordPress attachment registered');
+    $attachmentUrl=wp_get_attachment_url($attachment);
+    psr_audit_assert(is_string($attachmentUrl) && $attachmentUrl!=='', 'Attachment URL available');
+    $box=new_cmb2_box(array('id'=>'psr_ci_file_list','title'=>'File-list','object_types'=>array('post')));
+    $box->add_field(array('id'=>'psr_ci_documenti','name'=>'Documenti','type'=>'file_list'));
+    // CMB2 file_list stores attachment ID => URL (not URL => ID).
+    $box->save_fields($post,'post',array('psr_ci_documenti'=>array($attachment=>$attachmentUrl)));
+    $saved=get_post_meta($post,'psr_ci_documenti',true);
+    echo 'OBSERVED: file-list meta saved=' . wp_json_encode($saved) . PHP_EOL;
+    psr_audit_assert(is_array($saved) && count($saved)===1
+      && ($saved[$attachment]??null)===$attachmentUrl, 'CMB2 file_list attachment preserved with WordPress attachment ID');
+    // Invalid keys in attacker-controlled file-list payloads must not be accepted.
+    $box->save_fields($post,'post',array('psr_ci_documenti'=>array($attachmentUrl=>$attachment)));
+    psr_audit_assert(get_post_meta($post,'psr_ci_documenti',true)==='', 'CMB2 rejects invalid file-list key/value format');
+} finally {
+    if($comment)wp_delete_comment($comment,true);
+    if($attachment)wp_delete_attachment($attachment,true);
+    wp_delete_post($post,true);
+    wp_delete_post($custom,true);
+}
+echo "ALL PSR DEEP REGRESSION CHECKS PASSED\n";
