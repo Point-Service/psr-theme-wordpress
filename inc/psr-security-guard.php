@@ -526,14 +526,23 @@ function psr_guard_night_window($timestamp = null) {
     return $hour >= 1 && $hour < 3;
 }
 
+/**
+ * Spalma gli avvii dei diversi Comuni nei primi 20 minuti della finestra.
+ * Deterministico per installazione; evita picchi simultanei sullo stesso server.
+ */
+function psr_guard_scan_start_offset() {
+    return hexdec(substr(hash('sha256', ABSPATH . '|' . wp_salt('auth')), 0, 5)) % 1200;
+}
+
 /** Prossimo passaggio; dopo le 03:00 solo la notte successiva. */
 function psr_guard_next_scan_time($now = null, $next_night = false) {
     $now = $now === null ? time() : (int) $now;
-    if (!$next_night && psr_guard_night_window($now)) {
-        return $now + 60;
-    }
     $local = (new DateTimeImmutable('@' . $now))->setTimezone(wp_timezone());
-    $target = $local->setTime(1, 0, 0);
+    $target = $local->setTime(1, 0, 0)->modify('+' . psr_guard_scan_start_offset() . ' seconds');
+    if (!$next_night && psr_guard_night_window($now)) {
+        // Non avviare tutte le installazioni alle 01:00 precise.
+        return $now < $target->getTimestamp() ? $target->getTimestamp() : $now + 60;
+    }
     if ($target->getTimestamp() <= $now) { $target = $target->modify('+1 day'); }
     return $target->getTimestamp();
 }
@@ -651,6 +660,8 @@ function psr_guard_scan_batch(&$state, $root, $max_entries = 400, $max_seconds =
                 psr_guard_verify_file($full, $lower, $events, $detections, $removed);
             }
         } catch (Throwable $e) {
+            // Evita di riprovare indefinitamente lo stesso elemento problematico.
+            $state['stack'][$position]['offset']++;
             $state['unreadable']++;
             $events[] = 'ELEMENTO NON ANALIZZATO (errore I/O): ' . $rel;
             $iterator = null;
