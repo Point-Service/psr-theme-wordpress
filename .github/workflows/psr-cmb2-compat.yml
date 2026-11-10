@@ -85,3 +85,16 @@ jobs:
           });
           PHP
           php /tmp/wp-cli.phar eval-file "${GITHUB_WORKSPACE}/tests/psr-cmb2-wordpress-smoke.php" --path=/tmp/psr-cmb2-wordpress
+      - name: Activate PSR theme and verify civic post types
+        run: |
+          set -eu
+          ln -s "${GITHUB_WORKSPACE}" /tmp/psr-cmb2-wordpress/wp-content/themes/psr-theme-wordpress
+          php /tmp/wp-cli.phar theme activate psr-theme-wordpress --path=/tmp/psr-cmb2-wordpress
+          php /tmp/wp-cli.phar eval '
+            if (get_stylesheet() !== "psr-theme-wordpress") { throw new Exception("PSR theme not active"); }
+            if (!defined("CMB2_VERSION") || CMB2_VERSION !== "2.13.5") { throw new Exception("Wrong CMB2 version"); }
+            foreach (array("segnala_disservizio","richiesta_assistenza","notizia") as $type) {
+              if (!post_type_exists($type)) { throw new Exception("Missing civic post type " . $type); }
+            }
+            echo "PSR theme active; CMB2 and civic post types loaded successfully\n";
+          ' --path=/tmp/psr-cmb2-wordpress
