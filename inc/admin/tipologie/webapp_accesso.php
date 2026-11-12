@@ -82,30 +82,36 @@ function psr_webapp_v3_verify_ticket() {
     header('Content-Type: text/plain; charset=utf-8');
     header('X-Content-Type-Options: nosniff');
     header('Referrer-Policy: no-referrer');
-    $deny=static function () { status_header(403); echo 'DENIED'; exit; };
-    if (($_SERVER['REQUEST_METHOD']??'')!=='POST') { $deny(); }
+    // Diagnostic code only: never include ticket, tenant, PIN or user identifiers.
+    $deny=static function ($code='INVALID') {
+        status_header(403);
+        if (!headers_sent()) { header('X-PSR-Webapp-Deny: ' . $code); }
+        echo 'DENIED';
+        exit;
+    };
+    if (($_SERVER['REQUEST_METHOD']??'')!=='POST') { $deny('METHOD'); }
     $ticket=isset($_POST['ticket']) && is_string($_POST['ticket']) ? wp_unslash($_POST['ticket']) : '';
     $tenant=isset($_POST['ente']) && is_string($_POST['ente']) ? wp_unslash($_POST['ente']) : '';
     if (!preg_match('/\A[a-f0-9]{64}\z/D', $ticket)
-        || !preg_match('/\A[A-Za-z0-9_-]{1,64}\z/D', $tenant)) { $deny(); }
+        || !preg_match('/\A[A-Za-z0-9_-]{1,64}\z/D', $tenant)) { $deny('FORMAT'); }
     global $wpdb;
     $option='_psr_webapp_v3_' . hash('sha256', $ticket);
     // Bypass non-authoritative object caches: claim uses DB conditional DELETE.
     $stored=$wpdb->get_var($wpdb->prepare(
         "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s LIMIT 1", $option));
-    if (!is_string($stored)) { $deny(); }
+    if (!is_string($stored)) { $deny('NOT_FOUND'); }
     // A ticket cannot outlive or change the administrator-configured tenant.
     $current_destination=psr_webapp_v3_url((string)get_option(DCI_WEBAPP_OPT, ''));
-    if (!$current_destination || !hash_equals((string)$current_destination['ente'], $tenant)) { $deny(); }
+    if (!$current_destination || !hash_equals((string)$current_destination['ente'], $tenant)) { $deny('DESTINATION'); }
     $components=explode('|', $stored);
     if (count($components)!==3 || !ctype_digit($components[0])
         || (int)$components[0] < time() || (int)$components[0] > time()+90
         || !hash_equals((string)$components[1], $tenant) || (int)$components[2]<1
-        || !user_can((int)$components[2], DCI_WEBAPP_CAP)) { $deny(); }
+        || !user_can((int)$components[2], DCI_WEBAPP_CAP)) { $deny('EXPIRED_OR_RIGHTS'); }
     $deleted=$wpdb->query($wpdb->prepare(
         "DELETE FROM {$wpdb->options} WHERE option_name = %s AND option_value = %s LIMIT 1",
         $option, $stored));
-    if ($deleted!==1) { $deny(); }
+    if ($deleted!==1) { $deny('ALREADY_USED'); }
     wp_cache_delete($option, 'options');
     // Owner identity is derived server-side from the consumed ticket, never from URL/POST.
     // Restrict automatic PIN bypass to the site's original ID 1 administrator.
@@ -116,6 +122,18 @@ function psr_webapp_v3_verify_ticket() {
 }
 add_action('wp_ajax_psr_webapp_v3_verify', 'psr_webapp_v3_verify_ticket');
 add_action('wp_ajax_nopriv_psr_webapp_v3_verify', 'psr_webapp_v3_verify_ticket');
+
+/** The REST endpoint is another transport for the SAME one-time ticket claim.
+ * It never accepts a browser session as evidence or skips the SQL DELETE gate.
+ * A missing/invalid ticket still returns HTTP 403; no anonymous authorization.
+ */
+add_action('rest_api_init', static function () {
+    register_rest_route('psr-webapp/v3', '/verify', array(
+        'methods' => 'POST',
+        'permission_callback' => '__return_true',
+        'callback' => static function () { psr_webapp_v3_verify_ticket(); },
+    ));
+});
 
 /**
  * Percorso pubblico alternativo per la verifica server-to-server.
