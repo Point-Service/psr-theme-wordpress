@@ -107,8 +107,11 @@ function psr_webapp_v3_verify_ticket() {
         $option, $stored));
     if ($deleted!==1) { $deny(); }
     wp_cache_delete($option, 'options');
+    // Owner identity is derived server-side from the consumed ticket, never from URL/POST.
+    // Restrict automatic PIN bypass to the site's original ID 1 administrator.
+    $is_owner = ((int)$components[2] === 1) && user_can(1, 'manage_options');
     status_header(200);
-    echo 'PSR-WEBAPP-V3-OK:' . $tenant;
+    echo 'PSR-WEBAPP-V3-OK:' . $tenant . ($is_owner ? ':OWNER' : ':USER');
     exit;
 }
 add_action('wp_ajax_psr_webapp_v3_verify', 'psr_webapp_v3_verify_ticket');
