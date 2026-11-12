@@ -117,6 +117,19 @@ function psr_webapp_v3_verify_ticket() {
 add_action('wp_ajax_psr_webapp_v3_verify', 'psr_webapp_v3_verify_ticket');
 add_action('wp_ajax_nopriv_psr_webapp_v3_verify', 'psr_webapp_v3_verify_ticket');
 
+/**
+ * Percorso pubblico alternativo per la verifica server-to-server.
+ * Alcuni hosting limitano POST anonimi a wp-admin/admin-ajax.php.
+ * Non e' un bypass: usa LO STESSO verificatore con DELETE atomica del ticket.
+ * Non concede accesso in assenza di un ticket valido e monouso.
+ */
+add_action('init', static function () {
+    if (!isset($_GET['psr_webapp_verify']) || !is_string($_GET['psr_webapp_verify'])
+        || $_GET['psr_webapp_verify'] !== '1') { return; }
+    psr_webapp_v3_verify_ticket();
+}, 20);
+
+
 /** Eventual tickets never consumed are removed during the normal WP-Cron schedule. */
 function psr_webapp_v3_cleanup() {
     global $wpdb;
