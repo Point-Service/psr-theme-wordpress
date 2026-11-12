@@ -200,44 +200,52 @@ function dci_webapp_mobile_page() {
     ?>
     <div class="wrap psr-wa">
       <style>
-      .psr-wa{--wa-deep:#142f4f;--wa-ink:#193551;--wa-muted:#5d7086;--wa-border:#dce6f0;--wa-blue:#285cc7;--wa-bg:#f1f6fc;color:var(--wa-ink);max-width:1160px;margin:24px 24px 40px 0;font-family:inherit}
+      .psr-wa{--wa-deep:#142f4f;--wa-ink:#193551;--wa-muted:#5d7086;--wa-border:#dce6f0;--wa-blue:#285cc7;--wa-bg:#f1f6fc;color:var(--wa-ink);max-width:1160px;margin:24px 24px 40px 0;font-family:inherit;font-size:15px;line-height:1.5}
       .psr-wa *{box-sizing:border-box}
       .psr-wa .wa-hero{position:relative;overflow:hidden;border-radius:20px;padding:32px 36px;background:linear-gradient(116deg,#193858 0%,#284d76 66%,#305b87 100%);color:#fff;box-shadow:0 9px 28px rgba(28,62,103,.13)}
       .psr-wa .wa-hero:after{content:"";position:absolute;right:-45px;top:-85px;width:285px;height:285px;border:1px solid rgba(255,255,255,.14);border-radius:50%;box-shadow:0 0 0 45px rgba(255,255,255,.035),0 0 0 92px rgba(255,255,255,.025);pointer-events:none}
-      .psr-wa .wa-eyebrow{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:750;letter-spacing:1.25px;text-transform:uppercase;color:#c9e6ff}
-      .psr-wa .wa-hero h1{color:#fff;font-size:30px;font-weight:760;line-height:1.24;margin:14px 0 10px;padding:0}
-      .psr-wa .wa-hero p{font-size:14px;line-height:1.65;color:#dbebf7;max-width:620px;margin:0}
+      .psr-wa .wa-eyebrow{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:750;letter-spacing:1px;text-transform:uppercase;color:#f2f8ff}
+      .psr-wa .wa-hero h1{color:#fff;font-size:31px;font-weight:760;line-height:1.25;margin:14px 0 12px;padding:0;color:#fff!important}
+      .psr-wa .wa-hero p{font-size:16px;line-height:1.6;color:#f1f7ff!important;max-width:690px;margin:0}
       .psr-wa .wa-stamps{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:20px}
-      .psr-wa .wa-stamp{border:1px solid rgba(255,255,255,.2);color:#e4f0fc;padding:7px 12px;border-radius:99px;background:rgba(255,255,255,.075);font-size:12px;font-weight:600}
+      .psr-wa .wa-stamp{border:1px solid rgba(255,255,255,.2);color:#e4f0fc;padding:7px 12px;border-radius:99px;background:rgba(255,255,255,.15);font-size:13px;font-weight:700;line-height:1.4}
       .psr-wa .wa-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(275px,.8fr);gap:18px;margin-top:20px}
       .psr-wa .wa-card{border:1px solid var(--wa-border);border-radius:18px;background:#fff;padding:26px 28px;box-shadow:0 5px 18px rgba(26,60,92,.045);min-width:0}
       .psr-wa .wa-card-head{display:flex;gap:13px;align-items:center;margin-bottom:15px}
       .psr-wa .wa-icon{flex:0 0 44px;width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:#e9f1ff;color:#285cc7}
       .psr-wa .wa-icon .dashicons{font-size:23px;width:23px;height:23px}
-      .psr-wa h2{font-size:18px;font-weight:760;margin:0;line-height:1.35;color:#163653}
-      .psr-wa .wa-card p{margin:7px 0 0;line-height:1.65;font-size:13px;color:var(--wa-muted)}
-      .psr-wa .wa-access-status{padding:11px 13px;border-radius:10px;display:flex;gap:9px;align-items:flex-start;color:#216148;background:#e7f6ed;border:1px solid #c5e8d4;font-weight:650;font-size:12px;margin:21px 0}
+      .psr-wa h2{font-size:20px;font-weight:760;margin:0;line-height:1.35;color:#142f4a}
+      .psr-wa .wa-card p{margin:7px 0 0;line-height:1.65;font-size:15px;color:#324d67}
+      .psr-wa .wa-access-status{padding:11px 13px;border-radius:10px;display:flex;gap:9px;align-items:flex-start;color:#216148;background:#e7f6ed;border:1px solid #c5e8d4;font-weight:650;font-size:14px;line-height:1.5;margin:21px 0}
       .psr-wa .wa-access-status .dashicons{flex:0 0 19px}
-      .psr-wa .wa-open{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px!important;font-size:14px!important;font-weight:700!important;line-height:1.2!important;border-radius:11px!important;background:#285cc7!important;border:1px solid #285cc7!important;color:#fff!important;box-shadow:0 5px 12px rgba(40,92,199,.17);transition:transform .15s,background .15s;text-decoration:none}
-      .psr-wa .wa-open:hover{background:#1e4ea9!important;transform:translateY(-1px)}
+      .psr-wa .wa-open{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px!important;font-size:16px!important;font-weight:750!important;line-height:1.35!important;border-radius:11px!important;background:#285cc7!important;border:1px solid #285cc7!important;color:#fff!important;box-shadow:0 5px 12px rgba(40,92,199,.17);transition:transform .15s,background .15s;text-decoration:none}
+      .psr-wa .wa-open:hover{background:#19418f!important;color:#fff!important;transform:translateY(-1px)}
       .psr-wa .wa-open:focus{outline:2px solid #204a9d;outline-offset:3px}
       .psr-wa .wa-open .dashicons{margin:0;font-size:19px;height:19px;width:19px}
-      .psr-wa .wa-hint{font-size:12px!important;margin-top:11px!important;color:#708398!important}
-      .psr-wa .wa-row{display:flex;gap:10px;align-items:center;font-size:13px;line-height:1.5;padding:11px 0;border-bottom:1px solid #eaf0f5;color:#3a5068}
+      .psr-wa .wa-hint{font-size:14px!important;line-height:1.55!important;margin-top:13px!important;color:#33536e!important}
+      .psr-wa .wa-row{display:flex;gap:10px;align-items:center;font-size:14px;line-height:1.55;padding:12px 0;border-bottom:1px solid #eaf0f5;color:#203b55}
       .psr-wa .wa-row:last-child{border-bottom:0}
       .psr-wa .wa-row .dashicons{color:#5087a8}
       .psr-wa .wa-setting{margin-top:20px}
-      .psr-wa .wa-setting label{display:block;font-size:12px;font-weight:750;color:#26435f;margin:0 0 8px}
-      .psr-wa .wa-setting input[type=url]{display:block;width:100%;max-width:100%;border:1px solid #c9d6e3;border-radius:10px;padding:12px;min-height:44px;font-size:13px;box-shadow:none}
+      .psr-wa .wa-setting label{display:block;font-size:14px;font-weight:750;color:#203e5b;margin:0 0 9px}
+      .psr-wa .wa-setting input[type=url]{display:block;width:100%;max-width:100%;border:1px solid #c9d6e3;border-radius:10px;padding:12px;min-height:47px;font-size:15px;color:#1c364f;background:#fff;box-shadow:none}
       .psr-wa .wa-setting input[type=url]:focus{border-color:#5285d6;box-shadow:0 0 0 3px rgba(80,133,214,.12)}
-      .psr-wa .wa-setting .button{border-radius:9px;padding:6px 16px;min-height:36px;margin:14px 0 0;font-weight:650}
-      .psr-wa .wa-footnote{margin-top:13px!important;font-size:12px!important}
-      .psr-wa .wa-url-read{overflow-wrap:anywhere;background:#f2f6fa;border:1px solid #e1eaf1;border-radius:10px;padding:12px;font-size:12px;color:#4a6076;margin-top:16px}
-      .psr-wa .wa-note{margin-top:18px;padding:14px 17px;background:#edf4fd;border-radius:11px;border-left:3px solid #73a0d8;color:#425c78;font-size:12px;line-height:1.55}
-      .psr-wa .wa-warning{margin:17px 0 0;border:1px solid #f0d9b5;background:#fff8ed;color:#785520;border-radius:10px;padding:12px 14px;font-size:13px}
-      .psr-wa .wa-meta{margin-top:16px;color:#5d758d;font-size:12px;display:flex;gap:7px;align-items:center}
+      .psr-wa .wa-setting .button{border-radius:9px;padding:6px 16px;min-height:36px;margin:14px 0 0;font-weight:650;font-size:14px}
+      .psr-wa .wa-footnote{margin-top:13px!important;font-size:14px!important;line-height:1.55!important;color:#36526c!important}
+      .psr-wa .wa-url-read{overflow-wrap:anywhere;background:#f2f6fa;border:1px solid #e1eaf1;border-radius:10px;padding:13px;font-size:14px;line-height:1.55;color:#2a4762;margin-top:16px}
+      .psr-wa .wa-note{margin-top:18px;padding:14px 17px;background:#edf4fd;border-radius:11px;border-left:3px solid #5689ce;color:#2b4963;font-size:14px;line-height:1.6}
+      .psr-wa .wa-warning{margin:17px 0 0;border:1px solid #f0d9b5;background:#fff8ed;color:#785520;border-radius:10px;padding:13px 15px;font-size:14px;line-height:1.55}
+      .psr-wa .wa-meta{margin-top:16px;color:#354f68;font-size:14px;line-height:1.55;display:flex;gap:8px;align-items:center}
       @media(max-width:960px){.psr-wa .wa-grid{grid-template-columns:1fr}}
-      @media(max-width:600px){.psr-wa{margin:12px 12px 25px 0}.psr-wa .wa-hero{padding:25px 22px;border-radius:14px}.psr-wa .wa-hero h1{font-size:24px}.psr-wa .wa-card{padding:22px 19px;border-radius:14px}.psr-wa .wa-open{width:100%}}
+      @media(max-width:600px){.psr-wa{margin:12px 12px 25px 0}.psr-wa .wa-hero{padding:25px 22px;border-radius:14px}.psr-wa .wa-hero h1{font-size:24px}.psr-wa .wa-card{padding:22px 19px;border-radius:14px}.psr-wa .wa-open{width:100%}.psr-wa .wa-hero p{font-size:15px}.psr-wa .wa-stamp{font-size:12px}}
+      /* Contrast safeguards scoped to this screen only: leave the WP admin UI untouched. */
+      .psr-wa .wa-card,.psr-wa .wa-card-head,.psr-wa .wa-card-head div{color:#173651}
+      .psr-wa .wa-hero .wa-eyebrow,.psr-wa .wa-hero .wa-eyebrow .dashicons{color:#f2f8ff!important}
+      .psr-wa .wa-hero .wa-stamp{color:#fff!important}
+      .psr-wa .wa-open,.psr-wa .wa-open .dashicons{color:#fff!important}
+      .psr-wa .wa-card .wa-access-status,.psr-wa .wa-card .wa-access-status span{color:#18543a!important}
+      .psr-wa .wa-card h2,.psr-wa .wa-setting label{opacity:1}
+      .psr-wa .wa-row .dashicons,.psr-wa .wa-meta .dashicons{color:#315e81}
       @media(prefers-reduced-motion:reduce){.psr-wa .wa-open{transition:none}}
       </style>
       <section class="wa-hero" aria-label="Gestione WebApp comunale">
