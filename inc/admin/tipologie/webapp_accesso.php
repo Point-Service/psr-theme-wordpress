@@ -246,6 +246,31 @@ function dci_webapp_mobile_page() {
       .psr-wa .wa-card .wa-access-status,.psr-wa .wa-card .wa-access-status span{color:#18543a!important}
       .psr-wa .wa-card h2,.psr-wa .wa-setting label{opacity:1}
       .psr-wa .wa-row .dashicons,.psr-wa .wa-meta .dashicons{color:#315e81}
+      /* Fix V3.7.2: WordPress can inject admin notices after this screen's H1,
+         inside the blue hero. Override the hero's white paragraph rule ONLY
+         for real WordPress admin notices; never change security behavior. */
+      .psr-wa .wa-hero .notice,
+      .psr-wa .wa-hero .updated,
+      .psr-wa .wa-hero .error,
+      .psr-wa .wa-hero .update-nag {
+        position:relative;z-index:1;
+        margin:16px 0 18px!important;padding:12px 16px!important;
+        background:#fff8e9!important;color:#573c17!important;
+        border:1px solid #ebd4a5!important;border-left:4px solid #d59b2b!important;
+        border-radius:8px!important;box-shadow:none!important;
+      }
+      .psr-wa .wa-hero .notice p,
+      .psr-wa .wa-hero .updated p,
+      .psr-wa .wa-hero .error p,
+      .psr-wa .wa-hero .update-nag p,
+      .psr-wa .notice p {
+        color:#573c17!important;opacity:1!important;
+        font-size:14px!important;line-height:1.6!important;
+        font-weight:500!important;margin:0!important;max-width:none!important;
+      }
+      .psr-wa .wa-hero .notice a,
+      .psr-wa .wa-hero .updated a,
+      .psr-wa .wa-hero .error a {color:#164a8c!important;text-decoration:underline}
       @media(prefers-reduced-motion:reduce){.psr-wa .wa-open{transition:none}}
       </style>
       <section class="wa-hero" aria-label="Gestione WebApp comunale">
