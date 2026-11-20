@@ -1347,15 +1347,6 @@ add_action('init', function() {
 
 
 /**
- * PSR API Avvisi: endpoint di sola lettura isolato dalle API Notizie/Eventi.
- * Include opzionale per non creare errori durante un deploy parziale.
- */
-$psr_avvisi_rest_file = get_template_directory() . '/inc/psr-avvisi-rest.php';
-if (is_file($psr_avvisi_rest_file) && is_readable($psr_avvisi_rest_file)) {
-    require_once $psr_avvisi_rest_file;
-}
-
-/**
  * Restituisce i servizi attivi per integrazioni esterne (es. APP Comuni).
  */
 function dci_is_servizio_attivo($post_id) {
