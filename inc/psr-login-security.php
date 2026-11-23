@@ -750,10 +750,6 @@ function psr_login_start_otp($user, $username, $password) {
         $office_login = array('remember' => !empty($_POST['rememberme']));
         psr_login_grant_session($user, $office_login);
         psr_account_rate_clear(psr_login_ip(), $user->user_login);
-        if (function_exists('psr_center_log_event')) {
-            psr_center_log_event('login_success', 'info', psr_login_ip(), $user->user_login,
-                'IT', 'trusted_browser', 'Login da browser attendibile con password valida');
-        }
         $redirect = isset($_REQUEST['redirect_to']) && is_string($_REQUEST['redirect_to'])
             ? wp_unslash($_REQUEST['redirect_to']) : '';
         wp_safe_redirect(wp_validate_redirect($redirect, admin_url()) ?: admin_url());
