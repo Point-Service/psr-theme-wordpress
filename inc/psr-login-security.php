@@ -7,6 +7,11 @@
 if (!defined('ABSPATH')) { exit; }
 require_once __DIR__ . '/psr-auth-hardening.php';
 require_once __DIR__ . '/psr-account-rate.php';
+/** Modulo opzionale, fail-closed: se manca, torna il normale OTP email. */
+$psr_trust_module = __DIR__ . '/psr-trusted-browser.php';
+if (is_file($psr_trust_module) && is_readable($psr_trust_module)) {
+    require_once $psr_trust_module;
+}
 
 /** Rifiuta array/oggetti nei campi scalari prima delle funzioni di autenticazione. */
 function psr_login_request_shape_valid($sources) {
@@ -735,6 +740,25 @@ function psr_login_start_otp($user, $username, $password) {
     if (!psr_login_interactive()) {
         return new WP_Error('psr_login_interactive_only', 'Accesso WordPress disponibile solo tramite login con OTP via email.');
     }
+    /*
+     * Skip dell'OTP solamente per un browser che ha GIA' superato un OTP
+     * su questo specifico Comune, e solo dall'IP esatto dell'ufficio.
+     * Password, CAPTCHA, rate-limit, controlli geografici e session proof
+     * vengono comunque verificati da questo login e da PSR Session Guard.
+     */
+    if (function_exists('psr_trust_can_login') && psr_trust_can_login($user)) {
+        $office_login = array('remember' => !empty($_POST['rememberme']));
+        psr_login_grant_session($user, $office_login);
+        psr_account_rate_clear(psr_login_ip(), $user->user_login);
+        if (function_exists('psr_center_log_event')) {
+            psr_center_log_event('login_success', 'info', psr_login_ip(), $user->user_login,
+                'IT', 'trusted_browser', 'Login da browser attendibile con password valida');
+        }
+        $redirect = isset($_REQUEST['redirect_to']) && is_string($_REQUEST['redirect_to'])
+            ? wp_unslash($_REQUEST['redirect_to']) : '';
+        wp_safe_redirect(wp_validate_redirect($redirect, admin_url()) ?: admin_url());
+        exit;
+    }
     if (!function_exists('random_bytes')) {
         return new WP_Error('psr_login_crypto_missing', 'Generatore crittografico OTP non disponibile. Accesso negato.');
     }
@@ -879,6 +903,10 @@ function psr_login_otp_page() {
                 }
                 psr_auth_unlock($otp_lock);
                 psr_login_grant_session($user, $pending);
+                // Prima associazione del browser SOLO dopo OTP valido.
+                if (function_exists('psr_trust_after_otp')) {
+                    psr_trust_after_otp($user);
+                }
                 wp_safe_redirect($pending['redirect']); exit;
             }
             $pending['tries'] = (int)$pending['tries'] + 1;
