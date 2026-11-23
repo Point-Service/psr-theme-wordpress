@@ -1,0 +1,28 @@
+name: PSR - accesso browser aziendale attendibile
+on:
+  push:
+    branches:
+      - master
+      - "feature/psr-browser-attendibile-20261123"
+    paths:
+      - "inc/psr-trusted-browser.php"
+      - "inc/psr-login-security.php"
+      - "tests/psr-trusted-browser-smoke.php"
+      - ".github/workflows/psr-trusted-browser-smoke.yml"
+  workflow_dispatch:
+jobs:
+  trusted-browser:
+    name: Sintassi PHP e test isolamento OTP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+      - name: PHP lint
+        run: |
+          php -l inc/psr-login-security.php
+          php -l inc/psr-trusted-browser.php
+          php -l tests/psr-trusted-browser-smoke.php
+      - name: Verifica trust browser, IP e scadenze
+        run: php tests/psr-trusted-browser-smoke.php
