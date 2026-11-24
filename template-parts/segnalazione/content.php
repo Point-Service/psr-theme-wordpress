@@ -141,6 +141,20 @@ $luoghi = get_posts(array(
                             </span>
                         </div>
                     </div>
+                    <?php if (function_exists('psr_report_photos_available') && psr_report_photos_available()) : ?>
+                    <div class="border-top border-light pt-3 mt-4" id="report-photo-section">
+                        <h3 class="title-medium-semi-bold mb-2">Foto e immagini (facoltative)</h3>
+                        <p class="text-paragraph-small mb-3">Puoi allegare fino a 3 foto del disservizio, scattandole direttamente o scegliendole dalla galleria. Le immagini saranno visibili agli operatori autorizzati del Comune. Evita dati personali non necessari.</p>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <button type="button" class="btn btn-primary btn-sm" id="report-camera-button" hidden>Scatta foto</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="report-gallery-button">Scegli immagini</button>
+                        </div>
+                        <input type="file" id="report-camera" accept="image/*" capture="environment" hidden>
+                        <input type="file" id="report-gallery" accept="image/*" multiple hidden>
+                        <p class="text-paragraph-small mb-2" id="report-photo-status" role="status" aria-live="polite">Nessuna immagine selezionata.</p>
+                        <div class="row g-3" id="report-photo-previews"></div>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -227,6 +241,12 @@ $luoghi = get_posts(array(
                                         <div class="text-paragraph-small">Ulteriori dettagli</div>
                                         <p class="data-text report-review-multiline" id="review-description"></p>
                                     </div>
+                                    <?php if (function_exists('psr_report_photos_available') && psr_report_photos_available()) : ?>
+                                    <div class="single-line-info border-light">
+                                        <div class="text-paragraph-small">Immagini allegate</div>
+                                        <p class="data-text" id="review-photos"></p>
+                                    </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

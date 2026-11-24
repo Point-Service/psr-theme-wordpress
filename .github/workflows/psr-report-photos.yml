@@ -1,0 +1,30 @@
+name: PSR - foto segnalazioni
+on:
+  push:
+    branches: [master, "feature/psr-report-photos-20261124"]
+    paths:
+      - 'inc/psr-report-photos.php'
+      - 'inc/funzionalita_trasversali.php'
+      - 'inc/psr-public-request-guard.php'
+      - 'template-parts/segnalazione/content.php'
+      - 'assets/js/segnalazione.js'
+      - 'tests/psr-report-photos-smoke.php'
+      - '.github/workflows/psr-report-photos.yml'
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: gd
+          coverage: none
+      - run: |
+          php -l inc/psr-report-photos.php
+          php -l inc/funzionalita_trasversali.php
+          php -l inc/psr-public-request-guard.php
+          php -l template-parts/segnalazione/content.php
+          node --check assets/js/segnalazione.js
+          php tests/psr-report-photos-smoke.php

@@ -11,6 +11,107 @@
   var successBox = document.getElementById('report-success');
   var currentStep = 1;
   var submitting = false;
+  var photos = [];
+  var photoBusy = false;
+  var previewUrls = [];
+
+  function renderPhotos(message) {
+    var status = getEl('report-photo-status');
+    var previews = getEl('report-photo-previews');
+    var camera = getEl('report-camera-button');
+    var gallery = getEl('report-gallery-button');
+    if (!previews || !status) return;
+    previewUrls.forEach(function (url) { URL.revokeObjectURL(url); });
+    previewUrls = [];
+    previews.textContent = '';
+    photos.forEach(function (blob, index) {
+      var col = document.createElement('div');
+      col.className = 'col-6 col-md-4';
+      var img = document.createElement('img');
+      img.className = 'img-fluid rounded w-100';
+      img.style.height = '130px';
+      img.style.objectFit = 'contain';
+      img.alt = 'Immagine allegata ' + (index + 1);
+      var url = URL.createObjectURL(blob);
+      previewUrls.push(url);
+      img.src = url;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-link p-0 mt-1';
+      btn.textContent = 'Rimuovi';
+      btn.setAttribute('aria-label', 'Rimuovi immagine ' + (index + 1));
+      btn.disabled = photoBusy || submitting;
+      btn.addEventListener('click', function () {
+        if (photoBusy || submitting) return;
+        photos.splice(index, 1);
+        renderPhotos();
+      });
+      col.appendChild(img); col.appendChild(btn); previews.appendChild(col);
+    });
+    status.textContent = message || (photos.length ? photos.length + '/3 immagini pronte per l’invio.' : 'Nessuna immagine selezionata.');
+    if (camera) camera.disabled = photoBusy || submitting || photos.length >= 3;
+    if (gallery) gallery.disabled = photoBusy || submitting || photos.length >= 3;
+    updateNextState();
+    if (currentStep === steps.length) updateSummary();
+  }
+
+  function preparePhoto(file) {
+    return new Promise(function (resolve, reject) {
+      if (!file || !file.size || file.size > 25 * 1024 * 1024) {
+        reject(new Error('Scegli un’immagine di massimo 25 MB.')); return;
+      }
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        try {
+          if (!img.naturalWidth || !img.naturalHeight) throw new Error('Immagine non valida.');
+          var scale = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+          var canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+          var ctx = canvas.getContext('2d');
+          if (!ctx || !canvas.toBlob) throw new Error('Conversione immagine non disponibile.');
+          ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(function (blob) {
+            if (!blob || blob.type !== 'image/jpeg' || blob.size > 2 * 1024 * 1024) {
+              reject(new Error('Immagine troppo grande. Scegline un’altra.')); return;
+            }
+            resolve(blob);
+          }, 'image/jpeg', 0.82);
+        } catch (error) { reject(error); }
+      };
+      img.onerror = function () {
+        URL.revokeObjectURL(url);
+        reject(new Error('Formato non leggibile dal browser. Prova JPEG, PNG o WebP.'));
+      };
+      img.src = url;
+    });
+  }
+
+  function pickPhotos(event) {
+    var files = Array.prototype.slice.call(event.target.files || []);
+    event.target.value = '';
+    if (!files.length || photoBusy || submitting) return;
+    if (files.length + photos.length > 3) {
+      renderPhotos('Puoi allegare al massimo 3 immagini.'); return;
+    }
+    photoBusy = true;
+    renderPhotos('Preparazione immagini…');
+    var prepared = [];
+    var chain = Promise.resolve();
+    files.forEach(function (file) {
+      chain = chain.then(function () { return preparePhoto(file); }).then(function (blob) { prepared.push(blob); });
+    });
+    chain.then(function () {
+      photos = photos.concat(prepared);
+      photoBusy = false; renderPhotos();
+    }).catch(function (error) {
+      photoBusy = false;
+      renderPhotos(error.message || 'Impossibile leggere le immagini. Riprova.');
+    });
+  }
 
   function getEl(id) {
     return document.getElementById(id);
@@ -58,6 +159,7 @@
     setText('review-type', getSelectedText('report-type'));
     setText('review-reason', getValue('report-reason'));
     setText('review-description', getValue('report-description'));
+    setText('review-photos', photos.length ? photos.length + ' immagini pronte per l’invio' : 'Nessuna immagine');
     setText('review-name', getValue('name'));
     setText('review-surname', getValue('surname'));
     setText('review-email', getValue('email'));
@@ -91,7 +193,7 @@
 
   function updateNextState() {
     if (!btnNext) return;
-    btnNext.disabled = submitting || !isStepValid(currentStep);
+    btnNext.disabled = submitting || photoBusy || !isStepValid(currentStep);
   }
 
   function updateButtons() {
@@ -145,13 +247,13 @@
   }
 
   function submitReport() {
-    if (submitting) return;
+    if (submitting || photoBusy) return;
 
     submitting = true;
     clearError();
     updateButtons();
 
-    var body = new URLSearchParams();
+    var body = photos.length ? new FormData() : new URLSearchParams();
     body.append('action', 'save_segnalazione_disservizio');
     body.append('nonce', dciSegnalazione.nonce);
     body.append('luogo_id', getValue('luogo-disservizio'));
@@ -167,14 +269,17 @@
     body.append('privacy', getEl('privacy') && getEl('privacy').checked ? '1' : '0');
     body.append('website', getValue('report-website'));
 
+    if (photos.length) {
+      body.append('report_photo_count', String(photos.length));
+      photos.forEach(function (blob, i) { body.append('report_photo_' + i, blob, 'foto-' + (i + 1) + '.jpg'); });
+    }
+    var headers = { 'Cache-Control': 'no-cache' };
+    if (!photos.length) headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     fetch(dciSegnalazione.ajaxUrl, {
       method: 'POST',
       credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Cache-Control': 'no-cache'
-      },
-      body: body.toString()
+      headers: headers,
+      body: photos.length ? body : body.toString()
     })
       .then(function (response) {
         return response.json().catch(function () {
@@ -262,5 +367,18 @@
     });
   }
 
+  var camera = getEl('report-camera');
+  var gallery = getEl('report-gallery');
+  var cameraButton = getEl('report-camera-button');
+  var galleryButton = getEl('report-gallery-button');
+  if (camera && cameraButton) {
+    cameraButton.hidden = !(('ontouchstart' in window) || navigator.maxTouchPoints > 0);
+    cameraButton.addEventListener('click', function () { if (!photoBusy && !submitting) camera.click(); });
+    camera.addEventListener('change', pickPhotos);
+  }
+  if (gallery && galleryButton) {
+    galleryButton.addEventListener('click', function () { if (!photoBusy && !submitting) gallery.click(); });
+    gallery.addEventListener('change', pickPhotos);
+  }
   goToStep(1, false);
 })();

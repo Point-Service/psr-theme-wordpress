@@ -152,7 +152,15 @@ function psr_public_guard_ajax_init() {
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
         psr_public_guard_deny($action, 'http_method', 405, 'Metodo non consentito.');
     }
-    if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 65536) {
+    // Il limite di 64 KB resta invariato per tutti i moduli testuali.
+    // Eccezione circoscritta al multipart con immagini di una segnalazione.
+    $max_body = 65536;
+    if ($action === 'save_segnalazione_disservizio' && isset($_FILES['report_photo_0'])
+        && is_string($_POST['report_photo_count'] ?? null)
+        && in_array($_POST['report_photo_count'], array('1', '2', '3'), true)) {
+        $max_body += (int)$_POST['report_photo_count'] * 2 * 1024 * 1024;
+    }
+    if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > $max_body) {
         psr_public_guard_deny($action, 'body_too_large', 413, 'Richiesta troppo grande.');
     }
     if (!psr_public_guard_valid_fields($_POST, $action, $limits)) {

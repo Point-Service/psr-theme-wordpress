@@ -1852,6 +1852,11 @@ function dci_save_richiesta_assistenza(){
 add_action("wp_ajax_save_richiesta_assistenza" , "dci_save_richiesta_assistenza");
 add_action("wp_ajax_nopriv_save_richiesta_assistenza" , "dci_save_richiesta_assistenza");
 
+/** Modulo opzionale: le segnalazioni senza foto restano disponibili. */
+if (is_readable(__DIR__ . '/psr-report-photos.php')) {
+    require_once __DIR__ . '/psr-report-photos.php';
+}
+
 /**
  * Salva una segnalazione di disservizio proveniente dal relativo percorso guidato.
  */
@@ -1908,6 +1913,17 @@ function dci_save_segnalazione_disservizio() {
         ), 422);
     }
 
+    $report_photos = array();
+    if (!empty($_FILES) || isset($params['report_photo_count'])) {
+        if (!function_exists('psr_report_photos_prepare')) {
+            wp_send_json_error(array('message' => 'Caricamento immagini non disponibile. Riprova senza allegati.'), 503);
+        }
+        $report_photos = psr_report_photos_prepare($_FILES, $params['report_photo_count'] ?? '');
+        if (is_wp_error($report_photos)) {
+            wp_send_json_error(array('message' => $report_photos->get_error_message()), 422);
+        }
+    }
+
     $post_id = wp_insert_post(array(
         'post_type' => 'segnala_disservizio',
         'post_title' => 'Segnalazione in acquisizione',
@@ -1921,6 +1937,12 @@ function dci_save_segnalazione_disservizio() {
         ), 500);
     }
 
+    foreach ($report_photos as $index => $encoded) {
+        if (!add_post_meta($post_id, '_psr_report_photo_' . $index, $encoded, true)) {
+            wp_delete_post($post_id, true);
+            wp_send_json_error(array('message' => 'Impossibile salvare le immagini. Riprova o invia senza allegati.'), 500);
+        }
+    }
     $ticket_code = 'SEG-' . date_i18n('Ymd') . '-' . str_pad((string) $post_id, 5, '0', STR_PAD_LEFT);
     wp_update_post(array(
         'ID' => $post_id,
@@ -1955,6 +1977,9 @@ function dci_save_segnalazione_disservizio() {
         'motivo' => $motivo,
         'dettagli' => $dettagli_completi,
     );
+    if ($report_photos) {
+        $notification_params['dettagli'] .= "\nImmagini allegate: " . count($report_photos) . ' (consultabili nel pannello riservato)';
+    }
     $mail_sent = dci_queue_richiesta_assistenza_notification($post_id, $notification_params, $ticket_code, 'disservizio');
 
     wp_send_json_success(array(
