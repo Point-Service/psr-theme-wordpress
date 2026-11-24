@@ -153,7 +153,7 @@ function psr_public_guard_ajax_init() {
         psr_public_guard_deny($action, 'http_method', 405, 'Metodo non consentito.');
     }
     // Il limite di 64 KB resta invariato per tutti i moduli testuali.
-    // Eccezione circoscritta al multipart con immagini di una segnalazione.
+    // Eccezione circoscritta al multipart con allegati di una segnalazione.
     $max_body = 65536;
     if ($action === 'save_segnalazione_disservizio' && isset($_FILES['report_photo_0'])
         && is_string($_POST['report_photo_count'] ?? null)

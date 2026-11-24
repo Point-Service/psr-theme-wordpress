@@ -1,7 +1,7 @@
-name: PSR - foto segnalazioni
+name: PSR - allegati segnalazioni
 on:
   push:
-    branches: [master, "feature/psr-report-photos-20261124"]
+    branches: [master, "feature/psr-report-photos-20261124", "feature/psr-report-pdf-20261124"]
     paths:
       - 'inc/psr-report-photos.php'
       - 'inc/funzionalita_trasversali.php'
@@ -19,7 +19,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: "8.3"
-          extensions: gd
+          extensions: gd, fileinfo
           coverage: none
       - run: |
           php -l inc/psr-report-photos.php

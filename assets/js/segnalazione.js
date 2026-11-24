@@ -20,6 +20,7 @@
     var previews = getEl('report-photo-previews');
     var camera = getEl('report-camera-button');
     var gallery = getEl('report-gallery-button');
+    var pdfButton = getEl('report-pdf-button');
     if (!previews || !status) return;
     previewUrls.forEach(function (url) { URL.revokeObjectURL(url); });
     previewUrls = [];
@@ -27,19 +28,26 @@
     photos.forEach(function (blob, index) {
       var col = document.createElement('div');
       col.className = 'col-6 col-md-4';
-      var img = document.createElement('img');
-      img.className = 'img-fluid rounded w-100';
-      img.style.height = '130px';
-      img.style.objectFit = 'contain';
-      img.alt = 'Immagine allegata ' + (index + 1);
-      var url = URL.createObjectURL(blob);
-      previewUrls.push(url);
-      img.src = url;
+      var img;
+      if (blob.type === 'application/pdf') {
+        img = document.createElement('div');
+        img.className = 'border rounded bg-white p-3 text-break';
+        img.textContent = 'PDF · ' + Math.ceil(blob.size / 1024) + ' KB';
+      } else {
+        img = document.createElement('img');
+        img.className = 'img-fluid rounded w-100';
+        img.style.height = '130px';
+        img.style.objectFit = 'contain';
+        img.alt = 'Immagine allegata ' + (index + 1);
+        var url = URL.createObjectURL(blob);
+        previewUrls.push(url);
+        img.src = url;
+      }
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'btn btn-link p-0 mt-1';
       btn.textContent = 'Rimuovi';
-      btn.setAttribute('aria-label', 'Rimuovi immagine ' + (index + 1));
+      btn.setAttribute('aria-label', 'Rimuovi allegato ' + (index + 1));
       btn.disabled = photoBusy || submitting;
       btn.addEventListener('click', function () {
         if (photoBusy || submitting) return;
@@ -48,9 +56,10 @@
       });
       col.appendChild(img); col.appendChild(btn); previews.appendChild(col);
     });
-    status.textContent = message || (photos.length ? photos.length + '/3 immagini pronte per l’invio.' : 'Nessuna immagine selezionata.');
+    status.textContent = message || (photos.length ? photos.length + '/3 allegati pronti per l’invio.' : 'Nessun allegato selezionato.');
     if (camera) camera.disabled = photoBusy || submitting || photos.length >= 3;
     if (gallery) gallery.disabled = photoBusy || submitting || photos.length >= 3;
+    if (pdfButton) pdfButton.disabled = photoBusy || submitting || photos.length >= 3 || photos.some(function (b) { return b.type === 'application/pdf'; });
     updateNextState();
     if (currentStep === steps.length) updateSummary();
   }
@@ -95,7 +104,7 @@
     event.target.value = '';
     if (!files.length || photoBusy || submitting) return;
     if (files.length + photos.length > 3) {
-      renderPhotos('Puoi allegare al massimo 3 immagini.'); return;
+      renderPhotos('Puoi allegare al massimo 3 file.'); return;
     }
     photoBusy = true;
     renderPhotos('Preparazione immagini…');
@@ -111,6 +120,30 @@
       photoBusy = false;
       renderPhotos(error.message || 'Impossibile leggere le immagini. Riprova.');
     });
+  }
+
+  function pickPdf(event) {
+    var file = (event.target.files || [])[0];
+    event.target.value = '';
+    if (!file || photoBusy || submitting) return;
+    if (photos.length >= 3 || photos.some(function (b) { return b.type === 'application/pdf'; })) {
+      renderPhotos('Massimo 3 allegati, di cui un solo PDF.'); return;
+    }
+    if (!file.size || file.size > 2 * 1024 * 1024 || !/\.pdf$/i.test(file.name)) {
+      renderPhotos('Scegli un documento PDF di massimo 2 MB.'); return;
+    }
+    // Non mostrare anteprime PDF né aprire il file nel browser.
+    var reader = new FileReader();
+    photoBusy = true; renderPhotos('Verifica documento…');
+    reader.onload = function () {
+      photoBusy = false;
+      if (reader.result !== '%PDF-') { renderPhotos('Il file non è un PDF valido.'); return; }
+      photos.push(new Blob([file], {type: 'application/pdf'}));
+      renderPhotos();
+    };
+    reader.onerror = function () { photoBusy = false; renderPhotos('Impossibile leggere il PDF.'); };
+    reader.onabort = reader.onerror;
+    reader.readAsText(file.slice(0, 5));
   }
 
   function getEl(id) {
@@ -159,7 +192,7 @@
     setText('review-type', getSelectedText('report-type'));
     setText('review-reason', getValue('report-reason'));
     setText('review-description', getValue('report-description'));
-    setText('review-photos', photos.length ? photos.length + ' immagini pronte per l’invio' : 'Nessuna immagine');
+    setText('review-photos', photos.length ? photos.length + ' allegati pronti per l’invio' : 'Nessun allegato');
     setText('review-name', getValue('name'));
     setText('review-surname', getValue('surname'));
     setText('review-email', getValue('email'));
@@ -271,7 +304,10 @@
 
     if (photos.length) {
       body.append('report_photo_count', String(photos.length));
-      photos.forEach(function (blob, i) { body.append('report_photo_' + i, blob, 'foto-' + (i + 1) + '.jpg'); });
+      photos.forEach(function (blob, i) {
+        var isPdf = blob.type === 'application/pdf';
+        body.append('report_photo_' + i, blob, (isPdf ? 'documento-' : 'foto-') + (i + 1) + (isPdf ? '.pdf' : '.jpg'));
+      });
     }
     var headers = { 'Cache-Control': 'no-cache' };
     if (!photos.length) headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
@@ -379,6 +415,12 @@
   if (gallery && galleryButton) {
     galleryButton.addEventListener('click', function () { if (!photoBusy && !submitting) gallery.click(); });
     gallery.addEventListener('change', pickPhotos);
+  }
+  var pdfInput = getEl('report-pdf');
+  var pdfButton = getEl('report-pdf-button');
+  if (pdfInput && pdfButton) {
+    pdfButton.addEventListener('click', function () { if (!photoBusy && !submitting) pdfInput.click(); });
+    pdfInput.addEventListener('change', pickPdf);
   }
   goToStep(1, false);
 })();

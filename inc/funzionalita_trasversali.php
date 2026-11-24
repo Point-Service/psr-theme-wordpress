@@ -1916,7 +1916,7 @@ function dci_save_segnalazione_disservizio() {
     $report_photos = array();
     if (!empty($_FILES) || isset($params['report_photo_count'])) {
         if (!function_exists('psr_report_photos_prepare')) {
-            wp_send_json_error(array('message' => 'Caricamento immagini non disponibile. Riprova senza allegati.'), 503);
+            wp_send_json_error(array('message' => 'Caricamento allegati non disponibile. Riprova senza allegati.'), 503);
         }
         $report_photos = psr_report_photos_prepare($_FILES, $params['report_photo_count'] ?? '');
         if (is_wp_error($report_photos)) {
@@ -1940,7 +1940,7 @@ function dci_save_segnalazione_disservizio() {
     foreach ($report_photos as $index => $encoded) {
         if (!add_post_meta($post_id, '_psr_report_photo_' . $index, $encoded, true)) {
             wp_delete_post($post_id, true);
-            wp_send_json_error(array('message' => 'Impossibile salvare le immagini. Riprova o invia senza allegati.'), 500);
+            wp_send_json_error(array('message' => 'Impossibile salvare gli allegati. Riprova o invia senza allegati.'), 500);
         }
     }
     $ticket_code = 'SEG-' . date_i18n('Ymd') . '-' . str_pad((string) $post_id, 5, '0', STR_PAD_LEFT);
@@ -1978,7 +1978,7 @@ function dci_save_segnalazione_disservizio() {
         'dettagli' => $dettagli_completi,
     );
     if ($report_photos) {
-        $notification_params['dettagli'] .= "\nImmagini allegate: " . count($report_photos) . ' (consultabili nel pannello riservato)';
+        $notification_params['dettagli'] .= "\nAllegati: " . count($report_photos) . ' (consultabili nel pannello riservato)';
     }
     $mail_sent = dci_queue_richiesta_assistenza_notification($post_id, $notification_params, $ticket_code, 'disservizio');
 
