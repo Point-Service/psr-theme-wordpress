@@ -144,17 +144,17 @@ $luoghi = get_posts(array(
                     <?php if (function_exists('psr_report_photos_available') && psr_report_photos_available()) : ?>
                     <div class="border-top border-light pt-3 mt-4" id="report-photo-section">
                         <h3 class="title-medium-semi-bold mb-2">Allegati (facoltativi)</h3>
-                        <p class="text-paragraph-small mb-3">Puoi allegare fino a 3 file, scattando foto direttamente o scegliendole dalla galleria. <?php if (psr_report_pdf_available()) : ?>È consentito anche un PDF semplice (massimo 2 MB), senza password o elementi interattivi. <?php endif; ?>Gli allegati saranno visibili agli operatori autorizzati del Comune. Evita dati personali non necessari.</p>
+                        <p class="text-paragraph-small mb-3">Puoi allegare fino a 3 file, scattando foto direttamente o scegliendole dalla galleria. <?php if (function_exists('psr_report_pdf_available') && psr_report_pdf_available()) : ?>È consentito anche un PDF semplice (massimo 2 MB), senza password o elementi interattivi. <?php endif; ?>Gli allegati saranno visibili agli operatori autorizzati del Comune. Evita dati personali non necessari.</p>
                         <div class="d-flex flex-wrap gap-2 mb-3">
                             <button type="button" class="btn btn-primary btn-sm" id="report-camera-button" hidden>Scatta foto</button>
                             <button type="button" class="btn btn-outline-primary btn-sm" id="report-gallery-button">Scegli immagini</button>
-                            <?php if (psr_report_pdf_available()) : ?>
+                            <?php if (function_exists('psr_report_pdf_available') && psr_report_pdf_available()) : ?>
                             <button type="button" class="btn btn-outline-primary btn-sm" id="report-pdf-button">Allega PDF</button>
                             <?php endif; ?>
                         </div>
                         <input type="file" id="report-camera" accept="image/*" capture="environment" hidden>
                         <input type="file" id="report-gallery" accept="image/*" multiple hidden>
-                        <?php if (psr_report_pdf_available()) : ?>
+                        <?php if (function_exists('psr_report_pdf_available') && psr_report_pdf_available()) : ?>
                         <input type="file" id="report-pdf" accept=".pdf,application/pdf" hidden>
                         <?php endif; ?>
                         <p class="text-paragraph-small mb-2" id="report-photo-status" role="status" aria-live="polite">Nessun allegato selezionato.</p>
