@@ -68,32 +68,22 @@ check(is_wp_error(psr_otp_smtp_load()),'broken password fails closed for other u
 check(psr_otp_smtp_store($record),'restore valid fixture');
 $record['encrypted']['host']='other.example.test';
 check(is_wp_error(psr_otp_smtp_load($record)),'unexpected SMTP host denied');
-class PSR_Mock_Admin_Bar { public $nodes=array(); public function add_node($node){$this->nodes[]=$node;} }
-$bar=new PSR_Mock_Admin_Bar();
-check(psr_otp_smtp_badge_visible(),'active SMTP badge for ID 1');
 function admin_url($path){return 'https://example.test/wp-admin/'.$path;}
-psr_otp_smtp_admin_bar_badge($bar);
-check(count($bar->nodes)===1 && strpos($bar->nodes[0]['title'],'SMTP personalizzato attivo')!==false,'correct active badge');
+function esc_html($v){return htmlspecialchars($v,ENT_QUOTES,'UTF-8');}
+function esc_attr($v){return esc_html($v);}
+function esc_url($v){return esc_html($v);}
+check(!function_exists('psr_otp_smtp_admin_bar_badge'),'no SMTP admin bar callback');
+check(psr_otp_smtp_badge_visible(),'active center badge for ID 1');
+check(strpos(psr_otp_smtp_center_badge(),'SMTP personalizzato attivo')!==false && strpos(psr_otp_smtp_center_badge(),'#psr-otp-smtp-config')!==false,'active center link');
 $GLOBALS['uid']=2;
-check(!psr_otp_smtp_badge_visible(),'badge hidden for other administrators');
-psr_otp_smtp_admin_bar_badge($bar);
-check(count($bar->nodes)===1,'no node for other administrators');
+check(psr_otp_smtp_center_badge()==='','center link hidden for other administrators');
 $GLOBALS['uid']=1;
 $GLOBALS['mock_admin']=false;
 check(!psr_otp_smtp_badge_visible(),'badge hidden on public pages');
 $GLOBALS['mock_admin']=true;
 $inactive=psr_otp_smtp_record(); $inactive['enabled']=false;
 check(psr_otp_smtp_store($inactive) && psr_otp_smtp_badge_visible(),'disabled SMTP shows configuration link');
-function esc_html($v){return htmlspecialchars($v,ENT_QUOTES,'UTF-8');}
-function esc_attr($v){return esc_html($v);}
-function esc_url($v){return esc_html($v);}
-psr_otp_smtp_admin_bar_badge($bar);
-check(count($bar->nodes)===2 && strpos($bar->nodes[1]['title'],'Personalizza e attiva SMTP')!==false,'inactive label');
-check($bar->nodes[0]['href']===$bar->nodes[1]['href'] && str_ends_with($bar->nodes[1]['href'],'#psr-otp-smtp-config'),'both states link to exact module');
 check(strpos(psr_otp_smtp_center_badge(),'Personalizza e attiva SMTP')!==false && strpos(psr_otp_smtp_center_badge(),'#psr-otp-smtp-config')!==false,'inactive center link');
-$GLOBALS['uid']=2;
-check(psr_otp_smtp_center_badge()==='','center link hidden for other administrators');
-$GLOBALS['uid']=1;
 $inactive['enabled']=true;
 check(psr_otp_smtp_store($inactive),'restore enabled state');
 define('PSR_OTP_SMTP_ENABLED',false);
