@@ -71,3 +71,15 @@ check(is_wp_error(psr_otp_smtp_load($record)),'unexpected SMTP host denied');
 define('PSR_OTP_SMTP_ENABLED',false);
 check(!psr_otp_smtp_enabled(),'emergency override works');
 check(!psr_otp_smtp_for_user(1) && !psr_otp_smtp_for_user(2),'override returns all users to original transport');
+
+$diag=psr_otp_smtp_classify_failure(array('smtp_code'=>'550','smtp_code_ex'=>'5.1.0','detail'=>'authentication failed secret@example.test'), 'The following From address failed: secret@example.test');
+check($diag==='psr_otp_smtp_diag_550_x5_1_0_ssender_rauth','550 sender/auth diagnosis');
+check(strpos($diag,'secret')===false && strpos(psr_otp_smtp_result_message($diag),'secret')===false,'raw reply not disclosed');
+check(strpos(psr_otp_smtp_result_message($diag),'5.1.0')!==false,'extended code shown');
+$diag=psr_otp_smtp_classify_failure(array('smtp_code'=>'550','detail'=>'Connection from private.example temporarily rejected'), 'The following From address failed');
+check($diag==='psr_otp_smtp_diag_550_ssender_rip_policy','IP policy diagnosis');
+$diag=psr_otp_smtp_classify_failure(array('smtp_code'=>'550','smtp_code_ex'=>'5.1.1','detail'=>'user unknown'), 'SMTP Error: The following recipients failed: private@example.test');
+check($diag==='psr_otp_smtp_diag_550_x5_1_1_srecipient_rmailbox','recipient failure diagnosis');
+$diag=psr_otp_smtp_classify_failure(array('smtp_code'=>'550','smtp_code_ex'=>'5.7.26','detail'=>'DKIM failed'), 'SMTP Error: data not accepted');
+check($diag==='psr_otp_smtp_diag_550_x5_7_26_sdata_rdomain','domain rejection diagnosis');
+check(psr_otp_smtp_classify_failure(array(), 'SMTP Error: Could not connect to SMTP host')==='psr_otp_smtp_diag_connection','connection diagnosis');

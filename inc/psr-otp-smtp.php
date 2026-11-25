@@ -51,18 +51,45 @@ function psr_otp_smtp_owner() {
     return is_ssl() && (int)get_current_user_id() === 1 && current_user_can('manage_options')
         && function_exists('psr_login_privilege_authorized') && psr_login_privilege_authorized();
 }
-/** Only allowlisted SMTP status codes: no raw replies, addresses or message body in logs. */
+/**
+ * Diagnostic categories only. Never store or display the raw SMTP reply,
+ * PHPMailer error text, AUTH traffic, recipient, credentials or message.
+ */
+function psr_otp_smtp_classify_failure($reply, $error_info = '') {
+    $code = (string)($reply['smtp_code'] ?? '');
+    $extended = (string)($reply['smtp_code_ex'] ?? '');
+    $detail = substr((string)($reply['detail'] ?? ''), 0, 2048);
+    $info = substr((string)$error_info, 0, 2048);
+    $combined = $detail . ' ' . $info;
+    // Match fixed categories; the original text is never returned.
+    if (!preg_match('/\A[45][0-9]{2}\z/D', $code) && preg_match('/\b([45][0-9]{2})\s+[45]\.[0-9]{1,3}\.[0-9]{1,3}\b/', $combined, $m)) { $code = $m[1]; }
+    if (!preg_match('/\A[45]\.[0-9]{1,3}\.[0-9]{1,3}\z/D', $extended) && preg_match('/\b([45]\.[0-9]{1,3}\.[0-9]{1,3})\b/', $combined, $m)) { $extended = $m[1]; }
+    $stage = '';
+    if (preg_match('/following from address failed|sender address rejected|MAIL FROM/i', $info)) { $stage = 'sender'; }
+    elseif (preg_match('/following recipients failed|recipient address rejected|RCPT TO/i', $info)) { $stage = 'recipient'; }
+    elseif (preg_match('/data not accepted|DATA command/i', $info)) { $stage = 'data'; }
+    elseif (preg_match('/authenticate|authentication|AUTH command/i', $info)) { $stage = 'auth'; }
+    elseif (preg_match('/connect|certificate|TLS|SSL/i', $info)) { $stage = 'connection'; }
+    $reason = '';
+    if (preg_match('/authentication failed|authenticat(?:ion|e) (?:failed|required)|not authenticated|not logged in|invalid credentials|authentication credentials invalid/i', $combined)) { $reason = 'auth'; }
+    elseif (preg_match('/blacklist|blacklisted|blocklist|temporarily rejected|temporaneamente rifiutata|IP (?:address )?(?:blocked|rejected|not allowed)/i', $combined)) { $reason = 'ip_policy'; }
+    elseif (preg_match('/spam detected|spam rejected|message considered spam/i', $combined)) { $reason = 'spam'; }
+    elseif (preg_match('/relay(?:ing)? (?:access )?(?:denied|not permitted|prohibited)|relay not allowed/i', $combined)) { $reason = 'relay'; }
+    elseif (preg_match('/mailbox (?:unavailable|not found)|user unknown|no such user|recipient rejected|address does not exist/i', $combined)) { $reason = 'mailbox'; }
+    elseif (preg_match('/SPF|DKIM|DMARC|unauthenticated email/i', $combined)) { $reason = 'domain'; }
+    if (!preg_match('/\A[45][0-9]{2}\z/D', $code)) {
+        return $stage === 'connection' ? 'psr_otp_smtp_diag_connection' : ($stage === 'auth' ? 'psr_otp_smtp_diag_auth' : 'psr_otp_smtp_transport_failed');
+    }
+    $result = 'psr_otp_smtp_diag_' . $code;
+    if (preg_match('/\A[45]\.[0-9]{1,3}\.[0-9]{1,3}\z/D', $extended)) { $result .= '_x' . str_replace('.','_',$extended); }
+    if ($stage !== '') { $result .= '_s' . $stage; }
+    if ($reason !== '') { $result .= '_r' . $reason; }
+    return $result;
+}
 function psr_otp_smtp_failure_code($mailer) {
     try {
         $reply = $mailer->getSMTPInstance()->getError();
-        $code = (string)($reply['smtp_code'] ?? '');
-        $extended = (string)($reply['smtp_code_ex'] ?? '');
-        if (in_array($extended, array('5.7.26','5.7.1','5.7.0','4.7.0','4.7.1'), true)) {
-            return 'psr_otp_smtp_' . str_replace('.', '_', $extended);
-        }
-        if (in_array($code, array('421','450','451','452','454','530','534','535','550','551','552','553','554'), true)) {
-            return 'psr_otp_smtp_' . $code;
-        }
+        return psr_otp_smtp_classify_failure(is_array($reply) ? $reply : array(), $mailer->ErrorInfo);
     } catch (Throwable $ignored) {}
     return 'psr_otp_smtp_transport_failed';
 }
@@ -157,7 +184,19 @@ function psr_otp_smtp_result_message($code) {
         'psr_otp_smtp_5_7_26'=>'Messaggio rifiutato per autenticazione del dominio (5.7.26).',
         'psr_otp_smtp_transport_failed'=>'Connessione o invio SMTP non riuscito. Verifica il servizio Aruba.'
     );
-    return $messages[$code] ?? 'Operazione non riuscita. Codice diagnostico: ' . $code;
+    if (isset($messages[$code])) { return $messages[$code]; }
+    if ($code === 'psr_otp_smtp_diag_connection') { return 'Connessione SMTP non riuscita. Verificare connettività, porta e certificato TLS.'; }
+    if ($code === 'psr_otp_smtp_diag_auth') { return 'Autenticazione SMTP non riuscita. Verificare casella e password.'; }
+    if (preg_match('/\Apsr_otp_smtp_diag_([45][0-9]{2})(?:_x([45]_[0-9]{1,3}_[0-9]{1,3}))?(?:_s(sender|recipient|data|auth|connection))?(?:_r(auth|ip_policy|spam|relay|mailbox|domain))?\z/D',$code,$m)) {
+        $stages = array('sender'=>'mittente (MAIL FROM)','recipient'=>'destinatario (RCPT TO)','data'=>'contenuto del messaggio (DATA)','auth'=>'autenticazione','connection'=>'connessione');
+        $reasons = array('auth'=>'Autenticazione richiesta o rifiutata.','ip_policy'=>'Possibile limitazione o blocco della connessione/IP.','spam'=>'Messaggio rifiutato dal filtro antispam.','relay'=>'Inoltro SMTP non autorizzato.','mailbox'=>'Casella o destinatario non riconosciuto.','domain'=>'Controllo di autenticazione del dominio.');
+        $message = 'Server SMTP: ' . $m[1] . (!empty($m[2]) ? ' ' . str_replace('_','.',$m[2]) : '') . '.';
+        if (!empty($m[3])) { $message .= ' Fase: ' . $stages[$m[3]] . '.'; }
+        if (!empty($m[4])) { $message .= ' ' . $reasons[$m[4]]; }
+        return $message . ' Codice diagnostico: ' . $code;
+    }
+    if ($code === 'psr_otp_smtp_550') { return 'Server SMTP: 550. Rifiuto del server; ripetere la prova per una diagnosi più dettagliata.'; }
+    return 'Operazione non riuscita. Codice diagnostico: ' . $code;
 }
 function psr_otp_smtp_redirect($result) {
     $result = preg_match('/\A(?:saved|disabled|tested|enabled|missing|crypto|storage|psr_otp_smtp_[a-z0-9_]+)\z/D', $result) ? $result : 'storage';
