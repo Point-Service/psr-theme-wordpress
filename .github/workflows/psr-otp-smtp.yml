@@ -1,7 +1,7 @@
 name: PSR - SMTP OTP database cifrato
 on:
   push:
-    branches: [master, "feature/psr-otp-smtp-db-20261125", "fix/psr-otp-smtp-diagnostic-20261125", "fix/psr-smtp-active-label-20261125", "fix/psr-smtp-configuration-link-20261125"]
+    branches: [master, "feature/psr-otp-smtp-db-20261125", "fix/psr-otp-smtp-diagnostic-20261125", "fix/psr-smtp-active-label-20261125", "fix/psr-smtp-configuration-link-20261125", "fix/psr-smtp-explanation-20261125"]
     paths:
       - 'inc/psr-otp-smtp*.php'
       - 'inc/psr-login-security.php'
