@@ -1,0 +1,31 @@
+name: PSR - SMTP OTP database cifrato
+on:
+  push:
+    branches: [master, "feature/psr-otp-smtp-db-20261125"]
+    paths:
+      - 'inc/psr-otp-smtp*.php'
+      - 'inc/psr-login-security.php'
+      - 'inc/psr-security-center.php'
+      - 'tests/psr-otp-smtp-smoke.php'
+      - '.github/workflows/psr-otp-smtp.yml'
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.2", "8.3", "8.4"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: sodium
+          coverage: none
+      - run: |
+          php -l inc/psr-login-security.php
+          php -l inc/psr-security-center.php
+          php -l inc/psr-otp-smtp.php
+          php -l inc/psr-otp-smtp-crypto.php
+          php tests/psr-otp-smtp-smoke.php

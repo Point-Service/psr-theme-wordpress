@@ -7,6 +7,9 @@
 if (!defined('ABSPATH')) { exit; }
 require_once __DIR__ . '/psr-auth-hardening.php';
 require_once __DIR__ . '/psr-account-rate.php';
+if (is_readable(__DIR__ . '/psr-otp-smtp.php')) {
+    require_once __DIR__ . '/psr-otp-smtp.php';
+}
 /** Modulo opzionale, fail-closed: se manca, torna il normale OTP email. */
 $psr_trust_module = __DIR__ . '/psr-trusted-browser.php';
 if (is_file($psr_trust_module) && is_readable($psr_trust_module)) {
@@ -470,6 +473,9 @@ function psr_login_email_issue($user, $ticket, &$pending) {
     $pending['code_expires'] = min($now + 300, (int)($pending['deadline'] ?? ($now + 300)));
     $pending['sent_at'] = $now;
     $subject = '[PSR] Codice di accesso WordPress';
+    if (function_exists('psr_otp_smtp_enabled') && psr_otp_smtp_enabled()) {
+        $subject = '[' . wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES) . '] Codice di accesso WordPress';
+    }
     $ip = psr_login_ip();
     $info = psr_login_mail_request_details($now, $ip);
     $body = "PSR SECURITY  |  VERIFICA ACCESSO\n";
@@ -488,10 +494,21 @@ function psr_login_email_issue($user, $ticket, &$pending) {
     $body .= "IP e Paese riguardano la connessione, non la persona.\n";
     $body .= "Browser, sistema e dispositivo sono indicativi (User-Agent).\n";
     $body .= "Messaggio automatico PSR - non rispondere.\n";
-    $GLOBALS['psr_auth_sensitive_mail']=array('to'=>$email,'subject'=>$subject,'message'=>$body,'headers'=>array('Content-Type: text/plain; charset=UTF-8'));
-    try { $sent = wp_mail($email, $subject, $body, array('Content-Type: text/plain; charset=UTF-8')); }
-    catch (Throwable $e) { $sent = false; }
-    finally { psr_auth_mail_done(); }
+    if (function_exists('psr_otp_smtp_enabled') && psr_otp_smtp_enabled()) {
+        // Explicit opt-in per Comune. A failed dedicated transport never falls back silently.
+        $sent = function_exists('psr_otp_smtp_send')
+            ? psr_otp_smtp_send($email, $subject, $body)
+            : new WP_Error('psr_otp_smtp_module_missing', 'Servizio OTP temporaneamente non disponibile.');
+        if (is_wp_error($sent)) {
+            unset($pending['digest'], $pending['code_expires']);
+            return $sent;
+        }
+    } else {
+        $GLOBALS['psr_auth_sensitive_mail']=array('to'=>$email,'subject'=>$subject,'message'=>$body,'headers'=>array('Content-Type: text/plain; charset=UTF-8'));
+        try { $sent = wp_mail($email, $subject, $body, array('Content-Type: text/plain; charset=UTF-8')); }
+        catch (Throwable $e) { $sent = false; }
+        finally { psr_auth_mail_done(); }
+    }
     // Restituzione true da wp_mail significa accettazione dal trasporto, NON consegna garantita.
     if (!$sent) {
         unset($pending['digest'], $pending['code_expires']);
@@ -878,7 +895,12 @@ function psr_login_otp_page() {
                         psr_center_log_event('otp_resent', 'info', psr_login_ip(), $user->user_login, '', 'otp',
                             'Reinvio OTP confermato dal trasporto; codice precedente invalidato');
                     }
-                } else { $message = $sent->get_error_message(); }
+                } else {
+                    $message = $sent->get_error_message();
+                    if (function_exists('psr_center_log_event')) {
+                        psr_center_log_event('otp_delivery_failed','warning',psr_login_ip(),$user->user_login,'','otp', $sent->get_error_code());
+                    }
+                }
             }
         } else {
             $input = (isset($_POST['psr_otp']) && is_string($_POST['psr_otp'])) ? trim(wp_unslash($_POST['psr_otp'])) : '';
