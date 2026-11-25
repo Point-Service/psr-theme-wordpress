@@ -249,7 +249,7 @@ function psr_otp_smtp_admin_panel() {
     $key = psr_otp_smtp_site_key();
     $ready = $key !== false;
     if ($ready) { sodium_memzero($key); }
-    echo '<div class="psrc-card" style="margin-top:18px"><h2>SMTP dedicato agli OTP</h2><p>Riservato all’amministratore ID 1. Il tuo account ID 1 usa sempre il sistema precedente WordPress/Plesk, anche se SMTP dedicato è attivo o non funziona. Le altre email del Comune non vengono modificate.</p>';
+    echo '<div id="psr-otp-smtp-config" class="psrc-card" style="margin-top:18px;scroll-margin-top:65px"><h2>SMTP dedicato agli OTP</h2><p>Riservato all’amministratore ID 1. Il tuo account ID 1 usa sempre il sistema precedente WordPress/Plesk, anche se SMTP dedicato è attivo o non funziona. Le altre email del Comune non vengono modificate.</p>';
     $result = $_GET['smtp_result'] ?? '';
     if (is_string($result) && preg_match('/\A(?:saved|disabled|tested|enabled|missing|crypto|storage|psr_otp_smtp_[a-z0-9_]{1,64})\z/D',$result)) {
         echo '<div role="status" class="notice notice-' . (in_array($result,array('saved','disabled','tested','enabled'),true)?'success':'error') . ' inline"><p>' . esc_html(psr_otp_smtp_result_message($result)) . '</p></div>';
@@ -270,17 +270,33 @@ function psr_otp_smtp_admin_panel() {
     echo '<p class="psrc-muted">In caso di blocco puoi ripristinare il vecchio trasporto da Plesk File Manager inserendo <code>define(&#39;PSR_OTP_SMTP_ENABLED&#39;, false);</code> in wp-config.php. Non disabilita gli OTP.</p></div>';
 }
 
-/** Read-only status indicator, no new settings, visible only to the verified owner in wp-admin. */
+/** Owner-only navigation, with explicit configured transport state. */
 function psr_otp_smtp_badge_visible() {
-    return is_admin() && psr_otp_smtp_owner() && psr_otp_smtp_enabled();
+    return is_admin() && psr_otp_smtp_owner();
+}
+function psr_otp_smtp_badge_data() {
+    $active = psr_otp_smtp_enabled();
+    $label = $active ? 'SMTP personalizzato attivo' : 'Personalizza e attiva SMTP';
+    $hint = $active ? 'SMTP personalizzato attivo per gli altri utenti; apri configurazione.' : 'Invio standard WordPress/Plesk; apri configurazione SMTP.';
+    return array('label'=>$label,'hint'=>$hint,'url'=>admin_url('admin.php?page=psr-security-center&tab=otp').'#psr-otp-smtp-config',
+        'background'=>$active?'#174e3a':'#414b56','foreground'=>$active?'#d5fce7':'#f0f4f8','border'=>$active?'#80d6ae':'#aeb9c5');
+}
+function psr_otp_smtp_badge_markup($data) {
+    return '<span style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;border-radius:12px;background:'.$data['background'].';color:'.$data['foreground'].';font-size:11px;line-height:20px;font-weight:600"><span aria-hidden="true">●</span> '.esc_html($data['label']).'</span>';
+}
+function psr_otp_smtp_center_badge() {
+    if (!psr_otp_smtp_badge_visible()) { return ''; }
+    $data = psr_otp_smtp_badge_data();
+    return '<a href="'.esc_url($data['url']).'" title="'.esc_attr($data['hint']).'" style="display:inline-flex;align-items:center;border:1px solid '.$data['border'].';border-radius:24px;padding:7px 12px;font-weight:650;font-size:12px;text-decoration:none;background:'.$data['background'].';color:'.$data['foreground'].'"><i class="dashicons dashicons-email-alt" aria-hidden="true"></i>'.esc_html($data['label']).'</a>';
 }
 function psr_otp_smtp_admin_bar_badge($bar) {
     if (!psr_otp_smtp_badge_visible() || !is_object($bar) || !is_callable(array($bar,'add_node'))) { return; }
+    $data = psr_otp_smtp_badge_data();
     $bar->add_node(array(
         'id'=>'psr-otp-smtp-active',
-        'title'=>'<span style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;border-radius:12px;background:#174e3a;color:#d5fce7;font-size:11px;line-height:20px;font-weight:600"><span aria-hidden="true" style="color:#a4f5c4">●</span> SMTP personalizzato attivo</span>',
-        'href'=>admin_url('admin.php?page=psr-security-center&tab=otp'),
-        'meta'=>array('title'=>'SMTP personalizzato attivo per gli OTP degli altri utenti; ID 1 usa Plesk.')
+        'title'=>psr_otp_smtp_badge_markup($data),
+        'href'=>$data['url'],
+        'meta'=>array('title'=>$data['hint'])
     ));
 }
 add_action('admin_bar_menu','psr_otp_smtp_admin_bar_badge',95);

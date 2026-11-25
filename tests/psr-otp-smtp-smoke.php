@@ -83,7 +83,17 @@ $GLOBALS['mock_admin']=false;
 check(!psr_otp_smtp_badge_visible(),'badge hidden on public pages');
 $GLOBALS['mock_admin']=true;
 $inactive=psr_otp_smtp_record(); $inactive['enabled']=false;
-check(psr_otp_smtp_store($inactive) && !psr_otp_smtp_badge_visible(),'disabled SMTP hides badge');
+check(psr_otp_smtp_store($inactive) && psr_otp_smtp_badge_visible(),'disabled SMTP shows configuration link');
+function esc_html($v){return htmlspecialchars($v,ENT_QUOTES,'UTF-8');}
+function esc_attr($v){return esc_html($v);}
+function esc_url($v){return esc_html($v);}
+psr_otp_smtp_admin_bar_badge($bar);
+check(count($bar->nodes)===2 && strpos($bar->nodes[1]['title'],'Personalizza e attiva SMTP')!==false,'inactive label');
+check($bar->nodes[0]['href']===$bar->nodes[1]['href'] && str_ends_with($bar->nodes[1]['href'],'#psr-otp-smtp-config'),'both states link to exact module');
+check(strpos(psr_otp_smtp_center_badge(),'Personalizza e attiva SMTP')!==false && strpos(psr_otp_smtp_center_badge(),'#psr-otp-smtp-config')!==false,'inactive center link');
+$GLOBALS['uid']=2;
+check(psr_otp_smtp_center_badge()==='','center link hidden for other administrators');
+$GLOBALS['uid']=1;
 $inactive['enabled']=true;
 check(psr_otp_smtp_store($inactive),'restore enabled state');
 define('PSR_OTP_SMTP_ENABLED',false);
@@ -103,5 +113,5 @@ check($diag==='psr_otp_smtp_diag_550_x5_7_26_sdata_rdomain','domain rejection di
 check(psr_otp_smtp_classify_failure(array(), 'SMTP Error: Could not connect to SMTP host')==='psr_otp_smtp_diag_connection','connection diagnosis');
 
 function is_admin(){return $GLOBALS['mock_admin'] ?? true;}
-/* Earlier smoke test defines emergency override false; the real flag must hide the badge. */
-check(!psr_otp_smtp_badge_visible(),'emergency override hides active SMTP badge');
+/* Emergency override must show the inactive state, never an active label. */
+check(psr_otp_smtp_badge_visible() && psr_otp_smtp_badge_data()['label']==='Personalizza e attiva SMTP','override shows inactive configuration link');
