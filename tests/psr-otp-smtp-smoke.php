@@ -68,6 +68,24 @@ check(is_wp_error(psr_otp_smtp_load()),'broken password fails closed for other u
 check(psr_otp_smtp_store($record),'restore valid fixture');
 $record['encrypted']['host']='other.example.test';
 check(is_wp_error(psr_otp_smtp_load($record)),'unexpected SMTP host denied');
+class PSR_Mock_Admin_Bar { public $nodes=array(); public function add_node($node){$this->nodes[]=$node;} }
+$bar=new PSR_Mock_Admin_Bar();
+check(psr_otp_smtp_badge_visible(),'active SMTP badge for ID 1');
+function admin_url($path){return 'https://example.test/wp-admin/'.$path;}
+psr_otp_smtp_admin_bar_badge($bar);
+check(count($bar->nodes)===1 && strpos($bar->nodes[0]['title'],'SMTP personalizzato attivo')!==false,'correct active badge');
+$GLOBALS['uid']=2;
+check(!psr_otp_smtp_badge_visible(),'badge hidden for other administrators');
+psr_otp_smtp_admin_bar_badge($bar);
+check(count($bar->nodes)===1,'no node for other administrators');
+$GLOBALS['uid']=1;
+$GLOBALS['mock_admin']=false;
+check(!psr_otp_smtp_badge_visible(),'badge hidden on public pages');
+$GLOBALS['mock_admin']=true;
+$inactive=psr_otp_smtp_record(); $inactive['enabled']=false;
+check(psr_otp_smtp_store($inactive) && !psr_otp_smtp_badge_visible(),'disabled SMTP hides badge');
+$inactive['enabled']=true;
+check(psr_otp_smtp_store($inactive),'restore enabled state');
 define('PSR_OTP_SMTP_ENABLED',false);
 check(!psr_otp_smtp_enabled(),'emergency override works');
 check(!psr_otp_smtp_for_user(1) && !psr_otp_smtp_for_user(2),'override returns all users to original transport');
@@ -83,3 +101,7 @@ check($diag==='psr_otp_smtp_diag_550_x5_1_1_srecipient_rmailbox','recipient fail
 $diag=psr_otp_smtp_classify_failure(array('smtp_code'=>'550','smtp_code_ex'=>'5.7.26','detail'=>'DKIM failed'), 'SMTP Error: data not accepted');
 check($diag==='psr_otp_smtp_diag_550_x5_7_26_sdata_rdomain','domain rejection diagnosis');
 check(psr_otp_smtp_classify_failure(array(), 'SMTP Error: Could not connect to SMTP host')==='psr_otp_smtp_diag_connection','connection diagnosis');
+
+function is_admin(){return $GLOBALS['mock_admin'] ?? true;}
+/* Earlier smoke test defines emergency override false; the real flag must hide the badge. */
+check(!psr_otp_smtp_badge_visible(),'emergency override hides active SMTP badge');

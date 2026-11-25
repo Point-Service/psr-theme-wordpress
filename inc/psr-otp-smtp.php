@@ -269,3 +269,18 @@ function psr_otp_smtp_admin_panel() {
     echo '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="submit" class="psrc-btn" name="smtp_operation" value="save">Salva impostazioni</button><button type="submit" class="psrc-btn secondary" name="smtp_operation" value="test">Invia email di prova</button></div></form>';
     echo '<p class="psrc-muted">In caso di blocco puoi ripristinare il vecchio trasporto da Plesk File Manager inserendo <code>define(&#39;PSR_OTP_SMTP_ENABLED&#39;, false);</code> in wp-config.php. Non disabilita gli OTP.</p></div>';
 }
+
+/** Read-only status indicator, no new settings, visible only to the verified owner in wp-admin. */
+function psr_otp_smtp_badge_visible() {
+    return is_admin() && psr_otp_smtp_owner() && psr_otp_smtp_enabled();
+}
+function psr_otp_smtp_admin_bar_badge($bar) {
+    if (!psr_otp_smtp_badge_visible() || !is_object($bar) || !is_callable(array($bar,'add_node'))) { return; }
+    $bar->add_node(array(
+        'id'=>'psr-otp-smtp-active',
+        'title'=>'<span style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;border-radius:12px;background:#174e3a;color:#d5fce7;font-size:11px;line-height:20px;font-weight:600"><span aria-hidden="true" style="color:#a4f5c4">●</span> SMTP personalizzato attivo</span>',
+        'href'=>admin_url('admin.php?page=psr-security-center&tab=otp'),
+        'meta'=>array('title'=>'SMTP personalizzato attivo per gli OTP degli altri utenti; ID 1 usa Plesk.')
+    ));
+}
+add_action('admin_bar_menu','psr_otp_smtp_admin_bar_badge',95);
