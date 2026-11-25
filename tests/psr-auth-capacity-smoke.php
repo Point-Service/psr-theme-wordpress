@@ -60,3 +60,10 @@ for ($i=0;$i<min(7,$max);$i++) {
 check(count(array_filter($locks,'is_array'))===min(7,$max),'seven distinct in-flight requests (subject to explicit cap)');
 foreach ($locks as $lock) { psr_auth_unlock($lock); }
 check(count($wpdb->rows)===0,'no lingering locks');
+
+/* User-facing security messages must not report invalid credentials for temporary limits. */
+$login_source=file_get_contents(__DIR__.'/../inc/psr-login-security.php');
+check(substr_count($login_source, 'Accesso temporaneamente sospeso per motivi di sicurezza. Attendi qualche secondo e riprova.')===5,'temporary concurrency message on all busy paths');
+check(substr_count($login_source, 'Accesso temporaneamente bloccato per motivi di sicurezza a causa dei troppi tentativi. Attendi alcuni minuti e riprova.')===4,'temporary security block message on rate-limit paths');
+check(strpos($login_source,'Invio OTP temporaneamente limitato per motivi di sicurezza.')!==false,'OTP throttle message');
+check(strpos($login_source,'Accesso temporaneamente bloccato per motivi di sicurezza: troppi codici OTP errati.')!==false,'OTP failure limit message');

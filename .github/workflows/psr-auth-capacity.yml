@@ -1,9 +1,10 @@
 name: PSR - capacità login
 on:
   push:
-    branches: [master, "fix/psr-login-capacity-20261125"]
+    branches: [master, "fix/psr-login-capacity-20261125", "fix/psr-login-block-messages-20261125"]
     paths:
       - 'inc/psr-auth-hardening.php'
+      - 'inc/psr-login-security.php'
       - 'tests/psr-auth-capacity-smoke.php'
       - '.github/workflows/psr-auth-capacity.yml'
   workflow_dispatch:

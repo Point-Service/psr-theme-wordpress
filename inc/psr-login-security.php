@@ -42,12 +42,12 @@ add_action('login_init', 'psr_login_validate_request_shape', -10);
 /** Difesa del modulo: controlla la rete prima di mostrare form o emettere OTP. */
 function psr_login_access_error() {
     if ((defined('WP_CLI') && WP_CLI) || (defined('DOING_CRON') && DOING_CRON)) { return null; }
-    if (!empty($GLOBALS['psr_auth_password_busy'])) { return new WP_Error('psr_login_busy', 'Accesso gia\' in verifica da questa rete. Riprova tra pochi secondi.'); }
+    if (!empty($GLOBALS['psr_auth_password_busy'])) { return new WP_Error('psr_login_busy', 'Accesso temporaneamente sospeso per motivi di sicurezza. Attendi qualche secondo e riprova.'); }
     if (!function_exists('psr_geo_decision') || !empty(psr_geo_decision()['blocked'])) {
         return new WP_Error('psr_login_ip_denied', 'Accesso riservato a connessioni da IP italiani verificati.');
     }
     if (psr_login_rate_blocked(psr_login_ip())) {
-        return new WP_Error('psr_login_blocked', 'Troppi tentativi di accesso. Riprova piu\' tardi.');
+        return new WP_Error('psr_login_blocked', 'Accesso temporaneamente bloccato per motivi di sicurezza a causa dei troppi tentativi. Attendi alcuni minuti e riprova.');
     }
     return null;
 }
@@ -269,12 +269,12 @@ function psr_login_auth_precheck($user, $username, $password) {
             psr_center_log_limited('login_blocked','warning',$ip,$username,'','login',
                 $remaining ? 'IP sotto blocco manuale/geografico' : 'Limite account/IP',60);
         }
-        return new WP_Error('psr_login_blocked', 'Troppi tentativi di accesso. Riprova piu\' tardi.');
+        return new WP_Error('psr_login_blocked', 'Accesso temporaneamente bloccato per motivi di sicurezza a causa dei troppi tentativi. Attendi alcuni minuti e riprova.');
     }
     // Richieste gia' bloccate non acquisiscono lock o slot di controllo password.
     if ($username!=='' && $password!=='' && empty($GLOBALS['psr_auth_capacity_lock'])) {
         $capacity=psr_auth_capacity();
-        if (!$capacity) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy','Servizio accessi occupato. Riprova tra pochi secondi.'); }
+        if (!$capacity) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy','Accesso temporaneamente sospeso per motivi di sicurezza. Attendi qualche secondo e riprova.'); }
         $GLOBALS['psr_auth_capacity_lock']=$capacity;
     }
     // Serializzazione per account/IP, non dell'intera sede. Lo slot globale resta limitato.
@@ -282,7 +282,7 @@ function psr_login_auth_precheck($user, $username, $password) {
         $identity=psr_account_rate_identity($username);
         $resource='password|' . psr_account_rate_key($ip, $identity['subject']);
         $lock=psr_auth_lock($resource, 0);
-        if (!$lock) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy', 'Verifica gia\' in corso per questo account. Riprova tra pochi secondi.'); }
+        if (!$lock) { $GLOBALS['psr_auth_password_busy']=true; return new WP_Error('psr_login_busy', 'Accesso temporaneamente sospeso per motivi di sicurezza. Attendi qualche secondo e riprova.'); }
         $GLOBALS['psr_auth_password_lock']=$lock;
     }
     return $user;
@@ -465,7 +465,7 @@ function psr_login_email_issue($user, $ticket, &$pending) {
         return new WP_Error('psr_login_email_unavailable', 'Servizio OTP via email non disponibile. Accesso negato.');
     }
     if (!psr_login_email_can_send($user)) {
-        return new WP_Error('psr_login_email_throttled', 'Troppi invii OTP oppure richiesta troppo ravvicinata. Riprovare piu\' tardi.');
+        return new WP_Error('psr_login_email_throttled', 'Invio OTP temporaneamente limitato per motivi di sicurezza. Attendi prima di richiedere un nuovo codice; se il limite persiste, riprova più tardi.');
     }
     $now = time();
     $code = str_pad((string)random_int(0, 99999999), 8, '0', STR_PAD_LEFT);
@@ -754,7 +754,7 @@ function psr_login_start_otp($user, $username, $password) {
     if (is_wp_error($error)) { return $error; }
     if (!psr_login_requires_otp($user) || (defined('WP_CLI') && WP_CLI)) { return $user; }
     if (psr_account_rate_blocked(psr_login_ip(), $user->user_login) > 0) {
-        return new WP_Error('psr_login_account_limited', 'Troppi tentativi per questo account. Riprova piu tardi.');
+        return new WP_Error('psr_login_account_limited', 'Accesso temporaneamente bloccato per motivi di sicurezza a causa dei troppi tentativi. Attendi alcuni minuti e riprova.');
     }
     // Niente bypass via XML-RPC, REST, application passwords, login alternativi.
     if (!psr_login_interactive()) {
@@ -824,7 +824,7 @@ function psr_login_grant_session($user, $pending) {
         wp_die('PSR richiede HTTPS riconosciuto da WordPress per proteggere le sessioni. Verificare TLS/proxy da Plesk prima di accedere.', 'PSR - HTTPS richiesto', array('response'=>503));
     }
     $lock=psr_auth_lock('session|' . (int)$user->ID);
-    if (!$lock) { wp_die('Creazione sessione gia\' in corso. Riprova.', '', array('response'=>503)); }
+    if (!$lock) { wp_die('Accesso temporaneamente sospeso per motivi di sicurezza. Attendi qualche secondo e riprova.', '', array('response'=>503)); }
     $GLOBALS['psr_auth_session_lock']=$lock;
     try {
     wp_cache_delete((int)$user->ID, 'user_meta');
@@ -853,7 +853,7 @@ function psr_login_otp_page() {
     $raw_ticket=$_COOKIE[psr_login_cookie_name()]??'';
     if (($_SERVER['REQUEST_METHOD']??'GET')==='POST' && is_string($raw_ticket) && preg_match('/^[a-f0-9]{64}$/D',$raw_ticket)) {
         $otp_lock=psr_auth_lock('otp|' . $raw_ticket);
-        if (!$otp_lock) { wp_die('Verifica OTP gia\' in corso. Riprova tra pochi secondi.', '', array('response'=>429)); }
+        if (!$otp_lock) { wp_die('Accesso temporaneamente sospeso per motivi di sicurezza. Attendi qualche secondo e riprova.', '', array('response'=>429)); }
     }
     list($ticket, $pending) = psr_login_pending();
     if (psr_login_rate_blocked(psr_login_ip())) { psr_login_cancel_ticket($ticket); $pending = false; }
@@ -868,7 +868,7 @@ function psr_login_otp_page() {
     }
     if (psr_account_rate_blocked(psr_login_ip(), $user->user_login) > 0) {
         psr_login_cancel_ticket($ticket);
-        wp_die('Troppi tentativi per questo account. Riprova piu tardi.',
+        wp_die('Accesso temporaneamente bloccato per motivi di sicurezza a causa dei troppi tentativi. Attendi alcuni minuti e riprova.',
             'PSR - Account temporaneamente limitato', array('response'=>403));
     }
     $message = '';
@@ -934,7 +934,7 @@ function psr_login_otp_page() {
             psr_account_rate_failure(psr_login_ip(), $user->user_login, 'otp');
             if ($pending['tries'] >= 5 || psr_account_rate_blocked(psr_login_ip(), $user->user_login) || psr_login_rate_blocked(psr_login_ip())) {
                 psr_login_cancel_ticket($ticket);
-                wp_die('Troppi codici errati. Ricomincia dal login dopo il blocco.', 'PSR - OTP email', array('response'=>403));
+                wp_die('Accesso temporaneamente bloccato per motivi di sicurezza: troppi codici OTP errati. Attendi alcuni minuti, poi ricomincia dal login.', 'PSR - OTP email', array('response'=>403));
             }
             if (!set_transient(psr_login_pending_key($ticket), $pending, max(1, (int)$pending['code_expires'] - time()))) {
                 psr_login_cancel_ticket($ticket); wp_die('Verifica non salvata. Ricomincia dal login.', '', array('response'=>503));
