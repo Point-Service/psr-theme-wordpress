@@ -472,8 +472,11 @@ function psr_login_email_issue($user, $ticket, &$pending) {
     $pending['digest'] = psr_login_email_digest($ticket, $code);
     $pending['code_expires'] = min($now + 300, (int)($pending['deadline'] ?? ($now + 300)));
     $pending['sent_at'] = $now;
+    // The owner always uses the unchanged WordPress/Plesk transport, even when SMTP is enabled or broken.
+    $use_dedicated_smtp = !psr_login_main_admin($user) && function_exists('psr_otp_smtp_for_user')
+        && psr_otp_smtp_for_user((int)$user->ID);
     $subject = '[PSR] Codice di accesso WordPress';
-    if (function_exists('psr_otp_smtp_enabled') && psr_otp_smtp_enabled()) {
+    if ($use_dedicated_smtp) {
         $subject = '[' . wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES) . '] Codice di accesso WordPress';
     }
     $ip = psr_login_ip();
@@ -494,7 +497,7 @@ function psr_login_email_issue($user, $ticket, &$pending) {
     $body .= "IP e Paese riguardano la connessione, non la persona.\n";
     $body .= "Browser, sistema e dispositivo sono indicativi (User-Agent).\n";
     $body .= "Messaggio automatico PSR - non rispondere.\n";
-    if (function_exists('psr_otp_smtp_enabled') && psr_otp_smtp_enabled()) {
+    if ($use_dedicated_smtp) {
         // Explicit opt-in per Comune. A failed dedicated transport never falls back silently.
         $sent = function_exists('psr_otp_smtp_send')
             ? psr_otp_smtp_send($email, $subject, $body)

@@ -43,6 +43,7 @@ function psr_login_privilege_authorized(){return $GLOBALS['verified'] ?? true;}
 function update_option($key,$record,$autoload){$GLOBALS['mock_option']=psr_otp_smtp_protect_option($record,$GLOBALS['mock_option']??array());}
 require dirname(__DIR__).'/inc/psr-otp-smtp.php';
 check(!psr_otp_smtp_enabled(),'default disabled');
+check(!psr_otp_smtp_for_user(1) && !psr_otp_smtp_for_user(2),'both use original transport by default');
 $record=array('enabled'=>false,'encrypted'=>psr_otp_smtp_encrypt_password($secret));
 check(psr_otp_smtp_store($record),'owner stores encrypted');
 check(!psr_otp_smtp_enabled(),'saved disabled');
@@ -58,7 +59,15 @@ check(!psr_otp_smtp_owner(),'HTTP rejected');
 $GLOBALS['ssl']=true;
 check(psr_otp_smtp_protect_option($record,psr_otp_smtp_record())['enabled']===false,'generic settings write rejected');
 check(psr_otp_smtp_store($record) && psr_otp_smtp_enabled(),'owner enables');
+check(!psr_otp_smtp_for_user(1),'ID 1 always uses original transport');
+check(psr_otp_smtp_for_user(2) && psr_otp_smtp_for_user(42),'other accounts use dedicated SMTP');
+check(!psr_otp_smtp_for_user(0),'invalid account never routed');
+$broken=$record; $broken['encrypted']['ciphertext']='broken';
+check(psr_otp_smtp_store($broken) && !psr_otp_smtp_for_user(1) && psr_otp_smtp_for_user(2),'broken password cannot affect owner route');
+check(is_wp_error(psr_otp_smtp_load()),'broken password fails closed for other users');
+check(psr_otp_smtp_store($record),'restore valid fixture');
 $record['encrypted']['host']='other.example.test';
 check(is_wp_error(psr_otp_smtp_load($record)),'unexpected SMTP host denied');
 define('PSR_OTP_SMTP_ENABLED',false);
 check(!psr_otp_smtp_enabled(),'emergency override works');
+check(!psr_otp_smtp_for_user(1) && !psr_otp_smtp_for_user(2),'override returns all users to original transport');

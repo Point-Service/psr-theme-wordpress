@@ -5,7 +5,8 @@ out.postassl.it:465, TLS con verifica certificato. Nessuna password in GitHub.
 Per ogni Comune: inserire password, salvare con check disattivato, inviare prova
 al destinatario OTP ID 1 e verificare la ricezione. Dopo almeno 30 secondi
 abilitare il check e salvare: ulteriore test SMTP, nessuna attivazione se fallisce.
-Provare un login da un altro browser prima di uscire dalla sessione corrente.
+Provare un login con un account diverso da ID 1 in un altro browser prima di uscire dalla sessione corrente.
+L'account ID 1 continua SEMPRE a usare wp_mail e il trasporto WordPress/Plesk preesistente, anche se il nuovo SMTP è attivo, la password è errata o il servizio non risponde. Il test manuale è soltanto un messaggio di prova, non un OTP.
 Il server SMTP può accettare un messaggio che poi non viene consegnato.
 Il flag disattivato usa il percorso wp_mail preesistente; nessun fallback
 automatico con flag attivo. Ripristino da Plesk File Manager:

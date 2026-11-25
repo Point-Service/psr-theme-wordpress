@@ -21,6 +21,10 @@ function psr_otp_smtp_enabled() {
     $r = psr_otp_smtp_record();
     return ($r['enabled'] ?? false) === true;
 }
+/** Authentication routing: ID 1 can NEVER depend on the dedicated SMTP password. */
+function psr_otp_smtp_for_user($user_id) {
+    return (int)$user_id > 1 && psr_otp_smtp_enabled();
+}
 function psr_otp_smtp_load($record = null) {
     $record = $record === null ? psr_otp_smtp_record() : $record;
     $encrypted = $record['encrypted'] ?? null;
@@ -141,7 +145,7 @@ function psr_otp_smtp_result_message($code) {
         'saved'=>'Impostazioni salvate.',
         'disabled'=>'SMTP dedicato disattivato. Gli OTP usano il sistema precedente.',
         'tested'=>'Server SMTP ha accettato la prova. Verifica di averla ricevuta, anche nello spam, prima di attivare.',
-        'enabled'=>'SMTP dedicato attivo. Verifica subito un login da un altro browser senza chiudere questa sessione.',
+        'enabled'=>'SMTP dedicato attivo per gli altri utenti. Verifica un login con un account diverso da ID 1. Il tuo OTP resta sul sistema precedente.',
         'missing'=>'Inserisci la password SMTP prima di proseguire.',
         'crypto'=>'Cifratura non disponibile: verificare sodium e le quattro chiavi di wp-config.php.',
         'storage'=>'Impossibile salvare la configurazione.',
@@ -206,12 +210,12 @@ function psr_otp_smtp_admin_panel() {
     $key = psr_otp_smtp_site_key();
     $ready = $key !== false;
     if ($ready) { sodium_memzero($key); }
-    echo '<div class="psrc-card" style="margin-top:18px"><h2>SMTP dedicato agli OTP</h2><p>Riservato all’amministratore ID 1. Le altre email del Comune non vengono modificate.</p>';
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>SMTP dedicato agli OTP</h2><p>Riservato all’amministratore ID 1. Il tuo account ID 1 usa sempre il sistema precedente WordPress/Plesk, anche se SMTP dedicato è attivo o non funziona. Le altre email del Comune non vengono modificate.</p>';
     $result = $_GET['smtp_result'] ?? '';
     if (is_string($result) && preg_match('/\A(?:saved|disabled|tested|enabled|missing|crypto|storage|psr_otp_smtp_[a-z0-9_]{1,64})\z/D',$result)) {
         echo '<div role="status" class="notice notice-' . (in_array($result,array('saved','disabled','tested','enabled'),true)?'success':'error') . ' inline"><p>' . esc_html(psr_otp_smtp_result_message($result)) . '</p></div>';
     }
-    echo '<p><strong>Trasporto attuale:</strong> ' . ($active?'SMTP dedicato Aruba':'Sistema precedente WordPress') . ' · <strong>Password:</strong> ' . ($stored?'Cifrata nel database':'Non configurata') . '</p>';
+    echo '<p><strong>Trasporto altri utenti:</strong> ' . ($active?'SMTP dedicato Aruba':'Sistema precedente WordPress') . ' · <strong>Password:</strong> ' . ($stored?'Cifrata nel database':'Non configurata') . '</p>';
     if ($override) { echo '<div class="notice notice-warning inline"><p>Disattivazione di emergenza imposta da wp-config.php.</p></div>'; }
     if (!$ready) { echo '<div class="notice notice-error inline"><p>Chiavi di sicurezza o estensione sodium non disponibili. Non attivare SMTP.</p></div>'; }
     echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" autocomplete="off">';
@@ -221,8 +225,8 @@ function psr_otp_smtp_admin_panel() {
         echo '<div><label>' . esc_html($label) . '</label><p><strong>' . esc_html($value) . '</strong></p></div>';
     }
     echo '</div><p><label for="psr-smtp-password"><strong>Password SMTP</strong></label><br><input id="psr-smtp-password" type="password" name="psr_smtp_password" maxlength="1024" autocomplete="new-password" style="width:min(100%,360px)" placeholder="' . ($stored?'Lascia vuoto per mantenere la password':'Inserisci la password della casella') . '"></p>';
-    echo '<p><label><input type="checkbox" name="psr_smtp_enabled" value="1" ' . checked(!empty($record['enabled']),true,false) . '> Utilizza SMTP dedicato per gli OTP</label></p>';
-    echo '<p class="psrc-muted">Prima salva la password senza attivare, invia una prova e controlla la posta. L’attivazione esegue un ulteriore test SMTP. Il test non contiene codici OTP e arriva soltanto all’indirizzo protetto ID 1. Attendi 30 secondi tra i test.</p>';
+    echo '<p><label><input type="checkbox" name="psr_smtp_enabled" value="1" ' . checked(!empty($record['enabled']),true,false) . '> Utilizza SMTP dedicato per gli OTP degli altri utenti (ID 1 sempre escluso)</label></p>';
+    echo '<p class="psrc-muted">Prima salva la password senza attivare, invia una prova e controlla la posta. L’attivazione esegue un ulteriore test SMTP. Il test non contiene codici OTP e arriva soltanto all’indirizzo protetto ID 1; i veri OTP di ID 1 non usano mai questo SMTP. Attendi 30 secondi tra i test.</p>';
     echo '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="submit" class="psrc-btn" name="smtp_operation" value="save">Salva impostazioni</button><button type="submit" class="psrc-btn secondary" name="smtp_operation" value="test">Invia email di prova</button></div></form>';
     echo '<p class="psrc-muted">In caso di blocco puoi ripristinare il vecchio trasporto da Plesk File Manager inserendo <code>define(&#39;PSR_OTP_SMTP_ENABLED&#39;, false);</code> in wp-config.php. Non disabilita gli OTP.</p></div>';
 }
