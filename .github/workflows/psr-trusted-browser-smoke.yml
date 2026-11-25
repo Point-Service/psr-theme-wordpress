@@ -5,8 +5,10 @@ on:
       - master
       - "feature/psr-browser-attendibile-20261123"
       - "fix/psr-trusted-browser-owner-only-20261125"
+      - "fix/psr-trusted-browser-diagnostics-20261125"
     paths:
       - "inc/psr-trusted-browser.php"
+      - "inc/psr-security-center.php"
       - "inc/psr-login-security.php"
       - "tests/psr-trusted-browser-smoke.php"
       - ".github/workflows/psr-trusted-browser-smoke.yml"
@@ -24,6 +26,7 @@ jobs:
         run: |
           php -l inc/psr-login-security.php
           php -l inc/psr-trusted-browser.php
+          php -l inc/psr-security-center.php
           php -l tests/psr-trusted-browser-smoke.php
       - name: Verifica trust browser, IP e scadenze
         run: php tests/psr-trusted-browser-smoke.php

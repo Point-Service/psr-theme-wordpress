@@ -19,19 +19,20 @@ function psr_trust_office_ip() {
         ? $ip : '';
 }
 
-function psr_trust_office_request() {
-    if (!psr_trust_enabled() || !is_ssl() || !function_exists('psr_login_ip')
-        || !function_exists('psr_geo_decision')) { return false; }
-
+function psr_trust_office_status() {
+    if (!psr_trust_enabled()) { return 'disabled'; }
+    if (!is_ssl()) { return 'https_missing'; }
+    if (!function_exists('psr_login_ip') || !function_exists('psr_geo_decision')) { return 'module_missing'; }
     $office = psr_trust_office_ip();
-    $actual = psr_login_ip(); // Solo REMOTE_ADDR, mai X-Forwarded-For.
-    if ($office === '' || $actual === '' || !hash_equals($office, $actual)) { return false; }
-
+    $actual = psr_login_ip();
+    if ($office === '') { return 'office_invalid'; }
+    if ($actual === '' || !hash_equals($office, $actual)) { return 'ip_mismatch'; }
     $geo = psr_geo_decision();
-    // I blocchi GeoIP/blacklist prevalgono sempre sul browser attendibile.
-    return is_array($geo) && empty($geo['blocked']) && ($geo['country'] ?? '') === 'IT'
-        && hash_equals($actual, (string)($geo['ip'] ?? ''));
+    if (!is_array($geo) || !empty($geo['blocked']) || ($geo['country'] ?? '') !== 'IT'
+        || !hash_equals($actual, (string)($geo['ip'] ?? ''))) { return 'geo_denied'; }
+    return 'ok';
 }
+function psr_trust_office_request() { return psr_trust_office_status() === 'ok'; }
 
 function psr_trust_cookie_name() {
     // Cookie host-only: non si trasferisce tra diversi Comuni o sottodomini.
@@ -63,36 +64,33 @@ function psr_trust_office_stamp() {
 }
 
 /** Non accetta login da REST, XML-RPC, PHP CLI o da IP non aziendale. */
-function psr_trust_can_login($user) {
-    if (!psr_trust_owner($user)
-        || !function_exists('psr_login_interactive') || !psr_login_interactive()
-        || !psr_trust_office_request()) { return false; }
-
+/** Inspect the exact same predicates for login and the owner-only diagnostic panel. */
+function psr_trust_browser_status($user) {
+    if (!psr_trust_owner($user)) { return 'other_user'; }
+    $office = psr_trust_office_status();
+    if ($office !== 'ok') { return $office; }
     $ua_hash = psr_trust_user_agent_hash();
     $pw_stamp = psr_trust_password_stamp($user);
-    if ($ua_hash === '' || $pw_stamp === '') { return false; }
+    if ($ua_hash === '' || $pw_stamp === '') { return 'identity_missing'; }
     $token = $_COOKIE[psr_trust_cookie_name()] ?? '';
-    if (!is_string($token) || !preg_match('/^[a-f0-9]{64}$/D', $token)) { return false; }
-
-    $records = get_user_meta((int)$user->ID, psr_trust_meta_key(), true);
-    if (!is_array($records)) { return false; }
-    $digest = psr_trust_token_digest($user->ID, $token);
-    $entry = $records[$digest] ?? null;
-    if (!is_array($entry)) { return false; }
-
+    if ($token === '') { return 'cookie_missing'; }
+    if (!is_string($token) || !preg_match('/^[a-f0-9]{64}$/D', $token)) { return 'cookie_invalid'; }
+    $records = get_user_meta(1, psr_trust_meta_key(), true);
+    $entry = is_array($records) ? ($records[psr_trust_token_digest(1,$token)] ?? null) : null;
+    if (!is_array($entry)) { return 'record_missing'; }
     $now = time();
     if ((int)($entry['expires'] ?? 0) <= $now
         || (int)($entry['created'] ?? 0) <= 0
         || (int)($entry['created'] ?? 0) > $now
-        || (int)($entry['expires'] ?? 0) - (int)($entry['created'] ?? 0) > psr_trust_ttl()) {
-        return false;
-    }
-
-    return is_string($entry['ua'] ?? null) && is_string($entry['password'] ?? null)
-        && is_string($entry['office'] ?? null)
-        && hash_equals($ua_hash, $entry['ua'])
-        && hash_equals($pw_stamp, $entry['password'])
-        && hash_equals(psr_trust_office_stamp(), $entry['office']);
+        || (int)($entry['expires'] ?? 0) - (int)($entry['created'] ?? 0) > psr_trust_ttl()) { return 'expired'; }
+    if (!is_string($entry['ua'] ?? null) || !hash_equals($ua_hash,$entry['ua'])) { return 'browser_changed'; }
+    if (!is_string($entry['password'] ?? null) || !hash_equals($pw_stamp,$entry['password'])) { return 'password_changed'; }
+    if (!is_string($entry['office'] ?? null) || !hash_equals(psr_trust_office_stamp(),$entry['office'])) { return 'office_changed'; }
+    return 'ok';
+}
+function psr_trust_can_login($user) {
+    return function_exists('psr_login_interactive') && psr_login_interactive()
+        && psr_trust_browser_status($user) === 'ok';
 }
 
 /** Salva SOLO l'HMAC del token, mai il suo valore in chiaro nel database. */
@@ -145,22 +143,26 @@ function psr_trust_toast_key($user_id, $wp_session_token) {
 
 /** Invocata solamente dopo OTP valido, sessione creata e cookie di sessione emesso. */
 function psr_trust_after_otp($user) {
-    if (!psr_trust_owner($user)
-        || !psr_trust_office_request() || headers_sent()) { return false; }
+    if (!psr_trust_owner($user)) { return false; }
+    $status = psr_trust_office_status();
+    if ($status !== 'ok') { psr_trust_enrollment_note($status); return false; }
+    if (headers_sent()) { psr_trust_enrollment_note('headers_sent'); return false; }
     try {
         $token = bin2hex(random_bytes(32));
     } catch (Throwable $e) {
+        psr_trust_enrollment_note('random_failed');
         return false; // Nessun fallback a token prevedibili.
     }
-    if (!psr_trust_store_token($user, $token)) { return false; }
+    if (!psr_trust_store_token($user, $token)) { psr_trust_enrollment_note('store_failed'); return false; }
     $ok = setcookie(psr_trust_cookie_name(), $token, array(
         'expires' => time() + psr_trust_ttl(),
         'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'Lax'
     ));
     if (!$ok) {
         // La credenziale non consegnata non e' utilizzabile.
-        return false;
+        psr_trust_enrollment_note('cookie_emit_failed'); return false;
     }
+    psr_trust_enrollment_note('issued');
     // La notifica non contiene token, IP, email o identificativi personali.
     $session = $GLOBALS['psr_device_new_token'] ?? '';
     if (is_string($session) && $session !== '') {
@@ -202,3 +204,38 @@ function psr_trust_welcome_toast() {
 }
 add_action('admin_footer', 'psr_trust_welcome_toast', PHP_INT_MAX);
 add_action('wp_footer', 'psr_trust_welcome_toast', PHP_INT_MAX);
+
+/** Last enrollment result is informational only; never used to authorize. */
+function psr_trust_enrollment_note($status) {
+    update_user_meta(1, '_psr_trusted_browser_last_result', array('status'=>$status,'time'=>time()));
+}
+function psr_trust_status_label($status) {
+    $labels = array('ok'=>'Riconosciuto e valido','disabled'=>'Funzione disattivata','https_missing'=>'HTTPS non riconosciuto',
+        'module_missing'=>'Modulo non disponibile','office_invalid'=>'IP aziendale non configurato correttamente',
+        'ip_mismatch'=>'IP rilevato diverso da quello autorizzato','geo_denied'=>'Verifica geografica o blocco IP non superata',
+        'identity_missing'=>'Dati del browser o account non disponibili','cookie_missing'=>'Cookie assente nel browser',
+        'cookie_invalid'=>'Cookie non valido','record_missing'=>'Associazione non trovata nel database',
+        'expired'=>'Associazione scaduta','browser_changed'=>'Browser o User-Agent cambiato',
+        'password_changed'=>'Password WordPress cambiata','office_changed'=>'IP autorizzato cambiato',
+        'headers_sent'=>'Intestazioni già inviate: cookie non emesso','random_failed'=>'Generazione token non riuscita',
+        'store_failed'=>'Salvataggio associazione non riuscito','cookie_emit_failed'=>'Emissione cookie non riuscita',
+        'issued'=>'Cookie emesso dopo OTP valido (da verificare nel browser)','other_user'=>'Account non autorizzato');
+    return is_string($status) ? ($labels[$status] ?? 'Non disponibile') : 'Non disponibile';
+}
+function psr_trust_diagnostics_panel() {
+    if (!function_exists('psr_center_is_owner') || !psr_center_is_owner() || !psr_login_session_verified(1) || !is_ssl()) { return; }
+    $user = get_userdata(1);
+    $status = psr_trust_browser_status($user);
+    $last = get_user_meta(1,'_psr_trusted_browser_last_result',true);
+    echo '<div class="psrc-card" style="margin-top:18px"><h2>Browser aziendale · 30 giorni</h2><p>Esclusivamente per ID 1 e per il singolo IP autorizzato. Le sessioni WordPress conservano le normali scadenze.</p>';
+    echo '<p><strong>IP pubblico rilevato:</strong> <code>' . esc_html(psr_login_ip() ?: 'Non rilevato') . '</code><br><strong>IP autorizzato:</strong> <code>' . esc_html(psr_trust_office_ip() ?: 'Non configurato') . '</code></p>';
+    echo '<p><strong>Stato rete:</strong> ' . esc_html(psr_trust_status_label(psr_trust_office_status())) . '<br><strong>Stato browser attuale:</strong> ' . esc_html(psr_trust_status_label($status)) . '</p>';
+    if (is_array($last)) { echo '<p><strong>Ultimo tentativo di associazione:</strong> ' . esc_html(psr_trust_status_label($last['status']??'')) . ' · ' . esc_html(wp_date('d/m/Y H:i:s',(int)($last['time']??0))) . '</p>'; }
+    if ($status === 'ok') {
+        $token = $_COOKIE[psr_trust_cookie_name()];
+        $records = get_user_meta(1,psr_trust_meta_key(),true);
+        $entry = $records[psr_trust_token_digest(1,$token)]??array();
+        if (!empty($entry['expires'])) { echo '<p><strong>Scadenza:</strong> ' . esc_html(wp_date('d/m/Y H:i:s',(int)$entry['expires'])) . '</p>'; }
+    }
+    echo '<p class="psrc-muted">Se il cookie è assente, prova un nuovo login con OTP nello stesso browser normale e con lo stesso indirizzo del sito (www o senza www). Non usare una finestra privata. Nessun IP viene autorizzato automaticamente.</p></div>';
+}
