@@ -1,7 +1,7 @@
 <?php
 /**
  * PSR - Browser attendibile: skip OTP solo dopo un precedente OTP verificato,
- * dalla rete aziendale identificata con un singolo IP pubblico.
+ * esclusivamente per ID 1 dalla rete aziendale identificata con un singolo IP pubblico.
  * Non cambia il controllo sessione (max 12 ore e inattivita' 1 ora).
  * Le chiavi per la verifica del cookie sono solo lato WordPress, mai nel codice.
  */
@@ -38,6 +38,10 @@ function psr_trust_cookie_name() {
     return '__Host-psr_trusted_' . substr(hash('sha256', site_url('/')), 0, 16);
 }
 function psr_trust_meta_key() { return '_psr_trusted_browsers_v1'; }
+/** ID 1 only. Old records of any other user are permanently ineligible. */
+function psr_trust_owner($user) {
+    return $user instanceof WP_User && (int)$user->ID === 1;
+}
 function psr_trust_ttl() { return 30 * DAY_IN_SECONDS; }
 
 function psr_trust_user_agent_hash() {
@@ -46,7 +50,7 @@ function psr_trust_user_agent_hash() {
     return hash_hmac('sha256', 'psr-trust-ua-v1|' . $ua, wp_salt('auth'));
 }
 function psr_trust_password_stamp($user) {
-    if (!($user instanceof WP_User) || (int)$user->ID <= 0 ||
+    if (!psr_trust_owner($user) ||
         !is_string($user->user_pass) || $user->user_pass === '') { return ''; }
     return hash_hmac('sha256', 'psr-trust-pw-v1|' . $user->user_pass, wp_salt('secure_auth'));
 }
@@ -60,7 +64,7 @@ function psr_trust_office_stamp() {
 
 /** Non accetta login da REST, XML-RPC, PHP CLI o da IP non aziendale. */
 function psr_trust_can_login($user) {
-    if (!($user instanceof WP_User) || (int)$user->ID <= 0
+    if (!psr_trust_owner($user)
         || !function_exists('psr_login_interactive') || !psr_login_interactive()
         || !psr_trust_office_request()) { return false; }
 
@@ -93,7 +97,7 @@ function psr_trust_can_login($user) {
 
 /** Salva SOLO l'HMAC del token, mai il suo valore in chiaro nel database. */
 function psr_trust_store_token($user, $token) {
-    if (!($user instanceof WP_User) || (int)$user->ID <= 0
+    if (!psr_trust_owner($user)
         || !is_string($token) || !preg_match('/^[a-f0-9]{64}$/D', $token)
         || !psr_trust_office_request()) { return false; }
 
@@ -141,7 +145,7 @@ function psr_trust_toast_key($user_id, $wp_session_token) {
 
 /** Invocata solamente dopo OTP valido, sessione creata e cookie di sessione emesso. */
 function psr_trust_after_otp($user) {
-    if (!($user instanceof WP_User) || (int)$user->ID <= 0
+    if (!psr_trust_owner($user)
         || !psr_trust_office_request() || headers_sent()) { return false; }
     try {
         $token = bin2hex(random_bytes(32));
@@ -183,7 +187,7 @@ add_action('profile_update', 'psr_trust_profile_update', 10, 2);
 function psr_trust_welcome_toast() {
     if (!function_exists('psr_login_session_verified') || !is_user_logged_in()) { return; }
     $uid = (int)get_current_user_id();
-    if ($uid <= 0 || !psr_login_session_verified($uid)) { return; }
+    if ($uid !== 1 || !psr_login_session_verified($uid)) { return; }
     $session = wp_get_session_token();
     if (!is_string($session) || $session === '') { return; }
     $key = psr_trust_toast_key($uid, $session);
@@ -191,7 +195,7 @@ function psr_trust_welcome_toast() {
     delete_transient($key);
     echo '<div id="psr-trust-toast" role="status" aria-live="polite" class="psr-trust-toast">';
     echo '<strong>Browser aziendale riconosciuto</strong>';
-    echo '<p>Su questo Comune e da questo browser, per 30 giorni puoi accedere dalla rete dell’ufficio con la sola password, senza nuovo OTP. Da altre reti o browser servirà ancora l’OTP. Le sessioni restano limitate a 12 ore (1 ora di inattività).</p>';
+    echo '<p>Solo il tuo account ID 1, su questo Comune e da questo browser, per 30 giorni può accedere dalla rete dell’ufficio con la sola password, senza nuovo OTP. Da altre reti o browser servirà ancora l’OTP. Le sessioni restano limitate a 12 ore (1 ora di inattività).</p>';
     echo '<button type="button" aria-label="Chiudi avviso" onclick="document.getElementById(\'psr-trust-toast\').remove()">×</button></div>';
     echo '<style>.psr-trust-toast{position:fixed;right:18px;bottom:20px;z-index:2147483000;max-width:430px;background:#173f33;color:#fff;padding:16px 44px 16px 18px;border-radius:12px;box-shadow:0 7px 28px #0005;font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}.psr-trust-toast strong{display:block;font-size:16px;margin-bottom:6px}.psr-trust-toast p{margin:0}.psr-trust-toast button{position:absolute;top:8px;right:10px;border:0;background:none;color:#fff;font-size:25px;cursor:pointer}@media(max-width:600px){.psr-trust-toast{left:10px;right:10px;bottom:12px;max-width:none}}</style>';
     echo '<script>setTimeout(function(){var t=document.getElementById("psr-trust-toast");if(t)t.remove();},14000);</script>';
