@@ -1,0 +1,32 @@
+name: PSR - capacità login
+on:
+  push:
+    branches: [master, "fix/psr-login-capacity-20261125"]
+    paths:
+      - 'inc/psr-auth-hardening.php'
+      - 'tests/psr-auth-capacity-smoke.php'
+      - '.github/workflows/psr-auth-capacity.yml'
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.2", "8.3", "8.4"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - run: |
+          php -l inc/psr-auth-hardening.php
+          php -l inc/psr-login-security.php
+          php -l tests/psr-auth-capacity-smoke.php
+          php tests/psr-auth-capacity-smoke.php
+          php tests/psr-auth-capacity-smoke.php 16
+          php tests/psr-auth-capacity-smoke.php 1
+          php tests/psr-auth-capacity-smoke.php 100
+          php tests/psr-otp-smtp-smoke.php
+          php tests/psr-trusted-browser-smoke.php

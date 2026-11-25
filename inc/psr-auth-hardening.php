@@ -42,10 +42,11 @@ function psr_auth_release_password_lock() {
 add_action('wp_login_failed', 'psr_auth_release_password_lock', 20);
 add_action('wp_login', 'psr_auth_release_password_lock', 40);
 function psr_auth_capacity() {
-    $maximum=defined('PSR_AUTH_MAX_PARALLEL') ? min(64,max(1,(int)PSR_AUTH_MAX_PARALLEL)) : 16;
+    $maximum=defined('PSR_AUTH_MAX_PARALLEL') ? min(64,max(1,(int)PSR_AUTH_MAX_PARALLEL)) : 24;
     $start=random_int(0,$maximum-1);
-    // Pochi tentativi e nessuna attesa, anche se tutti gli slot sono occupati.
-    for($i=0;$i<min(4,$maximum);$i++) {
+    // Una sola scansione circolare di tutti gli slot, senza attesa o retry.
+    // Evita rifiuti casuali quando esistono slot liberi; il tetto resta atomico.
+    for($i=0;$i<$maximum;$i++) {
         $lock=psr_auth_lock('capacity|' . (($start+$i)%$maximum),0);
         if ($lock) { return $lock; }
     }
