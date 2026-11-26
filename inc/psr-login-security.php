@@ -386,7 +386,9 @@ function psr_login_email_matches($pending, $ticket, $code) {
         && hash_equals($expected, psr_login_email_digest($ticket, (string)$code));
 }
 /** Limiti anti-abuso per ogni account e per IP, senza penalizzare tutti gli utenti. */
-function psr_login_email_can_send($user) {
+function psr_login_email_can_send($user, &$reservation = null, &$error = null) {
+    $reservation = null;
+    $error = new WP_Error('psr_login_email_busy', 'Invio OTP temporaneamente sospeso per motivi di sicurezza. Attendi qualche secondo e riprova.');
     if (!($user instanceof WP_User)) { return false; }
     $key = '_psr_login_email_limit_' . (int)$user->ID;
     $ip = psr_login_ip();
@@ -403,7 +405,10 @@ function psr_login_email_can_send($user) {
         if (!is_array($istate) || time()-(int)($istate['start']??0)>=HOUR_IN_SECONDS) {
             $istate=array('start'=>time(),'n'=>0);
         }
-        if ((int)$istate['n'] >= 180) { return false; }
+        if ((int)$istate['n'] >= 180) {
+            $error = new WP_Error('psr_login_email_ip_limit', 'Invio OTP temporaneamente limitato per motivi di sicurezza. Riprova più tardi.');
+            return false;
+        }
     }
 
     $now = time();
@@ -411,16 +416,42 @@ function psr_login_email_can_send($user) {
     if (!is_array($state) || $now - (int)($state['start'] ?? 0) >= HOUR_IN_SECONDS) {
         $state = array('start'=>$now, 'last'=>0, 'n'=>0);
     }
-    if ((int)($state['last'] ?? 0) > $now - 60 || (int)($state['n'] ?? 0) >= 10) { return false; }
+    if ((int)($state['n'] ?? 0) >= 10) {
+        $error = new WP_Error('psr_login_email_user_limit', 'Limite orario OTP del tuo account raggiunto per motivi di sicurezza. Riprova più tardi.');
+        return false;
+    }
+    $retry_at = (int)($state['retry_at'] ?? ((int)($state['last'] ?? 0) + 60));
+    if ($retry_at > $now) {
+        $error = new WP_Error('psr_login_email_throttled', 'Invio OTP temporaneamente limitato per motivi di sicurezza. Riprova tra ' . ($retry_at - $now) . ' secondi.');
+        return false;
+    }
     $state['last'] = $now;
+    $state['retry_at'] = $now + 60;
+    $state['reservation'] = bin2hex(random_bytes(16));
     $state['n'] = (int)$state['n'] + 1;
     if (!set_transient($key, $state, HOUR_IN_SECONDS)) { return false; }
     if ($ip_key !== '') {
         $istate['n']++;
         if (!set_transient($ip_key, $istate, HOUR_IN_SECONDS)) { return false; }
     }
+    $reservation = $state['reservation'];
     return true;
     } finally { foreach(array_reverse($locks) as $lock) { psr_auth_unlock($lock); } }
+}
+/** Solo un errore di trasporto confermato abbrevia la pausa; mai azzerare le quote. */
+function psr_login_email_mark_failed($user, $reservation) {
+    if (!($user instanceof WP_User) || !is_string($reservation) || $reservation === '') { return; }
+    $key = '_psr_login_email_limit_' . (int)$user->ID;
+    $lock = psr_auth_lock('mail|' . $key);
+    if (!$lock) { return; }
+    try {
+        $state = psr_auth_fresh_transient($key);
+        if (!is_array($state) || !hash_equals((string)($state['reservation'] ?? ''), $reservation)) { return; }
+        $ttl = (int)($state['start'] ?? 0) + HOUR_IN_SECONDS - time();
+        if ($ttl <= 0) { return; }
+        $state['retry_at'] = min((int)$state['retry_at'], time() + 15);
+        set_transient($key, $state, $ttl);
+    } finally { psr_auth_unlock($lock); }
 }
 /** Dati indicativi della richiesta OTP, senza usare header proxy non attendibili. */
 function psr_login_mail_request_details($timestamp, $ip) {
@@ -464,9 +495,8 @@ function psr_login_email_issue($user, $ticket, &$pending) {
     if (!function_exists('wp_mail') || !function_exists('random_int')) {
         return new WP_Error('psr_login_email_unavailable', 'Servizio OTP via email non disponibile. Accesso negato.');
     }
-    if (!psr_login_email_can_send($user)) {
-        return new WP_Error('psr_login_email_throttled', 'Invio OTP temporaneamente limitato per motivi di sicurezza. Attendi prima di richiedere un nuovo codice; se il limite persiste, riprova più tardi.');
-    }
+    $reservation = null; $limit_error = null;
+    if (!psr_login_email_can_send($user, $reservation, $limit_error)) { return $limit_error; }
     $now = time();
     $code = str_pad((string)random_int(0, 99999999), 8, '0', STR_PAD_LEFT);
     $pending['digest'] = psr_login_email_digest($ticket, $code);
@@ -503,6 +533,7 @@ function psr_login_email_issue($user, $ticket, &$pending) {
             ? psr_otp_smtp_send($email, $subject, $body)
             : new WP_Error('psr_otp_smtp_module_missing', 'Servizio OTP temporaneamente non disponibile.');
         if (is_wp_error($sent)) {
+            psr_login_email_mark_failed($user, $reservation);
             unset($pending['digest'], $pending['code_expires']);
             return $sent;
         }
@@ -514,6 +545,7 @@ function psr_login_email_issue($user, $ticket, &$pending) {
     }
     // Restituzione true da wp_mail significa accettazione dal trasporto, NON consegna garantita.
     if (!$sent) {
+        psr_login_email_mark_failed($user, $reservation);
         unset($pending['digest'], $pending['code_expires']);
         return new WP_Error('psr_login_email_send_failed', 'Invio OTP non riuscito. Verificare SMTP da Plesk: accesso negato.');
     }
@@ -749,6 +781,26 @@ function psr_login_cancel_ticket($ticket) {
     if ($ticket !== '') { delete_transient(psr_login_pending_key($ticket)); }
     psr_login_set_pending_cookie('', time()-3600);
 }
+/** Il core puo' aggiornare l'hash durante wp_authenticate, lasciando il WP_User precedente. */
+function psr_login_current_password_hash($user) {
+    global $wpdb;
+    if (!($user instanceof WP_User) || (int)$user->ID <= 0) { return ''; }
+    $hash = $wpdb->get_var($wpdb->prepare("SELECT user_pass FROM $wpdb->users WHERE ID=%d", (int)$user->ID));
+    return is_string($hash) ? $hash : '';
+}
+function psr_login_password_stamp_after_auth($user, $password) {
+    $hash = psr_login_current_password_hash($user);
+    if ($hash === '') { return ''; }
+    // Se nel frattempo la password e' cambiata, quella appena fornita deve essere ancora valida.
+    if (!hash_equals((string)$user->user_pass, $hash) &&
+        (!is_string($password) || !wp_check_password($password, $hash, (int)$user->ID))) { return ''; }
+    return hash_hmac('sha256', $hash, wp_salt('auth'));
+}
+function psr_login_reusable_pending($user, $stamp) {
+    list($ticket, $pending) = psr_login_pending();
+    return $stamp !== '' && is_array($pending) && (int)$pending['uid'] === (int)$user->ID &&
+        hash_equals((string)($pending['password_stamp'] ?? ''), $stamp) ? $pending : false;
+}
 function psr_login_start_otp($user, $username, $password) {
     $error = psr_login_access_error();
     if (is_wp_error($error)) { return $error; }
@@ -775,6 +827,15 @@ function psr_login_start_otp($user, $username, $password) {
         wp_safe_redirect(wp_validate_redirect($redirect, admin_url()) ?: admin_url());
         exit;
     }
+    $stamp = psr_login_password_stamp_after_auth($user, $password);
+    if ($stamp === '') {
+        return new WP_Error('psr_login_credentials_changed', 'La verifica delle credenziali non è più valida. Ripeti il login.');
+    }
+    // Dopo password e controlli di sicurezza, riprendi solo il ticket valido di questo browser/account.
+    if (psr_login_reusable_pending($user, $stamp)) {
+        wp_safe_redirect(add_query_arg('action', 'psr_mfa', wp_login_url()));
+        exit;
+    }
     if (!function_exists('random_bytes')) {
         return new WP_Error('psr_login_crypto_missing', 'Generatore crittografico OTP non disponibile. Accesso negato.');
     }
@@ -782,7 +843,7 @@ function psr_login_start_otp($user, $username, $password) {
     $now = time();
     $pending = array(
         'uid'=>(int)$user->ID, 'created'=>$now, 'deadline'=>$now + 900,
-        'password_stamp'=>hash_hmac('sha256',(string)$user->user_pass,wp_salt('auth')),
+        'password_stamp'=>$stamp,
         'ua'=>hash('sha256', (string)($_SERVER['HTTP_USER_AGENT'] ?? '')),
         'ip'=>psr_login_ip(), 'tries'=>0, 'resends'=>0,
         'remember'=>!empty($_POST['rememberme']),
@@ -861,9 +922,10 @@ function psr_login_otp_page() {
         wp_die('Verifica scaduta o non valida. <a href="' . esc_url(wp_login_url()) . '">Ricomincia dal login</a>.', 'PSR - OTP email', array('response'=>403));
     }
     $user = get_userdata((int)$pending['uid']);
-    if (!psr_login_requires_otp($user) ||
+    $current_hash = psr_login_current_password_hash($user);
+    if (!psr_login_requires_otp($user) || $current_hash === '' ||
         !hash_equals((string)($pending['password_stamp']??''),
-            hash_hmac('sha256',(string)($user instanceof WP_User ? $user->user_pass : ''),wp_salt('auth')))) {
+            hash_hmac('sha256',$current_hash,wp_salt('auth')))) {
         psr_login_cancel_ticket($ticket); wp_die('Account o credenziali non piu valide.');
     }
     if (psr_account_rate_blocked(psr_login_ip(), $user->user_login) > 0) {

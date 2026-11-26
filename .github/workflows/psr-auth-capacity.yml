@@ -1,11 +1,12 @@
 name: PSR - capacità login
 on:
   push:
-    branches: [master, "fix/psr-login-capacity-20261125", "fix/psr-login-block-messages-20261125"]
+    branches: [master, "fix/psr-login-capacity-20261125", "fix/psr-login-block-messages-20261125", "fix/psr-otp-login-retry-20261126"]
     paths:
       - 'inc/psr-auth-hardening.php'
       - 'inc/psr-login-security.php'
       - 'tests/psr-auth-capacity-smoke.php'
+      - 'tests/psr-otp-retry-smoke.php'
       - '.github/workflows/psr-auth-capacity.yml'
   workflow_dispatch:
 jobs:
@@ -29,5 +30,7 @@ jobs:
           php tests/psr-auth-capacity-smoke.php 16
           php tests/psr-auth-capacity-smoke.php 1
           php tests/psr-auth-capacity-smoke.php 100
+          php -l tests/psr-otp-retry-smoke.php
+          php tests/psr-otp-retry-smoke.php
           php tests/psr-otp-smtp-smoke.php
           php tests/psr-trusted-browser-smoke.php
