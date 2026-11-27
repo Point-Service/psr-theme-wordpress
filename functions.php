@@ -1624,6 +1624,39 @@ main .psr-service-taxonomy > p.text-paragraph-small.mb-0 {
     }
 }
 
+/* PSR: titoli sezioni interne, stessa gerarchia visiva della home.
+   Non altera titoli principali, ancore, schede, testi editoriali o indice. */
+body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > :is(h2,h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
+    font-size:clamp(1.45rem,1.8vw,1.8rem);
+    font-weight:700;
+    line-height:1.28;
+    letter-spacing:-.02em;
+    padding-inline-start:13px;
+    background-image:linear-gradient(var(--psr-institution-color,#245c9f),var(--psr-institution-color,#245c9f));
+    background-repeat:no-repeat;
+    background-size:4px .82em;
+    background-position:left .21em;
+    overflow-wrap:anywhere;
+}
+body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > h2:not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) ~ :is(h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
+    font-size:clamp(1.18rem,1.5vw,1.45rem);
+    font-weight:650;
+    line-height:1.4;
+    background-size:3px .8em;
+    background-position:left .27em;
+}
+@media (max-width:575.98px) {
+    body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > :is(h2,h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
+        padding-inline-start:11px;
+    }
+}
+@media print {
+    body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > :is(h2,h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
+        background-image:none;
+        padding-inline-start:0;
+    }
+}
+
 CSS
     );
     wp_add_inline_script('dci-comuni', <<<'JS'
