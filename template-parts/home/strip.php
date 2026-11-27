@@ -30,6 +30,7 @@ if (!empty($strip['strip_items']) && count($strip['strip_items']) > 0) :
           </div>
 
         </a>
+        <?php if (function_exists('psr_home_tools_edit_row')) { psr_home_tools_edit_row('strip_home', $item); } ?>
       </div>
 
     <?php endforeach; ?>

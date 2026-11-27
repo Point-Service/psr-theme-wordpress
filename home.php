@@ -17,12 +17,15 @@ if ($is_external_only) {
     exit;
 }
 
+if (function_exists('psr_home_tools_begin')) { psr_home_tools_begin(); }
 get_header();
 
 ?>
 	    
        <main id="main-container" class="main-container redbrown">
 
+        <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('header'); } ?>
+        <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('banner'); } ?>
         <?php get_template_part("template-parts/home/carosello2"); ?>
 
         <h1 class="visually-hidden">
@@ -30,6 +33,7 @@ get_header();
         </h1>
         <section id="head-section">
             <h2 class="visually-hidden">Contenuti in evidenza</h2>
+            <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('messages'); } ?>
             <?php
 			$messages = dci_get_option( "messages", "home_messages" );
             if($messages && !empty($messages)) {
@@ -40,7 +44,9 @@ get_header();
             
             
 	    <p></p>
+            <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('news'); } ?>
             <?php dci_get_template_part_async("home-notizie"); ?>
+            <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('events'); } ?>
             <?php dci_get_template_part_async("home-calendario"); ?>
 
         </section>
@@ -48,11 +54,15 @@ get_header();
 
 		   
         <section id="evidenza" class="evidence-section">
+                <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('topics'); } ?>
                 <?php dci_get_template_part_async("home-argomenti"); ?>
+               <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('strip'); } ?>
                <?php  get_template_part("template-parts/home/strip"); ?>
+                <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('services'); } ?>
                 <?php dci_get_template_part_async("home-servizi"); ?>
             <div class="section py-5 pb-lg-80 px-lg-5 position-relative">
 		        
+                <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('thematic'); } ?>
                 <?php  get_template_part("template-parts/home/siti","tematici"); ?>
             </div>
         </section>
@@ -60,6 +70,7 @@ get_header();
       
 		   
         <section id="accesso-rapido" class="quick-access-section">
+            <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('quick'); } ?>
 
             <?php 
                 $boxes = dci_get_option( "quickboxes", "accesso_rapido" );
@@ -69,6 +80,7 @@ get_header();
         
 		<?php 
 		    // Controlla se mostrare la galleria
+            if (function_exists('psr_home_tools_section')) { psr_home_tools_section('gallery'); }
             $mostra_gallery = dci_get_option('mostra_gallery', 'galleria');
             if ($mostra_gallery) {
                 $stile_galleria = dci_get_option('stile_galleria','galleria') ?: null;
@@ -83,9 +95,11 @@ get_header();
 		?>
 
 
+        <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('links'); } ?>
         <?php get_template_part("template-parts/home/ricerca"); ?>
 
          <?php 
+            if (function_exists('psr_home_tools_section')) { psr_home_tools_section('map'); }
             $show_map = dci_get_option( "ck_show_map", "homepage" );
             if($show_map === 'true'){
               dci_get_template_part_async("home-map");
@@ -93,8 +107,12 @@ get_header();
 
         ?>
         <?php get_template_part("template-parts/common/valuta-servizio"); ?>
+        <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('weather'); } ?>
         <?php dci_get_template_part_async("home-meteo"); ?>
+        <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('assistance'); } ?>
         <?php get_template_part("template-parts/common/assistenza-contatti"); ?>
+        <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('footer'); } ?>
+        <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('socials'); } ?>
     </main>
 <?php
 get_footer();

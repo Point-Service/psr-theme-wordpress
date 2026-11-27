@@ -87,6 +87,7 @@ $links = dci_get_option('link', 'link_utili');
                 </span>
 
               </a>
+              <?php if (function_exists('psr_home_tools_edit_row')) { psr_home_tools_edit_row('link_utili', $link); } ?>
 
             <?php } ?>
 

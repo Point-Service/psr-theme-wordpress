@@ -41,6 +41,7 @@
                         Dettagli
                     </a>
                 <?php endif; ?>
+                <?php if (function_exists('psr_home_tools_edit_row')) { psr_home_tools_edit_row('home_messages', $message); } ?>
 
             </p>
         </div>

@@ -241,6 +241,7 @@ if ($totale === 0) {
                                         <?php echo esc_html(preg_match('/[A-Z]{5,}/', $p->post_title) ? ucfirst(strtolower($p->post_title)) : $p->post_title); ?>
                                     </h3>
                                 </a>
+                                <?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($p->ID); } ?>
 
                                 <p class="mb-2 font-serif descrizione-breve-notizia" aria-label="<?php echo esc_attr($descrizione_breve); ?>">
                                     <?php echo esc_html(preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve); ?>
@@ -380,6 +381,7 @@ if ($totale === 0) {
                             <?php echo esc_html(preg_match('/[A-Z]{5,}/', $p->post_title) ? ucfirst(strtolower($p->post_title)) : $p->post_title); ?>
                         </h3>
                     </a>
+                    <?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($p->ID); } ?>
 
                     <p class="mb-2 font-serif descrizione-breve-notizia">
                         <?php echo esc_html(preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve); ?>

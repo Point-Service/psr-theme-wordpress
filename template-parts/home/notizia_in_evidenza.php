@@ -83,6 +83,7 @@ if (is_array($post_ids) && count($post_ids) > 1) {
                   ?>
                                 </h3>
                             </a>
+                            <?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
 
                             <p class="mb-2 font-serif">
                                 <?php
@@ -215,6 +216,7 @@ if (is_array($post_ids) && count($post_ids) > 1) {
                             <?php echo preg_match('/[A-Z]{5,}/', $post->post_title) ? ucfirst(strtolower($post->post_title)) : $post->post_title; ?>
                         </h3>
                     </a>
+                    <?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
 
                     <p class="mb-2 font-serif">
                         <?php echo preg_match('/[A-Z]{5,}/', $descrizione_breve) ? ucfirst(strtolower($descrizione_breve)) : $descrizione_breve; ?>

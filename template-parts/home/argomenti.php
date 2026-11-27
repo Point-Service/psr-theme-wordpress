@@ -87,6 +87,7 @@ $img = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null)
                   </svg>
                   <?php echo esc_html($argomento->name); ?>
                 </a>
+                <?php if (function_exists('psr_home_tools_edit_topic')) { psr_home_tools_edit_topic($argomento); } ?>
                 
                 <?php
                     }

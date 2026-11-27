@@ -18,6 +18,7 @@ if (is_array($siti_tematici) && count($siti_tematici)) {
           <div class="col-12 col-md-6 col-lg-4 card-wrapper pb-0">
             <?php
             get_template_part("template-parts/sito-tematico/card");
+            if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($sito_tematico_id); }
             ?>
           </div>
         <?php

@@ -34,5 +34,6 @@ if(isset($img) && $img != null){ ?>
                 <?php } ?>
             </div>
         </a>
+        <?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
     </div>
 <?php } ?>

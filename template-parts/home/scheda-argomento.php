@@ -42,6 +42,7 @@ if (isset($argomento_full['argomento_'.$count.'_contenuti']))
 <?php echo esc_html($argomento->name); ?>
 
 </h3>
+<?php if (function_exists('psr_home_tools_edit_topic')) { psr_home_tools_edit_topic($argomento); } ?>
 
 </div>
 

@@ -134,6 +134,7 @@ switch ($post_type_label) {
                 echo esc_html($title);
                 ?>
             </h3>
+            <?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
             
             <?php if (preg_match('/[A-Z]{5,}/', $descrizione_breve)) {
                 echo  '<p class="text-paragraph-card u-grey-light m-0 text-justify">' . ucfirst(strtolower($descrizione_breve)) . '</p>';

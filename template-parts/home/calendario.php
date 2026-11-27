@@ -63,7 +63,7 @@ $url_eventi = dci_get_template_page_url("page-templates/eventi.php");
 														?>
 																<p class="card-text px-2 pb-10 mb-10 d-flex">
 																	<?php if ($img) dci_get_img($img, 'me-3 rounded', array('loading' => 'lazy', 'decoding' => 'async', 'fetchpriority' => 'low')); ?>
-																	<a href="<?php echo $evento['link'] ?>"><?php echo $evento['titolo'] ?></a>
+																	<a href="<?php echo $evento['link'] ?>"><?php echo $evento['titolo'] ?></a><?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($evento['id']); } ?>
 																</p>
 														<?php }
 														} ?>

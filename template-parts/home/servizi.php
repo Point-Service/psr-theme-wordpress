@@ -111,6 +111,7 @@ if (is_array($servizi_evidenza) && count($servizi_evidenza) > 0) {
                                             <?php echo esc_html($servizio->post_title); ?>
                                         </a>
                                     </h3>
+                                    <?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($servizio_id); } ?>
 
                                     <!-- STATO E PERIODO -->
                                     <div class="mb-2">

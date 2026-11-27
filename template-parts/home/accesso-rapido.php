@@ -92,6 +92,7 @@ $box_accesso_rapido = $boxes;
                 </div>
 
             </a>
+            <?php if (function_exists('psr_home_tools_edit_row')) { psr_home_tools_edit_row('accesso_rapido', $box); } ?>
 
         </div>
 
