@@ -89,7 +89,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.15');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.16');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -982,28 +982,60 @@ body.psr-modern-admin:not(.block-editor-page) #wpbody-content input[type=file]:i
 }
 
 
-/* PSR: evidenzia delicatamente i metabox della colonna laterale dell'editor. */
+/* PSR: schede laterali dell'editor, riconoscibili ma leggere. */
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox {
-    border-color:#b9cddd;
-    box-shadow:0 2px 6px rgba(16,36,60,.08);
+    border:1px solid #c1d2e3;
+    border-radius:10px;
+    background:#fff;
+    box-shadow:0 3px 10px rgba(16,36,60,.065);
 }
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox > .postbox-header {
-    background:#e9f1f8;
-    border-bottom-color:#c5d6e5;
-    border-radius:7px 7px 0 0;
+    background:linear-gradient(110deg,#e8f1fa,#f3f7fb);
+    border-bottom-color:#d4e1ee;
+    border-radius:9px 9px 0 0;
+    box-shadow:inset 3px 0 #6695c4;
 }
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox.closed > .postbox-header {
-    border-radius:7px;
+    border-radius:9px;
 }
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox > .postbox-header h2 {
     color:#173f6e;
     font-weight:650;
+    line-height:1.45;
+    padding-inline-start:13px;
 }
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox > .postbox-header .handle-actions button:not(:disabled) {
-    color:#245c9f;
+    color:#315d87;
+    border-radius:5px;
 }
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox > .postbox-header .handle-actions button:not(:disabled):hover {
     background-color:#dbe8f5;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox > .postbox-header .handle-actions button:focus-visible {
+    outline:2px solid #245c9f;
+    outline-offset:-3px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox .inside :is(ul.categorychecklist,ul.cmb2-checkbox-list) li {
+    line-height:1.5;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox .inside :is(ul.categorychecklist,ul.cmb2-checkbox-list) label {
+    color:#28445d;
+    border-radius:4px;
+    overflow-wrap:anywhere;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox .inside :is(ul.categorychecklist,ul.cmb2-checkbox-list) label:hover {
+    background:#edf4fb;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox .inside :is(ul.categorychecklist,ul.cmb2-checkbox-list) input[type=checkbox]:checked + label {
+    color:#173f6e;
+    font-weight:600;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox .inside :is(.button,.cmb2-toggle) :is(svg,.dashicons) {
+    vertical-align:middle;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox .inside :is(.button,.cmb2-toggle):not(.button-primary):not(.button-link):not(.button-link-delete):not(:disabled):not(.disabled):not([aria-disabled=true]) {
+    border-radius:6px;
+    max-width:100%;
 }
 
 CSS
