@@ -35,7 +35,7 @@ get_header();
         <h1 class="visually-hidden">
             <?php echo dci_get_option("nome_comune"); ?>
         </h1>
-        <section id="head-section">
+        <section id="head-section" style="padding-top: clamp(16px, 2vw, 28px);">
             <h2 class="visually-hidden">Contenuti in evidenza</h2>
             <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('messages'); } ?>
             <?php
