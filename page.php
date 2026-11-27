@@ -16,7 +16,7 @@ get_header();
             ?>
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-lg-10">
+                    <div class="col-12">
                         <?php get_template_part("template-parts/common/breadcrumb"); ?>
                         <div class="cmp-hero">
                             <section class="it-hero-wrapper bg-white align-items-start">
@@ -32,17 +32,17 @@ get_header();
                         </div>
                     </div>
                 </div>
-                <div class="container ">
+                <div>
                     <article class="article-wrapper">
 
-                        <div class="row variable-gutters">
+                        <div class="row">
                             <div class="col-lg-12">
                                 <?php
                                 the_content();
                                 ?>                               
                             </div>
                         </div>
-                        <div class="row variable-gutters">
+                        <div class="row">
                             <div class="col-lg-12">
                                 <?php
                                 if ( comments_open() || get_comments_number() ) :
@@ -51,7 +51,7 @@ get_header();
                                 ?>
                             </div>
                         </div>
-                        <div class="row variable-gutters">
+                        <div class="row">
                             <div class="col-lg-12">
                                 <?php get_template_part( "template-parts/single/bottom" ); ?>
                             </div><!-- /col-lg-9 -->
