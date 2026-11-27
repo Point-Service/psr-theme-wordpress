@@ -1329,12 +1329,3 @@ function dci_terms_to_hide() {
 }
 
 
-?>
-
-
-
-
-
-
-
-
