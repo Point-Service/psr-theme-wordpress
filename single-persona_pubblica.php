@@ -104,7 +104,7 @@ get_header();
             return trim(strip_tags($text));
         }
     ?>
-</main>
+
 <script type="application/ld+json" data-element="metatag">
     {
         "name": "<?= $nome ?>",
