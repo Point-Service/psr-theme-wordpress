@@ -843,6 +843,21 @@ JS
 }
 add_action('wp_enqueue_scripts', 'psr_frontend_institution_colors', 20);
 
+/** PSR: restyle della sola home, senza migrazioni dei contenuti. */
+function psr_public_home_restyle_enqueue() {
+    if (!is_home() && !is_front_page()) {
+        return;
+    }
+    $relative = '/assets/css/psr-home-restyle.css';
+    $file = get_template_directory() . $relative;
+    if (is_readable($file)) {
+        wp_enqueue_style('psr-public-home-restyle', get_template_directory_uri() . $relative,
+            array('dci-wp-style'), (string) filemtime($file));
+    }
+}
+add_action('wp_enqueue_scripts', 'psr_public_home_restyle_enqueue', 30);
+
+
 
 function add_menu_link_class( $atts, $item, $args ) {
 	if (property_exists($args, 'link_class')) {

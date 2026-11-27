@@ -22,7 +22,7 @@ get_header();
 
 ?>
 	    
-       <main id="main-container" class="main-container redbrown">
+       <main id="main-container" class="main-container redbrown psr-home-restyle">
 
 
         <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('header'); } ?>
