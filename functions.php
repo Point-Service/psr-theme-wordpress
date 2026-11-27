@@ -782,6 +782,64 @@ function dci_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'dci_scripts' );
 
+/**
+ * Colore istituzionale effettivo del frontend. Il CSS aggiuntivo di ciascun
+ * Comune puo' personalizzare l'intestazione senza aggiornare le variabili
+ * Bootstrap. Manteniamo il CSS originale quando non si rileva un colore.
+ */
+function psr_frontend_institution_colors() {
+    wp_add_inline_style('dci-wp-style', <<<'CSS'
+html.psr-institution-color #main-container #notizie .btn-outline-primary,
+html.psr-institution-color #main-container #servizi .btn-outline-primary,
+html.psr-institution-color #main-container #link-utili a.link-utili-item,
+html.psr-institution-color #main-container #link-utili a.link-utili-item > span.t-primary {
+    color: var(--psr-institution-color) !important;
+}
+html.psr-institution-color #main-container #notizie .btn-outline-primary svg,
+html.psr-institution-color #main-container #servizi .btn-outline-primary svg,
+html.psr-institution-color #main-container #link-utili a.link-utili-item > svg {
+    fill: currentColor !important;
+}
+html.psr-institution-color main .pagination .page-item:not(.disabled) .page-link[aria-current]:not([aria-current="false"]),
+html.psr-institution-color main .pagination .page-item.active:not(.disabled) > .page-link {
+    color: var(--psr-institution-color) !important;
+    border-color: var(--psr-institution-color) !important;
+}
+html.psr-institution-color main .pagination .page-item:not(.disabled) .page-link.text,
+html.psr-institution-color main .pagination .page-item:not(.disabled) .page-link:hover,
+html.psr-institution-color main .pagination .page-item:not(.disabled) .page-link:focus-visible {
+    color: var(--psr-institution-color) !important;
+}
+CSS
+    );
+    wp_add_inline_script('dci-comuni', <<<'JS'
+(function () {
+    'use strict';
+    if (!window.getComputedStyle || !document.documentElement) { return; }
+    var selectors = ['.it-header-center-wrapper', '.it-header-navbar-wrapper', '.it-header-slim-wrapper'];
+    function syncColor() {
+        for (var i = 0; i < selectors.length; i++) {
+            var el = document.querySelector(selectors[i]);
+            if (!el) { continue; }
+            var color = window.getComputedStyle(el).backgroundColor;
+            if (!color || color === 'transparent' || /^rgba\(\s*[\d.]+,\s*[\d.]+,\s*[\d.]+,\s*0(?:\.0+)?\s*\)$/.test(color)) { continue; }
+            document.documentElement.style.setProperty('--psr-institution-color', color);
+            document.documentElement.classList.add('psr-institution-color');
+            return;
+        }
+    }
+    syncColor();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', syncColor, {once:true});
+    }
+    window.addEventListener('load', syncColor, {once:true});
+}());
+JS
+    , 'before');
+}
+add_action('wp_enqueue_scripts', 'psr_frontend_institution_colors', 20);
+
+
 function add_menu_link_class( $atts, $item, $args ) {
 	if (property_exists($args, 'link_class')) {
 	  $atts['class'] = $args->link_class;
