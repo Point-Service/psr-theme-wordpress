@@ -13,7 +13,7 @@ function psr_modern_admin_enabled() {
         && get_option('psr_modern_admin_ui', '1') === '1';
 }
 function psr_modern_admin_content_enabled() {
-    return psr_modern_admin_enabled() && get_option('psr_modern_admin_content_ui', '0') === '1';
+    return psr_modern_admin_enabled() && get_option('psr_modern_admin_content_ui', '1') === '1';
 }
 function psr_modern_admin_config_screen() {
     return is_admin() && !is_network_admin() && !is_user_admin() && !wp_doing_ajax()
@@ -70,8 +70,8 @@ function psr_modern_admin_setting() {
         . '> Abilita gestione contestuale dei contenuti</label></p>';
     echo '<p class="description" style="margin-left:24px">Mostra nella home e nelle sezioni interne del sito i comandi rapidi per aggiungere, modificare e configurare i contenuti, aprendo le relative schermate di WordPress in base ai permessi dell’operatore.</p>';
     echo '<p><label><input type="checkbox" name="psr_modern_admin_content_value" value="1"'
-        . checked(!$forced[0] && get_option('psr_modern_admin_content_ui', '0') === '1', true, false) . disabled($forced[0], true, false)
-        . '> Abilita grafica moderna delle schermate interne (in prova)</label></p>';
+        . checked(!$forced[0] && get_option('psr_modern_admin_content_ui', '1') === '1', true, false) . disabled($forced[0], true, false)
+        . '> Abilita grafica moderna delle schermate interne</label></p>';
     echo '<p class="description" style="margin-left:24px">Rinnova tabelle, filtri, pulsanti e pannelli di configurazione senza cambiare la disposizione delle schermate. Richiede il menu amministrativo moderno.</p>';
     if ($forced[0]) { echo '<p>Stile classico imposto dalla configurazione di emergenza.</p>'; }
     if ($forced[1]) { echo '<p>Gestione contestuale disabilitata dalla configurazione di emergenza.</p>'; }
