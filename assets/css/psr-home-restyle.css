@@ -392,3 +392,101 @@
         transition:none !important;
     }
 }
+
+
+/* PSR: il footer delle schede argomento deve stare nel flusso.
+   Bootstrap Italia posiziona .card a.read-more in assoluto: qui
+   sovrappone il link finale al sito tematico e agli ultimi allegati. */
+#main-container.psr-home-restyle #evidenza .argomento-card {
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    flex-wrap:nowrap;
+    min-width:0;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card > .card-body {
+    flex:1 1 auto;
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card > .card-footer {
+    flex:0 0 auto;
+    width:100%;
+    box-sizing:border-box;
+    margin-top:auto !important;
+    padding:12px 18px 0 !important;
+    border-top:1px solid var(--psr-topic-line) !important;
+    background:transparent;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card > .card-footer > a.read-more {
+    position:static;
+    inset:auto;
+    width:auto;
+    max-width:100%;
+    margin:0 !important;
+    padding:0;
+    min-height:32px;
+    align-items:center;
+    gap:6px;
+    line-height:1.4;
+    white-space:normal;
+    text-decoration:none;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card > .card-footer > a.read-more > svg {
+    flex:none;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card > .card-footer > a.read-more:hover {
+    text-decoration:underline;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card > .card-footer > a.read-more:focus-visible {
+    outline:2px solid currentColor;
+    outline-offset:3px;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card .card-body > a.sito-tematico-page {
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    margin-bottom:0;
+    border-radius:6px !important;
+    border:1px solid var(--psr-topic-line);
+    box-shadow:0 1px 3px rgba(24,43,61,.05) !important;
+    transform:none !important;
+    transition:box-shadow .18s ease,border-color .18s ease;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card .card-body > a.sito-tematico-page > .card-body {
+    min-width:0;
+    border-radius:4px !important;
+    padding:10px !important;
+    overflow-wrap:anywhere;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card .card-body > a.sito-tematico-page:has(> .external-icon) > .card-body {
+    padding-inline-end:30px !important;
+}
+#main-container.psr-home-restyle #evidenza .argomento-card .card-body > a.sito-tematico-page .external-icon {
+    transform:none !important;
+    width:16px;
+    height:16px;
+}
+@media (hover:hover) and (pointer:fine) {
+    #main-container.psr-home-restyle #evidenza .argomento-card .card-body > a.sito-tematico-page:hover {
+        border-color:var(--psr-institution-color,#8ca4bc);
+        box-shadow:0 2px 6px rgba(24,43,61,.08) !important;
+    }
+}
+@media (max-width:575.98px) {
+    #main-container.psr-home-restyle #evidenza .argomento-card > .card-body {
+        padding:12px 10px 12px !important;
+    }
+    #main-container.psr-home-restyle #evidenza .argomento-card > .card-footer {
+        padding:10px 10px 0 !important;
+    }
+    #main-container.psr-home-restyle #evidenza .argomento-card > .card-footer > a.read-more {
+        min-height:44px;
+    }
+}
+@media (prefers-reduced-motion:reduce) {
+    #main-container.psr-home-restyle #evidenza .argomento-card .card-body > a.sito-tematico-page {
+        transition:none;
+    }
+}
