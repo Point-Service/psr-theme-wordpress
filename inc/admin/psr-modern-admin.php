@@ -10,7 +10,7 @@ function psr_modern_admin_is_owner() {
 }
 function psr_modern_admin_enabled() {
     return !(defined('PSR_ADMIN_CLASSIC_UI') && PSR_ADMIN_CLASSIC_UI)
-        && get_option('psr_modern_admin_ui', '0') === '1';
+        && get_option('psr_modern_admin_ui', '1') === '1';
 }
 function psr_modern_admin_config_screen() {
     return is_admin() && !is_network_admin() && !is_user_admin()
@@ -37,10 +37,10 @@ function psr_modern_admin_setting() {
     echo '<input type="hidden" name="psr_modern_admin_save" value="1">';
     echo '<label for="psr_modern_admin_value">Stile del menu e della barra superiore: </label> ';
     echo '<select name="psr_modern_admin_value" id="psr_modern_admin_value"' . disabled($forced, true, false) . '>';
-    echo '<option value="0"' . selected(get_option('psr_modern_admin_ui', '0'), '0', false) . '>WordPress classico (predefinito)</option>';
-    echo '<option value="1"' . selected(get_option('psr_modern_admin_ui', '0'), '1', false) . '>PSR moderno</option></select> ';
+    echo '<option value="0"' . selected(get_option('psr_modern_admin_ui', '1'), '0', false) . '>WordPress classico</option>';
+    echo '<option value="1"' . selected(get_option('psr_modern_admin_ui', '1'), '1', false) . '>PSR moderno (predefinito)</option></select> ';
     if (!$forced) { submit_button('Salva stile', 'secondary', 'psr_modern_admin_submit', false); }
-    echo '<p class="description">La scelta vale per questo portale. Non modifica contenuti, abilitazioni o accessi. Puoi tornare allo stile originale in qualsiasi momento.</p>';
+    echo '<p class="description">Lo stile moderno è attivo per impostazione predefinita. La scelta salvata vale per questo portale e viene mantenuta nei successivi aggiornamenti. Non modifica contenuti, abilitazioni o accessi.</p>';
     if ($forced) { echo '<p>Stile classico imposto dalla configurazione di emergenza.</p>'; }
     echo '</form></div>';
 }
