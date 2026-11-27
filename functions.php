@@ -1169,6 +1169,99 @@ main .psr-detail-tools > .psr-detail-tools-category > ul > li > a.chip.chip-simp
         background:transparent;
     }
 }
+/* PSR: dropdown strumenti - finitura light.
+   Solo superficie e voci: Popper conserva posizione, apertura e chiusura. */
+main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareActions,button#viewActions) {
+    background:#fbfcfd !important;
+    border-color:#e1e7ed !important;
+}
+main .psr-detail-tools > .psr-detail-tools-category > ul > li > .chip.chip-simple:not(.chip-disabled) {
+    background:#fafbfd !important;
+    border-color:#e1e7ed !important;
+}
+main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareActions,button#viewActions)[aria-expanded="true"] {
+    background:#f4f7fa !important;
+    border-color:#b9c9d8 !important;
+}
+main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) {
+    box-sizing:border-box;
+    --bs-dropdown-min-width:min(184px,calc(100vw - 32px));
+    --bs-dropdown-padding-x:6px;
+    --bs-dropdown-padding-y:6px;
+    min-width:min(184px,calc(100vw - 32px));
+    max-width:min(280px,calc(100vw - 32px));
+    padding:6px !important;
+    background:#fff;
+    border:1px solid #e0e6ec;
+    border-radius:7px;
+    box-shadow:0 6px 20px rgba(24,43,61,.13) !important;
+}
+main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"])::before {
+    content:none;
+}
+main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list > li {
+    margin:0;
+    padding:0;
+}
+main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list > li + li {
+    margin-top:2px;
+}
+main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list > li > a.list-item {
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-height:38px;
+    padding:8px 10px !important;
+    border-radius:4px;
+    color:var(--psr-institution-color,#245c9f) !important;
+    font-size:.94rem;
+    line-height:1.35;
+    text-decoration:none;
+}
+main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list > li > a.list-item > svg.icon {
+    flex:0 0 18px;
+    width:18px;
+    height:18px;
+    margin:0 !important;
+    fill:currentColor !important;
+}
+main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list > li > a.list-item > span {
+    flex:1 1 auto;
+    min-width:0;
+    margin:0 !important;
+    color:inherit !important;
+    line-height:1.35;
+    overflow-wrap:anywhere;
+}
+main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list > li > a.list-item:focus-visible {
+    outline:2px solid currentColor;
+    outline-offset:-2px;
+    background:#f0f5f9;
+}
+@media (hover:hover) and (pointer:fine) {
+    main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareActions,button#viewActions):hover,
+    main .psr-detail-tools > .psr-detail-tools-category > ul > li > .chip.chip-simple:not(.chip-disabled):is(a):hover {
+        background:#f4f7fa !important;
+        border-color:#c5d2df !important;
+    }
+    main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list > li > a.list-item:hover {
+        background:#f0f5f9;
+        text-decoration:underline;
+        text-underline-offset:2px;
+    }
+}
+@media (max-width:575.98px) {
+    main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list > li > a.list-item {
+        min-height:44px;
+    }
+}
+
 CSS
     );
     wp_add_inline_script('dci-comuni', <<<'JS'
