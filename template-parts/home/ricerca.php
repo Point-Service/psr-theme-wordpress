@@ -72,7 +72,7 @@ $links = dci_get_option('link', 'link_utili');
                  <?php if ($link_is_external) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>
                  class="d-inline-flex align-items-center gap-2
                         px-3 py-2 border border-light rounded
-                        shadow-sm bg-white text-primary
+                        shadow-sm bg-white t-primary
                         text-decoration-none link-hover
                         flex-shrink-0 link-utili-item"
                  style="max-width:100%;">
@@ -87,7 +87,7 @@ $links = dci_get_option('link', 'link_utili');
                 </svg>
 
                 <!-- TESTO -->
-                <span class="fw-semibold text-truncate"
+                <span class="fw-semibold text-truncate t-primary"
                       style="max-width:200px;pointer-events:none;">
 
                   <?php echo esc_html($link['testo']); ?>
