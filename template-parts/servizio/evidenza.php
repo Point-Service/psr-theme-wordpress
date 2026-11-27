@@ -13,9 +13,7 @@ $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
 
 <div class="col-12">
 
-<div class="row">
 <h2 class="text-black title-xlarge mb-3">Servizi in evidenza</h2>
-</div>
 
 <div class="card shadow-sm px-4 pt-4 pb-4 rounded border border-light">
 

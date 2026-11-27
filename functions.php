@@ -1626,7 +1626,8 @@ main .psr-service-taxonomy > p.text-paragraph-small.mb-0 {
 
 /* PSR: titoli sezioni interne, stessa gerarchia visiva della home.
    Non altera titoli principali, ancore, schede, testi editoriali o indice. */
-body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > :is(h2,h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
+body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > :is(h2,h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]),
+body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > .cmp-timeline > h2#deadlines:not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
     font-size:clamp(1.45rem,1.8vw,1.8rem);
     font-weight:700;
     line-height:1.28;
@@ -1646,12 +1647,14 @@ body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggior
     background-position:left .27em;
 }
 @media (max-width:575.98px) {
-    body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > :is(h2,h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
+    body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > :is(h2,h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]),
+body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > .cmp-timeline > h2#deadlines:not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
         padding-inline-start:11px;
     }
 }
 @media print {
-    body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > :is(h2,h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
+    body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > :is(h2,h3,h4):not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]),
+body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggiornamento):not(.card .it-page-section) > .cmp-timeline > h2#deadlines:not(.visually-hidden,.sr-only,.card-title,.point-list-aside,.accordion-header,[hidden]) {
         background-image:none;
         padding-inline-start:0;
     }
