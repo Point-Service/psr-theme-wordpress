@@ -814,6 +814,73 @@ html.psr-institution-color main .pagination .page-item:not(.disabled) .page-link
 html.psr-institution-color main .it-carousel-wrapper .splide__pagination button.is-active {
     background-color: var(--psr-institution-color) !important;
 }
+/* PSR: rifinitura intestazione pubblica e valutazione delle pagine.
+   Nessuna modifica alle altezze del menu, sticky, hamburger o eventi rating. */
+@media (min-width:992px) {
+    html.psr-institution-color .it-header-wrapper .it-header-slim-wrapper {
+        box-shadow:inset 0 -1px 0 rgba(255,255,255,.18);
+    }
+    html.psr-institution-color .it-header-wrapper .it-header-center-wrapper {
+        box-shadow:inset 0 -1px 0 rgba(255,255,255,.14);
+    }
+    html.psr-institution-color .it-header-wrapper #header-nav-wrapper:not(.theme-light-desk) .menu-wrapper > nav > .navbar-nav > li.nav-item > .nav-link {
+        border-radius:4px 4px 0 0;
+    }
+    html.psr-institution-color .it-header-wrapper #header-nav-wrapper:not(.theme-light-desk) .menu-wrapper > nav > .navbar-nav > li.nav-item > .nav-link:hover {
+        background-color:rgba(255,255,255,.10);
+    }
+    html.psr-institution-color .it-header-wrapper .it-header-slim-wrapper .nav-item > a.navbar-brand:hover {
+        text-decoration:underline !important;
+        text-underline-offset:3px;
+    }
+}
+/* Link editoriali: non modificare pulsanti, avvisi, form o colori semantici. */
+html.psr-institution-color body.page main article.article-wrapper > .row.variable-gutters:first-child p a:not([class]):not([style]),
+html.psr-institution-color body.page main article.article-wrapper > .row.variable-gutters:first-child li a:not([class]):not([style]),
+html.psr-institution-color body.single-sito_tematico main article.article-wrapper .sito-links-wrapper > .row:first-child p a:not([class]):not([style]) {
+    color:var(--psr-institution-color);
+    text-underline-offset:3px;
+}
+main #rating.cmp-rating > .card[data-element="feedback"] {
+    border-radius:8px;
+    border:1px solid rgba(0,0,0,.08);
+    box-shadow:0 3px 14px rgba(0,0,0,.12) !important;
+}
+main #rating.cmp-rating .cmp-rating__card-first > .card-header h2 {
+    line-height:1.35;
+    letter-spacing:-.012em;
+}
+main #rating.cmp-rating .cmp-rating__card-first .rating > label {
+    padding-inline:4px;
+    min-height:36px;
+    border-radius:4px;
+}
+main #rating.cmp-rating .cmp-rating__card-first .rating > label > svg {
+    width:24px;
+    height:24px;
+    transition:none;
+}
+main #rating.cmp-rating .cmp-rating__card-first .rating > label:hover > svg {
+    transform:none;
+}
+html.psr-institution-color main #rating .rating:not(:checked)>label:hover svg,
+html.psr-institution-color main #rating .rating:not(:checked)>label:hover~label svg,
+html.psr-institution-color main #rating .rating>input:checked~label svg {
+    fill:var(--psr-institution-color) !important;
+}
+@media (min-width:992px) {
+    main #rating.cmp-rating {
+        padding-top:44px !important;
+        padding-bottom:44px !important;
+    }
+}
+@media (max-width:575.98px) {
+    main #rating.cmp-rating .cmp-rating__card-first .rating > label {
+        min-height:44px;
+        min-width:44px;
+        padding-inline:4px;
+    }
+}
 CSS
     );
     wp_add_inline_script('dci-comuni', <<<'JS'
