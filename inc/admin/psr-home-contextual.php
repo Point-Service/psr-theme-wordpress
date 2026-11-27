@@ -9,44 +9,6 @@ function psr_home_tools_enabled() {
     return !(defined('PSR_HOME_TOOLS_DISABLED') && PSR_HOME_TOOLS_DISABLED)
         && get_option('psr_home_contextual_tools', '0') === '1';
 }
-function psr_home_tools_owner() {
-    return (int) get_current_user_id() === 1 && current_user_can('manage_options');
-}
-function psr_home_tools_config_screen() {
-    return is_admin() && !is_network_admin() && !is_user_admin() && !wp_doing_ajax()
-        && isset($_GET['page']) && $_GET['page'] === 'dci_options';
-}
-function psr_home_tools_save_setting() {
-    if (!psr_home_tools_config_screen() || !psr_home_tools_owner()
-        || !isset($_POST['psr_home_tools_save'])) { return; }
-    check_admin_referer('psr_home_tools_save', 'psr_home_tools_nonce');
-    if (!(defined('PSR_HOME_TOOLS_DISABLED') && PSR_HOME_TOOLS_DISABLED)) {
-        update_option('psr_home_contextual_tools',
-            isset($_POST['psr_home_tools_enabled']) && $_POST['psr_home_tools_enabled'] === '1' ? '1' : '0', false);
-    }
-    wp_safe_redirect(admin_url('admin.php?page=dci_options'));
-    exit;
-}
-add_action('admin_init', 'psr_home_tools_save_setting', 91);
-
-function psr_home_tools_setting() {
-    if (!psr_home_tools_config_screen() || !psr_home_tools_owner()) { return; }
-    $forced = defined('PSR_HOME_TOOLS_DISABLED') && PSR_HOME_TOOLS_DISABLED;
-    echo '<div class="notice notice-info" style="padding:12px 16px;margin-top:16px">';
-    echo '<p><strong>Gestione contestuale dei contenuti</strong></p>';
-    echo '<form method="post" action="' . esc_url(admin_url('admin.php?page=dci_options')) . '">';
-    wp_nonce_field('psr_home_tools_save', 'psr_home_tools_nonce');
-    echo '<input type="hidden" name="psr_home_tools_save" value="1">';
-    echo '<p><label><input type="checkbox" name="psr_home_tools_enabled" value="1"'
-        . checked(psr_home_tools_enabled(), true, false) . disabled($forced, true, false)
-        . '> Abilita i comandi di gestione nella home e nelle sezioni interne</label></p>';
-    echo '<p class="description">Disattivato per impostazione predefinita. I comandi sono visibili soltanto agli utenti con le autorizzazioni richieste. Indipendente dallo stile del menu.</p>';
-    if (!$forced) { submit_button('Salva gestione contestuale', 'secondary', 'psr_home_tools_submit', false); }
-    else { echo '<p>Funzione disabilitata dalla configurazione di emergenza.</p>'; }
-    echo '</form></div>';
-}
-add_action('admin_notices', 'psr_home_tools_setting', 20);
-
 /** Le protezioni PSR esistenti verificano la sessione prima del rendering. */
 function psr_home_tools_session() {
     if (!is_user_logged_in() || !psr_home_tools_enabled()) { return false; }
