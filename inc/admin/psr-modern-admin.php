@@ -60,10 +60,11 @@ function psr_modern_admin_setting() {
     echo '<p><label><input type="checkbox" name="psr_modern_admin_value" value="1"'
         . checked($modern, true, false) . disabled($forced[0], true, false)
         . '> Abilita menu amministrativo moderno</label></p>';
+    echo '<p class="description" style="margin-left:24px">Rinnova il menu laterale e la barra superiore di WordPress, organizzando le voci in sezioni richiudibili e aggiungendo la ricerca rapida.</p>';
     echo '<p><label><input type="checkbox" name="psr_home_tools_enabled" value="1"'
         . checked($contextual, true, false) . disabled($forced[1], true, false)
         . '> Abilita gestione contestuale dei contenuti</label></p>';
-    echo '<p class="description">Entrambe le funzioni sono attive per impostazione predefinita. Le scelte salvate vengono mantenute anche dopo gli aggiornamenti. I comandi di gestione sono visibili esclusivamente agli operatori autorizzati.</p>';
+    echo '<p class="description" style="margin-left:24px">Mostra nella home e nelle sezioni interne del sito i comandi rapidi per aggiungere, modificare e configurare i contenuti, aprendo le relative schermate di WordPress in base ai permessi dell’operatore.</p>';
     if ($forced[0]) { echo '<p>Stile classico imposto dalla configurazione di emergenza.</p>'; }
     if ($forced[1]) { echo '<p>Gestione contestuale disabilitata dalla configurazione di emergenza.</p>'; }
     if (!$forced[0] || !$forced[1]) { submit_button('Salva impostazioni', 'secondary', 'psr_modern_admin_submit', false); }
