@@ -490,3 +490,66 @@
         transition:none;
     }
 }
+
+
+/* PSR: gerarchia dei titoli della home, solo intestazioni di sezione.
+   Accento istituzionale, nessuna icona o testo aggiunto al contenuto. */
+#main-container.psr-home-restyle #evidenza > .section > .container > .row > h2:not(.visually-hidden),
+#main-container.psr-home-restyle #accesso-rapido > .container > h2:not(.visually-hidden),
+#main-container.psr-home-restyle #link-utili h2.title-xxlarge:not(.visually-hidden),
+#main-container.psr-home-restyle #servizi .section-content > .container > .row > h2:not(.visually-hidden),
+#main-container.psr-home-restyle #head-section .row-title h2:not(.visually-hidden),
+#main-container.psr-home-restyle #evidenza > .container > .row > h2:not(.visually-hidden),
+#main-container.psr-home-restyle #evidenza .argomenti-evidenza-bg > .container > .row > h2:not(.visually-hidden),
+#main-container.psr-home-restyle #evidenza > .container > .row.pt-30 > .col-12 > h2:not(.visually-hidden) {
+    font-size:clamp(1.65rem,2.1vw,2rem);
+    font-weight:700;
+    line-height:1.28;
+    letter-spacing:-.02em;
+    text-wrap:balance;
+}
+#main-container.psr-home-restyle #evidenza > .section > .container > .row > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #accesso-rapido > .container > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #link-utili h2.title-xxlarge:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #servizi .section-content > .container > .row > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #head-section .row-title h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #evidenza > .container > .row > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #evidenza .argomenti-evidenza-bg > .container > .row > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #evidenza > .container > .row.pt-30 > .col-12 > h2:not(.visually-hidden)::before {
+    content:"";
+    display:inline-block;
+    width:4px;
+    height:.82em;
+    margin-inline-end:11px;
+    vertical-align:-.025em;
+    border-radius:2px;
+    background-color:var(--psr-institution-color,#245c9f);
+}
+#main-container.psr-home-restyle #evidenza .argomenti-evidenza-bg > .container > .row > h2:not(.visually-hidden) {
+    color:#fff !important;
+    text-shadow:0 1px 3px rgba(0,0,0,.4);
+}
+#main-container.psr-home-restyle #evidenza .argomenti-evidenza-bg > .container > .row > h2:not(.visually-hidden)::before {
+    background-color:#fff;
+}
+#main-container.psr-home-restyle #evidenza > .container > .row.pt-30 > .col-12 > h2:not(.visually-hidden) {
+    font-size:clamp(1.22rem,1.5vw,1.45rem);
+    font-weight:650;
+    line-height:1.35;
+}
+#main-container.psr-home-restyle #evidenza > .container > .row.pt-30 > .col-12 > h2:not(.visually-hidden) > font {
+    font-size:inherit;
+    color:inherit;
+}
+@media (max-width:575.98px) {
+    #main-container.psr-home-restyle #evidenza > .section > .container > .row > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #accesso-rapido > .container > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #link-utili h2.title-xxlarge:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #servizi .section-content > .container > .row > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #head-section .row-title h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #evidenza > .container > .row > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #evidenza .argomenti-evidenza-bg > .container > .row > h2:not(.visually-hidden)::before,
+#main-container.psr-home-restyle #evidenza > .container > .row.pt-30 > .col-12 > h2:not(.visually-hidden)::before {
+        margin-inline-end:8px;
+    }
+}
