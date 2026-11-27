@@ -810,6 +810,10 @@ html.psr-institution-color main .pagination .page-item:not(.disabled) .page-link
 html.psr-institution-color main .pagination .page-item:not(.disabled) .page-link:focus-visible {
     color: var(--psr-institution-color) !important;
 }
+/* Caroselli pubblici: il pallino attivo segue il colore del Comune. */
+html.psr-institution-color main .it-carousel-wrapper .splide__pagination button.is-active {
+    background-color: var(--psr-institution-color) !important;
+}
 CSS
     );
     wp_add_inline_script('dci-comuni', <<<'JS'
