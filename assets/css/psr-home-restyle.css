@@ -2,7 +2,7 @@
    Mantiene contenuti, colori configurati, ordine, griglie, animazioni native,
    caricamento asincrono, collegamenti e comandi di gestione contestuale. */
 #main-container.psr-home-restyle {
-    --psr-home-radius:14px;
+    --psr-home-radius:9px;
     --psr-home-border:#dfe5eb;
     --psr-home-shadow:0 3px 14px rgba(24,43,61,.075);
     --psr-home-shadow-hover:0 6px 19px rgba(24,43,61,.12);
@@ -27,7 +27,7 @@
     border-color:var(--psr-home-border) !important;
 }
 #main-container.psr-home-restyle #notizie .card :is(.img-responsive-wrapper,.img-wrapper) {
-    border-radius:12px 12px 0 0;
+    border-radius:8px 8px 0 0;
 }
 #main-container.psr-home-restyle :is(#notizie,#servizi) .card :is(h3,h4).card-title,
 #main-container.psr-home-restyle #servizi .card h3,
@@ -41,42 +41,42 @@
     box-shadow:0 1px 5px rgba(24,43,61,.08);
 }
 #main-container.psr-home-restyle .it-calendar-wrapper .it-header-block {
-    border-radius:12px 12px 0 0;
+    border-radius:8px 8px 0 0;
 }
 #main-container.psr-home-restyle .it-calendar-wrapper .card.card-bg {
-    border-radius:10px;
+    border-radius:7px;
     box-shadow:0 2px 9px rgba(24,43,61,.065);
 }
 #main-container.psr-home-restyle .it-calendar-wrapper .card-title {
     font-variant-numeric:tabular-nums;
 }
 #main-container.psr-home-restyle .it-calendar-wrapper .card-text > img {
-    border-radius:8px !important;
+    border-radius:6px !important;
 }
 #main-container.psr-home-restyle #evidenza .button-group a.btn-argomento,
 #main-container.psr-home-restyle #link-utili a.link-utili-item {
-    border-radius:10px !important;
+    border-radius:7px !important;
     box-shadow:0 2px 7px rgba(24,43,61,.07) !important;
 }
 #main-container.psr-home-restyle #link-utili .input-group {
-    border-radius:10px;
+    border-radius:7px;
     box-shadow:var(--psr-home-shadow) !important;
 }
 #main-container.psr-home-restyle #link-utili .input-group > input.form-control {
-    border-start-start-radius:10px;
-    border-end-start-radius:10px;
+    border-start-start-radius:7px;
+    border-end-start-radius:7px;
 }
 #main-container.psr-home-restyle #link-utili .input-group > .btn {
-    border-start-end-radius:10px;
-    border-end-end-radius:10px;
+    border-start-end-radius:7px;
+    border-end-end-radius:7px;
 }
 #main-container.psr-home-restyle :is(#notizie,#servizi) .read-more .btn-outline-primary,
 #main-container.psr-home-restyle #evidenza .row.pt-30 .btn.btn-primary {
-    border-radius:9px;
+    border-radius:6px;
     font-weight:600;
 }
 #main-container.psr-home-restyle #head-section .home-message .msg > a:is(.btn-outline-white,.btn-outline-black) {
-    border-radius:8px;
+    border-radius:6px;
 }
 #main-container.psr-home-restyle #notizie .card .card-body .read-more,
 #main-container.psr-home-restyle #servizi .card .card-body .read-more {
