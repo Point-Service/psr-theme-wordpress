@@ -16,39 +16,30 @@ function psr_modern_admin_config_screen() {
     return is_admin() && !is_network_admin() && !is_user_admin() && !wp_doing_ajax()
         && isset($_GET['page']) && $_GET['page'] === 'dci_options';
 }
-function psr_modern_admin_modes() {
-    return array(
-        '10' => 'PSR moderno (predefinito)',
-        '11' => 'PSR moderno + gestione contestuale',
-        '00' => 'WordPress classico',
-        '01' => 'WordPress classico + gestione contestuale',
-    );
-}
 function psr_modern_admin_forced_flags() {
     return array(
         defined('PSR_ADMIN_CLASSIC_UI') && PSR_ADMIN_CLASSIC_UI,
         defined('PSR_HOME_TOOLS_DISABLED') && PSR_HOME_TOOLS_DISABLED,
     );
 }
-function psr_modern_admin_current_mode() {
-    $forced = psr_modern_admin_forced_flags();
-    return ($forced[0] || get_option('psr_modern_admin_ui', '1') !== '1' ? '0' : '1')
-        . ($forced[1] || get_option('psr_home_contextual_tools', '0') !== '1' ? '0' : '1');
-}
 function psr_modern_admin_save() {
     if (!psr_modern_admin_config_screen() || !psr_modern_admin_is_owner()
         || !isset($_POST['psr_modern_admin_save'])) { return; }
     check_admin_referer('psr_modern_admin_save', 'psr_modern_admin_nonce');
-    $mode = isset($_POST['psr_modern_admin_mode']) && is_string($_POST['psr_modern_admin_mode'])
-        ? $_POST['psr_modern_admin_mode'] : '';
-    $forced = psr_modern_admin_forced_flags();
-    // Una scelta assente, alterata o incompatibile non modifica le preferenze.
-    if (in_array($mode, array('00','01','10','11'), true)
-        && (!$forced[0] || $mode[0] === '0')
-        && (!$forced[1] || $mode[1] === '0')) {
-        // Conserva i due valori esistenti: nessuna migrazione o attivazione automatica.
-        if (!$forced[0]) { update_option('psr_modern_admin_ui', $mode[0], false); }
-        if (!$forced[1]) { update_option('psr_home_contextual_tools', $mode[1], false); }
+    // Ignora anche i vecchi form a tendina rimasti aperti durante un aggiornamento.
+    $fields = array('psr_modern_admin_value', 'psr_home_tools_enabled');
+    $valid = isset($_POST['psr_modern_admin_checks']) && $_POST['psr_modern_admin_checks'] === '1';
+    foreach ($fields as $field) {
+        if (isset($_POST[$field]) && $_POST[$field] !== '1') { $valid = false; }
+    }
+    if ($valid) {
+        $forced = psr_modern_admin_forced_flags();
+        if (!$forced[0]) {
+            update_option('psr_modern_admin_ui', isset($_POST[$fields[0]]) ? '1' : '0', false);
+        }
+        if (!$forced[1]) {
+            update_option('psr_home_contextual_tools', isset($_POST[$fields[1]]) ? '1' : '0', false);
+        }
     }
     wp_safe_redirect(admin_url('admin.php?page=dci_options'));
     exit;
@@ -58,24 +49,24 @@ add_action('admin_init', 'psr_modern_admin_save', 90);
 function psr_modern_admin_setting() {
     if (!psr_modern_admin_config_screen() || !psr_modern_admin_is_owner()) { return; }
     $forced = psr_modern_admin_forced_flags();
-    $current = psr_modern_admin_current_mode();
+    $modern = psr_modern_admin_enabled();
+    $contextual = !$forced[1] && get_option('psr_home_contextual_tools', '1') === '1';
     echo '<div class="notice notice-info" style="padding:12px 16px;margin-top:16px">';
     echo '<p><strong>Interfaccia amministrativa PSR avanzata</strong></p>';
     echo '<form method="post" action="' . esc_url(admin_url('admin.php?page=dci_options')) . '">';
     wp_nonce_field('psr_modern_admin_save', 'psr_modern_admin_nonce');
     echo '<input type="hidden" name="psr_modern_admin_save" value="1">';
-    echo '<label for="psr_modern_admin_mode">Modalità di gestione: </label> ';
-    echo '<select name="psr_modern_admin_mode" id="psr_modern_admin_mode"' . disabled($forced[0] && $forced[1], true, false) . '>';
-    foreach (psr_modern_admin_modes() as $mode => $label) {
-        $mode = (string) $mode;
-        if (($forced[0] && $mode[0] !== '0') || ($forced[1] && $mode[1] !== '0')) { continue; }
-        echo '<option value="' . esc_attr($mode) . '"' . selected($current, $mode, false) . '>' . esc_html($label) . '</option>';
-    }
-    echo '</select> ';
-    if (!$forced[0] || !$forced[1]) { submit_button('Salva interfaccia', 'secondary', 'psr_modern_admin_submit', false); }
-    echo '<p class="description">La gestione contestuale aggiunge i comandi di inserimento e modifica nella home e nelle sezioni interne, esclusivamente per gli operatori autorizzati. Per i nuovi portali lo stile moderno è attivo e i comandi contestuali sono disattivati. Le scelte salvate vengono mantenute.</p>';
+    echo '<input type="hidden" name="psr_modern_admin_checks" value="1">';
+    echo '<p><label><input type="checkbox" name="psr_modern_admin_value" value="1"'
+        . checked($modern, true, false) . disabled($forced[0], true, false)
+        . '> Abilita menu amministrativo moderno</label></p>';
+    echo '<p><label><input type="checkbox" name="psr_home_tools_enabled" value="1"'
+        . checked($contextual, true, false) . disabled($forced[1], true, false)
+        . '> Abilita gestione contestuale dei contenuti</label></p>';
+    echo '<p class="description">Entrambe le funzioni sono attive per impostazione predefinita. Le scelte salvate vengono mantenute anche dopo gli aggiornamenti. I comandi di gestione sono visibili esclusivamente agli operatori autorizzati.</p>';
     if ($forced[0]) { echo '<p>Stile classico imposto dalla configurazione di emergenza.</p>'; }
     if ($forced[1]) { echo '<p>Gestione contestuale disabilitata dalla configurazione di emergenza.</p>'; }
+    if (!$forced[0] || !$forced[1]) { submit_button('Salva impostazioni', 'secondary', 'psr_modern_admin_submit', false); }
     echo '</form></div>';
 }
 add_action('admin_notices', 'psr_modern_admin_setting');

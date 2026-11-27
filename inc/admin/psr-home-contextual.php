@@ -1,13 +1,13 @@
 <?php
 /**
- * PSR – scorciatoie editoriali della home e delle sezioni interne. Opt-in per sito, nessuna modifica
+ * PSR – scorciatoie editoriali della home e delle sezioni interne. Attive di default, configurabili per sito, nessuna modifica
  * a ruoli, CPT, query pubbliche o salvataggi dei contenuti.
  */
 if (!defined('ABSPATH')) { exit; }
 
 function psr_home_tools_enabled() {
     return !(defined('PSR_HOME_TOOLS_DISABLED') && PSR_HOME_TOOLS_DISABLED)
-        && get_option('psr_home_contextual_tools', '0') === '1';
+        && get_option('psr_home_contextual_tools', '1') === '1';
 }
 /** Le protezioni PSR esistenti verificano la sessione prima del rendering. */
 function psr_home_tools_session() {
