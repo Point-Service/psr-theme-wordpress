@@ -1388,6 +1388,129 @@ main article#ultimo-aggiornamento.it-page-section > h4.h6 > span.h6 {
     line-height:1.5;
 }
 
+/* PSR: schede documentali e uffici responsabili. Mantiene griglie, link,
+   testi originali, allegati e immagini; consente nomi lunghi senza sbordare. */
+main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser,
+main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser,
+main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser {
+    box-sizing:border-box;
+    min-width:0;
+    max-width:100%;
+    padding:16px !important;
+    border:1px solid #dfe6ed !important;
+    border-radius:6px !important;
+    background:#fbfcfd;
+    box-shadow:0 2px 6px rgba(24,43,61,.045) !important;
+}
+main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser > .card-body,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser > .card-body,
+main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser > .card-body,
+main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser > .card-body {
+    flex:1 1 0%;
+    min-width:0;
+    max-width:100%;
+    overflow-wrap:anywhere;
+}
+main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser > .card-body .card-title,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser > .card-body .card-title {
+    min-width:0;
+    max-width:100%;
+    margin-bottom:0;
+    font-size:1.04rem;
+    line-height:1.45;
+    font-weight:600;
+    white-space:normal;
+    overflow-wrap:anywhere;
+}
+main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser > .card-body .card-title a,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser > .card-body .card-title a {
+    color:var(--psr-institution-color,#245c9f);
+    white-space:normal;
+    overflow-wrap:anywhere;
+    word-break:normal;
+    text-underline-offset:3px;
+}
+main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser > svg.icon,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser > svg.icon {
+    box-sizing:border-box;
+    flex:0 0 36px;
+    min-width:36px;
+    width:36px;
+    height:36px;
+    padding:8px;
+    border-radius:5px;
+    background:#edf2f7;
+    fill:var(--psr-institution-color,#245c9f) !important;
+}
+main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser > svg.icon + .card-body,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser > svg.icon + .card-body {
+    margin-inline-start:12px;
+}
+main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser > .card-body .card-title > svg.icon,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser > .card-body .card-title > svg.icon {
+    box-sizing:border-box;
+    width:28px;
+    height:28px;
+    min-width:28px;
+    padding:4px;
+    margin-inline-end:6px;
+    vertical-align:middle;
+    fill:var(--psr-institution-color,#245c9f) !important;
+}
+main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser > .card-body h4,
+main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser > .card-body h4 {
+    font-size:1.1rem;
+    line-height:1.4;
+    font-weight:650;
+    overflow-wrap:anywhere;
+}
+main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser > .card-body h4 a,
+main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser > .card-body h4 a {
+    color:var(--psr-institution-color,#245c9f);
+    text-underline-offset:3px;
+}
+main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser > .card-body .card-text p,
+main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser > .card-body .card-text p {
+    color:#41566a;
+    font-size:.98rem;
+    line-height:1.55;
+    overflow-wrap:anywhere;
+}
+main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser > .avatar,
+main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser > .avatar {
+    flex-shrink:0;
+}
+@supports (color:color-mix(in srgb, white, black)) {
+    html.psr-institution-color main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser > svg.icon,
+html.psr-institution-color main .it-page-section:is(#allegati,#documenti) .card.card-teaser > svg.icon {
+        background:color-mix(in srgb,var(--psr-institution-color) 7%,white);
+    }
+}
+@media (hover:hover) and (pointer:fine) {
+    main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser:hover,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser:hover,
+main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser:hover,
+main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser:hover {
+        border-color:#c5d2df !important;
+        box-shadow:0 3px 8px rgba(24,43,61,.07) !important;
+    }
+    main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser > .card-body .card-title a:hover,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser > .card-body .card-title a:hover,
+    main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser > .card-body h4 a:hover,
+main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser > .card-body h4 a:hover {
+        text-decoration:underline !important;
+    }
+}
+@media (max-width:575.98px) {
+    main .it-page-section :is(h2,h3,h4)[id]:is(#allegati,#documenti) + .card-teaser-wrapper > .card.card-teaser,
+main .it-page-section:is(#allegati,#documenti) .card.card-teaser,
+main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser,
+main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser {
+        padding:12px !important;
+    }
+}
+
 CSS
     );
     wp_add_inline_script('dci-comuni', <<<'JS'
