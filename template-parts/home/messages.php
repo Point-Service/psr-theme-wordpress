@@ -23,8 +23,9 @@
     ?>
 
     <div class="p-3 home-message <?php echo esc_attr($colore); ?>">
-        <div class="home-message-content">
+        <div class="container home-message-content">
             <p class="msg">
+                <span class="psr-notice-text">
 
                 <?php if ($icona): ?>
                 <svg id="alert" viewBox="0 0 492.963 492.963">
@@ -35,9 +36,10 @@
                 <?php endif; ?>
 
                 <?php echo nl2br(esc_html($testo)); ?>
+                </span>
 
                 <?php if (!empty($link)): ?>
-                    <a href="<?php echo esc_url($link); ?>" class="btn btn-sm btn-outline-<?php echo esc_attr($color); ?> ms-3">
+                    <a href="<?php echo esc_url($link); ?>" class="btn btn-sm btn-outline-<?php echo esc_attr($color); ?> ms-3 psr-notice-details">
                         Dettagli
                     </a>
                 <?php endif; ?>
