@@ -183,7 +183,7 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
 CSS
     );
     // Script nativo, senza dipendenze: deve partire nell'head, non nel footer.
-    wp_register_script('psr-modern-admin', false, array(), '1.0.2', false);
+    wp_register_script('psr-modern-admin', false, array(), '1.0.3', false);
     wp_enqueue_script('psr-modern-admin');
     $data = array(
         'key' => 'psr-modern-nav-v1-' . get_current_blog_id() . '-' . get_current_user_id(),
@@ -201,7 +201,9 @@ CSS
             ['amministrazione','Amministrazione',['unita_organizzativa','persona_pubblica','incarico','punto_contatto']],
             ['territorio','Servizi e territorio',['servizio','fase','luogo','progetto']],
             ['trasparenza','Documenti e trasparenza',['documento_pubblico','elemento_trasparenza','dataset','commissario','bando','titolari_di_incarichi_collaborazione_consulenza']],
-            ['operativa','Gestione operativa',['pratica','documento_privato','messaggio','pagamento','appuntamento','richiesta_assistenza','segnala_disservizio','domanda_frequente','rating']]
+            ['pratiche','Pratiche e pagamenti',['pratica','documento_privato','pagamento']],
+            ['sportello','Sportello e assistenza',['appuntamento','messaggio','richiesta_assistenza','segnala_disservizio']],
+            ['qualita_servizi','FAQ e valutazioni',['domanda_frequente','rating']]
         ];
         var items = Array.from(menu.children).filter(function(li) {
             return li.classList.contains('menu-top') && !!li.querySelector('a.menu-top');
@@ -220,6 +222,11 @@ CSS
         function active(li) { return li.classList.contains('current') || li.classList.contains('wp-has-current-submenu'); }
         var closed = {};
         try { var v = JSON.parse(localStorage.getItem(cfg.key) || '{}'); if (v && typeof v === 'object') { closed = v; } } catch(e) {}
+        // Mantiene lo stato della precedente sezione operativa finche' non
+        // viene scelta una preferenza specifica per ciascun nuovo gruppo.
+        ['pratiche','sportello','qualita_servizi'].forEach(function(key) {
+            if (typeof closed[key] !== 'boolean' && typeof closed.operativa === 'boolean') { closed[key] = closed.operativa; }
+        });
         function save() { try { localStorage.setItem(cfg.key, JSON.stringify(closed)); } catch(e) {} }
         var tools = make('li','psr-nav-tools');
         tools.appendChild(make('span','psr-nav-brand',cfg.site || 'Portale comunale'));
