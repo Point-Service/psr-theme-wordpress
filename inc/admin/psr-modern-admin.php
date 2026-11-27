@@ -55,7 +55,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.2');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.3');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -147,9 +147,9 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-search { box-sizing: border-box; width: 100%; min-height: 34px; background: #203851; color: #fff; border: 1px solid #607c99; border-radius: 6px; padding: 0 8px; font-size: 12px; }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-search::placeholder { color: #d1dfed; }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-heading { padding: 9px 10px 2px; }
-    body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group { display: flex; align-items: center; justify-content: space-between; width: 100%; border: 0; border-radius: 4px; background: transparent; color: var(--psr-muted); padding: 6px 3px; cursor: pointer; font: 700 12px/1.4 system-ui,sans-serif; text-transform: uppercase; letter-spacing: .045em; text-align: left; }
+    body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group { display: flex; align-items: center; justify-content: space-between; width: 100%; border: 0; border-radius: 4px; background: transparent; color: #e0eaf5; padding: 7px 3px; gap: 6px; cursor: pointer; font: 700 13px/1.4 system-ui,sans-serif; text-transform: uppercase; letter-spacing: .025em; text-align: left; overflow-wrap: anywhere; }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group:hover { color: #fff; background: var(--psr-hover); }
-    body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group:after { content: '\203A'; font-size: 17px; line-height: 1; }
+    body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group:after { content: '\203A'; font-size: 19px; line-height: 1; font-weight: 700; flex-shrink: 0; }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group[aria-expanded="true"]:after { transform: rotate(90deg); }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-hidden { display: none; }
     body.psr-modern-admin:not(.folded) #wpadminbar .ab-top-menu > li > .ab-item { padding-left: 9px; padding-right: 9px; }
