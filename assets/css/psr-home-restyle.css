@@ -125,3 +125,52 @@
         --psr-home-shadow-hover:none;
     }
 }
+
+
+/* PSR: bordi continui e rasterizzazione nativa, senza filtri GPU.
+   Le schede con involucro gia' bordato hanno un solo contorno e una sola ombra. */
+#main-container.psr-home-restyle #notizie .card-wrapper.cmp-list-card-img.border {
+    border-radius:var(--psr-home-radius) !important;
+    border-color:var(--psr-home-border) !important;
+    box-shadow:var(--psr-home-shadow) !important;
+}
+#main-container.psr-home-restyle #notizie .card-wrapper.cmp-list-card-img.border > .card {
+    border-radius:calc(var(--psr-home-radius) - 1px) !important;
+    box-shadow:none !important;
+}
+#main-container.psr-home-restyle #notizie .card-wrapper.cmp-list-card-img.border > .card img.rounded-top {
+    border-top-left-radius:calc(var(--psr-home-radius) - 1px) !important;
+    border-top-right-radius:calc(var(--psr-home-radius) - 1px) !important;
+}
+#main-container.psr-home-restyle #notizie .card .img-responsive-wrapper > .img-wrapper {
+    border-radius:inherit;
+}
+#main-container.psr-home-restyle #notizie .card .img-responsive-wrapper img {
+    border-radius:inherit;
+}
+#main-container.psr-home-restyle :is(#notizie,#servizi,#accesso-rapido,#carosello) img,
+#main-container.psr-home-restyle #evidenza .sito-tematico-card img,
+#main-container.psr-home-restyle .it-calendar-wrapper .card-text > img {
+    image-rendering:auto;
+}
+/* Evita che le card e i loro testi passino su livelli trasformati durante
+   l'hover. Conserva l'ombra di feedback e non tocca slider o mappe. */
+#main-container.psr-home-restyle #accesso-rapido .custom-styles a.card.card-teaser,
+#main-container.psr-home-restyle #evidenza a.sito-tematico-card {
+    transition:box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
+}
+#main-container.psr-home-restyle #accesso-rapido .custom-styles a.card.card-teaser:hover,
+#main-container.psr-home-restyle #evidenza a.sito-tematico-card:hover {
+    transform:none;
+}
+@media (hover:hover) and (pointer:fine) {
+    #main-container.psr-home-restyle #notizie .card-wrapper.cmp-list-card-img.border:hover {
+        box-shadow:var(--psr-home-shadow-hover) !important;
+    }
+}
+@media (prefers-reduced-motion:reduce) {
+    #main-container.psr-home-restyle #accesso-rapido .custom-styles a.card.card-teaser,
+    #main-container.psr-home-restyle #evidenza a.sito-tematico-card {
+        transition:none !important;
+    }
+}
