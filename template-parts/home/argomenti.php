@@ -79,7 +79,15 @@ $img = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null)
                     $argomento = get_term_by('term_taxonomy_id', $arg_id);
                     if ($argomento) {
                         $url = get_term_link($argomento->term_id, 'argomenti');
+                        // Crea il contenitore soltanto se il comando autorizzato esiste.
+                        $psr_topic_edit_html = '';
+                        if (function_exists('psr_home_tools_edit_topic')) {
+                            ob_start();
+                            psr_home_tools_edit_topic($argomento);
+                            $psr_topic_edit_html = ob_get_clean();
+                        }
                 ?>
+                <?php if ($psr_topic_edit_html !== '') { ?><span class="psr-other-topic"><?php } ?>
                 
                 <a href="<?php echo esc_url($url); ?>" class="btn-argomento" title="Vai all'argomento" style="display: inline-flex; align-items: center; gap: 8px;">
                   <svg class="icon text-primary" style="width:20px; height:30px; display:inline-block; vertical-align:middle;">
@@ -87,7 +95,7 @@ $img = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null)
                   </svg>
                   <?php echo esc_html($argomento->name); ?>
                 </a>
-                <?php if (function_exists('psr_home_tools_edit_topic')) { psr_home_tools_edit_topic($argomento); } ?>
+                <?php if ($psr_topic_edit_html !== '') { echo $psr_topic_edit_html; ?></span><?php } ?>
                 
                 <?php
                     }
@@ -175,6 +183,63 @@ $img = (isset($img_ricavata) && !empty($img_ricavata) && $img_ricavata !== null)
 .container .row.pt-30 .button-group a.btn-argomento:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Solo per gli argomenti con matita autorizzata: un unico riquadro visivo,
+   due link indipendenti e nessuna modifica al markup dei cittadini. */
+.container .row.pt-30 .button-group > .psr-other-topic {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+    max-width: 100%;
+    min-width: 0;
+    margin-top: -5px;
+    transition: transform 0.3s ease;
+}
+.container .row.pt-30 .button-group > .psr-other-topic > a.btn-argomento {
+    margin-top: 0;
+    padding-inline-end: 44px;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+.container .row.pt-30 .button-group > .psr-other-topic > .psr-home-item-actions {
+    position: absolute;
+    inset-inline-end: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    padding: 0;
+    z-index: 4;
+}
+.container .row.pt-30 .button-group > .psr-other-topic > a.btn-argomento:hover {
+    transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+    .container .row.pt-30 .button-group > .psr-other-topic:hover {
+        transform: translateY(-4px);
+    }
+    .container .row.pt-30 .button-group > .psr-other-topic:hover > a.btn-argomento {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+}
+@media (max-width: 768px) {
+    .container .row.pt-30 .button-group > .psr-other-topic > a.btn-argomento {
+        padding: 8px 44px 8px 14px;
+    }
+}
+@media (max-width: 576px) {
+    .container .row.pt-30 .button-group > .psr-other-topic > a.btn-argomento {
+        padding-inline-end: 50px;
+        min-height: 46px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .container .row.pt-30 .button-group > .psr-other-topic,
+    .container .row.pt-30 .button-group > .psr-other-topic > a.btn-argomento {
+        transition: none !important;
+        transform: none !important;
+    }
 }
 
 /* Titolo "Altri argomenti" */
