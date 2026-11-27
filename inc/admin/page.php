@@ -93,5 +93,3 @@ function dci_page_row_actions( $actions, $post ) {
     return $actions;
 }
 add_filter( 'page_row_actions', 'dci_page_row_actions', 10, 2 );
-?>
-
