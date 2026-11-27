@@ -183,7 +183,7 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
 CSS
     );
     // Script nativo, senza dipendenze: deve partire nell'head, non nel footer.
-    wp_register_script('psr-modern-admin', false, array(), '1.0.3', false);
+    wp_register_script('psr-modern-admin', false, array(), '1.0.4', false);
     wp_enqueue_script('psr-modern-admin');
     $data = array(
         'key' => 'psr-modern-nav-v1-' . get_current_blog_id() . '-' . get_current_user_id(),
@@ -198,19 +198,38 @@ CSS
         if (!menu || !cfg || menu.querySelector('.psr-nav-tools')) { return; }
         var groups = [
             ['comunicazione','Comunicazione',['notizia','evento','sito_tematico']],
-            ['amministrazione','Amministrazione',['unita_organizzativa','persona_pubblica','incarico','punto_contatto']],
+            ['contenuti_media','Contenuti e media',['page','post','galleria','core:upload.php']],
+            ['amministrazione','Amministrazione',['unita_organizzativa','persona_pubblica','incarico','punto_contatto','consiglio']],
             ['territorio','Servizi e territorio',['servizio','fase','luogo','progetto']],
             ['trasparenza','Documenti e trasparenza',['documento_pubblico','elemento_trasparenza','dataset','commissario','bando','titolari_di_incarichi_collaborazione_consulenza']],
             ['pratiche','Pratiche e pagamenti',['pratica','documento_privato','pagamento']],
             ['sportello','Sportello e assistenza',['appuntamento','messaggio','richiesta_assistenza','segnala_disservizio']],
-            ['qualita_servizi','FAQ e valutazioni',['domanda_frequente','rating']]
+            ['qualita_servizi','FAQ e valutazioni',['domanda_frequente','rating','core:edit-comments.php']],
+            ['setup_portale','Impostazioni portale',['admin:dci_options','core:themes.php','admin:dci_webapp_mobile','core:options-general.php']],
+            ['sistema_sicurezza','Sistema e sicurezza',['admin:psr-security-center','core:plugins.php','core:users.php','core:tools.php','plugin:wp-toolkit','admin:wpc-accessi']]
         ];
         var items = Array.from(menu.children).filter(function(li) {
             return li.classList.contains('menu-top') && !!li.querySelector('a.menu-top');
         });
         function type(li) {
-            try { var u = new URL(li.querySelector('a.menu-top').href, document.baseURI);
-                return /\/edit\.php$/.test(u.pathname) ? u.searchParams.get('post_type') : null;
+            try {
+                var a = li.querySelector('a.menu-top'), u = new URL(a.href, document.baseURI);
+                var base = new URL(document.baseURI);
+                if (u.origin !== base.origin || u.pathname.indexOf('/wp-admin/') === -1) { return null; }
+                var file = u.pathname.split('/').pop();
+                if (file === 'edit.php') { return u.searchParams.get('post_type') || 'post'; }
+                var page = u.searchParams.get('page');
+                if (file === 'admin.php' && page) {
+                    if (['dci_options','dci_webapp_mobile','psr-security-center','wpc-accessi'].indexOf(page) !== -1) { return 'admin:' + page; }
+                }
+                if (!page && ['upload.php','themes.php','plugins.php','users.php','tools.php','options-general.php','edit-comments.php'].indexOf(file) !== -1) {
+                    return 'core:' + file;
+                }
+                // WP Toolkit e' un plugin esterno: riconosci soltanto il nome
+                // esatto del menu esistente, non link generici o altri plugin.
+                var label = li.querySelector('.wp-menu-name');
+                if (norm(label ? label.textContent : a.textContent) === 'wp toolkit') { return 'plugin:wp-toolkit'; }
+                return null;
             } catch(e) { return null; }
         }
         function make(tag, cls, label) {
