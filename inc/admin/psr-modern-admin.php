@@ -89,7 +89,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.14');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.15');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -979,6 +979,31 @@ body.psr-modern-admin:not(.block-editor-page) #wpbody-content input[type=file]:i
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content input[type=file]:is(#dci_multi_files,#dci-trasparenza-media-packages,#dci-trasparenza-content-package):focus-visible {
     outline:2px solid #245c9f;
     outline-offset:2px;
+}
+
+
+/* PSR: evidenzia delicatamente i metabox della colonna laterale dell'editor. */
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox {
+    border-color:#b9cddd;
+    box-shadow:0 2px 6px rgba(16,36,60,.08);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox > .postbox-header {
+    background:#e9f1f8;
+    border-bottom-color:#c5d6e5;
+    border-radius:7px 7px 0 0;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox.closed > .postbox-header {
+    border-radius:7px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox > .postbox-header h2 {
+    color:#173f6e;
+    font-weight:650;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox > .postbox-header .handle-actions button:not(:disabled) {
+    color:#245c9f;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff #side-sortables > .postbox > .postbox-header .handle-actions button:not(:disabled):hover {
+    background-color:#dbe8f5;
 }
 
 CSS
