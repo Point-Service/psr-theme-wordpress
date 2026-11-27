@@ -66,7 +66,9 @@ $url_eventi = dci_get_template_page_url("page-templates/eventi.php");
 																	<a href="<?php echo $evento['link'] ?>"><?php echo $evento['titolo'] ?></a><?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($evento['id']); } ?>
 																</p>
 														<?php }
-														} ?>
+														} elseif (is_home() || dci_is_async_template_request('home-calendario')) { ?>
+															<p class="psr-calendar-empty">Nessun evento in programma</p>
+														<?php } ?>
 													</div>
 												</div>
 											</div>
