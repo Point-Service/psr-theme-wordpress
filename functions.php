@@ -1309,6 +1309,85 @@ main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-
     }
 }
 
+/* PSR: classificazioni a fondo contenuto, coordinate con le azioni light.
+   Solo campi identificati dal markup dei servizi, nessuna modifica alle tassonomie. */
+body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled) {
+    box-sizing:border-box;
+    height:auto;
+    min-height:32px;
+    min-width:0;
+    max-width:100%;
+    padding:5px 11px;
+    margin:0;
+    border:1px solid #e1e7ed !important;
+    border-radius:5px;
+    background:#fafbfd !important;
+    color:var(--psr-institution-color,#245c9f) !important;
+    text-decoration:none;
+}
+body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled) > .chip-label {
+    height:auto;
+    min-width:0;
+    transform:none;
+    color:inherit !important;
+    font-weight:600;
+    font-size:.9rem;
+    line-height:1.4;
+    white-space:normal;
+    overflow-wrap:anywhere;
+}
+body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled):focus-visible {
+    outline:2px solid currentColor;
+    outline-offset:2px;
+}
+@media (hover:hover) and (pointer:fine) {
+    body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled):hover {
+        background:#f0f5f9 !important;
+        border-color:#c5d2df !important;
+        text-decoration:underline;
+        text-underline-offset:2px;
+    }
+}
+@supports selector(:has(*)) {
+    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) {
+        margin-bottom:16px !important;
+    }
+    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) > .text-paragraph-small:not(p) {
+        color:#41566a;
+        font-size:.94rem;
+        line-height:1.4;
+        font-weight:650;
+    }
+    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) > ul.d-flex.flex-wrap {
+        gap:7px !important;
+        margin:8px 0 0 !important;
+        padding:0;
+        list-style:none;
+    }
+    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) > ul.d-flex.flex-wrap > li {
+        min-width:0;
+        max-width:100%;
+    }
+    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) > p.text-paragraph-small.mb-0 {
+        margin-top:18px !important;
+        padding-top:12px;
+        border-top:1px solid #e5eaf0;
+        color:#526779;
+        font-size:.875rem;
+        line-height:1.5;
+    }
+}
+main article#ultimo-aggiornamento.it-page-section {
+    padding-top:12px;
+    border-top:1px solid #e5eaf0;
+}
+main article#ultimo-aggiornamento.it-page-section > h4.h6,
+main article#ultimo-aggiornamento.it-page-section > h4.h6 > span.h6 {
+    color:#526779;
+    font-size:.875rem;
+    line-height:1.5;
+}
+
 CSS
     );
     wp_add_inline_script('dci-comuni', <<<'JS'
