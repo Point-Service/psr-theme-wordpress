@@ -93,7 +93,7 @@ function psr_home_tools_scope() {
 }
 function psr_home_tools_style() {
     if (empty($GLOBALS['psr_home_tools_rendering']) || !psr_home_tools_session()) { return; }
-    wp_register_style('psr-home-contextual-tools', false, array(), '1.0.1');
+    wp_register_style('psr-home-contextual-tools', false, array(), '1.0.2');
     wp_enqueue_style('psr-home-contextual-tools');
     wp_add_inline_style('psr-home-contextual-tools', '
 .psr-home-actions{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:5px 0;max-width:100%;position:relative}
@@ -110,6 +110,21 @@ a.psr-home-action:focus-visible{outline:2px solid #0b5da7;outline-offset:2px}
 .argomento-card .psr-home-item-actions,.argomento-card .psr-home-item-actions a.psr-home-action{pointer-events:auto!important}
 .psr-home-action.psr-home-icon-only svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .gallery-item > .psr-home-item-actions{position:absolute;top:8px;right:8px;z-index:5}
+/* Gli avvisi colorano tutti gli SVG: isolare la matita, non le icone pubbliche. */
+.home-message .msg .psr-home-item-actions{vertical-align:middle;align-items:center;padding:0;margin-inline-start:8px}
+.home-message .msg .psr-home-item-actions a.psr-home-icon-only{background:#fff!important;color:#164c80!important;border-color:#aac2d9!important}
+.home-message .msg .psr-home-item-actions a.psr-home-icon-only:hover{background:#e8f2fd!important}
+.home-message .msg .psr-home-item-actions a.psr-home-icon-only svg{background:transparent!important;color:inherit!important;fill:none!important;stroke:currentColor!important;width:14px!important;height:14px!important;margin:0!important;display:block}
+.home-message .msg .psr-home-item-actions a.psr-home-icon-only svg path{fill:none!important;stroke:currentColor!important}
+/* Accesso rapido: la matita resta sorella del link pubblico, dentro il
+   perimetro della card. Nessun anchor annidato o sovrapposizione ai titoli. */
+#accesso-rapido .custom-styles > div:has(> .psr-home-item-actions){position:relative}
+#accesso-rapido .custom-styles > div:has(> .psr-home-item-actions) > a.card{padding-bottom:36px!important}
+#accesso-rapido .custom-styles > div > .psr-home-item-actions{position:absolute;inset:auto calc(var(--bs-gutter-x, 24px) / 2 + 8px) 7px auto;z-index:4;margin:0;padding:0}
+@media(max-width:576px){#accesso-rapido .custom-styles > div:has(> .psr-home-item-actions) > a.card{padding-bottom:44px!important}}
+/* Browser senza :has: conservare il comando in flusso anziche sovrapporlo. */
+@supports not selector(:has(*)){#accesso-rapido .custom-styles > div > .psr-home-item-actions{position:relative;inset:auto;margin:4px 0}}
+
 @media(max-width:576px){a.psr-home-action{min-height:32px}.psr-home-item-actions a.psr-home-action{width:34px;height:34px;min-height:34px}.psr-home-section-actions{padding:6px 10px}}
 ');
 }
