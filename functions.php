@@ -861,6 +861,190 @@ html.psr-institution-color main #rating .rating>input:checked~label svg {
         padding-inline:4px;
     }
 }
+/* PSR: navigazione interna coordinata. Solo CSS, conserva breadcrumb
+   strutturati, scrollspy, collapse, progressbar e dropdown originali. */
+main .cmp-breadcrumbs .breadcrumb-container .breadcrumb:not(.dark) {
+    align-items:baseline;
+    row-gap:6px;
+    font-size:.94rem;
+    line-height:1.55;
+}
+main .cmp-breadcrumbs .breadcrumb-container .breadcrumb:not(.dark) > .breadcrumb-item {
+    max-width:100%;
+    overflow-wrap:anywhere;
+}
+main .cmp-breadcrumbs .breadcrumb-container .breadcrumb:not(.dark) > .breadcrumb-item > a {
+    color:var(--psr-institution-color,#245c9f);
+    text-underline-offset:3px;
+    text-decoration-thickness:1px;
+    font-weight:600;
+}
+main .cmp-breadcrumbs .breadcrumb-container .breadcrumb:not(.dark) > .breadcrumb-item > .separator {
+    color:#758596;
+    padding-inline:9px;
+    font-weight:400;
+}
+main .cmp-breadcrumbs .breadcrumb-container .breadcrumb:not(.dark) > .breadcrumb-item.active > [itemprop="item"] {
+    color:#34495e;
+    font-weight:600;
+    background:#f0f3f6;
+    border-radius:4px;
+    padding:3px 6px;
+    box-decoration-break:clone;
+    -webkit-box-decoration-break:clone;
+}
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion .accordion-header .accordion-button {
+    background:#f5f7fa;
+    color:var(--psr-institution-color,#245c9f);
+    font-weight:700;
+    letter-spacing:.025em;
+    border-radius:6px 6px 0 0;
+}
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion .accordion-header .accordion-button > svg {
+    fill:currentColor;
+    flex-shrink:0;
+}
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .progress {
+    background:#e4eaf0;
+}
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .progress .it-navscroll-progressbar {
+    background-color:var(--psr-institution-color,#245c9f);
+}
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] {
+    padding:8px 0;
+}
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item {
+    margin-top:0;
+    margin-bottom:3px;
+}
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link {
+    box-sizing:border-box;
+    padding:8px 12px;
+    min-height:36px;
+    line-height:1.45;
+    border-inline-start:2px solid transparent;
+    border-radius:0 5px 5px 0;
+    overflow-wrap:anywhere;
+}
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link > span {
+    color:var(--psr-institution-color,#245c9f);
+}
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link.active {
+    border-inline-start-color:var(--psr-institution-color,#245c9f);
+    background:#eaf0f6;
+    font-weight:700;
+}
+@media (min-width:992px) {
+    main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper > .accordion {
+        border:1px solid #dfe5eb;
+        border-radius:6px;
+        background:#fff;
+        box-shadow:0 2px 6px rgba(24,43,61,.045);
+    }
+}
+main :is(button#shareActions,button#viewActions) {
+    box-sizing:border-box;
+    min-height:36px;
+    gap:6px;
+    padding:7px 10px;
+    margin:3px 2px 3px 0;
+    background:#f5f7fa;
+    border:1px solid #dce5ed;
+    border-radius:6px;
+    color:var(--psr-institution-color,#245c9f);
+    text-decoration:none !important;
+    font-weight:600;
+    line-height:1.3;
+}
+main :is(button#shareActions,button#viewActions) > svg.icon {
+    flex:none;
+    width:19px;
+    height:19px;
+    fill:currentColor;
+}
+main :is(button#shareActions,button#viewActions) > small {
+    color:inherit;
+    font-size:.875rem;
+    text-decoration:none;
+}
+main .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) {
+    border-radius:6px;
+    border-color:#dfe5eb;
+}
+main .mt-4.mb-4 > .subtitle-small:has(+ ul.d-flex.flex-wrap > li > .chip.chip-simple) {
+    font-weight:650;
+    color:#41566a;
+}
+main .mt-4.mb-4 > .subtitle-small + ul.d-flex.flex-wrap:has(> li > .chip.chip-simple) {
+    gap:6px !important;
+    margin-top:4px;
+}
+main .mt-4.mb-4 > .subtitle-small + ul.d-flex.flex-wrap:has(> li > .chip.chip-simple) > li {
+    min-width:0;
+    max-width:100%;
+}
+main .mt-4.mb-4 > .subtitle-small + ul.d-flex.flex-wrap > li > .chip.chip-simple:not(.chip-disabled) {
+    box-sizing:border-box;
+    height:auto;
+    min-height:30px;
+    min-width:0;
+    max-width:100%;
+    padding:5px 10px;
+    margin:0;
+    border:1px solid #dce5ed;
+    border-radius:5px;
+    background:#f0f4f8;
+    color:var(--psr-institution-color,#245c9f);
+    text-decoration:none;
+}
+main .mt-4.mb-4 > .subtitle-small + ul.d-flex.flex-wrap > li > .chip.chip-simple:not(.chip-disabled) > .chip-label {
+    height:auto;
+    min-width:0;
+    transform:none;
+    color:inherit;
+    font-weight:600;
+    font-size:.875rem;
+    line-height:1.4;
+    white-space:normal;
+    overflow-wrap:anywhere;
+}
+@supports (color:color-mix(in srgb, white, black)) {
+    html.psr-institution-color main .mt-4.mb-4 > .subtitle-small + ul.d-flex.flex-wrap > li > .chip.chip-simple:not(.chip-disabled),
+    html.psr-institution-color main :is(button#shareActions,button#viewActions),
+    html.psr-institution-color main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link.active {
+        background-color:color-mix(in srgb,var(--psr-institution-color) 7%,white);
+    }
+}
+@media (hover:hover) and (pointer:fine) {
+    main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link:hover,
+    main :is(button#shareActions,button#viewActions):hover,
+    main :is(button#shareActions,button#viewActions)[aria-expanded="true"],
+    main .mt-4.mb-4 > .subtitle-small + ul.d-flex.flex-wrap > li > a.chip.chip-simple:not(.chip-disabled):hover {
+        background:#e4edf5;
+        color:var(--psr-institution-color,#245c9f);
+        border-color:var(--psr-institution-color,#245c9f);
+    }
+    main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link:hover > span {
+        color:var(--psr-institution-color,#245c9f);
+    }
+}
+main .cmp-breadcrumbs .breadcrumb-container .breadcrumb:not(.dark) a:focus-visible,
+main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link:focus-visible,
+main :is(button#shareActions,button#viewActions):focus-visible,
+main .mt-4.mb-4 > .subtitle-small + ul.d-flex.flex-wrap > li > a.chip.chip-simple:focus-visible {
+    outline:2px solid currentColor;
+    outline-offset:2px;
+}
+@media (max-width:575.98px) {
+    main :is(button#shareActions,button#viewActions),
+    main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link {
+        min-height:44px;
+    }
+    main .cmp-breadcrumbs .breadcrumb-container .breadcrumb:not(.dark) > .breadcrumb-item > .separator {
+        padding-inline:6px;
+    }
+}
+
 CSS
     );
     wp_add_inline_script('dci-comuni', <<<'JS'
