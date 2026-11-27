@@ -814,29 +814,9 @@ html.psr-institution-color main .pagination .page-item:not(.disabled) .page-link
 html.psr-institution-color main .it-carousel-wrapper .splide__pagination button.is-active {
     background-color: var(--psr-institution-color) !important;
 }
-/* PSR: rifinitura intestazione pubblica e valutazione delle pagine.
-   Nessuna modifica alle altezze del menu, sticky, hamburger o eventi rating. */
-@media (min-width:992px) {
-    html.psr-institution-color .it-header-wrapper .it-header-slim-wrapper {
-        box-shadow:inset 0 -1px 0 rgba(255,255,255,.18);
-    }
-    html.psr-institution-color .it-header-wrapper .it-header-center-wrapper {
-        box-shadow:inset 0 -1px 0 rgba(255,255,255,.14);
-    }
-    html.psr-institution-color .it-header-wrapper #header-nav-wrapper:not(.theme-light-desk) .menu-wrapper > nav > .navbar-nav > li.nav-item > .nav-link {
-        border-radius:4px 4px 0 0;
-    }
-    html.psr-institution-color .it-header-wrapper #header-nav-wrapper:not(.theme-light-desk) .menu-wrapper > nav > .navbar-nav > li.nav-item > .nav-link:hover {
-        background-color:rgba(255,255,255,.10);
-    }
-    html.psr-institution-color .it-header-wrapper .it-header-slim-wrapper .nav-item > a.navbar-brand:hover {
-        text-decoration:underline !important;
-        text-underline-offset:3px;
-    }
-}
 /* Link editoriali: non modificare pulsanti, avvisi, form o colori semantici. */
-html.psr-institution-color body.page main article.article-wrapper > .row.variable-gutters:first-child p a:not([class]):not([style]),
-html.psr-institution-color body.page main article.article-wrapper > .row.variable-gutters:first-child li a:not([class]):not([style]),
+html.psr-institution-color body.page main article.article-wrapper > .row:first-child p a:not([class]):not([style]),
+html.psr-institution-color body.page main article.article-wrapper > .row:first-child li a:not([class]):not([style]),
 html.psr-institution-color body.single-sito_tematico main article.article-wrapper .sito-links-wrapper > .row:first-child p a:not([class]):not([style]) {
     color:var(--psr-institution-color);
     text-underline-offset:3px;
