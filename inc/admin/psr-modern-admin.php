@@ -89,7 +89,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.9');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.10');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -440,6 +440,121 @@ body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options
     border-top-color:#dbe5ef;
     background:#eff4fa;
     border-bottom-right-radius:11px;
+}
+
+/* PSR: liste native piu' leggibili. Mantiene colonne, ordinamenti,
+   azioni di riga, stati speciali e comportamento responsive di WordPress. */
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table {
+    border-color:#d6e0ea;
+    border-radius:12px;
+    background:#fff;
+    box-shadow:0 3px 14px rgba(16,36,60,.065);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table > thead > tr > :is(th,td),
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table > tfoot > tr > :is(th,td) {
+    background:#e5edf6;
+    color:#233f5c;
+    font-weight:600;
+    border-color:#d5e0eb;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table > thead > tr > :first-child {border-top-left-radius:11px;}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table > thead > tr > :last-child {border-top-right-radius:11px;}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table > tfoot > tr > :first-child {border-bottom-left-radius:11px;}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table > tfoot > tr > :last-child {border-bottom-right-radius:11px;}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts > tbody > tr.type-page > td,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts > tbody > tr[class*="type-"] > td,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.users > tbody > tr > td,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.tags > tbody > tr > td {
+    line-height:1.55;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table:is(.posts,.users,.tags,.media) > tbody > tr > td.column-primary .row-title {
+    font-size:14px;
+    font-weight:650;
+    color:#204e80;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table:is(.posts,.users,.tags,.media) > tbody > tr > td.column-primary .row-title:hover {
+    color:#163a60;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts > tbody > tr > td[class*="column-taxonomy-"] > a,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts > tbody > tr > td.column-categories > a,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts > tbody > tr > td.column-tags > a,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts > tbody > tr > td.column-author > a {
+    color:#245c9f;
+    text-decoration-thickness:1px;
+    text-underline-offset:2px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts > tbody > tr > td.column-date {
+    color:#52657a;
+    font-variant-numeric:tabular-nums;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts.striped > tbody > tr[class*="type-"]:not(.inline-edit-row):not(.no-items):nth-child(odd) {
+    background-color:#f5f8fc;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts.striped > tbody > tr[class*="type-"]:not(.inline-edit-row):not(.no-items):hover {
+    background-color:#eaf1fa;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .wp-list-table.posts > tbody > tr[class*="type-"]:not(.inline-edit-row) .post-state {
+    background:#e8eef5;
+    color:#344e68;
+    border:1px solid #d5e0ec;
+    border-radius:5px;
+    padding:1px 5px;
+    font-size:11px;
+    font-weight:600;
+    box-decoration-break:clone;
+    -webkit-box-decoration-break:clone;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub a {
+    border-radius:5px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub a.current {
+    color:#17324d;
+    font-weight:650;
+    text-decoration:underline;
+    text-underline-offset:4px;
+    text-decoration-thickness:2px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .actions select:not(:disabled),
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box input[type=search]:not(:disabled),
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .current-page:not(:disabled) {
+    background-color:#fff;
+    border-color:#b3c5d8;
+    border-radius:7px;
+    box-shadow:0 1px 2px rgba(16,36,60,.04);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .actions select:focus-visible,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box input[type=search]:focus-visible,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .current-page:focus-visible {
+    outline:2px solid #245c9f;
+    outline-offset:1px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box .button:not(:disabled):not(.disabled):not(.button-primary) {
+    background:#eaf1fa;
+    border-color:#a6bdd5;
+    color:#194879;
+    font-weight:600;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box .button:not(:disabled):not(.disabled):not(.button-primary):hover {
+    background:#dce9f7;
+    border-color:#245c9f;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .tablenav-pages-navspan {
+    border-radius:7px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .tablenav-pages a.button:not(.disabled):not([aria-disabled=true]) {
+    background:#fff;
+    color:#245c9f;
+    border-color:#acbfd3;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .tablenav-pages a.button:not(.disabled):not([aria-disabled=true]):hover {
+    background:#e8f0fa;
+    border-color:#245c9f;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .tablenav-pages .displaying-num,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .tablenav-pages .total-pages {
+    color:#52657a;
+    font-variant-numeric:tabular-nums;
 }
 
 CSS
