@@ -57,7 +57,15 @@ $links = dci_get_option('link', 'link_utili');
             <?php foreach ($links as $link) {
               $link_url = $link['url'] ?? '';
               $link_is_external = !dci_is_internal_portal_url($link_url);
+              // Il contenitore esiste soltanto se il comando autorizzato viene emesso.
+              $psr_link_edit_html = '';
+              if (function_exists('psr_home_tools_edit_row')) {
+                  ob_start();
+                  psr_home_tools_edit_row('link_utili', $link);
+                  $psr_link_edit_html = ob_get_clean();
+              }
             ?>
+              <?php if ($psr_link_edit_html !== '') { ?><span class="psr-useful-link"><?php } ?>
 
               <!-- LINK -->
               <a href="<?php echo esc_url($link_url); ?>"
@@ -87,7 +95,7 @@ $links = dci_get_option('link', 'link_utili');
                 </span>
 
               </a>
-              <?php if (function_exists('psr_home_tools_edit_row')) { psr_home_tools_edit_row('link_utili', $link); } ?>
+              <?php if ($psr_link_edit_html !== '') { echo $psr_link_edit_html; ?></span><?php } ?>
 
             <?php } ?>
 
@@ -125,6 +133,59 @@ $links = dci_get_option('link', 'link_utili');
 .link-utili-item svg,
 .link-utili-item span {
     pointer-events: none;
+}
+
+/* Link utili: un riquadro visivo, con due collegamenti indipendenti.
+   Non applicato ai visitatori o agli utenti privi del comando di modifica. */
+#link-utili .psr-useful-link {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+    max-width: 100%;
+    min-width: 0;
+    transition: transform 0.3s ease;
+}
+#link-utili .psr-useful-link > a.link-utili-item {
+    padding-inline-end: 44px !important;
+    flex-shrink: 1 !important;
+    min-width: 0;
+    max-width: 100%;
+}
+#link-utili .psr-useful-link > a.link-utili-item > .text-truncate {
+    min-width: 0;
+}
+#link-utili .psr-useful-link > .psr-home-item-actions {
+    position: absolute;
+    inset-inline-end: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    padding: 0;
+    z-index: 4;
+}
+#link-utili .psr-useful-link > a.link-utili-item:hover {
+    transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+    #link-utili .psr-useful-link:hover {
+        transform: translateY(-4px);
+    }
+    #link-utili .psr-useful-link:hover > a.link-utili-item {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+    }
+}
+@media (max-width: 576px) {
+    #link-utili .psr-useful-link > a.link-utili-item {
+        padding-inline-end: 50px !important;
+        min-height: 46px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    #link-utili .psr-useful-link,
+    #link-utili .psr-useful-link > a.link-utili-item {
+        transition: none !important;
+        transform: none !important;
+    }
 }
 
 /* Evita hover mobile */
