@@ -23,6 +23,43 @@ get_header();
 ?>
 	    
        <main id="main-container" class="main-container redbrown">
+        <!-- PSR: colore istituzionale effettivo, anche per i frammenti asincroni. -->
+        <style>
+          #main-container.psr-home-theme-color #notizie .btn-outline-primary,
+          #main-container.psr-home-theme-color #link-utili a.link-utili-item,
+          #main-container.psr-home-theme-color #link-utili a.link-utili-item > span.t-primary {
+              color: var(--psr-home-institution-color) !important;
+          }
+          #main-container.psr-home-theme-color #notizie .btn-outline-primary svg,
+          #main-container.psr-home-theme-color #link-utili a.link-utili-item > svg {
+              fill: currentColor !important;
+          }
+        </style>
+        <script>
+        (function () {
+            'use strict';
+            var home = document.getElementById('main-container');
+            if (!home || !window.getComputedStyle) { return; }
+            var selectors = ['.it-header-center-wrapper', '.it-header-navbar-wrapper', '.it-header-slim-wrapper'];
+            function syncColor() {
+                for (var i = 0; i < selectors.length; i++) {
+                    var el = document.querySelector(selectors[i]);
+                    if (!el) { continue; }
+                    var color = window.getComputedStyle(el).backgroundColor;
+                    if (!color || color === 'transparent' || /^rgba\(\s*0,\s*0,\s*0,\s*0\s*\)$/.test(color)) { continue; }
+                    home.style.setProperty('--psr-home-institution-color', color);
+                    home.classList.add('psr-home-theme-color');
+                    return;
+                }
+            }
+            syncColor();
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', syncColor, {once:true});
+            }
+            window.addEventListener('load', syncColor, {once:true});
+        }());
+        </script>
+
 
         <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('header'); } ?>
         <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('banner'); } ?>
