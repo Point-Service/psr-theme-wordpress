@@ -930,25 +930,19 @@ main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.th
     display:flex;
     align-items:center;
     gap:10px;
-    padding:9px 12px;
-    min-height:40px;
+    padding:8px 12px;
+    min-height:38px;
     line-height:1.4;
     border:1px solid transparent;
-    border-radius:5px;
+    border-inline-start:3px solid transparent;
+    border-radius:4px;
     overflow-wrap:anywhere;
     font-weight:600;
     color:#34495e;
     text-decoration:none;
 }
 main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link::before {
-    content:"";
-    flex:0 0 7px;
-    width:7px;
-    height:7px;
-    box-sizing:border-box;
-    border:1px solid #aebfce;
-    border-radius:2px;
-    background:transparent;
+    content:none;
 }
 main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link > span {
     flex:1 1 auto;
@@ -967,16 +961,14 @@ main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.th
     opacity:.65;
 }
 main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link.active {
-    border:1px solid #d6e2ed;
-    border-inline-start:3px solid var(--psr-institution-color,#245c9f) !important;
-    padding-inline-start:10px;
+    border-color:#d6e2ed;
+    border-inline-start-color:var(--psr-institution-color,#245c9f) !important;
     background:#eaf1f7;
     color:var(--psr-institution-color,#245c9f);
     font-weight:700;
 }
 main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link.active::before {
-    border-color:var(--psr-institution-color,#245c9f);
-    background:var(--psr-institution-color,#245c9f);
+    content:none;
 }
 main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link.active > span {
     color:var(--psr-institution-color,#245c9f) !important;
@@ -996,40 +988,39 @@ main .psr-detail-tools {
     box-sizing:border-box;
     width:100%;
     min-width:0;
-    padding:14px;
-    border:1px solid #dfe5eb;
-    border-radius:7px;
-    background:#f7f9fb;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
 }
 main .psr-detail-tools .psr-detail-tools-actions {
-    display:grid;
-    grid-template-columns:minmax(0,1fr);
-    gap:7px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:stretch;
+    gap:6px;
 }
 main .psr-detail-tools .psr-detail-tools-actions > .psr-detail-tools-heading {
-    font-size:.96rem;
-    font-weight:700;
-    line-height:1.4;
-    color:#233b50;
-    margin:0 0 3px;
+    display:none; /* Titolo decorativo: i comandi conservano le proprie etichette. */
 }
 main .psr-detail-tools .psr-detail-tools-actions > .dropdown {
     display:block !important;
+    flex:1 1 105px;
     min-width:0;
+    max-width:100%;
 }
 main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareActions,button#viewActions) {
     box-sizing:border-box;
     display:flex !important;
     align-items:center;
-    justify-content:flex-start;
+    justify-content:center;
     width:100%;
-    min-height:44px;
-    gap:9px;
-    padding:7px 10px;
+    min-height:38px;
+    gap:5px;
+    padding:7px 8px;
     margin:0;
-    background:#fff !important;
-    border:1px solid #dce5ed !important;
-    border-radius:6px;
+    background:#f3f6f9 !important;
+    border:1px solid #dfe6ed !important;
+    border-radius:5px;
     color:var(--psr-institution-color,#245c9f) !important;
     text-decoration:none !important;
     text-align:start;
@@ -1038,19 +1029,19 @@ main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareA
 }
 main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareActions,button#viewActions) > svg.icon {
     box-sizing:border-box;
-    flex:0 0 30px;
-    width:30px;
-    height:30px;
-    padding:6px;
-    border-radius:5px;
-    background:#e8eff6;
+    flex:0 0 18px;
+    width:18px;
+    height:18px;
+    padding:0;
+    border-radius:0;
+    background:transparent;
     fill:currentColor !important;
 }
 main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareActions,button#viewActions) > small {
-    flex:1 1 auto;
+    flex:0 1 auto;
     min-width:0;
     color:inherit !important;
-    font-size:.94rem;
+    font-size:.875rem;
     line-height:1.35;
     white-space:normal;
     text-decoration:none !important;
@@ -1059,10 +1050,10 @@ main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareA
     content:"";
     display:block;
     box-sizing:border-box;
-    flex:0 0 7px;
-    width:7px;
-    height:7px;
-    margin:0 2px 3px auto;
+    flex:0 0 6px;
+    width:6px;
+    height:6px;
+    margin:0 1px 3px 1px;
     border:0;
     border-inline-end:1.5px solid currentColor;
     border-block-end:1.5px solid currentColor;
@@ -1082,19 +1073,19 @@ main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-
     overflow-wrap:anywhere;
 }
 main .psr-detail-tools > .psr-detail-tools-category {
-    margin:13px 0 0 !important;
-    padding:12px 0 0;
-    border-top:1px solid #dfe5eb;
+    margin:12px 0 0 !important;
+    padding:0;
+    border:0;
 }
 main .psr-detail-tools > .psr-detail-tools-category > .subtitle-small {
     color:#41566a !important;
-    font-weight:700;
-    font-size:.9rem;
+    font-weight:650;
+    font-size:.875rem;
     line-height:1.35;
 }
 main .psr-detail-tools > .psr-detail-tools-category > ul.d-flex.flex-wrap {
-    gap:6px !important;
-    margin:6px 0 0;
+    gap:5px !important;
+    margin:4px 0 0;
     padding:0;
 }
 main .psr-detail-tools > .psr-detail-tools-category > ul.d-flex.flex-wrap > li {
@@ -1104,14 +1095,14 @@ main .psr-detail-tools > .psr-detail-tools-category > ul.d-flex.flex-wrap > li {
 main .psr-detail-tools > .psr-detail-tools-category > ul > li > .chip.chip-simple:not(.chip-disabled) {
     box-sizing:border-box;
     height:auto;
-    min-height:30px;
+    min-height:28px;
     min-width:0;
     max-width:100%;
-    padding:5px 10px;
+    padding:4px 9px;
     margin:0;
-    border:1px solid #dfe5eb !important;
+    border:1px solid #dce5ed !important;
     border-radius:5px;
-    background:#fff !important;
+    background:#f5f8fb !important;
     color:var(--psr-institution-color,#245c9f) !important;
     text-decoration:none;
 }
@@ -1127,7 +1118,7 @@ main .psr-detail-tools > .psr-detail-tools-category > ul > li > .chip.chip-simpl
     overflow-wrap:anywhere;
 }
 @supports (color:color-mix(in srgb, white, black)) {
-    html.psr-institution-color main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareActions,button#viewActions) > svg.icon,
+    html.psr-institution-color main .psr-detail-tools > .psr-detail-tools-category > ul > li > .chip.chip-simple:not(.chip-disabled),
     html.psr-institution-color main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link.active {
         background-color:color-mix(in srgb,var(--psr-institution-color) 8%,white);
     }
@@ -1158,8 +1149,8 @@ main .psr-detail-tools > .psr-detail-tools-category > ul > li > a.chip.chip-simp
     outline-offset:2px;
 }
 @media (max-width:575.98px) {
-    main .psr-detail-tools {
-        padding:12px;
+    main .psr-detail-tools .psr-detail-tools-actions > .dropdown > :is(button#shareActions,button#viewActions) {
+        min-height:44px;
     }
     main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper .accordion-body ul[data-element="page-index"] > li.nav-item > a.nav-link {
         min-height:44px;
