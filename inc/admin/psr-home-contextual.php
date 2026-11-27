@@ -93,7 +93,7 @@ function psr_home_tools_scope() {
 }
 function psr_home_tools_style() {
     if (empty($GLOBALS['psr_home_tools_rendering']) || !psr_home_tools_session()) { return; }
-    wp_register_style('psr-home-contextual-tools', false, array(), '1.0.3');
+    wp_register_style('psr-home-contextual-tools', false, array(), '1.0.4');
     wp_enqueue_style('psr-home-contextual-tools');
     wp_add_inline_style('psr-home-contextual-tools', '
 .psr-home-actions{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:5px 0;max-width:100%;position:relative}
@@ -136,6 +136,26 @@ a.psr-home-action:focus-visible{outline:2px solid #0b5da7;outline-offset:2px}
 @supports not selector(:has(*)){#accesso-rapido .custom-styles > div > .psr-home-item-actions{position:relative;inset:auto;margin:4px 0}}
 
 @media(max-width:576px){a.psr-home-action{min-height:32px}.psr-home-item-actions a.psr-home-action{width:34px;height:34px;min-height:34px}.psr-home-section-actions{padding:6px 10px}}
+/* Siti tematici: stesso posizionamento di Accesso rapido. Il link di
+   modifica resta esterno al link della card, ma visivamente al suo interno. */
+@supports selector(:has(*)){
+    .card-wrapper:has(> a.sito-tematico-card):has(> .psr-home-item-actions){position:relative}
+    .card-wrapper:has(> a.sito-tematico-card):has(> .psr-home-item-actions) > a.sito-tematico-card{padding-bottom:36px!important;min-width:0}
+    .card-wrapper:has(> a.sito-tematico-card) > .psr-home-item-actions{position:absolute;inset:auto calc(var(--bs-gutter-x, 24px) / 2 + 8px) 8px auto;z-index:4;margin:0;padding:0}
+    @media(max-width:576px){
+        .card-wrapper:has(> a.sito-tematico-card):has(> .psr-home-item-actions) > a.sito-tematico-card{padding-bottom:44px!important}
+    }
+    @media(hover:hover) and (pointer:fine){
+        .card-wrapper:has(> a.sito-tematico-card) > .psr-home-item-actions{transition:transform 0.3s ease}
+        .card-wrapper:has(> a.sito-tematico-card):has(> .psr-home-item-actions):hover > a.sito-tematico-card{transform:translateY(-5px);box-shadow:0 4px 10px rgba(0,0,0,0.2);background-color:#e0e0e0}
+        .card-wrapper:has(> a.sito-tematico-card):has(> .psr-home-item-actions):hover > a.sito-tematico-card .card-title{color:#0056b3}
+        .card-wrapper:has(> a.sito-tematico-card):hover > .psr-home-item-actions{transform:translateY(-5px)}
+    }
+    @media(prefers-reduced-motion:reduce){
+        .card-wrapper:has(> a.sito-tematico-card):has(> .psr-home-item-actions) > a.sito-tematico-card,
+        .card-wrapper:has(> a.sito-tematico-card) > .psr-home-item-actions{transition:none!important;transform:none!important}
+    }
+}
 ');
 }
 add_action('wp_enqueue_scripts', 'psr_home_tools_style', 100);
