@@ -81,7 +81,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.3');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.4');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -180,6 +180,78 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-hidden { display: none; }
     body.psr-modern-admin:not(.folded) #wpadminbar .ab-top-menu > li > .ab-item { padding-left: 9px; padding-right: 9px; }
 }
+/* PSR: rifinitura schermate interne, solo skin moderna, senza cambiare layout. */
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > h1.wp-heading-inline,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > h1 { color:#17324d;font-weight:650;letter-spacing:-.025em; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > .page-title-action { border-radius:7px;border-color:#a6bdd5;color:#245c9f;background:#fff;font-weight:600; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > .page-title-action:hover { background:#e8f1fa;border-color:#245c9f;color:#163d67; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > .page-title-action:focus-visible { outline:2px solid #245c9f;outline-offset:2px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .subsubsub a:not(.current) { color:#245c9f; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .subsubsub a.current { color:#17324d;font-weight:650; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table { border:1px solid #d5dee8;border-radius:9px;box-shadow:0 2px 6px rgba(16,36,60,.045);border-collapse:separate;border-spacing:0; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table thead th,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table thead td,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table tfoot th,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table tfoot td { background:#eaf0f6;color:#233f5c; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table thead tr > :first-child { border-top-left-radius:8px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table thead tr > :last-child { border-top-right-radius:8px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table tfoot tr > :first-child { border-bottom-left-radius:8px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table tfoot tr > :last-child { border-bottom-right-radius:8px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table thead th a,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table tfoot th a { color:#234d76;font-weight:600; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table tbody tr:not(.plugin-update-tr) > th,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table tbody tr:not(.plugin-update-tr) > td { border-bottom:1px solid #e6ebf0; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table tbody tr:last-child > th,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table tbody tr:last-child > td { border-bottom:0; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table.striped > tbody > :nth-child(odd):not(.plugin-update-tr) { background-color:#f6f8fb; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table.striped > tbody > tr:not(.plugin-update-tr):hover { background-color:#edf3fa; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table .row-title { color:#245c9f;font-weight:600; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .wp-list-table .row-title:hover { color:#173f6e;text-decoration:underline; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .tablenav .button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .search-box .button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .tablenav .tablenav-pages .button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap #posts-filter .button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .submit-box .button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap #submitdiv .button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .form-table + .submit .button { border-radius:6px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .tablenav .button:not(.button-primary):not(.disabled):not(:disabled),
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .search-box .button:not(.button-primary):not(:disabled) { color:#245c9f;background:#fff;border-color:#acbfd3; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .tablenav .button:not(.button-primary):not(.disabled):not(:disabled):hover,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .search-box .button:not(.button-primary):not(:disabled):hover { color:#173f6e;background:#e8f0fa;border-color:#245c9f; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .submit-box .button-primary,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap #submitdiv .button-primary,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .form-table + .submit .button-primary { background:#245c9f;border-color:#245c9f;color:#fff; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .submit-box .button-primary:hover,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap #submitdiv .button-primary:hover,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .form-table + .submit .button-primary:hover { background:#194879;border-color:#194879; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .search-box input[type=search],
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .tablenav select,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .tablenav .current-page,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .form-table input.regular-text,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .form-table textarea.large-text,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb-row input.regular-text,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb-row textarea.cmb2_textarea,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap #titlediv #title { border-radius:6px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .search-box input[type=search]:not(:disabled),
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .tablenav select:not(:disabled),
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .tablenav .current-page:not(:disabled) { border-color:#a9bacb;background-color:#fff; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .postbox,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .stuffbox { border-radius:8px;border-color:#d5dee8;box-shadow:0 2px 6px rgba(16,36,60,.045); }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .postbox .postbox-header { border-bottom-color:#dce4ec; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .postbox .postbox-header h2,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .postbox .hndle { color:#233f5c; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box { border-radius:8px;border-color:#d5dee8;box-shadow:0 2px 6px rgba(16,36,60,.045); }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .nav-tab-wrapper .nav-tab { box-sizing:border-box;background:#eef3f8;color:#28445d;border-color:#dce4ec;white-space:normal;overflow-wrap:anywhere; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .nav-tab-wrapper .nav-tab:hover { background:#e2ebf5;color:#173f6e; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .nav-tab-wrapper .nav-tab-active,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .nav-tab-wrapper .nav-tab-active:hover { background:#dce9f7;color:#173f6e;box-shadow:inset 3px 0 #245c9f;font-weight:600; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > .notice,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content > .notice,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > .updated,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content > .updated,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > .error,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content > .error { border-radius:5px;box-shadow:0 1px 3px rgba(16,36,60,.04); }
+
 CSS
     );
     // Script nativo, senza dipendenze: deve partire nell'head, non nel footer.
