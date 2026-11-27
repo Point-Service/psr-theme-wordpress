@@ -1321,7 +1321,7 @@ main .psr-service-taxonomy a.chip.chip-simple[data-element="service-topic"]:not(
     margin:0;
     border:1px solid #e1e7ed !important;
     border-radius:5px;
-    background:#fafbfd !important;
+    background:#fff !important;
     color:var(--psr-institution-color,#245c9f) !important;
     text-decoration:none;
 }
@@ -1342,7 +1342,7 @@ main .psr-service-taxonomy a.chip.chip-simple[data-element="service-topic"]:not(
 }
 @media (hover:hover) and (pointer:fine) {
     main .psr-service-taxonomy a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled):hover {
-        background:#f0f5f9 !important;
+        background:#f7f9fb !important;
         border-color:#c5d2df !important;
         text-decoration:underline;
         text-underline-offset:2px;
@@ -1519,7 +1519,7 @@ main :is(.psr-contact-card,.psr-office-contact-card).card.card-teaser {
     padding:16px !important;
     border-radius:6px !important;
     border:1px solid #dfe6ed !important;
-    background:#fbfcfd;
+    background:#fff;
     box-shadow:0 2px 6px rgba(24,43,61,.045) !important;
 }
 main :is(.psr-contact-card,.psr-office-contact-card) > .card-body {
@@ -1548,7 +1548,7 @@ main :is(.psr-contact-card,.psr-office-contact-card) > svg.icon {
     height:34px;
     padding:7px;
     border-radius:5px;
-    background:#edf2f7;
+    background:#f5f8fb;
     fill:var(--psr-institution-color,#245c9f) !important;
 }
 main :is(.psr-contact-card,.psr-office-contact-card) > svg.icon + .card-body {
