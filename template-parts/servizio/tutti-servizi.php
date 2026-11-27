@@ -1,4 +1,6 @@
 <?php
+if (function_exists('psr_home_tools_section')) { psr_home_tools_section('services-all'); }
+
 global $posts, $the_query, $load_posts, $servizio, $load_card_type, $should_have_grey_background, $tax_query;
 $requested_max_posts = isset($_GET['max_posts']) ? absint($_GET['max_posts']) : 0;
 $max_posts = ($requested_max_posts > 0) ? min($requested_max_posts, 300) : 100;

@@ -1,4 +1,6 @@
 <?php
+if (function_exists('psr_home_tools_section')) { psr_home_tools_section('novita-highlight'); }
+
     global $post, $posts;
     // Per selezionare i contenuti in evidenza tramite flag
     // $post_types = dci_get_post_types_grouped('novita');

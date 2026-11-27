@@ -1,4 +1,6 @@
 <?php
+if (function_exists('psr_home_tools_section')) { psr_home_tools_section('vivi-places'); }
+
     // Per selezionare i contenuti in evidenza tramite flag
     // $luoghi = dci_get_highlighted_posts(['luogo'], 6);
 

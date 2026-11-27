@@ -35,6 +35,7 @@ $tax_query = array(
 get_header();
 ?>
  <main>
+<?php if (function_exists('psr_home_tools_category')) { psr_home_tools_category('servizio'); } ?>
  <?php 
       $title = $obj->name;
       $description = $obj->description;

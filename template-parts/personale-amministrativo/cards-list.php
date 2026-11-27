@@ -49,6 +49,7 @@ if ($tipo_name != "politico") {
                         <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
                             <h3 class="h5 card-title"><?php echo esc_html($titolo); ?></h3>
                         </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
 
                         <?php if (!empty($descrizione)) { ?>
                             <p class="card-text d-md-none">
@@ -90,6 +91,7 @@ if ($tipo_name != "politico") {
                         <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
                             <h3 class="h5 card-title"><?php echo esc_html($titolo); ?></h3>
                         </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
 
                         <?php if (!empty($descrizione)) { ?>
                             <p class="card-text d-md-none">

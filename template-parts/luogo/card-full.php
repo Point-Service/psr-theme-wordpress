@@ -35,6 +35,7 @@ $tipi_luogo = get_the_terms($post->ID,'tipi_luogo');
                 <h3 class="cmp-list-card-img__body-title u-main-primary">
                     <a class="text-decoration-none" href="<?php echo get_permalink($post->ID); ?>"><?php echo $post->post_title ?></a>
                 </h3>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
                 <p class="cmp-list-card-img__body-description">
                     <?php echo $descrizione; ?>
                 </p>

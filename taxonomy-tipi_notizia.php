@@ -12,6 +12,7 @@ get_header();
 ?>
 
 <main>
+<?php if (function_exists('psr_home_tools_category')) { psr_home_tools_category('notizia'); } ?>
 	<div class="container" id="main-container">
 		<div class="row justify-content-start">
 			<div class="col-12 col-lg-10">

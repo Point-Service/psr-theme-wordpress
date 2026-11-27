@@ -45,6 +45,7 @@ if (!empty($descrizione_mobile) && function_exists('mb_strlen') && function_exis
                         <a class="text-decoration-none" href="<?php echo get_permalink(); ?>">
                             <h3 class="h5 card-title"><?php echo esc_html($titolo); ?></h3>
                         </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
 
                         <!-- INCARICHI -->
                         <?php if (!empty($incarichi)) { ?>

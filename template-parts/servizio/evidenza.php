@@ -1,4 +1,6 @@
 <?php
+if (function_exists('psr_home_tools_section')) { psr_home_tools_section('services-highlight'); }
+
 global $post, $posts;
 
 $servizi_evidenza = dci_get_option('servizi_evidenziati', 'servizi');
@@ -77,6 +79,7 @@ return $cat->name;
 href="<?php echo get_permalink($post->ID); ?>">
 <?php echo $post->post_title; ?>
 </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
 </td>
 
 <td><?php echo $categoria; ?></td>
@@ -152,6 +155,7 @@ return $cat->name;
 href="<?php echo get_permalink($post->ID); ?>">
 <?php echo $post->post_title; ?>
 </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
 </div>
 
 <div class="small mb-1">

@@ -30,6 +30,7 @@ if($servizio->post_status == "publish") {
                     <h3 class="green-title-big t-primary mb-8">
                         <a class="text-decoration-none" href="<?php echo get_permalink($servizio->ID); ?>" data-element="service-link"><?php echo $servizio->post_title; ?></a>
                     </h3>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($servizio->ID); } ?>
                     <p class="text-paragraph">
                         <?php echo $descrizione_breve; ?>
                     </p>

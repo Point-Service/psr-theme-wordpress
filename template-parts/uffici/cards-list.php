@@ -38,6 +38,7 @@
                     <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
                         <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
                     </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post(get_the_ID()); } ?>
                     <p class="card-text d-none d-md-block">
                         <?php echo $description; ?>
                     </p>
@@ -57,6 +58,7 @@
                             <a class="text-decoration-none" href="<?php echo get_permalink(); ?>" data-element="administration-element">
                                 <h3 class="h5 card-title"><?php echo the_title(); ?></h3>
                             </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post(get_the_ID()); } ?>
                             <p class="card-text d-none d-md-block">
                                 <?php echo $description; ?>
                             </p>

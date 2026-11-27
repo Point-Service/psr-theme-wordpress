@@ -1,4 +1,6 @@
 <?php
+if (function_exists('psr_home_tools_section')) { psr_home_tools_section('units'); }
+
 global $the_query, $load_posts, $load_card_type;
 
     $max_posts = isset($_GET['max_posts']) ? $_GET['max_posts'] : 70;

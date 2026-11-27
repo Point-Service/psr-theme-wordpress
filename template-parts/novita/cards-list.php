@@ -52,6 +52,7 @@ if ($img) {
                                        ?>
                                     </h3>
                     </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
                               <p class="card-text">
                                     <?php 
                            
@@ -151,6 +152,7 @@ if ($img) {
                                     </h3>
                                
                             </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
                             <p class="card-text d-none d-md-block">                                       
                                   <?php 
                                   // Recupera il titolo della pagina

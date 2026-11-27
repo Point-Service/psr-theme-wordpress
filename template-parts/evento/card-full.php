@@ -56,7 +56,8 @@ $is_evento_attivo = ($current_timestamp >= $start_timestamp && $current_timestam
                         data-element="live-category-link">
                         <?php echo $post->post_title ?>
                     </a>
-                </h3>                
+                </h3>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>                
                 <p class="text-paragraph-card mb-5">
                     <?php echo $descrizione; ?>
                 </p>                 

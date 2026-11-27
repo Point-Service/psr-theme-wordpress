@@ -1,4 +1,6 @@
 <?php
+if (function_exists('psr_home_tools_section')) { psr_home_tools_section('admin-highlight'); }
+
     // Per selezionare i contenuti in evidenza tramite flag
     // $post_types = dci_get_post_types_grouped('amministrazione');
     // $posts_evidenza = dci_get_highlighted_posts( $post_types, 3);
@@ -28,6 +30,7 @@
                                  </svg> <?php echo $post->post_title; ?>
                                 </h3>
                             </a>
+<?php if (function_exists('psr_home_tools_edit_post')) { psr_home_tools_edit_post($post->ID); } ?>
                             <p class="text-paragraph mb-0">
                                 <?php echo dci_get_meta('descrizione_breve'); ?>
                             </p>

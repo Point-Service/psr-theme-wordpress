@@ -1,4 +1,6 @@
 <?php
+if (function_exists('psr_home_tools_section')) { psr_home_tools_section('novita-all'); }
+
 global $the_query, $load_card_type, $wpdb;
 
 // Recupero filtri

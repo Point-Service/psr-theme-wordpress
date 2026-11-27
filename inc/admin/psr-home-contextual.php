@@ -33,13 +33,13 @@ function psr_home_tools_setting() {
     if (!psr_home_tools_config_screen() || !psr_home_tools_owner()) { return; }
     $forced = defined('PSR_HOME_TOOLS_DISABLED') && PSR_HOME_TOOLS_DISABLED;
     echo '<div class="notice notice-info" style="padding:12px 16px;margin-top:16px">';
-    echo '<p><strong>Gestione contestuale dei contenuti (Home)</strong></p>';
+    echo '<p><strong>Gestione contestuale dei contenuti</strong></p>';
     echo '<form method="post" action="' . esc_url(admin_url('admin.php?page=dci_options')) . '">';
     wp_nonce_field('psr_home_tools_save', 'psr_home_tools_nonce');
     echo '<input type="hidden" name="psr_home_tools_save" value="1">';
     echo '<p><label><input type="checkbox" name="psr_home_tools_enabled" value="1"'
         . checked(psr_home_tools_enabled(), true, false) . disabled($forced, true, false)
-        . '> Abilita i comandi di gestione direttamente nella home</label></p>';
+        . '> Abilita i comandi di gestione nella home e nelle sezioni interne</label></p>';
     echo '<p class="description">Disattivato per impostazione predefinita. I comandi sono visibili soltanto agli utenti con le autorizzazioni richieste. Indipendente dallo stile del menu.</p>';
     if (!$forced) { submit_button('Salva gestione contestuale', 'secondary', 'psr_home_tools_submit', false); }
     else { echo '<p>Funzione disabilitata dalla configurazione di emergenza.</p>'; }
@@ -64,9 +64,15 @@ function psr_home_tools_scope() {
     if (!empty($GLOBALS['psr_home_tools_rendering']) && !is_admin()) { return true; }
     // Solo i frammenti home gia' ammessi dal dispatcher pubblico; nessun nuovo endpoint.
     if (!wp_doing_ajax() || !function_exists('dci_is_async_template_request')) { return false; }
-    foreach (array('home-notizie','home-calendario','home-servizi','home-argomenti','home-gallery') as $key) {
+    foreach (array('home-notizie','home-calendario','home-servizi','home-argomenti','home-gallery',
+        'novita-evidenza','novita-tutte','servizi-evidenza','servizi-tutti','eventi-tutti',
+        'luoghi-evidenza','luoghi-tutti','vivere-eventi','vivere-luoghi','amministrazione-evidenza',
+        'uffici-tutti','aree-amministrative-tutte','organi-governo-tutti','enti-fondazioni-tutti','politici-tutti','personale-amministrativo-tutti') as $key) {
         if (dci_is_async_template_request($key)) { return true; }
     }
+    if (isset($_POST['action'], $_POST['load_card_type']) && is_string($_POST['action']) && is_string($_POST['load_card_type'])
+        && $_POST['action'] === 'load_more'
+        && in_array($_POST['load_card_type'], array('notizia','servizio','categoria_servizio','luogo','personale-amministrativo'), true)) { return true; }
     return false;
 }
 function psr_home_tools_style() {
@@ -103,7 +109,7 @@ function psr_home_tools_type_can($type, $operation) {
 }
 function psr_home_tools_option_url($page, $anchor = '') {
     if (!current_user_can('manage_options') || !function_exists('new_cmb2_box')) { return ''; }
-    $allowed = array('dci_options','homepage','home_messages','strip_home','servizi','accesso_rapido','Galleria','link_utili','assistenza','footer','socials','ricerca');
+    $allowed = array('dci_options','homepage','home_messages','strip_home','servizi','accesso_rapido','Galleria','link_utili','assistenza','footer','socials','ricerca','novita','luoghi','vivi','amministrazione');
     if (!in_array($page, $allowed, true)) { return ''; }
     return add_query_arg('page', $page, admin_url('admin.php')) . ($anchor !== '' ? '#' . rawurlencode($anchor) : '');
 }
@@ -119,6 +125,17 @@ function psr_home_tools_link($url, $label, $icon = 'pencil') {
 function psr_home_tools_section($section) {
     if (!psr_home_tools_scope()) { return; }
     $sections = array(
+        'novita-highlight' => array('Novità in evidenza', '', 'novita', 'contenuti_evidenziati', 'Configura evidenza'),
+        'novita-all' => array('Tutte le notizie', 'notizia', '', '', ''),
+        'services-highlight' => array('Servizi in evidenza', '', 'servizi', 'servizi_evidenziati', 'Configura evidenza'),
+        'services-all' => array('Tutti i servizi', 'servizio', '', '', ''),
+        'places-highlight' => array('Luoghi in evidenza', '', 'luoghi', 'luoghi_evidenziati', 'Configura evidenza'),
+        'places-all' => array('Tutti i luoghi', 'luogo', '', '', ''),
+        'vivi-events' => array('Eventi in evidenza', 'evento', 'vivi', 'eventi_evidenziati', 'Configura evidenza'),
+        'vivi-places' => array('Luoghi in evidenza', 'luogo', 'vivi', 'luoghi_evidenziati', 'Configura evidenza'),
+        'admin-highlight' => array('Amministrazione in evidenza', '', 'amministrazione', 'notizia_evidenziata', 'Configura evidenza'),
+        'units' => array('Unità organizzative', 'unita_organizzativa', '', '', ''),
+        'people' => array('Persone pubbliche', 'persona_pubblica', '', '', ''),
         'header' => array('Intestazione', '', 'dci_options', '', 'Configura intestazione'),
         'banner' => array('Immagini iniziali', '', 'homepage', 'immagine', 'Gestisci immagini'),
         'messages' => array('Avvisi in home', '', 'home_messages', 'messages_repeat', 'Aggiungi / gestisci avvisi'),
@@ -141,7 +158,7 @@ function psr_home_tools_section($section) {
     list($title, $type, $page, $anchor, $config_label) = $sections[$section];
     if ($section === 'gallery' && function_exists('dci_get_option')
         && dci_get_option('stile_galleria','galleria') === 'foto-gallery') { $type = 'galleria'; }
-    $new = $type && psr_home_tools_type_can($type, 'create_posts') ? add_query_arg('post_type', $type, admin_url('post-new.php')) : '';
+    $new = $type && !in_array($section, array('units','people'), true) && psr_home_tools_type_can($type, 'create_posts') ? add_query_arg('post_type', $type, admin_url('post-new.php')) : '';
     $manage = $type && psr_home_tools_type_can($type, 'edit_posts') ? add_query_arg('post_type', $type, admin_url('edit.php')) : '';
     $config = $page ? psr_home_tools_option_url($page, $anchor) : '';
     $tax = $section === 'topics' ? get_taxonomy('argomenti') : null;
@@ -223,3 +240,33 @@ function psr_home_tools_focus_row() {
         . ';function focusRow(){var row=document.getElementById(id);if(!row||!row.classList.contains("cmb-repeatable-grouping"))return;row.classList.remove("closed");row.style.outline="3px solid #2271b1";row.style.outlineOffset="2px";row.scrollIntoView({block:"start"});}if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusRow);}else{focusRow();}})();</script>';
 }
 add_action('admin_footer', 'psr_home_tools_focus_row', 100);
+
+/** Attivazione solo nelle pagine pubbliche esplicitamente supportate. */
+function psr_home_tools_internal_begin() {
+    if (!psr_home_tools_session() || is_admin() || is_404() || is_preview()) { return; }
+    $templates = array('novita','eventi','servizi','luoghi','vivere-il-comune','amministrazione','uffici','aree-amministrative','organi-governo','enti-e-fondazioni','politici','personale-amministrativo');
+    $templates = array_map(static function($name) { return 'page-templates/' . $name . '.php'; }, $templates);
+    if (is_page_template($templates) || is_post_type_archive('notizia')
+        || is_tax(array('tipi_notizia','categorie_servizio','tipi_evento'))
+        || is_singular(array('notizia','evento','servizio'))) { psr_home_tools_begin(); }
+}
+add_action('template_redirect','psr_home_tools_internal_begin', 99);
+
+function psr_home_tools_category($type) {
+    if (!psr_home_tools_scope() || !psr_home_tools_type($type)) { return; }
+    $term = get_queried_object();
+    $allowed = array('notizia'=>'tipi_notizia','servizio'=>'categorie_servizio','evento'=>'tipi_evento');
+    if (!$term instanceof WP_Term || !isset($allowed[$type]) || $term->taxonomy !== $allowed[$type]) { return; }
+    $tax = get_taxonomy($term->taxonomy);
+    if (!$tax || empty($tax->show_ui) || !is_object_in_taxonomy($type, $term->taxonomy)) { return; }
+    $new = psr_home_tools_type_can($type, 'create_posts') ? add_query_arg('post_type', $type, admin_url('post-new.php')) : '';
+    $manage = psr_home_tools_type_can($type, 'edit_posts') ? add_query_arg('post_type', $type, admin_url('edit.php')) : '';
+    $edit = current_user_can('edit_term', $term->term_id) ? get_edit_term_link($term->term_id, $term->taxonomy) : '';
+    if (!$new && !$manage && !$edit) { return; }
+    $object = psr_home_tools_type($type);
+    echo '<nav class="psr-home-actions psr-home-section-actions" aria-label="Gestione contenuti">';
+    psr_home_tools_link($new, 'Aggiungi ' . $object->labels->singular_name, 'plus');
+    psr_home_tools_link($manage, 'Gestisci ' . $object->labels->name, 'list');
+    psr_home_tools_link($edit, 'Modifica categoria', 'pencil');
+    echo '</nav>';
+}

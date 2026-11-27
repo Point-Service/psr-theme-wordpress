@@ -1,4 +1,6 @@
 <?php
+if (function_exists('psr_home_tools_section')) { psr_home_tools_section('people'); }
+
 global $the_query, $load_posts, $load_card_type, $tax_query, $additional_filter, $filter_ids;
 
 $per_page = 12;

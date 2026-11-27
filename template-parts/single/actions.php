@@ -14,6 +14,7 @@ $tipi_commissario = get_the_terms($post->ID, 'tipi_commissario');
 if ($hide_arguments) $argomenti = array();
 ?>
 
+<?php if (function_exists('psr_home_tools_edit_post') && is_singular(array('notizia','evento','servizio')) && $post instanceof WP_Post && (int) $post->ID === (int) get_queried_object_id()) { psr_home_tools_edit_post($post->ID); } ?>
 <!-- Condividi sui social -->
 <div class="dropdown <?php echo $inline ? 'd-inline' : ''; ?>">
     <button class="btn btn-dropdown dropdown-toggle text-decoration-underline d-inline-flex align-items-center fs-0" type="button" id="shareActions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="condividi sui social">
