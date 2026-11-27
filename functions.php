@@ -1698,38 +1698,6 @@ body:not(.home) main #tutti-gli-argomenti .section-content > .row > .col > h3:no
     }
 }
 
-/* PSR: titoli principali delle pagine interne, coordinati alle sezioni.
-   Preserva la gerarchia H1, la griglia, le descrizioni e le immagini. */
-body:not(.home) main #custom-section .cmp-hero .it-hero-wrapper .it-hero-text-wrapper h1.hero-title:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,#main-container.psr-home-restyle *),
-body:not(.home) main .container h1:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,#main-container.psr-home-restyle *),
-body.single-galleria #main-container.container h1:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,#main-container.psr-home-restyle *) {
-    font-size:clamp(2rem,2.7vw,2.65rem);
-    font-weight:700;
-    line-height:1.2;
-    letter-spacing:-.025em;
-    padding-inline-start:18px;
-    background-image:linear-gradient(var(--psr-institution-color,#245c9f),var(--psr-institution-color,#245c9f));
-    background-repeat:no-repeat;
-    background-size:5px .82em;
-    background-position:left .18em;
-    overflow-wrap:anywhere;
-}
-@media (max-width:575.98px) {
-    body:not(.home) main #custom-section .cmp-hero .it-hero-wrapper .it-hero-text-wrapper h1.hero-title:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,#main-container.psr-home-restyle *),
-    body:not(.home) main .container h1:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,#main-container.psr-home-restyle *),
-    body.single-galleria #main-container.container h1:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,#main-container.psr-home-restyle *) {
-        padding-inline-start:13px;
-        background-size:4px .82em;
-    }
-}
-@media print {
-    body:not(.home) main #custom-section .cmp-hero .it-hero-wrapper .it-hero-text-wrapper h1.hero-title:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,#main-container.psr-home-restyle *),
-    body:not(.home) main .container h1:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,#main-container.psr-home-restyle *),
-    body.single-galleria #main-container.container h1:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,#main-container.psr-home-restyle *) {
-        background-image:none;
-        padding-inline-start:0;
-    }
-}
 
 CSS
     );
