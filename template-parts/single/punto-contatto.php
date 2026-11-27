@@ -21,7 +21,7 @@ $other_contacts = array(
 if (isset($contatto->post_title) && strlen($contatto->post_title) > 0):
 ?>
 
-<div class="card card-teaser shadow mt-3 rounded">
+<div class="card card-teaser shadow mt-3 rounded psr-contact-card">
       <?php
     // Controlla il tipo di contatto per decidere quale icona mostrare
     if (isset($full_contatto['email']) && is_array($full_contatto['email']) && count($full_contatto['email'])):

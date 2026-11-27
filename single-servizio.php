@@ -724,7 +724,7 @@ get_header();
                                 <h2 class="mb-3" id="contacts">Contatti</h2>
                                 <h3 class="mb-3" id="contacts">Contatta ufficio</h3>
                                 <div class="row">
-                                      <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
+                                      <div class="col-12 psr-service-office">
                                         <?php
                                             get_template_part("template-parts/unita-organizzativa/card-full");
                                         ?>
@@ -735,7 +735,7 @@ get_header();
                                     if(!empty($punti_contatto_id)){                                      
                                 ?>
                                  <h3 class="mb-3" id="contacts">Contatti dedicati</h3>
-                                <div class="row">
+                                <div class="row psr-service-contacts">
                                         <?php
                                         foreach($punti_contatto_id as $pc_id) {
                                             ?>
@@ -755,7 +755,7 @@ get_header();
                             </section>
                             <?php }  ?>
                                  <div class="row">
-                                    <div class="col-12 mb-30">
+                                    <div class="col-12 mb-30 psr-service-taxonomy">
                                         <span class="text-paragraph-small">Argomenti:</span>
                                         <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
                                             <?php foreach ( $argomenti as $item ) { ?>
@@ -772,7 +772,7 @@ get_header();
                                 </div>
 
 
-                              <div class="col-12 mb-30">
+                              <div class="col-12 mb-30 psr-service-taxonomy">
                                         <span class="text-paragraph-small">Categorie:</span>
                                         <ul class="d-flex flex-wrap gap-2 mt-10 mb-30">
                                             <?php foreach ( $categorie as $item ) { ?>

@@ -46,7 +46,7 @@ $other_contacts = array(
 
 if ($ufficio != null) {
     if (!$with_border) { ?>
-<div class="card card-teaser shadow-sm p-4s rounded border border-light flex-nowrap">
+<div class="card card-teaser shadow-sm p-4s rounded border border-light flex-nowrap psr-office-contact-card">
     <svg class="icon">
         <use xlink:href="#it-pa"></use>
     </svg>
@@ -235,7 +235,7 @@ if ($ufficio != null) {
 <p></p>
 
 <?php } else { ?>
-<div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3">
+<div class="card card-teaser card-teaser-info rounded shadow-sm p-4 me-3 psr-office-contact-card">
     <svg class="icon">
         <use xlink:href="#it-pa"></use>
     </svg>

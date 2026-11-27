@@ -1311,7 +1311,7 @@ main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-
 
 /* PSR: classificazioni a fondo contenuto, coordinate con le azioni light.
    Solo campi identificati dal markup dei servizi, nessuna modifica alle tassonomie. */
-body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled) {
+main .psr-service-taxonomy a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled) {
     box-sizing:border-box;
     height:auto;
     min-height:32px;
@@ -1325,7 +1325,7 @@ body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-el
     color:var(--psr-institution-color,#245c9f) !important;
     text-decoration:none;
 }
-body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled) > .chip-label {
+main .psr-service-taxonomy a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled) > .chip-label {
     height:auto;
     min-width:0;
     transform:none;
@@ -1336,12 +1336,12 @@ body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-el
     white-space:normal;
     overflow-wrap:anywhere;
 }
-body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled):focus-visible {
+main .psr-service-taxonomy a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled):focus-visible {
     outline:2px solid currentColor;
     outline-offset:2px;
 }
 @media (hover:hover) and (pointer:fine) {
-    body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled):hover {
+    main .psr-service-taxonomy a.chip.chip-simple[data-element="service-topic"]:not(.chip-disabled):hover {
         background:#f0f5f9 !important;
         border-color:#c5d2df !important;
         text-decoration:underline;
@@ -1349,26 +1349,26 @@ body.single-servizio main .it-page-sections-container a.chip.chip-simple[data-el
     }
 }
 @supports selector(:has(*)) {
-    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) {
+    main .psr-service-taxonomy {
         margin-bottom:16px !important;
     }
-    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) > .text-paragraph-small:not(p) {
+    main .psr-service-taxonomy > .text-paragraph-small:not(p) {
         color:#41566a;
         font-size:.94rem;
         line-height:1.4;
         font-weight:650;
     }
-    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) > ul.d-flex.flex-wrap {
+    main .psr-service-taxonomy > ul.d-flex.flex-wrap {
         gap:7px !important;
         margin:8px 0 0 !important;
         padding:0;
         list-style:none;
     }
-    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) > ul.d-flex.flex-wrap > li {
+    main .psr-service-taxonomy > ul.d-flex.flex-wrap > li {
         min-width:0;
         max-width:100%;
     }
-    body.single-servizio main .it-page-sections-container .col-12.mb-30:has(> .text-paragraph-small + ul.d-flex.flex-wrap > li > a[data-element="service-topic"]) > p.text-paragraph-small.mb-0 {
+    main .psr-service-taxonomy > p.text-paragraph-small.mb-0 {
         margin-top:18px !important;
         padding-top:12px;
         border-top:1px solid #e5eaf0;
@@ -1507,6 +1507,119 @@ main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabil
 main .it-page-section:is(#allegati,#documenti) .card.card-teaser,
 main .it-page-section :is(h2,h3,h4)#a-cura-di + .row .card.card-teaser,
 main .it-page-section:is(#a-cura-di,#ufficio_responsabile,#struttura-responsabile) .card.card-teaser {
+        padding:12px !important;
+    }
+}
+
+/* PSR: contatti e classificazioni finali, stili dedicati ai componenti. */
+main :is(.psr-contact-card,.psr-office-contact-card).card.card-teaser {
+    box-sizing:border-box;
+    min-width:0;
+    max-width:100%;
+    padding:16px !important;
+    border-radius:6px !important;
+    border:1px solid #dfe6ed !important;
+    background:#fbfcfd;
+    box-shadow:0 2px 6px rgba(24,43,61,.045) !important;
+}
+main :is(.psr-contact-card,.psr-office-contact-card) > .card-body {
+    flex:1 1 0%;
+    min-width:0;
+    max-width:100%;
+    padding-inline-end:0 !important;
+    overflow-wrap:anywhere;
+}
+main :is(.psr-contact-card,.psr-office-contact-card) > .card-body > .card-title {
+    font-size:1.04rem;
+    line-height:1.4;
+    font-weight:650;
+    overflow-wrap:anywhere;
+    margin-bottom:10px;
+}
+main :is(.psr-contact-card,.psr-office-contact-card) > .card-body > .card-title,
+main :is(.psr-contact-card,.psr-office-contact-card) > .card-body > .card-title a {
+    color:var(--psr-institution-color,#245c9f);
+}
+main :is(.psr-contact-card,.psr-office-contact-card) > svg.icon {
+    box-sizing:border-box;
+    flex:0 0 34px;
+    min-width:34px;
+    width:34px;
+    height:34px;
+    padding:7px;
+    border-radius:5px;
+    background:#edf2f7;
+    fill:var(--psr-institution-color,#245c9f) !important;
+}
+main :is(.psr-contact-card,.psr-office-contact-card) > svg.icon + .card-body {
+    margin-inline-start:10px;
+}
+main :is(.psr-contact-card,.psr-office-contact-card) .card-text,
+main :is(.psr-contact-card,.psr-office-contact-card) .card-text p {
+    min-width:0;
+    max-width:100%;
+    font-size:.94rem;
+    line-height:1.55;
+    color:#41566a;
+    overflow-wrap:anywhere;
+}
+main :is(.psr-contact-card,.psr-office-contact-card) .card-text a {
+    color:var(--psr-institution-color,#245c9f);
+    white-space:normal;
+    overflow-wrap:anywhere;
+    word-break:normal;
+    text-underline-offset:2px;
+}
+main .psr-contact-card .card-text a[href^="mailto:"] {
+    display:block;
+}
+main :is(.psr-contact-card,.psr-office-contact-card) .card-text a:focus-visible {
+    outline:2px solid currentColor;
+    outline-offset:2px;
+}
+main .psr-service-contacts > [class*="col-"] {
+    min-width:0;
+    margin-bottom:14px !important;
+}
+main .psr-service-contacts .psr-contact-card {
+    width:100%;
+}
+main .psr-service-contacts .psr-contact-card + p:empty {
+    margin:0;
+}
+main .psr-service-office {
+    margin-bottom:20px;
+}
+main .psr-service-taxonomy {
+    margin-top:10px;
+    margin-bottom:16px !important;
+}
+main .psr-service-taxonomy > .text-paragraph-small:not(p) {
+    color:#41566a;
+    font-size:.94rem;
+    line-height:1.4;
+    font-weight:650;
+}
+main .psr-service-taxonomy > ul.d-flex.flex-wrap {
+    gap:7px !important;
+    margin:8px 0 0 !important;
+    padding:0;
+    list-style:none;
+}
+main .psr-service-taxonomy > ul.d-flex.flex-wrap > li {
+    min-width:0;
+    max-width:100%;
+}
+main .psr-service-taxonomy > p.text-paragraph-small.mb-0 {
+    margin-top:18px !important;
+    padding-top:12px;
+    border-top:1px solid #e5eaf0;
+    color:#526779;
+    font-size:.875rem;
+    line-height:1.5;
+}
+@media (max-width:575.98px) {
+    main :is(.psr-contact-card,.psr-office-contact-card).card.card-teaser {
         padding:12px !important;
     }
 }
