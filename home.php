@@ -25,9 +25,12 @@ get_header();
        <main id="main-container" class="main-container redbrown psr-home-restyle">
 
 
-        <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('header'); } ?>
-        <?php if (function_exists('psr_home_tools_section')) { psr_home_tools_section('banner'); } ?>
-        <?php get_template_part("template-parts/home/carosello2"); ?>
+        <?php
+        $psr_hero_tools = function_exists('psr_home_tools_hero_markup') ? psr_home_tools_hero_markup() : '';
+        if ($psr_hero_tools !== '') { echo '<div class="psr-home-hero-editor">'; }
+        get_template_part("template-parts/home/carosello2");
+        if ($psr_hero_tools !== '') { echo $psr_hero_tools . '</div>'; }
+        ?>
 
         <h1 class="visually-hidden">
             <?php echo dci_get_option("nome_comune"); ?>
