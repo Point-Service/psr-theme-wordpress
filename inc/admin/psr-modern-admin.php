@@ -89,7 +89,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.8');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.9');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -363,6 +363,84 @@ body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-option
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .file-status {border-radius:6px;}
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .cmb2-remove-file-button:focus-visible,
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .cmb2-remove-file-button:focus-visible {outline:2px solid #245c9f;outline-offset:3px;}
+
+/* Configurazione PSR: superficie leggera e campi piu' definiti.
+   Conserva colonne, dimensioni dei campi, widget e stati di validazione. */
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box {
+    background:#f4f7fb;
+    border-color:#d5e0eb;
+    border-radius:12px;
+    box-shadow:0 3px 14px rgba(16,36,60,.055);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box > .nav-tab-wrapper {
+    border-radius:11px 0 0 0;
+    background:#f4f7fb;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box > .nav-tab-wrapper > a.nav-tab {
+    background:transparent;
+    border-bottom-color:#e2e9f1;
+    color:#344e68;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box > .nav-tab-wrapper > a.nav-tab:hover {
+    background:#e8f0fa;
+    color:#194879;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box > .nav-tab-wrapper > a.nav-tab-active,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box > .nav-tab-wrapper > a.nav-tab-active:hover {
+    background:#dce9f7;
+    color:#173f6e;
+    box-shadow:inset 4px 0 #245c9f;
+    font-weight:650;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box > .cmb-form > .form-content .cmb2-metabox > .cmb-row:not(.cmb-type-title):not(.highlighted_missing_field):not(.highlighted_alternative_field):not(.error) {
+    background:#fff;
+    border-color:#e2e9f1;
+    box-shadow:none;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box > .cmb-form > .form-content .cmb2-metabox > .cmb-row:not(.cmb-type-title):not(.highlighted_missing_field):not(.highlighted_alternative_field):not(.error):focus-within {
+    box-shadow:inset 3px 0 #90b4da;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box > .cmb-form > .form-content .cmb2-metabox > .cmb-row > .cmb-th > label {
+    color:#17324d;
+    font-weight:650;
+    line-height:1.45;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box > .cmb-form > .form-content .cmb2-metabox > .cmb-row > .cmb-td > .cmb2-metabox-description {
+    color:#53677c;
+    font-size:13px;
+    line-height:1.55;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box .cmb-type-title {
+    background:#e7eff8;
+    border-color:#d5e1ed;
+    box-shadow:none;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box .cmb-type-title .cmb2-metabox-title {
+    color:#173f6e;
+    font-size:15px;
+    letter-spacing:.015em;
+    font-weight:700;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box .cmb-row:not(.highlighted_missing_field):not(.highlighted_alternative_field):not(.error) .cmb-td :is(input[type=text].regular-text,input[type=url],input[type=email],input[type=tel],input[type=number],input[type=password],textarea.cmb2_textarea):not(.wp-color-picker):not(.select2-search__field):not([aria-invalid=true]):not(.error):not(:disabled):not([readonly]):not([aria-readonly=true]) {
+    border-radius:8px;
+    border-color:#b9c9d9;
+    background-color:#f8fafc;
+    color:#17324d;
+    box-shadow:0 1px 2px rgba(16,36,60,.035);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box .cmb-row:not(.highlighted_missing_field):not(.highlighted_alternative_field):not(.error) .cmb-td :is(input[type=text].regular-text,input[type=url],input[type=email],input[type=tel],input[type=number],input[type=password],textarea.cmb2_textarea):not(.wp-color-picker):not(.select2-search__field):not([aria-invalid=true]):not(.error):not(:disabled):not([readonly]):not([aria-readonly=true]):hover {
+    border-color:#8faac5;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box .cmb-row:not(.highlighted_missing_field):not(.highlighted_alternative_field):not(.error) .cmb-td :is(input[type=text].regular-text,input[type=url],input[type=email],input[type=tel],input[type=number],input[type=password],textarea.cmb2_textarea):not(.wp-color-picker):not(.select2-search__field):not([aria-invalid=true]):not(.error):not(:disabled):not([readonly]):not([aria-readonly=true]):focus {
+    background-color:#fff;
+    border-color:#245c9f;
+    box-shadow:0 0 0 3px rgba(36,92,159,.10);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap.cmb2-options-page .cmb2-options-box .submit-box {
+    border-top-color:#dbe5ef;
+    background:#eff4fa;
+    border-bottom-right-radius:11px;
+}
 
 CSS
         );
