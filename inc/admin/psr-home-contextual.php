@@ -93,7 +93,7 @@ function psr_home_tools_scope() {
 }
 function psr_home_tools_style() {
     if (empty($GLOBALS['psr_home_tools_rendering']) || !psr_home_tools_session()) { return; }
-    wp_register_style('psr-home-contextual-tools', false, array(), '1.0.2');
+    wp_register_style('psr-home-contextual-tools', false, array(), '1.0.3');
     wp_enqueue_style('psr-home-contextual-tools');
     wp_add_inline_style('psr-home-contextual-tools', '
 .psr-home-actions{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:5px 0;max-width:100%;position:relative}
@@ -122,6 +122,16 @@ a.psr-home-action:focus-visible{outline:2px solid #0b5da7;outline-offset:2px}
 #accesso-rapido .custom-styles > div:has(> .psr-home-item-actions) > a.card{padding-bottom:36px!important}
 #accesso-rapido .custom-styles > div > .psr-home-item-actions{position:absolute;inset:auto calc(var(--bs-gutter-x, 24px) / 2 + 8px) 7px auto;z-index:4;margin:0;padding:0}
 @media(max-width:576px){#accesso-rapido .custom-styles > div:has(> .psr-home-item-actions) > a.card{padding-bottom:44px!important}}
+/* Card e matita condividono lo stesso stato hover, pur restando link distinti. */
+@media (hover:hover) and (pointer:fine){
+    #accesso-rapido .custom-styles > div:has(> .psr-home-item-actions) > .psr-home-item-actions{transition:transform 0.3s ease}
+    #accesso-rapido .custom-styles > div:has(> .psr-home-item-actions):hover > a.card{transform:translateY(-5px);box-shadow:0 4px 10px rgba(0,0,0,0.2)}
+    #accesso-rapido .custom-styles > div:has(> .psr-home-item-actions):hover > .psr-home-item-actions{transform:translateY(-5px)}
+}
+@media (prefers-reduced-motion:reduce){
+    #accesso-rapido .custom-styles > div:has(> .psr-home-item-actions) > a.card,
+    #accesso-rapido .custom-styles > div:has(> .psr-home-item-actions) > .psr-home-item-actions{transition:none!important;transform:none!important}
+}
 /* Browser senza :has: conservare il comando in flusso anziche sovrapporlo. */
 @supports not selector(:has(*)){#accesso-rapido .custom-styles > div > .psr-home-item-actions{position:relative;inset:auto;margin:4px 0}}
 
