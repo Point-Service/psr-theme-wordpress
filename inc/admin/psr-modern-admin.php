@@ -89,7 +89,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.7');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.8');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -308,16 +308,61 @@ body.psr-modern-admin:not(.block-editor-page) #wpbody-content #dashboard-widgets
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #dashboard-widgets .postbox .postbox-header { border-bottom-color:#dce4ec; }
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content #dashboard-widgets .postbox .postbox-header h2 { color:#233f5c; }
 
-/* Rifinitura dei campi file CMB2: lascia intatti preview, selezione, rimozione e drag-and-drop. */
-body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box input.cmb2-upload-file[type=text] + input.cmb2-upload-button { display:block;margin:8px 0 4px;float:none; }
-body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box input.cmb2-upload-button,
-body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox input.cmb2-upload-button { border-radius:7px;box-shadow:0 1px 2px rgba(16,36,60,.06); }
-body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .img-status img.cmb-file-field-image,
-body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .img-status img.cmb-file-field-image { border-radius:8px;outline:1px solid #d5dee8;box-shadow:0 2px 6px rgba(16,36,60,.08);background-color:#f5f7fa;background-image:linear-gradient(45deg,#e2e8ef 25%,transparent 25%,transparent 75%,#e2e8ef 75%,#e2e8ef),linear-gradient(45deg,#e2e8ef 25%,transparent 25%,transparent 75%,#e2e8ef 75%,#e2e8ef);background-size:16px 16px;background-position:0 0,8px 8px; }
+/* Rifinitura campi file CMB2: stessi controlli nativi, nessun cambio di eventi. */
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb-type-file .cmb-td input.cmb2-upload-file[type=text] ~ input.cmb2-upload-button {
+    margin:8px 0 6px !important;
+    float:none;
+    vertical-align:middle;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box input.cmb2-upload-button[type=button],
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox input.cmb2-upload-button[type=button] {
+    border-radius:7px;box-shadow:0 1px 3px rgba(16,36,60,.08);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled),
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled) {
+    background:#eaf1f9;color:#245c9f;border-color:#acc1d8;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled):hover,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled):hover {
+    background:#dce9f7;color:#173f6e;border-color:#245c9f;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .img-status > img,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .img-status > img {
+    border-radius:8px !important;
+    outline:1px solid #d5dee8;
+    box-shadow:0 2px 6px rgba(16,36,60,.08);
+    background-color:#f8fafc !important;
+    background-image:linear-gradient(45deg,#e9edf2 25%,transparent 25%,transparent 75%,#e9edf2 75%,#e9edf2),linear-gradient(45deg,#e9edf2 25%,transparent 25%,transparent 75%,#e9edf2 75%,#e9edf2) !important;
+    background-size:16px 16px;
+    background-position:0 0,8px 8px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .img-status .cmb2-remove-file-button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .img-status .cmb2-remove-file-button {
+    box-sizing:border-box;
+    background:#fff;
+    border:1px solid #dba3a3;
+    border-radius:50%;
+    color:#a4262c;
+    width:22px;height:22px;
+    left:auto;right:-4px;top:7px;
+    box-shadow:0 1px 3px rgba(16,36,60,.1);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .img-status .cmb2-remove-file-button::after,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .img-status .cmb2-remove-file-button::after {
+    content:"\00D7";
+    position:absolute;inset:0;
+    text-indent:0;text-align:center;
+    font:600 19px/19px system-ui,sans-serif;
+    pointer-events:none;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .img-status .cmb2-remove-file-button:hover,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .img-status .cmb2-remove-file-button:hover {
+    color:#fff;background:#a4262c;border-color:#a4262c;
+}
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .file-status,
-body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .file-status { border-radius:6px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .file-status {border-radius:6px;}
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .cmb2-remove-file-button:focus-visible,
-body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .cmb2-remove-file-button:focus-visible { outline:2px solid #245c9f;outline-offset:3px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .cmb2-remove-file-button:focus-visible {outline:2px solid #245c9f;outline-offset:3px;}
 
 CSS
         );
