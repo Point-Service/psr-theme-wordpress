@@ -89,7 +89,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.11');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.12');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -589,6 +589,144 @@ body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):n
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .tablenav-pages .displaying-num { font-weight:500;color:#52657a; }
 }
 /* Tablet e smartphone: disposizione e altezze native. */
+
+/* PSR: toolbar gestionale. Solo liste native, senza modifiche al DOM. */
+@supports selector(:has(*)) {
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub > li > a {
+    color:#36516d;
+    font-weight:550;
+    border-radius:8px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub > li > a.current,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub > li > a.current:hover {
+    color:#fff;
+    background:#204e80;
+    box-shadow:0 2px 4px rgba(16,36,60,.13);
+    text-decoration:none;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub > li > a.current .count {
+    color:#fff;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub > li > a:not(.current):hover {
+    color:#173f6e;
+    background:#e9f1fa;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .search-box .button:not(:disabled):not(.disabled):not(.button-primary) {
+    background:#204e80;
+    border-color:#204e80;
+    box-shadow:0 2px 4px rgba(16,36,60,.12);
+    font-weight:650;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .search-box .button:not(:disabled):not(.disabled):not(.button-primary):hover {
+    background:#173a61;
+    border-color:#173a61;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav .actions select:not(:disabled) {
+    background-color:#f8fafc;
+    border-color:#c3d0de;
+    color:#263f59;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav .actions .button:not(.button-primary):not(.disabled):not(:disabled) {
+    color:#204e80;
+    background:#edf3fa;
+    border-color:#c1d1e1;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav .actions .button:not(.button-primary):not(.disabled):not(:disabled):hover {
+    background:#dce9f7;
+    border-color:#8baacb;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav .tablenav-pages a.button:not(.disabled):not([aria-disabled=true]) {
+    background:#f6f9fc;
+    border-color:#c3d0de;
+    color:#204e80;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav .tablenav-pages .current-page:not(:disabled) {
+    background:#fff;
+    border-color:#b3c5d8;
+    font-weight:600;
+    color:#173f6e;
+}
+@media (min-width:1100px) {
+    /* Mantiene float e controlli nativi: le barre possono andare a capo. */
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub {
+        box-sizing:border-box;
+        background:#fff;
+        border:1px solid #dce5ef;
+        border-radius:11px;
+        padding:4px;
+        margin:10px 0;
+        box-shadow:0 2px 6px rgba(16,36,60,.04);
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub > li {
+        color:transparent;
+        line-height:2;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub > li > a {
+        padding:5px 9px;
+        line-height:1.55;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub > li > a .count {
+        display:inline-block;
+        padding:0 4px;
+        margin-inline-start:2px;
+        border-radius:5px;
+        background:#eef3f8;
+        color:#465e76;
+        font-size:11px;
+        line-height:1.6;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .subsubsub > li > a.current .count {
+        background:rgba(255,255,255,.18);
+        color:#fff;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .search-box {
+        margin-top:10px;
+        margin-bottom:10px;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .search-box input[type=search]:not(:disabled) {
+        box-sizing:border-box;
+        min-height:38px;
+        padding-inline-start:30px;
+        background-color:#fff;
+        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23647b93' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='10.8' cy='10.8' r='6.3'/%3E%3Cpath d='m16 16 4 4'/%3E%3C/svg%3E");
+        background-repeat:no-repeat;
+        background-position:left 9px center;
+        background-size:16px 16px;
+        border-radius:9px;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .search-box .button {
+        min-height:38px;
+        border-radius:9px;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav.top,
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav.bottom {
+        background:#fff;
+        border:1px solid #dce5ef;
+        border-radius:12px;
+        padding:10px 12px 6px;
+        min-height:52px;
+        box-shadow:0 2px 8px rgba(16,36,60,.045);
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav .actions select,
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav .actions .button {
+        min-height:34px;
+        border-radius:8px;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .tablenav .tablenav-pages .displaying-num {
+        padding:4px 8px;
+        background:#f0f4f8;
+        border-radius:6px;
+        color:#415b74;
+        font-weight:600;
+    }
+}
+/* In modalita' RTL l'icona ricerca segue la direzione del campo. */
+@media (min-width:1100px) {
+    body.rtl.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa):has(.wp-list-table) .search-box input[type=search]:not(:disabled) {
+        background-position:right 9px center;
+    }
+}
+}
 
 CSS
         );
