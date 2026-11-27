@@ -89,7 +89,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.10');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.11');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -556,6 +556,39 @@ body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):n
     color:#52657a;
     font-variant-numeric:tabular-nums;
 }
+
+/* PSR: barra strumenti liste, senza cambiare form, link o ordine nativo. */
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub > li { color:#aab8c7; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub > li > a { color:#345778;border-radius:6px;text-decoration:none; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub > li > a:hover { color:#173f6e;background:#e2ebf5; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub > li > a.current,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub > li > a.current:hover { background:#dce9f7;color:#173f6e;font-weight:650;text-decoration:none; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub > li > a .count { color:#52657a;font-variant-numeric:tabular-nums; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub > li > a:focus-visible,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .tablenav-pages a.button:focus-visible,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .actions .button:focus-visible,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box .button:focus-visible { outline:2px solid #245c9f;outline-offset:2px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box input[type=search]:not(:disabled) { background:#fff;border-color:#b9c9d9;border-radius:8px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box .button:not(:disabled):not(.disabled):not(.button-primary) { background:#245c9f;border-color:#245c9f;color:#fff;border-radius:8px;font-weight:600; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box .button:not(:disabled):not(.disabled):not(.button-primary):hover { background:#194879;border-color:#194879;color:#fff; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .actions select:not(:disabled) { background-color:#f8fafc;border-color:#bccbda;color:#233f5c;border-radius:7px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .actions select:not(:disabled):hover { border-color:#8faac5; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .actions .button:not(.button-primary):not(.disabled):not(:disabled) { background:#eaf1fa;color:#194879;border-color:#b2c7dc;font-weight:600; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .actions .button:not(.button-primary):not(.disabled):not(:disabled):hover { background:#dce9f7;color:#173f6e;border-color:#245c9f; }
+/* Desktop: superficie per filtri e paginazione. Conserva float nativi. */
+@media (min-width:1100px) {
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub { margin-top:9px;margin-bottom:9px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .subsubsub > li > a { display:inline-block;padding:3px 8px;line-height:1.55; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box { margin-top:7px;margin-bottom:9px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box input[type=search],
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .search-box .button { min-height:34px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav.top,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav.bottom { box-sizing:border-box;display:flow-root;height:auto;min-height:48px;margin:8px 0 12px;padding:8px 10px 4px;border:1px solid #d6e0ea;border-radius:10px;background:#fff;box-shadow:0 2px 6px rgba(16,36,60,.045); }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .actions select,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .actions .button { min-height:32px; }
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):not(.psr-wa) .tablenav .tablenav-pages .displaying-num { font-weight:500;color:#52657a; }
+}
+/* Tablet e smartphone: disposizione e altezze native. */
 
 CSS
         );
