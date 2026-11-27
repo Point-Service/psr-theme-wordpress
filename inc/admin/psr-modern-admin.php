@@ -6,14 +6,14 @@
 if (!defined('ABSPATH')) { exit; }
 
 function psr_modern_admin_is_owner() {
-    return get_current_user_id() === 1 && current_user_can('manage_options');
+    return (int) get_current_user_id() === 1 && current_user_can('manage_options');
 }
 function psr_modern_admin_enabled() {
     return !(defined('PSR_ADMIN_CLASSIC_UI') && PSR_ADMIN_CLASSIC_UI)
         && get_option('psr_modern_admin_ui', '1') === '1';
 }
 function psr_modern_admin_config_screen() {
-    return is_admin() && !is_network_admin() && !is_user_admin()
+    return is_admin() && !is_network_admin() && !is_user_admin() && !wp_doing_ajax()
         && isset($_GET['page']) && $_GET['page'] === 'dci_options';
 }
 function psr_modern_admin_save() {
@@ -21,7 +21,9 @@ function psr_modern_admin_save() {
         || !isset($_POST['psr_modern_admin_save'])) { return; }
     check_admin_referer('psr_modern_admin_save', 'psr_modern_admin_nonce');
     $value = isset($_POST['psr_modern_admin_value']) && $_POST['psr_modern_admin_value'] === '1' ? '1' : '0';
-    update_option('psr_modern_admin_ui', $value, false);
+    if (!(defined('PSR_ADMIN_CLASSIC_UI') && PSR_ADMIN_CLASSIC_UI)) {
+        update_option('psr_modern_admin_ui', $value, false);
+    }
     wp_safe_redirect(admin_url('admin.php?page=dci_options'));
     exit;
 }
@@ -157,7 +159,7 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
 CSS
     );
     // Script nativo, senza dipendenze: deve partire nell'head, non nel footer.
-    wp_register_script('psr-modern-admin', false, array(), '1.0.1', false);
+    wp_register_script('psr-modern-admin', false, array(), '1.0.2', false);
     wp_enqueue_script('psr-modern-admin');
     $data = array(
         'key' => 'psr-modern-nav-v1-' . get_current_blog_id() . '-' . get_current_user_id(),
@@ -223,10 +225,11 @@ CSS
         for (var i=0;i<items.length;i++) {
             if (known.indexOf(items[i]) !== -1) { anchor = records.find(function(r){return r.li === items[i];}).marker; break; }
         }
-        var media = window.matchMedia('(min-width: 961px)'), grouped = false;
+        var media = window.matchMedia('(min-width: 961px)'), grouped = false, failed = false;
         function matches(li, q) {
             var label = li.querySelector('.wp-menu-name');
-            return !q || norm(label ? label.textContent : li.querySelector('a.menu-top').textContent).indexOf(q) !== -1;
+            if (!q || norm(label ? label.textContent : li.querySelector('a.menu-top').textContent).indexOf(q) !== -1) { return true; }
+            return Array.from(li.querySelectorAll('.wp-submenu a')).some(function(a) { return norm(a.textContent).indexOf(q) !== -1; });
         }
         function apply() {
             if (!grouped) { return; }
@@ -248,22 +251,34 @@ CSS
         });
         input.addEventListener('input', apply);
         input.addEventListener('keydown', function(e) { if(e.key === 'Escape') { input.value = ''; apply(); } });
+        // Anche un errore a meta' del riordino ripristina i nodi nativi.
+        function restore() {
+            records.forEach(function(r) {
+                if (r.marker.parentNode === menu) { menu.insertBefore(r.li,r.marker.nextSibling); }
+            });
+            sections.forEach(function(s){s.header.remove();});
+            items.forEach(function(li){li.classList.remove('psr-nav-hidden');});
+            tools.remove(); input.value = ''; grouped = false;
+        }
         function sync() {
+            if (failed) { return; }
+            try { syncLayout(); }
+            catch(e) { failed = true; restore(); }
+        }
+        function syncLayout() {
             var desktop = media.matches && !document.body.classList.contains('folded');
             if (desktop && !grouped) {
                 menu.insertBefore(tools,menu.firstChild);
                 if (anchor) { sections.forEach(function(s) { menu.insertBefore(s.header,anchor); s.members.forEach(function(li){menu.insertBefore(li,anchor);}); }); }
                 grouped = true; apply();
             } else if (!desktop && grouped) {
-                records.forEach(function(r){ menu.insertBefore(r.li,r.marker.nextSibling); });
-                sections.forEach(function(s){s.header.remove();});
-                items.forEach(function(li){li.classList.remove('psr-nav-hidden');});
-                tools.remove(); input.value = ''; grouped = false;
+                restore();
             }
         }
         // Attivazione solo dopo la preparazione dei controlli; il menu nativo rimane utilizzabile.
         document.body.classList.add('psr-modern-admin');
         sync();
+        if (failed) { return; }
         if (media.addEventListener) { media.addEventListener('change',sync); } else if (media.addListener) { media.addListener(sync); }
         if (window.MutationObserver) { new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['class']}); }
     }
@@ -279,6 +294,8 @@ CSS
         document.removeEventListener('DOMContentLoaded', onReady);
         try {
             if (prepare) { init(); }
+        } catch(e) {
+            // Un browser non compatibile conserva il menu originale.
         } finally {
             root.classList.remove('psr-nav-pending');
         }

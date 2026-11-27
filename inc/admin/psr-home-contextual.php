@@ -1,6 +1,6 @@
 <?php
 /**
- * PSR – scorciatoie editoriali della home. Opt-in per sito, nessuna modifica
+ * PSR – scorciatoie editoriali della home e delle sezioni interne. Opt-in per sito, nessuna modifica
  * a ruoli, CPT, query pubbliche o salvataggi dei contenuti.
  */
 if (!defined('ABSPATH')) { exit; }
@@ -51,8 +51,16 @@ add_action('admin_notices', 'psr_home_tools_setting', 20);
 function psr_home_tools_session() {
     if (!is_user_logged_in() || !psr_home_tools_enabled()) { return false; }
     if (!function_exists('psr_login_requires_otp') || !function_exists('psr_login_session_verified')) { return false; }
+    // La sessione e' gia' verificata dai guard PSR; memorizza il risultato
+    // solo per la richiesta corrente, non fra utenti o richieste AJAX.
+    static $checked = array();
     $user = wp_get_current_user();
-    return !psr_login_requires_otp($user) || psr_login_session_verified($user->ID);
+    $uid = (int) $user->ID;
+    if ($uid <= 0) { return false; }
+    if (!array_key_exists($uid, $checked)) {
+        $checked[$uid] = !psr_login_requires_otp($user) || psr_login_session_verified($uid);
+    }
+    return $checked[$uid];
 }
 function psr_home_tools_begin() {
     if (!psr_home_tools_session()) { return; }
@@ -63,16 +71,24 @@ function psr_home_tools_scope() {
     if (!psr_home_tools_session()) { return false; }
     if (!empty($GLOBALS['psr_home_tools_rendering']) && !is_admin()) { return true; }
     // Solo i frammenti home gia' ammessi dal dispatcher pubblico; nessun nuovo endpoint.
-    if (!wp_doing_ajax() || !function_exists('dci_is_async_template_request')) { return false; }
+    if (!wp_doing_ajax() || !function_exists('dci_is_async_template_request')
+        || !isset($_POST['action']) || !is_string($_POST['action'])
+        || (isset($_POST['template_key']) && !is_string($_POST['template_key']))) { return false; }
     foreach (array('home-notizie','home-calendario','home-servizi','home-argomenti','home-gallery',
         'novita-evidenza','novita-tutte','servizi-evidenza','servizi-tutti','eventi-tutti',
         'luoghi-evidenza','luoghi-tutti','vivere-eventi','vivere-luoghi','amministrazione-evidenza',
         'uffici-tutti','aree-amministrative-tutte','organi-governo-tutti','enti-fondazioni-tutti','politici-tutti','personale-amministrativo-tutti') as $key) {
-        if (dci_is_async_template_request($key)) { return true; }
+        if (dci_is_async_template_request($key)) {
+            if (!headers_sent()) { nocache_headers(); }
+            return true;
+        }
     }
     if (isset($_POST['action'], $_POST['load_card_type']) && is_string($_POST['action']) && is_string($_POST['load_card_type'])
         && $_POST['action'] === 'load_more'
-        && in_array($_POST['load_card_type'], array('notizia','servizio','categoria_servizio','luogo','personale-amministrativo'), true)) { return true; }
+        && in_array($_POST['load_card_type'], array('notizia','servizio','categoria_servizio','luogo','personale-amministrativo'), true)) {
+        if (!headers_sent()) { nocache_headers(); }
+        return true;
+    }
     return false;
 }
 function psr_home_tools_style() {
@@ -106,6 +122,10 @@ function psr_home_tools_type_can($type, $operation) {
     return $object && isset($object->cap->{$operation})
         && $object->cap->{$operation} !== 'do_not_allow'
         && current_user_can($object->cap->{$operation});
+}
+function psr_home_tools_can_create($type) {
+    // post-new.php richiede entrambi i permessi, anche quando sono distinti.
+    return psr_home_tools_type_can($type, 'edit_posts') && psr_home_tools_type_can($type, 'create_posts');
 }
 function psr_home_tools_option_url($page, $anchor = '') {
     if (!current_user_can('manage_options') || !function_exists('new_cmb2_box')) { return ''; }
@@ -158,7 +178,10 @@ function psr_home_tools_section($section) {
     list($title, $type, $page, $anchor, $config_label) = $sections[$section];
     if ($section === 'gallery' && function_exists('dci_get_option')
         && dci_get_option('stile_galleria','galleria') === 'foto-gallery') { $type = 'galleria'; }
-    $new = $type && !in_array($section, array('units','people'), true) && psr_home_tools_type_can($type, 'create_posts') ? add_query_arg('post_type', $type, admin_url('post-new.php')) : '';
+    // L'elenco Maggioli e' alimentato esternamente: non offrire creazione locale.
+    if ($section === 'services-all' && function_exists('dci_get_option')
+        && strlen((string) dci_get_option('servizi_maggioli_url', 'servizi')) >= 5) { $type = ''; }
+    $new = $type && !in_array($section, array('units','people'), true) && psr_home_tools_can_create($type) ? add_query_arg('post_type', $type, admin_url('post-new.php')) : '';
     $manage = $type && psr_home_tools_type_can($type, 'edit_posts') ? add_query_arg('post_type', $type, admin_url('edit.php')) : '';
     $config = $page ? psr_home_tools_option_url($page, $anchor) : '';
     $tax = $section === 'topics' ? get_taxonomy('argomenti') : null;
@@ -180,10 +203,19 @@ function psr_home_tools_section($section) {
 }
 function psr_home_tools_edit_post($post_id) {
     if (!psr_home_tools_scope()) { return; }
+    if (!is_int($post_id) && !is_string($post_id)) { return; }
+    if (!preg_match('/^[1-9][0-9]*$/D', (string) $post_id)) { return; }
     $post_id = absint($post_id);
     $post = $post_id ? get_post($post_id) : null;
     if (!$post instanceof WP_Post || $post->post_status !== 'publish' || $post->post_password !== ''
         || !psr_home_tools_type($post->post_type) || !current_user_can('edit_post', $post_id)) { return; }
+    if (function_exists('dci_members_can_user_view_post')
+        && !dci_members_can_user_view_post(get_current_user_id(), $post_id)) { return; }
+    if (wp_doing_ajax() && isset($_POST['action'], $_POST['load_card_type']) && $_POST['action'] === 'load_more') {
+        $types = array('notizia'=>'notizia','servizio'=>'servizio','categoria_servizio'=>'servizio','luogo'=>'luogo','personale-amministrativo'=>'persona_pubblica');
+        $card_type = $_POST['load_card_type'];
+        if (!is_string($card_type) || !isset($types[$card_type]) || $types[$card_type] !== $post->post_type) { return; }
+    }
     $url = get_edit_post_link($post_id, 'raw');
     if (!$url) { return; }
     echo '<span class="psr-home-item-actions">';
@@ -259,8 +291,10 @@ function psr_home_tools_category($type) {
     if (!$term instanceof WP_Term || !isset($allowed[$type]) || $term->taxonomy !== $allowed[$type]) { return; }
     $tax = get_taxonomy($term->taxonomy);
     if (!$tax || empty($tax->show_ui) || !is_object_in_taxonomy($type, $term->taxonomy)) { return; }
-    $new = psr_home_tools_type_can($type, 'create_posts') ? add_query_arg('post_type', $type, admin_url('post-new.php')) : '';
-    $manage = psr_home_tools_type_can($type, 'edit_posts') ? add_query_arg('post_type', $type, admin_url('edit.php')) : '';
+    $external = $type === 'servizio' && function_exists('dci_get_option')
+        && strlen((string) dci_get_option('servizi_maggioli_url', 'servizi')) >= 5;
+    $new = !$external && psr_home_tools_can_create($type) ? add_query_arg('post_type', $type, admin_url('post-new.php')) : '';
+    $manage = !$external && psr_home_tools_type_can($type, 'edit_posts') ? add_query_arg('post_type', $type, admin_url('edit.php')) : '';
     $edit = current_user_can('edit_term', $term->term_id) ? get_edit_term_link($term->term_id, $term->taxonomy) : '';
     if (!$new && !$manage && !$edit) { return; }
     $object = psr_home_tools_type($type);
