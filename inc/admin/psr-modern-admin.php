@@ -183,7 +183,7 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
 CSS
     );
     // Script nativo, senza dipendenze: deve partire nell'head, non nel footer.
-    wp_register_script('psr-modern-admin', false, array(), '1.0.4', false);
+    wp_register_script('psr-modern-admin', false, array(), '1.0.5', false);
     wp_enqueue_script('psr-modern-admin');
     $data = array(
         'key' => 'psr-modern-nav-v1-' . get_current_blog_id() . '-' . get_current_user_id(),
@@ -205,7 +205,7 @@ CSS
             ['pratiche','Pratiche e pagamenti',['pratica','documento_privato','pagamento']],
             ['sportello','Sportello e assistenza',['appuntamento','messaggio','richiesta_assistenza','segnala_disservizio']],
             ['qualita_servizi','FAQ e valutazioni',['domanda_frequente','rating','core:edit-comments.php']],
-            ['setup_portale','Impostazioni portale',['admin:dci_options','core:themes.php','admin:dci_webapp_mobile','core:options-general.php']],
+            ['setup_portale','Impostazioni portale',['core:themes.php','admin:dci_webapp_mobile','core:options-general.php']],
             ['sistema_sicurezza','Sistema e sicurezza',['admin:psr-security-center','core:plugins.php','core:users.php','core:tools.php','plugin:wp-toolkit','admin:wpc-accessi']]
         ];
         var items = Array.from(menu.children).filter(function(li) {
