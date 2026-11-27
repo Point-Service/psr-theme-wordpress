@@ -15,6 +15,9 @@ if ($hide_arguments) $argomenti = array();
 ?>
 
 <?php if (function_exists('psr_home_tools_edit_post') && is_singular(array('notizia','evento','servizio')) && $post instanceof WP_Post && (int) $post->ID === (int) get_queried_object_id()) { psr_home_tools_edit_post($post->ID); } ?>
+<div class="psr-detail-tools">
+<div class="psr-detail-tools-actions">
+    <div class="psr-detail-tools-heading">Strumenti della pagina</div>
 <!-- Condividi sui social -->
 <div class="dropdown <?php echo $inline ? 'd-inline' : ''; ?>">
     <button class="btn btn-dropdown dropdown-toggle text-decoration-underline d-inline-flex align-items-center fs-0" type="button" id="shareActions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="condividi sui social">
@@ -103,9 +106,11 @@ if ($hide_arguments) $argomenti = array();
     </div>
 </div>
 
+</div><!-- .psr-detail-tools-actions -->
+
 <!-- Tipi di notizia -->
 <?php if (!empty($tipi_notizia) && is_array($tipi_notizia)) { ?>
-<div class="mt-4 mb-4">
+<div class="mt-4 mb-4 psr-detail-tools-category">
     <span class="subtitle-small">Tipo Notizia</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_notizia as $tip_not) { ?>
@@ -121,7 +126,7 @@ if ($hide_arguments) $argomenti = array();
 
 <!-- Argomenti -->
 <?php if (!empty($argomenti) && is_array($argomenti)) { ?>
-<div class="mt-4 mb-4">
+<div class="mt-4 mb-4 psr-detail-tools-category">
     <span class="subtitle-small">Argomenti</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($argomenti as $argomento) { ?>
@@ -137,7 +142,7 @@ if ($hide_arguments) $argomenti = array();
 
 <!-- Categorie di servizio -->
 <?php if (!empty($categorie_servizio) && is_array($categorie_servizio)) { ?>
-<div class="mt-4 mb-4">
+<div class="mt-4 mb-4 psr-detail-tools-category">
     <span class="subtitle-small">Categorie Servizio</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($categorie_servizio as $cat_serv) { ?>
@@ -153,7 +158,7 @@ if ($hide_arguments) $argomenti = array();
 
 <!-- Tipi di unità organizzativa -->
 <?php if (!empty($tipi_unita_organizzativa) && is_array($tipi_unita_organizzativa)) { ?>
-<div class="mt-4 mb-4">
+<div class="mt-4 mb-4 psr-detail-tools-category">
     <span class="subtitle-small">Tipo</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_unita_organizzativa as $tipo) { ?>
@@ -169,7 +174,7 @@ if ($hide_arguments) $argomenti = array();
 
 <!-- Tipi di evento -->
 <?php if (!empty($tipo_evento) && is_array($tipo_evento)) { ?>
-<div class="mt-4 mb-4">
+<div class="mt-4 mb-4 psr-detail-tools-category">
     <span class="subtitle-small">Tipi evento</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipo_evento as $evento) { ?>
@@ -185,7 +190,7 @@ if ($hide_arguments) $argomenti = array();
 
 <!-- Tipi di luogo -->
 <?php if (!empty($tipi_luogo) && is_array($tipi_luogo)) { ?>
-<div class="mt-4 mb-4">
+<div class="mt-4 mb-4 psr-detail-tools-category">
     <span class="subtitle-small">Tipi luogo</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_luogo as $tipo_luogo) { ?>
@@ -201,7 +206,7 @@ if ($hide_arguments) $argomenti = array();
 
 <!-- Tipi di commissario -->
 <?php if (!empty($tipi_commissario) && is_array($tipi_commissario)) { ?>
-<div class="mt-4 mb-4">
+<div class="mt-4 mb-4 psr-detail-tools-category">
     <span class="subtitle-small">Commissari</span>
     <ul class="d-flex flex-wrap gap-1">
         <?php foreach ($tipi_commissario as $commissario) { ?>
@@ -214,3 +219,4 @@ if ($hide_arguments) $argomenti = array();
     </ul>
 </div>
 <?php } ?>
+</div><!-- .psr-detail-tools -->
