@@ -12,6 +12,9 @@ function psr_modern_admin_enabled() {
     return !(defined('PSR_ADMIN_CLASSIC_UI') && PSR_ADMIN_CLASSIC_UI)
         && get_option('psr_modern_admin_ui', '1') === '1';
 }
+function psr_modern_admin_content_enabled() {
+    return psr_modern_admin_enabled() && get_option('psr_modern_admin_content_ui', '0') === '1';
+}
 function psr_modern_admin_config_screen() {
     return is_admin() && !is_network_admin() && !is_user_admin() && !wp_doing_ajax()
         && isset($_GET['page']) && $_GET['page'] === 'dci_options';
@@ -27,8 +30,8 @@ function psr_modern_admin_save() {
         || !isset($_POST['psr_modern_admin_save'])) { return; }
     check_admin_referer('psr_modern_admin_save', 'psr_modern_admin_nonce');
     // Ignora anche i vecchi form a tendina rimasti aperti durante un aggiornamento.
-    $fields = array('psr_modern_admin_value', 'psr_home_tools_enabled');
-    $valid = isset($_POST['psr_modern_admin_checks']) && $_POST['psr_modern_admin_checks'] === '1';
+    $fields = array('psr_modern_admin_value', 'psr_home_tools_enabled', 'psr_modern_admin_content_value');
+    $valid = isset($_POST['psr_modern_admin_checks']) && $_POST['psr_modern_admin_checks'] === '2';
     foreach ($fields as $field) {
         if (isset($_POST[$field]) && $_POST[$field] !== '1') { $valid = false; }
     }
@@ -36,6 +39,7 @@ function psr_modern_admin_save() {
         $forced = psr_modern_admin_forced_flags();
         if (!$forced[0]) {
             update_option('psr_modern_admin_ui', isset($_POST[$fields[0]]) ? '1' : '0', false);
+            update_option('psr_modern_admin_content_ui', isset($_POST[$fields[2]]) ? '1' : '0', false);
         }
         if (!$forced[1]) {
             update_option('psr_home_contextual_tools', isset($_POST[$fields[1]]) ? '1' : '0', false);
@@ -56,7 +60,7 @@ function psr_modern_admin_setting() {
     echo '<form method="post" action="' . esc_url(admin_url('admin.php?page=dci_options')) . '">';
     wp_nonce_field('psr_modern_admin_save', 'psr_modern_admin_nonce');
     echo '<input type="hidden" name="psr_modern_admin_save" value="1">';
-    echo '<input type="hidden" name="psr_modern_admin_checks" value="1">';
+    echo '<input type="hidden" name="psr_modern_admin_checks" value="2">';
     echo '<p><label><input type="checkbox" name="psr_modern_admin_value" value="1"'
         . checked($modern, true, false) . disabled($forced[0], true, false)
         . '> Abilita menu amministrativo moderno</label></p>';
@@ -65,6 +69,10 @@ function psr_modern_admin_setting() {
         . checked($contextual, true, false) . disabled($forced[1], true, false)
         . '> Abilita gestione contestuale dei contenuti</label></p>';
     echo '<p class="description" style="margin-left:24px">Mostra nella home e nelle sezioni interne del sito i comandi rapidi per aggiungere, modificare e configurare i contenuti, aprendo le relative schermate di WordPress in base ai permessi dell’operatore.</p>';
+    echo '<p><label><input type="checkbox" name="psr_modern_admin_content_value" value="1"'
+        . checked(!$forced[0] && get_option('psr_modern_admin_content_ui', '0') === '1', true, false) . disabled($forced[0], true, false)
+        . '> Abilita grafica moderna delle schermate interne (in prova)</label></p>';
+    echo '<p class="description" style="margin-left:24px">Rinnova tabelle, filtri, pulsanti e pannelli di configurazione senza cambiare la disposizione delle schermate. Richiede il menu amministrativo moderno.</p>';
     if ($forced[0]) { echo '<p>Stile classico imposto dalla configurazione di emergenza.</p>'; }
     if ($forced[1]) { echo '<p>Gestione contestuale disabilitata dalla configurazione di emergenza.</p>'; }
     if (!$forced[0] || !$forced[1]) { submit_button('Salva impostazioni', 'secondary', 'psr_modern_admin_submit', false); }
@@ -81,7 +89,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.4');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.5');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -180,6 +188,10 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-hidden { display: none; }
     body.psr-modern-admin:not(.folded) #wpadminbar .ab-top-menu > li > .ab-item { padding-left: 9px; padding-right: 9px; }
 }
+CSS
+    );
+    if (psr_modern_admin_content_enabled()) {
+        wp_add_inline_style('psr-modern-admin', <<<'CSS'
 /* PSR: rifinitura schermate interne, solo skin moderna, senza cambiare layout. */
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > h1.wp-heading-inline,
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > h1 { color:#17324d;font-weight:650;letter-spacing:-.025em; }
@@ -253,7 +265,8 @@ body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > .error,
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content > .error { border-radius:5px;box-shadow:0 1px 3px rgba(16,36,60,.04); }
 
 CSS
-    );
+        );
+    }
     // Script nativo, senza dipendenze: deve partire nell'head, non nel footer.
     wp_register_script('psr-modern-admin', false, array(), '1.0.5', false);
     wp_enqueue_script('psr-modern-admin');
