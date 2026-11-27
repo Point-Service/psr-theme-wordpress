@@ -89,7 +89,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.12');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.13');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -191,6 +191,18 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
 CSS
     );
     if (psr_modern_admin_content_enabled()) {
+        // Etichette di fallback CMB2 in italiano; non sovrascrive le traduzioni
+        // esistenti ne' le etichette personalizzate dei singoli campi.
+        add_filter('gettext_cmb2', static function ($translated, $text) {
+            if ($translated !== $text || !in_array($text, array('Add or Upload File', 'Add or Upload Files'), true)) {
+                return $translated;
+            }
+            $locale = get_user_locale();
+            if ($locale !== 'it' && strpos($locale, 'it_') !== 0) {
+                return $translated;
+            }
+            return $text === 'Add or Upload File' ? 'Carica o seleziona file' : 'Carica o seleziona piu\' file';
+        }, 10, 2);
         wp_add_inline_style('psr-modern-admin', <<<'CSS'
 /* PSR: rifinitura schermate interne, solo skin moderna, senza cambiare layout. */
 body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap > h1.wp-heading-inline,
@@ -726,6 +738,154 @@ body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap:not(.psrc):n
         background-position:right 9px center;
     }
 }
+}
+
+/* PSR: componente media. Solo presentazione dei controlli CMB2 esistenti.
+   Non spostare i nodi: handleMedia usa il campo precedente al pulsante. */
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled):not([aria-disabled=true]),
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled):not([aria-disabled=true]) {
+    background-color:#245c9f;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 16V4m-5 5 5-5 5 5M4 16v4h16v-4'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-size:16px 16px;
+    background-position:left 12px center;
+    color:#fff;
+    border-color:#245c9f;
+    border-radius:9px;
+    padding-inline-start:35px;
+    padding-inline-end:14px;
+    min-height:36px;
+    font-weight:600;
+    box-shadow:0 2px 5px rgba(16,36,60,.12);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled):not([aria-disabled=true]):hover,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled):not([aria-disabled=true]):hover {
+    background-color:#194879;
+    border-color:#194879;
+    color:#fff;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box input.cmb2-upload-button[type=button]:focus-visible,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox input.cmb2-upload-button[type=button]:focus-visible {
+    outline:2px solid #245c9f;
+    outline-offset:3px;
+}
+body.rtl.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled):not([aria-disabled=true]),
+body.rtl.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox input.cmb2-upload-button[type=button]:not(:disabled):not(.disabled):not([aria-disabled=true]) {
+    background-position:right 12px center;
+}
+/* I riquadri e le immagini mantengono le dimensioni native e il drag-and-drop. */
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .img-status,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .img-status {
+    box-sizing:border-box;
+    max-width:100%;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .img-status > img,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .img-status > img {
+    border:4px solid #fff;
+    border-radius:10px !important;
+    outline:1px solid #d5e0ec;
+    box-shadow:0 3px 8px rgba(16,36,60,.08);
+    box-sizing:border-box;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .img-status .cmb2-remove-file-button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .img-status .cmb2-remove-file-button {
+    width:24px;
+    height:24px;
+    border-color:#dfb7b7;
+    box-shadow:0 2px 5px rgba(16,36,60,.12);
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .img-status .cmb2-remove-file-button::after,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .img-status .cmb2-remove-file-button::after {
+    font-size:19px;
+    line-height:21px;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .file-status,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .file-status {
+    box-sizing:border-box;
+    max-width:100%;
+    padding:9px 12px;
+    margin-top:6px;
+    background:#f7f9fc;
+    border:1px solid #dce5ef;
+    border-radius:8px;
+    overflow-wrap:anywhere;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .file-status > a:not(.cmb2-remove-file-button),
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .file-status > a:not(.cmb2-remove-file-button) {
+    color:#245c9f;
+    font-weight:600;
+}
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb2-media-status .file-status > a.cmb2-remove-file-button,
+body.psr-modern-admin:not(.block-editor-page) #wpbody-content #poststuff .cmb2-postbox .cmb2-media-status .file-status > a.cmb2-remove-file-button {
+    color:#a4262c;
+}
+@supports selector(:has(*)) {
+    /* Configurazione: campo URL, azione e anteprima dentro una superficie unica. */
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box :is(.cmb-type-file,.cmb-type-file-list) > .cmb-td:has(> input.cmb2-upload-button) {
+        box-sizing:border-box;
+        background:#f5f8fc;
+        border-radius:12px;
+        box-shadow:inset 0 0 0 1px #dce6f0;
+        padding:14px 14px 12px;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box :is(.cmb-type-file,.cmb-type-file-list) > .cmb-td:has(> input.cmb2-upload-button) > .cmb2-metabox-description {
+        color:#52657a;
+        line-height:1.55;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box :is(.cmb-type-file,.cmb-type-file-list) > .cmb-td:has(> input.cmb2-upload-button) > .cmb2-media-status:has(> .cmb2-media-item) {
+        box-sizing:border-box;
+        max-width:100%;
+        padding:10px 12px;
+        margin-top:8px;
+        border:1px solid #dce6f0;
+        border-radius:10px;
+        background:#fff;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box :is(.cmb-type-file,.cmb-type-file-list) > .cmb-td:has(> input.cmb2-upload-button) > .cmb2-media-status > .img-status {
+        margin-top:0;
+        padding:5px 8px 5px 0;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box :is(.cmb-type-file,.cmb-type-file-list) > .cmb-td:has(> input.cmb2-upload-button) > .cmb2-media-status > .img-status > img {
+        margin-top:0;
+        max-width:100%;
+    }
+    body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box :is(.cmb-type-file,.cmb-type-file-list) > .cmb-td:has(> input.cmb2-upload-button) > .cmb2-media-status > .img-status .cmb2-remove-file-button {
+        top:0;
+        right:1px;
+    }
+    /* Flex soltanto con coppia input/pulsante nativa, senza riordinare i nodi.
+       Gli altri campi, i file multipli e le sidebar conservano il layout CMB2. */
+    @media (min-width:1100px) {
+        body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb-type-file > .cmb-td:has(> input.cmb2-upload-file[type=text] + input.cmb2-upload-button:not(.cmb2-upload-list)) {
+            display:flex;
+            flex-wrap:wrap;
+            align-items:center;
+            gap:10px;
+        }
+        body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb-type-file > .cmb-td:has(> input.cmb2-upload-file[type=text] + input.cmb2-upload-button:not(.cmb2-upload-list)) > input.cmb2-upload-file[type=text]:not([hidden]) {
+            flex:1 1 240px;
+            width:auto !important;
+            min-width:0;
+            max-width:100%;
+            min-height:38px;
+            box-sizing:border-box;
+            margin:0;
+        }
+        body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb-type-file > .cmb-td:has(> input.cmb2-upload-file[type=text] + input.cmb2-upload-button:not(.cmb2-upload-list)) > input.cmb2-upload-button:not(.cmb2-upload-list) {
+            flex:0 0 auto;
+            max-width:100%;
+            margin:0 !important;
+            min-height:38px;
+        }
+        body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb-type-file > .cmb-td:has(> input.cmb2-upload-file[type=text] + input.cmb2-upload-button:not(.cmb2-upload-list)) > :not(input):not([hidden]) {
+            flex:1 1 100%;
+            min-width:0;
+        }
+        body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb-type-file > .cmb-td:has(> input.cmb2-upload-file[type=text] + input.cmb2-upload-button:not(.cmb2-upload-list)) > .cmb2-metabox-description,
+        body.psr-modern-admin:not(.block-editor-page) #wpbody-content .wrap .cmb2-options-box .cmb-type-file > .cmb-td:has(> input.cmb2-upload-file[type=text] + input.cmb2-upload-button:not(.cmb2-upload-list)) > .cmb2-media-status {
+            margin-top:0;
+        }
+    }
 }
 
 CSS
