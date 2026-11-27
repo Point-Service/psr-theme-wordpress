@@ -46,10 +46,16 @@ function psr_modern_admin_setting() {
 }
 add_action('admin_notices', 'psr_modern_admin_setting');
 
+function psr_modern_admin_body_class($classes) {
+    return $classes . ' psr-modern-admin ';
+}
+
 function psr_modern_admin_enqueue() {
     if (!psr_modern_admin_enabled() || is_network_admin() || is_user_admin()
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
-    wp_register_style('psr-modern-admin', false, array(), '1.0.0');
+    // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
+    add_filter('admin_body_class', 'psr_modern_admin_body_class');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.1');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -100,6 +106,10 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-my-account .avatar { border-radi
 body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-weight: 600; }
 #adminmenu .psr-nav-tools, #adminmenu .psr-nav-heading { display: none; }
 @media (min-width: 961px) {
+    /* Solo mentre il DOM del menu viene preparato; mai il contenuto o la toolbar. */
+    html.psr-nav-pending body.psr-modern-admin:not(.folded) #adminmenu {
+        visibility: hidden;
+    }
     body.psr-modern-admin:not(.folded) #adminmenuback,
     body.psr-modern-admin:not(.folded) #adminmenuwrap,
     body.psr-modern-admin:not(.folded) #adminmenu { width: var(--psr-width); }
@@ -131,7 +141,8 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
 }
 CSS
     );
-    wp_register_script('psr-modern-admin', false, array('jquery'), '1.0.0', true);
+    // Script nativo, senza dipendenze: deve partire nell'head, non nel footer.
+    wp_register_script('psr-modern-admin', false, array(), '1.0.1', false);
     wp_enqueue_script('psr-modern-admin');
     $data = array(
         'key' => 'psr-modern-nav-v1-' . get_current_blog_id() . '-' . get_current_user_id(),
@@ -241,7 +252,41 @@ CSS
         if (media.addEventListener) { media.addEventListener('change',sync); } else if (media.addListener) { media.addListener(sync); }
         if (window.MutationObserver) { new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['class']}); }
     }
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded',init); } else { init(); }
+    // Il menu nativo precede il contenuto della pagina: lo prepariamo appena
+    // il suo ultimo controllo (collapse-button) viene inserito dal parser.
+    // Se JS non parte non viene mai applicata la classe pending.
+    var root = document.documentElement, observer = null, timer = null, done = false;
+    function finish(prepare) {
+        if (done) { return; }
+        done = true;
+        if (observer) { observer.disconnect(); }
+        if (timer !== null) { window.clearTimeout(timer); }
+        document.removeEventListener('DOMContentLoaded', onReady);
+        try {
+            if (prepare) { init(); }
+        } finally {
+            root.classList.remove('psr-nav-pending');
+        }
+    }
+    function onReady() { finish(true); }
+    function checkMenu() {
+        var menu = document.getElementById('adminmenu');
+        if (menu && menu.querySelector('#collapse-button')) { finish(true); }
+    }
+    if (document.readyState !== 'loading') {
+        finish(true);
+    } else if (window.MutationObserver) {
+        // Fail-open: su una pagina insolitamente lenta non nascondiamo il menu
+        // indefinitamente e non lo riorganizziamo tardivamente dopo il timeout.
+        timer = window.setTimeout(function () { finish(false); }, 1500);
+        document.addEventListener('DOMContentLoaded', onReady);
+        observer = new MutationObserver(checkMenu);
+        observer.observe(root, {childList:true, subtree:true});
+        root.classList.add('psr-nav-pending');
+        checkMenu();
+    } else {
+        document.addEventListener('DOMContentLoaded', onReady);
+    }
 })();
 JS
     );
