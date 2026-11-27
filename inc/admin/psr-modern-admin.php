@@ -55,7 +55,7 @@ function psr_modern_admin_enqueue() {
         || (defined('IFRAME_REQUEST') && IFRAME_REQUEST)) { return; }
     // Classe presente nell'HTML iniziale: larghezza, colori e toolbar dal primo rendering.
     add_filter('admin_body_class', 'psr_modern_admin_body_class');
-    wp_register_style('psr-modern-admin', false, array(), '1.0.1');
+    wp_register_style('psr-modern-admin', false, array(), '1.0.2');
     wp_enqueue_style('psr-modern-admin');
     wp_add_inline_style('psr-modern-admin', <<<'CSS'
 body.psr-modern-admin {
@@ -120,7 +120,22 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
         left: auto; width: auto; min-width: 0;
     }
     body.psr-modern-admin:not(.folded) #adminmenu > li.menu-top > a.menu-top { min-height: 36px; border-radius: 6px; margin: 2px 6px; }
-    body.psr-modern-admin:not(.folded) #adminmenu .wp-menu-name { padding-top: 10px; padding-bottom: 10px; }
+    body.psr-modern-admin:not(.folded) #adminmenu > li.menu-top > a.menu-top .wp-menu-name {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
+    body.psr-modern-admin:not(.folded) #adminmenu .wp-submenu a {
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+    body.psr-modern-admin:not(.folded) #adminmenu .wp-submenu li.current a {
+        font-weight: 600;
+    }
     body.psr-modern-admin:not(.folded) #adminmenu .wp-menu-image { padding-top: 2px; }
     body.psr-modern-admin:not(.folded) #adminmenu .wp-has-current-submenu > a:after,
     body.psr-modern-admin:not(.folded) #adminmenu li.current > a:after { display: none; }
@@ -132,7 +147,7 @@ body.psr-modern-admin #wpadminbar #wp-admin-bar-design-comuni > .ab-item { font-
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-search { box-sizing: border-box; width: 100%; min-height: 34px; background: #203851; color: #fff; border: 1px solid #607c99; border-radius: 6px; padding: 0 8px; font-size: 12px; }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-search::placeholder { color: #d1dfed; }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-heading { padding: 9px 10px 2px; }
-    body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group { display: flex; align-items: center; justify-content: space-between; width: 100%; border: 0; border-radius: 4px; background: transparent; color: var(--psr-muted); padding: 6px 3px; cursor: pointer; font: 600 10px/1.4 system-ui,sans-serif; text-transform: uppercase; letter-spacing: .045em; text-align: left; }
+    body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group { display: flex; align-items: center; justify-content: space-between; width: 100%; border: 0; border-radius: 4px; background: transparent; color: var(--psr-muted); padding: 6px 3px; cursor: pointer; font: 700 12px/1.4 system-ui,sans-serif; text-transform: uppercase; letter-spacing: .045em; text-align: left; }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group:hover { color: #fff; background: var(--psr-hover); }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group:after { content: '\203A'; font-size: 17px; line-height: 1; }
     body.psr-modern-admin:not(.folded) #adminmenu .psr-nav-group[aria-expanded="true"]:after { transform: rotate(90deg); }
