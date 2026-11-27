@@ -974,12 +974,43 @@ main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.th
     color:var(--psr-institution-color,#245c9f) !important;
 }
 @media (min-width:992px) {
+    /* Un solo contorno: il contenitore ritaglia gli sfondi interni
+       sugli stessi angoli, senza modificare il contenitore sticky. */
     main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper > .accordion {
         margin:12px 14px 12px 0;
-        border:1px solid #dfe5eb;
-        border-radius:7px;
+        box-sizing:border-box;
+        border:1px solid #d8e1e9;
+        border-radius:6px;
         background:#fff;
-        box-shadow:0 2px 6px rgba(24,43,61,.045);
+        box-shadow:0 2px 5px rgba(24,43,61,.04);
+        overflow:hidden;
+    }
+    main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper > .accordion > .accordion-item {
+        border:0;
+        border-radius:0;
+        background:transparent;
+        box-shadow:none;
+    }
+    main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper > .accordion > .accordion-item > .accordion-header {
+        display:block;
+        margin:0;
+        padding:0;
+        border:0;
+        background:transparent;
+    }
+    main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper > .accordion > .accordion-item > .accordion-header > .accordion-button {
+        border:0;
+        border-radius:0;
+        box-shadow:none;
+        margin:0;
+    }
+    main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper > .accordion > .accordion-item > .accordion-header > .accordion-button:focus-visible {
+        outline:2px solid var(--psr-institution-color,#245c9f);
+        outline-offset:-3px;
+    }
+    main .cmp-navscroll .navbar.it-navscroll-wrapper:not(.theme-dark-mobile):not(.theme-dark-desk) .link-list-wrapper > .accordion > .accordion-item > .progress {
+        border-radius:0;
+        margin:0;
     }
 }
 /* PSR: pannello azioni e classificazioni. Mantiene i pulsanti Bootstrap e
@@ -1259,6 +1290,22 @@ main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-
 @media (max-width:575.98px) {
     main .psr-detail-tools .dropdown-menu:is([aria-labelledby="shareActions"],[aria-labelledby="viewActions"]) .link-list-wrapper > ul.link-list > li > a.list-item {
         min-height:44px;
+    }
+}
+
+/* PSR: allinea il blocco introduttivo ai bordi della griglia inferiore
+   nei modelli con breadcrumb, titolo 8 colonne, azioni 3 colonne.
+   Usa i gutter nativi Bootstrap; mobile e header restano invariati. */
+@media (min-width:992px) {
+    body.single:is(.single-evento,.single-luogo,.single-notizia,.single-servizio,.single-documento_pubblico,.single-atto_concessione,.single-commissario,.single-bando,.single-dataset,.single-consiglio,.single-elemento_trasparenza,.single-incarichi_dip,.single-incarico_dirig,.single-titolare_incarico) main #main-container.container {
+        padding-inline:calc(var(--bs-gutter-x,24px) * .5) !important;
+    }
+    body.single:is(.single-evento,.single-luogo,.single-notizia,.single-servizio,.single-documento_pubblico,.single-atto_concessione,.single-commissario,.single-bando,.single-dataset,.single-consiglio,.single-elemento_trasparenza,.single-incarichi_dip,.single-incarico_dirig,.single-titolare_incarico) main #main-container.container > .row > .col.px-lg-4,
+    body.single:is(.single-evento,.single-luogo,.single-notizia,.single-servizio,.single-documento_pubblico,.single-atto_concessione,.single-commissario,.single-bando,.single-dataset,.single-consiglio,.single-elemento_trasparenza,.single-incarichi_dip,.single-incarico_dirig,.single-titolare_incarico) main #main-container.container > .row > .col-lg-8.px-lg-4 {
+        padding-inline-start:0 !important;
+    }
+    body.single:is(.single-evento,.single-luogo,.single-notizia,.single-servizio,.single-documento_pubblico,.single-atto_concessione,.single-commissario,.single-bando,.single-dataset,.single-consiglio,.single-elemento_trasparenza,.single-incarichi_dip,.single-incarico_dirig,.single-titolare_incarico) main #main-container.container > .row > .col-lg-3.offset-lg-1 {
+        padding-inline-end:0 !important;
     }
 }
 
