@@ -1657,6 +1657,47 @@ body.single main .it-page-sections-container .it-page-section:not(#ultimo-aggior
     }
 }
 
+/* PSR: titoli di panoramiche ed elenchi, anche nei blocchi asincroni.
+   Esclude home, schede, indice, hero e componenti interattivi. */
+body:not(.home) main .container > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+body:not(.home) main .container > .row > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+body:not(.home) main .container > .row > :is(.col,.col-12,[class*='col-lg-']) > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+body:not(.home) main .container .col-12 > .row > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+body:not(.home) main .container#argomenti > h3.title-xlarge:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+body:not(.home) main #tutti-gli-argomenti .section-content > .row > .col > h3:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *) {
+    font-size:clamp(1.65rem,2.1vw,2rem);
+    font-weight:700;
+    line-height:1.28;
+    letter-spacing:-.02em;
+    padding-inline-start:15px;
+    background-image:linear-gradient(var(--psr-institution-color,#245c9f),var(--psr-institution-color,#245c9f));
+    background-repeat:no-repeat;
+    background-size:4px .82em;
+    background-position:left .21em;
+    overflow-wrap:anywhere;
+}
+@media (max-width:575.98px) {
+    body:not(.home) main .container > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main .container > .row > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main .container > .row > :is(.col,.col-12,[class*='col-lg-']) > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main .container .col-12 > .row > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main .container#argomenti > h3.title-xlarge:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main #tutti-gli-argomenti .section-content > .row > .col > h3:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *) {
+        padding-inline-start:12px;
+    }
+}
+@media print {
+    body:not(.home) main .container > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main .container > .row > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main .container > .row > :is(.col,.col-12,[class*='col-lg-']) > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main .container .col-12 > .row > h2:is(.title-xxlarge,.title-xlarge):not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main .container#argomenti > h3.title-xlarge:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *),
+    body:not(.home) main #tutti-gli-argomenti .section-content > .row > .col > h3:not(.visually-hidden,.sr-only,.card-title,[hidden],.card *,.it-page-section *,.cmp-navscroll *,.richtext-wrapper *,.modal *,.accordion *,.cmp-rating *,.it-hero-wrapper *,.cmp-hero *,#main-container.psr-home-restyle *) {
+        background-image:none;
+        padding-inline-start:0;
+    }
+}
+
 CSS
     );
     wp_add_inline_script('dci-comuni', <<<'JS'
